@@ -1,8 +1,9 @@
 #!/bin/sh
 # Agent-independent guards (standard library only).
+#   tools/accepted_freeze.py     accepted receipt hashes and committed freeze metadata
 #   tools/legacy_precommit.py    frozen legacy check (tools/precommit.py), scoped to C1/C2 evidence
 #   tools/milestone_precommit.py C4+: registration order, pipeline record, endpoint coverage, reviewer family
 #   tools/status.py --check      README status block must match STATUS.json
 # Enabled per clone with: git config core.hooksPath .githooks
 root="$(git rev-parse --show-toplevel)"
-python3 "$root/tools/legacy_precommit.py" && python3 "$root/tools/milestone_precommit.py" && python3 "$root/tools/status.py" --check
+python3 "$root/tools/accepted_freeze.py" && python3 "$root/tools/legacy_precommit.py" && python3 "$root/tools/milestone_precommit.py" && python3 "$root/tools/status.py" --check
