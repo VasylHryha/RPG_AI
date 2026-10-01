@@ -1,0 +1,69 @@
+{
+  "status": "PASS",
+  "source_commit": "63ae7ddc5d11f4c7b59972227c2c0ebf7fbc0cdf",
+  "results_sha256": "34865a9783c2337afda0578ea46e1ac2954926b5485801c394cf2eb47fccd657",
+  "fingerprint": "7e9c156dc21824a9948fe1d794181408871018fac1e3e4c52c51cda1e159c9f9",
+  "source_files": 43,
+  "trials": 40,
+  "state_bindings": 80,
+  "orders_verified": 4000,
+  "recorded_contracts": 23,
+  "mutation_checks": 4,
+  "stages": [
+    "preflight",
+    "tests",
+    "smoke",
+    "mutation",
+    "panel"
+  ],
+  "historical_files_verified": 59,
+  "initial_failed_check_preserved": true,
+  "uncertainty_recomputed": {
+    "affine": {
+      "candidate_mse": {
+        "mean": 0.017576919005517194,
+        "ci95": [
+          0.01672541101544274,
+          0.01847576148838179
+        ]
+      },
+      "relative_reduction": {
+        "mean": 0.08920474007224094,
+        "ci95": [
+          0.07452492665375646,
+          0.10455945195397091
+        ]
+      },
+      "paired_difference": {
+        "mean": -0.0017580875366782663,
+        "ci95": [
+          -0.002105001767805511,
+          -0.0014252445428282966
+        ]
+      }
+    },
+    "realizable": {
+      "candidate_mse": {
+        "mean": 0.0004149391585941494,
+        "ci95": [
+          0.00021392073640519785,
+          0.000650805954005404
+        ]
+      },
+      "relative_reduction": {
+        "mean": 0.5249198827478774,
+        "ci95": [
+          0.4480292991425892,
+          0.5996338122546827
+        ]
+      },
+      "paired_difference": {
+        "mean": -0.0005762676409032041,
+        "ci95": [
+          -0.0009491913133810449,
+          -0.00028151469350047787
+        ]
+      }
+    }
+  }
+}
