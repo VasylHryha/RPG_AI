@@ -1,0 +1,205 @@
+{
+  "milestone": "c5",
+  "fingerprint": "a4b1bd4eb7c7d9da38fbec1cf11ea2accdbff19dc8be2dacca5d5813ec1612a5",
+  "baseline": {
+    "detected": false,
+    "timed_out": false,
+    "summary": "32 passed in 4.34s",
+    "seconds": 4.535515917
+  },
+  "timeout": 120,
+  "mutants": {
+    "recovery_ignores_original": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 10 passed in 3.39s",
+      "seconds": 3.906638333000001
+    },
+    "criterion6_dropped": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 11 passed in 3.41s",
+      "seconds": 3.8325291660000005
+    },
+    "port_overlap_unchecked": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 11 passed in 3.33s",
+      "seconds": 3.7789023329999996
+    },
+    "unit_lock_unchecked": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 11 passed in 2.42s",
+      "seconds": 2.733907083
+    },
+    "time_not_scaled": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 8 passed in 3.40s",
+      "seconds": 3.864006667
+    },
+    "freq_tol_not_scaled": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 8 passed in 3.31s",
+      "seconds": 3.809853209
+    },
+    "outcome_merged_first": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 13 passed in 3.37s",
+      "seconds": 3.909667917000001
+    },
+    "decoupling_leaks": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 6 passed in 3.10s",
+      "seconds": 3.493845417000001
+    },
+    "shift_not_rigid": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 5 passed in 2.57s",
+      "seconds": 2.816883541
+    },
+    "scale_wrong_factor": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 5 passed in 2.80s",
+      "seconds": 3.201426125000001
+    },
+    "rates_per_element": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 4 passed in 2.90s",
+      "seconds": 3.2836542499999997
+    },
+    "unit_phase_arithmetic_mean": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed in 0.41s",
+      "seconds": 0.7430874580000015
+    },
+    "port_overlap_never": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 3 passed in 2.83s",
+      "seconds": 3.172524375
+    },
+    "coarse_never_reopens": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 16 passed in 4.06s",
+      "seconds": 4.427738
+    },
+    "coarse_phase_sign": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 15 passed in 3.99s",
+      "seconds": 4.299495917
+    },
+    "coarse_ignores_natural_rate": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 14 passed in 3.24s",
+      "seconds": 3.6049887920000003
+    },
+    "margin_ignored": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 20 passed in 8.12s",
+      "seconds": 8.386189791000001
+    },
+    "coarse_one_baseline": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 21 passed in 8.02s",
+      "seconds": 8.305433083
+    },
+    "coarse_fail_one_baseline": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 21 passed in 7.89s",
+      "seconds": 8.314248042000001
+    },
+    "control_vacuous_passes": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 22 passed in 7.96s",
+      "seconds": 8.234763875
+    },
+    "hm_ignores_formation": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 23 passed in 8.02s",
+      "seconds": 8.353137209000002
+    },
+    "hm_ignores_dose": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 23 passed in 8.09s",
+      "seconds": 8.3884675
+    },
+    "hc_formation_row_dropped": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 23 passed in 7.90s",
+      "seconds": 8.166071166000002
+    },
+    "hc_ignores_transfer": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 23 passed in 6.96s",
+      "seconds": 7.237113625000001
+    },
+    "formation_min_worlds_ignored": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 24 passed in 5.38s",
+      "seconds": 5.641162041999998
+    },
+    "effective_state_min_worlds_ignored": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 24 passed in 5.12s",
+      "seconds": 5.339994459
+    },
+    "effective_frequency_unscaled": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 25 passed in 6.35s",
+      "seconds": 6.618501958000003
+    },
+    "ablation_against_intact_control": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 18 passed in 5.94s",
+      "seconds": 6.245304874999999
+    },
+    "decoupled_transfer_not_decoupled": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 19 passed in 6.14s",
+      "seconds": 6.386746792
+    },
+    "smoke_uses_final_seeds": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 28 passed in 6.01s",
+      "seconds": 6.477329417
+    },
+    "controls_gate_vacuous": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 30 passed in 5.78s",
+      "seconds": 6.072674249999999
+    }
+  },
+  "detected": 31,
+  "total": 31,
+  "survivors": [],
+  "unexpected_survivors": [],
+  "problems": [],
+  "seconds": 26.890587125
+}
