@@ -1,0 +1,216 @@
+{
+  "experiment_id": "geomind-c5-r4-001",
+  "milestone": "C5",
+  "status": "REGISTERED",
+  "question": "Take accepted C4 resonators (level-1 units) with distinct collective rates and let them interact only through the unchanged C4 element law. Does a label-free detector reading only their ResonatorState find a level-2 resonator (persistent, recovering, frequency-locked, every unit alive and distinct), and does the level-2 mode depend causally on unit geometry and unit geometry on the level-2 mode, each effect vanishing under its complete matched ablation?",
+  "hypotheses": {
+    "H-M_level2": "geometry and modes influence one another at the unit scale (whole <-> parts)",
+    "H-C_first_transition": "one composition step R0 -> R1 under the same rule, with a valid effective state and a coarse prediction that beats cheap baselines"
+  },
+  "not_tested": [
+    "recursion R1 -> R2 (C6)",
+    "dissolution and reform (C7)",
+    "usefulness, compression or efficiency (C8)",
+    "units co-forming from one primitive soup",
+    "internally heterogeneous units",
+    "novelty over hierarchical synchrony"
+  ],
+  "proposal": "experiments/c5_proposal.md",
+  "decision_record": "docs/decisions/0004-approve-c5.md",
+  "implementer_family": "Claude",
+  "level1": {
+    "c4_manifest": "experiments/c4_manifest.json",
+    "c4_manifest_sha256": "8e9878107814a126fced5b7e1110888e357fad9fa250985e88e52fcefa4d5684",
+    "size_range": [
+      6,
+      16
+    ],
+    "harvest_ratio": 1.3,
+    "rule": "fresh C4 identical-arm worlds with the frozen C4 code; accepted resonators within size_range become single-use templates, assigned to level-2 worlds in harvest order"
+  },
+  "worlds": {
+    "units_per_world": 5,
+    "rate_half_width": 0.03,
+    "placement_radius": 2.5,
+    "min_gap": 0.6,
+    "spread_sweep": [
+      0.5,
+      1.0,
+      2.0
+    ]
+  },
+  "normalization": {
+    "T": 3.2,
+    "tau1": 1.5,
+    "tau2": 4.94,
+    "rule": "T = median tau2 / median tau1 on development worlds, rounded to 0.2 (step-exact), frozen; tau1: internal e-folding after an element phase kick, unit alone; tau2: e-folding of the inter-unit pattern after the unit-phase probe, intact G->M control",
+    "tau_kick_rms": 0.3,
+    "tau1_horizon": 20.0,
+    "tau_sample_dt": 0.5,
+    "development_measurement": "10 development worlds (entropy 22222) run with provisional T = 2.6: tau1 median 1.5 over 50 units, tau2 median 4.94 over 4 accepted groups; ratio 3.29, rounded to the 0.2 grid -> 3.2"
+  },
+  "integration": {
+    "horizon_in_T": 100,
+    "note": "C4 dt and RK4; the level-2 horizon, window and frame interval are the C4 values times T"
+  },
+  "detector": {
+    "rule": "C4 criteria 1-5 on unit states with the C4 thresholds (times x T, freq_tol / T); criterion 6: each member unit passes its own C4 criteria 2-4 with level-1 thresholds and its port overlap <= max_port_overlap",
+    "max_port_overlap": 0.2,
+    "max_port_overlap_basis": "development worlds: accepted groups reach at most 0.167 (one of six ports touching), the merged candidate 0.4; units' 95th percentile 0.167"
+  },
+  "interventions": {
+    "gm_scales": [
+      1.1,
+      1.25,
+      1.5
+    ],
+    "gm_scale": 1.25,
+    "gm_probe_unit_phase_rms": 0.3,
+    "gm_window_in_T": 5,
+    "mg_doses": [
+      "rms:0.5",
+      "rms:1.0",
+      "uniform"
+    ],
+    "mg_dose": "uniform",
+    "mg_window_in_T": 10,
+    "sample_dt_in_T": 0.1,
+    "gm_ablations": {
+      "no_geometry_to_mode": "complete: w = 1 and phase topology frozen at s0 (primary)",
+      "no_distance_weight": "decomposition",
+      "frozen_topology": "decomposition"
+    },
+    "mg_ablations": {
+      "no_mode_to_geometry": "complete: J = 0 (primary)"
+    }
+  },
+  "excitations": {
+    "phase_pulse": 0.5,
+    "radial_push_in_L": 0.2,
+    "window": "mg_window_in_T"
+  },
+  "effective_state_bounds": {
+    "state_error_position": 0.25,
+    "state_error_size": 0.05,
+    "state_error_frequency_level1": 0.01,
+    "note": "frequency bound is divided by T"
+  },
+  "statistics": {
+    "bootstrap_resamples": 10000,
+    "ci_level": 0.95,
+    "unit": "world (seed); its value is the mean over its accepted level-2 resonators"
+  },
+  "verdict_rules": {
+    "formation_min_fraction": 0.5,
+    "min_worlds_for_verdict": 10,
+    "ablation_vanish_fraction": 0.2,
+    "effective_state_min_fraction": 0.9,
+    "meaningful_margin": 0.01,
+    "formation_l2": "PASS if fraction >= 0.5 and >= 10 worlds FORMED; FAIL otherwise",
+    "causality": "rows: (1) INCONCLUSIVE if < 10 formed worlds; (2) FAIL if the intact CI includes 0 or lies below it; (3) PASS if the complete ablation CI includes 0 or |mean| <= 0.2 x intact mean; (4) INCONCLUSIVE otherwise",
+    "dose_response": "per direction: (1) INCONCLUSIVE if < 10 worlds; (2) PASS if means non-decreasing and the highest-minus-lowest CI > 0; (3) FAIL if that CI < 0; (4) INCONCLUSIVE otherwise. Endpoint FAIL if either direction fails, PASS only if both pass",
+    "margin_endpoints": "downward_effect and emergent_transfer: (1) INCONCLUSIVE if < 10 worlds; (2) FAIL if the CI upper bound < 0.01 rad; (3) PASS if the CI lower bound > 0.01 rad; (4) INCONCLUSIVE otherwise",
+    "effective_state_l2": "(1) INCONCLUSIVE if < 10 formed worlds or no units; (2) PASS if >= 90% of accepted level-2 units meet every bound; (3) FAIL otherwise",
+    "coarse_vs_full": "paired per world, gain = baseline error - coarse error for each baseline: (1) INCONCLUSIVE if < 10 worlds; (2) FAIL if either gain CI upper bound < 0; (3) PASS if both gain CI lower bounds > 0; (4) INCONCLUSIVE otherwise",
+    "controls": "not_independent and not_a_clump_l2: FAIL if any imposed candidate is accepted; PASS if >= 1 tested and none accepted; NOT_TESTED if none. Gate: both PASS",
+    "truth_table": {
+      "H-M_level2": [
+        [
+          "any of g_to_m_l2, m_to_g_l2, dose_response_l2 = FAIL",
+          "NOT_SUPPORTED"
+        ],
+        [
+          "formation_l2 = PASS and all three = PASS",
+          "SUPPORTED_WITHIN_SCOPE"
+        ],
+        [
+          "otherwise (formation FAIL; < 10 formed worlds; any INCONCLUSIVE)",
+          "INCONCLUSIVE"
+        ]
+      ],
+      "H-C_first_transition": [
+        [
+          "formation_l2 Wilson 95% upper bound < 0.25",
+          "NOT_SUPPORTED"
+        ],
+        [
+          "any of downward_effect, emergent_transfer, effective_state_l2, coarse_vs_full = FAIL",
+          "NOT_SUPPORTED"
+        ],
+        [
+          "H-M_level2 = SUPPORTED_WITHIN_SCOPE and those four = PASS",
+          "SUPPORTED_WITHIN_SCOPE"
+        ],
+        [
+          "otherwise",
+          "INCONCLUSIVE"
+        ]
+      ]
+    }
+  },
+  "numerical_checks": {
+    "decoupling_tolerance": 1e-09,
+    "note": "RK4 order, switching dt error and equivariance use the frozen C4 tolerances; unit relabelling uses the C4 equivariance tolerance"
+  },
+  "seeds": {
+    "development_entropy": 22222,
+    "development_worlds": 10,
+    "final_entropy": 7961019210925654807,
+    "final_worlds": 30,
+    "rule": "final entropy drawn with secrets.randbits(63) at registration; final worlds (and their harvest worlds) are never simulated before the recorded panel; smoke and tests use development entropy"
+  },
+  "endpoints": {
+    "level1_pool": "harvest counts and sizes; every used unit, alone with its rate, is re-detected as an accepted C4 resonator (gate)",
+    "formation_l2": "fraction of final worlds FORMED, Wilson 95% CI; PASS at >= 0.5 with >= 10 worlds",
+    "formation_outcomes": "descriptive: FORMED / MERGED / DRIFTING / APART / OTHER and per-criterion candidate failures",
+    "formation_vs_spread": "descriptive: formation with every rate scaled by 0.5, 1.0 and 2.0",
+    "not_independent": "decoupled continuation with the assembled rates, imposed candidates; must reject all (gate)",
+    "not_a_clump_l2": "decoupled continuation with all rates 0, imposed candidates; must reject all (gate)",
+    "g_to_m_l2": "G->M paired effect (intact, s = 1.25) and the complete ablation; causality rule",
+    "m_to_g_l2": "M->G paired effect (intact, uniform unit phases) and J = 0; causality rule",
+    "dose_response_l2": "G->M over s = 1.1/1.25/1.5 and M->G over RMS 0.5/1.0/uniform; dose rule",
+    "g_to_m_channels_l2": "descriptive: single-channel G->M effects as a fraction of intact",
+    "parts_alive": "descriptive: criterion-6 values for every unit of every candidate",
+    "downward_effect": "port-member phase-offset shift, group versus the same units alone; margin rule; entrainment reported",
+    "emergent_transfer": "response of the other units to a phase pulse on one unit, intact minus decoupled; margin rule",
+    "effective_state_l2": ">= 90% of accepted level-2 units within the effective-state bounds",
+    "coarse_vs_full": "coarse law (ports, zero fitted parameters, reopening) against no-transfer and rigid-transfer baselines on held-out excitations; frequency error, recovery error, reopen rate and work reported",
+    "same_rule_audit": "level-2 thresholds equal C4's after the single factor T; T, tau1, tau2 and the final-world measured ratio recorded (gate)",
+    "numerical_checks": "RK4 order, switching dt error, equivariance, unit relabelling and exact decoupling on an assembled world (gate)"
+  },
+  "gates": [
+    "passing focused contracts for the exact dependency fingerprint",
+    "complete panel for every final world",
+    "numerical_checks PASS",
+    "not_independent and not_a_clump_l2 PASS",
+    "level1_pool PASS",
+    "same_rule_audit PASS",
+    "endpoint coverage complete",
+    "source hashes stable during the run"
+  ],
+  "registered": "2026-10-01",
+  "registered_changes_from_proposal": [
+    "Criterion 6 distinctness uses port overlap (fraction of a unit's ports strictly inside another unit's hull <= 0.2) instead of the own-neighbour fraction q. Development worlds: the own-neighbour fraction falls to 0.5-0.6 for units merely pressed together (it measures contact area), while member hull overlap stays 0 except in a merged candidate.",
+    "The unit phase Theta is the circular mean of member phases, unwrapped over frames: C4 keeps member phases unwrapped and they can differ by whole turns (all harvested units have coherence 1.00).",
+    "The coarse law is evaluated on port pairs with actual port distances and port phase offsets (the C4 law exactly) instead of centroid distances divided by L_I + L_J, which would add an unmeasured distance scale. A port's coupling capacity is its own-neighbour distance list from the level-1 owner.",
+    "Coarse reopening: a state is INVALID when a unit's cross-link count changes by more than half or an inter-unit phase difference moves by more than pi/2 (outside the sine locking basin). The proposal's 'leaves the lock tolerance' would fire on every 0.5 rad pulse by design.",
+    "Decoupling translates each unit 100 length units apart in the same world (beyond the C4 radius 3) instead of separate worlds: exact by translation equivariance, checked in numerical_checks against each unit simulated alone.",
+    "Primary doses: G->M s = 1.25 (the middle dose, as C4's primary was its middle scale); M->G 'uniform' (as C4). Uniform is a random rigid offset per unit.",
+    "Held-out excitations: one unit per group, chosen with the seeded rng; the response error is the RMS wrapped phase error plus the RMS position error over L, over the other group units and the 10 T window; the world value is the mean of the two excitations' gains.",
+    "T is rounded to a 0.2 grid so every scaled time is a whole number of RK4 steps.",
+    "Work is counted as pair evaluations for both models (full: N^2 neighbour search plus 4 RK4 stages over N x k; coarse: 5 P^2 over ports).",
+    "Harvest: ceil(1.3 x units needed) fresh C4 worlds; templates assigned to level-2 worlds in harvest order (world index, then detection order).",
+    "level1_pool re-detection: the frozen C4 detector on the assembled world with units decoupled, over the C4 window; every unit must equal an accepted component.",
+    "DRIFTING includes worlds with contact but no locked candidate group.",
+    "tau2 is the e-folding time of the inter-unit pattern after the unit-phase probe in the intact G->M control (no extra runs); tau1 uses a decoupled continuation with an element-level kick inside every unit.",
+    "Development settings from the design gate (tools/c5_design_gate.py, development entropy only): placement radius R2 = 2.5, rate half-width delta = 0.03 (median |d omega| x window = 0.586 x 0.03 x 96 = 1.7 rad >= 1 rad, the non-vacuity bound), min_gap 0.6.",
+    "Downward effect (b) uses each unit's ports (hull members) at s0 and compares phase offsets at the end of the 10 T window (group versus decoupled)."
+  ],
+  "development_summary": {
+    "formed": 4,
+    "merged": 2,
+    "drifting": 4,
+    "worlds": 10,
+    "note": "settings only; development outcomes are not evidence. Formation 4/10 is below the registered 0.5; nothing was tuned to change it"
+  }
+}
