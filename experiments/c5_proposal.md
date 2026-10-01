@@ -43,7 +43,7 @@ The level-1 owner keeps the member lists private. The level-2 detector never rec
 
 **Coupling = the C4 law, unchanged.** The full model is `c4_model.simulate` on the union of all members, with the C4 parameters and the k = 8 nearest within radius 3 neighbour rule. Units interact only where boundary members fall inside one another's neighbour sets. These are the boundary ports, and the coupling topology grows and breaks through the same neighbour rule. Nothing in the dynamics knows that units exist. Interventions and ablations use C4's `Params` presets unchanged.
 
-**One normalization.** The C4 detector's spatial thresholds are already relative: the link threshold is 1.5 × the median nearest spacing, kicks are 0.1 × spacing, shape is a coefficient of variation, membership is a Jaccard score. Applied to unit centroids, they normalize by scale automatically. Phase thresholds are dimensionless. Only the time quantities scale, by one factor T = τ₂/τ₁:
+**One normalization.** The C4 detector's spatial thresholds are already relative: the link threshold is 1.5 × the median nearest spacing, kicks are 0.1 × spacing, shape is a coefficient of variation, membership is a Jaccard score. Applied to unit centroids, they normalize by scale automatically. This is the standard's "normalize distance by the units' size" in its scale-free form; the coarse model divides by L explicitly. Phase thresholds are dimensionless. Only the time quantities scale, by one factor T = τ₂/τ₁:
 - τ₁ is the measured e-folding time of a unit's internal phase pattern after a small kick (isolated units).
 - τ₂ is the same for inter-unit phase differences after a small unit-phase kick (units in contact).
 - T is measured as a median on development worlds and frozen. It scales the window, recovery time, frame interval, `freq_tol`, intervention windows and sample interval. The final-world ratio is reported. A value outside [T/2, 2T] is a stated limitation; it never changes a verdict.
@@ -109,11 +109,21 @@ Each intervention is applied to each accepted level-2 resonator. The treated run
 
 **Coarse model (zero fitted parameters).**
 - *Law:* the C4 law applied to `ResonatorState`s. Distances are divided by ℓ_IJ = L_I + L_J and time by T.
-- *Coupling:* the coupling between units I and J is K × (the active cross-unit links at their ports ÷ the unit size). This is read from the ports when the excitation is applied and then held fixed.
+- *Coupling, with dynamic attach and detach:* each unit's ports move rigidly with its X and Θ. At every coarse step, the cross-unit port links are recomputed with the unchanged C4 neighbour rule applied to port positions only. The coupling between units I and J is K × (their active port links ÷ the unit size). Couplings therefore form and break under the same rule as at level 1 (the standard's attach/detach protocol). The coarse model never reads non-port members.
 - *What the standard allows:* ports carry coupling quantities derived from active lower boundary interactions, and nothing is fitted.
+- *Error travels with compression (invariant 8):* every coarse state carries a validity bound, its own next-window prediction error from S. A coarse step is flagged **INVALID** and handed back to the full model when either of two things happens:
+  - a unit's port-link count changes by more than half, or
+  - the predicted inter-unit phase pattern leaves the detector's lock tolerance.
+
+  Reopen events are counted and stored. The coarse error is scored on the trajectory *with* those reopens. A reopen rate above 50% of excitations is reported as a coarse-model limitation.
 - *Baselines:* (i) **no transfer**: the other units do not respond; (ii) **rigid transfer**: the whole group shifts with the kicked unit immediately.
-- *Metric:* the RMS error, over the non-excited units and the response window, between predicted and full-model responses (excited minus unexcited control). It is computed separately for Θ and for X/L.
-- *Work:* element-steps and unit-steps are recorded as descriptive only; there is no efficiency claim.
+- *Metrics (the standard's required evidence):*
+  - **response error:** the RMS error, over the non-excited units and the response window, between predicted and full-model responses (excited minus unexcited control), separately for Θ and for X/L. This is the primary metric.
+  - **mode/frequency error:** the group Ω after the excitation;
+  - **recovery error:** the difference in the time to return within the lock tolerance;
+  - **work:** element-steps for the full model, unit-steps plus port links for the coarse model.
+
+  Everything except the primary metric is descriptive. There is no efficiency claim.
 - *Held out:* nothing about the excitations is used to settle any setting.
 
 **Dose values.** These are registered by this proposal. Development worlds are used only to check that they are in range: no non-finite state, and contact still exists at s = 1.1.
@@ -132,8 +142,9 @@ Each intervention is applied to each accepted level-2 resonator. The treated run
 | `dose_response_l2` | Per direction: (1) **INCONCLUSIVE** if fewer than 10 worlds; (2) **FAIL** if the highest-minus-lowest CI lies below 0; (3) **PASS** if the means are non-decreasing and that CI lies above 0; (4) **INCONCLUSIVE** otherwise. The endpoint fails if either direction fails, and passes only if both pass. |
 | `g_to_m_channels_l2` | Descriptive: each single-channel effect as a fraction of the intact effect. |
 | `parts_alive` | Descriptive: criterion 6 values for **every unit in every candidate**, accepted or not. |
-| `downward_effect` | Statistic (b), intact minus decoupled, paired: (1) **INCONCLUSIVE** if fewer than 10 worlds; (2) **FAIL** if the CI includes 0 or lies below it; (3) **PASS** if the CI lies above 0. (a) is reported alongside. |
-| `effective_state_l2` | The C4 rule with bounds scaled by the same normalization (position by the unit spacing, frequency by 1/T): **PASS** if ≥ 90% of accepted level-2 units meet every bound; **FAIL** if fewer do; **INCONCLUSIVE** if there are no units. |
+| `downward_effect` | Statistic (b), intact minus decoupled, paired. The decoupled value is 0 by construction, so a bare CI > 0 could pass on numerical noise. There is therefore a registered meaningful margin of **0.01 rad** (a tenth of `lock_std`). Rows: (1) **INCONCLUSIVE** if fewer than 10 worlds; (2) **FAIL** if the CI's upper bound is below 0.01 rad; (3) **PASS** if the CI's lower bound is above 0.01 rad; (4) **INCONCLUSIVE** otherwise. (a) is reported alongside. |
+| `emergent_transfer` | The standard's "collective behaviour absent in an isolated constituent": the response of the non-excited units to a held-out excitation of one unit, full model, intact minus decoupled (where it is 0), with the same 0.01 rad margin on Θ. Rows: (1) **INCONCLUSIVE** if fewer than 10 worlds; (2) **FAIL** if the CI's upper bound is below the margin; (3) **PASS** if the CI's lower bound is above the margin; (4) **INCONCLUSIVE** otherwise. |
+| `effective_state_l2` | The C4 rule with bounds scaled by the same normalization (position by the unit spacing, frequency by 1/T). Rows: (1) **INCONCLUSIVE** if fewer than 10 worlds are FORMED, a C4 lesson: C4 itself had no minimum here; (2) **PASS** if ≥ 90% of accepted level-2 units meet every bound; (3) **FAIL** otherwise. |
 | `coarse_vs_full` | Paired per world, (baseline error − coarse error) for each baseline: (1) **INCONCLUSIVE** if fewer than 10 worlds; (2) **FAIL** if either CI lies below 0, meaning the coarse law is worse than a cheap baseline; (3) **PASS** if both CIs lie above 0; (4) **INCONCLUSIVE** otherwise. |
 | `same_rule_audit` (gate) | The level-2 detector's thresholds equal C4's after the single declared factor T; T, τ₁ and τ₂ are recorded. |
 | `numerical_checks` (gate) | C4's checks on assembled worlds: RK4 order with held neighbour sets, switching-limited dt error, equivariance under permutation, translation, rotation and global phase, **plus unit relabelling**. |
@@ -146,8 +157,8 @@ Each intervention is applied to each accepted level-2 resonator. The treated run
 | | 2 | `formation_l2` = PASS and all three = PASS | SUPPORTED_WITHIN_SCOPE |
 | | 3 | otherwise (formation FAIL; < 10 formed worlds; any INCONCLUSIVE) | INCONCLUSIVE |
 | H-C first transition | 1 | `formation_l2` Wilson 95% upper bound < 0.25: composition clearly fails under this rule | NOT_SUPPORTED |
-| | 2 | any of `downward_effect`, `effective_state_l2`, `coarse_vs_full` = FAIL | NOT_SUPPORTED |
-| | 3 | H-M (level 2) = SUPPORTED_WITHIN_SCOPE and those three = PASS | SUPPORTED_WITHIN_SCOPE |
+| | 2 | any of `downward_effect`, `emergent_transfer`, `effective_state_l2`, `coarse_vs_full` = FAIL | NOT_SUPPORTED |
+| | 3 | H-M (level 2) = SUPPORTED_WITHIN_SCOPE and those four = PASS | SUPPORTED_WITHIN_SCOPE |
 | | 4 | otherwise | INCONCLUSIVE |
 
 Formation failure alone never makes H-M NOT_SUPPORTED: too few groups is no evidence about their coupling (the C4 R003 principle). For H-C it is different. If composition clearly does not happen, that *is* evidence against "the same rule composes" in this model, hence H-C row 1 (owner decision D3). Gate failure (the controls, `level1_pool`, `same_rule_audit`, numerical checks) means the run is not REVIEW_READY, whatever the verdicts.
@@ -211,7 +222,9 @@ The shared pipeline tools (`tools/milestones.py`, `verify.py`, `milestone_mutati
 - the decoupled control leaking cross links;
 - H-M ignoring formation;
 - dose ignored;
-- a coarse model reading member states;
+- a coarse model reading non-port member states;
+- a coarse model that never reopens;
+- `downward_effect` ignoring its margin;
 - T not applied.
 
 **Runtime estimate** (to be measured on development worlds and recorded in the manifest before registration):
@@ -243,9 +256,9 @@ Adding any library would change frozen files and needs an owner decision. None i
 |---|---|
 | Ablations must remove a pathway completely (R001) | G→M uses the complete `no_geometry_to_mode`; M→G uses J = 0; "all inter-unit coupling off" is literal separate worlds. Single channels are decomposition only. |
 | Recovery and membership must keep the original group (R002 → R003) | Criterion 5 matches the original **unit set** in both futures and requires the futures to agree. Criterion 6 tracks each unit's **original member set**, never a re-matched component. |
-| No verdict on tiny n (R001) | Every causal, dose, downward and coarse endpoint is INCONCLUSIVE below 10 formed worlds. Formation also needs ≥ 10 worlds. |
+| No verdict on tiny n (R001) | Every causal, dose, downward, transfer, effective-state and coarse endpoint is INCONCLUSIVE below 10 formed worlds. Formation also needs ≥ 10 worlds. |
 | One written rule implemented row by row (R002) | Ordered truth tables in the manifest, mirrored by the code, with an enumeration test over all combinations. |
-| Non-vacuous controls (R003) | Both decoupled controls receive imposed candidates, so they cannot pass empty. The static control is the level-2 analogue of C4's clump test. Distinct ω_g removes the trivial lock. |
+| Non-vacuous controls (R003) | Both decoupled controls receive imposed candidates, so they cannot pass empty. The static control is the level-2 analogue of C4's clump test. Distinct ω_g removes the trivial lock. Effects that are 0 by construction in the control (downward, transfer) need a registered margin, not just CI > 0. |
 | Per-unit values in the receipt (R001) | Per unit, per candidate, per world, dose and condition, and per excitation (§6). |
 | Falsifiable causal test beyond the sign (R001) | Dose-response in both directions, and a coarse model that must beat two cheap baselines. |
 
@@ -270,10 +283,16 @@ Adding any library would change frozen files and needs an owner decision. None i
 - **[S5]** Sar and Ghosh, *Dynamics of swarmalators: a pedagogical review* (2022). [arXiv:2208.14803](https://arxiv.org/abs/2208.14803).
 - **[R3]** in the standard: O'Keeffe, Hong and Strogatz, *Oscillators that sync and swarm* (2017).
 
-## Decisions for the owner
+## Decisions for the owner (with the drafter's recommendation)
 
-1. **D1 — Approval.** Approve the question, the staged assembly, the per-unit rates, the level-2 detector (criteria 1–6), the interventions and doses, the endpoints and the truth tables, or name changes.
-2. **D2 — Time normalization.** Accept the measured relaxation-time ratio T = τ₂/τ₁ in place of the standard's "collective period", which is undefined at Ω = 0.
-3. **D3 — Formation as evidence for H-C.** Accept H-C row 1, under which a Wilson upper bound below 0.25 makes the first transition NOT_SUPPORTED. The alternative keeps it INCONCLUSIVE, as for H-M.
-4. **D4 — Fixed numbers.** Formation PASS at ≥ 0.5 with 30 final worlds, q proposed at 0.75, M = 5, unit sizes 6–16.
-5. **D5 — Who implements and who reviews.** Recommended: Claude implements, for continuity with the C4 code it reuses, and Codex reviews. The reverse is also valid. The reviewer must be the other model family.
+1. **D1 — Approval. Recommended: approve as written.** The draft was checked against the standard's C5 section, the recursive-resonator invariants and the owner's task list. The 2026-10-01 self-audit fixed six gaps before approval:
+   - coarse attach/detach;
+   - invariant 8 reopen;
+   - the required frequency and recovery errors;
+   - an explicit emergent-behaviour endpoint;
+   - a minimum n for effective state;
+   - a margin for zero-by-construction controls.
+2. **D2 — Time normalization. Recommended: accept T = τ₂/τ₁.** The standard's collective period is undefined at Ω = 0. A measured relaxation time is the nearest faithful reading, and it applies the same way at every level, so C6 can reuse it.
+3. **D3 — Formation as evidence for H-C. Recommended: accept row 1.** If composition clearly does not occur under the same rule, that is the H-C answer for this model. Calling it INCONCLUSIVE would hide a negative result.
+4. **D4 — Fixed numbers. Recommended: accept** formation PASS at ≥ 0.5 with 30 final worlds, M = 5, unit sizes 6–16, q ≈ 0.75 (settled on development worlds) and the 0.01 rad margin.
+5. **D5 — Who implements and who reviews. Recommended: Claude implements** (continuity with the C4 code it reuses) **and Codex reviews.** The reviewer must be the other model family.
