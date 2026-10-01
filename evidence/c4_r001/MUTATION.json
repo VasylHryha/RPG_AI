@@ -1,0 +1,145 @@
+{
+  "milestone": "c4",
+  "fingerprint": "d9e142f235f065ae22ef35f8e9ab30df04c78ff7f0007b91b21a25f5ac17ff3f",
+  "baseline": {
+    "detected": false,
+    "timed_out": false,
+    "summary": "23 passed in 5.01s",
+    "seconds": 5.191212667
+  },
+  "timeout": 120,
+  "mutants": {
+    "mode_to_geometry_sign": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 2 passed in 0.28s",
+      "seconds": 0.5850490000000006
+    },
+    "coupling_kernel": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 2 passed in 0.25s",
+      "seconds": 0.563947583
+    },
+    "neighbor_radius_ignored": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed in 0.24s",
+      "seconds": 0.5120721670000004
+    },
+    "neighbor_skips_nearest": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed in 0.27s",
+      "seconds": 0.5649338330000004
+    },
+    "self_as_neighbor": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed in 0.22s",
+      "seconds": 0.5371807500000001
+    },
+    "phase_coupling_sign": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed in 0.25s",
+      "seconds": 0.539922292
+    },
+    "rk4_weights": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 7 passed in 1.99s",
+      "seconds": 2.2188004170000006
+    },
+    "recovery_ignores_phase": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 11 passed in 10.61s",
+      "seconds": 10.904063124999999
+    },
+    "recovery_compares_to_itself": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 11 passed in 10.48s",
+      "seconds": 10.764582584
+    },
+    "kick_not_zero_mean": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 10 passed in 1.89s",
+      "seconds": 2.2098855419999994
+    },
+    "lock_mask_loose": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 18 passed in 10.52s",
+      "seconds": 10.917061375000001
+    },
+    "membership_unchecked": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 19 passed in 10.59s",
+      "seconds": 10.878714541999997
+    },
+    "shape_unchecked": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 19 passed in 10.63s",
+      "seconds": 10.944451708
+    },
+    "gm_not_scaled": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 9 passed in 1.89s",
+      "seconds": 2.0960998340000003
+    },
+    "mg_statistic_min": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 20 passed in 10.56s",
+      "seconds": 10.804968209
+    },
+    "causality_upper_bound": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 15 passed in 10.32s",
+      "seconds": 10.560857333
+    },
+    "wilson_centre": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 15 passed in 10.71s",
+      "seconds": 10.944783457999998
+    },
+    "hm_ignores_mg_failure": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 15 passed in 7.43s",
+      "seconds": 7.644367708000001
+    },
+    "effective_state_rule": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 21 passed in 7.44s",
+      "seconds": 7.636199790999999
+    },
+    "clump_gate_off": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 22 passed in 7.19s",
+      "seconds": 7.408904582999998
+    },
+    "smoke_uses_final_seeds": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 16 passed in 7.33s",
+      "seconds": 7.505885625000001
+    }
+  },
+  "detected": 21,
+  "total": 21,
+  "survivors": [],
+  "unexpected_survivors": [],
+  "problems": [],
+  "seconds": 24.438707375000003
+}

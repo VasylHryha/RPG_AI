@@ -180,3 +180,13 @@ def test_provenance_trailer(tmp_path):
 
 def test_readme_status_block_matches_status_json():
     assert subprocess.run([sys.executable, str(ROOT / "tools/status.py"), "--check"], capture_output=True).returncode == 0
+
+
+def test_legacy_precommit_is_scoped_to_unconfigured_milestones():
+    sys.path.insert(0, str(ROOT / "tools"))
+    try:
+        import legacy_precommit
+    finally:
+        sys.path.pop(0)
+    added = ["evidence/c4_r001/results.json", "evidence/c2_r003/results.json", "README.md"]
+    assert legacy_precommit.legacy_paths(added, {"c4"}) == ["evidence/c2_r003/results.json", "README.md"]
