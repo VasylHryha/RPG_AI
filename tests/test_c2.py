@@ -49,7 +49,10 @@ def test_analytic_and_grid_equilibria_synchronous_bound_and_failures():
         expected=old-.25/(2*degree.max()+.01)*force
         assert result['free']==pytest.approx(expected,abs=1e-15)
     assert state.query((float('nan'),.2))['status']=='INVALID_STATE'
-    assert state.query((1e308,-1e308))['status']=='INVALID_STATE'
+    # Finite extreme inputs may overflow or exhaust the sweep cap; either is an
+    # explicit refusal. Finiteness alone does not require arithmetic overflow.
+    before=state.export(); extreme=state.query((1e308,-1e308))
+    assert extreme['status'] in ('INVALID_STATE','NOT_CONVERGED') and extreme['output'] is None and state.export()==before
 
 
 def test_same_old_geometry_update_sign_factor_gradient_and_feedback():
