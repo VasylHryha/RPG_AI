@@ -1,0 +1,47 @@
+{
+  "milestone": "c2",
+  "fingerprint": "7e9c156dc21824a9948fe1d794181408871018fac1e3e4c52c51cda1e159c9f9",
+  "stages": [
+    {
+      "stage": "preflight",
+      "artifacts": {
+        ".gate/c2_backend/BUILD.json": "9c277196c702f5716c0339ec204970314656c73323def7f935dd47be3b1e32ff",
+        ".gate/c2_backend/relaxation.dylib": "0a2377c1784117dc050e9b97a3db213aa963a359b7dcb20d3870a33314dc4080"
+      },
+      "commit": "63ae7ddc5d11f4c7b59972227c2c0ebf7fbc0cdf",
+      "seconds": 1.161090542
+    },
+    {
+      "stage": "tests",
+      "artifacts": {
+        ".gate/c2/7e9c156dc21824a9948fe1d794181408871018fac1e3e4c52c51cda1e159c9f9/contracts.xml": "cfb8eb32548589c09f7db20b43e4057b1f55e58ed1d57bc4f5120b2143246b9e"
+      },
+      "commit": "63ae7ddc5d11f4c7b59972227c2c0ebf7fbc0cdf",
+      "seconds": 2.5287615839999997
+    },
+    {
+      "stage": "smoke",
+      "artifacts": {
+        ".gate/c2/7e9c156dc21824a9948fe1d794181408871018fac1e3e4c52c51cda1e159c9f9/smoke.json": "72fc8c6fa27afbc3407bb61f1aebdc9021c44ed96f0a20a67b2cb0cb8bef530a"
+      },
+      "commit": "63ae7ddc5d11f4c7b59972227c2c0ebf7fbc0cdf",
+      "seconds": 0.27079679099999954
+    },
+    {
+      "stage": "mutation",
+      "artifacts": {
+        ".gate/c2/7e9c156dc21824a9948fe1d794181408871018fac1e3e4c52c51cda1e159c9f9/mutation.json": "8c5b6a6b93e795ea1bde4707b129fb80edf8d1769eb6ef4e89909decdbc40a05"
+      },
+      "commit": "63ae7ddc5d11f4c7b59972227c2c0ebf7fbc0cdf",
+      "seconds": 3.7815482499999993
+    },
+    {
+      "stage": "panel",
+      "artifacts": {
+        "evidence/c2_r002/results.json": "34865a9783c2337afda0578ea46e1ac2954926b5485801c394cf2eb47fccd657"
+      },
+      "commit": "63ae7ddc5d11f4c7b59972227c2c0ebf7fbc0cdf",
+      "seconds": 203.852696833
+    }
+  ]
+}

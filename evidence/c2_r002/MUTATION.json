@@ -1,0 +1,34 @@
+{
+  "total": 4,
+  "detected": 4,
+  "mutants": {
+    "update_sign": {
+      "detected": true,
+      "status": "PASS",
+      "geometry_error_max": 0.0008179816352983371,
+      "phases_correct": true
+    },
+    "update_factor": {
+      "detected": true,
+      "status": "PASS",
+      "geometry_error_max": 0.0004089900448666084,
+      "phases_correct": true
+    },
+    "geometry_changes_between_phases": {
+      "detected": true,
+      "status": "PASS",
+      "geometry_error_max": 0.010014298028237612,
+      "phases_correct": false
+    },
+    "synchronous_barrier_removed": {
+      "detected": true,
+      "status": "NOT_CONVERGED",
+      "geometry_error_max": 0.0004089910752433923,
+      "phases_correct": false
+    }
+  },
+  "unexpected_survivors": [],
+  "problems": [],
+  "seconds": 3.5701479160000003,
+  "fingerprint": "7e9c156dc21824a9948fe1d794181408871018fac1e3e4c52c51cda1e159c9f9"
+}

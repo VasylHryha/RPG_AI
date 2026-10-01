@@ -1,0 +1,83 @@
+{
+  "experiment_id": "geomind-c2-r4-002",
+  "schema": "geomind.c2.experiment.v1",
+  "algorithm": "synchronous-euler-local-ep.v1",
+  "generator": "c2-independent-linear-tasks.v1",
+  "tasks": [
+    "affine",
+    "realizable"
+  ],
+  "initialization_seeds": [
+    26000000,
+    26000001,
+    26000002,
+    26000003,
+    26000004,
+    26000005,
+    26000006,
+    26000007,
+    26000008,
+    26000009,
+    26000010,
+    26000011,
+    26000012,
+    26000013,
+    26000014,
+    26000015,
+    26000016,
+    26000017,
+    26000018,
+    26000019
+  ],
+  "dataset_seed_start": 27000000,
+  "teacher_seed_start": 28000000,
+  "order_seed_start": 29000000,
+  "epochs": 100,
+  "splits": {
+    "train": 100,
+    "validation": 50,
+    "test": 200
+  },
+  "settings": {
+    "leak": 0.01,
+    "beta": 0.05,
+    "eta": 0.01,
+    "tolerance": 1e-09,
+    "max_sweeps": 20000
+  },
+  "selection_rule": "Fixed eta=0.01 and final epoch=100 before fitting. No validation selection or test tuning; optional R4 eta grid is not used.",
+  "initialization": "Each seed samples 24 conductances Uniform[0.5,1.5]. Candidate and network controls start from identical arrays; two tasks share initialization but train separate copies.",
+  "dataset": "Each initialization trial has independent dataset/teacher/order seeds. Generate 350 Uniform[0,1]^2 input pairs once, split 100/50/200 in order; tasks share inputs. Affine y=0.2*x1+0.5*x2. Realizable labels use a hidden Uniform[0.5,1.5] conductance network of the same fixed grid topology via independent dense equilibrium. Teacher parameters belong only to evaluator; this is a matched generator prior.",
+  "activity_reset": "Free phase starts at zero with input ports clamped. Nudged phase starts from converged free activity; both use identical old g. Inference starts from zero and has beta=0; no target argument. Maximum 20000 synchronous Euler updates, then force rechecked; max force strictly below 1e-9.",
+  "conductance_update": "Only after both phases converge: clip(g+eta/(2*beta)*(difference_free^2-difference_nudged^2),0.05,5). Each failed sample leaves g unchanged; subsequent samples continue and failures are retained.",
+  "ports": {
+    "inputs": [
+      0,
+      3
+    ],
+    "output": 10
+  },
+  "controls": [
+    "frozen_random",
+    "constant_train_mean",
+    "ordinary_linear_regression",
+    "direct_equilibrium_local_rule",
+    "analytic_gradient_training",
+    "feedback_removed"
+  ],
+  "gradient_control": "Independent implicit-differentiation gradient of half squared output loss, same topology/initialization/eta/order/epochs and bounds; dense linear solve. Finite differences independently verify its sign and factor.",
+  "feedback_removed": "Run identical candidate training with nudged target replaced by attained free output. Both phases then have identical converged activity and the local update is exactly zero; no external training label reaches the nudged phase.",
+  "endpoints": {
+    "realizable_mse_max": 0.001,
+    "frozen_reduction_min": 0.5,
+    "equilibrium_abs_tolerance": 1e-07,
+    "gradient_direction_cosine_min": 0.999,
+    "bootstrap_resamples": 2000,
+    "bootstrap_seed": 25000000
+  },
+  "uncertainty": "Paired trial-level percentile bootstrap 95% intervals across 20 independent datasets/initializations, not frames/examples. Report all per-trial results and observed failures. Useful-effect support requires upper MSE CI<=1e-3 and lower relative-reduction CI>=0.5; failure is a valid result.",
+  "cost_units": "Wall-clock CPU-process timings in seconds plus explicitly named native scans/edge reads/node writes. Counts are workload diagnostics, not FLOPs/joules. Native strict float64 C++ used because measured NumPy phase cost implies hours; no claim of digital efficiency or novelty.",
+  "retention": "Frozen-query/export immutability and clone/load/restore identity only. Task A/B forgetting, replay and hierarchy are NOT_RUN (C3+).",
+  "claim_scope": "Small passive linear weighted-geometry/activity mechanism with equilibrium-propagation-style gradient interpretation. Fixed drawing coordinates do not compute; no moving-coordinate necessity, recursive closure, phase resonance, novel AI or energy efficiency claim.",
+  "revision_reason": "R001 was interrupted by evaluator receipt serialization, before any streamed result; 11 complete artifacts survive. Numerical rule/settings/endpoints unchanged. Fix scalar receipt serialization and durable per-trial receipts, register fresh initialization/data/teacher/order seeds before the replacement panel."
+}

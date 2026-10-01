@@ -2,9 +2,9 @@
 title: "GeoMind — Geometry, Dynamics, Memory: Research and Quality Standard"
 revision: R4
 date: 2026-10-01
-status: C2_ACTIVE
+status: C2_REVIEW_READY
 supersedes: "GEOMIND_GEOMETRIC_AI_QUALITY_STANDARD_R3.md in full"
-research_status: "C0 reconstruction evaluated locally; hypotheses await independent interpretation and no hierarchy implemented"
+research_status: "C0/C1 independently accepted; C2 weighted-activity mechanism evaluated, primary effect target INCONCLUSIVE; no hierarchy implemented"
 companion: GEOMIND_GEOTACTICS_ASTELIA_EXPERIMENT_PLAN_R3.md
 ---
 
@@ -18,7 +18,7 @@ This revision replaces R3 rather than appending a competing hierarchy note. R3 c
 
 | Item | Record |
 |---|---|
-| Current work | C0 R003 and C1 R006 independently ACCEPTED (`evidence/c0_review/ACCEPTANCE.md`, `evidence/c1_r006_independent/INDEPENDENT_REVIEW.md`, independently confirmed in its `CONFIRMATION.md`); earlier C1 revisions CHANGES_REQUIRED and retained; C2 R002 ACTIVE, fixed registered experiment; C3 and hierarchy NOT_STARTED |
+| Current work | C0 R003 and C1 R006 independently ACCEPTED (`evidence/c0_review/ACCEPTANCE.md`, `evidence/c1_r006_independent/INDEPENDENT_REVIEW.md`, independently confirmed in its `CONFIRMATION.md`); earlier C1 revisions CHANGES_REQUIRED and retained; C2 R002 REVIEW_READY (`evidence/c2_r002/HANDOFF.md`), separate acceptance pending; C3 and hierarchy NOT_STARTED |
 | First core milestone | **C0 — reproducible structural-memory reference experiment**, ACCEPTED (R003) |
 | Last accepted GeoMind code | C0 R003 (`evidence/c0_review/ACCEPTANCE.md`); C1 R006 (`evidence/c1_r006_independent/INDEPENDENT_REVIEW.md`, commit 721249b) |
 | Checks executed locally | C1 R006 (gated pipeline, 185 s): tests 16.8s, smoke 0.8s, mutation 60.2s (29/33), panel 107.1s (all gates PASS). C1 R005: nineteen checks PASS; 80 interventions in 104.5s, all six gates PASS; queue arm 63 correct commits and 17 refusals, fallback arm 80 correct. C1 R004 (CHANGES_REQUIRED): fourteen checks PASS; 80 seed-varied interventions in 83.9s in two arms, all six gates PASS. Queue arm: 60 correct commits (zero relaxation steps) and 20 contradiction rollbacks. Fallback arm: 80 correct commits, 20 through the metered CG. Historical C1 R003: twelve checks PASS in 2.23s; 48 seed-varied interventions in 40.36s, 36 correct commits (all with zero relaxation steps) and 12 budget-exhausted rollbacks (every inconsistent edge), all six gates PASS. Historical C1 R002: ten checks PASS in 1.42s; 16 fresh interventions in 7.28s, 13 correct commits and three budget-exhausted rollbacks, all six gates PASS. Historical C1 R001: seven checks PASS in 3.64s; 16 interventions in 24.76s, five correct commits and 11 rollbacks. C0 revised contracts: 58 PASS in 8.60s; R003: all 11 gates PASS across 1,250 fresh worlds in 331.50s, zero solver/infrastructure failures. Receipts preserve failed checks separately |
@@ -198,7 +198,11 @@ Baselines: frozen random network; constant mean; ordinary linear regression; the
 
 **Review focus.** Exact update sign/factor, convergence error mistaken for learning, hidden target access, linear capacity, and candid relation to established learning algorithms.
 
-**Local C2 R002 execution:** ACTIVE, registered as `experiments/c2_manifest.json` before fitting. Fixed eta 0.01 and epoch 100; twenty independent initialization/data/order trials per task with 100/50/200 splits. A measured development NumPy phase cost of 30.3 ms warrants the authorized strict-float64 C++ synchronous relaxation kernel (`native/c2/relaxation.cpp`); Python owns snapshots and evaluator, and independent NumPy linear solves/implicit gradients own numerical controls. `tools/verify_c2.py` preserves separate C2 prerequisite stamps and runs focused checks, non-panel smoke, four focused numerical mutations and one recorded panel. C0/C1 world panels and the C1 mutation suite are not repeated. No C2 acceptance, C3 or hierarchy advancement follows from implementation checks.
+**Local C2 R002 execution:** REVIEW_READY, separate independent acceptance pending. Registration `experiments/c2_manifest.json`: fixed eta 0.01 and epoch 100; twenty independent initialization/data/order trials per task with 100/50/200 splits. A measured development NumPy phase cost of 30.3 ms warranted the authorized strict-float64 C++ synchronous relaxation kernel (`native/c2/relaxation.cpp`); Python owns snapshots and evaluator, and independent NumPy linear solves/implicit gradients own numerical controls. The gated pipeline passed 23 focused checks, a non-panel smoke, four focused numerical mutation checks and all forty numerical/control trials in 203.456 seconds. There were zero update refusals, inference failures or saturated edges. Candidate/reference final output differences were at most 6.48e-9; direct-equilibrium local-rule training matched predictions within 1.89e-7. Feedback removal retained the initial frozen model, and both causal paths passed.
+
+Realizable mean test MSE: 0.000414939 (95% bootstrap CI [0.000213921, 0.000650806]); per-trial reduction from frozen initialization: 52.49% (CI [44.80%, 59.96%]). The error target is met, but the >=50% lower-bound improvement target remains **INCONCLUSIVE**. Affine MSE is 0.0175769 with only 8.92% reduction: **NOT_SUPPORTED** on the registered target. Ordinary linear regression solves both linear tasks to numerical precision with trivial cost; no additional quality/cost value is established for the candidate. The local rule follows an equilibrium-propagation-style gradient interpretation, and every sweep still scans the graph. This is no proof of broader theory, moving-coordinate necessity, recursive closure, resonance or energy efficiency. Under section 7, stop claims of added task value/efficiency; do not add hierarchy to rescue this result.
+
+R001's evaluator receipt-serialization failure and eleven completed artifacts remain in `evidence/c2_r001/`, unqualified. R002 repairs receipt serialization and durable per-trial writes, retains the same numerical rule/settings/endpoints, and registers fresh initialization/data/teacher/order seeds. The initial extreme-input test assertion failure is also preserved. C0/C1 panels and the long C1 mutation suite were not repeated. Complete costs, uncertainty, identities and the separate-review handoff: `evidence/c2_r002/`. Stop before C3 and hierarchy.
 
 ### C3 — learning stability, then a bounded research decision
 
