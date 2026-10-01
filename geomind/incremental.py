@@ -74,10 +74,15 @@ class _C1V4State(GeometryState):
     algorithm = "incremental-active-queue.v4"
 
 
-class _C1V5Snapshot(GeometryState):
-    """Accepted C0 validation rules applied to the current C1 snapshot."""
+class _C1V5State(GeometryState):
     schema = "geomind.c1.geometry.v5"
     algorithm = "incremental-active-queue.v5"
+
+
+class _C1V6Snapshot(GeometryState):
+    """Accepted C0 validation rules applied to the current C1 snapshot."""
+    schema = "geomind.c1.geometry.v6"
+    algorithm = "incremental-active-queue.v6"
 
 
 class _BudgetExhausted(Exception):
@@ -148,8 +153,8 @@ class _Transaction:
 
 
 class IncrementalGeometry:
-    schema = _C1V5Snapshot.schema
-    algorithm = _C1V5Snapshot.algorithm
+    schema = _C1V6Snapshot.schema
+    algorithm = _C1V6Snapshot.algorithm
 
     def __init__(self, settings=Settings()):
         settings.validate()
@@ -179,7 +184,7 @@ class IncrementalGeometry:
             raise ValueError(f"Invalid saved geometry: {exc}") from exc
         if not isinstance(schema, str):
             raise ValueError("Saved geometry schema must be a string")
-        loader = {cls.schema: _C1V5Snapshot, _C1V4State.schema: _C1V4State, _C1V3State.schema: _C1V3State, _C1V2State.schema: _C1V2State,
+        loader = {cls.schema: _C1V6Snapshot, _C1V5State.schema: _C1V5State, _C1V4State.schema: _C1V4State, _C1V3State.schema: _C1V3State, _C1V2State.schema: _C1V2State,
                   _C1V1State.schema: _C1V1State, GeometryState.schema: GeometryState}.get(schema)
         if loader is None:
             raise ValueError("Unknown saved geometry version")
@@ -187,7 +192,7 @@ class IncrementalGeometry:
 
     @classmethod
     def load(cls, encoded):
-        validated = _C1V5Snapshot.load(encoded)
+        validated = _C1V6Snapshot.load(encoded)
         return cls._from_validated(validated, frozen=validated._frozen)
 
     @classmethod
@@ -445,6 +450,12 @@ class IncrementalGeometry:
                     raise ValueError("Relation ID/vector mismatch")
             if manifest_backed and edge.relation_id is None:
                 raise ValueError("All manifest-backed constraints require relation IDs")
+        # Committed records must serialize exactly as export will write them, as C0
+        # checks before committing; non-JSON numbers (e.g. numpy float32/int64) refuse.
+        try:
+            canonical({"nodes": list(added_nodes), "edges": [asdict(e) for e in added_edges], "relations": [list(r) for r in added_relations]})
+        except (TypeError, ValueError) as exc:
+            raise ValueError(f"Delta is not serializable as committed state: {exc}") from exc
 
     def apply(self, added_nodes, added_edges, added_relations, manifest_hash, edge_visit_budget=100000, fallback_budget=0, input_records=0):
         """Atomically apply one additive delta; refusals undo every change."""

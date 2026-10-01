@@ -56,6 +56,8 @@ MUTANTS = {'frame_shift_sign_flipped': ('geomind/incremental.py', 'dx = self._ed
  'evaluator_baseline_gate_removed': ('geomind/run_c1.py', 'old.export() == saved and baseline_ok', 'old.export() == saved'),
  'endpoint_time_rule_removed': ('geomind/run_c1.py', ' and time_ratio <= e["time_locality_max_ratio"])', ')')}
 
+MUTANTS["delta_serialization_unchecked"] = ("geomind/incremental.py", "            canonical({\"nodes\": list(added_nodes),", "            ({\"nodes\": list(added_nodes),")
+
 # Guards that another tested guard compensates for (see FOCUSED_CHECKS.md).
 KNOWN_BACKSTOPS = {"energy_bound_unchecked", "forced_certificate_step_removed",
                    "local_quiet_ignores_update_tolerance", "local_norm_guard_removed"}

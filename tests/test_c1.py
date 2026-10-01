@@ -12,7 +12,7 @@ import pytest
 from geomind.c1_cases import KINDS, _with_relations, generate_case, save_initial_state
 from geomind.c1_reference import SparseLeastSquares
 from geomind.geometry import Answer, Constraint, GeometryState, Observation, Settings, digest
-from geomind.incremental import TRACE_COUNTERS, IncrementalGeometry, _C1V2State, _C1V3State, _C1V4State
+from geomind.incremental import TRACE_COUNTERS, IncrementalGeometry, _C1V2State, _C1V3State, _C1V4State, _C1V5State
 from geomind.references import LeastSquares
 
 HASH = digest({"fixture": "C1 focused contracts"})
@@ -235,7 +235,8 @@ def test_chained_updates_cycles_duplicates_and_real_artifact_migration():
     from geomind.run_c1 import ROOT
     for adapter, path in ((_C1V2State, "evidence/c1_review/states/32_inconsistent_edge_after.json"),
                           (_C1V3State, "evidence/c1_r003/states/32_bridge_w0_after.json"),
-                          (_C1V4State, "evidence/c1_r004/states/32_bridge_w0_queue_after.json.gz")):
+                          (_C1V4State, "evidence/c1_r004/states/32_bridge_w0_queue_after.json.gz"),
+                          (_C1V5State, "evidence/c1_r005/states/32_bridge_w0_queue_after.json.gz")):
         path = ROOT / path
         archived = (gzip.open(path, "rt").read() if path.suffix == ".gz" else path.read_text()).rstrip("\n")
         original, migrated = adapter.load(archived), IncrementalGeometry.from_saved(archived)
@@ -458,6 +459,19 @@ def test_overflow_and_invalid_inputs_never_commit_unpersistable_state():
     before = state.export()
     trace = state.apply((), (Constraint("a", "b", (4e150, 0.0)),), (), HASH, 1000, FALLBACK)
     assert trace["status"] == "NOT_CONVERGED" and state.export() == before
+    # R005 review N1: numbers C0 would refuse to serialize must not commit
+    # (they would make every later export fail). numpy float64 is a float and exports.
+    import numpy as numpy_types
+    pair = Observation(("a", "b"), (Constraint("a", "b", (1.0, 0.0)),))
+    saved, _ = save_initial_state(pair, HASH)
+    for bad in (Constraint("a", "b", (numpy_types.float32(1.0), 0.0)), Constraint("a", "b", (1.0, 0.0), numpy_types.int64(2))):
+        state = IncrementalGeometry.from_saved(saved)
+        before = state.export()
+        trace = state.apply((), (bad,), (), HASH)
+        assert trace["status"] == "INVALID_STATE" and "serializ" in trace["reason"] and state.export() == before
+    state = IncrementalGeometry.from_saved(saved)
+    assert state.apply((), (Constraint("a", "b", (numpy_types.float64(1.0), 0.0)),), (), HASH)["status"] == "PASS"
+    assert IncrementalGeometry.load(state.export()).export() == state.export()
     # F7: an invalid delta larger than the cap is INVALID_STATE, not NOT_CONVERGED.
     small = Observation(("a", "b"), (Constraint("a", "b", (1.0, 0.0)),))
     saved, _ = save_initial_state(small, HASH)

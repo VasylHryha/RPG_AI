@@ -1,8 +1,8 @@
 {
-  "experiment_id": "geomind-c1-r4-006",
+  "experiment_id": "geomind-c1-r4-005",
   "schema": "geomind.c1.experiment.v2",
   "generator": "c1-jittered-grid-interventions.v3",
-  "algorithm": "incremental-active-queue.v6",
+  "algorithm": "incremental-active-queue.v5",
   "sizes": [
     32,
     128,
@@ -16,7 +16,7 @@
     "bridge"
   ],
   "replicates": 5,
-  "seed_start": 12000000,
+  "seed_start": 11000000,
   "edge_visit_budget": 100000,
   "fallback_budget": 5000000,
   "displacement_tolerance": 1e-05,
@@ -61,6 +61,6 @@
     "H-L"
   ],
   "claim_scope": "80 registered interventions, five seed-varied worlds per size/intervention, one generator family, unit weights in the panel (weighted, duplicate and tiny-weight cases are covered by focused checks)",
-  "registration_note": "R006 repairs the independent R005 review: N1, where numpy float32/int64 inputs committed and then could not be exported, now refuses with INVALID_STATE as C0 does. N2-N4 are wording and labels. Endpoints and rules are unchanged from R005 (no tuning). Evaluated on new seeds starting at 12,000,000, through the gated pipeline (tools/verify_milestone.py).",
+  "registration_note": "R005 repairs the independent R004 review (F1 uncharged relation-map copy, F2 certificate not sound in the export gauge, F3 degree overflow, F4-F7 wording and reporting). Implementation and endpoints were written after inspecting R002-R004 and the reviewer's probes, and are evaluated only on new seeds starting at 11,000,000. The wall-clock locality endpoint was added after F1 showed that an operation meter alone can miss uncharged work.",
   "selection_rule": "No tuning or adaptive selection after execution; all cases and all unresolved outcomes are retained"
 }

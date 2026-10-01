@@ -205,7 +205,8 @@ def grade_arm(name, arm, case, manifest, expected, ls, expected_retention, fresh
             "observed_energy": observed_energy, "reference_energy": ls.energy, "energy_gap": energy_gap,
             "update_coverage": sum(a.status == "OK" and i for a, i in zip(arm["actual"], identifiable)) / sum(identifiable) if committed and any(identifiable) else None,
             "update_total_accuracy": sum(correct) / sum(identifiable) if committed and any(identifiable) else None,
-            "post_transaction_total_accuracy": sum(correct) / sum(identifiable) if any(identifiable) else None,
+            # Refused rows keep the frozen state; their accuracy is frozen_total_accuracy, not reported here.
+            "post_transaction_total_accuracy": sum(correct) / sum(identifiable) if committed and any(identifiable) else None,
             "prior_state_ok_answers": None if committed else len(prior_ok),
             "prior_state_answers_wrong_for_update": None if committed else sum(not finite_number(displacement_error(a, b)) or displacement_error(a, b) > tolerance for a, b in prior_ok),
             "cross_abstention_correct": sum(b.status == a.status == "UNIDENTIFIABLE" for a, b in zip(arm["actual"], expected)),
@@ -441,7 +442,7 @@ def main():
                                for arm, rows in ((arm, [r for r in valid if r["arms"][arm]["committed"]]) for arm in ARMS)},
         "checks_not_run": ["independent C1 acceptance", "C2-C8", "C++/browser integration", "hardware energy"],
         "total_seconds": perf_counter() - started, "instances": records,
-        "next_action": "Independent C1 review of R004 before C2",
+        "next_action": f"Independent C1 review of {manifest['experiment_id']} before C2",
     }
     (args.output / "results.json").write_text(json.dumps(receipt, indent=2, allow_nan=False) + "\n")
     q, f = summary["queue"], summary["fallback"]

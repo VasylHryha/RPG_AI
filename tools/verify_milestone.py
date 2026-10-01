@@ -62,7 +62,7 @@ def tests(args, staging):
     report = staging / "contracts.xml"
     run([PYTHON, "-m", "pytest", "-x", "-q", "-p", "no:cacheprovider", "tests/test_c1.py", f"--junitxml={report}"], 900)
     c0_report = staging / "c0_contracts.xml"
-    run([PYTHON, "-m", "pytest", "-x", "-q", "-p", "no:cacheprovider", "tests/test_c0.py", "tests/test_review_contracts.py", f"--junitxml={c0_report}"], 900)
+    run([PYTHON, "-m", "pytest", "-x", "-q", "-p", "no:cacheprovider", "tests/test_c0.py", "tests/test_review_contracts.py", "tests/test_gate.py", f"--junitxml={c0_report}"], 900)
     return [report, c0_report], {}
 
 

@@ -21,9 +21,12 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import gate  # noqa: E402
 
-STAGES = (("panel", re.compile(r"-m\s+geomind\.run_c1\b|geomind/run_c1\.py")),
-          ("mutation", re.compile(r"tools/mutation_probe\.py\b")),
-          ("mutation", re.compile(r"mutation_checks\.py\b.*--live")))
+# Match execution, not mention: an interpreter must run the module or file.
+# Editing or grepping these paths is allowed.
+INTERPRETER = r"\bpython[0-9.]*\s+(?:-\S+\s+)*"
+STAGES = (("panel", re.compile(INTERPRETER + r"(?:-m\s+geomind\.run_c1\b|(?:\S*/)?geomind/run_c1\.py\b)")),
+          ("mutation", re.compile(INTERPRETER + r"(?:\S*/)?tools/mutation_probe\.py\b")),
+          ("mutation", re.compile(INTERPRETER + r"(?:\S*/)?mutation_checks\.py\b.*--live")))
 NO_VERIFY = re.compile(r"\bgit\b[^\n;&|]*\bcommit\b[^\n;&|]*--no-verify")
 
 
