@@ -1,0 +1,46 @@
+{
+  "milestone": "c5",
+  "revision": "r002",
+  "fingerprint": "b8172d670e11cc237ea84d4bdab319dc180c03c037688da28ed91f3cc50dbd51",
+  "implementer_family": "Claude",
+  "stages": [
+    {
+      "stage": "preflight",
+      "artifacts": {},
+      "commit": "b5dbc6810fdf2965728a2270228d36842775ef8d",
+      "seconds": 0.1
+    },
+    {
+      "stage": "tests",
+      "artifacts": {
+        ".gate/c5/b8172d670e11cc237ea84d4bdab319dc180c03c037688da28ed91f3cc50dbd51/contracts.xml": "52cf979070060e0b311f5b8f44675b9d8cabcacfe66d899b7064ef913e085cfd"
+      },
+      "commit": "b5dbc6810fdf2965728a2270228d36842775ef8d",
+      "seconds": 9.35
+    },
+    {
+      "stage": "smoke",
+      "artifacts": {
+        ".gate/c5/b8172d670e11cc237ea84d4bdab319dc180c03c037688da28ed91f3cc50dbd51/smoke.json": "75d55e9a9e7cb1155d1339948c99248b99373bd6caf82d3226841dd6e2224187"
+      },
+      "commit": "b5dbc6810fdf2965728a2270228d36842775ef8d",
+      "seconds": 60.35
+    },
+    {
+      "stage": "mutation",
+      "artifacts": {
+        ".gate/c5/b8172d670e11cc237ea84d4bdab319dc180c03c037688da28ed91f3cc50dbd51/mutation.json": "bf61ae4b132d5d9bd94ad869cdf674ce98a319fe054c0c922cf07a765efc6599"
+      },
+      "commit": "b5dbc6810fdf2965728a2270228d36842775ef8d",
+      "seconds": 36.09
+    },
+    {
+      "stage": "panel",
+      "artifacts": {
+        "evidence/c5_r002/results.json": "a2c4f52fdd2c86696b81659beeea84729cb7084cbe243a11bb3d47322d840407"
+      },
+      "commit": "b5dbc6810fdf2965728a2270228d36842775ef8d",
+      "seconds": 247.85
+    }
+  ]
+}

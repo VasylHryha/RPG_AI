@@ -1,0 +1,265 @@
+{
+  "milestone": "c5",
+  "fingerprint": "b8172d670e11cc237ea84d4bdab319dc180c03c037688da28ed91f3cc50dbd51",
+  "baseline": {
+    "detected": false,
+    "timed_out": false,
+    "summary": "37 passed in 4.72s",
+    "seconds": 4.908290791
+  },
+  "timeout": 120,
+  "mutants": {
+    "recovery_ignores_original": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 10 passed in 1.87s",
+      "seconds": 2.210013041
+    },
+    "criterion6_dropped": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 11 passed in 1.91s",
+      "seconds": 2.2022572910000004
+    },
+    "port_overlap_unchecked": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 11 passed in 1.89s",
+      "seconds": 2.1884809159999996
+    },
+    "unit_lock_unchecked": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 11 passed in 1.94s",
+      "seconds": 2.238048
+    },
+    "time_not_scaled": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 8 passed in 1.84s",
+      "seconds": 2.178823917
+    },
+    "freq_tol_not_scaled": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 8 passed in 1.87s",
+      "seconds": 2.167153916
+    },
+    "outcome_merged_first": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 13 passed in 1.86s",
+      "seconds": 2.1698157920000005
+    },
+    "decoupling_leaks": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 6 passed in 1.68s",
+      "seconds": 1.9417842499999995
+    },
+    "shift_not_rigid": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 5 passed in 1.75s",
+      "seconds": 1.9623223339999996
+    },
+    "scale_wrong_factor": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 5 passed in 1.75s",
+      "seconds": 2.040189208
+    },
+    "rates_per_element": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 4 passed in 1.80s",
+      "seconds": 2.078607999999999
+    },
+    "unit_phase_arithmetic_mean": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed in 0.24s",
+      "seconds": 0.460959667
+    },
+    "port_overlap_never": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 3 passed in 1.74s",
+      "seconds": 2.021204290999999
+    },
+    "coarse_never_flags": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 16 passed in 2.25s",
+      "seconds": 2.477066209000001
+    },
+    "open_loop_flags_dropped": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 16 passed in 2.80s",
+      "seconds": 3.0745777080000005
+    },
+    "coarse_phase_sign": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 15 passed in 2.64s",
+      "seconds": 2.8920024589999995
+    },
+    "coarse_ignores_natural_rate": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 14 passed in 2.10s",
+      "seconds": 2.3681639170000004
+    },
+    "margin_ignored": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 20 passed in 8.65s",
+      "seconds": 8.9211655
+    },
+    "coarse_pass_one_baseline": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 21 passed in 8.61s",
+      "seconds": 8.923009250000002
+    },
+    "coarse_fail_one_baseline": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 21 passed in 8.61s",
+      "seconds": 8.909635125000001
+    },
+    "coarse_drops_relaxation": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 36 passed in 8.94s",
+      "seconds": 9.4912755
+    },
+    "relaxation_ignores_tau": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 23 passed in 8.77s",
+      "seconds": 9.034333292
+    },
+    "response_error_unnormalized": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 23 passed in 8.71s",
+      "seconds": 9.042350165999999
+    },
+    "separation_fail_row": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 22 passed in 8.66s",
+      "seconds": 8.974062708
+    },
+    "separation_wrong_tau1": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 35 passed in 9.09s",
+      "seconds": 9.366368875000001
+    },
+    "hc_ignores_separation": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 26 passed in 8.47s",
+      "seconds": 8.742362916000001
+    },
+    "mg_dose_constant": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 24 passed in 8.33s",
+      "seconds": 8.576293084
+    },
+    "mg_uniform_allowed": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 24 passed in 8.31s",
+      "seconds": 8.557493791999999
+    },
+    "downward_against_self": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 19 passed in 8.20s",
+      "seconds": 8.494940625000002
+    },
+    "control_vacuous_passes": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 25 passed in 8.33s",
+      "seconds": 8.613182374999997
+    },
+    "hm_ignores_formation": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 26 passed in 8.28s",
+      "seconds": 8.530165582999999
+    },
+    "hm_ignores_dose": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 26 passed in 8.01s",
+      "seconds": 8.303436082999998
+    },
+    "hc_formation_row_dropped": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 26 passed in 8.03s",
+      "seconds": 8.293999792000001
+    },
+    "hc_ignores_transfer": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 26 passed in 7.73s",
+      "seconds": 7.942260833000002
+    },
+    "formation_min_worlds_ignored": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 27 passed in 7.69s",
+      "seconds": 7.909337166999997
+    },
+    "effective_state_min_worlds_ignored": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 27 passed in 7.91s",
+      "seconds": 8.145610041999998
+    },
+    "effective_frequency_unscaled": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 28 passed in 7.78s",
+      "seconds": 8.042032666999997
+    },
+    "ablation_against_intact_control": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 18 passed in 7.70s",
+      "seconds": 7.920794208
+    },
+    "decoupled_transfer_not_decoupled": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 19 passed in 7.56s",
+      "seconds": 7.820501916999998
+    },
+    "smoke_uses_final_seeds": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 31 passed in 7.68s",
+      "seconds": 7.891489459000002
+    },
+    "controls_gate_vacuous": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 33 passed in 7.54s",
+      "seconds": 7.739927583
+    }
+  },
+  "detected": 41,
+  "total": 41,
+  "survivors": [],
+  "unexpected_survivors": [],
+  "problems": [],
+  "seconds": 35.940823791999996
+}
