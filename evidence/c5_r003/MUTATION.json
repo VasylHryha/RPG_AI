@@ -1,0 +1,331 @@
+{
+  "milestone": "c5",
+  "fingerprint": "c76099d412c660708bb5e803eccce1cd7ea11fffdb087965f5e6acc5f2988984",
+  "baseline": {
+    "detected": false,
+    "timed_out": false,
+    "summary": "46 passed in 5.01s",
+    "seconds": 5.68968125
+  },
+  "timeout": 120,
+  "mutants": {
+    "recovery_ignores_original": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 11 passed in 2.20s",
+      "seconds": 2.5141779159999995
+    },
+    "criterion6_dropped": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 12 passed in 2.15s",
+      "seconds": 2.4428466659999994
+    },
+    "hull_overlap_unchecked": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 4 passed in 1.89s",
+      "seconds": 2.1805628749999997
+    },
+    "unit_lock_unchecked": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 12 passed in 1.60s",
+      "seconds": 1.7946189160000001
+    },
+    "time_not_scaled": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 9 passed in 2.27s",
+      "seconds": 2.5693963329999994
+    },
+    "freq_tol_not_scaled": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 9 passed in 2.12s",
+      "seconds": 2.3583352090000007
+    },
+    "outcome_merged_first": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 14 passed in 2.18s",
+      "seconds": 2.4247678330000006
+    },
+    "decoupling_leaks": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 7 passed in 1.37s",
+      "seconds": 1.5693161660000001
+    },
+    "shift_not_rigid": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 6 passed in 1.92s",
+      "seconds": 2.1237346660000007
+    },
+    "scale_wrong_factor": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 6 passed in 1.88s",
+      "seconds": 2.1078305410000002
+    },
+    "rates_per_element": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 5 passed in 1.97s",
+      "seconds": 2.150896167000001
+    },
+    "unit_phase_arithmetic_mean": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed in 0.29s",
+      "seconds": 0.5000599579999996
+    },
+    "hull_overlap_zero": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 3 passed in 1.88s",
+      "seconds": 2.1303839999999994
+    },
+    "hull_overlap_vertices_only": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 3 passed in 1.86s",
+      "seconds": 2.0924963329999997
+    },
+    "clip_drops_crossings": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "n indented block\n=========================== short test summary info ============================\nERROR tests/test_c5.py\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!\n1 error in 0.40s\n",
+      "seconds": 0.6211770000000012
+    },
+    "compose_weighted_centroid": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 44 passed in 7.72s",
+      "seconds": 7.929127041999999
+    },
+    "compose_same_level": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 41 passed in 7.36s",
+      "seconds": 7.596982332999998
+    },
+    "interface_centroid_unchecked": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 41 passed in 7.61s",
+      "seconds": 7.814643417000001
+    },
+    "coarse_ties_take_extra": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 38 passed in 6.03s",
+      "seconds": 6.220302708
+    },
+    "coarse_ties_cross_first": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 38 passed in 7.69s",
+      "seconds": 7.8881985
+    },
+    "coarse_never_flags": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 17 passed in 2.85s",
+      "seconds": 3.0635879589999995
+    },
+    "open_loop_flags_dropped": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 17 passed in 2.27s",
+      "seconds": 2.461442208000001
+    },
+    "coarse_phase_sign": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 16 passed in 2.22s",
+      "seconds": 2.4257450840000008
+    },
+    "coarse_ignores_natural_rate": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 15 passed in 2.01s",
+      "seconds": 2.226107917
+    },
+    "margin_ignored": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 21 passed in 6.73s",
+      "seconds": 6.943788124999999
+    },
+    "coarse_pass_one_baseline": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 22 passed in 6.96s",
+      "seconds": 7.193866499999999
+    },
+    "coarse_fail_one_baseline": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 22 passed in 7.23s",
+      "seconds": 7.447293416000001
+    },
+    "coarse_drops_relaxation": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 37 passed in 7.58s",
+      "seconds": 7.795967625000001
+    },
+    "relaxation_ignores_tau": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 24 passed in 7.05s",
+      "seconds": 7.246848666000002
+    },
+    "response_error_unnormalized": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 24 passed in 7.06s",
+      "seconds": 7.297400459000002
+    },
+    "separation_fail_row": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 23 passed in 6.99s",
+      "seconds": 7.187026750000001
+    },
+    "separation_wrong_tau1": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 36 passed in 7.57s",
+      "seconds": 7.789859665999998
+    },
+    "hc_ignores_separation": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 27 passed in 7.39s",
+      "seconds": 7.5821745840000006
+    },
+    "mg_dose_constant": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 25 passed in 7.15s",
+      "seconds": 7.430029083000001
+    },
+    "mg_uniform_allowed": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 25 passed in 7.31s",
+      "seconds": 7.555955708999999
+    },
+    "downward_against_self": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 20 passed in 7.17s",
+      "seconds": 7.408626334000001
+    },
+    "control_vacuous_passes": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 26 passed in 7.43s",
+      "seconds": 7.622702999999998
+    },
+    "hm_ignores_formation": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 27 passed in 7.17s",
+      "seconds": 7.3687542499999985
+    },
+    "hm_ignores_dose": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 27 passed in 7.40s",
+      "seconds": 7.643805208
+    },
+    "hc_formation_row_dropped": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 27 passed in 7.22s",
+      "seconds": 7.397441958000002
+    },
+    "hc_ignores_transfer": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 27 passed in 7.42s",
+      "seconds": 7.644537042
+    },
+    "formation_min_worlds_ignored": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 28 passed in 7.73s",
+      "seconds": 7.9541030000000035
+    },
+    "effective_state_min_worlds_ignored": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 28 passed in 7.57s",
+      "seconds": 7.751910250000002
+    },
+    "effective_frequency_unscaled": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 29 passed in 7.53s",
+      "seconds": 7.744330291999997
+    },
+    "ablation_against_intact_control": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 19 passed in 7.34s",
+      "seconds": 7.555686915999999
+    },
+    "decoupled_transfer_not_decoupled": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 20 passed in 7.36s",
+      "seconds": 7.5986529590000025
+    },
+    "sources_shared": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 40 passed in 7.55s",
+      "seconds": 7.815689375000002
+    },
+    "source_leftovers_carried": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 39 passed in 7.59s",
+      "seconds": 7.783532917000002
+    },
+    "interface_count_unchecked": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 43 passed in 6.75s",
+      "seconds": 6.946474834
+    },
+    "interface_gate_off": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 45 passed in 6.39s",
+      "seconds": 6.576853458999999
+    },
+    "smoke_uses_final_seeds": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 32 passed in 5.64s",
+      "seconds": 5.834269417000002
+    },
+    "controls_gate_vacuous": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 34 passed in 5.55s",
+      "seconds": 5.755800499999999
+    }
+  },
+  "detected": 52,
+  "total": 52,
+  "survivors": [],
+  "unexpected_survivors": [],
+  "problems": [],
+  "seconds": 44.550116583
+}
