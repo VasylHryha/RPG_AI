@@ -1,0 +1,28 @@
+{
+  "experiment_id": "geomind-c0-r4-001",
+  "hypothesis_ids": ["H-R"],
+  "claim_scope": "Transductive reconstruction from exposed offsets; no superiority or recursive-hierarchy claim",
+  "generator_version": "c0-worlds.v1",
+  "anchor_rule": "Maximum exposed weighted degree per component, tie by sorted opaque ID; anchor fixed to zero without truth access",
+  "arms": ["lattice", "continuous", "disconnected", "inconsistent"],
+  "nodes_per_world": 32,
+  "queries_per_world": 64,
+  "splits": {
+    "train": {"count": 100, "seed_start": 100000},
+    "validation": {"count": 50, "seed_start": 200000},
+    "test": {"count": 100, "seed_start": 300000}
+  },
+  "arm_seed_stride": 10000,
+  "settings": {"step_factor": 0.25, "max_sweeps": 10000, "gradient_tolerance": 1e-8, "update_tolerance": 1e-8, "stable_sweeps": 10},
+  "primary_endpoint": "Fraction of clean identifiable pair queries agreeing with truth and both references within Euclidean displacement error 1e-5",
+  "required_fraction": 0.99,
+  "displacement_tolerance": 1e-5,
+  "disconnected_rule": "Every cross-component query must return UNIDENTIFIABLE",
+  "contradiction_rule": "Inconsistent residual remains positive and energy agrees with anchored least squares within 1e-8",
+  "selection_rule": "No fitting or parameter selection in C0; settings predeclared and identical across all worlds",
+  "uncertainty": {"unit": "independent world", "method": "percentile bootstrap of world-level primary fractions", "replicates": 2000, "seed": 900001},
+  "observability": "Only opaque IDs and exposed numerical offsets/weights; hidden coordinates/edges/queries remain evaluator-owned",
+  "reset_policy": "New zero-initialized geometry per world; freeze before queries; no cross-world learned parameters",
+  "feedback_rules": "No hidden answer feedback to candidate",
+  "baselines": ["compiled BFS coordinates", "independent dense anchored least squares", "direct-edge-only with abstention"]
+}

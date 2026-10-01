@@ -1,0 +1,67 @@
+{
+  "experiment_id": "geomind-c0-r4-002",
+  "hypothesis_ids": [
+    "H-R"
+  ],
+  "claim_scope": "Transductive reconstruction from exposed offsets; no superiority or recursive-hierarchy claim",
+  "generator_version": "c0-worlds.v2",
+  "anchor_rule": "maximum_exposed_weighted_degree_then_sorted_id",
+  "arms": [
+    "lattice",
+    "continuous",
+    "disconnected",
+    "inconsistent",
+    "noisy"
+  ],
+  "nodes_per_world": 32,
+  "queries_per_world": 64,
+  "splits": {
+    "train": {
+      "count": 100,
+      "seed_start": 1000000
+    },
+    "validation": {
+      "count": 50,
+      "seed_start": 2000000
+    },
+    "test": {
+      "count": 100,
+      "seed_start": 3000000
+    }
+  },
+  "arm_seed_stride": 10000,
+  "settings": {
+    "step_factor": 0.25,
+    "max_sweeps": 10000,
+    "gradient_tolerance": 1e-08,
+    "update_tolerance": 1e-08,
+    "stable_sweeps": 10
+  },
+  "primary_endpoint": "Fraction of clean identifiable pair queries agreeing with truth and both references within Euclidean displacement error 1e-5",
+  "required_fraction": 0.99,
+  "displacement_tolerance": 1e-05,
+  "disconnected_rule": "Every cross-component query must return UNIDENTIFIABLE",
+  "contradiction_rule": "Noisy/inconsistent residual remains positive; independently evaluated committed energy agrees with least squares within 1e-8",
+  "selection_rule": "No fitting or parameter selection in C0; settings predeclared and identical across all worlds",
+  "uncertainty": {
+    "unit": "independent world",
+    "method": "percentile bootstrap",
+    "replicates": 2000,
+    "seed": 900002
+  },
+  "observability": "Only opaque IDs and exposed numerical offsets/weights; hidden coordinates/edges/queries remain evaluator-owned",
+  "reset_policy": "New zero-initialized geometry per world; freeze before queries; no cross-world learned parameters",
+  "feedback_rules": "No hidden answer feedback to candidate",
+  "baselines": [
+    "compiled BFS coordinates",
+    "independent dense anchored least squares",
+    "direct-edge-only with abstention"
+  ],
+  "schema": "geomind.c0.experiment.v2",
+  "algorithm": "synchronous-local-relaxation.v2",
+  "noise_sigma": 0.05,
+  "energy_tolerance": 1e-08,
+  "query_rule": "All eight hidden redundant edges are included among 64 indirect queries; exposed-pair diagnostics and cross-component queries are separate panels",
+  "historical_receipts": "evidence/c0_original; material evaluator/input changes registered with fresh seeds before final evaluation",
+  "stationarity_rule": "Both absolute free-node force and force divided by exposed weighted degree must be below the registered gradient tolerance; additional guard prevents tiny weights from falsely certifying wrong coordinates"
+}

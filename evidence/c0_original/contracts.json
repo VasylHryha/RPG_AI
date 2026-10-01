@@ -1,0 +1,24 @@
+{
+  "command": ".venv/bin/python -m pytest -q",
+  "first_run": {
+    "check_status": "ASSERTION_FAILURE",
+    "passed": 15,
+    "failed": 3,
+    "seconds": 5.25,
+    "failures": [
+      "test_generator_replay_hidden_edge_identifiability_and_reference[lattice]",
+      "test_generator_replay_hidden_edge_identifiability_and_reference[continuous]",
+      "test_generator_replay_hidden_edge_identifiability_and_reference[inconsistent]"
+    ],
+    "cause": "Lexicographically first gauge node led to max-sweep exits on pre-evaluation diagnostic fixture seed 412; no state was committed",
+    "repair": "Select gauge by maximum exposed weighted degree; same dynamics, alpha, thresholds and 10000-sweep cap",
+    "final_worlds_used_for_repair": false
+  },
+  "final_run": {
+    "check_status": "PASS",
+    "passed": 18,
+    "failed": 0,
+    "seconds": 1.58,
+    "command": ".venv/bin/python -m pytest -q"
+  }
+}

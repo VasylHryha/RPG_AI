@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="13" skipped="0" tests="56" time="12.004" timestamp="2026-10-01T11:38:52.766126+03:00" hostname="MacBook-Pro-new.local"><testcase classname="tests.test_c0" name="test_two_node_direction_and_unknown" time="0.004" /><testcase classname="tests.test_c0" name="test_triangle_independent_reference_and_residual[False]" time="0.004" /><testcase classname="tests.test_c0" name="test_triangle_independent_reference_and_residual[True]" time="0.004" /><testcase classname="tests.test_c0" name="test_disconnected_and_singleton_cannot_invent_cross_offset" time="0.003" /><testcase classname="tests.test_c0" name="test_id_order_rotation_translation_and_component_rename" time="0.127"><failure message="AssertionError: {'alpha': 0.05, 'dynamics_seconds': 0.04549150000000002, 'dynamics_work': {'force_edge_records': 18546, 'global_convergence_scans': 2527, 'gradient_endpoint_accumulations': 74184, 'node_updates': 13472, ...}, 'edge_visits': 18546, ...}&#10;assert 'INVALID_STATE' == 'PASS'&#10;  &#10;  - PASS&#10;  + INVALID_STATE">def test_id_order_rotation_translation_and_component_rename():
+        world = generate(42, "disconnected", 16, 20)
+&gt;       original, _ = fit(world.observation)
+
+tests/test_c0.py:58: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+observation = Observation(nodes=('u0000', 'u0015', 'u0010', 'u0013', 'u0012', 'u0009', 'u0003', 'u0001', 'u0006', 'u0005', 'u0014', ...1.0), np.float64(0.0))), ('r0007', (np.float64(1.0), np.float64(1.0))), ('r0008', (np.float64(1.0), np.float64(2.0)))))
+settings = Settings(step_factor=0.25, max_sweeps=10000, gradient_tolerance=1e-08, update_tolerance=1e-08, stable_sweeps=10)
+
+    def fit(observation, settings=Settings()):
+        state = GeometryState(settings)
+        trace = state.learn(observation, HASH)
+&gt;       assert trace["status"] == "PASS", trace
+E       AssertionError: {'alpha': 0.05, 'dynamics_seconds': 0.04549150000000002, 'dynamics_work': {'force_edge_records': 18546, 'global_convergence_scans': 2527, 'gradient_endpoint_accumulations': 74184, 'node_updates': 13472, ...}, 'edge_visits': 18546, ...}
+E       assert 'INVALID_STATE' == 'PASS'
+E         
+E         - PASS
+E         + INVALID_STATE
+
+tests/test_c0.py:17: AssertionError</failure></testcase><testcase classname="tests.test_c0" name="test_generator_replay_hidden_edge_identifiability_and_reference[lattice]" time="0.492"><failure message="AssertionError: {'alpha': 0.03571428571428571, 'dynamics_seconds': 0.48843358400000025, 'dynamics_work': {'force_edge_records': 167640...gence_scans': 9142, 'gradient_endpoint_accumulations': 670560, 'node_updates': 97504, ...}, 'edge_visits': 167640, ...}&#10;assert 'INVALID_STATE' == 'PASS'&#10;  &#10;  - PASS&#10;  + INVALID_STATE">arm = 'lattice'
+
+    @pytest.mark.parametrize("arm", ["lattice", "continuous", "disconnected", "inconsistent", "noisy"])
+    def test_generator_replay_hidden_edge_identifiability_and_reference(arm):
+        world = generate(412, arm)
+        assert world == generate(412, arm)
+        assert len(world.observation.nodes) == 32
+        assert len(world.hidden_edges) == 8
+        assert set(world.hidden_edges).isdisjoint(world.observation.edges)
+&gt;       state, trace = fit(world.observation)
+
+tests/test_c0.py:78: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+observation = Observation(nodes=('u0012', 'u0020', 'u0017', 'u0027', 'u0001', 'u0011', 'u0005', 'u0019', 'u0016', 'u0029', 'u0000', ....0), np.float64(0.0))), ('r0012', (np.float64(1.0), np.float64(1.0))), ('r0013', (np.float64(2.0), np.float64(-1.0)))))
+settings = Settings(step_factor=0.25, max_sweeps=10000, gradient_tolerance=1e-08, update_tolerance=1e-08, stable_sweeps=10)
+
+    def fit(observation, settings=Settings()):
+        state = GeometryState(settings)
+        trace = state.learn(observation, HASH)
+&gt;       assert trace["status"] == "PASS", trace
+E       AssertionError: {'alpha': 0.03571428571428571, 'dynamics_seconds': 0.48843358400000025, 'dynamics_work': {'force_edge_records': 167640...gence_scans': 9142, 'gradient_endpoint_accumulations': 670560, 'node_updates': 97504, ...}, 'edge_visits': 167640, ...}
+E       assert 'INVALID_STATE' == 'PASS'
+E         
+E         - PASS
+E         + INVALID_STATE
+
+tests/test_c0.py:17: AssertionError</failure></testcase><testcase classname="tests.test_c0" name="test_generator_replay_hidden_edge_identifiability_and_reference[continuous]" time="0.460"><failure message="AssertionError: {'alpha': 0.03571428571428571, 'dynamics_seconds': 0.4546256660000001, 'dynamics_work': {'force_edge_records': 189365,...nce_scans': 10327, 'gradient_endpoint_accumulations': 757460, 'node_updates': 110144, ...}, 'edge_visits': 189365, ...}&#10;assert 'INVALID_STATE' == 'PASS'&#10;  &#10;  - PASS&#10;  + INVALID_STATE">arm = 'continuous'
+
+    @pytest.mark.parametrize("arm", ["lattice", "continuous", "disconnected", "inconsistent", "noisy"])
+    def test_generator_replay_hidden_edge_identifiability_and_reference(arm):
+        world = generate(412, arm)
+        assert world == generate(412, arm)
+        assert len(world.observation.nodes) == 32
+        assert len(world.hidden_edges) == 8
+        assert set(world.hidden_edges).isdisjoint(world.observation.edges)
+&gt;       state, trace = fit(world.observation)
+
+tests/test_c0.py:78: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+observation = Observation(nodes=('u0026', 'u0005', 'u0002', 'u0009', 'u0029', 'u0004', 'u0024', 'u0010', 'u0016', 'u0027', 'u0019', ...110226), np.float64(0.4132560127866505))), ('r0054', (np.float64(5.796257353602845), np.float64(1.4523587918896057)))))
+settings = Settings(step_factor=0.25, max_sweeps=10000, gradient_tolerance=1e-08, update_tolerance=1e-08, stable_sweeps=10)
+
+    def fit(observation, settings=Settings()):
+        state = GeometryState(settings)
+        trace = state.learn(observation, HASH)
+&gt;       assert trace["status"] == "PASS", trace
+E       AssertionError: {'alpha': 0.03571428571428571, 'dynamics_seconds': 0.4546256660000001, 'dynamics_work': {'force_edge_records': 189365,...nce_scans': 10327, 'gradient_endpoint_accumulations': 757460, 'node_updates': 110144, ...}, 'edge_visits': 189365, ...}
+E       assert 'INVALID_STATE' == 'PASS'
+E         
+E         - PASS
+E         + INVALID_STATE
+
+tests/test_c0.py:17: AssertionError</failure></testcase><testcase classname="tests.test_c0" name="test_generator_replay_hidden_edge_identifiability_and_reference[disconnected]" time="0.265"><failure message="AssertionError: {'alpha': 0.041666666666666664, 'dynamics_seconds': 0.26126704200000006, 'dynamics_work': {'force_edge_records': 83754...rgence_scans': 4651, 'gradient_endpoint_accumulations': 335016, 'node_updates': 49600, ...}, 'edge_visits': 83754, ...}&#10;assert 'INVALID_STATE' == 'PASS'&#10;  &#10;  - PASS&#10;  + INVALID_STATE">arm = 'disconnected'
+
+    @pytest.mark.parametrize("arm", ["lattice", "continuous", "disconnected", "inconsistent", "noisy"])
+    def test_generator_replay_hidden_edge_identifiability_and_reference(arm):
+        world = generate(412, arm)
+        assert world == generate(412, arm)
+        assert len(world.observation.nodes) == 32
+        assert len(world.hidden_edges) == 8
+        assert set(world.hidden_edges).isdisjoint(world.observation.edges)
+&gt;       state, trace = fit(world.observation)
+
+tests/test_c0.py:78: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+observation = Observation(nodes=('u0021', 'u0028', 'u0027', 'u0015', 'u0007', 'u0000', 'u0031', 'u0019', 'u0026', 'u0001', 'u0009', ...1.0), np.float64(1.0))), ('r0013', (np.float64(2.0), np.float64(1.0))), ('r0014', (np.float64(2.0), np.float64(3.0)))))
+settings = Settings(step_factor=0.25, max_sweeps=10000, gradient_tolerance=1e-08, update_tolerance=1e-08, stable_sweeps=10)
+
+    def fit(observation, settings=Settings()):
+        state = GeometryState(settings)
+        trace = state.learn(observation, HASH)
+&gt;       assert trace["status"] == "PASS", trace
+E       AssertionError: {'alpha': 0.041666666666666664, 'dynamics_seconds': 0.26126704200000006, 'dynamics_work': {'force_edge_records': 83754...rgence_scans': 4651, 'gradient_endpoint_accumulations': 335016, 'node_updates': 49600, ...}, 'edge_visits': 83754, ...}
+E       assert 'INVALID_STATE' == 'PASS'
+E         
+E         - PASS
+E         + INVALID_STATE
+
+tests/test_c0.py:17: AssertionError</failure></testcase><testcase classname="tests.test_c0" name="test_generator_replay_hidden_edge_identifiability_and_reference[inconsistent]" time="0.655"><failure message="AssertionError: {'alpha': 0.03571428571428571, 'dynamics_seconds': 0.6480392920000004, 'dynamics_work': {'force_edge_records': 166320,...gence_scans': 9070, 'gradient_endpoint_accumulations': 665280, 'node_updates': 96736, ...}, 'edge_visits': 166320, ...}&#10;assert 'INVALID_STATE' == 'PASS'&#10;  &#10;  - PASS&#10;  + INVALID_STATE">arm = 'inconsistent'
+
+    @pytest.mark.parametrize("arm", ["lattice", "continuous", "disconnected", "inconsistent", "noisy"])
+    def test_generator_replay_hidden_edge_identifiability_and_reference(arm):
+        world = generate(412, arm)
+        assert world == generate(412, arm)
+        assert len(world.observation.nodes) == 32
+        assert len(world.hidden_edges) == 8
+        assert set(world.hidden_edges).isdisjoint(world.observation.edges)
+&gt;       state, trace = fit(world.observation)
+
+tests/test_c0.py:78: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+observation = Observation(nodes=('u0012', 'u0020', 'u0017', 'u0027', 'u0001', 'u0011', 'u0005', 'u0019', 'u0016', 'u0029', 'u0000', ....0), np.float64(0.0))), ('r0013', (np.float64(1.0), np.float64(1.0))), ('r0014', (np.float64(2.0), np.float64(-1.0)))))
+settings = Settings(step_factor=0.25, max_sweeps=10000, gradient_tolerance=1e-08, update_tolerance=1e-08, stable_sweeps=10)
+
+    def fit(observation, settings=Settings()):
+        state = GeometryState(settings)
+        trace = state.learn(observation, HASH)
+&gt;       assert trace["status"] == "PASS", trace
+E       AssertionError: {'alpha': 0.03571428571428571, 'dynamics_seconds': 0.6480392920000004, 'dynamics_work': {'force_edge_records': 166320,...gence_scans': 9070, 'gradient_endpoint_accumulations': 665280, 'node_updates': 96736, ...}, 'edge_visits': 166320, ...}
+E       assert 'INVALID_STATE' == 'PASS'
+E         
+E         - PASS
+E         + INVALID_STATE
+
+tests/test_c0.py:17: AssertionError</failure></testcase><testcase classname="tests.test_c0" name="test_generator_replay_hidden_edge_identifiability_and_reference[noisy]" time="0.659"><failure message="AssertionError: {'alpha': 0.03571428571428571, 'dynamics_seconds': 0.6553690420000002, 'dynamics_work': {'force_edge_records': 189310,...nce_scans': 10324, 'gradient_endpoint_accumulations': 757240, 'node_updates': 110112, ...}, 'edge_visits': 189310, ...}&#10;assert 'INVALID_STATE' == 'PASS'&#10;  &#10;  - PASS&#10;  + INVALID_STATE">arm = 'noisy'
+
+    @pytest.mark.parametrize("arm", ["lattice", "continuous", "disconnected", "inconsistent", "noisy"])
+    def test_generator_replay_hidden_edge_identifiability_and_reference(arm):
+        world = generate(412, arm)
+        assert world == generate(412, arm)
+        assert len(world.observation.nodes) == 32
+        assert len(world.hidden_edges) == 8
+        assert set(world.hidden_edges).isdisjoint(world.observation.edges)
+&gt;       state, trace = fit(world.observation)
+
+tests/test_c0.py:78: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+observation = Observation(nodes=('u0020', 'u0010', 'u0016', 'u0019', 'u0013', 'u0025', 'u0000', 'u0008', 'u0014', 'u0024', 'u0015', ...13235), np.float64(0.44056565806028775))), ('r0054', (np.float64(5.727639774427736), np.float64(1.3780970047448455)))))
+settings = Settings(step_factor=0.25, max_sweeps=10000, gradient_tolerance=1e-08, update_tolerance=1e-08, stable_sweeps=10)
+
+    def fit(observation, settings=Settings()):
+        state = GeometryState(settings)
+        trace = state.learn(observation, HASH)
+&gt;       assert trace["status"] == "PASS", trace
+E       AssertionError: {'alpha': 0.03571428571428571, 'dynamics_seconds': 0.6553690420000002, 'dynamics_work': {'force_edge_records': 189310,...nce_scans': 10324, 'gradient_endpoint_accumulations': 757240, 'node_updates': 110112, ...}, 'edge_visits': 189310, ...}
+E       assert 'INVALID_STATE' == 'PASS'
+E         
+E         - PASS
+E         + INVALID_STATE
+
+tests/test_c0.py:17: AssertionError</failure></testcase><testcase classname="tests.test_c0" name="test_persistence_query_reset_invariance_and_frozen_memory" time="0.505"><failure message="AssertionError: {'alpha': 0.041666666666666664, 'dynamics_seconds': 0.502776334, 'dynamics_work': {'force_edge_records': 161590, 'glob...gence_scans': 8812, 'gradient_endpoint_accumulations': 646360, 'node_updates': 93984, ...}, 'edge_visits': 161590, ...}&#10;assert 'INVALID_STATE' == 'PASS'&#10;  &#10;  - PASS&#10;  + INVALID_STATE">def test_persistence_query_reset_invariance_and_frozen_memory():
+&gt;       state, _ = fit(generate(84, "continuous").observation)
+
+tests/test_c0.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+observation = Observation(nodes=('u0027', 'u0019', 'u0008', 'u0005', 'u0030', 'u0006', 'u0028', 'u0000', 'u0016', 'u0004', 'u0012', ...38709885), np.float64(3.758470660815113))), ('r0054', (np.float64(5.008141336722683), np.float64(2.868627150458745)))))
+settings = Settings(step_factor=0.25, max_sweeps=10000, gradient_tolerance=1e-08, update_tolerance=1e-08, stable_sweeps=10)
+
+    def fit(observation, settings=Settings()):
+        state = GeometryState(settings)
+        trace = state.learn(observation, HASH)
+&gt;       assert trace["status"] == "PASS", trace
+E       AssertionError: {'alpha': 0.041666666666666664, 'dynamics_seconds': 0.502776334, 'dynamics_work': {'force_edge_records': 161590, 'glob...gence_scans': 8812, 'gradient_endpoint_accumulations': 646360, 'node_updates': 93984, ...}, 'edge_visits': 161590, ...}
+E       assert 'INVALID_STATE' == 'PASS'
+E         
+E         - PASS
+E         + INVALID_STATE
+
+tests/test_c0.py:17: AssertionError</failure></testcase><testcase classname="tests.test_c0" name="test_failure_preserves_previous_transaction_and_no_false_convergence" time="0.073" /><testcase classname="tests.test_c0" name="test_tiny_step_does_not_hide_large_gradient" time="0.001" /><testcase classname="tests.test_c0" name="test_load_rejects_corruption_at_owner[checksum]" time="0.726"><failure message="AssertionError: {'alpha': 0.03571428571428571, 'dynamics_seconds': 0.7228466249999999, 'dynamics_work': {'force_edge_records': 218350,...nce_scans': 11908, 'gradient_endpoint_accumulations': 873400, 'node_updates': 127008, ...}, 'edge_visits': 218350, ...}&#10;assert 'INVALID_STATE' == 'PASS'&#10;  &#10;  - PASS&#10;  + INVALID_STATE">bad = 'checksum'
+
+    @pytest.mark.parametrize("bad", ["checksum", "coordinate", "component", "edge"])
+    def test_load_rejects_corruption_at_owner(bad):
+&gt;       state, _ = fit(generate(84, "lattice").observation)
+
+tests/test_c0.py:129: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+observation = Observation(nodes=('u0011', 'u0025', 'u0029', 'u0027', 'u0009', 'u0020', 'u0012', 'u0017', 'u0031', 'u0015', 'u0024', ...2.0), np.float64(3.0))), ('r0020', (np.float64(3.0), np.float64(0.0))), ('r0021', (np.float64(3.0), np.float64(1.0)))))
+settings = Settings(step_factor=0.25, max_sweeps=10000, gradient_tolerance=1e-08, update_tolerance=1e-08, stable_sweeps=10)
+
+    def fit(observation, settings=Settings()):
+        state = GeometryState(settings)
+        trace = state.learn(observation, HASH)
+&gt;       assert trace["status"] == "PASS", trace
+E       AssertionError: {'alpha': 0.03571428571428571, 'dynamics_seconds': 0.7228466249999999, 'dynamics_work': {'force_edge_records': 218350,...nce_scans': 11908, 'gradient_endpoint_accumulations': 873400, 'node_updates': 127008, ...}, 'edge_visits': 218350, ...}
+E       assert 'INVALID_STATE' == 'PASS'
+E         
+E         - PASS
+E         + INVALID_STATE
+
+tests/test_c0.py:17: AssertionError</failure></testcase><testcase classname="tests.test_c0" name="test_load_rejects_corruption_at_owner[coordinate]" time="0.861"><failure message="AssertionError: {'alpha': 0.03571428571428571, 'dynamics_seconds': 0.8309346249999994, 'dynamics_work': {'force_edge_records': 218350,...nce_scans': 11908, 'gradient_endpoint_accumulations': 873400, 'node_updates': 127008, ...}, 'edge_visits': 218350, ...}&#10;assert 'INVALID_STATE' == 'PASS'&#10;  &#10;  - PASS&#10;  + INVALID_STATE">bad = 'coordinate'
+
+    @pytest.mark.parametrize("bad", ["checksum", "coordinate", "component", "edge"])
+    def test_load_rejects_corruption_at_owner(bad):
+&gt;       state, _ = fit(generate(84, "lattice").observation)
+
+tests/test_c0.py:129: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+observation = Observation(nodes=('u0011', 'u0025', 'u0029', 'u0027', 'u0009', 'u0020', 'u0012', 'u0017', 'u0031', 'u0015', 'u0024', ...2.0), np.float64(3.0))), ('r0020', (np.float64(3.0), np.float64(0.0))), ('r0021', (np.float64(3.0), np.float64(1.0)))))
+settings = Settings(step_factor=0.25, max_sweeps=10000, gradient_tolerance=1e-08, update_tolerance=1e-08, stable_sweeps=10)
+
+    def fit(observation, settings=Settings()):
+        state = GeometryState(settings)
+        trace = state.learn(observation, HASH)
+&gt;       assert trace["status"] == "PASS", trace
+E       AssertionError: {'alpha': 0.03571428571428571, 'dynamics_seconds': 0.8309346249999994, 'dynamics_work': {'force_edge_records': 218350,...nce_scans': 11908, 'gradient_endpoint_accumulations': 873400, 'node_updates': 127008, ...}, 'edge_visits': 218350, ...}
+E       assert 'INVALID_STATE' == 'PASS'
+E         
+E         - PASS
+E         + INVALID_STATE
+
+tests/test_c0.py:17: AssertionError</failure></testcase><testcase classname="tests.test_c0" name="test_load_rejects_corruption_at_owner[component]" time="0.871"><failure message="AssertionError: {'alpha': 0.03571428571428571, 'dynamics_seconds': 0.8657267089999996, 'dynamics_work': {'force_edge_records': 218350,...nce_scans': 11908, 'gradient_endpoint_accumulations': 873400, 'node_updates': 127008, ...}, 'edge_visits': 218350, ...}&#10;assert 'INVALID_STATE' == 'PASS'&#10;  &#10;  - PASS&#10;  + INVALID_STATE">bad = 'component'
+
+    @pytest.mark.parametrize("bad", ["checksum", "coordinate", "component", "edge"])
+    def test_load_rejects_corruption_at_owner(bad):
+&gt;       state, _ = fit(generate(84, "lattice").observation)
+
+tests/test_c0.py:129: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+observation = Observation(nodes=('u0011', 'u0025', 'u0029', 'u0027', 'u0009', 'u0020', 'u0012', 'u0017', 'u0031', 'u0015', 'u0024', ...2.0), np.float64(3.0))), ('r0020', (np.float64(3.0), np.float64(0.0))), ('r0021', (np.float64(3.0), np.float64(1.0)))))
+settings = Settings(step_factor=0.25, max_sweeps=10000, gradient_tolerance=1e-08, update_tolerance=1e-08, stable_sweeps=10)
+
+    def fit(observation, settings=Settings()):
+        state = GeometryState(settings)
+        trace = state.learn(observation, HASH)
+&gt;       assert trace["status"] == "PASS", trace
+E       AssertionError: {'alpha': 0.03571428571428571, 'dynamics_seconds': 0.8657267089999996, 'dynamics_work': {'force_edge_records': 218350,...nce_scans': 11908, 'gradient_endpoint_accumulations': 873400, 'node_updates': 127008, ...}, 'edge_visits': 218350, ...}
+E       assert 'INVALID_STATE' == 'PASS'
+E         
+E         - PASS
+E         + INVALID_STATE
+
+tests/test_c0.py:17: AssertionError</failure></testcase><testcase classname="tests.test_c0" name="test_load_rejects_corruption_at_owner[edge]" time="0.654"><failure message="AssertionError: {'alpha': 0.03571428571428571, 'dynamics_seconds': 0.6514399169999994, 'dynamics_work': {'force_edge_records': 218350,...nce_scans': 11908, 'gradient_endpoint_accumulations': 873400, 'node_updates': 127008, ...}, 'edge_visits': 218350, ...}&#10;assert 'INVALID_STATE' == 'PASS'&#10;  &#10;  - PASS&#10;  + INVALID_STATE">bad = 'edge'
+
+    @pytest.mark.parametrize("bad", ["checksum", "coordinate", "component", "edge"])
+    def test_load_rejects_corruption_at_owner(bad):
+&gt;       state, _ = fit(generate(84, "lattice").observation)
+
+tests/test_c0.py:129: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+observation = Observation(nodes=('u0011', 'u0025', 'u0029', 'u0027', 'u0009', 'u0020', 'u0012', 'u0017', 'u0031', 'u0015', 'u0024', ...2.0), np.float64(3.0))), ('r0020', (np.float64(3.0), np.float64(0.0))), ('r0021', (np.float64(3.0), np.float64(1.0)))))
+settings = Settings(step_factor=0.25, max_sweeps=10000, gradient_tolerance=1e-08, update_tolerance=1e-08, stable_sweeps=10)
+
+    def fit(observation, settings=Settings()):
+        state = GeometryState(settings)
+        trace = state.learn(observation, HASH)
+&gt;       assert trace["status"] == "PASS", trace
+E       AssertionError: {'alpha': 0.03571428571428571, 'dynamics_seconds': 0.6514399169999994, 'dynamics_work': {'force_edge_records': 218350,...nce_scans': 11908, 'gradient_endpoint_accumulations': 873400, 'node_updates': 127008, ...}, 'edge_visits': 218350, ...}
+E       assert 'INVALID_STATE' == 'PASS'
+E         
+E         - PASS
+E         + INVALID_STATE
+
+tests/test_c0.py:17: AssertionError</failure></testcase><testcase classname="tests.test_c0" name="test_direct_baseline_reports_abstention_and_direction" time="0.000" /><testcase classname="tests.test_c0" name="test_protocol_split_seeds_and_settings_are_predeclared" time="0.001" /><testcase classname="tests.test_review_contracts" name="test_checksum_is_not_semantic_validation[wrong_finite]" time="0.003" /><testcase classname="tests.test_review_contracts" name="test_checksum_is_not_semantic_validation[string_coordinate]" time="0.002" /><testcase classname="tests.test_review_contracts" name="test_checksum_is_not_semantic_validation[boolean_coordinate]" time="0.002" /><testcase classname="tests.test_review_contracts" name="test_checksum_is_not_semantic_validation[settings_float]" time="0.002" /><testcase classname="tests.test_review_contracts" name="test_checksum_is_not_semantic_validation[bad_hash]" time="0.002" /><testcase classname="tests.test_review_contracts" name="test_checksum_is_not_semantic_validation[extra_field]" time="0.002" /><testcase classname="tests.test_review_contracts" name="test_checksum_is_not_semantic_validation[missing_field]" time="0.002" /><testcase classname="tests.test_review_contracts" name="test_checksum_is_not_semantic_validation[wrong_anchor]" time="0.002" /><testcase classname="tests.test_review_contracts" name="test_checksum_is_not_semantic_validation[old_schema]" time="0.002" /><testcase classname="tests.test_review_contracts" name="test_load_errors_have_one_public_type[null]" time="0.000" /><testcase classname="tests.test_review_contracts" name="test_load_errors_have_one_public_type[[]]" time="0.000" /><testcase classname="tests.test_review_contracts" name="test_load_errors_have_one_public_type[{]" time="0.000" /><testcase classname="tests.test_review_contracts" name="test_load_errors_have_one_public_type[{&quot;checksum&quot;:&quot;x&quot;}]" time="0.000" /><testcase classname="tests.test_review_contracts" name="test_load_errors_have_one_public_type[{&quot;x&quot;:1,&quot;x&quot;:2}]" time="0.039" /><testcase classname="tests.test_review_contracts" name="test_invalid_settings_rejected_before_mutation[max_sweeps-True]" time="0.106" /><testcase classname="tests.test_review_contracts" name="test_invalid_settings_rejected_before_mutation[max_sweeps-10.5]" time="0.028" /><testcase classname="tests.test_review_contracts" name="test_invalid_settings_rejected_before_mutation[stable_sweeps-inf]" time="0.000" /><testcase classname="tests.test_review_contracts" name="test_invalid_settings_rejected_before_mutation[step_factor-0.25]" time="0.000" /><testcase classname="tests.test_review_contracts" name="test_invalid_settings_rejected_before_mutation[gradient_tolerance-True]" time="0.000" /><testcase classname="tests.test_review_contracts" name="test_invalid_settings_rejected_before_mutation[update_tolerance-nan]" time="0.000" /><testcase classname="tests.test_review_contracts" name="test_mutable_input_and_overflow_rejected_transactionally" time="0.020" /><testcase classname="tests.test_review_contracts" name="test_readonly_settings_and_isolated_many_components_cost" time="0.007" /><testcase classname="tests.test_review_contracts" name="test_weighted_inconsistent_case_against_hand_solution" time="0.002" /><testcase classname="tests.test_review_contracts" name="test_public_relation_mapping_and_consistent_id_permutation" time="1.014" /><testcase classname="tests.test_review_contracts" name="test_invalid_protocol_cannot_vacuously_qualify[zero_count]" time="0.001" /><testcase classname="tests.test_review_contracts" name="test_invalid_protocol_cannot_vacuously_qualify[missing_arm]" time="0.007" /><testcase classname="tests.test_review_contracts" name="test_invalid_protocol_cannot_vacuously_qualify[overlap]" time="0.001" /><testcase classname="tests.test_review_contracts" name="test_invalid_protocol_cannot_vacuously_qualify[loose_tolerance]" time="0.000" /><testcase classname="tests.test_review_contracts" name="test_invalid_protocol_cannot_vacuously_qualify[bad_queries]" time="0.000" /><testcase classname="tests.test_review_contracts" name="test_invalid_protocol_cannot_vacuously_qualify[unknown_algorithm]" time="0.022" /><testcase classname="tests.test_review_contracts" name="test_invalid_protocol_cannot_vacuously_qualify[bad_uncertainty]" time="0.001" /><testcase classname="tests.test_review_contracts" name="test_new_worlds_disjoint_from_original_final_worlds" time="0.001" /><testcase classname="tests.test_review_contracts" name="test_noisy_evaluator_has_separate_metrics_and_work" time="0.644"><failure message="AssertionError: assert 'INVALID_STATE' == 'PASS'&#10;  &#10;  - PASS&#10;  + INVALID_STATE">def test_noisy_evaluator_has_separate_metrics_and_work():
+        m = manifest()
+        result = evaluate_world(generate(617, "noisy"), Settings(), HASH, m["displacement_tolerance"])
+&gt;       assert result["candidate"]["status"] == "PASS"
+E       AssertionError: assert 'INVALID_STATE' == 'PASS'
+E         
+E         - PASS
+E         + INVALID_STATE
+
+tests/test_review_contracts.py:149: AssertionError</failure></testcase><testcase classname="tests.test_review_contracts" name="test_evaluator_rejects_wrong_candidate_even_if_trace_says_pass" time="0.422"><failure message="TypeError: '&gt;' not supported between instances of 'NoneType' and 'float'">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x106aa8fd0&gt;
+
+    def test_evaluator_rejects_wrong_candidate_even_if_trace_says_pass(monkeypatch):
+        actual = GeometryState.query
+        def wrong(self, a, b):
+            answer = actual(self, a, b)
+            return Answer("OK", (0.0, 0.0)) if answer.status == "OK" else answer
+        monkeypatch.setattr(GeometryState, "query", wrong)
+        result = evaluate_world(generate(618, "continuous"), Settings(), HASH, 1e-5)
+        assert result["primary_fraction"] &lt; 0.99
+        assert result["methods"]["candidate"]["indirect"]["total_least_squares_accuracy"] &lt; 0.99
+&gt;       assert result["reported_energy_gap"] &gt; 1e-8
+E       TypeError: '&gt;' not supported between instances of 'NoneType' and 'float'
+
+tests/test_review_contracts.py:172: TypeError</failure></testcase><testcase classname="tests.test_review_contracts" name="test_nonconvergent_candidate_still_produces_metrics" time="0.187" /><testcase classname="tests.test_review_contracts" name="test_cli_refuses_to_overwrite_completed_evidence" time="0.607" /><testcase classname="tests.test_review_contracts" name="test_run_retains_every_infrastructure_failure_and_source_snapshot" time="0.294" /></testsuite></testsuites>

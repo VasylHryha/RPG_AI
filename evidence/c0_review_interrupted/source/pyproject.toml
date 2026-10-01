@@ -1,0 +1,13 @@
+[project]
+name = "geomind"
+version = "0.1.0"
+description = "GeoMind C0 structural-memory reference experiment"
+requires-python = ">=3.9,<3.10"
+dependencies = ["numpy==2.0.2"]
+
+[dependency-groups]
+dev = ["pytest==8.4.2"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

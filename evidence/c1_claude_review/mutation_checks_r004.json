@@ -1,0 +1,224 @@
+{
+  "baseline": {
+    "exit": 0,
+    "summary": "14 passed in 4.22s",
+    "failed": [],
+    "seconds": 4.383692084
+  },
+  "mutants": {
+    "frame_shift_sign_flipped": {
+      "exit": 1,
+      "summary": "4 failed, 10 passed in 5.49s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_both_arms_match_references_or_explicitly_reject",
+        "FAILED tests/test_c1.py::test_bridge_admits_cross_pairs_only_after_successful_commit",
+        "FAILED tests/test_c1.py::test_exact_operation_accounting_and_exhaustion_point",
+        "FAILED tests/test_c1.py::test_evaluator_negative_controls_two_arms_and_stale_coverage"
+      ],
+      "seconds": 5.654015083000001,
+      "detected": true
+    },
+    "certificate_skips_neighbors_of_moved_nodes": {
+      "exit": 1,
+      "summary": "1 failed, 13 passed in 2.65s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_local_certificate_agrees_with_global_validation_on_random_chains"
+      ],
+      "seconds": 2.8199875409999997,
+      "detected": true
+    },
+    "certificate_skips_freed_anchors": {
+      "exit": 1,
+      "summary": "2 failed, 12 passed in 2.24s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_exact_operation_accounting_and_exhaustion_point",
+        "FAILED tests/test_c1.py::test_local_certificate_agrees_with_global_validation_on_random_chains"
+      ],
+      "seconds": 2.4072212079999993,
+      "detected": true
+    },
+    "certificate_margin_removed": {
+      "exit": 0,
+      "summary": "14 passed in 4.19s",
+      "failed": [],
+      "seconds": 4.344872917,
+      "detected": false
+    },
+    "rollback_skips_coordinates": {
+      "exit": 1,
+      "summary": "4 failed, 10 passed in 2.01s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_mid_relaxation_refusal_restores_every_structure",
+        "FAILED tests/test_c1.py::test_local_certificate_agrees_with_global_validation_on_random_chains",
+        "FAILED tests/test_c1.py::test_tiny_weight_contradiction_needs_the_fallback_arm",
+        "FAILED tests/test_c1.py::test_evaluator_negative_controls_two_arms_and_stale_coverage"
+      ],
+      "seconds": 2.1737847919999993,
+      "detected": true
+    },
+    "rollback_skips_journal": {
+      "exit": 1,
+      "summary": "6 failed, 8 passed in 1.82s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_mid_relaxation_refusal_restores_every_structure",
+        "FAILED tests/test_c1.py::test_custom_update_tolerance_and_overflow_are_transactional",
+        "FAILED tests/test_c1.py::test_exact_operation_accounting_and_exhaustion_point",
+        "FAILED tests/test_c1.py::test_local_certificate_agrees_with_global_validation_on_random_chains",
+        "FAILED tests/test_c1.py::test_tiny_weight_contradiction_needs_the_fallback_arm",
+        "FAILED tests/test_c1.py::test_evaluator_negative_controls_two_arms_and_stale_coverage"
+      ],
+      "seconds": 1.981806959,
+      "detected": true
+    },
+    "degree_list_unsorted": {
+      "exit": 1,
+      "summary": "1 failed, 13 passed in 2.22s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_local_certificate_agrees_with_global_validation_on_random_chains"
+      ],
+      "seconds": 2.3772960829999974,
+      "detected": true
+    },
+    "anchor_tie_break_flipped": {
+      "exit": 1,
+      "summary": "3 failed, 11 passed in 2.79s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_custom_update_tolerance_and_overflow_are_transactional",
+        "FAILED tests/test_c1.py::test_exact_operation_accounting_and_exhaustion_point",
+        "FAILED tests/test_c1.py::test_local_certificate_agrees_with_global_validation_on_random_chains"
+      ],
+      "seconds": 2.9651067919999967,
+      "detected": true
+    },
+    "translation_not_charged": {
+      "exit": 1,
+      "summary": "1 failed, 13 passed in 4.25s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_exact_operation_accounting_and_exhaustion_point"
+      ],
+      "seconds": 4.4278501660000025,
+      "detected": true
+    },
+    "local_reads_not_charged": {
+      "exit": 1,
+      "summary": "2 failed, 12 passed in 5.90s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_exact_operation_accounting_and_exhaustion_point",
+        "FAILED tests/test_c1.py::test_evaluator_negative_controls_two_arms_and_stale_coverage"
+      ],
+      "seconds": 6.062689292000002,
+      "detected": true
+    },
+    "budget_never_enforced": {
+      "exit": "TIMEOUT",
+      "summary": "timed out after 180 s",
+      "failed": [],
+      "seconds": 180.006289,
+      "detected": true
+    },
+    "fallback_cap_never_enforced": {
+      "exit": 1,
+      "summary": "1 failed, 13 passed in 4.81s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_tiny_weight_contradiction_needs_the_fallback_arm"
+      ],
+      "seconds": 5.088144625000012,
+      "detected": true
+    },
+    "fallback_skips_final_certificate": {
+      "exit": 0,
+      "summary": "14 passed in 4.52s",
+      "failed": [],
+      "seconds": 4.734246458000001,
+      "detected": false
+    },
+    "query_ignores_anchor_gauge": {
+      "exit": 1,
+      "summary": "2 failed, 12 passed in 2.08s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_local_certificate_agrees_with_global_validation_on_random_chains",
+        "FAILED tests/test_c1.py::test_evaluator_negative_controls_two_arms_and_stale_coverage"
+      ],
+      "seconds": 2.2762274159999834,
+      "detected": true
+    },
+    "duplicate_removal_allowed": {
+      "exit": 1,
+      "summary": "1 failed, 13 passed in 4.53s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_chained_updates_cycles_duplicates_and_real_artifact_migration"
+      ],
+      "seconds": 4.722221459000025,
+      "detected": true
+    },
+    "frozen_apply_allowed": {
+      "exit": 1,
+      "summary": "1 failed, 13 passed in 4.58s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_frozen_state_forks_and_queries_do_not_mutate_parent_or_sibling"
+      ],
+      "seconds": 4.780976584000001,
+      "detected": true
+    },
+    "relation_redefinition_allowed": {
+      "exit": 1,
+      "summary": "1 failed, 13 passed in 4.98s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_gauge_shift_preserves_unaffected_component_and_bad_artifacts_fail"
+      ],
+      "seconds": 5.212496874999999,
+      "detected": true
+    },
+    "forced_certificate_step_removed": {
+      "exit": 0,
+      "summary": "14 passed in 4.55s",
+      "failed": [],
+      "seconds": 4.807488833000008,
+      "detected": false
+    },
+    "local_quiet_ignores_update_tolerance": {
+      "exit": 0,
+      "summary": "14 passed in 4.67s",
+      "failed": [],
+      "seconds": 4.884108333,
+      "detected": false
+    },
+    "local_norm_guard_removed": {
+      "exit": 0,
+      "summary": "14 passed in 4.32s",
+      "failed": [],
+      "seconds": 4.494016792000025,
+      "detected": false
+    },
+    "reference_rhs_sign_flipped": {
+      "exit": 1,
+      "summary": "2 failed, 12 passed in 3.96s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_sparse_reference_matches_dense_and_hand_computed_weighted_case",
+        "FAILED tests/test_c1.py::test_evaluator_negative_controls_two_arms_and_stale_coverage"
+      ],
+      "seconds": 4.140964458000042,
+      "detected": true
+    },
+    "evaluator_energy_gate_removed": {
+      "exit": 1,
+      "summary": "1 failed, 13 passed in 3.98s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_evaluator_negative_controls_two_arms_and_stale_coverage"
+      ],
+      "seconds": 4.158593457999984,
+      "detected": true
+    },
+    "evaluator_status_equality_ignored": {
+      "exit": 1,
+      "summary": "1 failed, 13 passed in 6.26s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_evaluator_negative_controls_two_arms_and_stale_coverage"
+      ],
+      "seconds": 6.483563000000004,
+      "detected": true
+    }
+  },
+  "detected": 18,
+  "total": 23
+}

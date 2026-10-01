@@ -1,0 +1,135 @@
+{
+  "baseline": {
+    "exit": 0,
+    "summary": "10 passed in 1.09s",
+    "failed": [],
+    "seconds": 1.2955061250000002
+  },
+  "mutants": {
+    "frame_offset_sign_flipped": {
+      "exit": 1,
+      "summary": "2 failed, 8 passed in 1.66s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_four_transactions_match_references_or_explicitly_reject",
+        "FAILED tests/test_c1.py::test_bridge_admits_cross_pairs_only_after_successful_commit"
+      ],
+      "seconds": 1.829103833,
+      "detected": true
+    },
+    "regauge_removed": {
+      "exit": 1,
+      "summary": "3 failed, 7 passed in 0.94s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_four_transactions_match_references_or_explicitly_reject",
+        "FAILED tests/test_c1.py::test_chained_updates_cycles_duplicates_and_legacy_migration",
+        "FAILED tests/test_c1.py::test_custom_update_tolerance_and_overflow_are_transactional"
+      ],
+      "seconds": 1.1184346250000003,
+      "detected": true
+    },
+    "freed_old_anchor_not_dirty": {
+      "exit": 0,
+      "summary": "10 passed in 1.02s",
+      "failed": [],
+      "seconds": 1.1779397500000002,
+      "detected": false
+    },
+    "local_quiet_ignores_update_tolerance": {
+      "exit": 1,
+      "summary": "1 failed, 9 passed in 1.52s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_custom_update_tolerance_and_overflow_are_transactional"
+      ],
+      "seconds": 1.6841819999999998,
+      "detected": true
+    },
+    "local_force_ignores_weight": {
+      "exit": 1,
+      "summary": "1 failed, 9 passed in 1.33s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_chained_updates_cycles_duplicates_and_legacy_migration"
+      ],
+      "seconds": 1.5511288749999999,
+      "detected": true
+    },
+    "single_certificate_instead_of_ten": {
+      "exit": 0,
+      "summary": "10 passed in 1.00s",
+      "failed": [],
+      "seconds": 1.1554260410000001,
+      "detected": false
+    },
+    "certificate_visits_not_charged": {
+      "exit": 0,
+      "summary": "10 passed in 1.00s",
+      "failed": [],
+      "seconds": 1.1605675829999988,
+      "detected": false
+    },
+    "warm_start_reads_not_charged": {
+      "exit": 0,
+      "summary": "10 passed in 0.99s",
+      "failed": [],
+      "seconds": 1.1448993749999996,
+      "detected": false
+    },
+    "budget_never_enforced": {
+      "exit": 1,
+      "summary": "2 failed, 8 passed in 1.01s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_budget_exhaustion_and_invalid_inputs_preserve_snapshot",
+        "FAILED tests/test_c1.py::test_bridge_admits_cross_pairs_only_after_successful_commit"
+      ],
+      "seconds": 1.1695950830000008,
+      "detected": true
+    },
+    "duplicate_removal_allowed": {
+      "exit": 0,
+      "summary": "10 passed in 1.08s",
+      "failed": [],
+      "seconds": 1.2417700000000007,
+      "detected": false
+    },
+    "frozen_update_allowed": {
+      "exit": 1,
+      "summary": "1 failed, 9 passed in 1.05s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_frozen_state_forks_and_queries_do_not_mutate_parent_or_sibling"
+      ],
+      "seconds": 1.2275254170000007,
+      "detected": true
+    },
+    "local_norm_guard_removed": {
+      "exit": 0,
+      "summary": "10 passed in 1.00s",
+      "failed": [],
+      "seconds": 1.1657369170000003,
+      "detected": false
+    },
+    "reference_rhs_sign_flipped": {
+      "exit": 1,
+      "summary": "1 failed, 9 passed in 1.03s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_sparse_reference_matches_dense_and_hand_computed_weighted_case"
+      ],
+      "seconds": 1.1942907910000002,
+      "detected": true
+    },
+    "evaluator_energy_gate_removed": {
+      "exit": 0,
+      "summary": "10 passed in 1.00s",
+      "failed": [],
+      "seconds": 1.1533875409999972,
+      "detected": false
+    },
+    "evaluator_status_equality_ignored": {
+      "exit": 0,
+      "summary": "10 passed in 1.06s",
+      "failed": [],
+      "seconds": 1.2312474580000021,
+      "detected": false
+    }
+  },
+  "detected": 7,
+  "total": 15
+}
