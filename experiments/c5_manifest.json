@@ -1,5 +1,5 @@
 {
-  "experiment_id": "geomind-c5-r4-002",
+  "experiment_id": "geomind-c5-r4-003",
   "milestone": "C5",
   "status": "REGISTERED",
   "question": "Take accepted C4 resonators (level-1 units) with distinct collective rates and let them interact only through the unchanged C4 element law. Does a label-free detector reading only their ResonatorState find a level-2 resonator (persistent, recovering, frequency-locked, every unit alive and distinct), and does the level-2 mode depend causally on unit geometry and unit geometry on the level-2 mode, each effect vanishing under its complete matched ablation?",
@@ -25,8 +25,8 @@
       6,
       16
     ],
-    "harvest_ratio": 1.3,
-    "rule": "fresh C4 identical-arm worlds with the frozen C4 code; accepted resonators within size_range become single-use templates, assigned to level-2 worlds in harvest order"
+    "harvest_ratio": 1.5,
+    "rule": "fresh C4 identical-arm worlds with the frozen C4 code; accepted resonators within size_range become single-use templates, assigned to level-2 worlds in harvest order with source isolation: every template of one harvest world goes to a single level-2 world (templates that do not fit are discarded), so level-2 worlds share no upstream randomness; template sources are stored per world"
   },
   "worlds": {
     "units_per_world": 5,
@@ -54,9 +54,9 @@
     "note": "C4 dt and RK4; the level-2 horizon, window and frame interval are the C4 values times T"
   },
   "detector": {
-    "rule": "C4 criteria 1-5 on unit states with the C4 thresholds (times x T, freq_tol / T); criterion 6: each member unit passes its own C4 criteria 2-4 with level-1 thresholds and its port overlap <= max_port_overlap",
-    "max_port_overlap": 0.2,
-    "max_port_overlap_basis": "development worlds: accepted groups reach at most 0.167 (one of six ports touching), the merged candidate 0.4; units' 95th percentile 0.167"
+    "rule": "C4 criteria 1-5 on unit states with the C4 thresholds (times x T, freq_tol / T); criterion 6: each member unit passes its own C4 criteria 2-4 with level-1 thresholds and no other unit's convex hull covers more than max_hull_overlap of its hull area (exact convex clipping)",
+    "max_hull_overlap": 0.2,
+    "max_hull_overlap_basis": "development worlds (entropy 22222, new measure): hull-area overlap over all units has 99th percentile 0.100 and maximum 0.132 (a touching, accepted group); the review's crossing-hexagon merger gives 0.928. Threshold kept at 0.2"
   },
   "interventions": {
     "gm_scales": [
@@ -156,9 +156,9 @@
   "seeds": {
     "development_entropy": 22222,
     "development_worlds": 10,
-    "final_entropy": 1348336910983156933,
+    "final_entropy": 6141758840824254324,
     "final_worlds": 30,
-    "rule": "final entropy drawn with secrets.randbits(63) at R002 registration (fresh; the R001 final worlds are not reused); final worlds and their harvest worlds are never simulated before the recorded panel; smoke and tests use development entropy"
+    "rule": "final entropy drawn with secrets.randbits(63) at R003 registration (fresh; R001/R002 final worlds are not reused); final worlds and their harvest worlds are never simulated before the recorded panel; smoke and tests use development entropy"
   },
   "endpoints": {
     "level1_pool": "harvest counts and sizes; every used unit, alone with its rate, is re-detected as an accepted C4 resonator (gate)",
@@ -178,7 +178,8 @@
     "coarse_vs_full": "open-loop coarse law (ports, zero fitted parameters) against no-transfer, rigid-transfer and relaxation (measured tau2) baselines on held-out excitations; the reopening protocol, invalid flags, frequency error, recovery error and work reported",
     "same_rule_audit": "level-2 thresholds equal C4's after the single factor T; T, tau1, tau2 and the final-world measured ratio recorded (gate)",
     "numerical_checks": "RK4 order, switching dt error, equivariance, unit relabelling and exact decoupling on an assembled world (gate)",
-    "timescale_separation": "tau2 / tau1 per group (between-unit versus within-unit relaxation), censoring counted; separation rule"
+    "timescale_separation": "tau2 / tau1 per group (between-unit versus within-unit relaxation), censoring counted; separation rule",
+    "level2_interface": "every accepted level-2 resonator publishes a ResonatorState (level 2) built from its children's states only: centroid of child centroids, their radius of gyration, collective rate, hull ports, digest of child digests; exactly one per accepted candidate (gate: not FAIL)"
   },
   "gates": [
     "passing focused contracts for the exact dependency fingerprint",
@@ -187,10 +188,11 @@
     "not_independent and not_a_clump_l2 PASS",
     "level1_pool PASS",
     "same_rule_audit PASS",
+    "level2_interface not FAIL",
     "endpoint coverage complete",
     "source hashes stable during the run"
   ],
-  "registered": "2026-10-01",
+  "registered": "2026-10-02",
   "registered_changes_from_proposal": [
     "Criterion 6 distinctness uses port overlap (fraction of a unit's ports strictly inside another unit's hull <= 0.2) instead of the own-neighbour fraction q. Development worlds: the own-neighbour fraction falls to 0.5-0.6 for units merely pressed together (it measures contact area), while member hull overlap stays 0 except in a merged candidate.",
     "The unit phase Theta is the circular mean of member phases, unwrapped over frames: C4 keeps member phases unwrapped and they can differ by whole turns (all harvested units have coherence 1.00).",
@@ -212,7 +214,12 @@
     "R002: a third cheap baseline, relaxation to an equal share of the excitation with the group's own measured tau2; the coarse law must beat all three.",
     "R002: timescale_separation (tau2 / tau1 > 1) is a registered H-C endpoint: the dynamical test that a level-2 group is a hierarchy, not one merged resonator. tau2 censored at the 5 T window is counted and used as a lower bound.",
     "R002: disclosure of how many accepted groups the frozen C4 component rule sees as one component.",
-    "R002: placement radius, rate spread, T, port overlap, thresholds, worlds and every other setting are unchanged from R001; nothing was tuned on R001's final worlds."
+    "R002: placement radius, rate spread, T, port overlap, thresholds, worlds and every other setting are unchanged from R001; nothing was tuned on R001's final worlds.",
+    "R003 (review F1): every accepted level-2 resonator publishes its own ResonatorState (level 2) through compose_state, from its children's published states only: centroid of the child centroids, their radius of gyration, circular-mean phase, measured group rate, size-weighted natural rate, ports = child ports on the hull of all child ports, total primitive count, criteria statistics as S, digest of child digests. Child states carry measured rates and their own validity. A level2_interface endpoint and gate check one valid parent per accepted candidate.",
+    "R003 (review F2): criterion 6 distinctness uses hull-area overlap (exact convex clipping): no other unit's hull may cover more than 0.2 of a unit's hull area. R002's vertex-in-hull proxy missed hulls that cross (two hexagons with 93% common area scored 0). Development worlds: overlap 99th percentile 0.100, maximum 0.132.",
+    "R003 (review F3): the coarse neighbour rule takes exactly k candidates by a stable sort, own neighbours before cross ports on ties, then the radius; R002 admitted every candidate tied with the kth distance.",
+    "R003 (review F4): source-isolated template assignment: every template of one harvest world goes to a single level-2 world (non-fitting templates discarded), so level-2 worlds share no upstream randomness; template sources stored per world; harvest ratio 1.3 -> 1.5 to cover the discards.",
+    "R003: placement radius, rate spread, T, the 0.2 overlap threshold, every detector/effect threshold, doses, baselines, endpoints' rules and the number of worlds are unchanged from R002; nothing was tuned on R001 or R002 final worlds."
   ],
   "development_summary": {
     "formed": 4,
@@ -222,9 +229,15 @@
     "note": "settings only; development outcomes are not evidence. Formation 4/10 is below the registered 0.5; nothing was tuned to change it"
   },
   "supersedes": {
-    "experiment_id": "geomind-c5-r4-001",
-    "evidence": "evidence/c5_r001/",
-    "status": "WITHDRAWN before review by the implementer; receipt preserved unchanged, its recorded verdicts (H-M level 2 and H-C first transition INCONCLUSIVE) stand as history",
-    "decision_record": "docs/decisions/0005-c5-r002-supersedes-r001.md"
+    "experiment_id": "geomind-c5-r4-002",
+    "evidence": "evidence/c5_r002/",
+    "review": "evidence/c5_r002_review_codex/INDEPENDENT_REVIEW.md",
+    "status": "CHANGES_REQUIRED by the independent Codex review (F1 high, F2 medium, F3 and F4 low); receipt preserved unchanged, its recorded verdicts (both INCONCLUSIVE, confirmed by the review as following the registered rules) stand as history",
+    "earlier": {
+      "experiment_id": "geomind-c5-r4-001",
+      "evidence": "evidence/c5_r001/",
+      "status": "WITHDRAWN before review (decision 0005)"
+    },
+    "decision_record": "docs/decisions/0006-c5-r003-review-fixes.md"
   }
 }

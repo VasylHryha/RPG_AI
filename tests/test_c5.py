@@ -63,13 +63,30 @@ def test_rotating_frame_symmetry_shared_rate():
     assert np.abs(wrap(b[1] - a[1] - 0.37 * 10.0)).max() < 1e-9
 
 
-def test_port_overlap_detects_interpenetration():
+HEX = np.c_[np.cos(np.arange(6) * np.pi / 3), np.sin(np.arange(6) * np.pi / 3)]
+CROSSED = np.c_[np.cos(np.arange(6) * np.pi / 3 + np.pi / 6), np.sin(np.arange(6) * np.pi / 3 + np.pi / 6)] + [0.01, 0.01]
+
+
+def test_hull_overlap_detects_interpenetration_and_allows_touching():
     sq = np.array([[0, 0], [1, 0], [1, 1], [0, 1], [0.5, 0.5]], float)
     labels = np.r_[np.zeros(5, int), np.ones(5, int)]
-    apart = np.vstack([sq, sq + [3, 0]])
-    inside = np.vstack([sq, sq * 0.4 + [0.3, 0.3]])
-    assert c5_units.port_overlap(apart, labels, [0, 1]) == [0.0, 0.0]
-    assert c5_units.port_overlap(inside, labels, [0, 1])[1] == 1.0
+    assert c5_units.hull_overlap(np.vstack([sq, sq + [3, 0]]), labels, [0, 1]) == [0.0, 0.0]
+    assert c5_units.hull_overlap(np.vstack([sq, sq * 0.4 + [0.3, 0.3]]), labels, [0, 1])[1] == pytest.approx(1.0)
+    six = np.repeat([0, 1], 6)
+    assert c5_units.hull_overlap(np.vstack([HEX, HEX + [2.0, 0]]), six, [0, 1]) == [0.0, 0.0]  # touching at a vertex
+    crossed = c5_units.hull_overlap(np.vstack([HEX, CROSSED]), six, [0, 1])
+    assert min(crossed) > 0.9, "review F2: hulls that cross without containing vertices"
+
+
+def test_criterion6_rejects_crossed_hulls_through_unit_validity():
+    """Review F2: the crossing hexagons, held for a whole window, pass criteria 2-4 but fail criterion 6."""
+    x = np.vstack([HEX, CROSSED])
+    xs = np.repeat(x[None], 31, axis=0)
+    ths = np.zeros((31, 12))
+    validity = c5_units.unit_validity(xs, ths, np.repeat([0, 1], 6), [0, 1], 1.0, C4["detector"]["link_factor"])
+    for v in validity:
+        assert v["shape_cv"] == 0.0 and v["lock_std"] == 0.0 and v["hull_overlap"] > 0.9
+    assert not c5_detect.parts_alive(validity, [0, 1], C4["detector"], MANIFEST["detector"]["max_hull_overlap"])[0]
 
 
 # ---------------------------------------------------------------- assembly, rigid operations, decoupling
@@ -181,10 +198,10 @@ def test_recovery_rule_keeps_the_original_group():
 
 
 def test_criterion6_rejects_merger_and_broken_units():
-    good = {"shape_cv": 0.0, "lock_std": 0.0, "freq_change": 0.0, "pattern_change": 0.0, "port_overlap": 0.0}
+    good = {"shape_cv": 0.0, "lock_std": 0.0, "freq_change": 0.0, "pattern_change": 0.0, "hull_overlap": 0.0}
     t1 = C4["detector"]
     assert c5_detect.parts_alive([good] * 3, [0, 1, 2], t1, 0.2)[0]
-    assert not c5_detect.parts_alive([good, {**good, "port_overlap": 0.4}, good], [0, 1, 2], t1, 0.2)[0]
+    assert not c5_detect.parts_alive([good, {**good, "hull_overlap": 0.4}, good], [0, 1, 2], t1, 0.2)[0]
     assert not c5_detect.parts_alive([good, {**good, "lock_std": 0.2}, good], [0, 1, 2], t1, 0.2)[0]
     stats = {"size": 3, "membership_jaccard": 1.0, "shape_cv": 0.0, "lock_std": 0.0, "freq_change": 0.0,
              "pattern_change": 0.0, "recovery_jaccard": 1.0, "recovery_pattern_error": 0.0, "parts_alive": False}
@@ -412,6 +429,12 @@ def fake_world(formed, groups=(), outcome="FORMED"):
             "c4_single_component": [True] * len(groups)}
 
 
+FAKE_CHILDREN = [{"level": 1, "effective_position": [float(k), 0.0], "size": 7, "optional_phase": 0.0,
+                  "natural_rate": 0.0, "member_digest": f"{k:016d}",
+                  "boundary_ports": [{"offset": [0.5, 0.0], "phase_offset": 0.0, "own_neighbour_distances": [0.5]}]}
+                 for k in range(3)]
+
+
 def group(value):
     effects = {f"g_to_m_dose/{s}/intact": value * (k + 1) for k, s in enumerate(MANIFEST["interventions"]["gm_scales"])}
     effects.update({f"m_to_g_dose/{d}/intact": value * (k + 1) for k, d in enumerate(MANIFEST["interventions"]["mg_doses"])})
@@ -419,7 +442,8 @@ def group(value):
                     "m_to_g/no_mode_to_geometry": 0.0, "g_to_m/no_distance_weight": 0.0, "g_to_m/frozen_topology": 0.0})
     exc = {"error_coarse": 0.0, "error_coarse_reopened": 0.0, "error_no_transfer": 0.1, "error_rigid_transfer": 0.1,
            "error_relaxation": 0.1, "frequency_error": 0.0, "recovery_error": 0.0, "reopens": 0, "flagged_samples": 0}
-    return {"units": [0, 1, 2], "effects": effects, "downward_effect": 0.05, "entrainment": 0.01, "emergent_transfer": 0.1,
+    parent = c5_units.compose_state(FAKE_CHILDREN, 0.0, {})
+    return {"units": [0, 1, 2], "effects": effects, "level2_state": parent, "children_states": FAKE_CHILDREN, "downward_effect": 0.05, "entrainment": 0.01, "emergent_transfer": 0.1,
             "tau2": 4.0 + value, "tau2_censored": False,
             "coarse": {"gain_vs_no_transfer": 0.1, "gain_vs_rigid_transfer": 0.1, "gain_vs_relaxation": 0.1,
                        "excitations": {"pulse": exc, "push": exc},
@@ -489,7 +513,8 @@ def test_runner_calls_the_gate_itself():
 
 def test_gates_require_non_vacuous_controls():
     e = {"numerical_checks": {"verdict": "PASS"}, "not_independent": {"verdict": "NOT_TESTED"},
-         "not_a_clump_l2": {"verdict": "PASS"}, "level1_pool": {"verdict": "PASS"}, "same_rule_audit": {"verdict": "PASS"}}
+         "not_a_clump_l2": {"verdict": "PASS"}, "level1_pool": {"verdict": "PASS"}, "same_rule_audit": {"verdict": "PASS"},
+         "level2_interface": {"verdict": "PASS"}}
     cov = {"evaluated": {k: {} for k in MANIFEST["endpoints"]}, "not_run": {}}
     gates = run_c5.implementation_gates(MANIFEST, [0] * 3, e, cov, 3)
     assert not gates["controls_non_vacuous_reject"]
@@ -517,3 +542,98 @@ def test_coarse_must_beat_the_relaxation_baseline():
         g["coarse"]["gain_vs_relaxation"] = -0.05
         worlds.append(fake_world(True, [g]))
     assert evaluate(worlds)["coarse_vs_full"]["verdict"] == "FAIL"
+
+
+def test_coarse_neighbour_rule_takes_exactly_k_with_own_first_ties():
+    """Review F3: eight own neighbours at 0.5 and a cross port at 0.5 -> exactly k = 8, cross excluded."""
+    tied = [state([0, 0], 0.0, 0.0, [[0, 0]], [0.5] * 8, size=9), state([0.5, 0], 0.0, 0.0, [[0, 0]], [0.5] * 8, size=9)]
+    cs = c5_coarse.CoarseState(tied, INTACT.k)
+    sel, _, n_p = c5_coarse.links(cs, cs.X, INTACT)
+    assert not sel.any() and list(n_p) == [8, 8]
+    free = [state([0, 0], 0.0, 0.0, [[0, 0]], [0.5] * 7, size=9), state([0.5, 0], 0.0, 0.0, [[0, 0]], [0.5] * 7, size=9)]
+    cs = c5_coarse.CoarseState(free, INTACT.k)
+    sel, _, n_p = c5_coarse.links(cs, cs.X, INTACT)
+    assert sel[0, 1] and sel[1, 0] and list(n_p) == [8, 8]
+
+
+def template(source):
+    return {"x": np.zeros((3, 2)), "th": np.zeros(3), "source_world": source}
+
+
+def test_template_assignment_isolates_harvest_sources():
+    """Review F4: no harvest source contributes to two level-2 worlds."""
+    pool = [template(s) for s in [0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 6, 6, 7, 8, 9]]
+    worlds = E.assign_templates(pool, 5, 2)
+    sources = [[t["source_world"] for t in w] for w in worlds]
+    assert all(len(w) == 5 for w in sources)
+    assert not set(sources[0]) & set(sources[1]), sources
+    assert E.assign_templates(pool, 5, 1) == worlds[:1], "prefix-stable"
+    with pytest.raises(RuntimeError):
+        E.assign_templates(pool, 5, 4)
+
+
+def test_build_worlds_uses_isolated_assignment():
+    pool = [template(s) for s in [0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 6, 7, 8, 9]]
+    with patch.object(E, "assemble", lambda chosen, *a: [t["source_world"] for t in chosen]):
+        worlds, sources = E.build_worlds(MANIFEST, pool, 1, [0, 1])
+    assert worlds == sources and not set(sources[0]) & set(sources[1])
+
+
+def child(world, u):
+    x, th, om, labels = world
+    return c5_units.resonator_state(x, th, om, labels, u, 0.01 * u, {"shape_cv": 0.0}, INTACT)
+
+
+def test_parent_state_is_published_with_the_shared_shape(world):
+    """Review F1: the accepted composite exposes its own ResonatorState, built from its children only."""
+    children = [child(world, u) for u in range(3)]
+    parent = c5_units.compose_state(children, 0.02, {"lock_std": 0.0})
+    assert c5_units.interface_problems(parent, children) == []
+    assert parent["level"] == 2 and parent["size"] == 21 and parent["collective_rate"] == 0.02
+    assert set(c5_units.INTERFACE_FIELDS) <= set(parent)
+    # Same shape one level up: two parents compose into a level-3 state, and the coarse law consumes them.
+    other = {**parent, "effective_position": (np.array(parent["effective_position"]) + [6.0, 0]).tolist(),
+             "member_digest": "x" * 16}
+    grand = c5_units.compose_state([parent, other], 0.0, {})
+    assert grand["level"] == 3 and c5_units.interface_problems(grand, [parent, other]) == []
+    assert c5_coarse.CoarseState([parent, other], INTACT.k).M == 2
+    broken = {**parent, "effective_position": [9.0, 9.0]}
+    assert c5_units.interface_problems(broken, children)
+    assert c5_units.interface_problems({**parent, "level": 1}, children)
+
+
+def test_group_runs_publish_the_parent(runs):
+    assert c5_units.interface_problems(runs["level2_state"], runs["children_states"]) == []
+    assert all(np.isfinite(c["collective_rate"]) for c in runs["children_states"])
+
+
+def test_interface_endpoint_counts_one_parent_per_accepted_candidate(world):
+    children = [child(world, u) for u in range(3)]
+    parent = c5_units.compose_state(children, 0.0, {})
+    g = group(0.01)
+    g["level2_state"], g["children_states"] = parent, children
+    e = evaluate([fake_world(True, [g])] * 12)
+    assert e["level2_interface"]["verdict"] == "PASS", e["level2_interface"]["problems"]
+    w = fake_world(True, [])
+    w["groups"] = []
+    e = evaluate([fake_world(True, [g])] * 11 + [w])
+    assert e["level2_interface"]["verdict"] == "FAIL", "an accepted candidate without a published parent"
+
+
+def test_parent_centroid_is_unweighted_over_children_of_different_size():
+    kids = [{**c, "size": n} for c, n in zip(FAKE_CHILDREN, (6, 9, 16))]
+    parent = c5_units.compose_state(kids, 0.0, {})
+    assert parent["effective_position"] == pytest.approx([1.0, 0.0])
+    assert c5_units.interface_problems(parent, kids) == []
+    assert parent["natural_rate"] == 0.0 and parent["size"] == 31
+
+
+def test_interface_failure_closes_the_gate():
+    e = {"numerical_checks": {"verdict": "PASS"}, "not_independent": {"verdict": "PASS"},
+         "not_a_clump_l2": {"verdict": "PASS"}, "level1_pool": {"verdict": "PASS"}, "same_rule_audit": {"verdict": "PASS"},
+         "level2_interface": {"verdict": "FAIL"}}
+    cov = {"evaluated": {k: {} for k in MANIFEST["endpoints"]}, "not_run": {}}
+    gates = run_c5.implementation_gates(MANIFEST, [0] * 3, e, cov, 3)
+    assert not gates["level2_interface"] and gates["controls_non_vacuous_reject"]
+    e["level2_interface"]["verdict"] = "NOT_TESTED"
+    assert run_c5.implementation_gates(MANIFEST, [0] * 3, e, cov, 3)["level2_interface"]

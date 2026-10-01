@@ -33,7 +33,7 @@ JOBS = 4
 ENDPOINTS = ("level1_pool", "formation_l2", "formation_outcomes", "formation_vs_spread", "not_independent",
              "not_a_clump_l2", "g_to_m_l2", "m_to_g_l2", "dose_response_l2", "g_to_m_channels_l2", "parts_alive",
              "downward_effect", "emergent_transfer", "effective_state_l2", "coarse_vs_full", "timescale_separation",
-             "same_rule_audit", "numerical_checks")
+             "level2_interface", "same_rule_audit", "numerical_checks")
 
 
 def load_manifest(path=MANIFEST):
@@ -107,6 +107,8 @@ def implementation_gates(manifest, records, e, coverage, worlds):
         "controls_non_vacuous_reject": e["not_independent"]["verdict"] == "PASS" and e["not_a_clump_l2"]["verdict"] == "PASS",
         "level1_pool": e["level1_pool"]["verdict"] == "PASS",
         "same_rule_audit": e["same_rule_audit"]["verdict"] == "PASS",
+        # Every accepted composite publishes a valid level-2 ResonatorState (none when nothing formed).
+        "level2_interface": e["level2_interface"]["verdict"] != "FAIL",
         "endpoint_coverage": set(coverage["evaluated"]) | set(coverage["not_run"]) == set(manifest["endpoints"]),
     }
 

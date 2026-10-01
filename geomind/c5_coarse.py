@@ -49,17 +49,21 @@ class CoarseState:
 
 
 def links(cs, X, params):
-    """Cross-port selection under the C4 neighbour rule: (selected mask (P, P), distances, n_p)."""
+    """Cross-port selection under the C4 neighbour rule: exactly the k nearest candidates (own-neighbour
+    distances and other units' ports) by a stable sort, then those within the radius. Tie policy: own
+    neighbours before cross ports, cross ports in port order (C4 breaks ties by element index, which this
+    level does not see). Returns (selected cross mask (P, P), distances, n_p)."""
     pos = X[cs.unit] + cs.offset
     d = np.linalg.norm(pos[None, :, :] - pos[:, None, :], axis=-1)
     cross = cs.unit[:, None] != cs.unit[None, :]
     d_cross = np.where(cross, d, np.inf)
     combined = np.concatenate([cs.own, d_cross], axis=1)
-    kth = np.sort(combined, axis=1)[:, params.k - 1]
-    within = combined < params.radius
-    chosen = (combined <= kth[:, None]) & within
+    first = np.argsort(combined, axis=1, kind="stable")[:, :params.k]
+    chosen = np.zeros(combined.shape, bool)
+    np.put_along_axis(chosen, first, True, axis=1)
+    chosen &= combined < params.radius
     n_p = np.maximum(chosen.sum(1), 1)
-    selected = (d_cross <= kth[:, None]) & (d_cross < params.radius)
+    selected = chosen[:, cs.own.shape[1]:]
     return selected, d, n_p
 
 

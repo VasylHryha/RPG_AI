@@ -10,7 +10,7 @@ best_match, jaccard, pair_differences) with the C4 thresholds; only time quantit
 by the single registered factor T (level2_thresholds). Criterion 6 is new and stated for every
 level: each member unit stays a valid unit of its own level over the window (its own C4
 criteria 2-4 on its original members, with the level-1 thresholds) and does not interpenetrate
-another unit (port overlap). For primitives it is vacuous.
+another unit (hull area overlap). For primitives it is vacuous.
 """
 
 import numpy as np
@@ -74,14 +74,14 @@ def recovery(units, control_X, control_Theta, kicked_X, kicked_Theta, locked, t)
             "recovery_pattern_error": float(np.abs(wrap(difference)).max())}
 
 
-def parts_alive(validity, units, level1, max_port_overlap):
-    """Criterion 6: every member unit passes its own criteria 2-4 (level-1 thresholds) and its ports stay
-    outside the other units' hulls. Returns (ok, worst values)."""
+def parts_alive(validity, units, level1, max_hull_overlap):
+    """Criterion 6: every member unit passes its own criteria 2-4 (level-1 thresholds) and no other unit's
+    hull covers more than max_hull_overlap of its hull area. Returns (ok, worst values)."""
     rows = [validity[u] for u in units]
     ok = all(r["shape_cv"] <= level1["shape_cv"] and r["lock_std"] <= level1["lock_std"]
              and r["freq_change"] <= level1["freq_tol"] and r["pattern_change"] <= level1["pattern_tol"]
-             and r["port_overlap"] <= max_port_overlap for r in rows)
-    worst = {k: max(r[k] for r in rows) for k in ("shape_cv", "lock_std", "freq_change", "pattern_change", "port_overlap")}
+             and r["hull_overlap"] <= max_hull_overlap for r in rows)
+    worst = {k: max(r[k] for r in rows) for k in ("shape_cv", "lock_std", "freq_change", "pattern_change", "hull_overlap")}
     return ok, worst
 
 

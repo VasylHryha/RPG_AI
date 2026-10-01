@@ -27,11 +27,16 @@ Per world (independent seed):
    The candidates are the intact world's candidate groups, or its proximity-only components, so a
    control is never empty.
 6. level1_pool: every used unit, alone with its rate, is re-detected as an accepted C4 resonator.
+7. Promotion: every accepted level-2 resonator publishes its own ResonatorState (level 2), composed from
+   its children's published states only (c5_units.compose_state), and the receipt stores it.
+
+Templates are assigned with source isolation: no C4 harvest world contributes to two level-2 worlds.
 
 The unit of analysis is the world: its effect is the mean over its accepted level-2 resonators.
 """
 
 import hashlib
+import itertools
 import json
 from pathlib import Path
 
@@ -46,7 +51,8 @@ from geomind.c4_model import Batch, neighbors, simulate, wrap
 from geomind.c5_compose import (assemble, decouple_offsets, pad, rotate_units, scale_units, shift_units, unit_kick)
 from geomind.c5_detect import (candidates, criteria_checks, imposed, level2_thresholds, outcome, parts_alive, recovery,
                                unit_kick as detector_kick)
-from geomind.c5_units import harvest, resonator_state, unit_phases, unit_positions, unit_validity
+from geomind.c5_units import (compose_state, harvest, interface_problems, resonator_state, unit_phases, unit_positions,
+                              unit_validity)
 
 ROOT = Path(__file__).resolve().parents[1]
 GM_CONDITIONS = ("no_geometry_to_mode", "no_distance_weight", "frozen_topology")
@@ -76,7 +82,7 @@ def settings(manifest, c4m):
         "recovery_steps": steps(t2["recovery_time"]),
         "gm_steps": steps(iv["gm_window_in_T"] * T), "mg_steps": steps(iv["mg_window_in_T"] * T),
         "sample_every": steps(iv["sample_dt_in_T"] * T),
-        "max_port_overlap": manifest["detector"]["max_port_overlap"],
+        "max_hull_overlap": manifest["detector"]["max_hull_overlap"],
         "pulse": ex["phase_pulse"], "push": ex["radial_push_in_L"],
     }
 
@@ -90,14 +96,29 @@ def harvest_count(manifest, worlds):
     return int(np.ceil(manifest["level1"]["harvest_ratio"] * manifest["worlds"]["units_per_world"] * worlds))
 
 
+def assign_templates(templates, M, worlds):
+    """Source-isolated assignment over templates in harvest order (grouped by source world): each harvest
+    source's templates go to one level-2 world only; those that do not fit in that world are discarded,
+    never given to the next. Worlds therefore share no upstream harvest randomness. Prefix-stable."""
+    out, current = [], []
+    for _, group in itertools.groupby(templates, key=lambda t: t["source_world"]):
+        current.extend(list(group)[:M - len(current)])
+        if len(current) == M:
+            out.append(current)
+            current = []
+            if len(out) == worlds:
+                return out
+    raise RuntimeError("too few source-isolated templates: raise the harvest ratio")
+
+
 def build_worlds(manifest, templates, entropy, indices):
     w = manifest["worlds"]
     M = w["units_per_world"]
+    assigned = assign_templates(templates, M, max(indices) + 1)
     out = []
     for i in indices:
-        chosen = templates[i * M:(i + 1) * M]
-        out.append(assemble(chosen, rng_for(entropy, 5, i), M, w["rate_half_width"], w["placement_radius"], w["min_gap"]))
-    return out
+        out.append(assemble(assigned[i], rng_for(entropy, 5, i), M, w["rate_half_width"], w["placement_radius"], w["min_gap"]))
+    return out, [[t["source_world"] for t in assigned[i]] for i in indices]
 
 
 # ---------------------------------------------------------------- detection on unit states
@@ -127,7 +148,7 @@ def detect_rows(rows, S, rngs, groups=None):
             found, locked = imposed(X, Th, groups[r], t2["frame_dt"], t2)
         cands = []
         for units, stats in found:
-            ok, worst = parts_alive(validity, units, t1, S["max_port_overlap"])
+            ok, worst = parts_alive(validity, units, t1, S["max_hull_overlap"])
             stats["parts_alive"], stats["parts_worst"] = ok, worst
             dX, dTh = detector_kick(X[-1], Th[-1], units, rngs[r], t2)
             kx = shift_units(row["x0"], row["labels"], units, dX)
@@ -192,7 +213,7 @@ def mg_dose_rms(dose):
     return float(value)
 
 
-def group_runs(row, units, S, params, manifest, rng):
+def group_runs(row, units, S, params, manifest, rng, validity=None, stats=None):
     """All paired runs for one accepted level-2 resonator from its formed state s0. Returns the raw values."""
     iv = manifest["interventions"]
     x0, th0, om, labels = row["x0"], row["th0"], row["omega"], row["labels"]
@@ -296,8 +317,16 @@ def group_runs(row, units, S, params, manifest, rng):
     dpulse = series[("decoupled_pulse", "intact")]
     transfer_decoupled = float(np.sqrt((wrap(dpulse[1][:, others] - Thd[:, others]) ** 2).mean()))
 
-    coarse = coarse_vs_full(row, g, excited, push, series, S, params["intact"], tau2_value)
+    # Promotion: the accepted composite publishes its own ResonatorState (level 2), built from its children's
+    # published states only. Child rates are measured over the intact continuation from s0.
+    rates = {int(u): float((Thc[-1, u] - Thc[0, u]) / duration) for u in g}
+    validity = validity or [{} for _ in all_units]
+    children = [resonator_state(x0, th0, om, labels, int(u), rates[int(u)], validity[int(u)], params["intact"]) for u in g]
+    parent = compose_state(children, float(np.mean(list(rates.values()))),
+                           {k: v for k, v in (stats or {}).items() if not isinstance(v, dict)})
+    coarse = coarse_vs_full(row, g, excited, push, series, S, params["intact"], tau2_value, rates, validity)
     return {
+        "level2_state": parent, "children_states": children,
         "units": [int(u) for u in g], "excited_unit": excited, "effects": effects, "tau2": tau2_value, "tau2_censored": tau2_censored,
         "downward_units": per_unit,
         "downward_effect": float(np.mean([p["boundary_shift"] for p in per_unit])),
@@ -308,8 +337,8 @@ def group_runs(row, units, S, params, manifest, rng):
     }
 
 
-def states_at(x, th, om, labels, units, params):
-    return [resonator_state(x, th, om, labels, int(u), 0.0, {}, params) for u in units]
+def states_at(x, th, om, labels, units, params, rates, validity):
+    return [resonator_state(x, th, om, labels, int(u), rates[int(u)], validity[int(u)], params) for u in units]
 
 
 def response_error(fT, fX, pT, pX, others, L):
@@ -326,7 +355,7 @@ def relaxation_prediction(times, units, amount, tau):
     return share[:, None] * (np.asarray(amount, dtype=float) / units)
 
 
-def coarse_vs_full(row, g, excited, push, series, S, params, tau2):
+def coarse_vs_full(row, g, excited, push, series, S, params, tau2, rates, validity):
     """Open-loop coarse predictions against the full model and three cheap baselines; the reopening
     protocol (invariant 8) is run alongside and reported, never scored as the prediction."""
     om, labels = row["omega"], row["labels"]
@@ -337,8 +366,12 @@ def coarse_vs_full(row, g, excited, push, series, S, params, tau2):
     runs = {}
     for name, key in (("control", ("control", "intact")), ("pulse", ("pulse", "intact")), ("push", ("push", "intact"))):
         X, Th, xs, ths = series[key]
-        start = states_at(xs[0], ths[0], om, labels, g, params)
-        reopen = (lambda xs=xs, ths=ths: (lambda f: states_at(xs[f], ths[f], om, labels, g, params)))()
+        start = states_at(xs[0], ths[0], om, labels, g, params, rates, validity)
+
+        def reopen(f, xs=xs, ths=ths, Th=Th):
+            # Rates at the reopened sample from the full unit phases (finite difference over one sample).
+            local = {int(u): float((Th[f, u] - Th[max(f - 1, 0), u]) / (every * S["dt"])) if f else rates[int(u)] for u in g}
+            return states_at(xs[f], ths[f], om, labels, g, params, local, validity)
         open_loop = c5_coarse.run(start, params, S["dt"], steps, every)
         reopened = c5_coarse.run(start, params, S["dt"], steps, every, reopen)
         align = lambda r: r["theta"] + (Th[0, g] - r["theta"][0])  # the full series' phase branch at t0
@@ -471,7 +504,7 @@ def run_worlds(manifest, entropy, indices, templates):
     c4m = load_c4(manifest)
     params = model_params(c4m)
     S = settings(manifest, c4m)
-    worlds = build_worlds(manifest, templates, entropy, indices)
+    worlds, sources = build_worlds(manifest, templates, entropy, indices)
     rows = formation_rows(worlds, params["intact"], S)
     det = detect_rows(rows, S, [rng_for(entropy, 7, i) for i in indices])
     sweep = {}
@@ -490,7 +523,8 @@ def run_worlds(manifest, entropy, indices, templates):
     for b, i in enumerate(indices):
         row, d = rows[b], det[b]
         accepted = [c for c in d["candidates"] if c["accepted"]]
-        groups = [group_runs(row, c["units"], S, params, manifest, rng_for(entropy, 6, i, n)) for n, c in enumerate(accepted)]
+        groups = [group_runs(row, c["units"], S, params, manifest, rng_for(entropy, 6, i, n), d["validity"], c["stats"])
+                  for n, c in enumerate(accepted)]
         touching = contact(row["x0"], row["labels"], params["intact"])
         # Disclosure: does the frozen C4 component rule (close and locked elements) see each accepted group
         # as one single level-1 component? (Expected yes: geometric contact plus locking; the level-2 claim
@@ -503,6 +537,7 @@ def run_worlds(manifest, entropy, indices, templates):
         records.append({
             "seed_index": int(i),
             "elements": int((row["labels"] >= 0).sum()),
+            "template_sources": sources[b],
             "unit_sizes": [int((row["labels"] == u).sum()) for u in range(d["M"])],
             "unit_rates": [float(row["omega"][row["labels"] == u][0]) for u in range(d["M"])],
             "unit_validity": d["validity"],
@@ -653,6 +688,16 @@ def evaluate(records, pool, manifest, S, rng):
     timescale = {"ratio": separation, "tau2_censored_groups": censored,
                  "groups": sum(len(w["groups"]) for w in worlds), "verdict": separation_verdict(separation, min_worlds)}
     c4_single = sum(c for w in worlds for c in w.get("c4_single_component", []))
+    problems = {f"{w['seed_index']}/{n}": interface_problems(g["level2_state"], g["children_states"])
+                for w in worlds for n, g in enumerate(w["groups"])}
+    bad = {k: v for k, v in problems.items() if v}
+    accepted_count = sum(c["accepted"] for w in worlds for c in w["candidates"])
+    published = sum(len(w["groups"]) for w in worlds)
+    # Exactly one published parent state per accepted candidate (rejected candidates publish none).
+    if published != accepted_count:
+        bad["count"] = [f"{published} published for {accepted_count} accepted candidates"]
+    interface = {"published": published, "accepted_candidates": accepted_count, "problems": bad,
+                 "verdict": "FAIL" if bad else "PASS" if published else "NOT_TESTED"}
     parts = [{"seed_index": w["seed_index"], "candidate": n, "units": c["units"], "accepted": c["accepted"],
               "unit_validity": [w["unit_validity"][u] for u in c["units"]]} for w in worlds for n, c in enumerate(w["candidates"])]
     used = [ok for w in worlds for ok in w["level1_redetected"]]
@@ -677,6 +722,7 @@ def evaluate(records, pool, manifest, S, rng):
         "effective_state_l2": effective,
         "coarse_vs_full": coarse,
         "timescale_separation": timescale,
+        "level2_interface": interface,
     }
 
 
@@ -728,7 +774,7 @@ def numerical_checks(manifest, templates, entropy):
     c4m = load_c4(manifest)
     nc, params = c4m["numerical_checks"], model_params(c4m)["intact"]
     dt = c4m["integration"]["dt"]
-    x, th, om, labels = build_worlds(manifest, templates, entropy, [0])[0]
+    x, th, om, labels = build_worlds(manifest, templates, entropy, [0])[0][0]
     x, th, _ = simulate(x[None], th[None], om[None], params, dt, int(round(nc["settle_time"] / dt)))
     rng = rng_for(entropy, 3)
     th = th + unit_kick(rng, th.shape[1], c4m["interventions"]["gm_probe_phase_rms"])
