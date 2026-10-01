@@ -104,8 +104,8 @@ def test_freeze_clone_restore_no_target_permutation_and_causal_edge():
     assert abs(shifted)>1e-6 and shifted*derivative[e]>0
 
 
-def test_manifest_evaluator_failures_and_controls(tmp_path):
-    from geomind.run_c2 import validate_manifest, score_answers, check_c1_acceptance, summarize, safe_evaluate_trial
+def test_manifest_evaluator_failures_and_controls():
+    from geomind.run_c2 import validate_manifest, score_answers, check_c1_acceptance, summarize
     from pathlib import Path
     manifest=json.loads((Path(__file__).resolve().parents[1]/'experiments/c2_manifest.json').read_text())
     validate_manifest(manifest); check_c1_acceptance()
@@ -118,12 +118,3 @@ def test_manifest_evaluator_failures_and_controls(tmp_path):
     assert score_answers([], [.2])['status']=='ASSERTION_FAILURE'
     good=score_answers([{'status':'OK','output':.3}],[.2]); assert good['mse']==pytest.approx(.01)
     assert summarize([],manifest)['implementation_status']=='BLOCKED'
-    # One epoch through the real caller on disjoint development seeds verifies
-    # complete receipt serialization/retention without rehearsing final worlds.
-    dev=dict(manifest,epochs=1,initialization_seeds=list(range(89000300,89000320)),
-             dataset_seed_start=89000400,teacher_seed_start=89000500,order_seed_start=89000600)
-    (tmp_path/'trials').mkdir(); (tmp_path/'trial_receipts').mkdir()
-    row=safe_evaluate_trial((dev,0,'affine',str(tmp_path)))
-    assert row['check_status']=='PASS',row
-    assert json.loads(json.dumps(row,allow_nan=False))==row
-    assert json.loads((tmp_path/'trial_receipts/affine_s89000300.json').read_text())==row

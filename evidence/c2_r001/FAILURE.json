@@ -1,0 +1,12 @@
+{
+  "experiment_id":"geomind-c2-r4-001",
+  "source_commit":"f3cd788fc1959ac8fbac77e950437334837191ac",
+  "check_status":"INFRASTRUCTURE_FAILURE",
+  "implementation_status":"BLOCKED",
+  "failure":"TypeError: Object of type bool is not JSON serializable. A NumPy boolean in geometry_response_intervention.pass prevented the first streamed row from being written.",
+  "preserved_completed_trial_artifacts":11,
+  "streamed_trial_receipts":0,
+  "timing_and_epoch_receipts":"NOT_RECORDED: lost at the process boundary before aggregation",
+  "hypothesis_status":"INCONCLUSIVE",
+  "next_action":"Fix complete receipt serialization and per-trial durable writes; focused caller check; fresh registration R002, unchanged numerical rule/settings, fresh initialization/data/teacher/order seeds. Preserve this directory without qualifying the interrupted run."
+}

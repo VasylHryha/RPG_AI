@@ -1,0 +1,66 @@
+{
+  "experiment_id": "geomind-c1-r4-005",
+  "schema": "geomind.c1.experiment.v2",
+  "generator": "c1-jittered-grid-interventions.v3",
+  "algorithm": "incremental-active-queue.v5",
+  "sizes": [
+    32,
+    128,
+    512,
+    2048
+  ],
+  "interventions": [
+    "consistent_edge",
+    "inconsistent_edge",
+    "new_node",
+    "bridge"
+  ],
+  "replicates": 5,
+  "seed_start": 11000000,
+  "edge_visit_budget": 100000,
+  "fallback_budget": 5000000,
+  "displacement_tolerance": 1e-05,
+  "energy_tolerance": 1e-08,
+  "reference_tolerance": 1e-11,
+  "reference_max_iterations": 20000,
+  "settings": {
+    "step_factor": 0.25,
+    "max_sweeps": 10000,
+    "gradient_tolerance": 1e-08,
+    "update_tolerance": 1e-08,
+    "stable_sweeps": 10
+  },
+  "state_model": "In-memory incremental structures (adjacency, per-node canonical degree lists reproducing the C0 bincount degree bit for bit and kept finite, component member lists, anchors). Coordinates are always stored in the export gauge: every component anchor sits at exactly 0.0 and export writes the stored numbers unchanged. Additive deltas only; delta validation reads the delta and looks up stored relations without copying them. Every mutation is journaled and undone on refusal. Export/load produce and validate the canonical C0-format snapshot.",
+  "queue_order": "Stable sorted node IDs within each active round; neighbors enter the next round; node-local C0 gradient steps (alpha = 0.25 / max(1, maximum weighted degree)) read the current workspace; nodes flagged by a failed certificate take one forced step",
+  "budget_scope": "One 100,000-operation cap per transaction over every in-memory step: delta input records, degree-list upkeep, frame placement reads, frame translation writes, anchor candidates, incident-edge reads and certificate reads. A superset of edge visits. Export, load and evaluator work are timed separately.",
+  "certificate": "Local and explicit, in the export gauge: added-edge endpoints, new nodes, freed anchors, every written node (translated, re-gauged, relaxed or fallback-solved) and every neighbor of a relaxed node. Residual bits equal the C0 validator's; each force plus a rounding bound 4(n+2)*eps*sum|w*r| + 8*eps*|f| must satisfy the force, normalized-force and step tolerances. A running upper bound on total residual energy must stay at or below 1e300. The evaluator's reload re-validates every committed state globally.",
+  "fallback": "Distinct arm: after the queue cap is exhausted, a separately capped (5,000,000 operations) Jacobi-preconditioned conjugate-gradient solve on the affected components, warm-started from the queue workspace, then the same certificate over those components. The queue arm runs with no fallback. Fallback commits are never counted as queue successes.",
+  "update_initialization": "Every old component is a rigid frame and each added node a singleton frame. Added inter-frame edges link frames; for each linked group the merged anchor is chosen first by the C0 gauge rule (maximum weighted degree, then smallest ID), its frame stays fixed, and the other frames are written once relative to it. If the anchor changes within its own frame, that frame is re-stored too. Every written node is certified. Translation work is charged and reported (translated_nodes, regauged_components).",
+  "world_variation": "Each seed draws grid widths, continuous position jitter, consistent chord cycles, intervention endpoints and the contradiction vector",
+  "controls": "Third disconnected component is unaffected; distant connected nodes are potentially affected, never required to remain fixed; the frozen saved state answers every query as the no-update control",
+  "reference": "Independent sparse anchored least squares (preconditioned conjugate gradients), qualified against independent dense LS at small sizes, built after both arms and the incremental compiled baseline answered; compiled coordinates also measured. Fresh recompute time is the faster valid reference build. An incremental compiled baseline (union-by-size compiled frames; contradictions refuse) is timed on the same delta and reported.",
+  "endpoints": {
+    "locality_kinds": [
+      "consistent_edge",
+      "new_node"
+    ],
+    "locality_max_ratio": 2.0,
+    "time_locality_max_ratio": 4.0,
+    "speed_kinds": [
+      "consistent_edge",
+      "new_node",
+      "bridge"
+    ],
+    "contradiction_min_nodes": 128,
+    "contradiction_not_supported_below": 0.5
+  },
+  "endpoint_rules": "H-L consistent-edge and new-node in-memory updates: SUPPORTED_WITHIN_SCOPE only if each kind commits in all worlds at 32 and 2048 nodes, the median queue-arm operations at 2048 are <= 2x the median at 32, the median in-memory apply time at 2048 is <= 4x the median at 32, and every 2048-node world's in-memory update time is < its fresh recompute time; otherwise NOT_SUPPORTED. Bridges: cost grows with the translated frames, so size independence is not tested; the faster-than-recompute endpoint is reported. H-L contradiction resolution by the local queue at >= 128 nodes: NOT_SUPPORTED if the queue-arm resolution rate < 0.5, SUPPORTED_WITHIN_SCOPE if 1.0, else INCONCLUSIVE. Durable persistence is global by design and not tested for locality. The incremental compiled comparison is reported and claims no advantage.",
+  "acceptance": "Each arm is reference-correct when committed or explicitly unresolved with byte-identical previous state and a proven cap exhaustion; budget, reference, retention, reload and determinism checks pass. Prior-state answers after a refusal are reported separately, never as coverage",
+  "hypothesis_ids": [
+    "H-P",
+    "H-L"
+  ],
+  "claim_scope": "80 registered interventions, five seed-varied worlds per size/intervention, one generator family, unit weights in the panel (weighted, duplicate and tiny-weight cases are covered by focused checks)",
+  "registration_note": "R005 repairs the independent R004 review (F1 uncharged relation-map copy, F2 certificate not sound in the export gauge, F3 degree overflow, F4-F7 wording and reporting). Implementation and endpoints were written after inspecting R002-R004 and the reviewer's probes, and are evaluated only on new seeds starting at 11,000,000. The wall-clock locality endpoint was added after F1 showed that an operation meter alone can miss uncharged work.",
+  "selection_rule": "No tuning or adaptive selection after execution; all cases and all unresolved outcomes are retained"
+}

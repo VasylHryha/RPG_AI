@@ -1,0 +1,17 @@
+{
+  "command": [
+    "clang++",
+    "-std=c++17",
+    "-O3",
+    "-fno-fast-math",
+    "-ffp-contract=off",
+    "-dynamiclib",
+    "/Users/new/RiderProjects/ai_RPG_test/native/c2/relaxation.cpp",
+    "-o",
+    "/Users/new/RiderProjects/ai_RPG_test/.gate/c2_backend/relaxation.dylib"
+  ],
+  "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)\nTarget: arm64-apple-darwin25.6.0\nThread model: posix\nInstalledDir: /Library/Developer/CommandLineTools/usr/bin\n",
+  "seconds": 0.450938875,
+  "source_sha256": "f16fec19c44be698fb86455e0594c2f44b5df46221e8b5ba9b7bf0f8a1ea2146",
+  "binary_sha256": "0a2377c1784117dc050e9b97a3db213aa963a359b7dcb20d3870a33314dc4080"
+}

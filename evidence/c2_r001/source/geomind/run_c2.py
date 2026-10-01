@@ -177,7 +177,7 @@ def evaluate_trial(args):
         changed[edge]+=delta; intervention_answer=ConductanceNetwork(changed,manifest_hash).query(sample)
         shift=intervention_answer['output']-base_answer if intervention_answer['status']=='OK' else None
         intervention={'edge':edge,'delta':delta,'predicted_derivative':float(dy[edge]),'actual_shift':shift,
-                      'pass':bool(shift is not None and abs(shift)>1e-9 and shift*dy[edge]*delta>0)}
+                      'pass':shift is not None and abs(shift)>1e-9 and shift*dy[edge]*delta>0}
     # Activity->geometry: paired one-example training targets differ, away from bound.
     response_a=ConductanceNetwork(g,manifest_hash); response_b=response_a.clone()
     ra=response_a.learn(x[0],.2); rb=response_b.learn(x[0],.8)
@@ -225,16 +225,11 @@ def interval(values,seed,resamples):
 
 def safe_evaluate_trial(args):
     try:
-        row=evaluate_trial(args)
-        canonical(row)  # Validate the complete receipt, not just state/artifacts.
+        return evaluate_trial(args)
     except Exception as exc:
         manifest,index,task,_=args
-        row={'task':task,'trial':index,'initialization_seed':manifest['initialization_seeds'][index],
+        return {'task':task,'trial':index,'initialization_seed':manifest['initialization_seeds'][index],
                 'check_status':'INFRASTRUCTURE_FAILURE','failures':[{'reason':str(exc),'traceback':traceback.format_exc()}]}
-    # Make every completed trial durable before it crosses the process boundary.
-    path=Path(args[3])/'trial_receipts'/f"{row['task']}_s{row['initialization_seed']}.json"
-    path.write_text(canonical(row)+'\n')
-    return row
 
 
 def summarize(rows,manifest):
@@ -280,7 +275,7 @@ def main():
     m=validate_manifest(json.loads((ROOT/'experiments/c2_manifest.json').read_text())); acceptance=check_c1_acceptance()
     if args.output.exists(): raise FileExistsError('Evidence must use a fresh directory')
     if not 1<=args.jobs<=4: raise ValueError('Between one and four worker processes required')
-    output=args.output.resolve(); output.mkdir(parents=True); (output/'trials').mkdir(); (output/'trial_receipts').mkdir()
+    output=args.output.resolve(); output.mkdir(parents=True); (output/'trials').mkdir()
     hashes={str(p.relative_to(ROOT)):gate.sha256(p) for p in gate.source_files()}
     for name in hashes:
         destination=output/'source'/name; destination.parent.mkdir(parents=True,exist_ok=True); shutil.copyfile(ROOT/name,destination)
