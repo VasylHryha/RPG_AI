@@ -1,6 +1,6 @@
-# C5 proposal: many resonators form one new effective resonator (PROPOSED, awaiting owner approval)
+# C5 proposal: many resonators form one new effective resonator (APPROVED 2026-10-01)
 
-Status: **PROPOSED** on 2026-10-01. Not registered: there is no `experiments/c5_manifest.json`, `milestones/c5.json` or C5 code, and nothing has been run. Authority: `GEOMIND_GEOMETRIC_AI_QUALITY_STANDARD_R4.md` (C5, the recursive unit interface, the recursive-resonator invariants, §5–7). Builds on C4 R003, which is accepted (`evidence/c4_r003/results.json`, `evidence/c4_r003_review_codex/INDEPENDENT_REVIEW.md`).
+Status: **APPROVED** by the owner on 2026-10-01 (`docs/decisions/0004-approve-c5.md`), with D2 and D3 as recommended. Not yet registered: there is no `experiments/c5_manifest.json`, `milestones/c5.json` or C5 code, and nothing has been run. Authority: `GEOMIND_GEOMETRIC_AI_QUALITY_STANDARD_R4.md` (C5, the recursive unit interface, the recursive-resonator invariants, §5–7). Builds on C4 R003, which is accepted (`evidence/c4_r003/results.json`, `evidence/c4_r003_review_codex/INDEPENDENT_REVIEW.md`).
 
 **Level names.** Level 0 is a primitive element. Level 1 is an accepted C4 resonator. Level 2 is the C5 composite. In the standard's C6 notation, level 1 is R₀ and level 2 is R₁. C5 is one transition (R₀ → R₁), not recursion.
 
