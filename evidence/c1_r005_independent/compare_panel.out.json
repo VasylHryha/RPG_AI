@@ -1,0 +1,250 @@
+{
+ "gates_rerun": {
+  "contracts": true,
+  "complete_panel": true,
+  "correct_or_explicitly_unresolved": true,
+  "source_stable": true,
+  "contracts_stable": true,
+  "c0_acceptance_stable": true
+ },
+ "hypotheses_equal": true,
+ "hypotheses_rerun": {
+  "consistent_edge_and_new_node_in_memory_updates": "SUPPORTED_WITHIN_SCOPE",
+  "bridge_in_memory_updates": "NOT_TESTED for size independence: cost grows with the translated frames (reported); faster-than-recompute endpoint met",
+  "contradiction_resolution_by_local_queue": "NOT_SUPPORTED",
+  "durable_persistence": "NOT_TESTED: export/load are O(V+E) by design and reported separately"
+ },
+ "artifact_hash_differences": [],
+ "operation_differences": [],
+ "status_differences": [],
+ "receipt_locality": {
+  "consistent_edge": {
+   "ratio": 1.1818181818181819,
+   "time_ratio": 1.726538925779664,
+   "median_apply_seconds_small": 9.279199999978616e-05,
+   "median_apply_seconds_large": 0.00016020900000057736,
+   "regauged_worlds_large": 0,
+   "pass": true
+  },
+  "new_node": {
+   "ratio": 1.1111111111111112,
+   "time_ratio": 0.9501319384532664,
+   "median_apply_seconds_small": 0.0001712919999996565,
+   "median_apply_seconds_large": 0.00016275000000121054,
+   "regauged_worlds_large": 0,
+   "pass": true
+  }
+ },
+ "receipt_speed_max_ratio": {
+  "consistent_edge": 0.005451276121129155,
+  "new_node": 0.004105942965846267,
+  "bridge": 0.2725694324506433
+ },
+ "receipt_baseline": {
+  "consistent_edge": {
+   "cand_ms": 0.16020900000057736,
+   "base_ms": 0.012208999997653791,
+   "time_ratio": 13.122204933357752,
+   "cand_ops": 39,
+   "base_ops": 1
+  },
+  "new_node": {
+   "cand_ms": 0.16275000000121054,
+   "base_ms": 0.015957999991655925,
+   "time_ratio": 10.19864645233167,
+   "cand_ops": 30,
+   "base_ops": 3
+  },
+  "bridge": {
+   "cand_ms": 3.0792919999953483,
+   "base_ms": 0.40537499999970805,
+   "time_ratio": 7.59615664507571,
+   "cand_ops": 2639,
+   "base_ops": 513
+  }
+ },
+ "receipt_per_world_ratio_2048": {
+  "consistent_edge": [
+   10.6,
+   15.0,
+   15.1,
+   24.7,
+   26.5
+  ],
+  "new_node": [
+   8.2,
+   9.7,
+   10.3,
+   11.2,
+   15.7
+  ],
+  "bridge": [
+   7.6,
+   8.2,
+   8.4,
+   12.2,
+   46.2
+  ]
+ },
+ "receipt_regauged_by_kind": {
+  "consistent_edge": 3,
+  "inconsistent_edge": 3,
+  "new_node": 4,
+  "bridge": 1
+ },
+ "receipt_summary": {
+  "queue": {
+   "committed": 63,
+   "explicitly_unresolved": 17,
+   "committed_without_relaxation_step": 60,
+   "fallback_used": 0,
+   "committed_faster_than_fresh_recompute": 60,
+   "max_committed_displacement_error": 6.055125806360517e-08,
+   "max_committed_energy_gap": 3.524958103184872e-15
+  },
+  "fallback": {
+   "committed": 80,
+   "explicitly_unresolved": 0,
+   "committed_without_relaxation_step": 60,
+   "fallback_used": 17,
+   "committed_faster_than_fresh_recompute": 59,
+   "max_committed_displacement_error": 6.055125806360517e-08,
+   "max_committed_energy_gap": 3.524958103184872e-15
+  }
+ },
+ "receipt_seconds": 104.53391137499999,
+ "receipt_frozen_vs_adaptive": {
+  "queue": {
+   "committed_rows": 63,
+   "median_frozen_total_accuracy": 0.8607594936708861,
+   "median_updated_total_accuracy": 1.0
+  },
+  "fallback": {
+   "committed_rows": 80,
+   "median_frozen_total_accuracy": 0.8155631288542681,
+   "median_updated_total_accuracy": 1.0
+  }
+ },
+ "receipt_contradiction": {
+  "cases": 15,
+  "queue_resolution_rate": 0.0,
+  "fallback_arm_resolution_rate": 1.0,
+  "median_fallback_operations": 34474,
+  "median_fresh_reference_edge_visits": 261522
+ },
+ "rerun_locality": {
+  "consistent_edge": {
+   "ratio": 1.1818181818181819,
+   "time_ratio": 1.8431927161982355,
+   "median_apply_seconds_small": 8.237499999996789e-05,
+   "median_apply_seconds_large": 0.00015183299999677047,
+   "regauged_worlds_large": 0,
+   "pass": true
+  },
+  "new_node": {
+   "ratio": 1.1111111111111112,
+   "time_ratio": 1.8099334298080554,
+   "median_apply_seconds_small": 8.637499999997189e-05,
+   "median_apply_seconds_large": 0.00015633299999961991,
+   "regauged_worlds_large": 0,
+   "pass": true
+  }
+ },
+ "rerun_speed_max_ratio": {
+  "consistent_edge": 0.004102095117200563,
+  "new_node": 0.0059596675471631924,
+  "bridge": 0.15547509318406627
+ },
+ "rerun_baseline": {
+  "consistent_edge": {
+   "cand_ms": 0.15183299999677047,
+   "base_ms": 0.008499999999855845,
+   "time_ratio": 17.862705882275936,
+   "cand_ops": 39,
+   "base_ops": 1
+  },
+  "new_node": {
+   "cand_ms": 0.15633299999961991,
+   "base_ms": 0.01279199999970615,
+   "time_ratio": 12.22115384640487,
+   "cand_ops": 30,
+   "base_ops": 3
+  },
+  "bridge": {
+   "cand_ms": 5.156334000002261,
+   "base_ms": 0.3390000000003113,
+   "time_ratio": 15.210424778753763,
+   "cand_ops": 2639,
+   "base_ops": 513
+  }
+ },
+ "rerun_per_world_ratio_2048": {
+  "consistent_edge": [
+   7.5,
+   16.4,
+   17.6,
+   19.1,
+   31.7
+  ],
+  "new_node": [
+   9.5,
+   10.7,
+   12.2,
+   13.6,
+   18.8
+  ],
+  "bridge": [
+   9.1,
+   10.1,
+   12.0,
+   14.2,
+   19.1
+  ]
+ },
+ "rerun_regauged_by_kind": {
+  "consistent_edge": 3,
+  "inconsistent_edge": 3,
+  "new_node": 4,
+  "bridge": 1
+ },
+ "rerun_summary": {
+  "queue": {
+   "committed": 63,
+   "explicitly_unresolved": 17,
+   "committed_without_relaxation_step": 60,
+   "fallback_used": 0,
+   "committed_faster_than_fresh_recompute": 60,
+   "max_committed_displacement_error": 6.055125806360517e-08,
+   "max_committed_energy_gap": 3.524958103184872e-15
+  },
+  "fallback": {
+   "committed": 80,
+   "explicitly_unresolved": 0,
+   "committed_without_relaxation_step": 60,
+   "fallback_used": 17,
+   "committed_faster_than_fresh_recompute": 60,
+   "max_committed_displacement_error": 6.055125806360517e-08,
+   "max_committed_energy_gap": 3.524958103184872e-15
+  }
+ },
+ "rerun_seconds": 57.826800917,
+ "rerun_frozen_vs_adaptive": {
+  "queue": {
+   "committed_rows": 63,
+   "median_frozen_total_accuracy": 0.8607594936708861,
+   "median_updated_total_accuracy": 1.0
+  },
+  "fallback": {
+   "committed_rows": 80,
+   "median_frozen_total_accuracy": 0.8155631288542681,
+   "median_updated_total_accuracy": 1.0
+  }
+ },
+ "rerun_contradiction": {
+  "cases": 15,
+  "queue_resolution_rate": 0.0,
+  "fallback_arm_resolution_rate": 1.0,
+  "median_fallback_operations": 34474,
+  "median_fresh_reference_edge_visits": 261522
+ }
+}

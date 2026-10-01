@@ -1,0 +1,10 @@
+{"probe": "P1 bridge shift 1e+06", "status": "PASS", "reason": null, "uncertified_violators": [], "certified_nodes": ["a0", "a1", "a2", "a3", "p", "q", "r"], "reload": "OK", "c0_learn_status": "PASS"}
+{"probe": "P1 bridge shift 1e+07", "status": "PASS", "reason": null, "uncertified_violators": [], "certified_nodes": ["a0", "a1", "a2", "a3", "p", "q", "r"], "reload": "OK", "c0_learn_status": "PASS"}
+{"probe": "P1 bridge shift 1e+08", "status": "PASS", "reason": null, "uncertified_violators": [], "certified_nodes": ["a0", "a1", "a2", "a3", "p", "q", "r"], "reload": "OK", "c0_learn_status": "NOT_CONVERGED"}
+{"probe": "P1 bridge shift 1e+09", "status": "NOT_CONVERGED", "reason": "Dynamic operation budget exhausted", "c0_learn_status": "NOT_CONVERGED"}
+{"probe": "P1 bridge shift 1e+10", "status": "NOT_CONVERGED", "reason": "Dynamic operation budget exhausted", "c0_learn_status": "NOT_CONVERGED"}
+{"probe": "P2 near-tolerance r, bridge shift 1000", "status": "PASS", "reason": null, "uncertified_violators": [], "certified_nodes": ["a0", "a1", "a2", "a3", "p", "q", "r"], "reload": "OK", "c0_learn_status": "PASS"}
+{"probe": "P2 near-tolerance r, bridge shift 100000", "status": "PASS", "reason": null, "uncertified_violators": [], "certified_nodes": ["a0", "a1", "a2", "a3", "p", "q", "r"], "reload": "OK", "c0_learn_status": "PASS"}
+{"probe": "P2 near-tolerance r, bridge shift 1e+06", "status": "PASS", "reason": null, "uncertified_violators": [], "certified_nodes": ["a0", "a1", "a2", "a3", "p", "q", "r"], "reload": "OK", "c0_learn_status": "PASS"}
+{"probe": "P3 duplicate 1e308-weight edge (degree overflow)", "status": "INVALID_STATE", "reason": "Weighted degree overflow", "c0_learn_status": "INVALID_STATE"}
+$P probe_certificate.py  1.22s user 0.02s system 91% cpu 1.361 total

@@ -1,0 +1,6 @@
+{"probe": "P4 re-anchor far=1000 gap=1e-14", "status": "PASS", "translated_nodes": 7, "r_certified": true, "new_anchor": [0], "reload": "OK"}
+{"probe": "P4 re-anchor far=100000 gap=1e-12", "status": "PASS", "translated_nodes": 7, "r_certified": true, "new_anchor": [0], "reload": "OK"}
+{"probe": "P4 re-anchor far=100000 gap=1e-13", "status": "PASS", "translated_nodes": 7, "r_certified": true, "new_anchor": [0], "reload": "OK"}
+{"probe": "P4 re-anchor far=1e+06 gap=1e-11", "status": "PASS", "translated_nodes": 7, "r_certified": true, "new_anchor": [0], "reload": "OK"}
+{"probe": "P5 randomized candidate-only chains, scale 10^(0.0, 2.0)", "PASS": 1416, "relaxed": 907, "fallback": 412, "max_err_e-9": 77, "NOT_CONVERGED": 384, "no_relax": 509, "seconds": 36.8}
+$P probe_regauge_and_random.py 300 0,2  31.39s user 0.21s system 85% cpu 36.906 total

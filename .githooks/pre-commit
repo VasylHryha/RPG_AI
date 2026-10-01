@@ -1,0 +1,4 @@
+#!/bin/sh
+# Agent-independent guard (standard library only); see tools/precommit.py.
+# Enabled per clone with: git config core.hooksPath .githooks
+exec python3 "$(git rev-parse --show-toplevel)/tools/precommit.py"

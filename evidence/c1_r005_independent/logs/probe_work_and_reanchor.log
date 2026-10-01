@@ -1,0 +1,14 @@
+{"probe": "W1", "nodes": 32, "seed": 40000032, "status": "PASS", "charged_operations": 30, "python_line_events": 540, "builtin_c_calls": 171, "c_calls_top": {"len": 31, "isinstance": 23, "isfinite": 18, "abs": 16, "append": 14, "max": 10}, "median_apply_us": 63.9}
+{"probe": "W1", "nodes": 512, "seed": 40000512, "status": "PASS", "charged_operations": 30, "python_line_events": 540, "builtin_c_calls": 171, "c_calls_top": {"len": 31, "isinstance": 23, "isfinite": 18, "abs": 16, "append": 14, "max": 10}, "median_apply_us": 116.7}
+{"probe": "W1", "nodes": 2048, "seed": 40002048, "status": "PASS", "charged_operations": 36, "python_line_events": 580, "builtin_c_calls": 177, "c_calls_top": {"len": 31, "isinstance": 23, "isfinite": 20, "abs": 20, "append": 14, "max": 10}, "median_apply_us": 162.8}
+{"probe": "W1", "nodes": 8192, "seed": 40008192, "status": "PASS", "charged_operations": 45, "python_line_events": 639, "builtin_c_calls": 186, "c_calls_top": {"len": 31, "abs": 26, "isinstance": 23, "isfinite": 23, "append": 14, "max": 10}, "median_apply_us": 178.3}
+{"probe": "W1", "nodes": 32768, "seed": 40032768, "status": "PASS", "charged_operations": 36, "python_line_events": 580, "builtin_c_calls": 177, "c_calls_top": {"len": 31, "isinstance": 23, "isfinite": 20, "abs": 20, "append": 14, "max": 10}, "median_apply_us": 182.0}
+{"probe": "W2", "kind": "consistent_edge", "nodes": 32, "worlds": 200, "regauged_fraction": 0.325, "median_ops": 30.0, "mean_ops": 46.5, "max_ops": 91, "max_translated_nodes": 16}
+{"probe": "W2", "kind": "consistent_edge", "nodes": 128, "worlds": 200, "regauged_fraction": 0.19, "median_ops": 33.0, "mean_ops": 88.2, "max_ops": 327, "max_translated_nodes": 64}
+{"probe": "W2", "kind": "consistent_edge", "nodes": 512, "worlds": 200, "regauged_fraction": 0.065, "median_ops": 36.0, "mean_ops": 117.6, "max_ops": 1304, "max_translated_nodes": 256}
+{"probe": "W2", "kind": "consistent_edge", "nodes": 2048, "worlds": 120, "regauged_fraction": 0.025, "median_ops": 36.0, "mean_ops": 166.9, "max_ops": 5255, "max_translated_nodes": 1024}
+{"probe": "W2", "kind": "consistent_edge", "nodes": 8192, "worlds": 40, "regauged_fraction": 0.0, "median_ops": 36.0, "mean_ops": 37.4, "max_ops": 45, "max_translated_nodes": 0}
+{"probe": "W2", "kind": "new_node", "nodes": 32, "worlds": 200, "regauged_fraction": 0.225, "median_ops": 27.0, "mean_ops": 39.2, "max_ops": 90, "max_translated_nodes": 17}
+{"probe": "W2", "kind": "new_node", "nodes": 128, "worlds": 200, "regauged_fraction": 0.115, "median_ops": 30.0, "mean_ops": 62.4, "max_ops": 326, "max_translated_nodes": 65}
+{"probe": "W2", "kind": "new_node", "nodes": 512, "worlds": 200, "regauged_fraction": 0.03, "median_ops": 30.0, "mean_ops": 67.6, "max_ops": 1300, "max_translated_nodes": 257}
+stopped by reviewer at the coordinator's time cap; W2 new_node at 2048 and 8192 NOT_RUN
