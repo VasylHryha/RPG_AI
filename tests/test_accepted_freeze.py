@@ -1,5 +1,6 @@
 """Freeze guard controls in disposable repositories; no real receipt is changed."""
 
+import copy
 import hashlib
 import json
 from pathlib import Path
@@ -8,7 +9,7 @@ import subprocess
 
 import pytest
 
-from tools.accepted_freeze import check
+from tools.accepted_freeze import TOOLING, check, pinned_inventory
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -250,3 +251,137 @@ def test_committed_pin_cannot_be_dropped_later(repo):
 def test_guard_tooling_list_matches_the_pipeline():
     from tools import accepted_freeze, milestones
     assert tuple(accepted_freeze.TOOLING) == tuple(milestones.TOOLING)
+
+
+@pytest.mark.parametrize("attack", ["drop", "null", "empty", "commit", "hash", "refreeze",
+                                   "unfreeze_owned", "drop_milestone", "downgrade_and_drop"])
+@pytest.mark.parametrize("snapshot", ["working", "index_restored"])
+def test_committed_pin_metadata_attacks(repo, attack, snapshot):
+    status, _, _ = pin_shared_tool(repo)
+    status_path = repo / "STATUS.json"
+    original = json.dumps(status)
+    status_path.write_text(original)
+    git(repo, "add", "STATUS.json")
+    assert check(repo) == []
+    git(repo, "commit", "-q", "-m", "pin")
+    proposed = copy.deepcopy(status)
+    entry = proposed["milestones"]["c9"]
+    if attack == "drop":
+        del entry["pinned_shared"]
+    elif attack == "null":
+        entry["pinned_shared"] = None
+    elif attack == "empty":
+        entry["pinned_shared"]["hashes"] = {}
+    elif attack == "commit":
+        entry["pinned_shared"]["commit"] = git(repo, "rev-parse", "HEAD").stdout.strip()
+    elif attack == "hash":
+        entry["pinned_shared"]["hashes"]["tools/milestones.py"] = "0" * 64
+    elif attack == "refreeze":
+        entry["frozen_hashes"].update(entry.pop("pinned_shared")["hashes"])
+    elif attack == "unfreeze_owned":
+        entry["pinned_shared"]["hashes"].update(entry["frozen_hashes"])
+        entry["frozen_hashes"] = {}
+    elif attack == "drop_milestone":
+        del proposed["milestones"]["c9"]
+    elif attack == "downgrade_and_drop":
+        entry["implementation"] = "REVIEW_READY"
+        del entry["pinned_shared"]
+    status_path.write_text(json.dumps(proposed))
+    if snapshot == "index_restored":
+        git(repo, "add", "STATUS.json")
+        status_path.write_text(original)
+    expected = "index" if snapshot == "index_restored" else "working"
+    assert any(p.startswith(expected + ": c9 committed freeze metadata cannot be removed or changed")
+               for p in check(repo))
+
+
+@pytest.mark.parametrize("path", sorted(json.loads((ROOT / "STATUS.json").read_text())
+                                       ["milestones"]["c4"]["frozen_hashes"]))
+def test_every_c4_owned_path_is_ineligible_for_pinning(repo, path):
+    status, commit, _ = pin_shared_tool(repo)
+    entry = status["milestones"]["c9"]
+    entry["pinned_shared"] = {"commit": commit, "hashes": {path: "0" * 64}}
+    with pytest.raises(ValueError, match="only shared pipeline tooling"):
+        pinned_inventory(repo, entry, entry["accepted_receipt"], entry["accepted_results_sha256"])
+
+
+@pytest.mark.parametrize("attack", ["old_receipt", "wrong_tool", "nonancestor"])
+def test_pin_historical_binding_attacks(repo, attack):
+    status, _, _ = pin_shared_tool(repo)
+    entry = status["milestones"]["c9"]
+    if attack == "old_receipt":
+        entry["pinned_shared"]["commit"] = git(repo, "rev-parse", "HEAD~1").stdout.strip()
+        expected = "does not hold the accepted version of evidence/c9_r001/results.json"
+    elif attack == "wrong_tool":
+        (repo / "tools/milestones.py").write_text("TOOL = 999\n")
+        git(repo, "add", "tools/milestones.py")
+        git(repo, "commit", "-q", "-m", "later tooling")
+        entry["pinned_shared"]["commit"] = git(repo, "rev-parse", "HEAD").stdout.strip()
+        expected = "does not hold the accepted version of tools/milestones.py"
+    else:
+        tree = git(repo, "rev-parse", "HEAD^{tree}").stdout.strip()
+        entry["pinned_shared"]["commit"] = git(repo, "commit-tree", tree, "-m", "unrelated fixture history").stdout.strip()
+        expected = "pinned commit is not in HEAD's history"
+    (repo / "STATUS.json").write_text(json.dumps(status))
+    git(repo, "add", "STATUS.json")
+    assert any(expected in p for p in check(repo))
+
+
+@pytest.mark.parametrize("tool_path", TOOLING)
+@pytest.mark.parametrize("protected_path", ["geomind/c9.py", "evidence/c9_r001/results.json"])
+def test_each_committed_tool_can_evolve_without_unfreezing_protected_files(repo, tool_path, protected_path):
+    status, _, _ = pin_shared_tool(repo)
+    # Bind all three tools to one synthetic evidence commit, just as C4 does.
+    for path in TOOLING:
+        (repo / path).write_text("TOOL = 1\n")
+    receipt_path = repo / "evidence/c9_r001/results.json"
+    receipt = json.loads(receipt_path.read_text())
+    pinned = {path: hashlib.sha256((repo / path).read_bytes()).hexdigest() for path in TOOLING}
+    receipt["file_hashes"].update(pinned)
+    receipt_path.write_text(json.dumps(receipt))
+    digest = hashlib.sha256(receipt_path.read_bytes()).hexdigest()
+    entry = status["milestones"]["c9"]
+    entry["accepted_results_sha256"] = digest
+    (repo / entry["review"]).write_text(f"Verdict: **ACCEPTED**.\n\nReviewer family: Codex\n\n{digest}\n")
+    git(repo, "add", ".")
+    git(repo, "commit", "-q", "-m", "three-tool evidence")
+    entry["pinned_shared"] = {"commit": git(repo, "rev-parse", "HEAD").stdout.strip(), "hashes": pinned}
+    (repo / "STATUS.json").write_text(json.dumps(status))
+    git(repo, "add", "STATUS.json")
+    assert check(repo) == []
+    git(repo, "commit", "-q", "-m", "pin three tools")
+    (repo / tool_path).write_text("TOOL = 2\n")
+    git(repo, "add", tool_path)
+    assert check(repo) == []
+    git(repo, "commit", "-q", "-m", "later tool")
+    assert check(repo) == []
+    original = (repo / protected_path).read_bytes()
+    (repo / protected_path).write_bytes(original + b"\n")
+    git(repo, "add", protected_path)
+    (repo / protected_path).write_bytes(original)
+    assert any("index: c9 accepted file changed: " + protected_path in p for p in check(repo))
+
+
+def test_actual_precommit_blocks_pin_removal_after_working_status_is_restored(repo):
+    status, _, _ = pin_shared_tool(repo)
+    original = json.dumps(status)
+    (repo / "STATUS.json").write_text(original)
+    git(repo, "add", "STATUS.json")
+    git(repo, "commit", "-q", "-m", "pin")
+    (repo / ".githooks").mkdir()
+    shutil.copyfile(ROOT / "tools/accepted_freeze.py", repo / "tools/accepted_freeze.py")
+    shutil.copyfile(ROOT / ".githooks/pre-commit", repo / ".githooks/pre-commit")
+    (repo / ".githooks/pre-commit").chmod(0o755)
+    # The other hook stages are outside this isolated freeze-guard control.
+    for name in ("legacy_precommit.py", "milestone_precommit.py", "status.py"):
+        (repo / "tools" / name).write_text("raise SystemExit(0)\n")
+    git(repo, "config", "core.hooksPath", ".githooks")
+    before = git(repo, "rev-parse", "HEAD").stdout
+    del status["milestones"]["c9"]["pinned_shared"]
+    (repo / "STATUS.json").write_text(json.dumps(status))
+    git(repo, "add", "STATUS.json")
+    (repo / "STATUS.json").write_text(original)
+    result = subprocess.run(["git", "commit", "-m", "should be blocked"], cwd=repo, capture_output=True, text=True)
+    assert result.returncode != 0
+    assert "index: c9 committed freeze metadata cannot be removed or changed" in result.stderr
+    assert git(repo, "rev-parse", "HEAD").stdout == before
