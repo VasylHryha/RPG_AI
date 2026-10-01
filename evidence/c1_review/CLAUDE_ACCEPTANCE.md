@@ -189,6 +189,10 @@ A second fresh-context reviewer (`evidence/c1_r005_independent/`) confirmed R004
 
 R006 fixes N1 the C0 way (the delta must serialize as export writes it) and states N2 and N3. It is the first revision verified end to end by the gated pipeline (185 s, all stages stamped; mutation 29/33 caught with only the documented backstops surviving), and its registered verdicts are unchanged. See `evidence/c1_r006/HANDOFF.md`. R006 needs its own independent review.
 
+## Final outcome
+
+A third fresh-context reviewer independently **ACCEPTED** C1 R006 (`evidence/c1_r006_independent/INDEPENDENT_REVIEW.md`). It found N1–N4 fixed, with 72 numeric-type probes showing no value that commits and then fails export or reload. Two notes are low and non-blocking: R1, a `Constraint` subclass with extra fields that the accepted C0 shares; and R2, a re-anchoring caveat stated only in the handoff. The accepted C1 files are frozen; see `AGENTS.md`.
+
 ## Checks actually performed
 
 1. Read R4 (§0–4 C0/C1, §5–7, the execution record), every R002 receipt, handoff, review and integrity file, the existing `ACCEPTANCE.md`, and all C1 sources and tests, plus `geometry.py` and `references.py`.

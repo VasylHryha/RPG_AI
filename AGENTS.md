@@ -27,6 +27,19 @@ Run the cheapest checks first. A long stage starts only after every earlier stag
 - Mutation definitions live in `tools/c1_mutants.py`. Update them there when code changes, never in the recorded evidence scripts.
 - Hooks are a guardrail, not a hard boundary, in both Claude Code and Codex. The self-guards and the pre-commit hook back them up. Never work around a block: fix what it reports.
 
+## Accepted and frozen
+
+C1 R006 is independently accepted (commit 721249b). Do not modify these files. C2 work goes in new files.
+
+- `geomind/incremental.py` `fcbb18a41f151da3d93c47f9779af0ae46adc3e45fe2f61581f825ab66118b23`
+- `geomind/run_c1.py` `c561625056311ecee9ff795844b67775567db49a7b40f1697b4e6a9c74cbdeb5`
+- `geomind/c1_cases.py` `56f080e4e06eecdcfcc2910250003d9b5d5a745b37f32d65b564c7876348bf05`
+- `geomind/c1_reference.py` `1f853a205d18a26b7c9e544d8c3dd04980096ac56ced259672e40486a3c14df4`
+- `tests/test_c1.py` `31ff88acd1c7b7df479153063283d891fde2dd855e9bc9a9ebbf38eee343dd5e`
+- `experiments/c1_manifest.json` `a96767c7b9548e35dd1b9974873b7295fd7cc8aea66b21698195489dae6bf4b4`
+
+Open low notes for a future revision, not blocking: R1 (`_validate_delta` should require `type(edge) is Constraint`) and R2 (state the re-anchoring cost in receipt-generated limits).
+
 ## Known gaps (by design, documented)
 
 - The accepted C1 panel runner (`geomind/run_c1.py`) is frozen and cannot check the gate itself. Agent hooks and the pre-commit hook cover it. **Every new milestone runner (C2+) must call `tools/gate.py` `check("panel")` itself before running.**

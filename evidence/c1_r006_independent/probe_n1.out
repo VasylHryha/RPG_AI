@@ -1,0 +1,73 @@
+np.float16 | offset | True | INVALID_STATE | Delta is not serializable as committed state: Obje | - | - | unchanged=True
+np.float16 | weight | True | INVALID_STATE | Delta is not serializable as committed state: Obje | - | - | unchanged=True
+np.float16 | relation | True | INVALID_STATE | Delta is not serializable as committed state: Obje | - | - | unchanged=True
+np.float32 | offset | True | INVALID_STATE | Delta is not serializable as committed state: Obje | - | - | unchanged=True
+np.float32 | weight | True | INVALID_STATE | Delta is not serializable as committed state: Obje | - | - | unchanged=True
+np.float32 | relation | True | INVALID_STATE | Delta is not serializable as committed state: Obje | - | - | unchanged=True
+np.float64 | offset | True | PASS |  | ok | ok | eq
+np.float64 | weight | True | PASS |  | ok | ok | eq
+np.float64 | relation | True | PASS |  | ok | ok | eq
+np.longdouble | offset | True | INVALID_STATE | Delta is not serializable as committed state: Obje | - | - | unchanged=True
+np.longdouble | weight | True | INVALID_STATE | Delta is not serializable as committed state: Obje | - | - | unchanged=True
+np.longdouble | relation | True | INVALID_STATE | Delta is not serializable as committed state: Obje | - | - | unchanged=True
+np.int8 | offset | True | INVALID_STATE | Delta is not serializable as committed state: Obje | - | - | unchanged=True
+np.int8 | weight | True | INVALID_STATE | Delta is not serializable as committed state: Obje | - | - | unchanged=True
+np.int8 | relation | True | INVALID_STATE | Delta is not serializable as committed state: Obje | - | - | unchanged=True
+np.int32 | offset | True | INVALID_STATE | Delta is not serializable as committed state: Obje | - | - | unchanged=True
+np.int32 | weight | True | INVALID_STATE | Delta is not serializable as committed state: Obje | - | - | unchanged=True
+np.int32 | relation | True | INVALID_STATE | Delta is not serializable as committed state: Obje | - | - | unchanged=True
+np.uint8 | offset | True | INVALID_STATE | Delta is not serializable as committed state: Obje | - | - | unchanged=True
+np.uint8 | weight | True | INVALID_STATE | Delta is not serializable as committed state: Obje | - | - | unchanged=True
+np.uint8 | relation | True | INVALID_STATE | Delta is not serializable as committed state: Obje | - | - | unchanged=True
+np.int64 | offset | True | INVALID_STATE | Delta is not serializable as committed state: Obje | - | - | unchanged=True
+np.int64 | weight | True | INVALID_STATE | Delta is not serializable as committed state: Obje | - | - | unchanged=True
+np.int64 | relation | True | INVALID_STATE | Delta is not serializable as committed state: Obje | - | - | unchanged=True
+np.uint64 | offset | True | INVALID_STATE | Delta is not serializable as committed state: Obje | - | - | unchanged=True
+np.uint64 | weight | True | INVALID_STATE | Delta is not serializable as committed state: Obje | - | - | unchanged=True
+np.uint64 | relation | True | INVALID_STATE | Delta is not serializable as committed state: Obje | - | - | unchanged=True
+np.bool_ | offset | False | INVALID_STATE | Finite immutable 2D offsets required | - | - | unchanged=True
+np.bool_ | weight | False | INVALID_STATE | Positive finite weights required | - | - | unchanged=True
+np.bool_ | relation | False | INVALID_STATE | Invalid or redefined relation | - | - | unchanged=True
+bool | offset | False | INVALID_STATE | Finite immutable 2D offsets required | - | - | unchanged=True
+bool | weight | False | INVALID_STATE | Positive finite weights required | - | - | unchanged=True
+bool | relation | False | INVALID_STATE | Invalid or redefined relation | - | - | unchanged=True
+Fraction | offset | raises TypeError | INVALID_STATE | ufunc 'isfinite' not supported for the input types | - | - | unchanged=True
+Fraction | weight | raises TypeError | INVALID_STATE | ufunc 'isfinite' not supported for the input types | - | - | unchanged=True
+Fraction | relation | raises TypeError | INVALID_STATE | ufunc 'isfinite' not supported for the input types | - | - | unchanged=True
+Decimal | offset | False | INVALID_STATE | Finite immutable 2D offsets required | - | - | unchanged=True
+Decimal | weight | False | INVALID_STATE | Positive finite weights required | - | - | unchanged=True
+Decimal | relation | False | INVALID_STATE | Invalid or redefined relation | - | - | unchanged=True
+int | offset | True | PASS |  | ok | ok | eq
+int | weight | True | PASS |  | ok | ok | eq
+int | relation | True | PASS |  | ok | ok | eq
+float | offset | True | PASS |  | ok | ok | eq
+float | weight | True | PASS |  | ok | ok | eq
+float | relation | True | PASS |  | ok | ok | eq
+int 2**63 | offset | True | NOT_CONVERGED | Dynamic operation budget exhausted | - | - | unchanged=True
+int 2**63 | weight | True | PASS |  | ok | ok | eq
+int 2**63 | relation | True | PASS |  | ok | ok | eq
+int 2**64-1 | offset | True | NOT_CONVERGED | Dynamic operation budget exhausted | - | - | unchanged=True
+int 2**64-1 | weight | True | PASS |  | ok | ok | eq
+int 2**64-1 | relation | True | PASS |  | ok | ok | eq
+int 2**64 | offset | raises TypeError | INVALID_STATE | ufunc 'isfinite' not supported for the input types | - | - | unchanged=True
+int 2**64 | weight | raises TypeError | INVALID_STATE | ufunc 'isfinite' not supported for the input types | - | - | unchanged=True
+int 2**64 | relation | raises TypeError | INVALID_STATE | ufunc 'isfinite' not supported for the input types | - | - | unchanged=True
+int 10**400 | offset | raises TypeError | INVALID_STATE | ufunc 'isfinite' not supported for the input types | - | - | unchanged=True
+int 10**400 | weight | raises TypeError | INVALID_STATE | ufunc 'isfinite' not supported for the input types | - | - | unchanged=True
+int 10**400 | relation | raises TypeError | INVALID_STATE | ufunc 'isfinite' not supported for the input types | - | - | unchanged=True
+IntEnum | offset | True | PASS |  | ok | ok | eq
+IntEnum | weight | True | PASS |  | ok | ok | eq
+IntEnum | relation | True | PASS |  | ok | ok | eq
+float subclass(repr override) | offset | True | PASS |  | ok | ok | eq
+float subclass(repr override) | weight | True | PASS |  | ok | ok | eq
+float subclass(repr override) | relation | True | PASS |  | ok | ok | eq
+int subclass(repr override) | offset | True | PASS |  | ok | ok | eq
+int subclass(repr override) | weight | True | PASS |  | ok | ok | eq
+int subclass(repr override) | relation | True | PASS |  | ok | ok | eq
+-0.0 | offset | True | PASS |  | ok | ok | eq
+-0.0 | weight | True | INVALID_STATE | Positive finite weights required | - | - | unchanged=True
+-0.0 | relation | True | PASS |  | ok | ok | eq
+5e-324 | offset | True | PASS |  | ok | ok | eq
+5e-324 | weight | True | PASS |  | ok | ok | eq
+5e-324 | relation | True | PASS |  | ok | ok | eq
+BLOCKING: 0
