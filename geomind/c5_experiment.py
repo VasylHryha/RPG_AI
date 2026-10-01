@@ -12,14 +12,17 @@ Per world (independent seed):
    - G->M: units moved rigidly so offsets from the group centroid scale by s; both runs of a pair get
      the same zero-mean unit-phase probe. Statistic: time-mean RMS inter-unit pattern deviation over
      5 T (C4 gm_statistic on unit phases). Complete ablation: w = 1 with the phase topology frozen at s0.
-   - M->G: each unit's phases rotated rigidly (zero-mean RMS dose, or uniform). Statistic: peak radius
+   - M->G: each unit's phases rotated rigidly by a zero-mean unit-level kick of fixed RMS (the dose). Statistic: peak radius
      of gyration of the unit centroids relative to s0 over 10 T (C4 mg_statistic on centroids).
      Complete ablation: J = 0.
    - Downward effect: the group versus the same units decoupled (translated beyond the C4 radius) over
      10 T: (a) unit rate pulled from its natural rate; (b) RMS shift of port-member phase offsets.
    - Held-out excitations on one unit: a phase pulse and a radial push. Full responses of the other
-     units (emergent transfer: intact minus decoupled), and the coarse model's prediction against
-     two cheap baselines (no transfer; rigid transfer).
+     units (emergent transfer: intact minus decoupled), and the coarse model's open-loop prediction
+     against three cheap baselines (no transfer; rigid transfer; relaxation to an equal share with the
+     group's own measured tau2). The reopening protocol is run alongside and reported.
+   - Timescale separation: tau2 (between units) over tau1 (within units); a hierarchy relaxes more
+     slowly between its parts than within them.
 5. Controls from s0 with every unit decoupled: rates as assembled (drift) and all rates 0 (static).
    The candidates are the intact world's candidate groups, or its proximity-only components, so a
    control is never empty.
@@ -35,7 +38,8 @@ from pathlib import Path
 import numpy as np
 
 from geomind import c5_coarse
-from geomind.c4_detect import _convex_hull, circular_mean, components, detect as c4_detect, pair_differences, radius_of_gyration
+from geomind.c4_detect import (_convex_hull, circular_mean, components, detect as c4_detect, locked_pairs, pair_differences,
+                               radius_of_gyration)
 from geomind.c4_experiment import (bootstrap_ci, causality_verdict, dose_response_verdict, gm_statistic, mg_statistic,
                                    model_params, summarize, wilson)
 from geomind.c4_model import Batch, neighbors, simulate, wrap
@@ -179,6 +183,15 @@ def port_members(x, labels, unit):
     return members[_convex_hull(x[members])]
 
 
+def mg_dose_rms(dose):
+    """M->G doses are zero-mean unit-level kicks of fixed RMS ('rms:<a>'): one controlled size family, so the
+    effective (wrapped pairwise) perturbation grows with the dose. A random-size dose is refused."""
+    kind, value = dose.split(":")
+    if kind != "rms":
+        raise ValueError(f"M->G dose must be 'rms:<a>', got {dose!r}")
+    return float(value)
+
+
 def group_runs(row, units, S, params, manifest, rng):
     """All paired runs for one accepted level-2 resonator from its formed state s0. Returns the raw values."""
     iv = manifest["interventions"]
@@ -201,7 +214,7 @@ def group_runs(row, units, S, params, manifest, rng):
     # M->G, downward control, excitations (one 10 T batch)
     mg = [("control", c, x0, th0) for c in ("intact",) + MG_CONDITIONS]
     for dose in iv["mg_doses"]:
-        deltas = rng.uniform(-np.pi, np.pi, len(g)) if dose == "uniform" else unit_kick(rng, len(g), float(dose.split(":")[1]))
+        deltas = unit_kick(rng, len(g), mg_dose_rms(dose))
         treated = rotate_units(th0, labels, g, deltas)
         mg.append((f"dose/{dose}", "intact", x0, treated))
         if dose == iv["mg_dose"]:
@@ -233,7 +246,10 @@ def group_runs(row, units, S, params, manifest, rng):
         gm_values[(key, cond)] = gm_statistic(Th, g, reference)
         if (key, cond) == ("control", "intact"):
             # tau2: e-folding of the inter-unit pattern deviation after the unit-phase probe (intact control).
+            # Censored at the window length when it never reaches 1/e (a lower bound, counted).
             tau2 = efold(np.sqrt((wrap(pair_differences(Th, g) - reference) ** 2).mean(1)), S["sample_every"] * S["dt"])
+            tau2_censored = bool(not np.isfinite(tau2))
+            tau2_value = S["gm_steps"] * S["dt"] if tau2_censored else tau2
     runs10 = mg + extra
     mxs, mths = batch(runs10, S["mg_steps"])
     rg0 = radius_of_gyration(X0[g])
@@ -280,9 +296,9 @@ def group_runs(row, units, S, params, manifest, rng):
     dpulse = series[("decoupled_pulse", "intact")]
     transfer_decoupled = float(np.sqrt((wrap(dpulse[1][:, others] - Thd[:, others]) ** 2).mean()))
 
-    coarse = coarse_vs_full(row, g, excited, push, series, S, params["intact"])
+    coarse = coarse_vs_full(row, g, excited, push, series, S, params["intact"], tau2_value)
     return {
-        "units": [int(u) for u in g], "excited_unit": excited, "effects": effects, "tau2": tau2,
+        "units": [int(u) for u in g], "excited_unit": excited, "effects": effects, "tau2": tau2_value, "tau2_censored": tau2_censored,
         "downward_units": per_unit,
         "downward_effect": float(np.mean([p["boundary_shift"] for p in per_unit])),
         "entrainment": float(np.mean([p["entrainment"] for p in per_unit])),
@@ -296,8 +312,23 @@ def states_at(x, th, om, labels, units, params):
     return [resonator_state(x, th, om, labels, int(u), 0.0, {}, params) for u in units]
 
 
-def coarse_vs_full(row, g, excited, push, series, S, params):
-    """Coarse predictions (with reopening) against the full model and two cheap baselines."""
+def response_error(fT, fX, pT, pX, others, L):
+    """RMS wrapped phase error plus RMS position error over L, over the other units and all samples."""
+    dT = wrap(fT[:, others] - pT[:, others])
+    dX = np.linalg.norm(fX[:, others] - pX[:, others], axis=-1) / L[others]
+    return float(np.sqrt((dT ** 2).mean()) + np.sqrt((dX ** 2).mean()))
+
+
+def relaxation_prediction(times, units, amount, tau):
+    """Cheap baseline: each other unit relaxes to an equal share of the excitation, amount / units, with the
+    group's own measured inter-unit time tau2 (mean-field redistribution; no ports, no geometry)."""
+    share = 1.0 - np.exp(-np.asarray(times) / tau)
+    return share[:, None] * (np.asarray(amount, dtype=float) / units)
+
+
+def coarse_vs_full(row, g, excited, push, series, S, params, tau2):
+    """Open-loop coarse predictions against the full model and three cheap baselines; the reopening
+    protocol (invariant 8) is run alongside and reported, never scored as the prediction."""
     om, labels = row["omega"], row["labels"]
     others = [k for k, u in enumerate(g) if u != excited]
     e_index = int(np.flatnonzero(g == excited)[0])
@@ -308,44 +339,54 @@ def coarse_vs_full(row, g, excited, push, series, S, params):
         X, Th, xs, ths = series[key]
         start = states_at(xs[0], ths[0], om, labels, g, params)
         reopen = (lambda xs=xs, ths=ths: (lambda f: states_at(xs[f], ths[f], om, labels, g, params)))()
-        cX, cTh, reopens, work = c5_coarse.run(start, params, S["dt"], steps, every, reopen)
-        # Align the coarse unit phases with the full series' branch at t0.
-        cTh = cTh + (Th[0, g] - cTh[0])
-        runs[name] = {"full": (X[:, g], Th[:, g]), "coarse": (cX, cTh), "reopens": reopens, "work": work}
-    out = {"excitations": {}}
+        open_loop = c5_coarse.run(start, params, S["dt"], steps, every)
+        reopened = c5_coarse.run(start, params, S["dt"], steps, every, reopen)
+        align = lambda r: r["theta"] + (Th[0, g] - r["theta"][0])  # the full series' phase branch at t0
+        runs[name] = {"full": (X[:, g], Th[:, g]), "open": (open_loop["X"], align(open_loop)),
+                      "reopened": (reopened["X"], align(reopened)), "reopens": reopened["reopens"],
+                      "flagged": open_loop["flagged"], "work": open_loop["work"] + reopened["work"]}
+    times = np.arange(steps // every + 1) * every * S["dt"]
+    out = {"excitations": {}, "tau2": tau2}
     for name in ("pulse", "push"):
         fX = runs[name]["full"][0] - runs["control"]["full"][0]
         fT = runs[name]["full"][1] - runs["control"]["full"][1]
-        cX = runs[name]["coarse"][0] - runs["control"]["coarse"][0]
-        cT = runs[name]["coarse"][1] - runs["control"]["coarse"][1]
-        rigid_T = np.full_like(fT, S["pulse"] if name == "pulse" else 0.0)
-        rigid_X = np.zeros_like(fX) + (push if name == "push" else 0.0)
-
-        def error(pT, pX):
-            dT = wrap(fT[:, others] - pT[:, others])
-            dX = np.linalg.norm(fX[:, others] - pX[:, others], axis=-1) / L[others]
-            return float(np.sqrt((dT ** 2).mean()) + np.sqrt((dX ** 2).mean()))
-
-        e_coarse, e_none, e_rigid = error(cT, cX), error(np.zeros_like(fT), np.zeros_like(fX)), error(rigid_T, rigid_X)
+        oX = runs[name]["open"][0] - runs["control"]["open"][0]
+        oT = runs[name]["open"][1] - runs["control"]["open"][1]
+        rX = runs[name]["reopened"][0] - runs["control"]["reopened"][0]
+        rT = runs[name]["reopened"][1] - runs["control"]["reopened"][1]
+        zero_T, zero_X = np.zeros_like(fT), np.zeros_like(fX)
+        if name == "pulse":
+            rigid_T, rigid_X = np.full_like(fT, S["pulse"]), zero_X
+            relax_T, relax_X = np.repeat(relaxation_prediction(times, len(g), S["pulse"], tau2), len(g), axis=1), zero_X
+        else:
+            rigid_T, rigid_X = zero_T, zero_X + push
+            relax_T = zero_T
+            relax_X = np.repeat(relaxation_prediction(times, len(g), push, tau2)[:, None, :], len(g), axis=1)
+        errors = {
+            "error_coarse": response_error(fT, fX, oT, oX, others, L),
+            "error_coarse_reopened": response_error(fT, fX, rT, rX, others, L),
+            "error_no_transfer": response_error(fT, fX, zero_T, zero_X, others, L),
+            "error_rigid_transfer": response_error(fT, fX, rigid_T, rigid_X, others, L),
+            "error_relaxation": response_error(fT, fX, relax_T, relax_X, others, L),
+        }
         half = len(fT) // 2
-        span = (len(fT) - 1 - half) * S["sample_every"] * S["dt"]
+        span = (len(fT) - 1 - half) * every * S["dt"]
         rate_full = float((runs[name]["full"][1][-1] - runs[name]["full"][1][half]).mean() / span)
-        rate_coarse = float((runs[name]["coarse"][1][-1] - runs[name]["coarse"][1][half]).mean() / span)
+        rate_coarse = float((runs[name]["open"][1][-1] - runs[name]["open"][1][half]).mean() / span)
 
         def settle(dTh):
             dev = np.abs(wrap(dTh - dTh[:, [e_index]])).max(1) if name == "pulse" else np.abs(wrap(dTh)).max(1)
             below = np.flatnonzero(dev <= S["t2"]["pattern_tol"])
-            return float(below[0] * S["sample_every"] * S["dt"]) if len(below) else float(steps * S["dt"])
+            return float(times[below[0]]) if len(below) else float(steps * S["dt"])
 
-        out["excitations"][name] = {
-            "error_coarse": e_coarse, "error_no_transfer": e_none, "error_rigid_transfer": e_rigid,
-            "frequency_error": abs(rate_full - rate_coarse), "recovery_error": abs(settle(fT) - settle(cT)),
-            "reopens": runs[name]["reopens"],
-        }
+        out["excitations"][name] = {**errors, "frequency_error": abs(rate_full - rate_coarse),
+                                    "recovery_error": abs(settle(fT) - settle(oT)),
+                                    "reopens": runs[name]["reopens"], "flagged_samples": runs[name]["flagged"]}
     ex = out["excitations"]
-    out["gain_vs_no_transfer"] = float(np.mean([ex[n]["error_no_transfer"] - ex[n]["error_coarse"] for n in ex]))
-    out["gain_vs_rigid_transfer"] = float(np.mean([ex[n]["error_rigid_transfer"] - ex[n]["error_coarse"] for n in ex]))
+    for base in ("no_transfer", "rigid_transfer", "relaxation"):
+        out[f"gain_vs_{base}"] = float(np.mean([ex[n][f"error_{base}"] - ex[n]["error_coarse"] for n in ex]))
     out["reopens"] = int(sum(r["reopens"] for r in runs.values()))
+    out["flagged_samples"] = int(sum(r["flagged"] for r in runs.values()))
     n = int((labels >= 0).sum())
     # Pair evaluations, same unit for both: full = N^2 neighbour search + 4 RK4 stages over N x k per step.
     out["work_full_pair_evaluations"] = int(3 * steps * (n * n + 4 * n * params.k))
@@ -451,6 +492,14 @@ def run_worlds(manifest, entropy, indices, templates):
         accepted = [c for c in d["candidates"] if c["accepted"]]
         groups = [group_runs(row, c["units"], S, params, manifest, rng_for(entropy, 6, i, n)) for n, c in enumerate(accepted)]
         touching = contact(row["x0"], row["labels"], params["intact"])
+        # Disclosure: does the frozen C4 component rule (close and locked elements) see each accepted group
+        # as one single level-1 component? (Expected yes: geometric contact plus locking; the level-2 claim
+        # rests on criterion 6 and timescale separation, not on the C4 view.)
+        keep = row["labels"] >= 0
+        c4_labels = components(row["xs"][-1][keep], c4m["detector"]["link_factor"],
+                               locked_pairs(row["ths"][:, keep], c4m["detector"]["lock_std"]))
+        lab = row["labels"][keep]
+        single = [len(set(c4_labels[np.isin(lab, c["units"])])) == 1 for c in accepted]
         records.append({
             "seed_index": int(i),
             "elements": int((row["labels"] >= 0).sum()),
@@ -462,6 +511,7 @@ def run_worlds(manifest, entropy, indices, templates):
             "outcome": outcome(d["candidates"], touching),
             "contact": touching,
             "groups": groups,
+            "c4_single_component": single,
             "spread_sweep": {f: {"formed": any(c["accepted"] for c in sweep[f][b]),
                                  "outcome": outcome(sweep[f][b], touching)} for f in sweep},
             "controls": {name: [{k: c[k] for k in ("units", "stats", "failed", "accepted")} for c in controls[name][b]["candidates"]]
@@ -490,13 +540,26 @@ def margin_verdict(summary, margin, min_worlds):
     return "INCONCLUSIVE"
 
 
-def coarse_verdict(none, rigid, min_worlds):
-    """Rows: INCONCLUSIVE below min_worlds; FAIL if either gain CI lies below 0; PASS if both lie above 0."""
-    if none["ci"] is None or rigid["ci"] is None or none["n_worlds"] < min_worlds:
+def coarse_verdict(gains, min_worlds):
+    """Rows over every baseline's gain summary: INCONCLUSIVE below min_worlds; FAIL if any gain CI lies below 0
+    (the coarse law is worse than a cheap baseline); PASS if every gain CI lies above 0; INCONCLUSIVE otherwise."""
+    if any(g["ci"] is None or g["n_worlds"] < min_worlds for g in gains):
         return "INCONCLUSIVE"
-    if none["ci"][1] < 0 or rigid["ci"][1] < 0:
+    if any(g["ci"][1] < 0 for g in gains):
         return "FAIL"
-    if none["ci"][0] > 0 and rigid["ci"][0] > 0:
+    if all(g["ci"][0] > 0 for g in gains):
+        return "PASS"
+    return "INCONCLUSIVE"
+
+
+def separation_verdict(summary, min_worlds):
+    """Timescale separation tau2 / tau1: INCONCLUSIVE below min_worlds; FAIL if the CI lies below 1 (units relax
+    together no slower than within, i.e. one resonator); PASS if it lies above 1; INCONCLUSIVE otherwise."""
+    if summary["ci"] is None or summary["n_worlds"] < min_worlds:
+        return "INCONCLUSIVE"
+    if summary["ci"][1] < 1.0:
+        return "FAIL"
+    if summary["ci"][0] > 1.0:
         return "PASS"
     return "INCONCLUSIVE"
 
@@ -565,19 +628,31 @@ def evaluate(records, pool, manifest, S, rng):
                  "worst": {k: max((e[k] for e in errors), default=None) for k in bounds},
                  "verdict": ("INCONCLUSIVE" if formed < min_worlds or not errors else
                              "PASS" if fraction >= rules["effective_state_min_fraction"] else "FAIL")}
-    none = summarize(per_world(lambda g: g["coarse"]["gain_vs_no_transfer"]), rng, resamples)
-    rigid = summarize(per_world(lambda g: g["coarse"]["gain_vs_rigid_transfer"]), rng, resamples)
+    gains = {b: summarize(per_world(lambda g, b=b: g["coarse"][f"gain_vs_{b}"]), rng, resamples)
+             for b in ("no_transfer", "rigid_transfer", "relaxation")}
     excitations = [g["coarse"] for w in worlds for g in w["groups"]]
     reopened = sum(e["excitations"][n]["reopens"] > 0 for e in excitations for n in e["excitations"])
+    flagged = sum(e["excitations"][n]["flagged_samples"] > 0 for e in excitations for n in e["excitations"])
     total_exc = sum(len(e["excitations"]) for e in excitations)
-    coarse = {"gain_vs_no_transfer": none, "gain_vs_rigid_transfer": rigid,
+    coarse = {**{f"gain_vs_{b}": v for b, v in gains.items()},
+              "reopened_protocol_error": summarize(per_world(lambda g: np.mean([e["error_coarse_reopened"] for e in g["coarse"]["excitations"].values()])), rng, resamples),
+              "open_loop_error": summarize(per_world(lambda g: np.mean([e["error_coarse"] for e in g["coarse"]["excitations"].values()])), rng, resamples),
+              "excitations_flagged_invalid": flagged,
               "frequency_error": summarize(per_world(lambda g: np.mean([e["frequency_error"] for e in g["coarse"]["excitations"].values()])), rng, resamples),
               "recovery_error": summarize(per_world(lambda g: np.mean([e["recovery_error"] for e in g["coarse"]["excitations"].values()])), rng, resamples),
               "reopened_excitations": reopened, "excitations": total_exc,
               "reopen_rate": reopened / total_exc if total_exc else None,
               "work_full_pair_evaluations": sum(e["work_full_pair_evaluations"] for e in excitations),
               "work_coarse_pair_evaluations": sum(e["work_coarse_pair_evaluations"] for e in excitations),
-              "verdict": coarse_verdict(none, rigid, min_worlds)}
+              "verdict": coarse_verdict(list(gains.values()), min_worlds)}
+    def ratio(w, g):
+        t1 = np.mean([w["tau1"][u] for u in g["units"]])
+        return g["tau2"] / t1
+    separation = summarize(per_world_w(worlds, ratio), rng, resamples)
+    censored = sum(g["tau2_censored"] for w in worlds for g in w["groups"])
+    timescale = {"ratio": separation, "tau2_censored_groups": censored,
+                 "groups": sum(len(w["groups"]) for w in worlds), "verdict": separation_verdict(separation, min_worlds)}
+    c4_single = sum(c for w in worlds for c in w.get("c4_single_component", []))
     parts = [{"seed_index": w["seed_index"], "candidate": n, "units": c["units"], "accepted": c["accepted"],
               "unit_validity": [w["unit_validity"][u] for u in c["units"]]} for w in worlds for n, c in enumerate(w["candidates"])]
     used = [ok for w in worlds for ok in w["level1_redetected"]]
@@ -586,7 +661,9 @@ def evaluate(records, pool, manifest, S, rng):
     return {
         "level1_pool": level1,
         "formation_l2": formation,
-        "formation_outcomes": {"counts": outcomes, "candidate_failures": failures, "verdict": "REPORTED"},
+        "formation_outcomes": {"counts": outcomes, "candidate_failures": failures,
+                               "accepted_groups_one_c4_component": c4_single,
+                               "accepted_groups": sum(len(w["groups"]) for w in worlds), "verdict": "REPORTED"},
         "formation_vs_spread": {"by_factor": sweep, "verdict": "REPORTED"},
         "not_independent": control_verdict([w["controls"]["decoupled_spread"] for w in worlds]),
         "not_a_clump_l2": control_verdict([w["controls"]["decoupled_static"] for w in worlds]),
@@ -599,7 +676,13 @@ def evaluate(records, pool, manifest, S, rng):
         "emergent_transfer": emergent,
         "effective_state_l2": effective,
         "coarse_vs_full": coarse,
+        "timescale_separation": timescale,
     }
+
+
+def per_world_w(worlds, fn):
+    """Per-world mean over its accepted groups of fn(world, group); None for worlds without one."""
+    return [float(np.mean([fn(w, g) for g in w["groups"]])) if w["groups"] else None for w in worlds]
 
 
 def hypothesis_verdicts(e):
@@ -611,9 +694,9 @@ def hypothesis_verdicts(e):
       3. otherwise                                                      -> INCONCLUSIVE
     H-C first transition:
       1. formation_l2 Wilson 95% upper bound < 0.25                     -> NOT_SUPPORTED
-      2. downward_effect, emergent_transfer, effective_state_l2 or
-         coarse_vs_full is FAIL                                         -> NOT_SUPPORTED
-      3. H-M SUPPORTED_WITHIN_SCOPE and those four PASS                 -> SUPPORTED_WITHIN_SCOPE
+      2. downward_effect, emergent_transfer, effective_state_l2,
+         coarse_vs_full or timescale_separation is FAIL                 -> NOT_SUPPORTED
+      3. H-M SUPPORTED_WITHIN_SCOPE and those five PASS                 -> SUPPORTED_WITHIN_SCOPE
       4. otherwise                                                      -> INCONCLUSIVE
     """
     causal = (e["g_to_m_l2"]["verdict"], e["m_to_g_l2"]["verdict"], e["dose_response_l2"]["verdict"])
@@ -624,13 +707,14 @@ def hypothesis_verdicts(e):
     else:
         h_m = "INCONCLUSIVE"
     composition = (e["downward_effect"]["verdict"], e["emergent_transfer"]["verdict"],
-                   e["effective_state_l2"]["verdict"], e["coarse_vs_full"]["verdict"])
+                   e["effective_state_l2"]["verdict"], e["coarse_vs_full"]["verdict"],
+                   e["timescale_separation"]["verdict"])
     upper = e["formation_l2"]["wilson_95"][1]
     if upper < 0.25:
         h_c = "NOT_SUPPORTED"
     elif "FAIL" in composition:
         h_c = "NOT_SUPPORTED"
-    elif h_m == "SUPPORTED_WITHIN_SCOPE" and composition == ("PASS",) * 4:
+    elif h_m == "SUPPORTED_WITHIN_SCOPE" and composition == ("PASS",) * 5:
         h_c = "SUPPORTED_WITHIN_SCOPE"
     else:
         h_c = "INCONCLUSIVE"

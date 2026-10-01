@@ -20,8 +20,6 @@ members fall into one another's C4 neighbour sets.
 
 import numpy as np
 
-from geomind.c4_model import simulate
-
 FAR = 1.0e4  # inert padding distance, far beyond the C4 neighbour radius
 
 
@@ -101,10 +99,3 @@ def decouple_offsets(labels, units):
     for k, u in enumerate(units):
         offsets[labels == u, 0] = SEPARATION * (k + 1)
     return offsets
-
-
-def run(x, th, omega, params, dt, duration, sample_dt=None, phase_topology=None):
-    """simulate() over a duration; returns (x, th, frames) with frames sampled every sample_dt (including t0)."""
-    steps = int(round(duration / dt))
-    every = int(round(sample_dt / dt)) if sample_dt else None
-    return simulate(x, th, omega, params, dt, steps, every, phase_topology=phase_topology)

@@ -32,8 +32,8 @@ JOBS = 4
 
 ENDPOINTS = ("level1_pool", "formation_l2", "formation_outcomes", "formation_vs_spread", "not_independent",
              "not_a_clump_l2", "g_to_m_l2", "m_to_g_l2", "dose_response_l2", "g_to_m_channels_l2", "parts_alive",
-             "downward_effect", "emergent_transfer", "effective_state_l2", "coarse_vs_full", "same_rule_audit",
-             "numerical_checks")
+             "downward_effect", "emergent_transfer", "effective_state_l2", "coarse_vs_full", "timescale_separation",
+             "same_rule_audit", "numerical_checks")
 
 
 def load_manifest(path=MANIFEST):
@@ -185,7 +185,8 @@ def panel(output, contract_report):
             "One model, one parameter set, M = 5, unit sizes 6-16; no internally heterogeneous unit (the C4 heterogeneous arm is not accepted).",
             "Complete ablations remove their pathway by construction; the evidence is the intact effect and its dose-response.",
             "Downward effect (a), rate entrainment, is largely implied by acceptance; (b) tests existence, not dose.",
-            "Timescale separation is modest (T is the measured tau2 / tau1 ratio); hierarchical synchrony and population reduction are known results.",
+            "The frozen C4 component rule (close and locked elements) sees an accepted level-2 group as one component; the level-2 claim rests on criterion 6 (distinct, internally valid units) and timescale separation, both reported.",
+            "Hierarchical synchrony and population reduction are known results; this is a mechanism probe of the R4 composition rule.",
             "Development settings (placement radius, rate spread, T, port overlap) and the changes from the proposal are listed in the manifest.",
         ],
         "next_action": "One independent review by the other model family (Codex), on the committed evidence; no C6 work before acceptance.",

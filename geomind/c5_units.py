@@ -64,11 +64,6 @@ def unit_positions(xs, labels, units):
     return np.stack([xs[:, labels == u].mean(1) for u in units], axis=1)
 
 
-def unit_sizes(xs, labels, units):
-    """Radius of gyration of each unit per frame: (F, len(units))."""
-    return np.array([[radius_of_gyration(xs[f, labels == u]) for u in units] for f in range(len(xs))])
-
-
 def _inside(point, hull):
     edges = np.roll(hull, -1, axis=0) - hull
     rel = point - hull

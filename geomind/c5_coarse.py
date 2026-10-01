@@ -18,7 +18,8 @@ Error travels with compression (R4 invariant 8): at every sample the state is ch
 INVALID if a unit's cross-link count changed by more than half of its starting value (minimum 1)
 or an inter-unit phase difference moved by more than pi/2 (outside the sine-coupling locking
 basin). An invalid coarse state is reopened: replaced by the full model's unit states at that
-sample (re-read ports), and counted.
+sample (re-read ports), and counted. The scored prediction is open-loop (no reopening, so no
+full-model state enters it); the reopening protocol is run alongside and reported.
 """
 
 import numpy as np
@@ -93,12 +94,13 @@ def invalid(cs, counts0, counts, theta0, theta):
 def run(states, params, dt, steps, sample_every, reopen=None):
     """Integrate the coarse law with RK4 (cross links recomputed each step, held for its stages).
 
-    reopen(frame) -> list of ResonatorStates from the full model at that sample, or None (no reopening).
-    Returns X (S, M, 2), theta (S, M), the number of reopens and the work (port-pair evaluations)."""
+    reopen(frame) -> list of ResonatorStates from the full model at that sample. Without it the run is an
+    open-loop prediction: invalid samples are only flagged (the validity bound travels with the state).
+    Returns X (S, M, 2), theta (S, M), reopens, flagged (invalid samples) and work (port-pair evaluations)."""
     cs = CoarseState(states, params.k)
     X, theta = cs.X.copy(), cs.theta.copy()
     counts0, theta0 = link_counts(cs, links(cs, X, params)[0]), theta.copy()
-    Xs, thetas, reopens, work = [X.copy()], [theta.copy()], 0, 0
+    Xs, thetas, reopens, flagged, work = [X.copy()], [theta.copy()], 0, 0, 0
     P = len(cs.unit)
     for step in range(1, steps + 1):
         held = links(cs, X, params)
@@ -112,15 +114,17 @@ def run(states, params, dt, steps, sample_every, reopen=None):
         if step % sample_every == 0:
             frame = step // sample_every
             counts = link_counts(cs, links(cs, X, params)[0])
-            if reopen is not None and invalid(cs, counts0, counts, theta0, theta):
-                fresh = reopen(frame)
-                cs = CoarseState(fresh, params.k)
-                X, theta = cs.X.copy(), cs.theta.copy()
-                # Keep the unit phase continuous with the coarse series (unwrapped).
-                theta = theta + 2 * np.pi * np.round((thetas[-1] - theta) / (2 * np.pi))
-                counts0, theta0 = link_counts(cs, links(cs, X, params)[0]), theta.copy()
-                P = len(cs.unit)
-                reopens += 1
+            if invalid(cs, counts0, counts, theta0, theta):
+                flagged += 1
+                if reopen is not None:
+                    fresh = reopen(frame)
+                    cs = CoarseState(fresh, params.k)
+                    X, theta = cs.X.copy(), cs.theta.copy()
+                    # Keep the unit phase continuous with the coarse series (unwrapped).
+                    theta = theta + 2 * np.pi * np.round((thetas[-1] - theta) / (2 * np.pi))
+                    counts0, theta0 = link_counts(cs, links(cs, X, params)[0]), theta.copy()
+                    P = len(cs.unit)
+                    reopens += 1
             Xs.append(X.copy())
             thetas.append(theta.copy())
-    return np.array(Xs), np.array(thetas), reopens, work
+    return {"X": np.array(Xs), "theta": np.array(thetas), "reopens": reopens, "flagged": flagged, "work": work}

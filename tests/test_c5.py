@@ -222,8 +222,9 @@ RING = [[0.6 * np.cos(t), 0.6 * np.sin(t)] for t in np.arange(6) * np.pi / 3]
 
 def test_coarse_isolated_units_follow_natural_rates():
     states = [state([0, 0], 0.0, 0.02, RING, [0.6] * 3), state([50, 0], 1.0, -0.01, RING, [0.6] * 3)]
-    X, th, reopens, _ = c5_coarse.run(states, INTACT, 0.02, 100, 10)
-    assert np.allclose(X, X[0]) and reopens == 0
+    r = c5_coarse.run(states, INTACT, 0.02, 100, 10)
+    X, th = r["X"], r["theta"]
+    assert np.allclose(X, X[0]) and r["reopens"] == 0 and r["flagged"] == 0
     assert np.allclose(th[-1] - th[0], [0.02 * 2.0, -0.01 * 2.0])
 
 
@@ -232,7 +233,7 @@ def test_coarse_couples_through_ports_and_locks_phases():
     cs = c5_coarse.CoarseState(states, INTACT.k)
     sel, _, _ = c5_coarse.links(cs, cs.X, INTACT)
     assert sel.any()
-    _, th, _, _ = c5_coarse.run(states, INTACT, 0.02, 2000, 100)
+    th = c5_coarse.run(states, INTACT, 0.02, 2000, 100)["theta"]
     assert abs(wrap(th[-1, 1] - th[-1, 0])) < 0.5 * 0.5
 
 
@@ -244,8 +245,10 @@ def test_coarse_reopens_when_invalid():
         calls.append(frame)
         return states
 
-    _, _, reopens, _ = c5_coarse.run(states, INTACT, 0.02, 200, 10, reopen)
-    assert reopens >= 1 and calls
+    r = c5_coarse.run(states, INTACT, 0.02, 200, 10, reopen)
+    assert r["reopens"] >= 1 and calls
+    open_loop = c5_coarse.run(states, INTACT, 0.02, 200, 10)
+    assert open_loop["reopens"] == 0 and open_loop["flagged"] >= 1, "open loop flags but never injects full states"
 
 
 def test_coarse_reads_only_resonator_states():
@@ -280,7 +283,11 @@ def test_group_runs_report_every_registered_quantity(runs):
     assert abs(runs["transfer_decoupled"]) < 1e-9, "decoupled units cannot transfer a pulse"
     assert len(runs["downward_units"]) == 3 and all("boundary_shift" in u for u in runs["downward_units"])
     c = runs["coarse"]
-    assert set(c["excitations"]) == {"pulse", "push"} and "gain_vs_rigid_transfer" in c
+    assert set(c["excitations"]) == {"pulse", "push"}
+    for b in ("no_transfer", "rigid_transfer", "relaxation"):
+        assert f"gain_vs_{b}" in c
+    assert runs["tau2"] > 0 and isinstance(runs["tau2_censored"], bool)
+    assert runs["downward_effect"] > 1e-6, "units in contact feel their neighbours at the boundary"
 
 
 # ---------------------------------------------------------------- statistics and verdict rules
@@ -298,10 +305,59 @@ def test_margin_verdict_rows():
 
 
 def test_coarse_verdict_rows():
-    assert E.coarse_verdict(summ(0.1, 0.2, 5), summ(0.1, 0.2, 5), 10) == "INCONCLUSIVE"
-    assert E.coarse_verdict(summ(0.1, 0.2), summ(-0.3, -0.1), 10) == "FAIL"
-    assert E.coarse_verdict(summ(0.1, 0.2), summ(0.05, 0.1), 10) == "PASS"
-    assert E.coarse_verdict(summ(0.1, 0.2), summ(-0.05, 0.1), 10) == "INCONCLUSIVE"
+    good = summ(0.1, 0.2)
+    assert E.coarse_verdict([summ(0.1, 0.2, 5)] * 3, 10) == "INCONCLUSIVE"
+    for k in range(3):
+        bad = [good] * 3
+        bad[k] = summ(-0.3, -0.1)
+        assert E.coarse_verdict(bad, 10) == "FAIL", k
+        weak = [good] * 3
+        weak[k] = summ(-0.05, 0.1)
+        assert E.coarse_verdict(weak, 10) == "INCONCLUSIVE", k
+    assert E.coarse_verdict([good, summ(0.05, 0.1), summ(0.01, 0.02)], 10) == "PASS"
+
+
+def test_separation_verdict_rows():
+    assert E.separation_verdict(summ(2.0, 3.0, 9), 10) == "INCONCLUSIVE"
+    assert E.separation_verdict(summ(0.5, 0.9), 10) == "FAIL"
+    assert E.separation_verdict(summ(1.2, 3.0), 10) == "PASS"
+    assert E.separation_verdict(summ(0.9, 3.0), 10) == "INCONCLUSIVE"
+
+
+def test_relaxation_baseline_and_response_error():
+    t = np.array([0.0, 1.0, 1e6])
+    p = E.relaxation_prediction(t, 4, 0.5, 2.0)
+    assert p.shape == (3, 1) and p[0, 0] == 0.0 and abs(p[-1, 0] - 0.125) < 1e-12
+    assert abs(p[1, 0] - 0.125 * (1 - np.exp(-0.5))) < 1e-12
+    v = E.relaxation_prediction(t, 2, np.array([0.2, 0.0]), 1.0)
+    assert v.shape == (3, 2) and abs(v[-1, 0] - 0.1) < 1e-12
+    fT = np.zeros((3, 3))
+    fX = np.zeros((3, 3, 2))
+    pT = fT.copy()
+    pT[:, 1] = 0.3
+    pX = fX.copy()
+    pX[:, 2, 0] = 0.4
+    L = np.array([1.0, 1.0, 2.0])
+    assert abs(E.response_error(fT, fX, pT, pX, [1, 2], L) - (np.sqrt(0.09 / 2) + np.sqrt(0.04 / 2))) < 1e-12
+    assert E.response_error(fT, fX, pT, pX, [0], L) == 0.0, "the excited unit is not scored"
+
+
+def test_mg_doses_are_one_fixed_size_family_increasing_in_effective_size():
+    doses = MANIFEST["interventions"]["mg_doses"]
+    assert all(d.startswith("rms:") for d in doses)
+    sizes = [E.mg_dose_rms(d) for d in doses]
+    assert sizes == [0.5, 1.0, 1.5] and MANIFEST["interventions"]["mg_dose"] == "rms:1.0"
+    for bad in ("uniform", "uniform:1.0"):
+        with pytest.raises(ValueError):
+            E.mg_dose_rms(bad)
+    rng = np.random.default_rng(0)
+    i, j = np.triu_indices(3, 1)
+    effective = []
+    for a in sizes:
+        k = c5_compose.unit_kick(rng, 3, a)
+        assert abs(k.mean()) < 1e-12 and abs(np.sqrt((k ** 2).mean()) - a) < 1e-12
+        effective.append(np.sqrt((wrap(k[j] - k[i]) ** 2).mean()))
+    assert effective == sorted(effective)
 
 
 def test_control_verdict_never_passes_empty():
@@ -322,7 +378,7 @@ def reference_truth_table(formation, upper, causal, composition):
         hc = "NOT_SUPPORTED"
     elif "FAIL" in composition:
         hc = "NOT_SUPPORTED"
-    elif hm == "SUPPORTED_WITHIN_SCOPE" and all(v == "PASS" for v in composition):
+    elif hm == "SUPPORTED_WITHIN_SCOPE" and len(composition) == 5 and all(v == "PASS" for v in composition):
         hc = "SUPPORTED_WITHIN_SCOPE"
     else:
         hc = "INCONCLUSIVE"
@@ -336,15 +392,15 @@ def test_truth_tables_every_combination():
     count = 0
     for formation, upper in itertools.product(("PASS", "FAIL"), (0.1, 0.6)):
         for causal in itertools.product(values, repeat=3):
-            for comp in itertools.product(values, repeat=4):
+            for comp in itertools.product(values, repeat=5):
                 e = {"formation_l2": {"verdict": formation, "wilson_95": [0.0, upper]},
                      "g_to_m_l2": {"verdict": causal[0]}, "m_to_g_l2": {"verdict": causal[1]},
                      "dose_response_l2": {"verdict": causal[2]}, "downward_effect": {"verdict": comp[0]},
                      "emergent_transfer": {"verdict": comp[1]}, "effective_state_l2": {"verdict": comp[2]},
-                     "coarse_vs_full": {"verdict": comp[3]}}
+                     "coarse_vs_full": {"verdict": comp[3]}, "timescale_separation": {"verdict": comp[4]}}
                 assert E.hypothesis_verdicts(e) == reference_truth_table(formation, upper, causal, comp)
                 count += 1
-    assert count == 2 * 2 * 27 * 81
+    assert count == 2 * 2 * 27 * 243
 
 
 def fake_world(formed, groups=(), outcome="FORMED"):
@@ -352,7 +408,8 @@ def fake_world(formed, groups=(), outcome="FORMED"):
              "stats": {"state_error_position": 0.0, "state_error_size": 0.0, "state_error_frequency": 0.0}}]
     return {"seed_index": 0, "candidates": cand, "groups": list(groups), "outcome": outcome,
             "spread_sweep": {"1.0": {"formed": formed}}, "controls": {"decoupled_spread": [], "decoupled_static": []},
-            "unit_validity": [{}] * 3, "level1_redetected": [True] * 3}
+            "unit_validity": [{}] * 3, "level1_redetected": [True] * 3, "tau1": [1.5] * 3,
+            "c4_single_component": [True] * len(groups)}
 
 
 def group(value):
@@ -360,10 +417,12 @@ def group(value):
     effects.update({f"m_to_g_dose/{d}/intact": value * (k + 1) for k, d in enumerate(MANIFEST["interventions"]["mg_doses"])})
     effects.update({"g_to_m/intact": value, "m_to_g/intact": value, "g_to_m/no_geometry_to_mode": 0.0,
                     "m_to_g/no_mode_to_geometry": 0.0, "g_to_m/no_distance_weight": 0.0, "g_to_m/frozen_topology": 0.0})
-    exc = {"error_coarse": 0.0, "error_no_transfer": 0.1, "error_rigid_transfer": 0.1, "frequency_error": 0.0,
-           "recovery_error": 0.0, "reopens": 0}
-    return {"effects": effects, "downward_effect": 0.05, "entrainment": 0.01, "emergent_transfer": 0.1, "tau2": 4.0,
-            "coarse": {"gain_vs_no_transfer": 0.1, "gain_vs_rigid_transfer": 0.1, "excitations": {"pulse": exc, "push": exc},
+    exc = {"error_coarse": 0.0, "error_coarse_reopened": 0.0, "error_no_transfer": 0.1, "error_rigid_transfer": 0.1,
+           "error_relaxation": 0.1, "frequency_error": 0.0, "recovery_error": 0.0, "reopens": 0, "flagged_samples": 0}
+    return {"units": [0, 1, 2], "effects": effects, "downward_effect": 0.05, "entrainment": 0.01, "emergent_transfer": 0.1,
+            "tau2": 4.0 + value, "tau2_censored": False,
+            "coarse": {"gain_vs_no_transfer": 0.1, "gain_vs_rigid_transfer": 0.1, "gain_vs_relaxation": 0.1,
+                       "excitations": {"pulse": exc, "push": exc},
                        "work_full_pair_evaluations": 1, "work_coarse_pair_evaluations": 1}}
 
 
@@ -378,12 +437,12 @@ def test_formation_and_min_worlds_rules():
     e = evaluate(worlds)
     assert e["formation_l2"]["verdict"] == "FAIL", "fewer than 10 formed worlds cannot pass"
     for name in ("g_to_m_l2", "m_to_g_l2", "dose_response_l2", "downward_effect", "emergent_transfer",
-                 "effective_state_l2", "coarse_vs_full"):
+                 "effective_state_l2", "coarse_vs_full", "timescale_separation"):
         assert e[name]["verdict"] == "INCONCLUSIVE", name
     worlds = [fake_world(True, [group(0.01 + 0.001 * rng.random())]) for _ in range(12)]
     e = evaluate(worlds)
     for name in ("formation_l2", "g_to_m_l2", "m_to_g_l2", "dose_response_l2", "downward_effect",
-                 "emergent_transfer", "effective_state_l2", "coarse_vs_full"):
+                 "emergent_transfer", "effective_state_l2", "coarse_vs_full", "timescale_separation"):
         assert e[name]["verdict"] == "PASS", name
     assert E.hypothesis_verdicts(e) == {"H-M_level2": "SUPPORTED_WITHIN_SCOPE", "H-C_first_transition": "SUPPORTED_WITHIN_SCOPE"}
     worlds = [fake_world(True, [group(0.01)]) for _ in range(12)] + [fake_world(False, outcome="DRIFTING")] * 13
@@ -441,3 +500,20 @@ def test_frozen_c4_manifest_hash_is_checked():
     bad["level1"]["c4_manifest_sha256"] = "0" * 64
     with pytest.raises(ValueError):
         E.load_c4(bad)
+
+
+def test_separation_uses_group_units_tau1():
+    w = fake_world(True, [group(0.0)])
+    w["tau1"] = [1.0, 2.0, 3.0, 100.0]
+    w["groups"][0]["units"] = [0, 1, 2]
+    e = evaluate([w] * 12)
+    assert abs(e["timescale_separation"]["ratio"]["mean"] - 4.0 / 2.0) < 1e-12
+
+
+def test_coarse_must_beat_the_relaxation_baseline():
+    worlds = []
+    for _ in range(12):
+        g = group(0.01)
+        g["coarse"]["gain_vs_relaxation"] = -0.05
+        worlds.append(fake_world(True, [g]))
+    assert evaluate(worlds)["coarse_vs_full"]["verdict"] == "FAIL"
