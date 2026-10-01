@@ -257,6 +257,8 @@ def test_statistics_and_verdict_rules():
     assert verdicts("FAIL", "PASS", "PASS", "PASS", "PASS") == (I, I)  # formation failure alone is inconclusive
     assert verdicts("FAIL", "INCONCLUSIVE", "INCONCLUSIVE", "INCONCLUSIVE", "INCONCLUSIVE") == (I, I)  # too few worlds
     assert verdicts("PASS", "PASS", "INCONCLUSIVE", "PASS", "PASS") == (I, I)
+    assert verdicts("PASS", "INCONCLUSIVE", "PASS", "PASS", "PASS") == (I, I)
+    assert verdicts("PASS", "PASS", "PASS", "INCONCLUSIVE", "PASS") == (I, I)  # dose-response is required
     assert verdicts("PASS", "PASS", "PASS", "PASS", "FAIL") == (S, N)
     assert verdicts("FAIL", "INCONCLUSIVE", "INCONCLUSIVE", "INCONCLUSIVE", "FAIL") == (I, N)
     assert verdicts("PASS", "PASS", "PASS", "PASS", "INCONCLUSIVE") == (S, I)
