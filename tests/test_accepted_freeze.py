@@ -173,3 +173,80 @@ def test_actual_precommit_hook_blocks_staged_edit(repo):
     result = subprocess.run(["git", "commit", "-m", "should be blocked"], cwd=repo, capture_output=True, text=True)
     assert result.returncode != 0
     assert "pre-commit blocked" in result.stderr and "geomind/c9.py" in result.stderr
+
+
+def pin_shared_tool(repo):
+    """Turn the fixture into a C4-style acceptance whose receipt also binds a shared pipeline tool."""
+    (repo / "tools").mkdir()
+    (repo / "tools/milestones.py").write_text("TOOL = 1\n")
+    own = hashlib.sha256((repo / "geomind/c9.py").read_bytes()).hexdigest()
+    tool = hashlib.sha256((repo / "tools/milestones.py").read_bytes()).hexdigest()
+    receipt_path = repo / "evidence/c9_r001/results.json"
+    receipt = json.loads(receipt_path.read_text())
+    receipt["file_hashes"] = {"geomind/c9.py": own, "tools/milestones.py": tool}
+    receipt_path.write_text(json.dumps(receipt))
+    rdigest = hashlib.sha256(receipt_path.read_bytes()).hexdigest()
+    (repo / "evidence/c9_r001_review_codex/INDEPENDENT_REVIEW.md").write_text(
+        f"Verdict: **ACCEPTED**.\n\nReviewer family: Codex\n\n{rdigest}\n")
+    status = json.loads((repo / "STATUS.json").read_text())
+    status["milestones"]["c9"] = {**status["milestones"]["c9"], "accepted_results_sha256": rdigest,
+                                  "frozen_hashes": {"geomind/c9.py": own}}
+    # The evidence commit carries no freeze yet; the acceptance (with its pin) is declared afterwards.
+    (repo / "STATUS.json").write_text(json.dumps({"milestones": {"c9": {"implementation": "REVIEW_READY"}}}))
+    git(repo, "add", ".")
+    git(repo, "commit", "-q", "-m", "evidence")  # the disposable repository has no hooks installed
+    commit = git(repo, "rev-parse", "HEAD").stdout.strip()
+    status["milestones"]["c9"]["pinned_shared"] = {"commit": commit, "hashes": {"tools/milestones.py": tool}}
+    return status, commit, tool
+
+
+def test_pinned_shared_tool_may_evolve_while_owned_files_stay_frozen(repo):
+    status, _, _ = pin_shared_tool(repo)
+    (repo / "STATUS.json").write_text(json.dumps(status))
+    git(repo, "add", "STATUS.json")
+    assert check(repo) == []
+    git(repo, "commit", "-q", "-m", "pin")
+    (repo / "tools/milestones.py").write_text("TOOL = 2\n")
+    git(repo, "add", "tools/milestones.py")
+    assert check(repo) == []
+    (repo / "geomind/c9.py").write_text("answer = 2\n")
+    assert any("accepted file changed: geomind/c9.py" in p for p in check(repo))
+
+
+def test_only_shared_tooling_can_be_pinned(repo):
+    status, commit, tool = pin_shared_tool(repo)
+    entry = status["milestones"]["c9"]
+    own = entry["frozen_hashes"]["geomind/c9.py"]
+    swapped = {**entry, "frozen_hashes": {"tools/milestones.py": tool},
+               "pinned_shared": {"commit": commit, "hashes": {"geomind/c9.py": own}}}
+    (repo / "STATUS.json").write_text(json.dumps({"milestones": {"c9": swapped}}))
+    assert any("only shared pipeline tooling" in p for p in check(repo))
+
+
+def test_pinned_inventory_must_complete_the_receipt_and_match_the_commit(repo):
+    status, commit, tool = pin_shared_tool(repo)
+    entry = status["milestones"]["c9"]
+    unpinned = {k: v for k, v in entry.items() if k != "pinned_shared"}
+    (repo / "STATUS.json").write_text(json.dumps({"milestones": {"c9": unpinned}}))
+    assert any("freeze inventory differs" in p for p in check(repo))
+    wrong = {**entry, "pinned_shared": {"commit": commit, "hashes": {"tools/milestones.py": "0" * 64}}}
+    (repo / "STATUS.json").write_text(json.dumps({"milestones": {"c9": wrong}}))
+    assert any("does not hold the accepted version" in p for p in check(repo))
+    overlap = {**entry, "frozen_hashes": {**entry["frozen_hashes"], "tools/milestones.py": tool}}
+    (repo / "STATUS.json").write_text(json.dumps({"milestones": {"c9": overlap}}))
+    assert any("freeze inventory differs" in p for p in check(repo))
+
+
+def test_committed_pin_cannot_be_dropped_later(repo):
+    status, _, _ = pin_shared_tool(repo)
+    (repo / "STATUS.json").write_text(json.dumps(status))
+    git(repo, "add", "STATUS.json")
+    git(repo, "commit", "-q", "-m", "pin")
+    entry = {k: v for k, v in status["milestones"]["c9"].items() if k != "pinned_shared"}
+    (repo / "STATUS.json").write_text(json.dumps({"milestones": {"c9": entry}}))
+    assert any("cannot be removed or changed" in p for p in check(repo))
+
+
+def test_guard_tooling_list_matches_the_pipeline():
+    from tools import accepted_freeze, milestones
+    assert tuple(accepted_freeze.TOOLING) == tuple(milestones.TOOLING)

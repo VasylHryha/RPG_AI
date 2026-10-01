@@ -55,6 +55,8 @@ GeoMind research workspace. Authority: `GEOMIND_GEOMETRIC_AI_QUALITY_STANDARD_R4
 
 **Bound by accepted receipts:** the C1 R006 and C2 R002 receipts bind every file listed in their `results.json` `file_hashes`. That includes `tools/gate.py`, `tools/gate_hook.py`, `tools/precommit.py`, `tools/mutation_probe.py`, `tools/verify_milestone.py`, `tools/verify_c2.py`, `tools/c1_mutants.py`, the C2 tools, `tests/test_gate.py`, `tests/test_c2*.py` and the C2 sources. **Never edit them**; add new files instead. Check with the identity snippet in `docs/PROCESS_REVIEW.md` or by comparing against `file_hashes`.
 
+**C4 R003** is independently accepted (`evidence/c4_r003_review_codex/INDEPENDENT_REVIEW.md`). Its ten own files (`experiments/c4_manifest.json`, `geomind/c4_*.py`, `geomind/run_c4.py`, `tests/test_c4.py`, `tools/c4_mutants.py`, `milestones/c4.json`, `pyproject.toml`, `uv.lock`) are frozen at the hashes in `STATUS.json`, which `tools/accepted_freeze.py` enforces at commit. The shared pipeline tools (`tools/milestones.py`, `tools/verify.py`, `tools/milestone_mutation.py`) are **pinned** to the accepted evidence commit instead (`pinned_shared`): they may be improved for later milestones, and git history keeps the exact versions that produced C4.
+
 Open low notes for a future C1 revision, not blocking: R1 (`_validate_delta` should require `type(edge) is Constraint`) and R2 (state the re-anchoring cost in receipt-generated limits).
 
 ## Known gaps (by design, documented)
@@ -64,7 +66,8 @@ Open low notes for a future C1 revision, not blocking: R1 (`_validate_delta` sho
 
 ## Never
 
-- Modify accepted code, receipt-bound files or committed evidence receipts (`evidence/*/results.json`, `evidence/c0_review/`).
+- Modify accepted code, receipt-bound files or committed evidence receipts (`evidence/*/results.json`, `evidence/c0_review/`). The only exception is shared pipeline tooling that an acceptance explicitly pins (`pinned_shared`) instead of freezing.
+- Change or remove committed freeze metadata in `STATUS.json`.
 - Run the C0 world experiment (`geomind.run_c0`) unless explicitly asked.
 - Start a milestone whose proposal the owner has not approved, or C3 (not authorized after the C2 stop decision).
 - Assign numeric quality scores (such as 9/10).

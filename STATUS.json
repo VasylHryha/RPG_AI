@@ -31,11 +31,33 @@
     },
     "c4": {
       "title": "Base resonator: geometry-mode closure",
-      "implementation": "REVIEW_READY",
+      "implementation": "ACCEPTED",
       "revision": "R003",
       "proposal": "experiments/c4_proposal.md",
-      "review": "evidence/c4_r003/HANDOFF.md",
-      "outcome": "R003 (fixes R002 review R1/R2): gates PASS; identical arm formation 20/20, G->M and M->G PASS, dose-response PASS; H-M and H-C precursor SUPPORTED_WITHIN_SCOPE pending Codex review. Heterogeneous arm formation 5/20, INCONCLUSIVE. R002 CHANGES_REQUIRED, R001 withdrawn"
+      "review": "evidence/c4_r003_review_codex/INDEPENDENT_REVIEW.md",
+      "outcome": "Independently accepted by Codex; R002 recovery and verdict-rule findings fixed. Identical arm: formation 20/20, two-way causality and dose-response PASS, 39/39 effective units within bounds; H-M and H-C precursor SUPPORTED_WITHIN_SCOPE. Heterogeneous arm: formation 5/20, H-M INCONCLUSIVE, H-C precursor NOT_SUPPORTED. No hierarchy, task or efficiency claim. Owner decision: C4's own files are frozen; shared pipeline tools are pinned to the accepted evidence commit",
+      "accepted_receipt": "evidence/c4_r003/results.json",
+      "accepted_results_sha256": "5a95025fc65487e00cf1012044535745fe212077d9b2f0ed2683b5ad6b42b1ab",
+      "frozen_hashes": {
+        "experiments/c4_manifest.json": "8e9878107814a126fced5b7e1110888e357fad9fa250985e88e52fcefa4d5684",
+        "geomind/c4_detect.py": "ba7fd94efc0edf028df137dc617666c9b8540b914ab4fca1ce793c84d78aacb8",
+        "geomind/c4_experiment.py": "53dc126a2c7c485e41273515c932fb91d113504b8e8351403b5d06cb0d11fc24",
+        "geomind/c4_model.py": "4fafc161b65914a44dccaca6caefb59a5154079f17f564b4cdc4d44f58c59d33",
+        "geomind/run_c4.py": "248b02f7f7d41eae6363995d08c1f060620e115214d24c48cd32a54da743658e",
+        "milestones/c4.json": "c157fa9cf2420c4456f603f0bd5409bd3b0237069e117daff789c7117b2d61ce",
+        "pyproject.toml": "b13af15c4b02a76b429da4d76965cddf66f73d59198bca80d01fab7b51c705e2",
+        "tests/test_c4.py": "005954fa311b7292d5044f8aedb0a931bd102346506d1add6e4dd67e45b43f61",
+        "tools/c4_mutants.py": "b037031b7cdd27e2f65f816df333f9b0bc52a1f1860a3b01eacd2c7d5fe27a51",
+        "uv.lock": "284881c4c71c8282aca81e9053794d2b0333f9ab10b21d9e425cba13bec918c8"
+      },
+      "pinned_shared": {
+        "commit": "a774d441f0409b7010a7321e52976539f48ca435",
+        "hashes": {
+          "tools/milestones.py": "f389ba5e7ff4d0249e53a3b0bb7d0a7600833926dd698c155956ce0632fb34af",
+          "tools/verify.py": "5d6a986c5d1371b70d27acd3bf3923e903e6cf78ee030444b2bc94ad02ae0d75",
+          "tools/milestone_mutation.py": "a49d4e7025d4d37aa80545815f9d038a31db73a4fc161375fd7d93b65c8baef2"
+        }
+      }
     },
     "c5": {
       "title": "Many resonators form one effective resonator",

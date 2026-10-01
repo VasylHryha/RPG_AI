@@ -5,6 +5,15 @@ committed accepted receipt. A committed freeze cannot be removed from STATUS,
 and its receipt or bound files cannot be changed even by staging a different
 version and then restoring the working file. Legacy entries without freeze
 metadata retain their existing checks. This guard never writes files or stamps.
+
+Shared generic pipeline tools (tools/milestones.py TOOLING) serve every later
+milestone, so an acceptance may pin them instead of freezing them:
+"pinned_shared": {"commit": <sha>, "hashes": {path: sha256}}. The frozen and
+pinned inventories must be disjoint and together equal the receipt's
+file_hashes; pinned paths must be shared tooling; the pinned commit must be in
+HEAD's history and hold the accepted receipt and every pinned file at its
+recorded hash. Pinned files may then evolve in later commits, while git history
+keeps the exact accepted versions.
 """
 
 import argparse
@@ -16,7 +25,10 @@ import subprocess
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
-FIELDS = ("accepted_receipt", "accepted_results_sha256", "frozen_hashes")
+# Shared generic pipeline tooling; equal to tools/milestones.py TOOLING (a test checks this). Kept local so the
+# guard stays self-contained.
+TOOLING = ("tools/milestones.py", "tools/verify.py", "tools/milestone_mutation.py")
+FIELDS = ("accepted_receipt", "accepted_results_sha256", "frozen_hashes", "pinned_shared")
 DIGEST = re.compile(r"[0-9a-f]{64}\Z")
 
 
@@ -31,7 +43,7 @@ def read(root, snapshot, name):
         raise ValueError(f"invalid repository path {name!r}")
     if snapshot == "working":
         return (root / name).read_bytes()
-    spec = f"HEAD:{name}" if snapshot == "HEAD" else f":{name}"
+    spec = f"HEAD:{name}" if snapshot == "HEAD" else f":{name}" if snapshot == "index" else f"{snapshot}:{name}"
     result = subprocess.run(["git", "show", spec], cwd=root, capture_output=True)
     if result.returncode:
         raise ValueError(f"{snapshot}: missing {name}")
@@ -58,6 +70,24 @@ def validate_review(root, snapshot, entry, receipt, digest):
     implementer = receipt["manifest"]["implementer_family"]
     if not family or (family[1].lower() == implementer.lower() and "SAME-FAMILY REVIEW" not in report):
         raise ValueError("acceptance review must declare an independent reviewer family")
+
+
+def pinned_inventory(root, entry, receipt_path, digest):
+    """Validated {path: sha256} of shared tooling pinned by commit rather than frozen ({} when absent)."""
+    pinned = entry.get("pinned_shared")
+    if pinned is None:
+        return {}
+    commit, hashes = pinned.get("commit"), pinned.get("hashes")
+    if not isinstance(commit, str) or not re.fullmatch(r"[0-9a-f]{40}", commit) or not isinstance(hashes, dict) or not hashes:
+        raise ValueError("pinned_shared needs a full commit sha and a nonempty hash inventory")
+    if not set(hashes) <= set(TOOLING):
+        raise ValueError("only shared pipeline tooling may be pinned instead of frozen: " + ", ".join(sorted(set(hashes) - set(TOOLING))))
+    if subprocess.run(["git", "merge-base", "--is-ancestor", commit, "HEAD"], cwd=root, capture_output=True).returncode:
+        raise ValueError("pinned commit is not in HEAD's history")
+    for path, expected in {receipt_path: digest, **hashes}.items():
+        if hashlib.sha256(read(root, commit, path)).hexdigest() != expected:
+            raise ValueError(f"pinned commit does not hold the accepted version of {path}")
+    return hashes
 
 
 def check(root=ROOT):
@@ -99,7 +129,8 @@ def check(root=ROOT):
             if (receipt.get("check_status") != "PASS" or receipt.get("complete") is not True
                     or not receipt.get("gates") or not all(v is True for v in receipt["gates"].values())):
                 raise ValueError("accepted receipt must be complete with passing gates")
-            if hashes != receipt.get("file_hashes"):
+            pinned = pinned_inventory(root, entry, receipt_path, digest)
+            if set(hashes) & set(pinned) or {**hashes, **pinned} != receipt.get("file_hashes"):
                 raise ValueError("freeze inventory differs from the committed receipt")
             if any(not safe_path(path) or not isinstance(h, str) or not DIGEST.fullmatch(h)
                    for path, h in hashes.items()):
