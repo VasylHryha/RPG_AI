@@ -345,18 +345,32 @@ def evaluate_arm(records, manifest, rng):
         "m_to_g": causality["m_to_g"],
         "dose_response": dose,
         "g_to_m_channels": channels,
-        "not_a_clump": {**clump, "verdict": "PASS" if clump["accepted_resonators"] == 0 else "FAIL"},
+        "not_a_clump": {**clump, "verdict": ("FAIL" if clump["accepted_resonators"] else
+                                             "PASS" if clump["candidates"] else "NOT_TESTED")},
         "effective_state": effective_state,
         "ablation_formation": {k: v for k, v in records["ablation_formation"].items() if k != "clump"},
     }
 
 
 def hypothesis_verdicts(arm_eval, rules):
-    formation_ok = arm_eval["formation"]["fraction"] >= rules["formation_min_fraction"]
+    """The registered truth table (manifest verdict_rules.truth_table), applied per arm, rows in order.
+
+    H-M:
+      1. g_to_m, m_to_g or dose_response is FAIL                      -> NOT_SUPPORTED
+      2. formation PASS and g_to_m, m_to_g, dose_response all PASS     -> SUPPORTED_WITHIN_SCOPE
+      3. otherwise (formation FAIL, fewer than min_worlds formed worlds,
+         or any INCONCLUSIVE endpoint)                                  -> INCONCLUSIVE
+      Formation failure is reported by its own endpoint; too few resonators is no evidence about
+      their two-way coupling, so it never makes H-M NOT_SUPPORTED.
+    H-C precursor:
+      1. effective_state is FAIL                                       -> NOT_SUPPORTED
+      2. H-M SUPPORTED_WITHIN_SCOPE and effective_state PASS           -> SUPPORTED_WITHIN_SCOPE
+      3. otherwise                                                     -> INCONCLUSIVE
+    """
     causal = (arm_eval["g_to_m"]["verdict"], arm_eval["m_to_g"]["verdict"], arm_eval["dose_response"]["verdict"])
     if "FAIL" in causal:
         h_m = "NOT_SUPPORTED"
-    elif formation_ok and causal == ("PASS", "PASS", "PASS"):
+    elif arm_eval["formation"]["verdict"] == "PASS" and causal == ("PASS", "PASS", "PASS"):
         h_m = "SUPPORTED_WITHIN_SCOPE"
     else:
         h_m = "INCONCLUSIVE"

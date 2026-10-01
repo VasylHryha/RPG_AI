@@ -1,6 +1,7 @@
 """Focused C4 contracts: model, ablations, interventions, detector, statistics, runner and registration."""
 
 import copy
+from unittest.mock import patch
 import inspect
 import json
 from dataclasses import replace
@@ -182,7 +183,7 @@ def test_mini_run_covers_every_endpoint_and_passes_gates(mini_run):
     assert all(body["gates"].values()), body["gates"]
     assert set(body["endpoint_coverage"]["evaluated"]) == set(m["endpoints"]) and not body["endpoint_coverage"]["not_run"]
     for value in body["endpoint_coverage"]["evaluated"].values():
-        assert value["verdict"] in ("PASS", "FAIL", "INCONCLUSIVE", "REPORTED")
+        assert value["verdict"] in ("PASS", "FAIL", "INCONCLUSIVE", "REPORTED", "NOT_TESTED")
 
 
 def test_mini_run_detects_resonators_rejects_clumps_and_measures_two_way_effects(mini_run):
@@ -213,6 +214,7 @@ def test_detector_receives_no_labels():
 def test_active_unit_boundary_ports_are_the_hull():
     x = np.array([[0.0, 0.0], [2.0, 0.0], [2.0, 2.0], [0.0, 2.0], [1.0, 1.0]])
     stats = {k: 0.0 for k in ("membership_jaccard", "shape_cv", "lock_std", "freq_change", "pattern_change", "recovery_jaccard",
+                              "recovery_original_to_control", "recovery_original_to_kicked", "recovery_control_to_kicked",
                               "recovery_pattern_error", "state_error_position", "state_error_size", "state_error_frequency")}
     unit = active_unit(x, np.zeros(5), 0.0, np.arange(5), stats)
     assert len(unit["boundary_ports"]) == 4 and unit["effective_position"] == [1.0, 1.0]
@@ -236,16 +238,29 @@ def test_statistics_and_verdict_rules():
     assert dose_response_verdict(doses, {"ci": [0.1, 0.4], "n_worlds": 9}, 10) == "INCONCLUSIVE"
     rules = MANIFEST["verdict_rules"]
 
-    def arm(fraction, gm, mg, state, dose="PASS"):
-        return {"formation": {"fraction": fraction}, "g_to_m": {"verdict": gm}, "m_to_g": {"verdict": mg},
-                "dose_response": {"verdict": dose}, "effective_state": {"verdict": state}}
+    def verdicts(formation, gm, mg, dose, state):
+        arm = {"formation": {"verdict": formation}, "g_to_m": {"verdict": gm}, "m_to_g": {"verdict": mg},
+               "dose_response": {"verdict": dose}, "effective_state": {"verdict": state}}
+        out = hypothesis_verdicts(arm, rules)
+        return out["H-M"], out["H-C_precursor"]
 
-    assert hypothesis_verdicts(arm(0.9, "PASS", "PASS", "PASS"), rules) == {"H-M": "SUPPORTED_WITHIN_SCOPE", "H-C_precursor": "SUPPORTED_WITHIN_SCOPE"}
-    assert hypothesis_verdicts(arm(0.9, "PASS", "FAIL", "PASS"), rules)["H-M"] == "NOT_SUPPORTED"
-    assert hypothesis_verdicts(arm(0.9, "PASS", "PASS", "PASS", dose="FAIL"), rules)["H-M"] == "NOT_SUPPORTED"
-    assert hypothesis_verdicts(arm(0.9, "PASS", "PASS", "PASS", dose="INCONCLUSIVE"), rules)["H-M"] == "INCONCLUSIVE"
-    assert hypothesis_verdicts(arm(0.5, "PASS", "PASS", "PASS"), rules) == {"H-M": "INCONCLUSIVE", "H-C_precursor": "INCONCLUSIVE"}
-    assert hypothesis_verdicts(arm(0.9, "PASS", "PASS", "FAIL"), rules)["H-C_precursor"] == "NOT_SUPPORTED"
+    S, N, I = "SUPPORTED_WITHIN_SCOPE", "NOT_SUPPORTED", "INCONCLUSIVE"
+    # The registered truth table, row by row (manifest verdict_rules.truth_table).
+    assert verdicts("PASS", "PASS", "PASS", "PASS", "PASS") == (S, S)
+    for failing in range(3):
+        endpoints = ["PASS", "PASS", "PASS"]
+        endpoints[failing] = "FAIL"
+        assert verdicts("PASS", *endpoints, "PASS") == (N, I)
+        assert verdicts("FAIL", *endpoints, "PASS") == (N, I)  # an endpoint FAIL wins over formation failure
+    endpoints_mixed = ("FAIL", "INCONCLUSIVE", "PASS")
+    assert verdicts("PASS", *endpoints_mixed, "PASS")[0] == N
+    assert verdicts("FAIL", "PASS", "PASS", "PASS", "PASS") == (I, I)  # formation failure alone is inconclusive
+    assert verdicts("FAIL", "INCONCLUSIVE", "INCONCLUSIVE", "INCONCLUSIVE", "INCONCLUSIVE") == (I, I)  # too few worlds
+    assert verdicts("PASS", "PASS", "INCONCLUSIVE", "PASS", "PASS") == (I, I)
+    assert verdicts("PASS", "PASS", "PASS", "PASS", "FAIL") == (S, N)
+    assert verdicts("FAIL", "INCONCLUSIVE", "INCONCLUSIVE", "INCONCLUSIVE", "FAIL") == (I, N)
+    assert verdicts("PASS", "PASS", "PASS", "PASS", "INCONCLUSIVE") == (S, I)
+    assert set(rules["truth_table"]) == {"H-M", "H-C_precursor"}
 
 
 def test_registration_and_seed_separation(tmp_path, monkeypatch):
@@ -336,7 +351,7 @@ def test_endpoint_evaluation_on_synthetic_records():
     effects = [synthetic_effect(1 + 0.05 * i) for i in range(10)] + [None]
     ok = evaluate_arm(synthetic_records(effects, [True] * 11), m, rng)
     assert ok["formation"]["fraction"] == 10 / 11 and ok["formation"]["verdict"] == "PASS"
-    assert ok["g_to_m"]["verdict"] == ok["m_to_g"]["verdict"] == "PASS" and ok["not_a_clump"]["verdict"] == "PASS"
+    assert ok["g_to_m"]["verdict"] == ok["m_to_g"]["verdict"] == "PASS"
     assert ok["dose_response"]["verdict"] == "PASS"
     assert ok["g_to_m_channels"]["frozen_topology"]["fraction_of_intact"] == pytest.approx(
         0.019 / (0.02 * np.mean([1 + 0.05 * i for i in range(10)])), rel=1e-12)
@@ -344,6 +359,7 @@ def test_endpoint_evaluation_on_synthetic_records():
     assert hypothesis_verdicts(ok, m["verdict_rules"]) == {"H-M": "SUPPORTED_WITHIN_SCOPE", "H-C_precursor": "SUPPORTED_WITHIN_SCOPE"}
     reversed_dose = [synthetic_effect(1 + 0.05 * i, dose_order=(0.04, 0.02, 0.005)) for i in range(10)]
     assert evaluate_arm(synthetic_records(reversed_dose, [True] * 10), m, rng)["dose_response"]["verdict"] == "FAIL"
+    assert ok["not_a_clump"]["verdict"] == "NOT_TESTED"  # no clump candidates: nothing was tested
     bad = evaluate_arm(synthetic_records(effects[:7] + [None] * 3, [True] * 5 + [False] * 5, clump_accepted=1), m, rng)
     assert bad["formation"]["verdict"] == "FAIL" and bad["not_a_clump"]["verdict"] == "FAIL"
     assert bad["g_to_m"]["verdict"] == "INCONCLUSIVE"  # 7 worlds < 10
@@ -356,8 +372,40 @@ def test_implementation_gates():
     records = {a: {"worlds": [{}] * 3} for a in ARMS}
     coverage = {"evaluated": dict.fromkeys(m["endpoints"]), "not_run": {}}
     assert all(run_c4.implementation_gates(m, records, clean, {"verdict": "PASS"}, coverage, 3).values())
+    vacuous_secondary = {**clean, "heterogeneous": {"not_a_clump": {"verdict": "NOT_TESTED"}}}
+    assert run_c4.implementation_gates(m, records, vacuous_secondary, {"verdict": "PASS"}, coverage, 3)["detector_rejects_clumps"]
+    vacuous_primary = {**clean, "identical": {"not_a_clump": {"verdict": "NOT_TESTED"}}}
+    assert not run_c4.implementation_gates(m, records, vacuous_primary, {"verdict": "PASS"}, coverage, 3)["detector_rejects_clumps"]
     dirty = {**clean, "heterogeneous": {"not_a_clump": {"verdict": "FAIL"}}}
     assert run_c4.implementation_gates(m, records, dirty, {"verdict": "PASS"}, coverage, 3) == {
         "complete_panel": True, "numerical_checks": True, "detector_rejects_clumps": False, "endpoint_coverage": True}
     assert run_c4.implementation_gates(m, records, clean, {"verdict": "FAIL"}, {"evaluated": {}, "not_run": {}}, 4) == {
         "complete_panel": False, "numerical_checks": False, "detector_rejects_clumps": True, "endpoint_coverage": False}
+
+
+def recovery_case(future_end):
+    """A stationary, phase-locked six-member group whose recovery futures (control and kicked) both end at
+    future_end; the integration is replaced so only the detector's recovery logic is exercised."""
+    x = np.array([[0., 0.], [1., 0.], [2., 0.], [0., 1.], [1., 1.], [2., 1.]])
+    xs, ths = np.repeat(x[None, None], 31, axis=0), np.zeros((31, 1, 6))
+
+    def future(bx, bt, bw, params, dt, steps, **kw):
+        return np.repeat(future_end[None], len(bx), axis=0), np.zeros_like(bt), None
+
+    with patch("geomind.c4_detect.simulate", future):
+        return detect(xs, ths, np.zeros((1, 6)), INTACT, 0.02, 1.0, MANIFEST["detector"], [np.random.default_rng(1)])[0][0]
+
+
+def test_recovery_rejects_a_group_that_fragments_in_both_futures():
+    # Codex review R1 (C4 R002): identical fragmentation in control and kicked futures must not count as recovery.
+    split = np.array([[0., 0.], [.5, 0.], [0., .5], [10., 0.], [10.5, 0.], [10., .5]])
+    case = recovery_case(split)
+    assert not case["accepted"] and case["failed"] == ["5_recovery"]
+    assert case["stats"]["recovery_original_to_control"] == 0.5 and case["stats"]["recovery_original_to_kicked"] == 0.5
+    assert case["stats"]["recovery_control_to_kicked"] == 1.0 and case["stats"]["recovery_jaccard"] == 0.5
+
+
+def test_recovery_accepts_a_group_that_stays_whole():
+    whole = np.array([[0., 0.], [.5, 0.], [1., 0.], [0., .5], [.5, .5], [1., .5]])
+    case = recovery_case(whole)
+    assert case["accepted"] and case["stats"]["recovery_jaccard"] == 1.0

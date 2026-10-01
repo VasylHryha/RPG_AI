@@ -17,10 +17,13 @@ evaluator data. A group is a resonator only if all five R4 criteria hold:
 4. reproducible signature: the collective frequency differs by <= freq_tol
    and the pairwise phase pattern by <= pattern_tol between window halves;
 5. recovery: after a bounded kick of fixed size (positions: RMS
-   kick_position x spacing; phases: zero-mean, RMS kick_phase), the group
-   returns within the recovery time to the unkicked control's membership
-   (Jaccard >= recovery_jaccard) and phase pattern (max pairwise
-   difference <= pattern_tol).
+   kick_position x spacing; phases: zero-mean, RMS kick_phase), the
+   original group is still present at the end of the recovery time in both
+   the unkicked control future and the kicked future, and those two
+   components agree (each of the three Jaccard scores >= recovery_jaccard).
+   The kicked group's phase pattern also matches the control's (max
+   pairwise difference <= pattern_tol). A group that fragments or merges,
+   even the same way in both futures, does not recover.
 
 Criterion 5 separates a resonator from a clump: without phase coupling a
 kicked phase pattern has no restoring force. The kick has fixed size, so a
@@ -174,9 +177,14 @@ def detect(xs, ths, omega, params, dt, frame_dt, thresholds, rngs):
             control_labels = components(end_x[b], t["link_factor"], locks[b])
             control_members = max((np.flatnonzero(control_labels == c) for c in np.unique(control_labels)),
                                   key=lambda m: jaccard(members, m))
-            kicked_jaccard, _ = best_match(end_x[worlds + n], control_members, t["link_factor"], locks[b])
+            original_to_control = jaccard(members, control_members)
+            original_to_kicked, _ = best_match(end_x[worlds + n], members, t["link_factor"], locks[b])
+            control_to_kicked, _ = best_match(end_x[worlds + n], control_members, t["link_factor"], locks[b])
             difference = pair_differences(end_th[worlds + n], members) - pair_differences(end_th[b], members)
-            stats["recovery_jaccard"] = float(kicked_jaccard)
+            stats["recovery_original_to_control"] = float(original_to_control)
+            stats["recovery_original_to_kicked"] = float(original_to_kicked)
+            stats["recovery_control_to_kicked"] = float(control_to_kicked)
+            stats["recovery_jaccard"] = float(min(original_to_control, original_to_kicked, control_to_kicked))
             stats["recovery_pattern_error"] = float(np.abs(wrap(difference)).max())
     results = [[] for _ in range(worlds)]
     for b, members, stats in candidates:
@@ -209,7 +217,8 @@ def active_unit(x, th, omega_estimate, members, stats):
         },
         "boundary_ports": [X[i].tolist() for i in hull],
         "stability": {k: stats[k] for k in ("membership_jaccard", "shape_cv", "lock_std", "freq_change", "pattern_change",
-                                            "recovery_jaccard", "recovery_pattern_error", "state_error_position",
+                                            "recovery_jaccard", "recovery_original_to_control", "recovery_original_to_kicked",
+                                            "recovery_control_to_kicked", "recovery_pattern_error", "state_error_position",
                                             "state_error_size", "state_error_frequency")},
     }
 

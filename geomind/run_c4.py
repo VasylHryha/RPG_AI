@@ -76,7 +76,9 @@ def implementation_gates(manifest, records, evaluations, numerics, coverage, wor
     return {
         "complete_panel": all(len(records[a]["worlds"]) == worlds_per_arm for a in ARMS),
         "numerical_checks": numerics["verdict"] == "PASS",
-        "detector_rejects_clumps": all(evaluations[a]["not_a_clump"]["verdict"] == "PASS" for a in ARMS),
+        # No arm may accept a clump, and the primary arm must actually test the detector on clump candidates.
+        "detector_rejects_clumps": (all(evaluations[a]["not_a_clump"]["verdict"] != "FAIL" for a in ARMS)
+                                    and evaluations["identical"]["not_a_clump"]["verdict"] == "PASS"),
         "endpoint_coverage": set(coverage["evaluated"]) | set(coverage["not_run"]) == set(manifest["endpoints"]),
     }
 
