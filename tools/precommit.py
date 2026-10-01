@@ -34,9 +34,10 @@ def problems_for(path):
     problems = []
     if [s.get("stage") for s in record.get("stages", [])] != REQUIRED:
         problems.append(f"{path}: PIPELINE.json does not cover every stage through the panel")
+    milestone = match[1]
     if record.get("fingerprint") != gate.fingerprint():
         problems.append(f"{path}: PIPELINE.json was produced for different code than is being committed")
-    missing = [s for s in REQUIRED if s not in gate.verified()]
+    missing = [s for s in REQUIRED if s not in gate.verified(milestone)]
     if missing:
         problems.append(f"{path}: stamped artifacts do not re-verify for: {', '.join(missing)}")
     return problems

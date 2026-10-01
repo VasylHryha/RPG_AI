@@ -25,6 +25,8 @@ import gate  # noqa: E402
 # Editing or grepping these paths is allowed.
 INTERPRETER = r"\bpython[0-9.]*\s+(?:-\S+\s+)*"
 STAGES = (("panel", re.compile(INTERPRETER + r"(?:-m\s+geomind\.run_c1\b|(?:\S*/)?geomind/run_c1\.py\b)")),
+          ("panel", re.compile(INTERPRETER + r"(?:-m\s+geomind\.run_c2\b|(?:\S*/)?geomind/run_c2\.py\b)")),
+          ("mutation", re.compile(INTERPRETER + r"(?:\S*/)?tools/c2_mutation_probe\.py\b")),
           ("mutation", re.compile(INTERPRETER + r"(?:\S*/)?tools/mutation_probe\.py\b")),
           ("mutation", re.compile(INTERPRETER + r"(?:\S*/)?mutation_checks\.py\b.*--live")))
 NO_VERIFY = re.compile(r"\bgit\b[^\n;&|]*\bcommit\b[^\n;&|]*--no-verify")
@@ -39,7 +41,8 @@ def decide(payload):
             return "git commit --no-verify skips the evidence guard; commit normally."
         for stage, pattern in STAGES:
             if pattern.search(command):
-                problems = gate.check(stage)
+                milestone = "c2" if "run_c2" in pattern.pattern or "c2_mutation_probe" in pattern.pattern else "c1"
+                problems = gate.check(stage, milestone=milestone) if milestone == "c2" else gate.check(stage)
                 if problems:
                     return f"Gate blocked the {stage} stage. " + " ".join(problems)
     if tool in ("Agent", "Task") and "independent reviewer" in (data.get("prompt") or "").lower():

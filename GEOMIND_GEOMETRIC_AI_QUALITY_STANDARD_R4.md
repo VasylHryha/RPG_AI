@@ -2,7 +2,7 @@
 title: "GeoMind — Geometry, Dynamics, Memory: Research and Quality Standard"
 revision: R4
 date: 2026-10-01
-status: C1_REVIEW_READY
+status: C2_ACTIVE
 supersedes: "GEOMIND_GEOMETRIC_AI_QUALITY_STANDARD_R3.md in full"
 research_status: "C0 reconstruction evaluated locally; hypotheses await independent interpretation and no hierarchy implemented"
 companion: GEOMIND_GEOTACTICS_ASTELIA_EXPERIMENT_PLAN_R3.md
@@ -18,7 +18,7 @@ This revision replaces R3 rather than appending a competing hierarchy note. R3 c
 
 | Item | Record |
 |---|---|
-| Current work | C0 R003 and C1 R006 independently ACCEPTED (`evidence/c0_review/ACCEPTANCE.md`, `evidence/c1_r006_independent/INDEPENDENT_REVIEW.md`); earlier C1 revisions CHANGES_REQUIRED and retained; C2 not started |
+| Current work | C0 R003 and C1 R006 independently ACCEPTED (`evidence/c0_review/ACCEPTANCE.md`, `evidence/c1_r006_independent/INDEPENDENT_REVIEW.md`, independently confirmed in its `CONFIRMATION.md`); earlier C1 revisions CHANGES_REQUIRED and retained; C2 R001 ACTIVE, fixed registered experiment; C3 and hierarchy NOT_STARTED |
 | First core milestone | **C0 — reproducible structural-memory reference experiment**, ACCEPTED (R003) |
 | Last accepted GeoMind code | C0 R003 (`evidence/c0_review/ACCEPTANCE.md`); C1 R006 (`evidence/c1_r006_independent/INDEPENDENT_REVIEW.md`, commit 721249b) |
 | Checks executed locally | C1 R006 (gated pipeline, 185 s): tests 16.8s, smoke 0.8s, mutation 60.2s (29/33), panel 107.1s (all gates PASS). C1 R005: nineteen checks PASS; 80 interventions in 104.5s, all six gates PASS; queue arm 63 correct commits and 17 refusals, fallback arm 80 correct. C1 R004 (CHANGES_REQUIRED): fourteen checks PASS; 80 seed-varied interventions in 83.9s in two arms, all six gates PASS. Queue arm: 60 correct commits (zero relaxation steps) and 20 contradiction rollbacks. Fallback arm: 80 correct commits, 20 through the metered CG. Historical C1 R003: twelve checks PASS in 2.23s; 48 seed-varied interventions in 40.36s, 36 correct commits (all with zero relaxation steps) and 12 budget-exhausted rollbacks (every inconsistent edge), all six gates PASS. Historical C1 R002: ten checks PASS in 1.42s; 16 fresh interventions in 7.28s, 13 correct commits and three budget-exhausted rollbacks, all six gates PASS. Historical C1 R001: seven checks PASS in 3.64s; 16 interventions in 24.76s, five correct commits and 11 rollbacks. C0 revised contracts: 58 PASS in 8.60s; R003: all 11 gates PASS across 1,250 fresh worlds in 331.50s, zero solver/infrastructure failures. Receipts preserve failed checks separately |
@@ -197,6 +197,8 @@ Baselines: frozen random network; constant mean; ordinary linear regression; the
 **What this can support.** Reusable task learning by a local-response/weighted-geometry mechanism in a small, known model family. It does **not** establish moving-coordinate necessity, phase resonance, recursive scale closure, novel AI, or digital compute efficiency. In software, each sweep still processes all active edges; the local rule is not automatically a local-total-cost algorithm.
 
 **Review focus.** Exact update sign/factor, convergence error mistaken for learning, hidden target access, linear capacity, and candid relation to established learning algorithms.
+
+**Local C2 R001 execution:** ACTIVE, registered as `experiments/c2_manifest.json` before fitting. Fixed eta 0.01 and epoch 100; twenty independent initialization/data/order trials per task with 100/50/200 splits. A measured development NumPy phase cost of 30.3 ms warrants the authorized strict-float64 C++ synchronous relaxation kernel (`native/c2/relaxation.cpp`); Python owns snapshots and evaluator, and independent NumPy linear solves/implicit gradients own numerical controls. `tools/verify_c2.py` preserves separate C2 prerequisite stamps and runs focused checks, non-panel smoke, four focused numerical mutations and one recorded panel. C0/C1 world panels and the C1 mutation suite are not repeated. No C2 acceptance, C3 or hierarchy advancement follows from implementation checks.
 
 ### C3 — learning stability, then a bounded research decision
 

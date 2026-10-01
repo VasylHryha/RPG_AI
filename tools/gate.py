@@ -24,7 +24,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 STAMPS = ROOT / ".gate"
 ORDER = ("preflight", "tests", "smoke", "mutation", "panel", "review")
-SOURCE_GLOBS = ("geomind/*.py", "tests/*.py", "experiments/*.json", "tools/*.py", "pyproject.toml", "uv.lock")
+SOURCE_GLOBS = ("geomind/*.py", "tests/*.py", "experiments/*.json", "tools/*.py", "native/c2/*.cpp", "pyproject.toml", "uv.lock")
 
 
 def source_files():
@@ -59,11 +59,12 @@ def tree_problems():
     return problems
 
 
-def record(stage, artifacts=None, detail=None, code=None):
+def record(stage, artifacts=None, detail=None, code=None, milestone="c1"):
     """Stamp a passed stage with the SHA256 of each artifact that proves it."""
     code = code or fingerprint()
     STAMPS.mkdir(exist_ok=True)
-    path = STAMPS / f"{code}.json"
+    path = stamp_path(code, milestone)
+    path.parent.mkdir(parents=True, exist_ok=True)
     stamps = json.loads(path.read_text()) if path.exists() else {}
     stamps[stage] = {"artifacts": {str(Path(a).resolve().relative_to(ROOT)): sha256(a) for a in (artifacts or [])},
                      "commit": _git("rev-parse", "HEAD").strip(), **(detail or {})}
@@ -84,9 +85,15 @@ def _artifact_valid(stage, path):
     return True
 
 
-def verified():
+def stamp_path(code, milestone="c1"):
+    if milestone not in ("c1", "c2"):
+        raise ValueError("Unknown milestone")
+    return STAMPS / f"{code}.json" if milestone == "c1" else STAMPS / milestone / f"{code}.json"
+
+
+def verified(milestone="c1"):
     """Stages whose stamps match current artifacts; stops at the first broken link."""
-    path = STAMPS / f"{fingerprint()}.json"
+    path = stamp_path(fingerprint(), milestone)
     stamps = json.loads(path.read_text()) if path.exists() else {}
     good = []
     for stage in ORDER:
@@ -104,35 +111,41 @@ def verified():
     return good
 
 
-def revision():
-    experiment = json.loads((ROOT / "experiments/c1_manifest.json").read_text())["experiment_id"]
+def revision(milestone="c1"):
+    experiment = json.loads((ROOT / f"experiments/{milestone}_manifest.json").read_text())["experiment_id"]
     return "r" + experiment.rsplit("-", 1)[-1]
 
 
-def check(stage):
+def check(stage, milestone="c1"):
     """Reasons the stage must not start yet; empty when it may run."""
     problems = tree_problems()
-    done = verified()
+    done = verified(milestone)
     missing = [s for s in ORDER[:ORDER.index(stage)] if s not in done]
     if missing:
-        problems.append(f"earlier stages not verified for the current code: {', '.join(missing)}; run tools/verify_milestone.py")
+        runner = "tools/verify_milestone.py" if milestone == "c1" else "tools/verify_c2.py"
+        problems.append(f"earlier stages not verified for the current code: {', '.join(missing)}; run {runner}")
     if stage == "review":
-        report = ROOT / f"evidence/c1_{revision()}_independent/INDEPENDENT_REVIEW.md"
+        report = ROOT / f"evidence/{milestone}_{revision(milestone)}_independent/INDEPENDENT_REVIEW.md"
         if report.exists():
             problems.append(f"{report.relative_to(ROOT)} already exists: one independent review per revision; fix and register a new revision instead")
     return problems
 
 
 def main():
-    if sys.argv[1:] == ["status"]:
-        print(json.dumps({"fingerprint": fingerprint(), "revision": revision(), "verified": verified(), "tree_problems": tree_problems()}, indent=2))
+    args = sys.argv[1:]
+    milestone = "c1"
+    if args[:2] == ["--milestone", "c2"]:
+        milestone = "c2"
+        args = args[2:]
+    if args == ["status"]:
+        print(json.dumps({"fingerprint": fingerprint(), "milestone": milestone, "revision": revision(milestone), "verified": verified(milestone), "tree_problems": tree_problems()}, indent=2))
         return 0
-    if len(sys.argv) != 3 or sys.argv[1] != "check" or sys.argv[2] not in ORDER:
+    if len(args) != 2 or args[0] != "check" or args[1] not in ORDER:
         print(__doc__)
         return 2
-    problems = check(sys.argv[2])
+    problems = check(args[1], milestone)
     for problem in problems:
-        print(f"BLOCKED ({sys.argv[2]}): {problem}")
+        print(f"BLOCKED ({args[1]}): {problem}")
     return 1 if problems else 0
 
 
