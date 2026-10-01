@@ -1,0 +1,51 @@
+{
+ "results_sha256": "d769208dabe696f3f7e0ef9e4d17edcf652b12a33bc42a816239254b4ea44361",
+ "manifest_file_sha256": "6959cc6886fe59ff73203c3099baaf67566480eac8ee1083011cfd2b6b860754",
+ "manifest_digest_live": "80b987dea7e6955542a9104939504468048b5ebb4e2bd597549c96cc616ee40b",
+ "manifest_digest_receipt": "80b987dea7e6955542a9104939504468048b5ebb4e2bd597549c96cc616ee40b",
+ "manifest_equal": true,
+ "file_count": 21,
+ "live_mismatch": [],
+ "snapshot_mismatch": [],
+ "snapshot_extra": [],
+ "live_not_in_receipt": [],
+ "snapshot_hashes_equal": true,
+ "geomind/incremental.py": "093159523e7abdbd8c6a1be64039bc20241a9a447adfd6c41a2452516cb2b06b",
+ "geomind/run_c1.py": "ce9f93dffa5490c7c66ae9761bf7633ab8f9869fd15fdfdc8dc5f6e3e8d17ddc",
+ "geomind/c1_cases.py": "56f080e4e06eecdcfcc2910250003d9b5d5a745b37f32d65b564c7876348bf05",
+ "geomind/c1_reference.py": "e4d9439a69e65152cf04605f7aa7de0d878c2f27a530d5dc02ef148cac59279f",
+ "tests/test_c1.py": "13a8696215923e1a212a02a6f1cec7b4c7dc759abee59c504827a9e5a65c8ad6",
+ "geomind/geometry.py": "973740d321705d9c8633a6cd2da1696af91cec930e53bcb6b6b4831e280066f0",
+ "geomind/references.py": "771f9b355083240fa2bf1a5e713bb1f964f9fd493d7e485aa2d4ba1f5e5255f9",
+ "contracts_sha256": "a0b636a961be50f3f1b5e6ed1d0268b7269589e9b4ab42554ce47a9cf52a2ed2",
+ "contracts_receipt_sha256": "a0b636a961be50f3f1b5e6ed1d0268b7269589e9b4ab42554ce47a9cf52a2ed2",
+ "contracts_hashes_bound": true,
+ "contracts_scope": "geomind.c1.contracts.v4",
+ "contracts_cases": 14,
+ "contracts_failures": 0,
+ "instances_jsonl_equal": true,
+ "states_checked": 220,
+ "state_mismatch": [],
+ "states_missing": [],
+ "state_files": 160,
+ "c0_inputs": 12,
+ "c0_changed": [],
+ "c0_acceptance_bound": true,
+ "c0_results_sha256": "9e668784d62f7e1ee069abbae172a8263ee8adc5dcb33c67934a8ac3cb5ffd5f",
+ "gates": {
+  "contracts": true,
+  "complete_panel": true,
+  "correct_or_explicitly_unresolved": true,
+  "source_stable": true,
+  "contracts_stable": true,
+  "c0_acceptance_stable": true
+ },
+ "hypotheses": {
+  "H-L": {
+   "consistent_additive_in_memory_updates": "SUPPORTED_WITHIN_SCOPE",
+   "contradiction_resolution_by_local_queue": "NOT_SUPPORTED",
+   "durable_persistence": "NOT_TESTED: export/load are O(V+E) by design and reported separately"
+  },
+  "H-P": "INCONCLUSIVE"
+ }
+}

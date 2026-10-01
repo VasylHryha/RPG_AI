@@ -1,0 +1,121 @@
+32/consistent_edge/w0: PASS queue=PASS fallback=PASS
+32/inconsistent_edge/w0: PASS queue=NOT_CONVERGED fallback=PASS
+32/new_node/w0: PASS queue=PASS fallback=PASS
+32/bridge/w0: PASS queue=PASS fallback=PASS
+32/consistent_edge/w1: PASS queue=PASS fallback=PASS
+32/inconsistent_edge/w1: PASS queue=NOT_CONVERGED fallback=PASS
+32/new_node/w1: PASS queue=PASS fallback=PASS
+32/bridge/w1: PASS queue=PASS fallback=PASS
+32/consistent_edge/w2: PASS queue=PASS fallback=PASS
+32/inconsistent_edge/w2: PASS queue=NOT_CONVERGED fallback=PASS
+32/new_node/w2: PASS queue=PASS fallback=PASS
+32/bridge/w2: PASS queue=PASS fallback=PASS
+32/consistent_edge/w3: PASS queue=PASS fallback=PASS
+32/inconsistent_edge/w3: PASS queue=NOT_CONVERGED fallback=PASS
+32/new_node/w3: PASS queue=PASS fallback=PASS
+32/bridge/w3: PASS queue=PASS fallback=PASS
+32/consistent_edge/w4: PASS queue=PASS fallback=PASS
+32/inconsistent_edge/w4: PASS queue=NOT_CONVERGED fallback=PASS
+32/new_node/w4: PASS queue=PASS fallback=PASS
+32/bridge/w4: PASS queue=PASS fallback=PASS
+128/consistent_edge/w0: PASS queue=PASS fallback=PASS
+128/inconsistent_edge/w0: PASS queue=NOT_CONVERGED fallback=PASS
+128/new_node/w0: PASS queue=PASS fallback=PASS
+128/bridge/w0: PASS queue=PASS fallback=PASS
+128/consistent_edge/w1: PASS queue=PASS fallback=PASS
+128/inconsistent_edge/w1: PASS queue=NOT_CONVERGED fallback=PASS
+128/new_node/w1: PASS queue=PASS fallback=PASS
+128/bridge/w1: PASS queue=PASS fallback=PASS
+128/consistent_edge/w2: PASS queue=PASS fallback=PASS
+128/inconsistent_edge/w2: PASS queue=NOT_CONVERGED fallback=PASS
+128/new_node/w2: PASS queue=PASS fallback=PASS
+128/bridge/w2: PASS queue=PASS fallback=PASS
+128/consistent_edge/w3: PASS queue=PASS fallback=PASS
+128/inconsistent_edge/w3: PASS queue=NOT_CONVERGED fallback=PASS
+128/new_node/w3: PASS queue=PASS fallback=PASS
+128/bridge/w3: PASS queue=PASS fallback=PASS
+128/consistent_edge/w4: PASS queue=PASS fallback=PASS
+128/inconsistent_edge/w4: PASS queue=NOT_CONVERGED fallback=PASS
+128/new_node/w4: PASS queue=PASS fallback=PASS
+128/bridge/w4: PASS queue=PASS fallback=PASS
+512/consistent_edge/w0: PASS queue=PASS fallback=PASS
+512/inconsistent_edge/w0: PASS queue=NOT_CONVERGED fallback=PASS
+512/new_node/w0: PASS queue=PASS fallback=PASS
+512/bridge/w0: PASS queue=PASS fallback=PASS
+512/consistent_edge/w1: PASS queue=PASS fallback=PASS
+512/inconsistent_edge/w1: PASS queue=NOT_CONVERGED fallback=PASS
+512/new_node/w1: PASS queue=PASS fallback=PASS
+512/bridge/w1: PASS queue=PASS fallback=PASS
+512/consistent_edge/w2: PASS queue=PASS fallback=PASS
+512/inconsistent_edge/w2: PASS queue=NOT_CONVERGED fallback=PASS
+512/new_node/w2: PASS queue=PASS fallback=PASS
+512/bridge/w2: PASS queue=PASS fallback=PASS
+512/consistent_edge/w3: PASS queue=PASS fallback=PASS
+512/inconsistent_edge/w3: PASS queue=NOT_CONVERGED fallback=PASS
+512/new_node/w3: PASS queue=PASS fallback=PASS
+512/bridge/w3: PASS queue=PASS fallback=PASS
+512/consistent_edge/w4: PASS queue=PASS fallback=PASS
+512/inconsistent_edge/w4: PASS queue=NOT_CONVERGED fallback=PASS
+512/new_node/w4: PASS queue=PASS fallback=PASS
+512/bridge/w4: PASS queue=PASS fallback=PASS
+2048/consistent_edge/w0: PASS queue=PASS fallback=PASS
+2048/inconsistent_edge/w0: PASS queue=NOT_CONVERGED fallback=PASS
+2048/new_node/w0: PASS queue=PASS fallback=PASS
+2048/bridge/w0: PASS queue=PASS fallback=PASS
+2048/consistent_edge/w1: PASS queue=PASS fallback=PASS
+2048/inconsistent_edge/w1: PASS queue=NOT_CONVERGED fallback=PASS
+2048/new_node/w1: PASS queue=PASS fallback=PASS
+2048/bridge/w1: PASS queue=PASS fallback=PASS
+2048/consistent_edge/w2: PASS queue=PASS fallback=PASS
+2048/inconsistent_edge/w2: PASS queue=NOT_CONVERGED fallback=PASS
+2048/new_node/w2: PASS queue=PASS fallback=PASS
+2048/bridge/w2: PASS queue=PASS fallback=PASS
+2048/consistent_edge/w3: PASS queue=PASS fallback=PASS
+2048/inconsistent_edge/w3: PASS queue=NOT_CONVERGED fallback=PASS
+2048/new_node/w3: PASS queue=PASS fallback=PASS
+2048/bridge/w3: PASS queue=PASS fallback=PASS
+2048/consistent_edge/w4: PASS queue=PASS fallback=PASS
+2048/inconsistent_edge/w4: PASS queue=NOT_CONVERGED fallback=PASS
+2048/new_node/w4: PASS queue=PASS fallback=PASS
+2048/bridge/w4: PASS queue=PASS fallback=PASS
+{
+  "gates": {
+    "contracts": true,
+    "complete_panel": true,
+    "correct_or_explicitly_unresolved": true,
+    "source_stable": true,
+    "contracts_stable": true,
+    "c0_acceptance_stable": true
+  },
+  "summary": {
+    "queue": {
+      "committed": 60,
+      "explicitly_unresolved": 20,
+      "committed_without_relaxation_step": 60,
+      "fallback_used": 0,
+      "committed_faster_than_fresh_recompute": 60,
+      "max_committed_displacement_error": 3.9639493151673966e-11,
+      "max_committed_energy_gap": 1.3388292986858298e-20
+    },
+    "fallback": {
+      "committed": 80,
+      "explicitly_unresolved": 0,
+      "committed_without_relaxation_step": 60,
+      "fallback_used": 20,
+      "committed_faster_than_fresh_recompute": 56,
+      "max_committed_displacement_error": 6.289286849819841e-09,
+      "max_committed_energy_gap": 2.220446049250313e-16
+    }
+  },
+  "hypotheses": {
+    "H-L": {
+      "consistent_additive_in_memory_updates": "SUPPORTED_WITHIN_SCOPE",
+      "contradiction_resolution_by_local_queue": "NOT_SUPPORTED",
+      "durable_persistence": "NOT_TESTED: export/load are O(V+E) by design and reported separately"
+    },
+    "H-P": "INCONCLUSIVE"
+  },
+  "seconds": 117.4558645
+}
+.venv/bin/python -m geomind.run_c1 --output evidence/c1_r004_independent/pane  62.99s user 0.68s system 53% cpu 1:58.24 total
+exit=0

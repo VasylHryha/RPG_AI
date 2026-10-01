@@ -1,0 +1,5 @@
+{"probe": "P4 re-anchor far=1000 gap=1e-14", "status": "PASS", "translated_nodes": 3, "r_certified": true, "new_anchor": [0], "reload": "OK"}
+{"probe": "P4 re-anchor far=100000 gap=1e-12", "status": "PASS", "translated_nodes": 3, "r_certified": false, "new_anchor": [0], "reload": "REJECTED: Invalid geometry artifact: Persisted coordinates are not an equilibrium"}
+{"probe": "P4 re-anchor far=100000 gap=1e-13", "status": "PASS", "translated_nodes": 3, "r_certified": false, "new_anchor": [0], "reload": "REJECTED: Invalid geometry artifact: Persisted coordinates are not an equilibrium"}
+{"probe": "P4 re-anchor far=1e+06 gap=1e-11", "status": "PASS", "translated_nodes": 3, "r_certified": false, "new_anchor": [0], "reload": "OK"}
+{"probe": "P5 randomized candidate-only chains, scale 10^(0.0, 4.0)", "PASS": 715, "relaxed": 458, "fallback": 211, "max_err_e-9": 51, "NOT_CONVERGED": 185, "no_relax": 257, "seconds": 28.4}
