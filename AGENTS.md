@@ -9,7 +9,7 @@ Run the cheapest checks first. A long stage starts only after every earlier stag
 | Stage | Time | How |
 |---|---|---|
 | tests | ~20 s | `.venv/bin/python -m pytest -q -x` after any code change; this is the only everyday check |
-| full gated pipeline | estimate ~5 min (to be measured on first run) | `.venv/bin/python tools/verify_milestone.py --output evidence/c1_rNNN`: preflight → tests → smoke → mutation probe → recorded panel |
+| full gated pipeline | measured 185 s for C1 R006 (tests 17 s, smoke 1 s, mutation 60 s, panel 107 s) | `.venv/bin/python tools/verify_milestone.py --output evidence/c1_rNNN`: preflight → tests → smoke → mutation probe → recorded panel |
 | independent review | 20–30 min | **once per milestone**, on the committed pipeline result |
 
 - Finish **all** code and test edits before any long run. Never edit code while a long run is in progress.

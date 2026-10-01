@@ -1,0 +1,314 @@
+{
+  "fingerprint": "1f4b04b171030ca9509319f5d1e187e8e40fbe9909e1c073085eaf119e907978",
+  "baseline": {
+    "detected": false,
+    "timed_out": false,
+    "summary": "19 passed in 13.32s",
+    "failed": [],
+    "seconds": 13.579040209
+  },
+  "jobs": 8,
+  "timeout": 120,
+  "mutants": {
+    "frame_shift_sign_flipped": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed in 1.75s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_both_arms_match_references_or_explicitly_reject"
+      ],
+      "seconds": 2.1662904580000006
+    },
+    "certificate_skips_neighbors_of_moved_nodes": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 10 passed in 9.55s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_local_certificate_agrees_with_global_validation_on_random_chains"
+      ],
+      "seconds": 9.904981917
+    },
+    "certificate_skips_freed_anchors": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 9 passed in 2.70s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_exact_operation_accounting_and_exhaustion_point"
+      ],
+      "seconds": 3.065846875000002
+    },
+    "certificate_skips_translated_nodes": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 9 passed in 2.73s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_exact_operation_accounting_and_exhaustion_point"
+      ],
+      "seconds": 3.0381919999999987
+    },
+    "rounding_bound_removed": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 13 passed in 16.15s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_overflow_and_invalid_inputs_never_commit_unpersistable_state"
+      ],
+      "seconds": 16.486689165999998
+    },
+    "anchor_change_not_restored": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 1 passed in 1.59s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_mid_relaxation_refusal_restores_every_structure"
+      ],
+      "seconds": 1.8909661660000001
+    },
+    "largest_frame_kept_instead_of_anchor_frame": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 10 passed in 8.80s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_local_certificate_agrees_with_global_validation_on_random_chains"
+      ],
+      "seconds": 9.20180025
+    },
+    "degree_overflow_unchecked": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 13 passed in 16.28s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_overflow_and_invalid_inputs_never_commit_unpersistable_state"
+      ],
+      "seconds": 16.651858709000003
+    },
+    "energy_bound_unchecked": {
+      "detected": false,
+      "timed_out": false,
+      "summary": "19 passed in 20.60s",
+      "failed": [],
+      "seconds": 20.932129666
+    },
+    "relation_map_copied": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 14 passed in 16.59s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_delta_validation_reads_no_stored_relations"
+      ],
+      "seconds": 16.854019708
+    },
+    "validation_after_charge": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 13 passed in 16.34s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_overflow_and_invalid_inputs_never_commit_unpersistable_state"
+      ],
+      "seconds": 16.644420708000002
+    },
+    "rollback_skips_coordinates": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 1 passed in 1.66s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_mid_relaxation_refusal_restores_every_structure"
+      ],
+      "seconds": 1.961877916999999
+    },
+    "rollback_skips_journal": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 1 passed in 1.73s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_mid_relaxation_refusal_restores_every_structure"
+      ],
+      "seconds": 2.042808000000001
+    },
+    "degree_list_unsorted": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 10 passed in 2.66s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_local_certificate_agrees_with_global_validation_on_random_chains"
+      ],
+      "seconds": 2.9392151660000003
+    },
+    "anchor_tie_break_flipped": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 8 passed in 2.66s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_custom_update_tolerance_and_overflow_are_transactional"
+      ],
+      "seconds": 2.999939083000001
+    },
+    "translation_not_charged": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 9 passed in 2.62s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_exact_operation_accounting_and_exhaustion_point"
+      ],
+      "seconds": 2.8956545840000025
+    },
+    "local_reads_not_charged": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 9 passed in 3.14s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_exact_operation_accounting_and_exhaustion_point"
+      ],
+      "seconds": 3.445604124999999
+    },
+    "budget_never_enforced": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 1 passed in 2.24s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_mid_relaxation_refusal_restores_every_structure"
+      ],
+      "seconds": 2.556427791000001
+    },
+    "fallback_cap_never_enforced": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 15 passed in 17.57s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_tiny_weight_contradiction_needs_the_fallback_arm"
+      ],
+      "seconds": 17.828446458
+    },
+    "fallback_skips_final_certificate": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 13 passed in 15.72s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_overflow_and_invalid_inputs_never_commit_unpersistable_state"
+      ],
+      "seconds": 16.025113209
+    },
+    "duplicate_removal_allowed": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 7 passed in 2.45s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_chained_updates_cycles_duplicates_and_real_artifact_migration"
+      ],
+      "seconds": 2.732564916000001
+    },
+    "frozen_apply_allowed": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 4 passed in 2.34s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_frozen_state_forks_and_queries_do_not_mutate_parent_or_sibling"
+      ],
+      "seconds": 2.720937207999995
+    },
+    "relation_redefinition_allowed": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 5 passed in 2.45s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_gauge_shift_preserves_unaffected_component_and_bad_artifacts_fail"
+      ],
+      "seconds": 2.7592897500000007
+    },
+    "forced_certificate_step_removed": {
+      "detected": false,
+      "timed_out": false,
+      "summary": "19 passed in 20.30s",
+      "failed": [],
+      "seconds": 20.640288791999996
+    },
+    "local_quiet_ignores_update_tolerance": {
+      "detected": false,
+      "timed_out": false,
+      "summary": "19 passed in 20.19s",
+      "failed": [],
+      "seconds": 20.467058332999997
+    },
+    "local_norm_guard_removed": {
+      "detected": false,
+      "timed_out": false,
+      "summary": "19 passed in 19.84s",
+      "failed": [],
+      "seconds": 20.143257917
+    },
+    "reference_rhs_sign_flipped": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 2 passed in 2.24s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_sparse_reference_matches_dense_and_hand_computed_weighted_case"
+      ],
+      "seconds": 2.497165832999997
+    },
+    "baseline_translation_sign_flipped": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 11 passed in 9.21s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_incremental_compiled_baseline_is_exact_and_atomic"
+      ],
+      "seconds": 9.508050375000003
+    },
+    "evaluator_energy_gate_removed": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 16 passed in 17.88s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_evaluator_negative_controls_two_arms_and_stale_coverage"
+      ],
+      "seconds": 18.157058457999995
+    },
+    "evaluator_status_equality_ignored": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 16 passed in 17.62s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_evaluator_negative_controls_two_arms_and_stale_coverage"
+      ],
+      "seconds": 17.963457374999997
+    },
+    "evaluator_baseline_gate_removed": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 16 passed in 15.94s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_evaluator_negative_controls_two_arms_and_stale_coverage"
+      ],
+      "seconds": 16.195107790999998
+    },
+    "endpoint_time_rule_removed": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 17 passed in 16.48s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_registered_endpoint_rules_are_applied_as_written"
+      ],
+      "seconds": 16.725087458000004
+    },
+    "delta_serialization_unchecked": {
+      "detected": true,
+      "timed_out": false,
+      "summary": "1 failed, 13 passed in 13.77s",
+      "failed": [
+        "FAILED tests/test_c1.py::test_overflow_and_invalid_inputs_never_commit_unpersistable_state"
+      ],
+      "seconds": 14.039077624999997
+    }
+  },
+  "detected": 29,
+  "total": 33,
+  "survivors": [
+    "energy_bound_unchecked",
+    "forced_certificate_step_removed",
+    "local_norm_guard_removed",
+    "local_quiet_ignores_update_tolerance"
+  ],
+  "unexpected_survivors": [],
+  "problems": [],
+  "seconds": 60.002904333000004
+}

@@ -1,0 +1,52 @@
+{
+  "fingerprint": "1f4b04b171030ca9509319f5d1e187e8e40fbe9909e1c073085eaf119e907978",
+  "stages": [
+    {
+      "stage": "preflight",
+      "artifacts": {},
+      "commit": "55a8898eddd5ca1f65fcc12c2ec4d780b13310d2",
+      "seconds": 0.24
+    },
+    {
+      "stage": "tests",
+      "artifacts": {
+        ".gate/1f4b04b171030ca9509319f5d1e187e8e40fbe9909e1c073085eaf119e907978/contracts.xml": "6bcf5c9574f8f0116da14229c1e0e57c63276f72fd75f0729e2626b707349c3d",
+        ".gate/1f4b04b171030ca9509319f5d1e187e8e40fbe9909e1c073085eaf119e907978/c0_contracts.xml": "5270c491cb87f8d41322b769564ce3db644f1b38afdf64437bfdd5a0d81b5a09"
+      },
+      "commit": "55a8898eddd5ca1f65fcc12c2ec4d780b13310d2",
+      "seconds": 16.76
+    },
+    {
+      "stage": "smoke",
+      "artifacts": {
+        ".gate/1f4b04b171030ca9509319f5d1e187e8e40fbe9909e1c073085eaf119e907978/smoke.json": "56cd1f1114094e8666564d7edcbd6cce7729119f53727598ef735f6e7e7f4818"
+      },
+      "commit": "55a8898eddd5ca1f65fcc12c2ec4d780b13310d2",
+      "seconds": 0.77
+    },
+    {
+      "stage": "mutation",
+      "artifacts": {
+        ".gate/1f4b04b171030ca9509319f5d1e187e8e40fbe9909e1c073085eaf119e907978/mutation.json": "1c07e1ec4af90e0f595aba1375675c11dc4c4a63b80f601578402b206fb42c24"
+      },
+      "commit": "55a8898eddd5ca1f65fcc12c2ec4d780b13310d2",
+      "seconds": 60.002904333000004,
+      "detected": 29,
+      "total": 33,
+      "survivors": [
+        "energy_bound_unchecked",
+        "forced_certificate_step_removed",
+        "local_norm_guard_removed",
+        "local_quiet_ignores_update_tolerance"
+      ]
+    },
+    {
+      "stage": "panel",
+      "artifacts": {
+        "evidence/c1_r006/results.json": "7026b5b59d438395801c81cb8b58a00bf30e01544cd9536a2d8239dfbd82342f"
+      },
+      "commit": "55a8898eddd5ca1f65fcc12c2ec4d780b13310d2",
+      "seconds": 107.1
+    }
+  ]
+}

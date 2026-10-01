@@ -183,6 +183,12 @@ The reviewer's own probes now give 0 reload rejections in 1,338 large-scale comm
   - contradiction resolution by the local queue: NOT_SUPPORTED.
 - **The decisive scientific result:** the incremental compiled baseline gives identical answers 7–13× faster than the candidate on additive kinds (0.012 vs 0.16 ms for a consistent edge; 0.41 vs 3.1 ms for a bridge at 2,048 nodes). A matched simpler baseline therefore dominates the mechanism, which is a stop signal under R4 §7 for the claim that residual dynamics add useful locality.
 
+## Independent review of R005 and the R006 repair
+
+A second fresh-context reviewer (`evidence/c1_r005_independent/`) confirmed R004's findings F1–F7 as fixed. In 2,754 commits there were 0 reload rejections at coordinate scales up to 1e6, executed work inside `apply` stayed flat to 32,768 nodes, and rollback was exact across 1,250 refusals. Its panel rerun was byte-identical to the receipt. It found one blocking defect: N1, numpy float32/int64 inputs that committed but could not be exported. It also noted three wording items: N2, the re-anchoring tail; N3, that the baseline ratio is single-run and reported rather than gated; and N4, a stale label.
+
+R006 fixes N1 the C0 way (the delta must serialize as export writes it) and states N2 and N3. It is the first revision verified end to end by the gated pipeline (185 s, all stages stamped; mutation 29/33 caught with only the documented backstops surviving), and its registered verdicts are unchanged. See `evidence/c1_r006/HANDOFF.md`. R006 needs its own independent review.
+
 ## Checks actually performed
 
 1. Read R4 (§0–4 C0/C1, §5–7, the execution record), every R002 receipt, handoff, review and integrity file, the existing `ACCEPTANCE.md`, and all C1 sources and tests, plus `geometry.py` and `references.py`.
