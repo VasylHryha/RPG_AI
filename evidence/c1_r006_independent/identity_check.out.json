@@ -1,0 +1,52 @@
+{
+ "results_sha256": "7026b5b59d438395801c81cb8b58a00bf30e01544cd9536a2d8239dfbd82342f",
+ "manifest_file_sha256": "a96767c7b9548e35dd1b9974873b7295fd7cc8aea66b21698195489dae6bf4b4",
+ "manifest_digest_live": "92fdd676f902a7bd8dcec11c1ce9b77c08cd4d1a31dd0bf7e18a2fa69ea958e3",
+ "manifest_digest_receipt": "92fdd676f902a7bd8dcec11c1ce9b77c08cd4d1a31dd0bf7e18a2fa69ea958e3",
+ "manifest_equal": true,
+ "file_count": 24,
+ "live_mismatch": [],
+ "snapshot_mismatch": [],
+ "snapshot_extra": [],
+ "live_not_in_receipt": [],
+ "snapshot_hashes_equal": true,
+ "geomind/incremental.py": "fcbb18a41f151da3d93c47f9779af0ae46adc3e45fe2f61581f825ab66118b23",
+ "geomind/run_c1.py": "c561625056311ecee9ff795844b67775567db49a7b40f1697b4e6a9c74cbdeb5",
+ "geomind/c1_cases.py": "56f080e4e06eecdcfcc2910250003d9b5d5a745b37f32d65b564c7876348bf05",
+ "geomind/c1_reference.py": "1f853a205d18a26b7c9e544d8c3dd04980096ac56ced259672e40486a3c14df4",
+ "tests/test_c1.py": "31ff88acd1c7b7df479153063283d891fde2dd855e9bc9a9ebbf38eee343dd5e",
+ "geomind/geometry.py": "973740d321705d9c8633a6cd2da1696af91cec930e53bcb6b6b4831e280066f0",
+ "geomind/references.py": "771f9b355083240fa2bf1a5e713bb1f964f9fd493d7e485aa2d4ba1f5e5255f9",
+ "contracts_sha256": "6bcf5c9574f8f0116da14229c1e0e57c63276f72fd75f0729e2626b707349c3d",
+ "contracts_receipt_sha256": "6bcf5c9574f8f0116da14229c1e0e57c63276f72fd75f0729e2626b707349c3d",
+ "contracts_hashes_bound": true,
+ "contracts_scope": "geomind.c1.contracts.v4",
+ "contracts_cases": 19,
+ "contracts_failures": 0,
+ "instances_jsonl_equal": true,
+ "states_checked": 221,
+ "state_mismatch": [],
+ "states_missing": [],
+ "state_files": 160,
+ "c0_inputs": 12,
+ "c0_changed": [],
+ "c0_acceptance_bound": true,
+ "c0_results_sha256": "9e668784d62f7e1ee069abbae172a8263ee8adc5dcb33c67934a8ac3cb5ffd5f",
+ "gates": {
+  "contracts": true,
+  "complete_panel": true,
+  "correct_or_explicitly_unresolved": true,
+  "source_stable": true,
+  "contracts_stable": true,
+  "c0_acceptance_stable": true
+ },
+ "hypotheses": {
+  "H-L": {
+   "consistent_edge_and_new_node_in_memory_updates": "SUPPORTED_WITHIN_SCOPE",
+   "bridge_in_memory_updates": "NOT_TESTED for size independence: cost grows with the translated frames (reported); faster-than-recompute endpoint met",
+   "contradiction_resolution_by_local_queue": "NOT_SUPPORTED",
+   "durable_persistence": "NOT_TESTED: export/load are O(V+E) by design and reported separately"
+  },
+  "H-P": "INCONCLUSIVE"
+ }
+}
