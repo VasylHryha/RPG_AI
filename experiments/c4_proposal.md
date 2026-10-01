@@ -1,6 +1,6 @@
-# C4 proposal: base resonator, geometry ↔ mode closure (DRAFT, awaiting owner approval)
+# C4 proposal: base resonator, geometry ↔ mode closure (APPROVED 2026-10-01)
 
-Status: **PROPOSED**. Nothing is registered and no code exists. After approval, this becomes `experiments/c4_manifest.json` before any fitting or final-seed run. Authority: `GEOMIND_GEOMETRIC_AI_QUALITY_STANDARD_R4.md` (C4, the recursive unit interface, the invariants, §5–7).
+Status: **APPROVED** by the owner on 2026-10-01 (`docs/decisions/0001-deprecate-c3-approve-c4.md`) and registered as `experiments/c4_manifest.json` (experiment `geomind-c4-r4-001`). The manifest is authoritative; its `registered_changes_from_proposal` lists every change made while settling the design on development worlds. Authority: `GEOMIND_GEOMETRIC_AI_QUALITY_STANDARD_R4.md` (C4, the recursive unit interface, the invariants, §5–7).
 
 ## 1. The bounded question
 

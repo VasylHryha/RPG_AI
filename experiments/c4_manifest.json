@@ -1,0 +1,138 @@
+{
+  "experiment_id": "geomind-c4-r4-001",
+  "milestone": "C4",
+  "status": "REGISTERED",
+  "question": "In the R4 position-phase element model, do label-free detected resonators form reproducibly, survive small perturbations, and depend causally on both coupling directions (geometry->mode and mode->geometry), with each direction's effect vanishing under its matched ablation?",
+  "hypotheses": {
+    "H-M": "geometry and activity influence one another",
+    "H-C_precursor": "a stable structure exposes a reusable effective unit"
+  },
+  "not_tested": [
+    "hierarchy (C5+)",
+    "task usefulness",
+    "efficiency or energy",
+    "novelty over swarmalator dynamics"
+  ],
+  "proposal": "experiments/c4_proposal.md",
+  "decision_record": "docs/decisions/0001-deprecate-c3-approve-c4.md",
+  "implementer_family": "Claude",
+  "model": {
+    "A": 1.0,
+    "B": 1.0,
+    "J": 0.8,
+    "K": 1.0,
+    "eps": 1e-06,
+    "w": "exp(-r^2)",
+    "neighbors_k": 8,
+    "neighbor_radius": 3.0,
+    "neighbor_update": "recomputed at the start of every RK4 step and held for its four stages",
+    "boundary": "open plane"
+  },
+  "worlds": {
+    "elements": 24,
+    "disk_radius": 3.0,
+    "initial_phases": "uniform [-pi, pi)",
+    "arms": {
+      "identical": "omega_i = 0 (synchronizing fixture, primary)",
+      "heterogeneous": "omega_i ~ U[-0.5, 0.5] (reported separately)"
+    },
+    "omega_half_width": 0.5
+  },
+  "integration": {
+    "method": "fixed-step RK4",
+    "dt": 0.02,
+    "horizon": 100.0
+  },
+  "detector": {
+    "window": 30.0,
+    "frame_dt": 1.0,
+    "link_factor": 1.5,
+    "min_size": 3,
+    "membership_jaccard": 0.95,
+    "shape_cv": 0.05,
+    "lock_std": 0.1,
+    "freq_tol": 0.01,
+    "pattern_tol": 0.1,
+    "kick_position": 0.1,
+    "kick_phase": 0.3,
+    "recovery_time": 30.0,
+    "recovery_jaccard": 0.9
+  },
+  "interventions": {
+    "gm_scale": 1.5,
+    "gm_probe_phase_rms": 0.3,
+    "gm_window": 5.0,
+    "mg_window": 10.0,
+    "sample_dt": 0.1
+  },
+  "effective_state_bounds": {
+    "state_error_position": 0.25,
+    "state_error_size": 0.05,
+    "state_error_frequency": 0.01
+  },
+  "statistics": {
+    "bootstrap_resamples": 10000,
+    "ci_level": 0.95,
+    "unit": "world (seed); its effect is the mean over its accepted resonators"
+  },
+  "verdict_rules": {
+    "formation_min_fraction": 0.8,
+    "ablation_vanish_fraction": 0.2,
+    "H-M": "SUPPORTED_WITHIN_SCOPE if identical-arm formation >= 0.8 and both causality endpoints PASS; NOT_SUPPORTED if either causality endpoint FAILs (intact CI includes 0 or wrong sign); INCONCLUSIVE otherwise",
+    "H-C_precursor": "SUPPORTED_WITHIN_SCOPE if H-M is supported and >= 90% of accepted identical-arm units meet every effective-state bound; NOT_SUPPORTED if fewer do; INCONCLUSIVE otherwise",
+    "causality": "PASS if the intact paired-effect bootstrap CI lies above 0 and the matched-ablation CI includes 0 or its |mean| <= 0.2 x intact mean; FAIL if the intact CI includes 0 or lies below it; INCONCLUSIVE otherwise",
+    "primary_arm": "identical; the heterogeneous arm is evaluated with the same rules and reported separately",
+    "effective_state_min_fraction": 0.9
+  },
+  "numerical_checks": {
+    "settle_time": 20.0,
+    "horizon": 2.0,
+    "held_dt_tolerance": 1e-08,
+    "min_order_ratio": 12.0,
+    "switching_dt_tolerance": 0.05,
+    "equivariance_tolerance": 1e-09
+  },
+  "seeds": {
+    "development_entropy": 11111,
+    "development_worlds_per_arm": 10,
+    "final_entropy": 5656077370960929786,
+    "final_worlds_per_arm": 20,
+    "rule": "final entropy drawn with secrets.randbits(63) at registration; final worlds are never simulated before the recorded panel; smoke uses development worlds"
+  },
+  "endpoints": {
+    "formation_identical": "fraction of final worlds with >= 1 accepted resonator, Wilson 95% CI; expectation >= 0.8",
+    "formation_heterogeneous": "same, heterogeneous arm (reported separately)",
+    "g_to_m_identical": "G->M paired effect (intact) and matched w=1 ablation, bootstrap CIs; causality rule",
+    "m_to_g_identical": "M->G paired effect (intact) and matched J=0 ablation, bootstrap CIs; causality rule",
+    "g_to_m_heterogeneous": "same as g_to_m_identical, heterogeneous arm",
+    "m_to_g_heterogeneous": "same as m_to_g_identical, heterogeneous arm",
+    "both_off_identical": "descriptive: G->M and M->G paired effects with J=0 and w=1 (neighbor selection remains geometry-dependent)",
+    "both_off_heterogeneous": "same, heterogeneous arm",
+    "not_a_clump_identical": "detector accepts no resonator under J=K=0 (detector-validity gate)",
+    "not_a_clump_heterogeneous": "same, heterogeneous arm (detector-validity gate)",
+    "effective_state_identical": ">= 90% of accepted units meet every effective-state bound (worst unit reported)",
+    "effective_state_heterogeneous": "same, heterogeneous arm",
+    "ablation_formation": "descriptive: formation counts and rejection reasons under each ablation from the same initial worlds",
+    "numerical_checks": "RK4 order with held neighbor sets, switching-limited full-model dt error, and permutation/translation/rotation/global-phase equivariance (implementation gate)"
+  },
+  "gates": [
+    "passing focused contracts for the exact dependency fingerprint",
+    "complete panel for every final world in both arms",
+    "numerical_checks PASS",
+    "not_a_clump PASS in both arms",
+    "finite state throughout",
+    "source hashes stable during the run"
+  ],
+  "registered_changes_from_proposal": [
+    "Candidate groups are components of a graph joining pairs that are both close and phase-locked over the window (proposal: proximity only). Reason: in the heterogeneous arm, unlocked drifting elements merge with locked groups spatially, so proximity-only components never test the locked groups themselves.",
+    "Recovery kicks have fixed size (random direction, exact RMS) so rejection of a non-restoring clump is deterministic.",
+    "The J=K=0 clump is rejected by criterion 5 (phase-pattern recovery), not criteria 3-4: with identical omega and K=0, frozen phases trivially satisfy 3-4.",
+    "G->M adds an identical zero-mean phase probe kick (RMS 0.3) to both runs of the pair: exact synchrony is a fixed point for any geometry, so scaling alone cannot move a synchronized pattern; the statistic is the time-mean pattern deviation over 5 time units.",
+    "Ablations are matched on state: each control/treated pair starts from the same intact formed state and runs under the ablated dynamics. Formation from scratch under each ablation is reported descriptively.",
+    "Effective-state bounds and validity are judged on the identical arm (primary); thresholds settled on development worlds only.",
+    "Both-off (J=0, w=1) is descriptive, not a vanish test: development worlds showed geometry still reaches the phases through neighbor selection.",
+    "dt check split: RK4 order with held neighbor sets, plus a tolerance on the switching-limited full-model error (neighbor sets change at step boundaries, so the full model converges at first order).",
+    "Effective-state validity requires >= 90% of accepted units within bounds (worst reported); a single worst-unit maximum was fragile on development worlds where two groups drift apart."
+  ],
+  "registered": "2026-10-01"
+}

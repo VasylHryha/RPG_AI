@@ -8,7 +8,9 @@ Blocks, before they start:
     review gate is closed.
 Patterns are derived from milestones/<id>.json, so each new milestone is covered
 by adding its config, not by editing this hook. Standard library only. Execution
-is matched, not mention: editing or grepping files is allowed.
+is matched, not mention: editing or grepping files is allowed. A run of the panel
+module carrying a flag that only the smoke stage uses (e.g. --smoke) is the smoke
+run on development worlds and is allowed.
 """
 
 import json
@@ -20,6 +22,12 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import milestones  # noqa: E402
 
 INTERPRETER = r"\bpython[0-9.]*\s+(?:-\S+\s+)*"
+
+
+def smoke_markers(cfg):
+    """Flags in the smoke command that the panel command lacks; they mark a smoke run of the same module."""
+    panel = {str(a) for a in cfg["stages"]["panel"]["cmd"]}
+    return {str(a) for a in cfg["stages"]["smoke"]["cmd"] if str(a).startswith("--") and str(a) not in panel}
 
 
 def patterns(milestone):
@@ -38,8 +46,12 @@ def decide(payload):
     for milestone in milestones.configured():
         if tool == "Bash":
             command = data.get("command") or ""
+            markers = smoke_markers(milestones.config(milestone))
             for stage, pattern in patterns(milestone):
-                if pattern.search(command):
+                for match in pattern.finditer(command):
+                    segment = re.split(r"[;&|\n]", command[match.start():], maxsplit=1)[0].split()
+                    if stage == "panel" and markers & set(segment):
+                        continue
                     problems = milestones.check(milestone, stage)
                     if problems:
                         return f"Gate blocked {milestone} {stage}. " + " ".join(problems)

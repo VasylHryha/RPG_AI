@@ -12,7 +12,7 @@ Standalone CPU research workspace imported from `GEOMIND_R4_HIERARCHY_UPDATE.zip
 | C1: Incremental updates, locality and forgetting | **ACCEPTED** | R006 | H-L SUPPORTED_WITHIN_SCOPE for consistent-edge/new-node in-memory updates; NOT_SUPPORTED for contradiction resolution by the local queue; H-P INCONCLUSIVE. Matched-baseline stop signal for the dynamics-locality claim | [INDEPENDENT_REVIEW.md](evidence/c1_r006_independent/INDEPENDENT_REVIEW.md) |
 | C2: Geometry/activity learning probe | **ACCEPTED** | R002 | Realizable INCONCLUSIVE, affine NOT_SUPPORTED (budget-limited); STOP_THIS_BRANCH: linear regression dominates this linear task family | [INDEPENDENT_REVIEW.md](evidence/c2_r002_independent/INDEPENDENT_REVIEW.md), [cross-review](evidence/c2_r002_crosscheck/CROSS_REVIEW.md) |
 | C3: Learning stability | **DEPRECATED** |  | Deprecated by the owner on 2026-10-01: it would test the stability of the C2 learning rule, which linear regression already dominates (STOP_THIS_BRANCH). Revisit only with a redesigned C2 | [0001-deprecate-c3-approve-c4.md](docs/decisions/0001-deprecate-c3-approve-c4.md) |
-| C4: Base resonator: geometry-mode closure | **APPROVED** |  | Owner-approved 2026-10-01; Claude implements, Codex reviews. Registration next | [c4_proposal.md](experiments/c4_proposal.md) |
+| C4: Base resonator: geometry-mode closure | **REGISTERED** | R001 | Registered geomind-c4-r4-001 (experiments/c4_manifest.json); gated pipeline next, then a Codex review | [c4_proposal.md](experiments/c4_proposal.md) |
 | C5: Many resonators form one effective resonator | **NOT_STARTED** |  |  |  |
 | C6: Recursive composition R0 to R1 to R2 | **NOT_STARTED** |  |  |  |
 | C7: Perturb, dissolve, survive and reform | **NOT_STARTED** |  |  |  |

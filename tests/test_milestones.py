@@ -155,6 +155,21 @@ def test_hook_blocks_execution_not_mention(repo):
     assert hook.decide({"tool_name": "Agent", "tool_input": {"prompt": "You are an independent reviewer of C1"}}) is None
 
 
+def test_hook_allows_the_smoke_run_of_the_panel_module(repo):
+    config = repo / "milestones/c9.json"
+    cfg = json.loads(config.read_text())
+    cfg["stages"]["smoke"]["cmd"] = ["{python}", "-m", "geomind.fake_panel", "--smoke", "--output", "{staging}/smoke.json"]
+    config.write_text(json.dumps(cfg))
+    hook = tool(repo, "milestone_hook")
+
+    def bash(command):
+        return hook.decide({"tool_name": "Bash", "tool_input": {"command": command}})
+
+    assert bash(".venv/bin/python -m geomind.fake_panel --smoke --output s.json") is None
+    assert bash(".venv/bin/python -m geomind.fake_panel --output x")
+    assert bash(".venv/bin/python -m geomind.fake_panel --smoke --output s.json; .venv/bin/python -m geomind.fake_panel --output x")
+
+
 def test_provenance_trailer(tmp_path):
     message = tmp_path / "msg"
     for text, code in (("Fix\n\nAssisted-by: Claude:claude-opus-5-5\n", 0), ("Fix\n\nAssisted-by: Codex:gpt-5-codex\n", 0),
