@@ -1,5 +1,5 @@
 {
-  "experiment_id": "geomind-c4-r4-001",
+  "experiment_id": "geomind-c4-r4-002",
   "milestone": "C4",
   "status": "REGISTERED",
   "question": "In the R4 position-phase element model, do label-free detected resonators form reproducibly, survive small perturbations, and depend causally on both coupling directions (geometry->mode and mode->geometry), with each direction's effect vanishing under its matched ablation?",
@@ -60,10 +60,29 @@
   },
   "interventions": {
     "gm_scale": 1.5,
+    "gm_scales": [
+      1.25,
+      1.5,
+      2.0
+    ],
     "gm_probe_phase_rms": 0.3,
     "gm_window": 5.0,
+    "mg_dose": "uniform",
+    "mg_doses": [
+      "rms:0.5",
+      "rms:1.0",
+      "uniform"
+    ],
     "mg_window": 10.0,
-    "sample_dt": 0.1
+    "sample_dt": 0.1,
+    "gm_ablations": {
+      "no_geometry_to_mode": "complete: w = 1 and phase coupling over the frozen neighbor topology of s0 (primary matched ablation)",
+      "no_distance_weight": "w = 1 only (decomposition)",
+      "frozen_topology": "frozen phase topology only (decomposition)"
+    },
+    "mg_ablations": {
+      "no_mode_to_geometry": "complete: J = 0 (primary matched ablation)"
+    }
   },
   "effective_state_bounds": {
     "state_error_position": 0.25,
@@ -78,11 +97,13 @@
   "verdict_rules": {
     "formation_min_fraction": 0.8,
     "ablation_vanish_fraction": 0.2,
-    "H-M": "SUPPORTED_WITHIN_SCOPE if identical-arm formation >= 0.8 and both causality endpoints PASS; NOT_SUPPORTED if either causality endpoint FAILs (intact CI includes 0 or wrong sign); INCONCLUSIVE otherwise",
+    "H-M": "SUPPORTED_WITHIN_SCOPE if identical-arm formation >= 0.8, both causality endpoints PASS and dose_response PASS; NOT_SUPPORTED if any of these FAILs; INCONCLUSIVE otherwise",
     "H-C_precursor": "SUPPORTED_WITHIN_SCOPE if H-M is supported and >= 90% of accepted identical-arm units meet every effective-state bound; NOT_SUPPORTED if fewer do; INCONCLUSIVE otherwise",
-    "causality": "PASS if the intact paired-effect bootstrap CI lies above 0 and the matched-ablation CI includes 0 or its |mean| <= 0.2 x intact mean; FAIL if the intact CI includes 0 or lies below it; INCONCLUSIVE otherwise",
+    "causality": "PASS if at least 10 worlds have resonators, the intact paired-effect bootstrap CI lies above 0, and the complete matched-ablation CI includes 0 or its |mean| <= 0.2 x intact mean; FAIL if the intact CI includes 0 or lies below it; INCONCLUSIVE otherwise",
     "primary_arm": "identical; the heterogeneous arm is evaluated with the same rules and reported separately",
-    "effective_state_min_fraction": 0.9
+    "effective_state_min_fraction": 0.9,
+    "min_worlds_for_verdict": 10,
+    "dose_response": "per direction, intact dynamics: PASS if the mean effects are non-decreasing across the registered doses and the per-world highest-minus-lowest dose difference has a bootstrap CI above 0 (at least 10 worlds); FAIL if that CI lies below 0; INCONCLUSIVE otherwise. The endpoint passes only if both directions pass, and fails if either fails"
   },
   "numerical_checks": {
     "settle_time": 20.0,
@@ -95,25 +116,27 @@
   "seeds": {
     "development_entropy": 11111,
     "development_worlds_per_arm": 10,
-    "final_entropy": 5656077370960929786,
+    "final_entropy": 609675740695117696,
     "final_worlds_per_arm": 20,
-    "rule": "final entropy drawn with secrets.randbits(63) at registration; final worlds are never simulated before the recorded panel; smoke uses development worlds"
+    "rule": "final entropy drawn with secrets.randbits(63) at R002 registration (fresh; R001 final worlds are not reused); final worlds are never simulated before the recorded panel; smoke and tests use development worlds"
   },
   "endpoints": {
     "formation_identical": "fraction of final worlds with >= 1 accepted resonator, Wilson 95% CI; expectation >= 0.8",
     "formation_heterogeneous": "same, heterogeneous arm (reported separately)",
-    "g_to_m_identical": "G->M paired effect (intact) and matched w=1 ablation, bootstrap CIs; causality rule",
-    "m_to_g_identical": "M->G paired effect (intact) and matched J=0 ablation, bootstrap CIs; causality rule",
+    "g_to_m_identical": "G->M paired effect (intact, scale 1.5) and the complete matched ablation (w = 1 + frozen phase topology), bootstrap CIs; causality rule",
+    "m_to_g_identical": "M->G paired effect (intact, uniform phase replacement) and the complete matched ablation (J = 0), bootstrap CIs; causality rule",
     "g_to_m_heterogeneous": "same as g_to_m_identical, heterogeneous arm",
     "m_to_g_heterogeneous": "same as m_to_g_identical, heterogeneous arm",
-    "both_off_identical": "descriptive: G->M and M->G paired effects with J=0 and w=1 (neighbor selection remains geometry-dependent)",
-    "both_off_heterogeneous": "same, heterogeneous arm",
     "not_a_clump_identical": "detector accepts no resonator under J=K=0 (detector-validity gate)",
     "not_a_clump_heterogeneous": "same, heterogeneous arm (detector-validity gate)",
     "effective_state_identical": ">= 90% of accepted units meet every effective-state bound (worst unit reported)",
     "effective_state_heterogeneous": "same, heterogeneous arm",
-    "ablation_formation": "descriptive: formation counts and rejection reasons under each ablation from the same initial worlds",
-    "numerical_checks": "RK4 order with held neighbor sets, switching-limited full-model dt error, and permutation/translation/rotation/global-phase equivariance (implementation gate)"
+    "ablation_formation": "descriptive: formation counts and rejection reasons from the same initial worlds under J = 0, under w = 1, and the clump control",
+    "numerical_checks": "RK4 order with held neighbor sets, switching-limited full-model dt error, and permutation/translation/rotation/global-phase equivariance (implementation gate)",
+    "dose_response_identical": "G->M over scales 1.25/1.5/2.0 and M->G over phase kicks RMS 0.5/1.0/uniform, intact dynamics; dose-response rule",
+    "dose_response_heterogeneous": "same, heterogeneous arm",
+    "g_to_m_channels_identical": "descriptive: G->M effect with only w = 1, and with only the frozen phase topology, as a fraction of intact",
+    "g_to_m_channels_heterogeneous": "same, heterogeneous arm"
   },
   "gates": [
     "passing focused contracts for the exact dependency fingerprint",
@@ -123,16 +146,30 @@
     "finite state throughout",
     "source hashes stable during the run"
   ],
+  "registered": "2026-10-01",
+  "supersedes": {
+    "experiment_id": "geomind-c4-r4-001",
+    "evidence": "evidence/c4_r001/",
+    "status": "WITHDRAWN before independent review by the implementer's own recheck; its receipt is preserved unchanged and its recorded verdicts stand as history (H-M INCONCLUSIVE)",
+    "reasons": [
+      "Its G->M matched ablation (w = 1) was incomplete: geometry still reached the phases through neighbor selection, while the M->G ablation (J = 0) was complete. The asymmetry was a registration error, and it produced the INCONCLUSIVE G->M verdict.",
+      "Causality verdicts were issued on as few as 2 worlds (heterogeneous arm, bootstrap over two values).",
+      "No falsifiable test remained once ablations are complete (their vanishing holds by construction); R002 adds a registered dose-response prediction.",
+      "The receipt stored only per-world means, not per-resonator effects."
+    ],
+    "decision_record": "docs/decisions/0002-c4-r002-supersedes-r001.md"
+  },
   "registered_changes_from_proposal": [
     "Candidate groups are components of a graph joining pairs that are both close and phase-locked over the window (proposal: proximity only). Reason: in the heterogeneous arm, unlocked drifting elements merge with locked groups spatially, so proximity-only components never test the locked groups themselves.",
     "Recovery kicks have fixed size (random direction, exact RMS) so rejection of a non-restoring clump is deterministic.",
     "The J=K=0 clump is rejected by criterion 5 (phase-pattern recovery), not criteria 3-4: with identical omega and K=0, frozen phases trivially satisfy 3-4.",
     "G->M adds an identical zero-mean phase probe kick (RMS 0.3) to both runs of the pair: exact synchrony is a fixed point for any geometry, so scaling alone cannot move a synchronized pattern; the statistic is the time-mean pattern deviation over 5 time units.",
-    "Ablations are matched on state: each control/treated pair starts from the same intact formed state and runs under the ablated dynamics. Formation from scratch under each ablation is reported descriptively.",
-    "Effective-state bounds and validity are judged on the identical arm (primary); thresholds settled on development worlds only.",
-    "Both-off (J=0, w=1) is descriptive, not a vanish test: development worlds showed geometry still reaches the phases through neighbor selection.",
     "dt check split: RK4 order with held neighbor sets, plus a tolerance on the switching-limited full-model error (neighbor sets change at step boundaries, so the full model converges at first order).",
-    "Effective-state validity requires >= 90% of accepted units within bounds (worst reported); a single worst-unit maximum was fragile on development worlds where two groups drift apart."
-  ],
-  "registered": "2026-10-01"
+    "Effective-state validity requires >= 90% of accepted units within bounds (worst reported); a single worst-unit maximum was fragile on development worlds where two groups drift apart.",
+    "Effective-state bounds and validity are judged on the identical arm (primary); thresholds settled on development worlds only.",
+    "Ablations are matched on state (each control/treated pair starts from the same intact formed state) and complete: G->M removes both geometric channels (w = 1 and the phase coupling's neighbor choice, frozen at s0); M->G sets J = 0. Single-channel G->M ablations are reported as a decomposition. R001 used w = 1 alone (incomplete) and a descriptive both-off; both superseded.",
+    "Formation from scratch under ablations is descriptive (J = 0, w = 1, and the J = K = 0 clump control).",
+    "Dose-response added as a registered falsifiable prediction (R002).",
+    "Verdicts require at least 10 worlds with resonators (R002)."
+  ]
 }

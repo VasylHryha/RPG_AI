@@ -41,9 +41,10 @@ def load_manifest(path=MANIFEST):
 
 
 ENDPOINTS = ("formation_identical", "formation_heterogeneous", "g_to_m_identical", "m_to_g_identical",
-             "g_to_m_heterogeneous", "m_to_g_heterogeneous", "both_off_identical", "both_off_heterogeneous",
-             "not_a_clump_identical", "not_a_clump_heterogeneous", "effective_state_identical",
-             "effective_state_heterogeneous", "ablation_formation", "numerical_checks")
+             "g_to_m_heterogeneous", "m_to_g_heterogeneous", "dose_response_identical", "dose_response_heterogeneous",
+             "g_to_m_channels_identical", "g_to_m_channels_heterogeneous", "not_a_clump_identical",
+             "not_a_clump_heterogeneous", "effective_state_identical", "effective_state_heterogeneous",
+             "ablation_formation", "numerical_checks")
 
 
 def _arm(args):
@@ -85,7 +86,7 @@ def endpoint_coverage(evaluations, numerics):
     for arm in ARMS:
         e = evaluations[arm]
         evaluated[f"formation_{arm}"] = {"value": e["formation"], "verdict": e["formation"]["verdict"]}
-        for name in ("g_to_m", "m_to_g", "both_off", "not_a_clump", "effective_state"):
+        for name in ("g_to_m", "m_to_g", "dose_response", "g_to_m_channels", "not_a_clump", "effective_state"):
             evaluated[f"{name}_{arm}"] = {"value": e[name], "verdict": e[name]["verdict"]}
     evaluated["ablation_formation"] = {"value": {arm: evaluations[arm]["ablation_formation"] for arm in ARMS},
                                        "verdict": "REPORTED"}
@@ -162,7 +163,8 @@ def panel(output, contract_report):
             "A mechanism probe of known swarmalator dynamics: no novelty, hierarchy (C5+), task-usefulness, efficiency or energy claim.",
             "One model family, one element count (N = 24), one neighbor rule and one parameter set; no sweep.",
             "The identical-omega arm is a synchronizing fixture: its mode has collective frequency 0, and G->M is measured through the restoring rate of a probe kick, not through a spontaneous mode change.",
-            "Ablations are matched on state (pairs start from the intact formed state); with J = 0 and w = 1, geometry still reaches the phases through neighbor selection (reported as both_off).",
+            "Ablations are matched on state (pairs start from the intact formed state). Complete ablations remove their pathway by construction, so their vanishing verifies the statistic, not the hypothesis; the evidence is the intact effect and its dose-response.",
+            "Formation from scratch under ablations is descriptive and uses the single-channel geometry -> mode ablation (w = 1); a frozen phase topology is only defined from a formed state.",
             "Detector thresholds were settled on development worlds; changes from the proposal are listed in the manifest.",
         ],
         "next_action": "One independent review by the other model family (Codex), on the committed evidence; no C5 work before acceptance.",

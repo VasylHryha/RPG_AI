@@ -11,6 +11,7 @@ GeoMind research workspace. Authority: `GEOMIND_GEOMETRIC_AI_QUALITY_STANDARD_R4
 5. **Commit the evidence.** The pre-commit hook checks registration order, the `PIPELINE.json` record, endpoint coverage and the status block.
 6. **One independent review** per revision, by the **other model family** (Claude ↔ Codex), with a time cap of about 15–20 minutes. It goes in `evidence/cN_rNNN_review_<family>/INDEPENDENT_REVIEW.md`: first line the verdict, a `Reviewer family: <family>` line, and the SHA256 of the reviewed `results.json`.
 7. **ACCEPTED:** update `STATUS.json`, run `python3 tools/status.py --write`, and freeze the files. **CHANGES_REQUIRED:** fix, register a new revision on fresh seeds, verify once, review once.
+   An implementer who finds a design defect before review **withdraws** the revision in a decision record (`docs/decisions/`), keeps its evidence unchanged and registers the next revision on fresh seeds. Never re-analyze a recorded panel to change its verdict.
 
 ## Verification order (mandatory)
 

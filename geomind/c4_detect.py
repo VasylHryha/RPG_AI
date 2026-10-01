@@ -198,8 +198,6 @@ def criteria_checks(stats, t):
 def active_unit(x, th, omega_estimate, members, stats):
     """The upper-facing effective state (R4 ActiveUnit). Member indices are not exposed."""
     X = x[members]
-    pairs = pair_differences(th, members)
-    order = np.argsort(np.angle(np.exp(1j * (th[members] - circular_mean(th[members])))), kind="stable")
     hull = _convex_hull(X)
     return {
         "effective_position": X.mean(0).tolist(),
@@ -207,8 +205,7 @@ def active_unit(x, th, omega_estimate, members, stats):
         "mode_signature": {
             "collective_frequency": float(omega_estimate),
             "coherence": float(np.abs(np.exp(1j * th[members]).mean())),
-            "phase_offsets_sorted": np.sort(wrap(th[members][order] - circular_mean(th[members]))).tolist(),
-            "pairwise_pattern_spread": float(np.abs(wrap(pairs - circular_mean(pairs))).max()) if pairs.size else 0.0,
+            "phase_offsets_sorted": np.sort(wrap(th[members] - circular_mean(th[members]))).tolist(),
         },
         "boundary_ports": [X[i].tolist() for i in hull],
         "stability": {k: stats[k] for k in ("membership_jaccard", "shape_cv", "lock_std", "freq_change", "pattern_change",

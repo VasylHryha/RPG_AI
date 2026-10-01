@@ -84,6 +84,9 @@ def test_pipeline_runs_in_order_resumes_and_attests(repo):
     assert [s["stage"] for s in pipeline["stages"]] == ["preflight", "tests", "smoke", "mutation", "panel"]
     mutation = json.loads((repo / "evidence/c9_r001/MUTATION.json").read_text())
     assert mutation["detected"] == mutation["total"] == 1
+    # The recorded panel runs once per code: a direct second run is refused.
+    milestones = tool(repo, "milestones")
+    assert any("already ran" in p for p in milestones.check("c9", "panel", repo))
 
 
 def test_stage_order_isolation_and_forged_artifacts(repo):

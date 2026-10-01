@@ -30,6 +30,16 @@ MUTANTS = {
                        '"detector_rejects_clumps": True,'),
     "smoke_uses_final_seeds": ("geomind/run_c4.py", 'execute(manifest, manifest["seeds"]["development_entropy"], SMOKE_WORLDS)',
                                'execute(manifest, manifest["seeds"]["final_entropy"], SMOKE_WORLDS)'),
+    "frozen_topology_ignored": ("geomind/c4_model.py", "idx = np.where(batch.frozen, phase_topology[0], idx)", "idx = idx"),
+    "ablation_against_intact_control": ("geomind/c4_experiment.py", 'stats[(kind, n, f"control/{condition}", condition)]',
+                                        'stats[(kind, n, "control/intact", "intact")]'),
+    "dose_monotonicity_unchecked": ("geomind/c4_experiment.py", 'if all(a <= b for a, b in zip(means, means[1:])) and difference["ci"][0] > 0:',
+                                    'if difference["ci"][0] > 0:'),
+    "min_worlds_ignored": ("geomind/c4_experiment.py", ' or intact["n_worlds"] < min_worlds:', ":"),
+    "hm_ignores_dose": ("geomind/c4_experiment.py", 'elif formation_ok and causal == ("PASS", "PASS", "PASS"):',
+                        'elif formation_ok and causal[:2] == ("PASS", "PASS"):'),
+    "mg_dose_size": ("geomind/c4_experiment.py", 'probe_kick(rng, len(members), float(dose.split(":")[1]))',
+                     'probe_kick(rng, len(members), 2 * float(dose.split(":")[1]))'),
 }
 
 # Guards whose removal another tested guard compensates for; none are expected for C4.

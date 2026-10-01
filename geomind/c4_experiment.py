@@ -1,45 +1,53 @@
 """C4 experiment: worlds, formation, detection, matched interventions, statistics and endpoints.
 
-Everything numeric (model values, detector thresholds, seeds, bounds, verdict rules)
-comes from the committed manifest; nothing here is tuned per seed.
+Everything numeric (model values, detector thresholds, seeds, doses, bounds, verdict
+rules) comes from the committed manifest; nothing here is tuned per seed.
 
 Interventions are applied to each accepted resonator from its formed state s0,
-against a paired control run from the same s0, under the intact dynamics and
-under the matched ablation (both runs of a pair use the same dynamics):
+against a paired control run from the same s0. Both runs of a pair use the same
+dynamics (intact, or a matched ablation), and ablated pairs couple phases over the
+neighbor topology of s0 when the ablation freezes it.
 
-- G->M: scale the group's positions by `scale` about its centroid, phases held.
-  Because exact synchrony is a fixed point for any geometry, both runs of the
-  pair first receive the same zero-mean phase probe kick on the group. The
-  statistic is the time-mean RMS deviation of the pairwise phase pattern from
-  s0 over the response window: weaker distance-weighted coupling restores the
-  pattern more slowly, so the predicted effect is positive. Ablation: w = 1.
-- M->G: replace the group's phases with uniform random phases, positions held.
-  The statistic is the peak radius of gyration relative to s0 over the response
-  window: weaker phase-dependent attraction lets the group expand, so the
-  predicted effect is positive. Ablation: J = 0.
+- G->M: scale the group's positions about its centroid, phases held. Exact
+  synchrony is a fixed point for any geometry, so both runs of the pair first
+  receive the same zero-mean phase probe kick on the group. The statistic is the
+  time-mean RMS deviation of the pairwise phase pattern from s0 over the response
+  window; weaker geometric coupling restores the pattern more slowly, so the
+  predicted effect is positive. Complete ablation: w = 1 and frozen phase
+  topology. The two single channels (w = 1 only; frozen topology only) are
+  reported as a decomposition.
+- M->G: perturb the group's phases (fixed-RMS zero-mean kicks, or uniform
+  replacement), positions held. The statistic is the peak radius of gyration
+  relative to s0 over the response window; weaker phase-dependent attraction lets
+  the group expand, so the predicted effect is positive. Complete ablation: J = 0.
+- Dose-response: under the intact dynamics, larger scales (G->M) and stronger
+  phase perturbations (M->G) must give larger effects.
 
-The unit of analysis is the world (seed): its effect is the mean over its
-accepted resonators.
+A complete ablation removes its pathway by construction, so its vanishing checks
+that the statistic carries no other pathway; the scientific content is the
+intact effect and its dose-response. The unit of analysis is the world (seed):
+its effect is the mean over its accepted resonators.
 """
 
 import numpy as np
 from dataclasses import replace
 
 from geomind.c4_detect import active_unit, detect, pair_differences, radius_of_gyration
-from geomind.c4_model import ABLATIONS, Params, simulate, wrap
+from geomind.c4_model import ABLATIONS, Batch, Params, neighbors, simulate, wrap
 
 ARMS = ("identical", "heterogeneous")
 
 
 def model_params(manifest):
-    """Intact parameters from the manifest and the matched ablations (ABLATIONS lists the same five conditions)."""
+    """Intact parameters from the manifest and every ablation in c4_model.ABLATIONS."""
     m = manifest["model"]
     base = Params(A=m["A"], B=m["B"], J=m["J"], K=m["K"], eps=m["eps"], k=m["neighbors_k"], radius=m["neighbor_radius"])
     params = {
         "intact": base,
         "no_mode_to_geometry": replace(base, J=0.0),
-        "no_geometry_to_mode": replace(base, distance_weighted=False),
-        "both_off": replace(base, J=0.0, distance_weighted=False),
+        "no_distance_weight": replace(base, distance_weighted=False),
+        "frozen_topology": replace(base, frozen_phase_topology=True),
+        "no_geometry_to_mode": replace(base, distance_weighted=False, frozen_phase_topology=True),
         "clump": replace(base, J=0.0, K=0.0),
     }
     assert set(params) == set(ABLATIONS)
@@ -98,11 +106,18 @@ def gm_states(x, th, members, delta, scale):
     return (x.copy(), kicked), (scaled, kicked.copy())
 
 
-def mg_states(x, th, members, random_phases):
+def mg_states(x, th, members, new_phases):
     """(control, treated) for M->G: treated has the group's phases replaced, positions held."""
     treated = th.copy()
-    treated[members] = random_phases
+    treated[members] = new_phases
     return (x.copy(), th.copy()), (x.copy(), treated)
+
+
+def mg_phases(rng, th, members, dose):
+    """New phases for the group: 'uniform' replaces them; 'rms:<a>' adds a zero-mean kick of RMS a."""
+    if dose == "uniform":
+        return rng.uniform(-np.pi, np.pi, len(members))
+    return th[members] + probe_kick(rng, len(members), float(dose.split(":")[1]))
 
 
 def gm_statistic(ths, members, reference_pairs):
@@ -116,47 +131,63 @@ def mg_statistic(xs, members, rg0):
     return float(max(radius_of_gyration(xs[f, members]) for f in range(1, len(xs))) / rg0)
 
 
+GM_ABLATIONS = ("no_geometry_to_mode", "no_distance_weight", "frozen_topology")
+MG_ABLATIONS = ("no_mode_to_geometry",)
+
+
 def intervene(state, omega, resonators, params, manifest, entropy, arm, indices):
     """Paired intervention effects for every accepted resonator.
 
     resonators: list of (world position b, members). Returns one dict per resonator with the
-    treated - control effect of G->M and M->G under intact and ablated dynamics."""
+    treated - control effect of the primary G->M and M->G interventions under the intact dynamics
+    and each ablation ("g_to_m/<condition>", "m_to_g/<condition>"), and of every dose under the
+    intact dynamics ("g_to_m_dose/<scale>", "m_to_g_dose/<dose>")."""
     iv, dt = manifest["interventions"], manifest["integration"]["dt"]
     x, th = state
+    intact_batch = Batch(params["intact"], 1)
+    runs = {"gm": [], "mg": []}  # (resonator n, effect key or None for a control, condition, x, th)
     rngs = {}
-    gm_pairs, mg_pairs = [], []
-    for b, members in resonators:
+    for n, (b, members) in enumerate(resonators):
         rng = rngs.setdefault(b, world_rng(entropy, arm, indices[b], 2))
         delta = probe_kick(rng, len(members), iv["gm_probe_phase_rms"])
-        gm_pairs.append(gm_states(x[b], th[b], members, delta, iv["gm_scale"]))
-        mg_pairs.append(mg_states(x[b], th[b], members, rng.uniform(-np.pi, np.pi, len(members))))
+        for condition in ("intact",) + GM_ABLATIONS:
+            control, _ = gm_states(x[b], th[b], members, delta, 1.0)
+            runs["gm"].append((n, f"control/{condition}", condition, *control))
+        for scale in iv["gm_scales"]:
+            _, treated = gm_states(x[b], th[b], members, delta, scale)
+            runs["gm"].append((n, f"g_to_m_dose/{scale}", "intact", *treated))
+            if scale == iv["gm_scale"]:
+                for condition in GM_ABLATIONS:
+                    runs["gm"].append((n, f"g_to_m/{condition}", condition, *treated))
+        for condition in ("intact",) + MG_ABLATIONS:
+            runs["mg"].append((n, f"control/{condition}", condition, x[b], th[b]))
+        for dose in iv["mg_doses"]:
+            _, treated = mg_states(x[b], th[b], members, mg_phases(rng, th[b], members, dose))
+            runs["mg"].append((n, f"m_to_g_dose/{dose}", "intact", *treated))
+            if dose == iv["mg_dose"]:
+                for condition in MG_ABLATIONS:
+                    runs["mg"].append((n, f"m_to_g/{condition}", condition, *treated))
+    # Frozen phase topology of each pair: the neighbors of its unperturbed s0 (shared by control and treated).
+    topology = [neighbors(x[b][None], intact_batch) for b, _ in resonators]
+    stats = {}
+    for kind, duration in (("gm", iv["gm_window"]), ("mg", iv["mg_window"])):
+        rows = runs[kind]
+        topo = tuple(np.concatenate([topology[r[0]][i] for r in rows]) for i in range(3))
+        _, _, (xs, ths) = simulate(np.array([r[3] for r in rows]), np.array([r[4] for r in rows]),
+                                   np.array([omega[resonators[r[0]][0]] for r in rows]), [params[r[2]] for r in rows],
+                                   dt, int(round(duration / dt)), int(round(iv["sample_dt"] / dt)), phase_topology=topo)
+        for i, (n, key, condition, _, _) in enumerate(rows):
+            b, members = resonators[n]
+            value = (gm_statistic(ths[:, i], members, pair_differences(th[b], members)) if kind == "gm"
+                     else mg_statistic(xs[:, i], members, radius_of_gyration(x[b, members])))
+            stats[(kind, n, key, condition)] = value
     effects = [dict() for _ in resonators]
-
-    def run(pairs, conditions, duration):
-        """All conditions in one batch: world index (c, n, s) for condition c, resonator n, s = control/treated."""
-        bx = np.array([s[0] for _ in conditions for pair in pairs for s in pair])
-        bt = np.array([s[1] for _ in conditions for pair in pairs for s in pair])
-        bw = np.array([omega[b] for _ in conditions for b, _ in resonators for _ in (0, 1)])
-        plist = [params[c] for c in conditions for _ in pairs for _ in (0, 1)]
-        _, _, frames = simulate(bx, bt, bw, plist, dt, int(round(duration / dt)), int(round(iv["sample_dt"] / dt)))
-        return frames
-
-    gm_conditions = ("intact", "no_geometry_to_mode", "both_off")
-    xs, ths = run(gm_pairs, gm_conditions, iv["gm_window"])
-    for c, condition in enumerate(gm_conditions):
-        for n, (b, members) in enumerate(resonators):
-            reference = pair_differences(th[b], members)
-            base = 2 * (c * len(resonators) + n)
-            control, treated = gm_statistic(ths[:, base], members, reference), gm_statistic(ths[:, base + 1], members, reference)
-            effects[n][f"g_to_m/{condition}"] = treated - control
-    mg_conditions = ("intact", "no_mode_to_geometry", "both_off")
-    xs, ths = run(mg_pairs, mg_conditions, iv["mg_window"])
-    for c, condition in enumerate(mg_conditions):
-        for n, (b, members) in enumerate(resonators):
-            rg0 = radius_of_gyration(x[b, members])
-            base = 2 * (c * len(resonators) + n)
-            control, treated = mg_statistic(xs[:, base], members, rg0), mg_statistic(xs[:, base + 1], members, rg0)
-            effects[n][f"m_to_g/{condition}"] = treated - control
+    for (kind, n, key, condition), value in stats.items():
+        if not key.startswith("control/"):
+            effects[n][key] = value - stats[(kind, n, f"control/{condition}", condition)]
+    for n in range(len(resonators)):
+        effects[n]["g_to_m/intact"] = effects[n][f"g_to_m_dose/{iv['gm_scale']}"]
+        effects[n]["m_to_g/intact"] = effects[n][f"m_to_g_dose/{iv['mg_dose']}"]
     return effects
 
 
@@ -179,15 +210,27 @@ def wilson(successes, total, z=1.959963984540054):
     return [float(centre - half), float(centre + half)]
 
 
-def causality_verdict(intact, ablated, vanish_fraction):
+def causality_verdict(intact, ablated, vanish_fraction, min_worlds):
     """PASS: intact CI excludes 0 in the predicted (positive) direction and the ablated effect vanishes.
-    FAIL: intact CI includes 0 or the mean has the wrong sign. INCONCLUSIVE otherwise (or no data)."""
-    if intact["ci"] is None or ablated["ci"] is None:
+    FAIL: intact CI includes 0 or the mean has the wrong sign. INCONCLUSIVE otherwise, or with fewer
+    than min_worlds worlds."""
+    if intact["ci"] is None or ablated["ci"] is None or intact["n_worlds"] < min_worlds:
         return "INCONCLUSIVE"
     if intact["ci"][0] <= 0:
         return "FAIL"
     vanished = ablated["ci"][0] <= 0 <= ablated["ci"][1] or abs(ablated["mean"]) <= vanish_fraction * intact["mean"]
     return "PASS" if vanished else "INCONCLUSIVE"
+
+
+def dose_response_verdict(doses, difference, min_worlds):
+    """PASS: mean effects are non-decreasing across doses and the highest-minus-lowest paired difference
+    has a CI above 0. FAIL: that CI lies below 0. INCONCLUSIVE otherwise, or with fewer than min_worlds worlds."""
+    if difference["ci"] is None or difference["n_worlds"] < min_worlds:
+        return "INCONCLUSIVE"
+    means = [d["mean"] for d in doses]
+    if all(a <= b for a, b in zip(means, means[1:])) and difference["ci"][0] > 0:
+        return "PASS"
+    return "FAIL" if difference["ci"][1] < 0 else "INCONCLUSIVE"
 
 
 def summarize(per_world, rng, resamples):
@@ -196,7 +239,9 @@ def summarize(per_world, rng, resamples):
             "ci": bootstrap_ci(values, rng, resamples), "per_world": per_world}
 
 
-CONDITIONS = ("intact", "no_mode_to_geometry", "no_geometry_to_mode", "both_off", "clump")
+# Formation from the same initial worlds. Frozen phase topology is defined from a formed state, so the
+# complete geometry -> mode ablation is applied in the interventions only.
+CONDITIONS = ("intact", "no_mode_to_geometry", "no_distance_weight", "clump")
 
 
 def run_arm(manifest, entropy, arm, indices, params):
@@ -233,6 +278,7 @@ def run_arm(manifest, entropy, arm, indices, params):
             "units": units,
             "effects": {key: float(np.mean([effects[n][key] for n in accepted])) for key in (effects[0] if effects else {})}
             if accepted else {},
+            "resonator_effects": [effects[n] for n in accepted],
         })
     records = {"indices": list(indices), "worlds": worlds, "ablation_formation": {}}
     # Formation under each ablation from the same initial worlds (descriptive) and the clump control (detector validity).
@@ -260,11 +306,29 @@ def evaluate_arm(records, manifest, rng):
     def effect(key):
         return summarize([w["effects"].get(key) if w["resonators"] else None for w in worlds], rng, resamples)
 
+    min_worlds = rules["min_worlds_for_verdict"]
+    iv = manifest["interventions"]
     causality = {}
     for name, ablation in (("g_to_m", "no_geometry_to_mode"), ("m_to_g", "no_mode_to_geometry")):
-        intact, ablated, both = effect(f"{name}/intact"), effect(f"{name}/{ablation}"), effect(f"{name}/both_off")
-        causality[name] = {"intact": intact, "ablated": {"condition": ablation, **ablated}, "both_off": both,
-                           "verdict": causality_verdict(intact, ablated, rules["ablation_vanish_fraction"])}
+        intact, ablated = effect(f"{name}/intact"), effect(f"{name}/{ablation}")
+        causality[name] = {"intact": intact, "ablated": {"condition": ablation, **ablated},
+                           "verdict": causality_verdict(intact, ablated, rules["ablation_vanish_fraction"], min_worlds)}
+    channels = {"condition_note": "G->M primary effect with one geometric channel removed (descriptive)",
+                **{c: effect(f"g_to_m/{c}") for c in ("no_distance_weight", "frozen_topology")}}
+    for c in ("no_distance_weight", "frozen_topology"):
+        mean, base = channels[c]["mean"], causality["g_to_m"]["intact"]["mean"]
+        channels[c]["fraction_of_intact"] = (mean / base) if mean is not None and base else None
+    channels["verdict"] = "REPORTED"
+    dose = {}
+    for name, labels in (("g_to_m", [str(s) for s in iv["gm_scales"]]), ("m_to_g", list(iv["mg_doses"]))):
+        per_dose = [effect(f"{name}_dose/{label}") for label in labels]
+        difference = summarize([None if w["resonators"] == 0 else
+                                w["effects"][f"{name}_dose/{labels[-1]}"] - w["effects"][f"{name}_dose/{labels[0]}"]
+                                for w in worlds], rng, resamples)
+        dose[name] = {"doses": dict(zip(labels, per_dose)), "highest_minus_lowest": difference,
+                      "verdict": dose_response_verdict(per_dose, difference, min_worlds)}
+    dose["verdict"] = ("PASS" if all(dose[n]["verdict"] == "PASS" for n in ("g_to_m", "m_to_g")) else
+                       "FAIL" if any(dose[n]["verdict"] == "FAIL" for n in ("g_to_m", "m_to_g")) else "INCONCLUSIVE")
     bounds = manifest["effective_state_bounds"]
     errors = [{k: u["stability"][k] for k in bounds} for w in worlds for u in w["units"]]
     within = sum(all(e[k] <= bounds[k] for k in bounds) for e in errors)
@@ -279,8 +343,8 @@ def evaluate_arm(records, manifest, rng):
         "formation": formation,
         "g_to_m": causality["g_to_m"],
         "m_to_g": causality["m_to_g"],
-        "both_off": {"verdict": "REPORTED", "g_to_m": causality["g_to_m"]["both_off"], "m_to_g": causality["m_to_g"]["both_off"],
-                     "note": "descriptive: with J = 0 and w = 1, geometry can still reach the phases through neighbor selection"},
+        "dose_response": dose,
+        "g_to_m_channels": channels,
         "not_a_clump": {**clump, "verdict": "PASS" if clump["accepted_resonators"] == 0 else "FAIL"},
         "effective_state": effective_state,
         "ablation_formation": {k: v for k, v in records["ablation_formation"].items() if k != "clump"},
@@ -289,10 +353,10 @@ def evaluate_arm(records, manifest, rng):
 
 def hypothesis_verdicts(arm_eval, rules):
     formation_ok = arm_eval["formation"]["fraction"] >= rules["formation_min_fraction"]
-    causal = (arm_eval["g_to_m"]["verdict"], arm_eval["m_to_g"]["verdict"])
+    causal = (arm_eval["g_to_m"]["verdict"], arm_eval["m_to_g"]["verdict"], arm_eval["dose_response"]["verdict"])
     if "FAIL" in causal:
         h_m = "NOT_SUPPORTED"
-    elif formation_ok and causal == ("PASS", "PASS"):
+    elif formation_ok and causal == ("PASS", "PASS", "PASS"):
         h_m = "SUPPORTED_WITHIN_SCOPE"
     else:
         h_m = "INCONCLUSIVE"

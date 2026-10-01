@@ -155,6 +155,8 @@ def check(milestone, stage, root=ROOT):
     missing = [s for s in ORDER[:ORDER.index(stage)] if s not in done]
     if missing:
         problems.append(f"{milestone}: earlier stages not verified for the current code: {', '.join(missing)}; run tools/verify.py --milestone {milestone}")
+    if stage == "panel" and "panel" in done:
+        problems.append(f"{milestone}: the recorded panel already ran for this code; evidence is produced once per revision")
     if stage == "review" and review_reports(milestone, root):
         problems.append(f"{milestone} {revision(milestone, root)} already has an independent review; one review per revision")
     return problems

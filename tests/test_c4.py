@@ -11,32 +11,41 @@ import pytest
 
 from geomind import c4_detect, run_c4
 from geomind.c4_detect import active_unit, criteria_checks, detect, kick, locked_pairs, window_statistics
-from geomind.c4_experiment import (ARMS, bootstrap_ci, causality_verdict, evaluate_arm, gm_states, gm_statistic,
-                                   hypothesis_verdicts, mg_states, mg_statistic, model_params, numerical_checks,
-                                   probe_kick, wilson)
+from geomind.c4_experiment import (ARMS, bootstrap_ci, causality_verdict, dose_response_verdict, evaluate_arm,
+                                   gm_states, gm_statistic, hypothesis_verdicts, mg_phases, mg_states, mg_statistic,
+                                   model_params, numerical_checks, probe_kick, wilson)
 from geomind.c4_model import ABLATIONS, INTACT, Batch, neighbors, rhs, simulate
 
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST = json.loads((ROOT / "experiments/c4_manifest.json").read_text())
 
 
-def naive_rhs(x, th, omega, p):
-    """Independent per-element reference of the R4 C4 equations."""
+def naive_neighbors(x, i, p):
+    dist = [(np.linalg.norm(x[j] - x[i]), j) for j in range(len(x)) if j != i]
+    ordered = sorted(range(len(dist)), key=lambda q: dist[q][0])[:p.k]
+    return [dist[q][1] for q in ordered if dist[q][0] < p.radius]
+
+
+def naive_rhs(x, th, omega, p, topology_positions=None):
+    """Independent per-element reference of the R4 C4 equations; with a frozen phase topology the phase
+    coupling uses the neighbors that topology_positions would have."""
     n = len(x)
     x_dot, th_dot = np.zeros_like(x), np.array(omega, dtype=float)
     for i in range(n):
-        dist = [(np.linalg.norm(x[j] - x[i]), j) for j in range(n) if j != i]
-        ordered = sorted(range(len(dist)), key=lambda q: dist[q][0])[:p.k]
-        near = [dist[q][1] for q in ordered if dist[q][0] < p.radius]
-        if not near:
-            continue
-        fx, ft = np.zeros(2), 0.0
-        for j in near:
-            r = np.linalg.norm(x[j] - x[i])
-            fx += (x[j] - x[i]) / max(r, p.eps) * (p.A * (1 + p.J * np.cos(th[j] - th[i])) - p.B / max(r, p.eps))
-            ft += p.K * (np.exp(-r * r) if p.distance_weighted else 1.0) * np.sin(th[j] - th[i])
-        x_dot[i] = fx / len(near)
-        th_dot[i] += ft / len(near)
+        near = naive_neighbors(x, i, p)
+        if near:
+            fx = np.zeros(2)
+            for j in near:
+                r = np.linalg.norm(x[j] - x[i])
+                fx += (x[j] - x[i]) / max(r, p.eps) * (p.A * (1 + p.J * np.cos(th[j] - th[i])) - p.B / max(r, p.eps))
+            x_dot[i] = fx / len(near)
+        coupled = naive_neighbors(topology_positions, i, p) if p.frozen_phase_topology else near
+        if coupled:
+            ft = 0.0
+            for j in coupled:
+                r = np.linalg.norm(x[j] - x[i])
+                ft += p.K * (np.exp(-r * r) if p.distance_weighted else 1.0) * np.sin(th[j] - th[i])
+            th_dot[i] += ft / len(coupled)
     return x_dot, th_dot
 
 
@@ -48,9 +57,10 @@ def test_rhs_matches_naive_reference(name):
     x[1, 0] += 50.0  # an isolated element: no neighbors within the radius
     th, omega = rng.uniform(-np.pi, np.pi, (2, 10)), rng.uniform(-0.5, 0.5, (2, 10))
     batch = Batch(p, 2)
-    got = rhs(x, th, omega, *neighbors(x, batch), batch)
+    earlier = x + rng.normal(size=x.shape)  # a different configuration whose neighbors form the frozen topology
+    got = rhs(x, th, omega, *neighbors(x, batch), batch, neighbors(earlier, batch))
     for b in range(2):
-        want = naive_rhs(x[b], th[b], omega[b], p)
+        want = naive_rhs(x[b], th[b], omega[b], p, earlier[b])
         assert np.allclose(got[0][b], want[0], atol=1e-13) and np.allclose(got[1][b], want[1], atol=1e-13)
     assert np.array_equal(got[0][1, 0], [0.0, 0.0]) and got[1][1, 0] == omega[1, 0]
 
@@ -59,10 +69,12 @@ def test_mixed_batch_equals_separate_runs():
     rng = np.random.default_rng(2)
     x, th, omega = rng.normal(size=(1, 12, 2)), rng.uniform(-3, 3, (1, 12)), np.zeros((1, 12))
     names = sorted(ABLATIONS)
+    topology = neighbors(x, Batch(INTACT, 1))
+    stacked = tuple(np.repeat(a, len(names), 0) for a in topology)
     mixed = simulate(np.repeat(x, len(names), 0), np.repeat(th, len(names), 0), np.repeat(omega, len(names), 0),
-                     [ABLATIONS[n] for n in names], 0.02, 50)
+                     [ABLATIONS[n] for n in names], 0.02, 50, phase_topology=stacked)
     for i, n in enumerate(names):
-        alone = simulate(x, th, omega, ABLATIONS[n], 0.02, 50)
+        alone = simulate(x, th, omega, ABLATIONS[n], 0.02, 50, phase_topology=topology)
         assert np.allclose(mixed[0][i], alone[0][0], atol=1e-13) and np.allclose(mixed[1][i], alone[1][0], atol=1e-13)
 
 
@@ -94,8 +106,18 @@ def test_ablations_remove_exactly_their_coupling_term():
     # J = 0: positions never depend on phases (bit for bit).
     assert np.array_equal(simulate(x, th_a, omega, blind, 0.02, 100)[0], simulate(x, th_b, omega, blind, 0.02, 100)[0])
     assert not np.array_equal(simulate(x, th_a, omega, INTACT, 0.02, 100)[0], simulate(x, th_b, omega, INTACT, 0.02, 100)[0])
+    # Complete geometry -> mode ablation: phases never depend on positions (bit for bit).
+    blind_phases = ABLATIONS["no_geometry_to_mode"]
+    topology = neighbors(x, Batch(INTACT, 1))
+    assert np.array_equal(simulate(x, th_a, omega, blind_phases, 0.02, 100, phase_topology=topology)[1],
+                          simulate(1.5 * x + 0.3, th_a, omega, blind_phases, 0.02, 100, phase_topology=topology)[1])
+    for single in ("no_distance_weight", "frozen_topology"):
+        assert not np.array_equal(simulate(x, th_a, omega, ABLATIONS[single], 0.02, 100, phase_topology=topology)[1],
+                                  simulate(1.5 * x + 0.3, th_a, omega, ABLATIONS[single], 0.02, 100, phase_topology=topology)[1])
+    with pytest.raises(ValueError, match="phase_topology"):
+        simulate(x, th_a, omega, blind_phases, 0.02, 1)
     # w = 1: with the same neighbor sets, phase velocities do not depend on distances.
-    batch = Batch(ABLATIONS["no_geometry_to_mode"], 1)
+    batch = Batch(ABLATIONS["no_distance_weight"], 1)
     held = neighbors(x, batch)
     stretched = x * 1.3
     assert np.array_equal(rhs(x, th_a, omega, *held, batch)[1], rhs(stretched, th_a, omega, *held, batch)[1])
@@ -119,7 +141,10 @@ def test_interventions_hold_their_variables_bit_for_bit():
     assert np.allclose(tx[members].mean(0), x[members].mean(0), atol=1e-14)
     assert np.allclose(np.linalg.norm(tx[members] - tx[members[0]], axis=1),
                        1.5 * np.linalg.norm(x[members] - x[members[0]], axis=1), atol=1e-13)
-    new = rng.uniform(-np.pi, np.pi, len(members))
+    partial = mg_phases(rng, th, members, "rms:0.5") - th[members]
+    assert abs(partial.mean()) < 1e-15 and np.sqrt((partial ** 2).mean()) == pytest.approx(0.5, abs=1e-15)
+    new = mg_phases(rng, th, members, "uniform")
+    assert np.all(np.abs(new) <= np.pi)
     (cx, cth), (tx, tth) = mg_states(x, th, members, new)
     assert np.array_equal(cx, tx) and np.array_equal(cth, th) and np.array_equal(tth[members], new)
     assert np.array_equal(tth[others], th[others])
@@ -169,7 +194,9 @@ def test_mini_run_detects_resonators_rejects_clumps_and_measures_two_way_effects
     for world in identical["worlds"]:
         if world["resonators"]:
             assert world["effects"]["m_to_g/intact"] > 0 and world["effects"]["m_to_g/no_mode_to_geometry"] == 0.0
-            assert world["effects"]["g_to_m/intact"] > 0
+            assert world["effects"]["g_to_m/intact"] > 0 and world["effects"]["g_to_m/no_geometry_to_mode"] == 0.0
+            assert world["effects"]["g_to_m/intact"] == world["effects"]["g_to_m_dose/1.5"]
+            assert len(world["resonator_effects"]) == world["resonators"]
             unit = world["units"][0]
             assert "members" not in unit and set(unit) == {"effective_position", "characteristic_size", "mode_signature",
                                                            "boundary_ports", "stability"}
@@ -195,20 +222,28 @@ def test_active_unit_boundary_ports_are_the_hull():
 def test_statistics_and_verdict_rules():
     assert wilson(8, 10) == pytest.approx([0.4901625, 0.9433178], abs=1e-6)
     assert bootstrap_ci([2.0, 2.0, 2.0], np.random.default_rng(0), 100) == [2.0, 2.0]
-    up = {"mean": 1.0, "ci": [0.5, 1.5]}
-    assert causality_verdict(up, {"mean": 0.05, "ci": [0.01, 0.09]}, 0.2) == "PASS"
-    assert causality_verdict(up, {"mean": 0.0, "ci": [-0.1, 0.1]}, 0.2) == "PASS"
-    assert causality_verdict(up, {"mean": 0.5, "ci": [0.4, 0.6]}, 0.2) == "INCONCLUSIVE"
-    assert causality_verdict({"mean": 0.1, "ci": [-0.1, 0.3]}, {"mean": 0.0, "ci": [0.0, 0.0]}, 0.2) == "FAIL"
-    assert causality_verdict({"mean": None, "ci": None}, {"mean": None, "ci": None}, 0.2) == "INCONCLUSIVE"
+    up = {"mean": 1.0, "ci": [0.5, 1.5], "n_worlds": 12}
+    assert causality_verdict(up, {"mean": 0.05, "ci": [0.01, 0.09]}, 0.2, 10) == "PASS"
+    assert causality_verdict(up, {"mean": 0.0, "ci": [-0.1, 0.1]}, 0.2, 10) == "PASS"
+    assert causality_verdict(up, {"mean": 0.5, "ci": [0.4, 0.6]}, 0.2, 10) == "INCONCLUSIVE"
+    assert causality_verdict({**up, "n_worlds": 9}, {"mean": 0.0, "ci": [0.0, 0.0]}, 0.2, 10) == "INCONCLUSIVE"
+    assert causality_verdict({"mean": 0.1, "ci": [-0.1, 0.3], "n_worlds": 12}, {"mean": 0.0, "ci": [0.0, 0.0]}, 0.2, 10) == "FAIL"
+    assert causality_verdict({"mean": None, "ci": None, "n_worlds": 0}, {"mean": None, "ci": None}, 0.2, 10) == "INCONCLUSIVE"
+    doses = [{"mean": 0.1}, {"mean": 0.2}, {"mean": 0.4}]
+    assert dose_response_verdict(doses, {"ci": [0.1, 0.4], "n_worlds": 12}, 10) == "PASS"
+    assert dose_response_verdict(doses[::-1], {"ci": [-0.4, -0.1], "n_worlds": 12}, 10) == "FAIL"
+    assert dose_response_verdict([{"mean": 0.1}, {"mean": 0.5}, {"mean": 0.4}], {"ci": [0.1, 0.4], "n_worlds": 12}, 10) == "INCONCLUSIVE"
+    assert dose_response_verdict(doses, {"ci": [0.1, 0.4], "n_worlds": 9}, 10) == "INCONCLUSIVE"
     rules = MANIFEST["verdict_rules"]
 
-    def arm(fraction, gm, mg, state):
+    def arm(fraction, gm, mg, state, dose="PASS"):
         return {"formation": {"fraction": fraction}, "g_to_m": {"verdict": gm}, "m_to_g": {"verdict": mg},
-                "effective_state": {"verdict": state}}
+                "dose_response": {"verdict": dose}, "effective_state": {"verdict": state}}
 
     assert hypothesis_verdicts(arm(0.9, "PASS", "PASS", "PASS"), rules) == {"H-M": "SUPPORTED_WITHIN_SCOPE", "H-C_precursor": "SUPPORTED_WITHIN_SCOPE"}
     assert hypothesis_verdicts(arm(0.9, "PASS", "FAIL", "PASS"), rules)["H-M"] == "NOT_SUPPORTED"
+    assert hypothesis_verdicts(arm(0.9, "PASS", "PASS", "PASS", dose="FAIL"), rules)["H-M"] == "NOT_SUPPORTED"
+    assert hypothesis_verdicts(arm(0.9, "PASS", "PASS", "PASS", dose="INCONCLUSIVE"), rules)["H-M"] == "INCONCLUSIVE"
     assert hypothesis_verdicts(arm(0.5, "PASS", "PASS", "PASS"), rules) == {"H-M": "INCONCLUSIVE", "H-C_precursor": "INCONCLUSIVE"}
     assert hypothesis_verdicts(arm(0.9, "PASS", "PASS", "FAIL"), rules)["H-C_precursor"] == "NOT_SUPPORTED"
 
@@ -282,23 +317,36 @@ def synthetic_records(effects, units_ok, clump_accepted=0):
     worlds = [{"resonators": 1 if e is not None else 0, "effects": e or {}, "units": [unit(ok)] if e is not None else []}
               for e, ok in zip(effects, units_ok)]
     formation = {"worlds_with_resonator": 0, "accepted_resonators": 0, "candidates": 0, "rejections_by_criterion": {}}
-    return {"worlds": worlds, "ablation_formation": {"no_mode_to_geometry": formation, "no_geometry_to_mode": formation,
-                                                     "both_off": formation, "clump": {**formation, "accepted_resonators": clump_accepted}}}
+    return {"worlds": worlds, "ablation_formation": {"no_mode_to_geometry": formation, "no_distance_weight": formation,
+                                                     "clump": {**formation, "accepted_resonators": clump_accepted}}}
+
+
+def synthetic_effect(scale=1.0, dose_order=(0.005, 0.02, 0.04)):
+    gm = dict(zip(("1.25", "1.5", "2.0"), dose_order))
+    return {"g_to_m/intact": gm["1.5"] * scale, "g_to_m/no_geometry_to_mode": 0.0, "g_to_m/no_distance_weight": 0.001,
+            "g_to_m/frozen_topology": 0.019, "m_to_g/intact": 1.0 * scale, "m_to_g/no_mode_to_geometry": 0.0,
+            **{f"g_to_m_dose/{k}": v * scale for k, v in gm.items()},
+            "m_to_g_dose/rms:0.5": 0.05 * scale, "m_to_g_dose/rms:1.0": 0.3 * scale, "m_to_g_dose/uniform": 1.0 * scale}
 
 
 def test_endpoint_evaluation_on_synthetic_records():
-    effect = {"g_to_m/intact": 0.02, "g_to_m/no_geometry_to_mode": 0.0, "g_to_m/both_off": 0.001,
-              "m_to_g/intact": 1.0, "m_to_g/no_mode_to_geometry": 0.0, "m_to_g/both_off": 0.0}
     m = copy.deepcopy(MANIFEST)
     m["statistics"]["bootstrap_resamples"] = 200
     rng = np.random.default_rng(0)
-    ok = evaluate_arm(synthetic_records([effect] * 9 + [None], [True] * 10), m, rng)
-    assert ok["formation"]["fraction"] == 0.9 and ok["formation"]["verdict"] == "PASS"
+    effects = [synthetic_effect(1 + 0.05 * i) for i in range(10)] + [None]
+    ok = evaluate_arm(synthetic_records(effects, [True] * 11), m, rng)
+    assert ok["formation"]["fraction"] == 10 / 11 and ok["formation"]["verdict"] == "PASS"
     assert ok["g_to_m"]["verdict"] == ok["m_to_g"]["verdict"] == "PASS" and ok["not_a_clump"]["verdict"] == "PASS"
+    assert ok["dose_response"]["verdict"] == "PASS"
+    assert ok["g_to_m_channels"]["frozen_topology"]["fraction_of_intact"] == pytest.approx(
+        0.019 / (0.02 * np.mean([1 + 0.05 * i for i in range(10)])), rel=1e-12)
     assert ok["effective_state"]["fraction_within_bounds"] == 1.0 and ok["effective_state"]["verdict"] == "PASS"
     assert hypothesis_verdicts(ok, m["verdict_rules"]) == {"H-M": "SUPPORTED_WITHIN_SCOPE", "H-C_precursor": "SUPPORTED_WITHIN_SCOPE"}
-    bad = evaluate_arm(synthetic_records([effect] * 7 + [None] * 3, [True] * 5 + [False] * 5, clump_accepted=1), m, rng)
+    reversed_dose = [synthetic_effect(1 + 0.05 * i, dose_order=(0.04, 0.02, 0.005)) for i in range(10)]
+    assert evaluate_arm(synthetic_records(reversed_dose, [True] * 10), m, rng)["dose_response"]["verdict"] == "FAIL"
+    bad = evaluate_arm(synthetic_records(effects[:7] + [None] * 3, [True] * 5 + [False] * 5, clump_accepted=1), m, rng)
     assert bad["formation"]["verdict"] == "FAIL" and bad["not_a_clump"]["verdict"] == "FAIL"
+    assert bad["g_to_m"]["verdict"] == "INCONCLUSIVE"  # 7 worlds < 10
     assert bad["effective_state"]["fraction_within_bounds"] == 5 / 7 and bad["effective_state"]["verdict"] == "FAIL"
 
 
