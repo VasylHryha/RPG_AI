@@ -198,7 +198,13 @@ Baselines: frozen random network; constant mean; ordinary linear regression; the
 
 **Review focus.** Exact update sign/factor, convergence error mistaken for learning, hidden target access, linear capacity, and candid relation to established learning algorithms.
 
-**C2 cross-family review (Claude):** the R002 implementation is confirmed (`evidence/c2_r002_crosscheck/CROSS_REVIEW.md`). The registered gradient-direction endpoint (cosine ≥ 0.999) was not evaluated by the panel; evaluated separately, it is NOT MET at registered β = 0.05 (65.8% of updates; 100% at β = 0.001; never the wrong direction). The untrained network already meets the MSE ≤ 1e-3 target, and exact-gradient training matches the candidate. STOP_THIS_BRANCH stands.
+**C2 cross-family review (Claude, corrected):** the R002 implementation is confirmed (`evidence/c2_r002_crosscheck/CROSS_REVIEW.md`).
+- Two registered verification endpoints (equilibrium 1e-7, gradient cosine 0.999) are enforced by focused tests only, not by the panel.
+- On actual first-epoch training updates at β = 0.05, cosine ≥ 0.999 holds for 92.65% (affine) and 99.95% (realizable), never in the wrong direction; at reduced β it holds for 100%.
+- The affine shortfall is budget-limited: exact-gradient training reaches 1e-8 training MSE by 2,000 epochs.
+- The untrained network already meets MSE ≤ 1e-3.
+
+STOP_THIS_BRANCH stands because linear regression dominates this linear task family.
 
 **Local C2 R002 execution:** independently ACCEPTED (`evidence/c2_r002_independent/INDEPENDENT_REVIEW.md`); hypothesis support remains separate. Registration `experiments/c2_manifest.json`: fixed eta 0.01 and epoch 100; twenty independent initialization/data/order trials per task with 100/50/200 splits. A measured development NumPy phase cost of 30.3 ms warranted the authorized strict-float64 C++ synchronous relaxation kernel (`native/c2/relaxation.cpp`); Python owns snapshots and evaluator, and independent NumPy linear solves/implicit gradients own numerical controls. The gated pipeline passed 23 focused checks, a non-panel smoke, four focused numerical mutation checks and all forty numerical/control trials in 203.456 seconds. There were zero update refusals, inference failures or saturated edges. Candidate/reference final output differences were at most 6.48e-9; direct-equilibrium local-rule training matched predictions within 1.89e-7. Feedback removal retained the initial frozen model, and both causal paths passed.
 

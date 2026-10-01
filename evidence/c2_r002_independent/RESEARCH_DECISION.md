@@ -25,10 +25,10 @@ Preserve the candidate and all accepted/historical receipts as a mechanism refer
 
 The recursive-resonator H-C lane is scientifically distinct from this passive-linear learning probe. C4 and hierarchy remain **NOT_STARTED**. Before that lane can begin, explicitly select its bounded question and lock the R4 recursive `ActiveUnit` contract and C4 integration, persistence, perturbation, ablation and evaluation registration; qualify each reached milestone separately. No hierarchy is added to rescue C2 and no whole-program or broader-theory conclusion follows from this decision.
 
-## Addendum: cross-family review (Claude, 2026-10-01)
+## Addendum: cross-family review (Claude, 2026-10-01; corrected)
 
-See `../c2_r002_crosscheck/CROSS_REVIEW.md`. Three points correct the record; no reported number changes.
+See `../c2_r002_crosscheck/CROSS_REVIEW.md`. No reported number changes. This addendum replaces my first version, which measured the gradient endpoint on unrealistic targets.
 
-1. The registered endpoint `gradient_direction_cosine_min = 0.999` was not evaluated by the panel. A separate probe of 1,000 updates at the registered β = 0.05 finds 65.8% with cosine ≥ 0.999 (minimum 0.10, never the wrong direction): **NOT MET** as a minimum. At β = 0.001, 100% meet it. This is finite-nudge bias at large output errors, not an implementation error.
-2. The frozen untrained network already reaches realizable test MSE 0.000991 ≤ 1e-3, so the error target alone does not show learning.
-3. Exact-gradient training of the same network reaches the same MSE on both tasks. The outcomes reflect the registered training budget and the linear task family, not a defect of the local rule.
+1. Two registered verification endpoints (equilibrium accuracy 1e-7 and gradient-direction cosine 0.999) are checked by focused tests but not evaluated by the panel, and they are not listed as not run. On the actual first-epoch training updates at registered β = 0.05, cosine ≥ 0.999 holds for 99.95% (realizable) and 92.65% (affine) of updates, never in the wrong direction; the minima are 0.9977 and 0.9966. At reduced β = 0.001, which is R4's stated procedure, it holds for 100%. That makes it met under R4's procedure and narrowly missed as a strict minimum at the training β.
+2. The affine NOT_SUPPORTED outcome is budget-limited, not capacity-limited. Exact-gradient training on training data reaches MSE 0.00074 at 1,000 epochs and 1e-8 at 2,000, against 0.0186 at the registered 100. The candidate tracks the same gradient.
+3. The frozen untrained network already meets realizable MSE ≤ 1e-3, so only the frozen-reduction criterion shows learning.

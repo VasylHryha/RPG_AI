@@ -1,44 +1,47 @@
-Verdict: **CHANGES_REQUIRED (record only).** The implementation acceptance stands, and the corrections are applied in this commit; no code change or panel rerun is needed.
+Verdict: **CHANGES_REQUIRED (record only).** The implementation acceptance stands, and the corrections are applied; no code change or panel rerun is needed.
 
 # Cross-family review of C2 R002 (Claude reviewing Codex's work)
 
-Reviewer: Claude (Opus 5.5), which did not write C2. The original acceptance (`../c2_r002_independent/INDEPENDENT_REVIEW.md`) came from a separate Codex agent, the same model family as the author; this is a second review from a different family. Reviewed: evidence commit `c4400f7`, numerical source commit `63ae7dd`, experiment `geomind-c2-r4-002`. About 15 minutes, as required by `AGENTS.md`.
+Reviewer: Claude (Opus 5.5), which did not write C2. The original acceptance (`../c2_r002_independent/INDEPENDENT_REVIEW.md`) came from a separate Codex agent, the same model family as the author. Reviewed: evidence commit `c4400f7`, numerical source commit `63ae7dd`, experiment `geomind-c2-r4-002`.
+
+**Revision note.** This replaces my first version of this review (commit `29f9e70`). That version measured the gradient-direction endpoint on random targets unrelated to the network's output (errors up to about 0.9). On that basis it reported "65.8% of updates, minimum cosine 0.10, NOT MET", which misrepresents training. It also attributed the weak outcomes to the "training budget" without testing that claim. Both points are corrected below with faithful probes, and the stress probe is kept only as a labelled stress test.
 
 ## Confirmed correct
 
-- **Mechanism matches R4 C2:** the leaky Laplacian force, nudge term `β(u_out − y)`, step `0.25/(2·max degree + λ + β)`, clamped inputs, convergence at max force < 1e-9, and the local rule `g + η/(2β)·(Δu_F² − Δu_N²)` with the R4 sign and factor, using the same old conductances in both phases (`native/c2/relaxation.cpp`).
-- **Strict float64:** `-fno-fast-math -ffp-contract=off` (`tools/build_c2.py`).
+- **Mechanism matches R4 C2:** the leaky Laplacian forces, nudge `β(u_out − y)`, step `0.25/(2·max degree + λ + β)`, clamped inputs, convergence at max force < 1e-9, and the local rule `g + η/(2β)·(Δu_F² − Δu_N²)` with the R4 sign and factor, using the same old conductances in both phases.
+- **Strict float64** build (`-fno-fast-math -ffp-contract=off`).
 - **Independent references:** dense Kirchhoff solve plus adjoint gradient; no candidate imports.
 - **The receipt agrees with itself:**
-  - candidate = direct-equilibrium local rule (0.000415 on both);
-  - feedback removed = frozen (learning disappears);
+  - candidate = direct-equilibrium local rule (realizable 0.000415);
+  - feedback removed = frozen;
   - candidate ≈ exact analytic-gradient training (realizable 0.000415 vs 0.000402; affine 0.017577 vs 0.017548).
-- **Verdict logic** follows the registered rules: realizable INCONCLUSIVE (reduction 95% CI 44.8–60.0% straddles 50%); affine NOT_SUPPORTED (CI upper 10.5% < 50%).
-- **Identity:** all 43 registered source files match the live files and `source/`; C0 inputs unchanged; frozen C1 files unchanged. 23 C2 and gate tests pass (1.2 s).
+- **Verdict logic** follows the registered rules (realizable INCONCLUSIVE, affine NOT_SUPPORTED).
+- **Identity:** 43 registered source files match the live files and `source/`; C0 and frozen C1 unchanged; 23 C2 and gate tests pass.
 
 ## Findings
 
-1. **Medium: a registered endpoint was never evaluated, and was not listed as not run.** `gradient_direction_cosine_min = 0.999` appears in the manifest and in `validate_manifest`, but the panel never computes it. It is missing from `checks_not_run`, and the first review did not flag it. Evaluated here (`probe_gradient_direction.py`, 1,000 single updates at the registered settings, clipped updates excluded):
+1. **Medium: two registered verification endpoints are not evaluated by the panel, and are not listed as not run.** `equilibrium_abs_tolerance = 1e-7` and `gradient_direction_cosine_min = 0.999` each appear only in manifest validation (`run_c2.py`). The focused tests check both, on selected samples. Neither is in `checks_not_run`, and the first review did not flag this. The registration also does not say at what β the cosine endpoint applies, while R4's verification text says to "reduce β … to expose numerical error". Evaluated here:
 
-   | Setting | Updates with cosine ≥ 0.999 | Minimum cosine | Wrong direction |
+   | Evidence | Updates with cosine ≥ 0.999 | Minimum | Wrong direction |
    |---|---|---|---|
-   | registered β = 0.05 | 65.8% | 0.100 | 0 |
-   | registered β = 0.05, output error < 0.1 | 97.8% | 0.995 | 0 |
-   | reduced β = 0.001 | 100% | 0.9994 | 0 |
+   | **Actual training updates**, first epoch (worst case), all 40 trials, registered β = 0.05 (`probe_training_updates.py`): realizable | 99.95% of 2,000 | 0.9977 | 0 |
+   | the same, affine | 92.65% of 2,000 | 0.9966 | 0 |
+   | Reduced β = 0.001, random states (`probe_gradient_direction.py`) | 100% of 1,000 | 0.9994 | 0 |
+   | Stress test only: registered β, targets independent of the output (errors up to about 0.9) | 65.8% | 0.100 | 0 |
 
-   Read as a minimum over updates, the endpoint is **NOT MET at the registered β**. This is finite-nudge bias at large output errors, not an implementation error: it disappears as β → 0, consistent with the existing small-β focused test, and training still tracks exact-gradient training because errors shrink during learning.
+   **Reading:** under R4's stated procedure (reduced β) the endpoint is **met**. On actual training updates at the training β it is met by most updates but **narrowly missed as a strict minimum** (0.9966 and 0.9977 < 0.999). This is finite-nudge bias that grows with output error, not an implementation error; no update ever points the wrong way.
 
-2. **Low: the error target does not discriminate.** The untrained frozen network already reaches test MSE 0.000991 on the realizable task, under the ≤ 1e-3 target. "Error target met" is therefore not evidence of learning; only the frozen-reduction criterion is.
+2. **Medium: the affine NOT_SUPPORTED outcome is budget-limited, not a capacity limit.** `probe_training_budget.py` uses training data only and trains the exact-gradient control on trial 0 for longer. Affine training MSE is 0.0195 at epoch 0, 0.0186 at the registered 100, 0.00074 at 1,000 and 1.1e-8 at 2,000; the realizable task also keeps improving. The passive network can represent the affine target, so the registered 100 epochs at η = 0.01 were far too short. Because the candidate tracks the exact gradient, it is limited by the same budget. This changes no registered result; a longer budget would need a new registration on fresh data.
 
-3. **Low: the cause of the weak results is not stated.** Exact-gradient training of the same network reaches the same MSE on both tasks. The INCONCLUSIVE and NOT_SUPPORTED outcomes therefore reflect the registered training budget (η = 0.01, 100 epochs) and the linear task family, not a defect of the local rule. A future redesign should not blame the rule.
+3. **Low: the error target does not discriminate.** The untrained frozen network already reaches realizable test MSE 0.000991 ≤ 1e-3. Only the frozen-reduction criterion is evidence of learning.
 
-## Corrections applied
+## Effect on the research decision
 
-Addenda (original text kept) in `../c2_r002/HANDOFF.md` and `../c2_r002_independent/RESEARCH_DECISION.md`, plus status lines in `README.md` and the R4 standard. The STOP_THIS_BRANCH decision is unchanged and, if anything, strengthened: the local rule works as an approximate gradient method, but a matched linear baseline dominates on both quality and cost.
+STOP_THIS_BRANCH stands, on firmer and more precise grounds. The local rule is a faithful approximate gradient method, and its weak registered outcomes are a too-short training budget, not a broken mechanism. Even with an adequate budget, the task family is linear: ordinary linear regression is exact and orders of magnitude cheaper, so the learner cannot add task value or efficiency here (R4 §7). A redesign would need a task beyond linear capacity and a new registration.
 
 ## Not run
 
-The panel was not rerun (unnecessary: findings 1–3 change no reported number). The mutation probe was not rerun.
+The panel and the mutation probe were not rerun; nothing here changes a reported number. The longer-budget check used one trial per task, with the exact-gradient control, on training data only.
 
 ## Independence
 
