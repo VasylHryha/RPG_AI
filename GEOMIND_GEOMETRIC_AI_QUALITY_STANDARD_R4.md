@@ -18,10 +18,10 @@ This revision replaces R3 rather than appending a competing hierarchy note. R3 c
 
 | Item | Record |
 |---|---|
-| Current work | C0 R003 independently ACCEPTED; C1 R002 CHANGES_REQUIRED (`evidence/c1_review/CLAUDE_ACCEPTANCE.md`; it conflicts with the earlier `ACCEPTANCE.md` and must be resolved); C1 R003 superseded; C1 R004 REVIEW_READY, independent acceptance pending |
+| Current work | C0 R003 independently ACCEPTED; C1 R002 CHANGES_REQUIRED (`evidence/c1_review/CLAUDE_ACCEPTANCE.md`; conflict with the earlier `ACCEPTANCE.md` reconciled in `evidence/c1_review/RECONCILIATION.md`); C1 R003 superseded; C1 R004 CHANGES_REQUIRED (independent review); C1 R005 REVIEW_READY, independent acceptance pending |
 | First core milestone | **C0 — reproducible structural-memory reference experiment**, ACCEPTED (R003) |
 | Last accepted GeoMind code | C0 R003, independent receipt `evidence/c0_review/ACCEPTANCE.md` |
-| Checks executed locally | C1 R004: fourteen checks PASS; 80 seed-varied interventions in 83.9s in two arms, all six gates PASS. Queue arm: 60 correct commits (zero relaxation steps) and 20 contradiction rollbacks. Fallback arm: 80 correct commits, 20 through the metered CG. Historical C1 R003: twelve checks PASS in 2.23s; 48 seed-varied interventions in 40.36s, 36 correct commits (all with zero relaxation steps) and 12 budget-exhausted rollbacks (every inconsistent edge), all six gates PASS. Historical C1 R002: ten checks PASS in 1.42s; 16 fresh interventions in 7.28s, 13 correct commits and three budget-exhausted rollbacks, all six gates PASS. Historical C1 R001: seven checks PASS in 3.64s; 16 interventions in 24.76s, five correct commits and 11 rollbacks. C0 revised contracts: 58 PASS in 8.60s; R003: all 11 gates PASS across 1,250 fresh worlds in 331.50s, zero solver/infrastructure failures. Receipts preserve failed checks separately |
+| Checks executed locally | C1 R005: nineteen checks PASS; 80 interventions in 104.5s, all six gates PASS; queue arm 63 correct commits and 17 refusals, fallback arm 80 correct. C1 R004 (CHANGES_REQUIRED): fourteen checks PASS; 80 seed-varied interventions in 83.9s in two arms, all six gates PASS. Queue arm: 60 correct commits (zero relaxation steps) and 20 contradiction rollbacks. Fallback arm: 80 correct commits, 20 through the metered CG. Historical C1 R003: twelve checks PASS in 2.23s; 48 seed-varied interventions in 40.36s, 36 correct commits (all with zero relaxation steps) and 12 budget-exhausted rollbacks (every inconsistent edge), all six gates PASS. Historical C1 R002: ten checks PASS in 1.42s; 16 fresh interventions in 7.28s, 13 correct commits and three budget-exhausted rollbacks, all six gates PASS. Historical C1 R001: seven checks PASS in 3.64s; 16 interventions in 24.76s, five correct commits and 11 rollbacks. C0 revised contracts: 58 PASS in 8.60s; R003: all 11 gates PASS across 1,250 fresh worlds in 331.50s, zero solver/infrastructure failures. Receipts preserve failed checks separately |
 | Core artifacts | This standard, one hypothesis/experiment manifest per actual experiment, machine-readable results |
 | Astelia work | A separate application experiment governed by the companion plan; not a pass for the core theory |
 | Not authorized by this document | A production game cutover, general intelligence claim, new physical theory claim, hardware purchase or unattended execution |
@@ -487,7 +487,26 @@ Production Astelia integration remains separate: lawful Sense, Groups/tactical a
 
 ## Local C1 execution record
 
-**R004 rework after the reviewer's self-recheck:** R004 (`geomind-c1-r4-004`) is REVIEW_READY; its author is the reviewer of R002 and R003, so independent acceptance is pending. The recheck found R003 global by construction: full-observation input, `_prepare`, global re-gauge, a global certificate and whole-snapshot hashing ran inside every update. It also found an unfair comparison against fresh recompute, no fallback arm and no registered endpoints. R004 changes the design:
+**R005 repair after the independent R004 review:** R005 (`geomind-c1-r4-005`) is REVIEW_READY, and its independent acceptance is pending. A fresh-context reviewer judged R004 CHANGES_REQUIRED (`evidence/c1_r004_independent/INDEPENDENT_REVIEW.md`). The blocking findings were an uncharged O(R) relation-map copy in every update, and a local certificate unsound in the export gauge, under which 11 of 1,324 large-coordinate commits failed C0 reload. A degree overflow also committed.
+
+R005's repairs:
+- coordinates are always stored in the export gauge, with anchors at exactly 0.0;
+- re-anchoring is charged and certified, and every written node is certified;
+- the certificate margin is a rigorous rounding bound;
+- delta validation no longer copies the relation map;
+- degree overflow refuses, and validation runs before charging;
+- verdicts are scoped, and an incremental compiled baseline is measured;
+- a wall-clock locality endpoint was registered before the run.
+
+R005 verification: nineteen checks PASS. The reviewer's probes give 0/1,338 reload rejections at scale 1e3–1e6, and apply time stays flat to 32,768 nodes. The mutation probe caught 28 of 32 defects. The panel ran 80 interventions with seeds from 11,000,000 in 104.5s, and all gates PASS.
+- **Queue arm:** 60/60 non-contradiction updates correct, with zero relaxation steps. Contradictions resolve in 3/5 worlds at 32 nodes and 0/15 at ≥128.
+- **Fallback arm:** 80/80 correct.
+- **Registered H-L verdicts:** SUPPORTED_WITHIN_SCOPE for consistent-edge and new-node in-memory updates; bridges NOT_TESTED for size independence; NOT_SUPPORTED for contradiction resolution by the local queue. H-P remains INCONCLUSIVE.
+- **Stop signal:** the incremental compiled baseline gives identical answers 7–13× faster on additive kinds. That is a matched-baseline stop signal under §7 for the claim that residual dynamics add useful locality.
+
+Evidence: `evidence/c1_r005/`.
+
+**R004 rework after the reviewer's self-recheck (historical; CHANGES_REQUIRED on independent review):** R004 (`geomind-c1-r4-004`) is REVIEW_READY; its author is the reviewer of R002 and R003, so independent acceptance is pending. The recheck found R003 global by construction: full-observation input, `_prepare`, global re-gauge, a global certificate and whole-snapshot hashing ran inside every update. It also found an unfair comparison against fresh recompute, no fallback arm and no registered endpoints. R004 changes the design:
 
 - the candidate keeps in-memory incremental state and takes additive deltas;
 - degree upkeep reproduces the C0 `bincount` bit for bit;

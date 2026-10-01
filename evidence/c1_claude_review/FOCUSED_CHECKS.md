@@ -104,3 +104,20 @@ Two survivors from an earlier R004 probe run were genuine gaps, and both are now
 - **Unsorted degree lists.** A bit-exact audit compares in-memory degrees with the C0 validator's.
 
 That earlier run was stopped and discarded once the gaps were found, so the recorded result is the post-fix run.
+
+## R005 mutation probe (`mutation_checks_r005.json`)
+
+| File | SHA256 |
+|---|---|
+| `mutation_checks.py` (adds `R005_MUTANTS`) | `32c49014935d5a14c57aa2c3f78c468145a208fc6993c60ad7fff870629c15b1` |
+| `mutation_checks_r005.json` | `df733acd0a2dcdbc44945027e708b56e1be57df68b6a7833e3732305161514e8` |
+
+There were 32 mutants, including one for each independent-review finding: translated nodes uncertified, rounding bound removed, re-anchor not re-stored, largest frame kept instead of the anchor frame, degree overflow unchecked, relation map copied, validation after charging. Further mutants covered the incremental compiled baseline, the evaluator's baseline gate and the wall-clock endpoint rule.
+
+The nineteen-check R005 suite catches **28 of 32**. The survivors are documented backstops: the energy bound (unreachable once certification passes), the forced certificate step, the local step-tolerance quiet check and the local force-norm guard.
+
+An earlier R005 probe run against eighteen checks caught 26 of 32 and exposed two real gaps:
+- **Uncertified neighbors were masked.** In small random graphs, re-gauge certification covered the neighbors anyway. A deterministic relaxation-frontier case now catches the mutant: a leaf tied to a moving node with weight 1e-9 is popped quiet and never moves.
+- **One baseline translation branch was untested.** The baseline now has a direct exactness and atomicity check covering both branches.
+
+That run's output was discarded and the probe rerun on the final code.

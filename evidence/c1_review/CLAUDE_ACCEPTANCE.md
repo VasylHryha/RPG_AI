@@ -1,4 +1,4 @@
-# Claude independent review — GeoMind C1 R002 (with repairs R003 → R004)
+# Claude independent review — GeoMind C1 R002 (with repairs R003 → R004 → R005)
 
 **Verdict for C1 R002 (`geomind-c1-r4-002`): CHANGES_REQUIRED.**
 
@@ -10,7 +10,7 @@ R002's transaction mechanics are sound. Every commit I checked was reference-cor
 - The headline numbers overstate what the C1 mechanism did: 12/13 commits used no relaxation, and duplicate certificates inflated the cost tenfold.
 - The ten focused checks miss defects they appear to cover.
 
-The owner authorized direct fixes, then asked for a recheck of those fixes. My first repair, **R003**, failed my own recheck (S1–S3 below) and is superseded. The current implementation is **R004 (`geomind-c1-r4-004`): REVIEW_READY**. I wrote R003 and R004, so this document is **not** their independent acceptance. A different reviewer must decide R004 before C2 starts. C2 has not been started.
+The owner authorized direct fixes, then asked for a recheck of those fixes. My first repair, **R003**, failed my own recheck (S1–S3 below). My second, **R004**, was judged CHANGES_REQUIRED by a fresh-context independent reviewer (`evidence/c1_r004_independent/INDEPENDENT_REVIEW.md`). Its blocking findings were an uncharged O(R) copy, a certificate unsound in the export gauge, and degree overflow. The current implementation is **R005 (`geomind-c1-r4-005`): REVIEW_READY**. I wrote R003, R004 and R005, so this document is **not** their independent acceptance. R005's acceptance decision is recorded separately by a different reviewer. C2 has not been started.
 
 **Conflict with the existing receipt.** `ACCEPTANCE.md` (SHA256 `5b008dac…364c`, by a separate agent) accepts R002 and says it establishes the C2 prerequisite. I disagree, for findings F1–F5. I did not edit that file. The owner must resolve the conflict in the R4 status table.
 
@@ -46,23 +46,29 @@ At review time, all 19 registered R002 inputs matched across the receipt, the li
 - Manifest file `24040c3116e953a18eb557b69f8caa6af8e0597afba1a40c1c17beceaaa794a1`, archived as `experiments/c1_r4_003_manifest.json`.
 - `evidence/c1_r003/results.json` `46e5567d13f2ec1e2a21fb7d99686f42ab67dad65c3f51a357b3b4403eff36f0`, with its archived `source/`.
 
-### R004, the current implementation (REVIEW_READY)
+### R004 (superseded after independent review; receipts unchanged)
 
-- Manifest: canonical `80b987dea7e6955542a9104939504468048b5ebb4e2bd597549c96cc616ee40b`, file `6959cc6886fe59ff73203c3099baaf67566480eac8ee1083011cfd2b6b860754`.
-- `evidence/c1_r004/results.json` `d769208dabe696f3f7e0ef9e4d17edcf652b12a33bc42a816239254b4ea44361`
-- `evidence/c1_r004/instances.jsonl` `6c2a6f983e435cc304de6f096f57f6c46068276323c158ab6435e98b4f0b5ba2`
-- `evidence/c1_r004/contracts.xml` `a0b636a961be50f3f1b5e6ed1d0268b7269589e9b4ab42554ce47a9cf52a2ed2` (14 checks)
-- `evidence/c1_r004/README.md` `4c64562be5ef2bd84a9193dea2db74ed83906ce165571ddf72417e94141a154e`
+- Manifest file `6959cc6886fe59ff73203c3099baaf67566480eac8ee1083011cfd2b6b860754`, archived as `experiments/c1_r4_004_manifest.json`.
+- `evidence/c1_r004/results.json` `d769208dabe696f3f7e0ef9e4d17edcf652b12a33bc42a816239254b4ea44361`.
+- Independent review: `evidence/c1_r004_independent/INDEPENDENT_REVIEW.md`, verdict **CHANGES_REQUIRED**.
 
-| R004 source | SHA256 |
+### R005, the current implementation (REVIEW_READY)
+
+- Manifest: canonical `2f0f1d59de649eb349884d28fc68ecf4f4e41a82f38cdc9a3c372b7f8713bcf4`, file `e154c968df94c49d2a3ab00ba8165fbb29fc53ad3a344d5fa301e8c47c561e72`.
+- `evidence/c1_r005/results.json` `fb13bed3dfc9b7a7a2ae205c1f16fe6f656ed4e0aeb6b00ad9f4a845be90635a`
+- `evidence/c1_r005/instances.jsonl` `2e32d79764843f1b4b85a7227118ed9f0f498fd102d5c67d5ebfce36a2f6748b`
+- `evidence/c1_r005/contracts.xml` `9bc987eb780e5497a92d5618594a188817e1acddd19c674e6ce9f7c22c0ef453` (19 checks)
+- `evidence/c1_r005/README.md` `c8e7657c8173a537923f986b2ec303f622a9c4f05a7e5f74f1e11205dfa99579`
+
+| R005 source | SHA256 |
 |---|---|
-| `geomind/incremental.py` | `093159523e7abdbd8c6a1be64039bc20241a9a447adfd6c41a2452516cb2b06b` |
-| `geomind/run_c1.py` | `ce9f93dffa5490c7c66ae9761bf7633ab8f9869fd15fdfdc8dc5f6e3e8d17ddc` |
+| `geomind/incremental.py` | `84ad79a62ec6b0b9831615bc7f5ad6eefd2ef00fd1313d8073f9172cca36a23a` |
+| `geomind/run_c1.py` | `1065d44969e0228de627397a55d1b2d97f120fdb0c07ed40a29784f8f5f7f17e` |
+| `geomind/c1_reference.py` (adds the incremental compiled baseline) | `1f853a205d18a26b7c9e544d8c3dd04980096ac56ced259672e40486a3c14df4` |
 | `geomind/c1_cases.py` (generator v3, unchanged since R003) | `56f080e4e06eecdcfcc2910250003d9b5d5a745b37f32d65b564c7876348bf05` |
-| `geomind/c1_reference.py` (unchanged since R002) | `e4d9439a69e65152cf04605f7aa7de0d878c2f27a530d5dc02ef148cac59279f` |
-| `tests/test_c1.py` | `13a8696215923e1a212a02a6f1cec7b4c7dc759abee59c504827a9e5a65c8ad6` |
+| `tests/test_c1.py` | `2ee715bcfa6af5da2647df43bf50a4838fee867c60717c56314a947668f0cb16` |
 
-All 21 R004 inputs match the receipt, the live files and `evidence/c1_r004/source/`. All 160 gzip-compressed saved states hash, uncompressed, to their receipt hashes. All 12 accepted C0 inputs are byte-identical to the C0 receipt. Source commit: none (not a git repository). Environment: Python 3.9.6, NumPy 2.0.2, macOS arm64.
+All 22 R005 inputs match the receipt, the live files and `evidence/c1_r005/source/`. All 80 saved before-states hash, uncompressed, to the receipt. All 12 accepted C0 inputs are byte-identical to the C0 receipt. Source commit: tracked in git from this revision on. Environment: Python 3.9.6, NumPy 2.0.2, macOS arm64.
 
 ## Findings on R002, ranked by severity
 
@@ -117,7 +123,9 @@ A randomized chained differential test of 616 updates found no wrong commit and 
 - **S2 — Medium: an unfair comparison.** "0/36 faster than a fresh recompute" compared a transaction that included persistence with an in-memory recompute that did not.
 - **S3 — Medium: gaps in scope.** There was no fallback arm for contradictions, although R4 permits a metered one. No endpoints were registered, so no H-L verdict was decidable. `touched_edges` was still saturated, states took 38 MB, and only three worlds were used per cell.
 
-## R004: what changed and what it shows
+## R004 (superseded): what changed and what it showed
+
+> The independent review below found this section's soundness and charging claims wrong for R004: an uncharged relation-map copy, and a certificate unsound in the export gauge. They hold only as repaired in R005.
 
 **Design.**
 - **State and input.** In-memory incremental state (adjacency; per-node canonical degree lists reproducing the C0 `bincount` degree bit for bit; component members; anchors; coordinates read relative to the component anchor). `apply` takes additive deltas, and every mutation is journaled and undone on refusal.
@@ -144,6 +152,37 @@ A randomized chained differential test of 616 updates found no wrong commit and 
   - durable persistence: global by design, not tested.
 - **H-P** remains INCONCLUSIVE. Median frozen accuracy is 0.81 against 1.0 after either arm, but a store that includes the new constraints answers them by construction.
 
+## Independent review of R004 and the R005 repair
+
+A fresh-context reviewer (`evidence/c1_r004_independent/`) confirmed R004's evidence was genuine and reproducible, with a byte-identical panel rerun. All 80 committed panel answers were correct. Three defects blocked acceptance; I reproduced each before fixing it.
+
+- **F1:** `dict(self._relation_map)` in every update, an uncharged O(R) step, about 70% of apply time at 2,048 nodes.
+- **F2:**
+  - translated nodes were never certified;
+  - re-anchoring re-gauged exported coordinates;
+  - the 1e-6 relative margin did not cover the rounding, so 11 of 1,324 commits at coordinate scale 1e3–1e6 failed C0 reload.
+- **F3:** a degree overflow committed.
+
+R005 fixes the cause rather than the margin. Coordinates are always stored in the export gauge, so the C0 validator sees exactly the numbers the certificate checked. Re-anchoring work is charged, every written node is certified, and a rigorous rounding bound is applied. The other repairs:
+
+- delta validation without copying the relation map;
+- a degree-overflow guard;
+- validation before charging;
+- scoped verdicts;
+- an incremental compiled baseline;
+- a wall-clock locality endpoint, so uncharged work cannot pass on the operation meter alone.
+
+The reviewer's own probes now give 0 reload rejections in 1,338 large-scale commits, INVALID_STATE for P3, and flat apply time to 32,768 nodes (`evidence/c1_r005_fix_checks/README.md`).
+
+**R005 panel** (80 interventions, seeds from 11,000,000, 104.5 s, all gates PASS):
+- **Queue arm:** 60/60 non-contradiction updates correct, with zero relaxation steps. 3/5 contradictions at 32 nodes resolve by relaxation; 0/15 at ≥ 128 nodes, each refused with byte-identical rollback.
+- **Fallback arm:** 80/80 correct.
+- **Registered H-L verdicts:**
+  - consistent-edge and new-node in-memory updates: SUPPORTED_WITHIN_SCOPE (operation ratios 1.18 and 1.11, time ratios 1.73 and 0.95, speed ratios ≤ 0.006);
+  - bridges: size independence NOT_TESTED, faster than recompute;
+  - contradiction resolution by the local queue: NOT_SUPPORTED.
+- **The decisive scientific result:** the incremental compiled baseline gives identical answers 7–13× faster than the candidate on additive kinds (0.012 vs 0.16 ms for a consistent edge; 0.41 vs 3.1 ms for a bridge at 2,048 nodes). A matched simpler baseline therefore dominates the mechanism, which is a stop signal under R4 §7 for the claim that residual dynamics add useful locality.
+
 ## Checks actually performed
 
 1. Read R4 (§0–4 C0/C1, §5–7, the execution record), every R002 receipt, handoff, review and integrity file, the existing `ACCEPTANCE.md`, and all C1 sources and tests, plus `geometry.py` and `references.py`.
@@ -163,26 +202,24 @@ A randomized chained differential test of 616 updates found no wrong commit and 
    - Read-only re-verification of the receipt claims: state hashes, abstention totals, arm agreement and cost ratios.
 
 Details are in `evidence/c1_claude_review/FOCUSED_CHECKS.md` and `evidence/c1_r004/HANDOFF.md`.
+6. R005:
+   - all 19 focused checks and 58 C0 contract tests PASS;
+   - the reviewer's probes re-run in `evidence/c1_r005_fix_checks/`;
+   - a mutation probe caught 28 of 32 defects, with the four survivors documented backstops;
+   - a scratch rehearsal, then the recorded panel run alone;
+   - read-only verification of identities, states, abstentions and the baseline's correctness.
 
-## Remaining practical and scientific limitations (R004)
+## Remaining practical and scientific limitations (R005)
 
-- **Contradictions need a global solve.** The C0-step queue cannot resolve contradictions within 100k operations at any tested size, so the useful path for them is the fallback, which is global. A better local mechanism (exact coordinate minimization, or warm-started CG without first exhausting the queue) would be a new registered experiment.
-- **Locality comes from frame placement and bookkeeping, not dynamics.** All 60 queue commits used zero relaxation steps. A comparably incremental *compiled* baseline would match them, so no superiority over compiled methods is claimed.
-- **Persistence is global.** Export and load are O(V+E) per call. A durable per-update log would be needed for end-to-end locality with persistence.
-- **Narrow panel.** One generator family, unit weights in the panel (weights, duplicates and tiny weights are covered only by focused checks), one added edge per intervention, and five worlds per cell with min/median/max spread but no confidence intervals.
-- **Noisy timings.** Wall clock is single-run; one 32-node consistent update in the fallback arm measured 10× a fresh recompute through noise. The registered speed endpoint uses only 2,048 nodes, where every ratio was ≤ 0.02.
-- **Refusals are visible only in the trace.** Queries keep answering from the prior snapshot, as R4 requires.
-- **Tiny-weight contradictions** need the fallback arm.
-- **Numerical edge case.** A committed state whose individual residual terms are finite but whose total energy overflows float64 would be refused only at export/load. That needs residuals above about 1e153 on many edges.
+- **A matched simpler baseline dominates.** The incremental compiled baseline is 7–13× faster with identical answers on every additive kind. The candidate's additive locality is compiled frame bookkeeping, not relaxation.
+- **Contradictions need a global solve.** The C0-step local queue resolves some contradictions at 32 nodes but none at ≥ 128 within 100k operations. The fallback is a global CG.
+- **Re-anchoring is O(component).** The C0 gauge rule (maximum weighted degree) forces a re-store of the whole frame whenever an update changes a component's anchor. It is charged, and occurred in 11 of 80 worlds.
+- **Bridges cost grows with the translated frame:** 512 or 1,024 nodes at 2,048, plus their certification.
+- **Persistence is global** (export/load O(V+E)).
+- **Narrow panel:** one generator family, unit panel weights and single-edge deltas, five worlds per cell, single-run wall-clock timings.
 - **H-P** has no task-learning comparison.
-- **R004 needs independent acceptance** from a reviewer other than its author.
+- **R005 needs independent acceptance** from a reviewer other than its author.
 
-## Precise next step (smallest meaningful verification batch for R004)
+## Precise next step
 
-1. Run `.venv/bin/python -m pytest -q tests/test_c1.py --junitxml=<fresh dir>/contracts.xml`: 14 checks, about 5–10 s.
-2. Read-only identity check of `evidence/c1_r004/` against the live sources, `source/` and the gunzipped states.
-3. Review the local-certificate soundness argument in `geomind/incremental.py` against `_apply_structure` and `_relax`, since the H-L locality claim rests on it.
-4. Optionally run `.venv/bin/python evidence/c1_claude_review/mutation_checks.py <scratch dir> --live`, about 8 minutes.
-5. Reconcile `ACCEPTANCE.md` and this receipt in the R4 status table, then decide R004 acceptance.
-
-Rerun the panel (about 85 s) only after a source change, and only into a fresh directory.
+The independent R005 review records the acceptance decision. If it is ACCEPTED, update the R4 status table. Whatever the decision, the owner should weigh the baseline-dominance stop signal before framing C2's mechanism question.

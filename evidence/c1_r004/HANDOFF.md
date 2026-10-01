@@ -1,5 +1,12 @@
 # C1 R004 independent review handoff
 
+> **Superseded by R005** (`evidence/c1_r005/`). An independent reviewer judged R004 CHANGES_REQUIRED (`evidence/c1_r004_independent/INDEPENDENT_REVIEW.md`). The blocking findings were:
+> - an uncharged O(R) relation-map copy in every update;
+> - a local certificate that was not sound for the exported gauge, so some committed states failed C0 reload at coordinate scales of 1e3–1e6;
+> - an unchecked degree overflow.
+>
+> Claims below about certificate soundness and "every in-memory step" being charged are therefore wrong for R004. The R004 receipts are unchanged historical evidence.
+
 C1 R004 (`geomind-c1-r4-004`) is **REVIEW_READY**, not accepted. Its author is the reviewer who judged R002 CHANGES_REQUIRED and then rechecked their own R003 repair ([CLAUDE_ACCEPTANCE.md](../c1_review/CLAUDE_ACCEPTANCE.md)). A **different reviewer** must decide R004 before C2. R001, R002 and R003 receipts are unchanged, and all 12 accepted C0 inputs are byte-identical.
 
 ## Design (replaces R003, which was global by construction)
