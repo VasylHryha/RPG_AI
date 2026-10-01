@@ -27,9 +27,13 @@ import c1_mutants  # noqa: E402
 import gate  # noqa: E402
 
 PYTHON = str(ROOT / ".venv/bin/python")
-ARCHIVED_STATES = ("evidence/c1_review/states/32_inconsistent_edge_after.json",
-                   "evidence/c1_r003/states/32_bridge_w0_after.json",
-                   "evidence/c1_r004/states/32_bridge_w0_queue_after.json.gz")
+
+
+def referenced_evidence():
+    """Every evidence file the C1 tests read, so new tests cannot outgrow the scratch copy."""
+    import re
+    text = (ROOT / "tests/test_c1.py").read_text()
+    return sorted({path for path in re.findall(r"evidence/[^\s'\"]+", text) if (ROOT / path).is_file()})
 
 
 def build_template(base):
@@ -42,7 +46,7 @@ def build_template(base):
     (template / "evidence/c0_review").mkdir(parents=True)
     for name in ("results.json", "ACCEPTANCE.md"):
         shutil.copyfile(ROOT / "evidence/c0_review" / name, template / "evidence/c0_review" / name)
-    for archived in ARCHIVED_STATES:
+    for archived in referenced_evidence():
         (template / archived).parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(ROOT / archived, template / archived)
     return template
