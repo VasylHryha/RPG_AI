@@ -1,0 +1,3 @@
+#!/bin/sh
+# Every commit states its provenance (Assisted-by: Agent:model, or Human-authored: yes). See tools/provenance.py.
+exec python3 "$(git rev-parse --show-toplevel)/tools/provenance.py" "$1"

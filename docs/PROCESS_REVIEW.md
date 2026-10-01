@@ -85,6 +85,21 @@ Research decisions (e.g. STOP_THIS_BRANCH) are separate from implementation acce
    - The review gate requires different families by default; a same-family review must say so.
    - Note: this harness also adds a `Co-Authored-By: Claude` trailer. Keep both unless the owner chooses otherwise.
 
+**P0 implementation status (done, before any C4 code):**
+
+- **P0-1, generic pipeline:**
+  - Files: `milestones/c4.json`, `tools/milestones.py` (gate), `tools/verify.py` (runner) and `tools/milestone_mutation.py` (parallel probe).
+  - The fingerprint is per milestone.
+  - Deviation: the committed attestation is `evidence/cN_rNNN/PIPELINE.json`, which the pre-commit hook checks against the current fingerprint and re-verified stamps. Stamps stay local in `.gate/cN/` instead of a committed `.lock.json`, because they reference staging artifacts that are not evidence.
+- **P0-2 and P0-3:** `tools/milestone_precommit.py` checks endpoint coverage and registration order (`tools/verify.py` also refuses incomplete coverage at the panel stage).
+- **P0-4:** `STATUS.json` plus `tools/status.py`. The README block is generated, and the pre-commit hook runs `--check`. The standard's Current work row now points to `STATUS.json` instead of duplicating it.
+- **P0-5:**
+  - `tools/provenance.py` (git commit-msg) requires `Assisted-by:` or `Human-authored: yes`.
+  - The review folder is named per family, and the pre-commit hook refuses a same-family review unless it is declared.
+- **Agent hooks:** `tools/milestone_hook.py` is wired for Claude Code and Codex next to the frozen legacy hook.
+- **Tests:** `tests/test_milestones.py` runs a fake milestone end to end in a temporary repo.
+- C1/C2 tooling is unchanged (bound by the accepted receipts).
+
 **P1: during C4**
 
 6. **ADRs (G4).** Write `docs/decisions/NNNN-title.md` (MADR) for the gating design, the R002 reconciliation and the C1/C2 STOP decisions. Then move the execution log out of the standard into `docs/log/`, so the standard stays normative and stable.

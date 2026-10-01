@@ -1,0 +1,18 @@
+{
+  "milestone": "c4",
+  "manifest": "experiments/c4_manifest.json",
+  "evidence_prefix": "c4",
+  "implementer_family": "Claude",
+  "deps": ["geomind/c4_*.py", "geomind/run_c4.py", "tests/test_c4.py", "pyproject.toml", "uv.lock"],
+  "mutants": "tools/c4_mutants.py",
+  "stages": {
+    "tests": {"cmd": ["{python}", "-m", "pytest", "-x", "-q", "-p", "no:cacheprovider", "tests/test_c4.py", "--junitxml={staging}/contracts.xml"],
+              "artifacts": ["{staging}/contracts.xml"]},
+    "smoke": {"cmd": ["{python}", "-m", "geomind.run_c4", "--smoke", "--output", "{staging}/smoke.json"],
+              "artifacts": ["{staging}/smoke.json"]},
+    "mutation": {"cmd": ["{python}", "tools/milestone_mutation.py", "--milestone", "{milestone}", "--out", "{staging}/mutation.json"],
+                 "artifacts": ["{staging}/mutation.json"]},
+    "panel": {"cmd": ["{python}", "-m", "geomind.run_c4", "--output", "{output}", "--contract-report", "{staging}/contracts.xml"],
+              "artifacts": ["{output}/results.json"]}
+  }
+}

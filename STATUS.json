@@ -1,0 +1,20 @@
+{
+  "updated": "2026-10-01",
+  "milestones": {
+    "c0": {"title": "Structural memory reference experiment", "implementation": "ACCEPTED", "revision": "R003",
+           "review": "evidence/c0_review/ACCEPTANCE.md", "outcome": "Reproducible reconstruction; a compiled baseline is the strong reference"},
+    "c1": {"title": "Incremental updates, locality and forgetting", "implementation": "ACCEPTED", "revision": "R006",
+           "review": "evidence/c1_r006_independent/INDEPENDENT_REVIEW.md",
+           "outcome": "H-L SUPPORTED_WITHIN_SCOPE for consistent-edge/new-node in-memory updates; NOT_SUPPORTED for contradiction resolution by the local queue; H-P INCONCLUSIVE. Matched-baseline stop signal for the dynamics-locality claim"},
+    "c2": {"title": "Geometry/activity learning probe", "implementation": "ACCEPTED", "revision": "R002",
+           "review": "evidence/c2_r002_independent/INDEPENDENT_REVIEW.md", "cross_review": "evidence/c2_r002_crosscheck/CROSS_REVIEW.md",
+           "outcome": "Realizable INCONCLUSIVE, affine NOT_SUPPORTED (budget-limited); STOP_THIS_BRANCH: linear regression dominates this linear task family"},
+    "c3": {"title": "Learning stability", "implementation": "NOT_STARTED", "outcome": "Not authorized after the C2 stop decision"},
+    "c4": {"title": "Base resonator: geometry-mode closure", "implementation": "PROPOSED", "proposal": "experiments/c4_proposal.md",
+           "outcome": "Awaiting registration on the generic gated pipeline"},
+    "c5": {"title": "Many resonators form one effective resonator", "implementation": "NOT_STARTED"},
+    "c6": {"title": "Recursive composition R0 to R1 to R2", "implementation": "NOT_STARTED"},
+    "c7": {"title": "Perturb, dissolve, survive and reform", "implementation": "NOT_STARTED"},
+    "c8": {"title": "Hierarchy usefulness and compression", "implementation": "NOT_STARTED"}
+  }
+}

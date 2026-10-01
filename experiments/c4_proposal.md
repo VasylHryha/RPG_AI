@@ -66,7 +66,8 @@ The heterogeneous arm is reported separately. Failure is a valid outcome.
 ## 6. Engineering and process (lessons from C1/C2 applied)
 
 - **New files only:** `geomind/c4_*.py`, `geomind/run_c4.py`, `tests/test_c4.py` and `tools/c4_mutants.py`. Accepted C0–C2 files stay frozen.
-- **Gate in the runner:** `run_c4.py` calls `tools/gate.py` `check("panel", milestone="c4")` itself.
+- **Generic pipeline:** C4 is the first milestone on `tools/verify.py --milestone c4`, configured by the committed `milestones/c4.json` (dependencies, stage commands, mutants, `implementer_family`). The manifest `experiments/c4_manifest.json` must be committed before the panel runs; the pre-commit hook checks this.
+- **Gate in the runner:** `run_c4.py` calls `tools/milestones.py` `check("c4", "panel")` itself.
 - **Gated pipeline:** tests → smoke on non-panel seeds → parallel mutation probe → recorded panel, each run once. Estimated: tests under 30 s, panel about 5 min (to be measured; move to C++ only if measured cost warrants it).
 - **Focused checks:**
   - a 2-element analytic case;
