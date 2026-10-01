@@ -24,3 +24,11 @@ The independent receipt accepts C2: its correctness prerequisite is satisfied an
 Preserve the candidate and all accepted/historical receipts as a mechanism reference. Do not tune eta, epochs, representation, seeds or endpoint margins against these inspected test results. A future redesign needs a stated scientific reason, a new registration and fresh data before evaluation.
 
 The recursive-resonator H-C lane is scientifically distinct from this passive-linear learning probe. C4 and hierarchy remain **NOT_STARTED**. Before that lane can begin, explicitly select its bounded question and lock the R4 recursive `ActiveUnit` contract and C4 integration, persistence, perturbation, ablation and evaluation registration; qualify each reached milestone separately. No hierarchy is added to rescue C2 and no whole-program or broader-theory conclusion follows from this decision.
+
+## Addendum: cross-family review (Claude, 2026-10-01)
+
+See `../c2_r002_crosscheck/CROSS_REVIEW.md`. Three points correct the record; no reported number changes.
+
+1. The registered endpoint `gradient_direction_cosine_min = 0.999` was not evaluated by the panel. A separate probe of 1,000 updates at the registered β = 0.05 finds 65.8% with cosine ≥ 0.999 (minimum 0.10, never the wrong direction): **NOT MET** as a minimum. At β = 0.001, 100% meet it. This is finite-nudge bias at large output errors, not an implementation error.
+2. The frozen untrained network already reaches realizable test MSE 0.000991 ≤ 1e-3, so the error target alone does not show learning.
+3. Exact-gradient training of the same network reaches the same MSE on both tasks. The outcomes reflect the registered training budget and the linear task family, not a defect of the local rule.

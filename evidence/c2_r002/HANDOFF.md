@@ -50,3 +50,11 @@ Frozen exports are immutable, cloned training does not alter parents, loaded ans
 4. Check all baselines, seed-level uncertainty, honest INCONCLUSIVE primary endpoint and stronger linear-regression control. Decide implementation acceptance independently from hypothesis support.
 
 **Stop:** separate C2 acceptance is pending. Do not advance C3, recursive hierarchy, or broad theory claims.
+
+## Addendum: cross-family review (Claude, 2026-10-01)
+
+See `../c2_r002_crosscheck/CROSS_REVIEW.md`. Three points correct the record; no reported number changes.
+
+1. The registered endpoint `gradient_direction_cosine_min = 0.999` was not evaluated by the panel. A separate probe of 1,000 updates at the registered β = 0.05 finds 65.8% with cosine ≥ 0.999 (minimum 0.10, never the wrong direction): **NOT MET** as a minimum. At β = 0.001, 100% meet it. This is finite-nudge bias at large output errors, not an implementation error.
+2. The frozen untrained network already reaches realizable test MSE 0.000991 ≤ 1e-3, so the error target alone does not show learning.
+3. Exact-gradient training of the same network reaches the same MSE on both tasks. The outcomes reflect the registered training budget and the linear task family, not a defect of the local rule.
