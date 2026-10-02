@@ -61,12 +61,40 @@
     },
     "c5": {
       "title": "Many resonators form one effective resonator",
-      "implementation": "REVIEW_READY",
+      "implementation": "ACCEPTED",
       "proposal": "experiments/c5_proposal.md",
-      "outcome": "R003 (fixes all four R002 review findings): gates PASS. Formation 17/30 PASS (near threshold: R001 15/30, R002 13/30). G->M, M->G and both dose ladders PASS; H-M level 2 SUPPORTED_WITHIN_SCOPE. Downward effect, emergent transfer, effective state, timescale separation (3.4x) and level-2 interface PASS; coarse port law does not beat relaxation, so H-C first transition INCONCLUSIVE. Pending Codex review",
+      "outcome": "Independently accepted by Codex (R003; R001 withdrawn, R002 CHANGES_REQUIRED). H-M level 2 SUPPORTED_WITHIN_SCOPE: G->M, M->G and both dose ladders PASS with complete ablations exactly 0. H-M is supported within the registered R003 scope for the formed groups; formation is near the pass threshold (17/30; earlier revisions 15/30 and 13/30), and this panel does not establish a population formation rate above 50%. H-C first transition INCONCLUSIVE: downward effect, emergent transfer, effective state, timescale separation (3.4x) and the published level-2 interface PASS, but the port coarse law does not beat relaxation with a measured tau2. No recursion, next-level predictive accuracy, usefulness, efficiency or novelty claim. Open low notes N1-N3 (review). Owner decision: C5's own files frozen; shared pipeline tools pinned to the accepted evidence commit",
       "decision": "docs/decisions/0004-approve-c5.md",
       "revision": "R003",
-      "review": "evidence/c5_r003/HANDOFF.md"
+      "review": "evidence/c5_r003_review_codex/INDEPENDENT_REVIEW.md",
+      "accepted_receipt": "evidence/c5_r003/results.json",
+      "accepted_results_sha256": "e51ec5c1f77f7df215a8b9cb285c0f20d0b9c798125089c04d15a248eda2fc85",
+      "frozen_hashes": {
+        "experiments/c4_manifest.json": "8e9878107814a126fced5b7e1110888e357fad9fa250985e88e52fcefa4d5684",
+        "experiments/c5_manifest.json": "0f5319973faf08654aca9019320a3398d9baa7008ade3d40a4ff0d68583be036",
+        "geomind/c4_detect.py": "ba7fd94efc0edf028df137dc617666c9b8540b914ab4fca1ce793c84d78aacb8",
+        "geomind/c4_experiment.py": "53dc126a2c7c485e41273515c932fb91d113504b8e8351403b5d06cb0d11fc24",
+        "geomind/c4_model.py": "4fafc161b65914a44dccaca6caefb59a5154079f17f564b4cdc4d44f58c59d33",
+        "geomind/c5_coarse.py": "9912363d5303593b145994851ff8bc6bdd92da9f31285a96272a4413a0752638",
+        "geomind/c5_compose.py": "beb4cd098a028df42988b8abcded523b5959c89261265be599f86e21872f9a8a",
+        "geomind/c5_detect.py": "19e1153c1d85ddc48eba765d46b66c87567da6ea1aff7309ad19df7390739f9a",
+        "geomind/c5_experiment.py": "207ad017274bbda6f15b9a56370fe057883fcbdbc94863a7023ee803cbc5ca27",
+        "geomind/c5_units.py": "70576cc2357a19024b8db79694dd55ee89f767deb65cc11191d0aa159128205b",
+        "geomind/run_c5.py": "50648958637ace8c114283f9a606bb24ed8b6c5af1572e369af03a272b12b6db",
+        "milestones/c5.json": "587c24b602a95a25d830d37121f428f22003f6d277d21b8456e92e163aa83606",
+        "pyproject.toml": "b13af15c4b02a76b429da4d76965cddf66f73d59198bca80d01fab7b51c705e2",
+        "tests/test_c5.py": "b4b0413e68329901994e98512f49ae57af29a3d1fecf14c1ff55272e7b37de0d",
+        "tools/c5_mutants.py": "7ff66525bd7c7e1acd375ea00828ea9b27cf9c3bf8d0e0e2fd1d07fc00ffa3fb",
+        "uv.lock": "284881c4c71c8282aca81e9053794d2b0333f9ab10b21d9e425cba13bec918c8"
+      },
+      "pinned_shared": {
+        "commit": "92814d1f1c7fccfe07590898b35720016d119931",
+        "hashes": {
+          "tools/milestone_mutation.py": "a49d4e7025d4d37aa80545815f9d038a31db73a4fc161375fd7d93b65c8baef2",
+          "tools/milestones.py": "f389ba5e7ff4d0249e53a3b0bb7d0a7600833926dd698c155956ce0632fb34af",
+          "tools/verify.py": "5d6a986c5d1371b70d27acd3bf3923e903e6cf78ee030444b2bc94ad02ae0d75"
+        }
+      }
     },
     "c6": {
       "title": "Recursive composition R0 to R1 to R2",

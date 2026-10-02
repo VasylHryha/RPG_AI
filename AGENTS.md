@@ -57,6 +57,18 @@ GeoMind research workspace. Authority: `GEOMIND_GEOMETRIC_AI_QUALITY_STANDARD_R4
 
 **C4 R003** is independently accepted (`evidence/c4_r003_review_codex/INDEPENDENT_REVIEW.md`). Its ten own files (`experiments/c4_manifest.json`, `geomind/c4_*.py`, `geomind/run_c4.py`, `tests/test_c4.py`, `tools/c4_mutants.py`, `milestones/c4.json`, `pyproject.toml`, `uv.lock`) are frozen at the hashes in `STATUS.json`, which `tools/accepted_freeze.py` enforces at commit. The shared pipeline tools (`tools/milestones.py`, `tools/verify.py`, `tools/milestone_mutation.py`) are **pinned** to the accepted evidence commit instead (`pinned_shared`): they may be improved for later milestones, and git history keeps the exact versions that produced C4.
 
+**C5 R003** is independently accepted (`evidence/c5_r003_review_codex/INDEPENDENT_REVIEW.md`).
+- **Frozen:** its ten own files (`experiments/c5_manifest.json`, `geomind/c5_*.py`, `geomind/run_c5.py`, `tests/test_c5.py`, `tools/c5_mutants.py`, `milestones/c5.json`), plus the six C4 and environment files it reads, at the hashes in `STATUS.json`.
+- **Pinned, not frozen:** the shared pipeline tools, to the accepted evidence commit.
+- **Reuse:** C6 must reuse C5 code read-only or through new files.
+- **Formation caveat:** H-M at level 2 is supported for the formed groups only. Formation is near its threshold, and this panel does not establish a population formation rate above 50%.
+
+Open low notes from that review, for future new-file work, not blocking:
+- **N1:** the `level2_interface` check counts publications globally. It should match one publication per accepted candidate, per world, and validate finite fields and the link between S and the candidate.
+- **N2:** keep the raw development measurements behind any calibrated threshold.
+- **N3:** zero-area (collinear) hulls bypass the hull-overlap test.
+- **Before claiming next-level dynamics:** the parent's inherited port capacities and its size-weighted natural rate need a full-versus-coarse check.
+
 Open low notes for a future C1 revision, not blocking: R1 (`_validate_delta` should require `type(edge) is Constraint`) and R2 (state the re-anchoring cost in receipt-generated limits).
 
 ## Known gaps (by design, documented)
