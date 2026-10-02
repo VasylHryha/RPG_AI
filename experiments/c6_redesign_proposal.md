@@ -1,4 +1,4 @@
-# C6 redesign: options after the design-gate stop (DRAFT, not approved)
+# C6 redesign: options after the design-gate stop (SUPERSEDED, see experiments/c6_proposal_r2.md)
 
 Status: **PROPOSED (options)**, awaiting the owner's choice. Nothing will run, and no code changes, until the owner
 chooses and approves. Context: decision 0009 (`docs/decisions/0009-c6-stops-at-design-gate.md`) and the gate record
