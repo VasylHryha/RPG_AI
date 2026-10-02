@@ -1,6 +1,6 @@
 # C6 proposal: recursive composition R₀ → R₁ → R₂ with the same rule (DRAFT, not approved)
 
-Status: **PROPOSED**, awaiting owner approval. Nothing is registered: there is no `experiments/c6_manifest.json`, `milestones/c6.json` or C6 code. At the owner's request, a development-only pilot was run with scratch code outside the repository (§3b). Authority: `GEOMIND_GEOMETRIC_AI_QUALITY_STANDARD_R4.md` (C6, the recursive unit interface, the ten recursive-resonator invariants, §5–7). Builds on C4 R003 and C5 R003, both independently accepted (`evidence/c4_r003_review_codex/INDEPENDENT_REVIEW.md`, `evidence/c5_r003_review_codex/INDEPENDENT_REVIEW.md`). Format follows `experiments/c5_proposal.md`. The drafter's self-audit of the first draft is at the end.
+Status: **PROPOSED**, awaiting owner approval. Nothing is registered: there is no `experiments/c6_manifest.json`, `milestones/c6.json` or C6 code. At the owner's request, a development-only pilot was run with scratch code outside the repository (§3b). Authority: `GEOMIND_GEOMETRIC_AI_QUALITY_STANDARD_R4.md` (C6, the recursive unit interface, the ten recursive-resonator invariants, §5–7). Builds on C4 R003 and C5 R003, both independently accepted (`evidence/c4_r003_review_codex/INDEPENDENT_REVIEW.md`, `evidence/c5_r003_review_codex/INDEPENDENT_REVIEW.md`). Format follows `experiments/c5_proposal.md`. The drafter's three self-audits are at the end.
 
 **Level names.** Level 0 is a primitive element. Level 1 is an accepted C4 resonator (the standard's R₀). Level 2 is a C5 composite (R₁). Level 3 is the C6 composite (R₂). "Transition n" is level n−1 → n, so transition 2 is level 1 → 2 and transition 3 is level 2 → 3. The standard's "two successive transitions" are transitions 2 and 3.
 
@@ -69,7 +69,7 @@ These dynamics are not new. Synchronization on hierarchical modular networks pro
 **Rates (the same fixture rule, one level up).** C5 gave each unit one rate ω_g ~ U[−δ₂, δ₂] for all its members. That is an exact symmetry, because the unit is the accepted resonator in a rotating frame. C6 applies the rule to whole level-2 groups:
 - every element rate in group G is shifted by one constant, so the group's measured isolated rate becomes ω_G ~ U[−δ₃, δ₃];
 - the group's insides are untouched;
-- δ₃ = δ₂ × C₂/C₃, the same dimensionless spread (C is defined below). The non-vacuity bound then repeats exactly: median |Δω| × window = 0.586 × δ₂ × 30 C₂ ≈ 1.7 rad ≥ 1 rad.
+- **The invariant is the dimensionless spread δ_n × C_n = 0.096**, C5's value (δ = 0.03 at C₂ = 3.2), held at every level. So δ₂ = 0.096 / C₂ (C₂ re-measured in C6) and δ₃ = 0.096 / C₃. Keeping C5's raw δ = 0.03 while C₂ changes would silently change the dimensionless spread. The non-vacuity bound then repeats exactly at both levels: median |Δω| × window = 0.586 × 0.096 × 30 ≈ 1.7 rad ≥ 1 rad.
 
 **Assembly: contact placement, the same rule at both levels.** The rule follows from the coupling law.
 - *Why disk placement cannot work at level 3:*
@@ -83,7 +83,9 @@ These dynamics are not new. Synchronization on hierarchical modular networks pro
   - A level-n world holds M = 5 parts of level n−1. Each part gets a random rotation and a random global phase.
   - The first part sits at the origin.
   - Each further part approaches the centroid of the parts already placed, from a uniformly random direction, and stops at the first position where some element pair across parts is at the element contact gap of 0.6. The 0.6 gap is element-scale and is not scaled by level, because it is a property of the element law.
-- *Scale-free at both levels:* every part starts touching the cluster, and the dynamics decide what locks, merges or drifts.
+- *Scale-free at both levels:* every part starts touching the cluster, and the dynamics decide what locks, merges or drifts. The rule applies to every assembled world: level-2 harvest worlds, transition-2 evidence worlds and level-3 worlds.
+- *Why it should raise formation, from the detector's definition:* a candidate needs a connected component of at least 3 close, locked parts. Disk placement often leaves fewer than 3 parts in contact, so the world is DRIFTING without any test of locking. With every part touching, that failure mode is removed and the locking criteria decide.
+- *At most one group per world:* with M = 5 and a minimum group size of 3, two disjoint groups cannot both exist. So each world contributes at most one group, and the world value is that group's value.
 - *A declared change from C5:* C5 used disk placement at level 2. Transition 2 in C6 uses contact placement, so it is a new measurement, not a replication.
 - *Size:* a level-3 world holds about 120–300 elements (pilot: 145–242, median about 190).
 - *M:* a world fixture, not part of the composition rule. M = 5 at both levels; M = 7 (about 350 elements) exceeds the compute budget (§10).
@@ -97,7 +99,11 @@ These dynamics are not new. Synchronization on hierarchical modular networks pro
 The capture region is relative (link factor × median spacing), and the persistence window scales with time. That is the standard's "normalized by L and timescale", applied identically at levels 2 and 3. In the coarse model, port links form and break by the same C4 rule.
 
 **Time normalization (C5 owner decision D2, generalized step-exactly).**
-- τ_n is the e-folding time of the level-n inter-part pattern after a part-phase kick.
+- τ_n is the e-folding time of a level-n group's inter-part pattern after a zero-mean part-phase kick (RMS 0.3), against its unkicked control, sampled at 0.1 C_n.
+- *Measurement context, one definition per use:*
+  - **For normalization (C_n) and for `timescale_separation`, τ is measured on the resonator alone**, decoupled from non-members, like the measured natural rate. It is a property of the resonator itself, the same at every level. τ₁ is measured the same way, so C₁ = 1 and C4's times are recovered exactly.
+  - **For the relaxation baselines, τ is measured in the world, on the intact control**, the context the excitation happens in. This is the declared calibration advantage of the strongest baseline.
+  - C5 used the in-world τ₂ for both purposes. C6 separates them, so a group's neighbours cannot change its own timescale.
 - The cumulative factor is C_n = τ_n/τ₁, measured on C6 development worlds and **rounded to the 0.2 grid**. At n = 2 this is exactly C5's rule (C5 had C₂ = 3.2).
 - Rounding the cumulative factor, not each ratio, keeps every scaled time a whole number of RK4 steps: the smallest is the 0.1 C sample interval, which is 5C steps. A per-level ratio T₃ rounded to 0.2 does not; for example T₃ = 3.2 gives 51.2 steps.
 - T₃ = C₃/C₂ is reported.
@@ -118,7 +124,8 @@ Invariant 1 is the governing rule: one rule at every level, normalized only by t
 | **Criterion 6 dynamic validity of a level-k part** | **the part's own level k** | **windows of 30 C_k at interval C_k, consecutive across the parent window** |
 | Criterion 6 geometric overlap | geometry, no time | area fraction 0.2, at every parent frame |
 | Degenerate shape | the part's level | area ≤ 10⁻¹² L² |
-| Rate spread of parts | level n | δ_n = δ₂ × C₂ / C_n (constant dimensionless spread) |
+| Rate spread of parts | level n | δ_n = 0.096 / C_n (dimensionless spread held at C5's value) |
+| τ_n for normalization and separation; τ_n for baselines | the level-n resonator alone; the intact world | kick RMS 0.3, sampled at 0.1 C_n (§3) |
 | G→M, M→G, excitation and τ windows; sample interval | level n | × C_n |
 | Doses (s, RMS), pulse 0.5 rad, margin 0.01 rad | level n | dimensionless, unchanged |
 | Push size | the excited part | 0.2 × its L |
@@ -126,6 +133,17 @@ Invariant 1 is the governing rule: one rule at every level, normalized only by t
 | Placement | element scale | contact at the 0.6 gap (no level-scaled radius) |
 | Hierarchy-specificity sub-part kick (RMS 0.3), pair e-folding | within-part pairs relax on level n−1 time; across-part pairs on level n time | dimensionless kick; sampled at 0.1 C_{n−1} (resolves the faster, within-part relocking on its own scale) over a window of 10 C_n (covers the slower, across-part relocking) |
 | Effective-state position and size bounds | level n | fractions of L, unchanged |
+| Static-control rates (`not_a_clump`) | each level-(n−1) part | each part's rates shifted by one constant so its isolated rate is 0. This leaves its internal rates untouched. At level 2 it equals C5's "all rates 0"; at level 3, zeroing every element rate would turn the parts into different objects. |
+| In-place recovery of a level-k part inside a parent (`parts_in_situ`) | the part's own level k | pattern return within the part's own pattern tolerance after its own-level kick, over 30 C_k. **Not membership:** the part's level components inside a parent see the parent's whole cluster, so a Jaccard match against them would fail by construction. Membership is the parent's own criterion 5. |
+
+**Cross-level reads, allowed only on the evaluator side.** The candidate path (detector, promotion, composition, coarse model) never reads below the level it acts on. Five evaluator-side quantities cross levels deliberately, and each says so in its endpoint:
+- `upward_transfer_l3`: a level-1 pulse, read in level-2 states;
+- `coarse_depth`: a flat model on level-1 states, as a comparison;
+- `coarse_error_decomposition`: a rigid reference on elements;
+- `interface_fidelity`: an element-level census;
+- the views from below in `formation_outcomes`: the C4 component view and the level-2 detector on level-3 worlds.
+
+Each side of such a quantity is measured in its own level's units.
 
 ## 3b. Development pilot (2026-10-02, owner-requested; not evidence)
 
@@ -186,10 +204,10 @@ Contracts and audit:
 ## 5. Lower levels stay real; upward, downward and hierarchy paths
 
 - **Alive and dynamic.** The full simulation always integrates every element. Promotion never deletes, freezes or replaces members (invariant 2). Coarse models are predictions scored against the full model and are never substituted into it. Recursive criterion 6 holds over the window. Two further measures for every accepted level-3 group are descriptive (`parts_in_situ`):
-  - each level-2 part's own recovery **in place**: the level-2 kick and the level-2 recovery rule, applied inside the level-3 world;
+  - each level-2 part's own recovery **in place**: the level-2 kick, then pattern return within the level-2 pattern tolerance over 30 C₂, on the part's own units. Membership is not re-tested here, because inside a parent the level-2 components see the whole parent cluster (§3a);
   - τ₁ and τ₂ inside the level-3 world against their values alone.
-- **Upward (`upward_transfer_l3`).** Rotate the phases of **one level-1 unit** inside one level-2 group by 0.5 rad. Measure the response of the **other level-2 groups'** published Θ: intact minus the same world with level-2 groups decoupled, where it is 0 by construction. Margin 0.01 rad. The disturbance must cross two levels.
-- **Downward (`downward_effect_l3`).** Each level-2 group's port elements' phase offsets, relative to its own Θ, inside the level-3 group against decoupled; margin 0.01 rad. The same shift for level-1 ports (two levels down) is descriptive. The whole acts only through the element law.
+- **Upward (`upward_transfer_l3`).** Rotate the phases of **one level-1 unit** (seeded choice) inside one level-2 group by 0.5 rad. Measure the response of the **other level-2 groups'** published Θ: intact minus the same world with level-2 groups decoupled, where it is 0 by construction. Margin 0.01 rad. The disturbance must cross two levels.
+- **Downward (`downward_effect_l3`).** The phase offsets of the elements of each level-2 group's **published** ports (the selected port variant), relative to its own Θ, inside the level-3 group against decoupled; margin 0.01 rad. The same shift for level-1 ports (two levels down) is descriptive. The whole acts only through the element law.
 - **Emergent transfer (`emergent_transfer_l3`).** Pulse a whole level-2 group's phase by 0.5 rad and measure the other groups' response, intact minus decoupled, margin 0.01 rad.
 - **Hierarchy specificity (`hierarchy_specificity_l2`, `_l3`; one function).** It runs at both transitions and is the dynamical test that the middle level is real. It is cheap: one extra kicked run per group.
   - *The kick:* at transition n, kick every level-(n−2) sub-part of an accepted group rigidly in phase (zero mean, RMS 0.3). At n = 2 the sub-parts are elements; at n = 3 they are level-1 units.
@@ -253,7 +271,7 @@ The minimum for any inferential verdict is **10 formed worlds** at that level; b
 | `same_rule_audit` (gate) | Level-n thresholds equal `level2_thresholds(C4, C_n)`. Detector, promotion, composition, coarse and hierarchy calls are the same function objects at both levels. The static no-level-branch check passes. C₂, C₃, every τ and the final measured ratios are recorded. |
 | `numerical_checks` (gate) | C4's checks on an assembled level-3 world (RK4 order, switching dt error, equivariance under permutation, translation, rotation and global phase), plus unit and group relabelling, plus exact decoupling (each group alone equals its decoupled run within 10⁻⁹). |
 | `level_interface` (gate, N1) | At both levels, exactly one published parent per accepted candidate **per world**, matched by unit set: no duplicates, omissions or swaps. Every numeric field finite. Ports and mode well-formed. S equal to the candidate's statistics. Digest derived from the children. Gate: not FAIL. |
-| `not_independent_l2/_l3`, `not_a_clump_l2/_l3` (gates) | Decoupled continuations with imposed candidates (the intact candidates, or proximity-only components when none exist). With the assembled rates, rejection is expected by criterion 3; with rates shifted to 0, by criterion 5. **FAIL** if any candidate is accepted; **PASS** if at least one was tested and none was accepted; **NOT_TESTED** if none. Gate: all PASS. |
+| `not_independent_l2/_l3`, `not_a_clump_l2/_l3` (gates) | Decoupled continuations with imposed candidates (the intact candidates, or proximity-only components when none exist). With the assembled rates, rejection is expected by criterion 3. With each part's isolated rate shifted to 0 by one constant per part (§3a), rejection is expected by criterion 5. **FAIL** if any candidate is accepted; **PASS** if at least one was tested and none was accepted; **NOT_TESTED** if none. Gate: all PASS. |
 | `formation_l2`, `formation_l3` | Fraction of FORMED worlds, Wilson 95% CI. (1) **PASS** if the lower bound ≥ 0.5 and ≥ 10 worlds formed; (2) **FAIL** if the upper bound < 0.5; (3) **INCONCLUSIVE** otherwise (D3). |
 | `formation_outcomes_l2/_l3` | Descriptive: outcome counts, per-criterion failures, the C4 component view and, at level 3, the level-2-detector union view. |
 | `g_to_m_lN`, `m_to_g_lN` (N = 2, 3) | (1) **INCONCLUSIVE** if fewer than 10 formed worlds; (2) **FAIL** if the intact CI includes 0 or lies below it; (3) **PASS** if the complete-ablation CI includes 0 or its \|mean\| ≤ 0.2 × the intact mean; (4) **INCONCLUSIVE** otherwise. |
@@ -293,7 +311,7 @@ The minimum for any inferential verdict is **10 formed worlds** at that level; b
   - Rate spread is not the lever: C5 formed 16, 17 and 16 at 0.5δ, δ and 2δ.
   - The losses are DRIFTING and MERGED.
 - *Two corrections raise formation:* the rules derived from invariant 1 and the coupling law, not a search over settings.
-  1. **Criterion 6 on each part's own timescale (§4).** The old rule judged parts over a window longer than their own (3.2× at level 2, about 10× at level 3). Fixed-amplitude tolerances then reject harmless slow drift, so some of the MERGED losses may come from this, and at level 3 all of them did in the pilot.
+  1. **Criterion 6 on each part's own timescale (§4).** The old rule judged parts over a window longer than their own (3.2× at level 2, about 10× at level 3). Fixed-amplitude tolerances then reject harmless slow drift, so some of the MERGED losses may come from this. At level 3 in the pilot, every candidate failed this check, so its effect there cannot yet be separated from real failures.
   2. **Contact placement (§3).** A composite couples only where it touches, so every part starts in contact. Disk placement left 9/24 pilot worlds DRIFTING with no coupling at all.
 - *These are not tuning:* each is fixed by the principle before any formation number under it is seen. Neither has a free parameter to adjust.
 - *Whether they reach the target is unknown.* The design gate measures it once, and there is no grid to search.
@@ -302,12 +320,15 @@ The minimum for any inferential verdict is **10 formed worlds** at that level; b
 1. **Formation.**
    - 30 development worlds at level 2 and 30 at level 3, with contact placement and the corrected criterion 6.
    - Target: formation ≥ 0.75 at both levels. Below 0.75 at either level means stop and report, with the per-criterion failure counts.
-   - Provisional C₃ = 9.6. If the measured C₃ is outside [4.8, 19.2], level-3 formation is re-run once at the measured value.
+   - *Two passes, so the gate measures the settings that get registered:*
+     - pass 1 runs at provisional C₂ = 3.2 and C₃ = 9.6, and measures C₂ and C₃ alone (§3);
+     - pass 2 re-runs formation at both levels on fresh development worlds (same entropy, new purpose) at the measured and rounded C₂ and C₃, with δ_n = 0.096 / C_n.
+   - Only pass 2 counts against the target. A further change in C between passes is reported, not iterated.
 2. **Timescales.** C₂ and C₃ are measured under contact placement, and τ₃ must be finite (groups in contact couple; the pilot's locked candidates in 22/24 worlds suggest they do).
 3. **Interface fidelity.** C5's and C6's composition rules are compared on development parents: rate error against the observed rate, and coarse cross-link counts against the element-level census. C6's rule must be at least as faithful on both measures.
 4. **Coarse readiness.** At both transitions, on development groups, compute the six gains for V1 and V2 and the error decomposition.
    - The variant with the larger worst-cell mean gain at the worse transition is selected.
-   - It is used only if that worst-cell mean gain is > 0 at both transitions.
+   - It is used only if that worst-cell mean gain is > 0 at both transitions, computed on at least 10 development groups per transition. Fewer groups means stop and report.
 5. **Overlap calibration.** Record union-of-hulls overlap for touching accepted groups at level 3. Intact touching groups above 0.2 means stop.
 6. **Runtime projection** from measured per-world costs (§10).
 
@@ -415,7 +436,7 @@ If any check fails, the implementer **stops and reports to the owner before regi
 | Harvest (about 3,300 C4 and 400 level-2 worlds, with filter runs) and 40 transition-2 worlds | about 15–20 min wall |
 | **Recorded panel, 8 processes** | **≈ 1–1.5 h** at C₃ ≈ 10; **≈ 2 h** at C₃ ≈ 16 |
 | Tests / smoke (1 development level-3 world, small harvest) / mutation probe | < 2 min / ≈ 10–15 min / ≈ 2–5 min |
-| Design gate (development only, before registration) | ≈ 45–60 min |
+| Design gate (development only, before registration; two formation passes) | ≈ 1–1.5 h |
 
 M = 7 would mean about 350 elements, roughly 3.4× the cost per step, so it is not proposed. If the design gate's projection exceeds **3 h**, the implementer returns to the owner before registering. The options would be:
 - n₃ = 30;
@@ -473,7 +494,7 @@ Because Claude drafted this proposal, the owner may ask Codex for a short critiq
 - **Rate offsets are fixtures:** exact rotating-frame symmetries assigned by the experiment.
 - **The physics does not rescale.** The element law's interaction range is fixed, so higher levels couple only through boundary contact. "Same rule" refers to detection, promotion, composition, coarse modelling and the time-scaled thresholds, not to a scale-free interaction.
 - **Narrow scope:** one model, one parameter set, M = 5, level-1 units of 6–16 elements.
-- **Development choices.** The port variant and the spacing are chosen on development data by pre-declared rules. The final evidence is fresh, but it is conditional on those choices.
+- **Development choices.** The port variant is chosen on development data by a pre-declared rule, and C₂ and C₃ are measured there. The final evidence is fresh, but it is conditional on those choices.
 - **Weak spots in the evidence:**
   - complete ablations vanish by construction; the evidence is the intact effects and their dose-response;
   - the downward effects test existence, not dose.
@@ -493,12 +514,12 @@ Because Claude drafted this proposal, the owner may ask Codex for a short critiq
 
 ## Decisions for the owner (with the drafter's recommendation)
 
-1. **D1 — Approval. Recommended: approve as written.**
+1. **D1 — Approval. Recommended: approve as written.** This draft includes the principle-derived rules: each part judged on its own level's windows, the normalization ledger (§3a), contact placement, and the uniform τ and rate-spread definitions.
 2. **D2 — Corrected composition rule** (measured isolated rate, sibling-folded capacities, one function at both promotions). **Recommended: accept.**
 3. **D3 — Formation rule:** PASS on the Wilson lower bound ≥ 0.5, FAIL on the upper bound < 0.5, INCONCLUSIVE otherwise; n = 40 per level; development target 0.75. **Recommended: accept.** The alternative, C5's point-estimate rule, leaves the C5 qualifier unresolved.
 4. **D4 — Predictive gate:** score pulse and push separately against three baselines with channel-matched τ, after a development coarse readiness check that can stop the work before the panel. **Recommended: accept.** The alternative, C5's average, would let a phase-only success hide a position failure.
 5. **D5 — Roles. Recommended: Codex implements and Claude reviews** (§12). Optional: a short Codex critique of this proposal before approval.
-6. **D6 — Compute. Recommended: NumPy with 8 processes and no C++ backend.** From the pilot's measured costs, the panel takes about 1–2 h and the design gate about 1 h; a projection above 3 h comes back to the owner.
+6. **D6 — Compute. Recommended: NumPy with 8 processes and no C++ backend.** From the pilot's measured costs, the panel takes about 1–2 h and the design gate about 1–1.5 h; a projection above 3 h comes back to the owner.
 
 ## Self-audit of the first draft (2026-10-02, owner-requested)
 
@@ -531,4 +552,26 @@ The first draft (commit e594e58) was rechecked against the standard, the frozen 
 4. **Hierarchy-specificity sampling (low).** Within-part pairs are now sampled on their own level's interval (§3a).
 5. **Runtime (medium).** The estimate was rebased on the pilot's measured costs: panel about 1–2 h, design gate about 1 h.
 6. **Process (disclosure).** The pilot ran at the owner's request. Its level-3 formation result (0/24) was produced under the defective criterion 6 and is void. The drafter first proposed further diagnostic runs where reasoning from the rule sufficed; that request was declined.
+
+## Third self-audit (2026-10-02, owner-requested; reasoning only, nothing run)
+
+Each rule was checked against the normalization ledger and the frozen code.
+1. **In-place part recovery mixed levels (high).**
+   - *The defect:* §5 applied the level-2 recovery rule, including its membership Jaccard, to level-2 parts inside a level-3 world. Inside a parent, the level-2 component rule links units across the parent's whole cluster, so membership fails by construction.
+   - *The fix:* only pattern return on the part's own units counts; membership belongs to the parent's criterion 5 (§3a, §5).
+2. **Static control at level 3 changed the parts (high).** C5's "all rates 0" (`c5_experiment.control_rows`) would erase each level-2 group's internal unit rates. It now shifts each part's isolated rate to 0 by one constant per part, which is identical to C5 at level 2.
+3. **Rate spread not dimensionless (medium).** δ₂ = 0.03 was kept while C₂ is re-measured. The invariant is now δ_n × C_n = 0.096, C5's value, at every level.
+4. **τ context undefined (medium).**
+   - *The defect:* C5's τ₂ came from the in-world control, while the pilot measured τ₂ alone.
+   - *The fix:* τ measured alone sets normalization and separation; τ in the world sets only the baselines (§3).
+5. **Design gate measured formation at provisional C (medium).** A second pass at the measured C now provides the only counted formation figures.
+6. **Readiness on too few groups (low).** The coarse readiness check now needs at least 10 development groups per transition, or it stops.
+7. **Cross-level reads (low).** The ledger now lists the five deliberate evaluator-side cross-level quantities and forbids any cross-level read in the candidate path.
+8. **Definitions made explicit (low).**
+   - every assembled world uses contact placement;
+   - at most one group per world;
+   - the downward effect uses published ports;
+   - the upward pulse unit is seeded;
+   - the mechanism by which contact placement raises formation is stated.
+9. **Stale text (low).** The "spacing" choice in §13, the self-audit pointer, and the pilot formation sentence are fixed.
 
