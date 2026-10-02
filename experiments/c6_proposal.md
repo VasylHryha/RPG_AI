@@ -169,7 +169,7 @@ The capture region is relative (link factor × median spacing), and the persiste
   - *Value:* τ is the first sample time at which the deviation falls to 1/e of its initial value (C5's `efold`).
   - *Censoring:* if it never falls that far, τ is censored at 10 C_n and recorded as "> 10 C_n".
 - **The cumulative factor:** C_n = median τ_n of the development level-n groups alone ÷ median τ₁ of the development level-1 units alone. Censored values count as +∞ in the medians.
-  - It is defined only if fewer than 50% of either set is censored; otherwise stop rule 2 applies.
+  - It is defined only if each set has at least 5 measurements and fewer than 50% of them are censored; otherwise stop rule 2 applies.
   - It is **rounded to the nearest multiple of 0.2**, with ties rounded up. At n = 2 this is exactly C5's rule (C5 had C₂ = 3.2).
   - Provisional C values are used only to schedule pass 1 of the design gate (§9).
 - Rounding the cumulative factor, not each ratio, keeps every scaled time a whole number of RK4 steps: the smallest is the 0.1 C sample interval, which is 5C steps. A per-level ratio T₃ rounded to 0.2 does not; for example T₃ = 3.2 gives 51.2 steps.
@@ -499,6 +499,7 @@ A NOT_SUPPORTED optional extension rejects that extension only. It never changes
    - Target: formation ≥ 0.75 at both levels. Below 0.75 at either level means stop and report, with the per-criterion failure counts.
    - *Two passes, so the gate measures the settings that get registered:*
      - pass 1 runs at provisional C₂ = 3.2 and C₃ = 9.6, and measures C₂ and C₃ alone (§3);
+     - **immediately after pass 1, before pass 2,** stop rules 2 and 3 are evaluated on the pass-1 measurements. If a required median (τ₁, τ₂ or τ₃) is undefined, because it has fewer than 5 measurements (including none, when no level-3 group formed) or 50% or more censored, or if C₂ is outside [1.6, 6.4], the gate stops. Pass 2 runs only with a defined C₂ and C₃ (Codex, step 2a, stop rule 8);
      - pass 2 re-runs formation at both levels on fresh development worlds (same entropy, new purpose) at the measured and rounded C₂ and C₃, with δ_n = 0.096 / C_n.
    - Only pass 2 counts against the target. A further change in C between passes is reported, not iterated.
 2. **Timescales.** C₂ and C₃ are measured alone under contact placement. τ₁, τ₂ and τ₃ alone must each be censored in fewer than 50% of development measurements (stop rule 2), and C₂ must lie within [1.6, 6.4], which is C5's T = 3.2 within a factor of 2 (stop rule 3).
@@ -730,8 +731,8 @@ Each responsibility has exactly one owner. Each rule is a yes/no condition with 
 | # | When | Condition (yes/no) | If yes |
 |---|---|---|---|
 | 1 | Design gate, formation pass 2 | Formation < 0.75 at level 2 **or** at level 3 | STOP |
-| 2 | Design gate, timescales | 50% or more of the development τ₁, τ₂ **or** τ₃ values measured alone are censored, so a required median is undefined | STOP |
-| 3 | Design gate, timescales | Measured C₂ outside [1.6, 6.4] | STOP |
+| 2 | Design gate, after formation pass 1 and before pass 2 | Fewer than 5 development τ₁, τ₂ **or** τ₃ measurements alone (none counts), or 50% or more of them censored, so a required median is undefined | STOP (pass 2 does not run) |
+| 3 | Design gate, after formation pass 1 and before pass 2 | Measured C₂ outside [1.6, 6.4] | STOP (pass 2 does not run) |
 | 4 | Design gate, interface fidelity | C6's composition is less faithful than C5's on rate **or** on capacity | STOP |
 | 5 | Design gate, coarse readiness | At either transition: fewer than 10 development groups, **or** fewer than 10 r-eligible groups for either type, **or** the selected combination's worst-cell mean gain ≤ 0, **or** its mean r > 0.5 for either type, **or** more than 10% censored in-world calibrations | STOP |
 | 6 | Design gate, overlap | Any intact touching pair of input templates (§9 step 5) has union-of-hulls overlap > 0.2, **or** the population is empty | STOP |
@@ -984,4 +985,11 @@ Codex's fourth re-check (`docs/reviews/c6_proposal_recheck4_codex.md`, verdict C
 | R3-1 residual (wording) | Two sentences still said any contiguous grouping in a "flat blob" is equally predictive, and called the statistic "the locked core's own test". The exactness proof covers only consensus systems where unprobed responses are identical. | Restricted to that consensus property; local media need not give 0; described as one operational comparison compatible with locked §7, alongside the other gates (§1, §5) |
 | R4-1 (medium): the diagnostic ratio is undefined | The ratio c^null / c was added without a domain; c can be 0 or negative | The ratio is removed and only the raw diagnostic contrast is reported. Disconnection and a missing positive eigenvalue are separate NOT_COMPUTED conditions, consistent in §5 and the ledger |
 | R4-2 (low): compactness missing from the ledger | A reported diagnostic was added without a ledger row | A ledger row (sub-part centroid radius of gyration over the group's median element spacing, mean per grouping, reported only) and an entry in the evaluator-side cross-level list |
+
+## Amendment A1 after approval (2026-10-02; stop rule 8, raised by the implementer)
+
+During step 2a, Codex (the implementer) found that §9 could not be implemented as written. Pass 2 needs the C₂ and C₃ measured in pass 1, but stop rules 2 and 3, which decide whether those values are defined, were placed after pass 2. If pass 1 yields no level-3 group, or too many censored τ values, pass 2 has no defined input.
+- *The fix:* stop rules 2 and 3 are evaluated immediately after pass 1, and pass 2 runs only with a defined C₂ and C₃.
+- *The minimum count:* "defined" needs at least 5 measurements per median, none counting as undefined.
+- *Approval:* nothing else changes. Under stop rule 8 the owner re-approves this amendment.
 
