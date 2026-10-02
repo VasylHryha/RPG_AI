@@ -98,12 +98,14 @@
     },
     "c6": {
       "title": "Recursive composition R0 to R1 to R2",
-      "implementation": "APPROVED",
+      "implementation": "BLOCKED",
       "proposal": "experiments/c6_proposal_r2.md",
-      "outcome": "Revision 2 approved; implementation and development gate authorized, nothing registered. Revision 1 stopped without a panel verdict; its deeper-part veto was stricter than the owner principle and is superseded by direct-part criterion 6.",
+      "outcome": "Revision 2 implemented and stopped at development gate rule 1 (55 minutes): pass-2 formation 14/30 at level 2 and 10/30 at level 3, below the approved 23/30 target. Direct-part criterion 6 is corrected; deeper diagnostics do not veto parents. Native/NumPy comparisons and numerical checks passed; 346 tests passed. Prediction readiness and final registration/panel/review were not reached; no hypothesis verdict. Await owner direction.",
       "decision": "docs/decisions/0011-approve-c6-revision-2.md",
-      "stop_decision": "docs/decisions/0009-c6-stops-at-design-gate.md",
-      "revision": "R002"
+      "stop_decision": "docs/decisions/0013-c6-r2-design-gate-stop.md",
+      "revision": "R002",
+      "previous_stop_decision": "docs/decisions/0009-c6-stops-at-design-gate.md",
+      "development_evidence": "evidence/c6_r2_design_gate/SUMMARY.md"
     },
     "c7": {
       "title": "Perturb, dissolve, survive and reform",
