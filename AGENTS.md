@@ -13,11 +13,12 @@ GeoMind research workspace. Authority: `GEOMIND_GEOMETRIC_AI_QUALITY_STANDARD_R4
 7. **ACCEPTED:** update `STATUS.json`, run `python3 tools/status.py --write`, and freeze the files. **CHANGES_REQUIRED:** fix, register a new revision on fresh seeds, verify once, review once.
    An implementer who finds a design defect before review **withdraws** the revision in a decision record (`docs/decisions/`), keeps its evidence unchanged and registers the next revision on fresh seeds. Never re-analyze a recorded panel to change its verdict.
 
-## Proposal phase (binary rules, every agent)
+## Proposal phase (every agent)
 
+- **Requirements come from the owner and the standard.** The owner's frequency → geometry → frequency → geometry loop repeats at a bigger or different scale. Resonators are its products. Physical analogies and downstream theory examples add no constraints to this AI experiment; operational tests do not redefine the principle.
 - **The drafter owns the proposal.** Any defect found in it, by anyone, is fixed by the drafter. The fix is recorded in the proposal's self-audit with its cause.
 - **Before owner approval, run no project code.** That covers benchmarks, pilots and smoke runs, unless the owner explicitly asks. An owner-requested pilot uses its own pilot entropy and scratch code outside `geomind/`. Its scripts, raw results and a README stating its status are committed to `evidence/cN_dev_pilot/` in the same session.
-- **Every proposal has a normalization ledger.** It lists each quantity, the level it is measured on, and its normalization, all derived from R4 invariant 1 (same rule at every level, normalized only by that level's own size and timescale). A check that mixes levels is allowed only on the evaluator side and must be listed in the ledger. Anywhere else it is a defect.
+- **Every proposal has a normalization ledger.** It lists measured quantities, their levels and their normalization. R4 invariant 1 and decision 0007 require the same procedure without hand-tuning per level; they do not prohibit scale ratios, composition from child summaries or lawful up/down transmission. State each side's units and keep descendant reads owner/evaluator-side, outside the upper-level prediction API.
 - **Every stop condition is a yes/no row** with one action and one responsible role (owner, drafter, implementer or reviewer).
 
 ## Verification order (mandatory)
