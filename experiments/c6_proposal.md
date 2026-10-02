@@ -160,6 +160,7 @@ The capture region is relative (link factor × median spacing), and the persiste
       - *Why the margin is valid:* |∂b/∂u| = |c| t e^{−tu} ≤ |c| t, and the error is a root-mean-square norm, so |E(u) − E(u′)| ≤ K |u − u′| with K = |c| · RMS(t). For position, |c| uses the largest 1/L among the responding parts, which is conservative.
       - *Certified bounds for every τ > T:* lower = max(0, min_j E(u_j) − K h) and upper = max_j E(u_j) + K h.
       - *How they are used:* gain_lo = lower − error_model, and gain_hi = upper − error_model. The PASS rows and readiness use gain_lo, and the FAIL rows use gain_hi, so no unknown τ > T can manufacture either verdict.
+      - *Both channels:* the error metric is RMS phase plus RMS position over L. The relaxation baseline varies only the excited channel: a pulse baseline predicts phase only, and a push baseline predicts position only. The other channel's term does not depend on u, so the margin K h applies to the excited channel's term alone, with K computed in that channel's normalized units.
       - *Raw records:* the censoring record and both bounds are stored.
     - *Readiness:* more than 10% censored calibrations among development groups at either transition means stop (stop rule 5).
   - C5 used the in-world τ₂ for both purposes. C6 separates them, so a group's neighbours cannot change its own timescale.
