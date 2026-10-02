@@ -337,6 +337,8 @@ Required invariants:
 
 **H-C support gate.** H-C is `SUPPORTED_WITHIN_SCOPE` only if two successive scale transitions satisfy these invariants with bounded predictive error. A dendrogram, connected-component tree, manual cluster labels, or a different algorithm per level is explicitly insufficient.
 
+**Reading of "same rule" (decision 0007, 2026-10-02).** In line with the RRG v0.2 locked core (§7), "same rule across scales" means the same *procedure* at every level: detection, promotion, composition, one effective-model recipe, and thresholds scaled only by measured size and time, with one physics in the full simulation. A higher level's effective dynamics may differ from the element law. Same-law closure and slower higher levels (scale separation) are tested with their own verdicts and are not required for H-C. See `docs/decisions/0007-rrg-reading-of-same-rule.md`.
+
 ### C7 — perturb, dissolve, survive and reform
 
 A hierarchy is not credible if promotion is permanent bookkeeping. Apply predeclared perturbations of increasing strength to an accepted `R₂`:
