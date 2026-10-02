@@ -1,0 +1,228 @@
+{
+  "kind": "DEVELOPMENT_ONLY",
+  "status": "STOP",
+  "hypothesis_verdicts": "NOT_ASSIGNED",
+  "protocol": {
+    "protocol_id": "geomind-c6-r5-003-development",
+    "claim_schema": "geomind-r5",
+    "arm_a": "NOT_RUN: decision 0013 R2 development STOP; no approved redesign",
+    "conditions": [
+      "intact",
+      "no_r",
+      "no_backreaction"
+    ],
+    "development_entropy": 46033001,
+    "development_worlds": 10,
+    "final_worlds": 40,
+    "episodes": 4,
+    "integration": {
+      "dt": 0.02,
+      "formation": 100.0,
+      "window": 30.0,
+      "recovery": 30.0,
+      "descriptor": 10.0,
+      "frame_dt": 1.0,
+      "probe_sample_dt": 0.1
+    },
+    "worlds": {
+      "bath_elements": 24,
+      "source_elements": 24,
+      "disk_radius": 3.0,
+      "bath_centre": [
+        4.0,
+        0.0
+      ],
+      "source_centre": [
+        0.0,
+        0.0
+      ],
+      "candidate_centre": [
+        2.0,
+        0.0
+      ],
+      "bath_omega_half_width": 0.5
+    },
+    "detector": {
+      "window": 30.0,
+      "frame_dt": 1.0,
+      "link_factor": 1.5,
+      "min_size": 3,
+      "membership_jaccard": 0.95,
+      "shape_cv": 0.05,
+      "lock_std": 0.1,
+      "freq_tol": 0.01,
+      "pattern_tol": 0.1,
+      "kick_position": 0.1,
+      "kick_phase": 0.3,
+      "recovery_time": 30.0,
+      "recovery_jaccard": 0.9,
+      "recovery_rule": "the original members must be matched with Jaccard >= recovery_jaccard in the control future and in the kicked future, and the two matched components must agree with Jaccard >= recovery_jaccard; recovery_jaccard in the receipt is the minimum of the three"
+    },
+    "interventions": {
+      "gm_scale": 1.5,
+      "gm_scales": [
+        1.25,
+        1.5,
+        2.0
+      ],
+      "gm_probe_phase_rms": 0.3,
+      "gm_window": 5.0,
+      "mg_dose": "uniform",
+      "mg_doses": [
+        "rms:0.5",
+        "rms:1.0",
+        "uniform"
+      ],
+      "mg_window": 10.0,
+      "sample_dt": 0.1,
+      "gm_ablations": {
+        "no_geometry_to_mode": "complete: w = 1 and phase coupling over the frozen neighbor topology of s0 (primary matched ablation)",
+        "no_distance_weight": "w = 1 only (decomposition)",
+        "frozen_topology": "frozen phase topology only (decomposition)"
+      },
+      "mg_ablations": {
+        "no_mode_to_geometry": "complete: J = 0 (primary matched ablation)"
+      }
+    },
+    "statistics": {
+      "bootstrap_resamples": 10000,
+      "primary_ci_level": 0.99375,
+      "nominal_ci_level": 0.95,
+      "minimum_qualified_worlds": 10,
+      "phase_margin": 0.05,
+      "formation_margin": 0.1
+    },
+    "qualification": {
+      "causal_floor": 1e-08,
+      "vanish_fraction": 0.2,
+      "vanish_absolute_tolerance": 1e-12,
+      "development_source_quorum": 5,
+      "native_reference_tolerance": 1e-10,
+      "equivariance_tolerance": 1e-09,
+      "dt_tolerance": 0.05,
+      "sham_source_tolerance": 1e-12,
+      "maximum_panel_seconds": 10800
+    },
+    "source_pin": "research/rrg/v0.2.1.import.json"
+  },
+  "file_hashes": {
+    "geomind/c6_r3_background.py": "4595d8b5aaf96d19c33b6ccab29fa0696ddc4ad4f3607ce4b5a0bdd6847e776f",
+    "geomind/c6_r3_reference.py": "ba0882f2bda7a0b05e1aa017f467d938fc7c013d33341cdf767ed348e343fa7f",
+    "geomind/c6_r3_assay.py": "d1789574ae91b5bf2551dfc49c9286a041db428cb75eba4e33526dc188a3b84a",
+    "geomind/c6_r3_protocol.py": "e99d63013d6b9cd3624bc835b2aadf60d68f9fd1a32238cb5d207e57562d4c84",
+    "geomind/run_c6_r3.py": "eb8eed539e0cefa641f7d0177815553ae283a871c958d21a0ea86d997c4de5dc",
+    "native/c6_r3/background.cpp": "beaa576142876631fee8286d204b824025858ecf71d54ebdeccfcf42dffe4907",
+    "tools/c6_r3_mutants.py": "6ec605786deca41bba84dca470012fc2a3c883ae593044e29e0da432a02b4e3d",
+    "tools/c6_r3_design_gate.py": "1cd772aee76917f411b9f0c3e851807d8104fd5e28b077e8b7116b415deecba1",
+    "tools/build_c6_r3.py": "20d5b6a1700ec433bc73763449fa621f331cc439697084f981e8e31f5e8bff72",
+    "tests/test_c6_r3.py": "fcf8a2de3f9d499edbd1e48961ec0b7c5a552bcacb6ecb13ec15a6c8e17cd53b",
+    "geomind/c4_model.py": "4fafc161b65914a44dccaca6caefb59a5154079f17f564b4cdc4d44f58c59d33",
+    "geomind/c4_detect.py": "ba7fd94efc0edf028df137dc617666c9b8540b914ab4fca1ce793c84d78aacb8",
+    "geomind/c4_experiment.py": "53dc126a2c7c485e41273515c932fb91d113504b8e8351403b5d06cb0d11fc24",
+    "experiments/c4_manifest.json": "8e9878107814a126fced5b7e1110888e357fad9fa250985e88e52fcefa4d5684",
+    "experiments/c6_r3_protocol.json": "71e28eecb884cbb3f03e6abe9d03f2c261f7f461fad9152476a844536bb3b626",
+    "experiments/c6_proposal_r3.md": "f52d0432291b4d613adf8248487953a2912acf593786fcbe501b8cdd234cb8aa",
+    "pyproject.toml": "b13af15c4b02a76b429da4d76965cddf66f73d59198bca80d01fab7b51c705e2",
+    "uv.lock": "284881c4c71c8282aca81e9053794d2b0333f9ab10b21d9e425cba13bec918c8"
+  },
+  "source_pin": {
+    "release": "RRG v0.2.1 audited publication companion",
+    "import_record_sha256": "3f34717f795415f5ed4b11df060cdfc3c36f0bd8b1d491853141778bbc2d3da2",
+    "source_files_verified": 25,
+    "verdict": "PASS"
+  },
+  "source_commit": "560ecdbe8ebea85a1a4b27f86b018be1a609d506",
+  "workers": 8,
+  "world_artifacts": [
+    {
+      "world": 0,
+      "path": "world_000.json.gz",
+      "sha256": "ad7835296152781272b4a9cc31d8f424c2844b93d35d42b0ed3b1bf8fab412f5",
+      "uncompressed_sha256": "b27f0b187a02cd576e51132b1cde630da3d921d3c48c7103db2bcd0feaeea89c",
+      "seconds": 11.231462167
+    },
+    {
+      "world": 6,
+      "path": "world_006.json.gz",
+      "sha256": "ea23733ea837500cc5259acec4952876dc2d14273d210d3afe0f894730a90006",
+      "uncompressed_sha256": "91f76d5ee84baa3288f6a8e35325d7325d9855ed81627089ef9e1c1b40bb6249",
+      "seconds": 12.415372417
+    },
+    {
+      "world": 4,
+      "path": "world_004.json.gz",
+      "sha256": "8e98df9a22c59d16fa8e96865753cc766b922a83082ca10a2dd7f62722a5f204",
+      "uncompressed_sha256": "4d3788188dbaaf144ffc3882f572e34ff36168a3df1f9c526e8ffe772e31ed5d",
+      "seconds": 13.50276825
+    },
+    {
+      "world": 3,
+      "path": "world_003.json.gz",
+      "sha256": "ab693087ae1a067132073bcf5f13a10c3092ee98272048f99f8766133495f206",
+      "uncompressed_sha256": "fa6a98d5d883133d11795f3bb3a5074e1727faa63d42f4e6a60a20d1a35a893d",
+      "seconds": 13.565472667
+    },
+    {
+      "world": 5,
+      "path": "world_005.json.gz",
+      "sha256": "1cb22726f2f40188504d0aad4735e1e9ef98f58c72720f8d1da55996030c6a26",
+      "uncompressed_sha256": "a0cebf25a7e83ed8369a9fbb78bed80f570f99a116e280e74496e97f53b15c0d",
+      "seconds": 13.563772
+    },
+    {
+      "world": 7,
+      "path": "world_007.json.gz",
+      "sha256": "9287fb2ebea601dde76b4db1ddd6a8a863b60777ac04c1ef85f79f36ba8c8659",
+      "uncompressed_sha256": "c926c97c410f1d6f5b40ffa70d4e818edeecebfef90df6a2cab9e5bc06c8f00c",
+      "seconds": 13.61941175
+    },
+    {
+      "world": 1,
+      "path": "world_001.json.gz",
+      "sha256": "015b2f704d8d0038921611c2029806d7b7829832f1097d289ac97f6f73c45bdb",
+      "uncompressed_sha256": "d8a5434e9e42508371dbc4fc993519d7d75457e035a7af13e96620827bc0f704",
+      "seconds": 14.468877375
+    },
+    {
+      "world": 2,
+      "path": "world_002.json.gz",
+      "sha256": "280c368650cb5c99db21012ff0d224353041d2c7a5c5088e2899ea6876ffc7ff",
+      "uncompressed_sha256": "650fe22f068a5c75ada1e3845ca98d567322451f28a1d98be33cebcb679749ed",
+      "seconds": 14.826981
+    },
+    {
+      "world": 8,
+      "path": "world_008.json.gz",
+      "sha256": "74873efcf22a00afb643815429a0706c3fb52d072cb1c283166f26c651423a7d",
+      "uncompressed_sha256": "def09a32ec8b921ebbad15a6b8e4efcb6114335acacbb68b23718d6a718c443a",
+      "seconds": 11.973598458000001
+    },
+    {
+      "world": 9,
+      "path": "world_009.json.gz",
+      "sha256": "4c60cc18f9607817fe4e2eec4e4366c4909255cb317c3f8ff183027ab668fdb3",
+      "uncompressed_sha256": "86421b70e1e4462f00f3de99d8ce6ecddb896ed10bfba1994a0def380b270950",
+      "seconds": 12.244326375
+    }
+  ],
+  "stop_rows": [
+    {
+      "condition": "development controls/numerics/quorum/runtime fail?",
+      "answer": true,
+      "action": "Return STOP to owner",
+      "responsible": "implementer"
+    }
+  ],
+  "errors": [],
+  "readiness": {
+    "passed": false,
+    "reason": "numerical check failed",
+    "qualified_sources": 0,
+    "worlds": 10,
+    "controls_passed": true,
+    "numerics_passed": false,
+    "full_workload_reached": false,
+    "panel_seconds": null
+  },
+  "seconds": 25.047026291999998
+}

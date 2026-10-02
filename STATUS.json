@@ -98,18 +98,19 @@
     },
     "c6": {
       "title": "Source-aligned recursion: staged composition and background generation",
-      "implementation": "ACTIVE",
+      "implementation": "BLOCKED",
       "proposal": "experiments/c6_proposal_r3.md",
-      "outcome": "R3 Arm B implemented: directed/replay dynamics, causal controls, label-free detection, fixed two-turn assay, world-level verdicts and guarded runner. Full everyday suite: 418 passed in 108.58 s. One fresh-development gate pending; no final registration, panel or hypothesis verdict. Arm A retains R2 STOP (0013).",
+      "outcome": "R3 Arm B implemented and locally committed; 418 everyday tests passed. Single fresh-development gate STOP: 0/10 qualified sources (required 5/10); world 4 dt error .07428 exceeds .05. Sham and NO-R controls passed; native/reference agreement near machine precision. No second-turn workload or panel runtime qualification; no final registration/panel or hypothesis verdict. Arm A retains R2 STOP.",
       "decision": "docs/decisions/0014-approve-c6-r3-implementation.md",
-      "stop_decision": "docs/decisions/0013-c6-r2-design-gate-stop.md",
+      "stop_decision": "docs/decisions/0015-c6-r3-development-stop.md",
       "revision": "R003",
       "alignment_decision": "docs/decisions/0012-align-geomind-to-rrg-v0.2.1.md",
       "source_pin": "research/rrg/CURRENT.md",
       "previous_stop_decision": "docs/decisions/0009-c6-stops-at-design-gate.md",
-      "development_evidence": "evidence/c6_r2_design_gate/SUMMARY.md",
+      "development_evidence": "evidence/c6_r3_design_gate/SUMMARY.md",
       "arm_a": "BLOCKED: R2 development STOP preserved; unchanged protocol not rerun",
-      "arm_b": "IMPLEMENTED: tests passed; development qualification pending"
+      "arm_b": "BLOCKED: R3 development STOP (0015); implementation complete, no final evidence",
+      "arm_a_stop_decision": "docs/decisions/0013-c6-r2-design-gate-stop.md"
     },
     "c7": {
       "title": "Perturb, dissolve, survive and reform",
