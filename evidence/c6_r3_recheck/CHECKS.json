@@ -1,0 +1,41 @@
+{
+  "kind": "ENGINEERING_REPAIR_VALIDATION_ONLY",
+  "date": "2026-10-02",
+  "reviewed_head": "71473a435f29cf97cdbd303c22bc68b6af9f15ca",
+  "tests": {
+    "command": ".venv/bin/python -m pytest -q -x",
+    "exit_code": 0,
+    "passed": 500,
+    "seconds": 131.68,
+    "timing": "once after the final complete change batch"
+  },
+  "preservation": {
+    "r3_results_sha256": "25e69d80ef36d12271badd2359bc1bed0e71f1e9acc02bd77a3202b194603b54",
+    "receipt_bound_files_verified": 18,
+    "source_release_files_verified": 25,
+    "accepted_freeze_check": "PASS",
+    "generated_status_check": "PASS"
+  },
+  "scientific_execution": {
+    "development_gate": "NOT_RERUN",
+    "mutation_probe": "NOT_RUN",
+    "final_panel": "NOT_RUN",
+    "independent_acceptance": "NOT_PERFORMED"
+  },
+  "milestone_status": "BLOCKED",
+  "limitations": "Prospective support components only; no replacement experimental runner or qualified physical model",
+  "file_hashes": {
+    "AGENTS.md": "265e16b5f1a93191d92296916b8c49703e0db6a9146e43a1734a9afeddd6f9ea",
+    "geomind/c6_r4_integrity.py": "8e3af230381d1294bd22d74c4c91b99f64116a86b6d56310533ff610cb60602d",
+    "geomind/c6_r4_analysis.py": "8efab94ae08dfc961249931a147c976260e57c8c0dc4d604ae55d48829d029e5",
+    "tests/test_c6_r4.py": "2e5c679a36edfd899440c3d0e1477b57d89ac9dd53dad761d6871700707359d8",
+    "tools/c6_r3_recheck.py": "614384d71e9b73ad26e52448e9e05212ec121f3094893109c3a1d56335d34f41",
+    "tools/verify.py": "91583606b8de989e2b79cc4ee8e3869c3aac5f1755279dc281ecabc2f435fcc6",
+    "docs/reviews/c6_r3_implementation_self_audit_codex.md": "110dc0b16ba91378d0bf5d81f5773df5db355e6417cda8494658bac85d8747f4",
+    "docs/decisions/0016-c6-r3-recheck-and-repair.md": "e5fcc6aaa3a9a7f041342ce17331287f5825b46765004f3b714134719a3391fd",
+    "evidence/c6_r3_recheck/AUDIT.json": "3676792144e037ad4645c5c093bff3ec76b641f7baffba874424c1014507520b",
+    "evidence/c6_r3_recheck/README.md": "404cb4e7fcedad63968396239434f0d3bae55a3598599c1cb11e7fd0d1a49945",
+    "STATUS.json": "5a537f4bd43ecf875448974aba7fc6158fc16174ca9cb803f457ef4e1f3869c1",
+    "README.md": "f4cca4b4daf14874d6813e157f7983190209f14f0dcd7a1ca489b077555991c6"
+  }
+}

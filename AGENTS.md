@@ -25,11 +25,14 @@ GeoMind research workspace. Forward guidance: `GEOMIND_GEOMETRIC_AI_QUALITY_STAN
 
 | Stage | Time | How |
 |---|---|---|
-| tests | ~20–30 s | `.venv/bin/python -m pytest -q -x` after any code change; this is the only everyday check |
+| tests | measure actual suite time | `.venv/bin/python -m pytest -q -x` once after the complete planned change batch, at the end of implementation work |
 | gated pipeline, C4+ | measure on first run | `tools/verify.py --milestone cN --output evidence/cN_rNNN` |
 | gated pipeline, C1/C2 (legacy) | C1 R006 measured 185 s | `tools/verify_milestone.py` (C1) and `tools/verify_c2.py` (C2) |
 | independent review | ≤ 20 min | once per revision, on committed evidence |
 
+- **Owner test timing rule:** finish all planned code, test and review-driven changes before running tests. Run the appropriate tests once at the end of the change batch/session. Do not run a full suite after each intermediate edit or review finding.
+- An earlier test run is allowed only when its result is required to unblock progress, diagnose a concrete failure, or decide a dependent implementation step. State that blocking need before the run. A successful run is not repeated unless subsequent changes, a failure or a specific unresolved concern requires it.
+- If review finds more changes after an early test, collect and complete the remaining batch before the next run; do not alternate edits with routine full-suite reruns.
 - Finish **all** code and test edits before any long run. Never edit code while a long run is in progress.
 - Never run a recorded panel or mutation probe directly; use the pipeline. Do not run a rehearsal panel. Do not repeat runs that already passed for the same code.
 - **Every registered endpoint** must appear in the receipt's `endpoint_coverage` as `evaluated` (value and verdict) or `not_run` (reason). No endpoint may be test-only and silently missing (the C2 lesson).

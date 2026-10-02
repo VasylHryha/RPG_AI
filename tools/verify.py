@@ -38,6 +38,10 @@ def expand(items, values):
 
 def run_stage(cfg, stage, values, timeout=3600):
     spec = cfg["stages"][stage]
+    # A declared stage budget is part of its fingerprinted milestone config.
+    timeout = spec.get("timeout_seconds", timeout)
+    if type(timeout) is not int or timeout < 1:
+        raise StageFailed(f"{stage}: timeout_seconds must be a positive integer")
     result = subprocess.run(expand(spec["cmd"], values), cwd=ROOT, capture_output=True, text=True, timeout=timeout)
     if result.returncode != 0:
         raise StageFailed("\n".join((result.stdout + result.stderr).strip().splitlines()[-15:]))
