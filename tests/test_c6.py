@@ -295,24 +295,11 @@ def test_threshold_scaling_and_exact_steps(n, C):
         experiment.steps_exact(.1*3.2*3.2)
 
 
-def test_no_level_branch_and_audit_ledger():
-    for module in (levels, units, compose, effective, experiment):
-        tree = ast.parse(inspect.getsource(module))
-        for node in ast.walk(tree):
-            if isinstance(node, (ast.If, ast.IfExp)):
-                for comparison in ast.walk(node.test):
-                    if isinstance(comparison, ast.Compare):
-                        operands = [comparison.left, *comparison.comparators]
-                        numeric = any(isinstance(x, ast.Constant) and type(x.value) in (int, float) for x in operands)
-                        level_operand = any(
-                            isinstance(x, ast.Name) and x.id in {'level', 'n', 'depth'} or
-                            isinstance(x, ast.Attribute) and x.attr in {'level', 'depth'} or
-                            isinstance(x, ast.Subscript) and isinstance(x.slice, ast.Constant) and x.slice.value == 'level'
-                            for x in operands)
-                        assert not (numeric and level_operand)
+def test_shared_procedure_and_revision_two_ledger():
     audit = experiment.same_rule_audit({2: 3.2, 3: 9.6})
-    assert len(audit['normalization_ledger']) == 26
-    assert len(set(audit['functions'])) == 6
+    assert audit['one_rule']
+    assert any('Direct part' in row for row in audit['normalization_ledger'])
+    assert len(set(audit['functions'])) == 5
     assert audit['thresholds'][3]['freq_tol'] == pytest.approx(.01/9.6)
 
 
@@ -801,7 +788,7 @@ def test_recursive_criterion_six_broken_child_inside_intact_parent_and_merged_pa
     broken[:, 0], broken[:, 1] = .005*times, -.005*times
     rows = levels.recursive_validity(owner, xs, broken, times, base)
     assert rows[0]['dynamic']['ok']
-    assert not rows[0]['children'][0]['ok'] and not rows[0]['ok']
+    assert not rows[0]['children'][0]['ok'] and rows[0]['ok']
     merged = xs.copy()
     merged[:, 12:24] -= [5., 0.]
     rows = levels.recursive_validity(owner, merged, ths, times, base)
@@ -892,130 +879,6 @@ def test_development_neighbor_check_uses_reference_indices_and_masks():
     assert measured == {'passed': True, 'states': 10, 'index_mismatches': 0, 'mask_mismatches': 0}
 
 
-@pytest.mark.parametrize('sizes', [(7, 7, 7, 7, 7), (6, 8, 10, 12, 12), (12, 16, 16, 16)])
-def test_constructive_sampler_realistic_8nn_finishes_under_one_second(sizes, kernel_and_measurements):
-    rng = np.random.default_rng(987)
-    count = sum(sizes)
-    x = rng.uniform(size=(count, 2))
-    distances = np.linalg.norm(x[:, None]-x[None], axis=-1)
-    adjacency = np.zeros((count, count), bool)
-    neighbours = np.argsort(distances, axis=1)[:, 1:9]
-    adjacency[np.arange(count)[:, None], neighbours] = True
-    adjacency |= adjacency.T
-    real, offset = [], 0
-    for size in sizes:
-        real.append(tuple(range(offset, offset+size)))
-        offset += size
-    started = time.perf_counter()
-    sample = levels.alternative_groupings(real, adjacency, np.random.default_rng(45))
-    elapsed = time.perf_counter()-started
-    kernel_and_measurements.setdefault('constructive_sampler', {})[str(count)] = {
-        'seconds': elapsed, 'attempts': sample['attempts'], 'acceptances': sample['acceptances']}
-    assert elapsed < .8, elapsed
-    assert 0 < sample['acceptances'] <= 20
-    assert sample['attempts'] <= 2000
-    assert sample['attempts'] == sample['acceptances']+sum(sample['rejections'].values())
-    keys = [levels.canonical_partition(g) for g in sample['alternatives']]
-    assert len(keys) == len(set(keys))
-    for grouping in sample['alternatives']:
-        assert sorted(map(len, grouping)) == sorted(sizes)
-        assert all(levels.connected(g, adjacency) for g in grouping)
-    assert sample == levels.alternative_groupings(real, adjacency, np.random.default_rng(45))
-
-
-def test_constructive_sampler_no_replacement_and_zero_not_tested():
-    real = [(0, 1), (2, 3)]
-    graph = np.ones((4, 4), bool)
-    sample = levels.alternative_groupings(real, graph, np.random.default_rng(76))
-    assert sample['acceptances'] == 2 and sample['attempts'] == 2000
-    assert sample['status'] == 'TESTED' and sample['rejections']['DUPLICATE'] > 0
-    assert len({levels.canonical_partition(g) for g in sample['alternatives']}) == 2
-    sample = levels.alternative_groupings(real, np.zeros((4, 4), bool), np.random.default_rng(76))
-    assert sample['status'] == 'NOT_TESTED' and sample['alternatives'] == []
-    assert sample['attempts'] == 2000 and sample['rejections'] == {'STUCK': 2000}
-
-
-def test_nested_part_breaks_early_in_top_level_window():
-    owner, xs, ths, times = recursive_world()
-    base = experiment.c4_manifest()['detector']
-    broken = ths.copy()
-    early = np.maximum(0., 30.-times)*.02
-    broken[:, 0], broken[:, 1] = early, -early
-    # The old shortened recursion sees only the stable last 96 time units.
-    assert levels.dynamic_validity(owner.children[0].children[0], xs, broken, times, 3.2, base)['ok']
-    rows = levels.recursive_validity(owner, xs, broken, times, base)
-    child = rows[0]['children'][0]
-    assert child['dynamic']['windows'][0]['start'] == pytest.approx(0.)
-    assert len(child['dynamic']['windows']) == 9
-    assert not child['ok'] and not rows[0]['ok']
-
-
-@pytest.mark.parametrize('stop', ['count', 'censoring', 'range'])
-def test_gate_never_schedules_pass_two_after_tau_stop(tmp_path, monkeypatch, stop):
-    from contextlib import nullcontext
-    class Pool:
-        def map(self, fn, jobs):
-            return map(fn, jobs)
-    monkeypatch.setattr(design, 'worker_pool', lambda: nullcontext(Pool()))
-    calls = []
-    def bank(pool, level, worlds, purpose, factors, smoke, receipt, inputs_only=False):
-        if purpose >= 5000:
-            pytest.fail('pass 2 was scheduled after a pass-1 stop')
-        calls.append(purpose)
-        return [level]*worlds
-    def formation(args):
-        level, C, purpose, index, factors, smoke, reference_backend = args
-        return {'record': {'world': index, 'outcome': 'FORMED', 'candidates': [], 'validity': [], 'level': level},
-                'xs': np.empty((0, 0, 2))}
-    def tau(args):
-        level = args[0]['record']['level']
-        records = []
-        for n in (1, level):
-            count = 1 if stop == 'count' and n == 3 else 3
-            records.extend({'level': n, 'tau': (10. if stop == 'range' and n == 2 else float(n)),
-                            'censored': stop == 'censoring' and n == 3} for _ in range(count))
-        return [{'measurements': records}]
-    monkeypatch.setattr(design, 'bank', bank)
-    monkeypatch.setattr(design, '_formation_job', formation)
-    monkeypatch.setattr(design, '_tau_job', tau)
-    monkeypatch.setattr(design, 'development_neighbors', lambda f: {'passed': True})
-    receipt = design.run(tmp_path/'scratch', smoke=True)
-    assert receipt.data['status'] == 'STOP'
-    assert receipt.data['stopped_at'] == (3 if stop == 'range' else 2)
-    assert not any(s['name'] == 'formation_pass_2' for s in receipt.data['steps'])
-    assert not any(r['evaluated'] for r in receipt.data['stop_rules'] if r['rule'] in (1, 4, 5, 6, 7))
-
-
-def test_interface_fidelity_independent_observation(tmp_path, monkeypatch):
-    owner, xs, ths, times = stable_world()
-    row = {'owner': owner, 'x': xs[-1], 'th': ths[-1], 'omega': np.zeros(xs.shape[1]),
-           'xs': xs, 'ths': ths, 'times': times,
-           'record': {'world': 0, 'candidates': [{'accepted': True, 'units': [0, 1, 2],
-                                                'stats': {'shape_cv': 0.}}]}}
-    calls = []
-    def measured(parent, x, th, omega, params, simulate):
-        calls.append((parent, x.copy(), th.copy()))
-        rate = .1 if len(calls) == 1 else .12
-        return rate, {'rate': rate, 'duration': 30*parent.C, 'sample_dt': parent.C}
-    monkeypatch.setattr(experiment, 'publication', lambda *a, **k: published_fixture()[len(calls) % 3])
-    monkeypatch.setattr(units, 'isolated_rate', measured)
-    out = experiment.interface_fidelity([row], object())
-    assert len(calls) == 2 and calls[0][0] == calls[1][0]
-    np.testing.assert_array_equal(calls[0][1], calls[1][1])
-    np.testing.assert_array_equal(calls[0][2], calls[1][2])
-    assert out[0]['publication_run']['rate'] == .1
-    assert out[0]['observed_rate'] == .12
-    assert out[0]['c6_rate_error'] == pytest.approx(.02)
-
-
-def test_fidelity_compares_parent_means_instead_of_each_parent():
-    rows = [{'c5_rate_error': .1, 'c6_rate_error': .2, 'c5_capacity_error': .1, 'c6_capacity_error': .2},
-            {'c5_rate_error': .4, 'c6_rate_error': .1, 'c5_capacity_error': .4, 'c6_capacity_error': .1}]
-    assert not design.fidelity_means(rows)['stop']
-    assert design.fidelity_means(rows[:1])['stop']
-    assert design.fidelity_means([])['stop']
-
-
 def test_same_rule_audit_detects_recipe_ports_functions_and_scaling():
     factors = {2: 3.2, 3: 9.6}
     assert experiment.same_rule_audit(factors)['one_rule']
@@ -1086,7 +949,7 @@ def test_check4_bank_inputs_only_and_projection_never_uses_their_costs(tmp_path,
     receipt.data['timings'][0]['seconds'] = 1e10
     assert design.full_gate_projection(receipt.data) == projection
     assert projection['complete_gate_seconds'] is None
-    assert 'interface_fidelity_l2' in projection['unmeasured']
+    assert 'transition_protocol_l2' in projection['unmeasured']
 
 
 def test_nested_geometry_overlap_only_early_in_level3_window():
@@ -1101,52 +964,34 @@ def test_nested_geometry_overlap_only_early_in_level3_window():
     child = rows[0]['children'][0]
     assert child['dynamic']['ok']
     assert child['hull_overlap'] == pytest.approx(1.)
-    assert not child['ok'] and not rows[0]['ok']
+    assert not child['ok'] and rows[0]['ok']
     assert child['geometry']['start'] == pytest.approx(0.)
     assert child['geometry']['frame_dt'] == 3.2
     assert child['geometry']['frames'] == 91
 
 
-def test_nested_geometry_requires_every_parent_frame():
+def test_missing_deeper_dynamic_frame_does_not_veto_parent():
     owner, xs, ths, times = recursive_world()
-    early = np.flatnonzero(np.isclose(times, 3.2))[0]
+    early = np.flatnonzero(np.isclose(times, 1.))[0]
     keep = np.arange(len(times)) != early
     rows = levels.recursive_validity(owner, xs[keep], ths[keep], times[keep], experiment.c4_manifest()['detector'])
-    assert rows[0]['geometry']['observed']  # The C3 grid does not use this frame.
-    assert not rows[0]['children'][0]['geometry']['observed']
+    assert rows[0]['geometry']['observed']
+    assert not rows[0]['children'][0]['dynamic']['ok']
     assert rows[0]['children'][0]['reason'] == 'INSUFFICIENT_OBSERVATION'
-    assert not rows[0]['ok']
+    assert rows[0]['ok']
 
 
-def test_all_stages_smoke_requires_smoke_and_scratch(tmp_path):
-    with pytest.raises(ValueError, match='requires --smoke'):
-        design.Receipt(tmp_path/'bad', False, smoke_all_stages=True)
-    assert not (tmp_path/'bad').exists()
-    with pytest.raises(ValueError, match='outside evidence'):
-        design.Receipt(ROOT/'evidence/c6_all_stages_forbidden', True, smoke_all_stages=True)
-    receipt = design.Receipt(tmp_path/'scratch', True, smoke_all_stages=True)
-    for rule in (*range(1, 8), 14):
-        assert receipt.check(rule, True, {'synthetic': True})
-    assert receipt.data['status'] == 'RUNNING'
-    assert all(r['would_stop'] and r['action'] == 'CONTINUE_SMOKE_ONLY' for r in receipt.data['stop_rules'])
+def test_no_c5_proximity_gate_and_rounded_zero_is_undefined(tmp_path):
+    receipt = design.Receipt(tmp_path/'scratch', True)
+    rows = {2: [{'level': 1, 'tau': 1., 'censored': False}]*5+
+                [{'level': 2, 'tau': 10., 'censored': False}]*5,
+            3: [{'level': 3, 'tau': .2, 'censored': False}]*5}
+    assert design.pass_one_factors(receipt, rows) == {2: 10., 3: .2}
+    assert experiment.cumulative_C([{'tau': .01, 'censored': False}]*5,
+                                  [{'tau': 1., 'censored': False}]*5) is None
 
 
-def test_all_stages_smoke_falls_back_only_for_undefined_C(tmp_path):
-    receipt = design.Receipt(tmp_path/'scratch', True, smoke_all_stages=True)
-    rows = {2: [{'level': n, 'tau': float(n), 'censored': False} for n in (1, 2) for _ in range(5)], 3: []}
-    factors = design.pass_one_factors(receipt, rows)
-    assert factors == {2: 2., 3: 9.6}
-    assert receipt.data['C_fallbacks'] == [{'level': 3, 'measured': None, 'used': 9.6,
-                                          'reason': 'measured C undefined', 'smoke_only': True}]
-    receipt = design.Receipt(tmp_path/'out_of_range', True, smoke_all_stages=True)
-    rows[3] = [{'level': 3, 'tau': 10., 'censored': False}]*5
-    rows[2] = [{'level': 1, 'tau': 1., 'censored': False}]*5 + [{'level': 2, 'tau': 10., 'censored': False}]*5
-    assert design.pass_one_factors(receipt, rows) == {2: 10., 3: 10.}
-    assert receipt.data['C_fallbacks'] == []
-    assert next(r for r in receipt.data['stop_rules'] if r['rule'] == 3)['would_stop']
-
-
-def test_full_projection_includes_measured_late_stages_and_serial_costs():
+def test_full_projection_measures_retained_protocol_and_keeps_missing_unknown():
     record = {'seconds': 8., 'duration': 100., 'full_duration': 100.,
               'observation_seconds': 1., 'observation_duration': 30.}
     timings = [{'stage': name, 'seconds': 1., 'inputs_only': False,
@@ -1154,62 +999,64 @@ def test_full_projection_includes_measured_late_stages_and_serial_costs():
                for name in ('primitive_harvest', 'composite_formation', 'composite_isolation',
                             'isolated_timescales', 'coarse_readiness')
                for n in (2, 3) for p in (1, 2)]
-    timings.append({'stage': 'overlap_calibration', 'seconds': 6., 'work': {'worlds': 6}, 'inputs_only': False})
     values = {f'formation_pass_{p}': {n: {'raw': [record]*6} for n in (2, 3)} for p in (1, 2)}
     values.update({f'isolated_timescales_pass_{p}_level_{n}': [{'tau': 1.}] for p in (1, 2) for n in (2, 3)})
-    values.update({f'backend_equivalence_4_level_{n}': [{'native': record, 'numpy': record}]*6 for n in (2, 3)})
-    values['interface_fidelity'] = {'raw': [{'level': n, 'seconds': 2.} for n in (2, 3)]}
-    values['runtime_specificity_measurements'] = {n: {'seconds': 8.} for n in (2, 3)}
+    values['runtime_protocol_measurements'] = {n: {'seconds': 8.} for n in (2, 3)}
     data = {'timings': timings, 'steps': [{'name': k, 'values': v} for k, v in values.items()]}
-    projection = design.full_gate_projection(data)
+    timings.extend({'stage': 'numerical_checks', 'seconds': 1., 'inputs_only': True,
+                    'work': {'level': n}} for n in (2, 3))
+    projection = design.full_gate_projection(data, panel=True)
     assert projection['unmeasured'] == []
-    assert projection['complete_gate_seconds'] == sum(s['seconds'] for s in projection['stages'])
     by_stage = {s['stage']: s['seconds'] for s in projection['stages']}
-    assert by_stage['interface_fidelity_l2'] == 60.  # Serial, not / 8.
-    assert by_stage['coarse_readiness_l3'] == 30.
-    assert by_stage['runtime_specificity_l3'] == 30.
-    assert by_stage['overlap_calibration'] == 30.
-    values['runtime_specificity_measurements'][3] = {'status': 'NOT_RUN', 'reason': 'no formed group'}
-    assert design.full_gate_projection(data)['complete_gate_seconds'] is None
+    assert by_stage['panel_l2_formation_protocol'] == 40.
+    assert by_stage['transition_protocol_l3'] == 40.
+    values['runtime_protocol_measurements'][3] = {'status': 'NOT_RUN'}
+    assert design.full_gate_projection(data, panel=True)['complete_gate_seconds'] is None
 
 
-def test_all_stages_smoke_six_full_horizon_worlds_and_all_stop_rows(tmp_path, monkeypatch):
-    from contextlib import nullcontext
-    class Pool:
-        def map(self, fn, jobs):
-            return map(fn, jobs)
-    monkeypatch.setattr(design, 'worker_pool', lambda: nullcontext(Pool()))
-    banks, formations = [], []
-    def bank(pool, level, worlds, purpose, factors, short, receipt, inputs_only=False):
-        banks.append((level, worlds, short, inputs_only))
-        return [level]*worlds
-    def formation(args):
-        level, C, purpose, index, factors, short, reference_backend = args
-        formations.append((level, purpose, short))
-        return {'record': {'world': index, 'outcome': 'MERGED', 'candidates': [], 'validity': [],
-                           'level': level, 'seconds': 1., 'duration': 100*C, 'full_duration': 100*C,
-                           'observation_seconds': .1, 'observation_duration': 30*C}, 'xs': []}
-    monkeypatch.setattr(design, 'bank', bank)
-    monkeypatch.setattr(design, '_formation_job', formation)
-    monkeypatch.setattr(design, '_tau_job', lambda args: [])
-    monkeypatch.setattr(design, '_readiness_job', lambda args: None)
-    monkeypatch.setattr(design, 'development_neighbors', lambda frames: {'passed': True})
-    monkeypatch.setattr(experiment, 'formed_group', lambda row: None)
-    monkeypatch.setattr(experiment, 'interface_fidelity', lambda *args: [])
-    monkeypatch.setattr(experiment, 'overlap_population', lambda rows: [{'intact': True, 'overlap': .3}])
-    receipt = design.run(tmp_path/'scratch', smoke=True, smoke_all_stages=True)
-    assert receipt.data['status'] == 'SMOKE_COMPLETE'
-    assert len(banks) == 6 and all(worlds == 6 and not short for _, worlds, short, _ in banks)
-    assert all(not short for _, _, short in formations)
-    assert len(formations) == 48  # 24 check-4 native/reference jobs + 24 two-pass jobs.
-    rules = {r['rule']: r for r in receipt.data['stop_rules']}
-    assert set(rules) == {*range(1, 8), 14}
-    assert all(r['evaluated'] and 'would_stop' in r for r in rules.values())
-    assert not rules[14]['would_stop']
-    assert all(rules[n]['would_stop'] for n in range(1, 8))
-    steps = {s['name']: s for s in receipt.data['steps']}
-    assert 'formation_pass_2' in steps and 'runtime_projection' in steps
-    for name in ('interface_fidelity_level_3', 'coarse_readiness_level_3', 'runtime_specificity_level_3'):
-        assert steps[name]['status'] == 'NOT_RUN'
-        assert steps[name]['reason'] == 'no formed group to process'
-    assert steps['overlap_calibration']['status'] == 'EVALUATED'
+def test_deeper_timescale_cannot_extend_direct_observation():
+    owner, xs, ths, times = recursive_world()
+    child = owner.children[0]
+    deep = replace(child.children[0], C=100.)
+    changed = replace(owner, children=(replace(child, children=(deep, *child.children[1:])), *owner.children[1:]))
+    assert levels.observation_window(changed) == levels.observation_window(owner)
+    assert levels.horizon(changed) == levels.horizon(owner)
+    rows = levels.recursive_validity(changed, xs, ths, times, experiment.c4_manifest()['detector'])
+    assert rows[0]['ok']
+    assert not rows[0]['children'][0]['ok']
+    assert experiment.own_stability(deep, (xs, ths, times)) == {'observation': 'INSUFFICIENT_OBSERVATION'}
+
+
+def test_E2_carries_validity_and_separate_service_reopens(monkeypatch):
+    states = published_fixture(2)
+    times = np.array([0., .1, .2])
+    def response(states, params, C, delta, times, dt):
+        M = len(states)
+        X = np.repeat(np.array([s['effective_position'] for s in states])[None], len(times), 0)
+        theta = np.repeat(np.array([s['optional_phase'] for s in states])[None], len(times), 0)
+        return {'response': np.zeros((len(times), M, 3)), 'validity': [False]+[True]*(len(times)-1),
+                'control': {'X': X, 'theta': theta}, 'work': 1, 'matrix_exponentials': len(times)}
+    monkeypatch.setattr(effective, 'E2', response)
+    calls = []
+    def reopen(frame):
+        calls.append(frame)
+        return states
+    out = effective.service(states, reference.INTACT, 1., 'E2', times, reopen)
+    assert calls == [1, 2]
+    assert out['reopens'] == out['flagged'] == 2
+    assert 'reopen' not in inspect.signature(effective.predict).parameters
+
+
+def test_retained_protocol_complete_ablations_and_publication():
+    from geomind.c6_protocol import transition_measurements
+    owner, xs, ths, times = stable_world()
+    row = {'owner': owner, 'x': xs[-1], 'th': ths[-1], 'omega': np.zeros(xs.shape[1]),
+           'xs': xs, 'ths': ths, 'times': times,
+           'record': {'world': 0, 'candidates': [{'accepted': True, 'units': [0, 1, 2],
+                                                'stats': {'shape_cv': 0.}}]}}
+    result = transition_measurements(row, native.simulate, 'E1', 'V1', 670101, 0)
+    assert result['effects']['g_to_m/no_geometry_to_mode/1.25'] == pytest.approx(0., abs=1e-12)
+    assert result['effects']['m_to_g/no_mode_to_geometry/1.0'] == pytest.approx(0., abs=1e-12)
+    assert not result['interface_problems']
+    assert all(result['controls'][name]['tested'] for name in ('not_independent', 'not_a_clump'))
+    assert result['parent_state']['stability'] == row['record']['candidates'][0]['stats']

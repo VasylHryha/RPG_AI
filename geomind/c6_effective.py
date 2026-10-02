@@ -93,10 +93,76 @@ def jacobian(states, params, C):
     return Jhalf, check
 
 
-def E2(states, params, C, delta, times):
+def validity_flags(states, params, positions, phases):
+    """Frozen C5 validity rule, evaluated on reconstructed published trajectories."""
+    cs = c5_coarse.CoarseState(states, params.k)
+    counts0 = c5_coarse.link_counts(cs, c5_coarse.links(cs, cs.X, params)[0])
+    return [c5_coarse.invalid(cs, counts0,
+                c5_coarse.link_counts(cs, c5_coarse.links(cs, X, params)[0]), cs.theta, theta)
+            for X, theta in zip(positions, phases)]
+
+
+def E2(states, params, C, delta, times, dt=.02):
+    from geomind.c6_experiment import steps_exact
     J, check = jacobian(states, params, C)
     responses = np.array([matrix_exp(J*t) @ delta for t in times]) if check["converged"] else np.zeros((len(times), len(delta)))
-    return {"response": unpack(responses, len(states)), "abstained": not check["converged"], "convergence": check}
+    response = unpack(responses, len(states))
+    control = E1(states, params, dt, steps_exact(times[-1], dt), steps_exact(times[1]-times[0], dt))
+    flags = validity_flags(states, params, control['X']+response[..., :2], control['theta']+response[..., 2])
+    ports = sum(len(s['boundary_ports']) for s in states)
+    return {"response": response, "abstained": not check["converged"], "convergence": check,
+            "flagged": sum(flags[1:])+control['flagged'], "validity": flags,
+            "work": control['work']+4*len(delta)*ports*ports,
+            "matrix_exponentials": len(times) if check['converged'] else 0,
+            "control": control}
+
+
+def service(states, params, C, recipe, times, reopen, dt=.02, delta=None):
+    """Unscored service: refresh published states only, then resume the same recipe."""
+    from geomind.c6_experiment import steps_exact
+    require_published(states)
+    if recipe == 'E1':
+        shifted = copy.deepcopy(states)
+        if delta is not None:
+            for state, change in zip(shifted, unpack(np.asarray(delta)[None], len(states))[0]):
+                state['effective_position'] = (np.asarray(state['effective_position'])+change[:2]).tolist()
+                state['optional_phase'] += float(change[2])
+        return E1(shifted, params, dt, steps_exact(times[-1], dt),
+                  steps_exact(times[1]-times[0], dt), reopen=reopen)
+    if recipe != 'E2':
+        raise ValueError('unknown recipe')
+    current = copy.deepcopy(states)
+    delta = np.zeros(3*len(states)) if delta is None else np.asarray(delta)
+    initial = unpack(delta[None], len(states))[0]
+    Xs = [np.array([s['effective_position'] for s in states])+initial[:, :2]]
+    phases = [np.array([s['optional_phase'] for s in states])+initial[:, 2]]
+    flags = reopens = work = exponentials = 0
+    start = 0
+    while start < len(times)-1:
+        segment = E2(current, params, C, delta, np.asarray(times[start:])-times[start], dt)
+        work += segment['work']; exponentials += segment['matrix_exponentials']
+        for offset in range(1, len(segment['response'])):
+            frame = start+offset
+            X = segment['control']['X'][offset]+segment['response'][offset, :, :2]
+            theta = segment['control']['theta'][offset]+segment['response'][offset, :, 2]
+            invalid = segment['validity'][offset]
+            if invalid:
+                flags += 1
+                current = reopen(frame)
+                require_published(current, states[0]['level'])
+                X = np.array([s['effective_position'] for s in current])
+                theta = np.array([s['optional_phase'] for s in current])
+                theta += 2*np.pi*np.round((phases[-1]-theta)/(2*np.pi))
+                reopens += 1
+                delta = np.zeros(3*len(current))
+            Xs.append(X.copy()); phases.append(theta.copy())
+            if invalid:
+                start = frame
+                break
+        else:
+            start = len(times)-1
+    return {'X': np.array(Xs), 'theta': np.array(phases), 'flagged': flags,
+            'reopens': reopens, 'work': work, 'matrix_exponentials': exponentials}
 
 
 def unpack(vectors, M):
@@ -109,7 +175,7 @@ def predict(states, params, C, recipe, delta, times, dt=.02, expected_level=None
     from geomind.c6_experiment import steps_exact
     require_published(states, expected_level)
     if recipe == "E2":
-        return E2(states, params, C, delta, times)
+        return E2(states, params, C, delta, times, dt)
     if recipe != "E1":
         raise ValueError("unknown recipe")
     changes = unpack(np.asarray(delta)[None], len(states))[0]
@@ -166,6 +232,23 @@ def censored_bounds(truth, times, amount, M, lengths, kind, T):
     h = 1/(128*T)
     return {"lower": max(0., min(errors)-K*h), "upper": max(errors)+K*h,
             "grid_u": grid.tolist(), "grid_errors": errors, "K": K, "h": h, "margin": K*h}
+
+
+def response_diagnostics(truth, prediction, times, excited, kind, pattern_tol=.2):
+    """C5 trailing frequency and recovery readouts, separate from prediction verdicts."""
+    half = len(times)//2
+    span = times[-1]-times[half]
+    frequency = float(abs(np.mean((truth[-1, :, 2]-truth[half, :, 2])
+                                 -(prediction[-1, :, 2]-prediction[half, :, 2]))/span))
+    from geomind.c4_model import wrap
+    def recovery(response):
+        phase = response[..., 2]
+        residual = phase-phase[:, [excited]] if kind == 'pulse' else phase
+        below = np.flatnonzero(np.max(np.abs(wrap(residual)), axis=1) <= pattern_tol)
+        return {'time': float(times[below[0]]) if len(below) else float(times[-1]), 'censored': not bool(len(below))}
+    full, coarse = recovery(truth), recovery(prediction)
+    return {'frequency_error': frequency, 'recovery_full': full, 'recovery_coarse': coarse,
+            'recovery_error': None if full['censored'] or coarse['censored'] else abs(full['time']-coarse['time'])}
 
 
 def score_excitation(truth, prediction, times, excited, lengths, kind, amount, tau):

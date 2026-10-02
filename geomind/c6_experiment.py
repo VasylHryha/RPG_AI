@@ -1,4 +1,4 @@
-"""Development transition protocol. Physics backend is explicit; no panel or registration path."""
+"""Development transition protocol. Element-law backend is explicit; no panel or registration path."""
 from collections import Counter
 from dataclasses import replace
 import copy
@@ -32,7 +32,10 @@ def steps_exact(duration, dt=.02):
 def rounded_C(value):
     if not np.isfinite(value) or value <= 0:
         raise ValueError("undefined cumulative timescale")
-    return np.floor(value*5 + .5 + 1e-12)/5
+    result = float(np.floor(value*5 + .5 + 1e-12)/5)
+    if result <= 0 or not np.isfinite(result):
+        raise ValueError("undefined cumulative timescale")
+    return result
 
 
 def cumulative_C(rows, reference):
@@ -41,7 +44,12 @@ def cumulative_C(rows, reference):
             return None
         return float(np.median([float('inf') if r['censored'] else r['tau'] for r in records]))
     a, b = median(rows), median(reference)
-    return None if a is None or b is None or b <= 0 else float(rounded_C(a/b))
+    if a is None or b is None or b <= 0:
+        return None
+    try:
+        return rounded_C(a/b)
+    except ValueError:
+        return None
 
 
 def restrict_owner(owner, members):
@@ -67,7 +75,7 @@ def integrate(x, th, omega, duration, simulate, every=None, params=None):
     return out[0][0], out[1][0], frames
 
 
-def detect_snapshot(owner, xs, ths, times, omega, simulate, base, rng, primitive=False):
+def detect_snapshot(owner, xs, ths, times, omega, simulate, base, rng, primitive=False, imposed=None):
     t = levels.thresholds(base, owner.C)
     wanted = times[-1]-30*owner.C + np.arange(31)*owner.C
     idx = np.searchsorted(times, wanted-1e-8)
@@ -83,7 +91,7 @@ def detect_snapshot(owner, xs, ths, times, omega, simulate, base, rng, primitive
         control = levels.child_series(owner, cx[None], ct[None])
         excited = levels.child_series(owner, ex[None], et[None])
         return control[0][0], control[1][0], excited[0][0], excited[1][0]
-    detected = levels.detect_level((X, Theta), validity, t, kick_runner, rng)
+    detected = levels.detect_level((X, Theta), validity, t, kick_runner, rng, imposed=imposed)
     return detected, validity
 
 
@@ -92,7 +100,7 @@ def formation(templates, C, purpose, index, simulate, factors, short=False):
     templates = [{**t, 'owner': set_factors(t['owner'], factors)} for t in templates]
     x, th, omega, owner, placement = compose.assemble(templates, development_rng(purpose, index, 0), C)
     base = c4_manifest()['detector']
-    observation = max([30*owner.C] + [30*c.C for c in levels.descendants(owner) if c.children])
+    observation = levels.observation_window(owner)
     duration = levels.horizon(owner)
     if short:
         # Smoke exercises the real path on a short horizon, never qualifies a development setting.
@@ -143,11 +151,21 @@ def harvest_primitives(purpose, count, simulate, start=0):
             members = row['units']
             if row['accepted'] and 6 <= len(members) <= 16:
                 local = levels.Owner(tuple(levels.Owner(element=j) for j in range(len(members))), source_path=(source,))
-                theta = float(circular_phase(th[members]))
-                measured, measurement = units.isolated_rate(local, x[members], th[members],
+                ax, at, alone_frames = integrate(x[members], th[members], om[0, members], 30., simulate, .2)
+                alone_times = np.arange(len(alone_frames[0]))*.2
+                alone_candidates, _ = detect_snapshot(local, *alone_frames, alone_times, om[0, members],
+                    simulate, manifest['detector'], development_rng(purpose, i, 10, *members), primitive=True)
+                reaccepted = any(c['accepted'] and set(c['units']) == set(range(len(members)))
+                                 for c in alone_candidates)
+                raw[-1].setdefault('alone', []).append({'members': members, 'accepted': reaccepted,
+                                                       'candidates': alone_candidates})
+                if not reaccepted:
+                    continue
+                theta = float(circular_phase(at))
+                measured, measurement = units.isolated_rate(local, ax, at,
                     om[0, members], c4_model.INTACT, simulate)
                 raw[-1]['isolated_rates'].append({'members': members, 'measurement': measurement})
-                templates.append({'x': x[members]-x[members].mean(0), 'th': th[members]-theta,
+                templates.append({'x': ax-ax.mean(0), 'th': at-theta,
                                   'omega': om[0, members].copy(), 'isolated_rate': measured, 'owner': local,
                                   'source_world': source, 'source_paths': [(source,)]})
         raw[-1]['seconds'] = time.perf_counter()-started
@@ -184,7 +202,7 @@ def alone(row, group, simulate, purpose, index):
     started = time.perf_counter()
     m = list(group.members)
     local = restrict_owner(group, m)
-    observation = max([30*local.C] + [30*c.C for c in levels.descendants(local) if c.children])
+    observation = levels.observation_window(local)
     x, th, frames = integrate(row['x'][m], row['th'][m], row['omega'][m], observation, simulate, .2)
     times = np.arange(len(frames[0]))*.2
     candidates, validity = detect_snapshot(local, *frames, times, row['omega'][m], simulate,
@@ -229,7 +247,11 @@ def publication(owner, x, th, omega, simulate, variant, stability, rate_records,
         xs, ths, times = series
         _, phase = levels.published_series(owner, xs, ths)
         start = np.searchsorted(times, times[-1]-30*owner.C-1e-8)
-        collective = float((phase[-1]-phase[start])/(times[-1]-times[start]))
+        if times[start] <= times[-1]-30*owner.C+1e-7:
+            collective = float((phase[-1]-phase[start])/(times[-1]-times[start]))
+        else:
+            measurement['collective_observation'] = 'INSUFFICIENT_OBSERVATION'
+            measurement['collective_fallback'] = 'measured isolated rate'
     rate_records.append({'members_digest': c5_units.member_digest(owner.members), 'measurement': measurement})
     if all(not c.children for c in owner.children):
         labels = np.full(len(x), -1, int)
@@ -255,7 +277,7 @@ def own_stability(owner, series):
     xs, ths, times = series
     dynamic = levels.dynamic_validity(owner, xs, ths, times, owner.C, c4_manifest()['detector'])
     if not dynamic['windows']:
-        raise ValueError('child publication has INSUFFICIENT_OBSERVATION')
+        return {'observation': 'INSUFFICIENT_OBSERVATION'}
     return {k: max(w['stats'][k] for w in dynamic['windows']) for k in
             ('shape_cv', 'lock_std', 'freq_change', 'pattern_change')}
 
@@ -381,21 +403,6 @@ def coarse_readiness_world(row, simulate, purpose, index):
         paired = np.concatenate([full[0]-control[0], (full[1]-control[1])[..., None]], axis=-1)
         truth = levels.linear_summary(paired, groupings)
         scores = {}
-        rigid_states = copy.deepcopy(variants['V1'])
-        for state, child in zip(rigid_states, owner.children):
-            m = list(child.members)
-            idx, mask, _ = c4_model.neighbors(row['x'][None, m], c4_model.Batch(c4_model.INTACT, 1))
-            distances = np.linalg.norm(row['x'][m][idx[0]]-row['x'][m][:, None], axis=-1)
-            state['boundary_ports'] = [{'offset': (row['x'][p]-state['effective_position']).tolist(),
-                'phase_offset': float(c4_model.wrap(row['th'][p]-state['optional_phase'])),
-                'own_neighbour_distances': sorted(distances[j][mask[0, j] > 0].tolist())}
-                for j, p in enumerate(m)]
-        rigid_delta = effective.linear_input(rigid_states, paired[0], groupings)
-        rigid_prediction = effective.predict(rigid_states, c4_model.INTACT, owner.C, 'E1', rigid_delta, times,
-                                               expected_level=owner.depth-1)['response']
-        others = [j for j in range(len(owner.children)) if j != excited]
-        L = np.array([s['characteristic_size'] for s in rigid_states])[others]
-        decomposition = {'rigidity_error': effective.error_parts(truth[:, others], rigid_prediction[:, others], L)}
         for variant, states in variants.items():
             delta = effective.linear_input(states, paired[0], groupings)
             lengths = np.array([s['characteristic_size'] for s in states])
@@ -406,8 +413,9 @@ def coarse_readiness_world(row, simulate, purpose, index):
                                                    lengths, kind, amount, tau),
                                              'abstained': prediction['abstained'],
                                              'convergence': prediction.get('convergence'),
-                                             'decomposition': {**decomposition, 'port_restriction_error':
-                                                 effective.error_parts(rigid_prediction[:, others], prediction['response'][:, others], L)}}
+                                             'flagged': prediction['flagged'], 'work': prediction['work'],
+                                             **effective.response_diagnostics(truth, prediction['response'], times, excited, kind,
+                                                 levels.thresholds(c4_manifest()['detector'], owner.C)['pattern_tol'])}
         out['excitations'][kind] = scores
     out['seconds'] = time.perf_counter()-started
     return out
@@ -470,14 +478,14 @@ def transition_rule(recipes=RECIPES, variants=PORT_VARIANTS):
     """The common transition implementation and available design choices."""
     return {'recipes': recipes, 'port_variants': variants,
             'functions': (levels.detect_level, units.compose_state, compose.assemble,
-                          effective.predict, levels.unit_specificity, levels.thresholds)}
+                          effective.predict, levels.thresholds)}
 
 
 def same_rule_audit(factors, transitions=None):
     """Compute recipe/port/function identity and own-timescale threshold scaling."""
-    proposal = (ROOT/'experiments/c6_proposal.md').read_text()
-    ledger = proposal.split('## 3a.')[1].split('**Cross-level reads')[0]
-    rows = [line for line in ledger.splitlines() if line.startswith('|')][2:]
+    proposal = (ROOT/'experiments/c6_proposal_r2.md').read_text()
+    ledger = proposal.split('| Quantity / level |')[1].split('E1=`')[0]
+    rows = [line for line in ledger.splitlines() if line.startswith('|') and not line.startswith('|---')]
     transitions = transitions or {n: transition_rule() for n in (2, 3)}
     first, second = transitions[2], transitions[3]
     base = c4_manifest()['detector']

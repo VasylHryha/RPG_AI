@@ -56,8 +56,13 @@ def thresholds(base, C):
     return c5_detect.level2_thresholds(base, C)
 
 
+def observation_window(owner):
+    """Required observations depend on the parent and its direct parts only."""
+    return max([30 * owner.C] + [30 * c.C for c in owner.children if c.children])
+
+
 def horizon(owner):
-    return max([100 * owner.C] + [30 * c.C for c in descendants(owner) if c.children])
+    return max(100 * owner.C, observation_window(owner))
 
 
 def descendants(owner):
@@ -143,10 +148,10 @@ def geometric_validity(parts, xs):
     return rows
 
 
-def dynamic_validity(part, xs, ths, times, parent_C, base):
+def dynamic_validity(part, xs, ths, times, parent_C, base, observation_W=None):
     """Original children, complete non-overlapping own-level windows, trailing remainder omitted."""
     t = thresholds(base, part.C)
-    start = times[-1] - max(30*parent_C, 30*part.C)
+    start = times[-1] - (max(30*parent_C, 30*part.C) if observation_W is None else observation_W)
     windows = []
     count = int(np.floor((times[-1]-start)/(30*part.C) + 1e-10))
     for w in range(count):
@@ -166,10 +171,10 @@ def dynamic_validity(part, xs, ths, times, parent_C, base):
 
 
 def recursive_validity(owner, xs, ths, times, base, top_C=None, observation_W=None):
-    """Owner-computed criterion six; its output, not ownership, crosses the detector boundary."""
+    """Direct-part criterion six; nested rows are diagnostics and never veto this owner."""
     top_C = owner.C if top_C is None else top_C
     if observation_W is None:
-        observation_W = max([30*top_C] + [30*c.C for c in descendants(owner) if c.children])
+        observation_W = observation_window(owner)
     start = times[-1] - observation_W
     parent_times = start + np.arange(int(np.floor(observation_W/owner.C + 1e-10))+1)*owner.C
     idx = np.searchsorted(times, parent_times - 1e-8)
@@ -178,7 +183,7 @@ def recursive_validity(owner, xs, ths, times, base, top_C=None, observation_W=No
         {"hull_overlap": float("inf"), "degenerate": True} for _ in owner.children]
     rows = []
     for child, geo in zip(owner.children, geometry):
-        dynamic = dynamic_validity(child, xs, ths, times, top_C, base)
+        dynamic = dynamic_validity(child, xs, ths, times, top_C, base, observation_W)
         nested = recursive_validity(child, xs, ths, times, base, top_C, observation_W) if any(c.children for c in child.children) else []
         rows.append({**geo, "dynamic": dynamic, "children": nested,
                      "geometry": {"observed": bool(observed), "start": float(start),
@@ -187,14 +192,17 @@ def recursive_validity(owner, xs, ths, times, base, top_C=None, observation_W=No
                                   "reason": None if observed else "INSUFFICIENT_OBSERVATION"},
                      "reason": "INSUFFICIENT_OBSERVATION" if not observed else dynamic["reason"],
                      "ok": observed and dynamic["ok"] and not geo["degenerate"] and
-                     geo["hull_overlap"] <= 0.2 and all(r["ok"] for r in nested)})
+                     geo["hull_overlap"] <= 0.2})
     return rows
 
 
-def detect_level(series, validity, thresholds_n, kick_runner, rng):
+def detect_level(series, validity, thresholds_n, kick_runner, rng, imposed=None):
     """ONE candidate path. Callback returns only published control/kicked endpoint summaries."""
     X, Theta = series
-    found, locked = c5_detect.candidates(X, Theta, thresholds_n["frame_dt"], thresholds_n)
+    if imposed is None:
+        found, locked = c5_detect.candidates(X, Theta, thresholds_n["frame_dt"], thresholds_n)
+    else:
+        found, locked = c5_detect.imposed(X, Theta, imposed, thresholds_n["frame_dt"], thresholds_n)
     out = []
     for units, stats in found:
         dx, dth = c5_detect.unit_kick(X[-1], Theta[-1], units, rng, thresholds_n)
