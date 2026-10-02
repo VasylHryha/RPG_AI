@@ -151,7 +151,7 @@ The owner asked whether the open risks could be checked before registration.
 - *What ran:* a development-only pilot, with scratch code outside the repository and pilot entropy 44444. That entropy is neither the C5 development nor the C6 development entropy, and no final entropy exists yet.
 - *What it reused:* the frozen C4/C5 functions, applied at provisional C₃ = 9.6.
 - *What it changed:* nothing was registered and no repository code was changed.
-- *Records:* the raw records are to be committed with the design-gate artifact (N2).
+- *Records:* scripts, raw results, logs, smoke files and hashes are committed in `evidence/c6_dev_pilot/` (N2), with a README marking the void result and the two scripts that never completed.
 
 **Level 1 → 2, C5 rules unchanged:**
 - 2,400 C4 worlds gave 2,669 templates.
@@ -160,7 +160,7 @@ The owner asked whether the open risks could be checked before registration.
 - τ₂ alone had median 4.8 (1 censored). The median isolated group rate was 0.0075. Median L₁ = 0.45 and L₂ = 0.67.
 
 **Level 2 → 3, 24 worlds per placement:**
-- *Disk placement* at C5's normalized radius gave 9/24 DRIFTING, with no coupling between separated groups. At spacing factors ≤ 0.6, no placement exists.
+- *Disk placement* (sequential, radius 2.5 × median L₂ / median L₁) gave 9/24 DRIFTING, with no coupling between separated groups. At spacing factor 0.6, neither sequential nor C5-style joint rejection placement found any placement.
 - *Contact placement* gave a locked candidate group of level-2 groups in **22/24** worlds. Level-3 locking does occur once groups touch.
 - **0/24 formed** in both placements. Every candidate failed criterion 6, almost always because level-1 units inside the groups failed criteria 2–4 over the 288-unit level-3 window.
 - *The cause is a rule defect, not the model.* Groups in drifting worlds that never touched anything also failed. Those same groups had passed when judged alone over the shorter level-2 window. This is the level-mixing defect corrected in §4, identified by the owner.
@@ -324,7 +324,7 @@ The minimum for any inferential verdict is **10 formed worlds** at that level; b
      - pass 1 runs at provisional C₂ = 3.2 and C₃ = 9.6, and measures C₂ and C₃ alone (§3);
      - pass 2 re-runs formation at both levels on fresh development worlds (same entropy, new purpose) at the measured and rounded C₂ and C₃, with δ_n = 0.096 / C_n.
    - Only pass 2 counts against the target. A further change in C between passes is reported, not iterated.
-2. **Timescales.** C₂ and C₃ are measured under contact placement, and τ₃ must be finite (groups in contact couple; the pilot's locked candidates in 22/24 worlds suggest they do).
+2. **Timescales.** C₂ and C₃ are measured alone under contact placement. τ₃ must be finite for a majority of development groups (stop rule 2), and C₂ must lie within [1.6, 6.4], which is C5's T = 3.2 within a factor of 2 (stop rule 3).
 3. **Interface fidelity.** C5's and C6's composition rules are compared on development parents: rate error against the observed rate, and coarse cross-link counts against the element-level census. C6's rule must be at least as faithful on both measures.
 4. **Coarse readiness.** At both transitions, on development groups, compute the six gains for V1 and V2 and the error decomposition.
    - The variant with the larger worst-cell mean gain at the worse transition is selected.
@@ -332,7 +332,7 @@ The minimum for any inferential verdict is **10 formed worlds** at that level; b
 5. **Overlap calibration.** Record union-of-hulls overlap for touching accepted groups at level 3. Intact touching groups above 0.2 means stop.
 6. **Runtime projection** from measured per-world costs (§10).
 
-If any check fails, the implementer **stops and reports to the owner before registration**. The law, the thresholds and the margins are never changed to make composition or prediction succeed. A failure here is itself a finding. The owner can then:
+If any check fails (stop rules 1–7 in §12), the implementer **stops and reports to the owner before registration**. The law, the thresholds and the margins are never changed to make composition or prediction succeed. A failure here is itself a finding. The owner can then:
 - run the panel anyway, to record the expected negative with full evidence;
 - write a decision record instead;
 - authorize a redesign in a new proposal: for example M = 6–7 with a longer panel, or a new coarse law.
@@ -453,7 +453,7 @@ M = 7 would mean about 350 elements, roughly 3.4× the cost per step, so it is n
 
 None is proposed.
 
-**Process.** Verify once, in order: `tools/verify.py --milestone c6 --output evidence/c6_r001`. Before the design gate and before the panel, tell the owner how long each will take and why. One independent review follows, by the other model family, capped at about 20 minutes. A design defect found before review means withdrawal through a decision record, and the next revision runs on fresh seeds.
+**Process.** Verify once, in order: `tools/verify.py --milestone c6 --output evidence/c6_r001`. Before the design gate and before the panel, tell the owner how long each will take and why. One independent review follows, by the other model family, capped at 20 minutes. A design defect found before review means withdrawal through a decision record, and the next revision runs on fresh seeds.
 
 ## 11. C4/C5 lessons applied up front
 
@@ -476,15 +476,46 @@ None is proposed.
 | An averaged score can hide a failing channel; a baseline must use the matching timescale (C5 receipt, found while drafting) | Per-excitation scoring, channel-matched τ, stored error parts, and a readiness check before the panel. |
 | Every check is measured in its own level's units (invariant 1; the level-mixing criterion 6 of drafts 1–2, caught by the owner) | Normalization ledger (§3a), reproduced by `same_rule_audit` with a contract for completeness. Parts are judged on windows of their own level's length. |
 
-## 12. Who implements and who reviews
+## 12. Responsibilities and rules (binary)
 
-Claude implemented C4 and C5, and Codex reviewed both. **The drafter recommends that Codex implement C6 and Claude review it.**
-- C6 is mostly new generic code over frozen C4/C5 functions, so continuity matters less.
+Each responsibility has exactly one owner. Each rule is a yes/no condition with one fixed action. Nothing in this section is discretionary for the person it binds.
+
+**Who owns what.**
+
+| Role | Who | Owns | Never |
+|---|---|---|---|
+| Owner | The project owner | Approving or rejecting this proposal; decisions D2–D6; the decision at every STOP; milestone status | — |
+| Drafter | Claude (claude-opus-5-5) | This proposal's text, its ledger and its self-audits. Every defect found in the proposal, whoever finds it, is fixed by the drafter and recorded in a self-audit with its cause. | Runs code before approval unless the owner explicitly asks (an owner-requested pilot goes to `evidence/c6_dev_pilot/`); approves its own proposal |
+| Implementer | Codex if D5 is accepted; otherwise the family the owner names | The design gate, the registration (`experiments/c6_manifest.json`, `milestones/c6.json`), the `c6_*` code, its tests and mutants, the one pipeline run, the handoff | Changes the C4 law, a threshold, a margin, a dose, a baseline or a verdict rule after seeing any development or final outcome; edits frozen C4/C5 files or `.gate/`; bypasses a hook |
+| Reviewer | The other model family from the implementer | One review of the committed evidence, capped at 20 minutes, written to `evidence/c6_r001_review_<family>/INDEPENDENT_REVIEW.md` | Reruns the panel; edits evidence or code |
+
+**Stop rules.** Every row is checked. On STOP, the implementer reports to the owner with the measured values and does nothing else on C6 until the owner decides.
+
+| # | When | Condition (yes/no) | If yes |
+|---|---|---|---|
+| 1 | Design gate, formation pass 2 | Formation < 0.75 at level 2 **or** at level 3 | STOP |
+| 2 | Design gate, timescales | τ₃ alone is not finite for a majority of development groups | STOP |
+| 3 | Design gate, timescales | Measured C₂ outside [1.6, 6.4] | STOP |
+| 4 | Design gate, interface fidelity | C6's composition is less faithful than C5's on rate **or** on capacity | STOP |
+| 5 | Design gate, coarse readiness | Fewer than 10 development groups at either transition, **or** the selected variant's worst-cell mean gain ≤ 0 at either transition | STOP |
+| 6 | Design gate, overlap | Any intact touching development group has union-of-hulls overlap > 0.2 | STOP |
+| 7 | Design gate, runtime | Projected panel > 3 h on 8 processes | STOP |
+| 8 | Before registration | Any proposal rule cannot be implemented as written | STOP (the drafter amends the proposal; the owner re-approves) |
+| 9 | Pipeline | Any stage fails | The pipeline stops; fix the code, then rerun from that stage (AGENTS.md) |
+| 10 | Panel | Any gate in §8 fails | The run is not REVIEW_READY |
+| 11 | Before review | The implementer finds a design defect | Withdraw the revision through a decision record; the next revision uses fresh seeds |
+| 12 | Any time | A rule mixes levels outside the evaluator-side list in §3a | It is a defect: the drafter fixes the proposal before registration, or the implementer withdraws after |
+
+**Verdicts are binary in their inputs.** Every endpoint rule in §8 and every truth-table row is an ordered list of yes/no conditions with exactly one outcome. No endpoint is decided by judgement.
+
+**Optional, owner's choice:** a short Codex critique of this proposal before approval.
+
+**Why Codex should implement (D5).**
+- Claude implemented C4 and C5, and Codex reviewed both.
+- C6 is mostly new generic code over frozen C4/C5 functions, so continuity matters less than it did for C5.
 - Codex knows those functions closely from its reviews; it found C5's F1–F4 and N1–N3.
-- Alternating roles keeps any one family from both building and judging the whole lane.
+- Alternating roles keeps one family from both building and judging the whole lane.
 - The cost is that Codex has not used this repository's implementer workflow since C2; the pipeline and hooks are unchanged.
-
-Because Claude drafted this proposal, the owner may ask Codex for a short critique of it before approval (optional).
 
 ## 13. What C6 cannot show
 
@@ -518,7 +549,7 @@ Because Claude drafted this proposal, the owner may ask Codex for a short critiq
 2. **D2 — Corrected composition rule** (measured isolated rate, sibling-folded capacities, one function at both promotions). **Recommended: accept.**
 3. **D3 — Formation rule:** PASS on the Wilson lower bound ≥ 0.5, FAIL on the upper bound < 0.5, INCONCLUSIVE otherwise; n = 40 per level; development target 0.75. **Recommended: accept.** The alternative, C5's point-estimate rule, leaves the C5 qualifier unresolved.
 4. **D4 — Predictive gate:** score pulse and push separately against three baselines with channel-matched τ, after a development coarse readiness check that can stop the work before the panel. **Recommended: accept.** The alternative, C5's average, would let a phase-only success hide a position failure.
-5. **D5 — Roles. Recommended: Codex implements and Claude reviews** (§12). Optional: a short Codex critique of this proposal before approval.
+5. **D5 — Roles. Recommended: Codex implements and Claude reviews** (§12 assigns every responsibility and stop rule). Optional: a short Codex critique of this proposal before approval.
 6. **D6 — Compute. Recommended: NumPy with 8 processes and no C++ backend.** From the pilot's measured costs, the panel takes about 1–2 h and the design gate about 1–1.5 h; a projection above 3 h comes back to the owner.
 
 ## Self-audit of the first draft (2026-10-02, owner-requested)
