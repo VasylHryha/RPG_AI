@@ -1,0 +1,103 @@
+{
+  "protocol_id": "geomind-c6-r5-003-development",
+  "claim_schema": "geomind-r5",
+  "arm_a": "NOT_RUN: decision 0013 R2 development STOP; no approved redesign",
+  "conditions": [
+    "intact",
+    "no_r",
+    "no_backreaction"
+  ],
+  "development_entropy": 46033001,
+  "development_worlds": 10,
+  "final_worlds": 40,
+  "episodes": 4,
+  "integration": {
+    "dt": 0.02,
+    "formation": 100.0,
+    "window": 30.0,
+    "recovery": 30.0,
+    "descriptor": 10.0,
+    "frame_dt": 1.0,
+    "probe_sample_dt": 0.1
+  },
+  "worlds": {
+    "bath_elements": 24,
+    "source_elements": 24,
+    "disk_radius": 3.0,
+    "bath_centre": [
+      4.0,
+      0.0
+    ],
+    "source_centre": [
+      0.0,
+      0.0
+    ],
+    "candidate_centre": [
+      2.0,
+      0.0
+    ],
+    "bath_omega_half_width": 0.5
+  },
+  "detector": {
+    "window": 30.0,
+    "frame_dt": 1.0,
+    "link_factor": 1.5,
+    "min_size": 3,
+    "membership_jaccard": 0.95,
+    "shape_cv": 0.05,
+    "lock_std": 0.1,
+    "freq_tol": 0.01,
+    "pattern_tol": 0.1,
+    "kick_position": 0.1,
+    "kick_phase": 0.3,
+    "recovery_time": 30.0,
+    "recovery_jaccard": 0.9,
+    "recovery_rule": "the original members must be matched with Jaccard >= recovery_jaccard in the control future and in the kicked future, and the two matched components must agree with Jaccard >= recovery_jaccard; recovery_jaccard in the receipt is the minimum of the three"
+  },
+  "interventions": {
+    "gm_scale": 1.5,
+    "gm_scales": [
+      1.25,
+      1.5,
+      2.0
+    ],
+    "gm_probe_phase_rms": 0.3,
+    "gm_window": 5.0,
+    "mg_dose": "uniform",
+    "mg_doses": [
+      "rms:0.5",
+      "rms:1.0",
+      "uniform"
+    ],
+    "mg_window": 10.0,
+    "sample_dt": 0.1,
+    "gm_ablations": {
+      "no_geometry_to_mode": "complete: w = 1 and phase coupling over the frozen neighbor topology of s0 (primary matched ablation)",
+      "no_distance_weight": "w = 1 only (decomposition)",
+      "frozen_topology": "frozen phase topology only (decomposition)"
+    },
+    "mg_ablations": {
+      "no_mode_to_geometry": "complete: J = 0 (primary matched ablation)"
+    }
+  },
+  "statistics": {
+    "bootstrap_resamples": 10000,
+    "primary_ci_level": 0.99375,
+    "nominal_ci_level": 0.95,
+    "minimum_qualified_worlds": 10,
+    "phase_margin": 0.05,
+    "formation_margin": 0.1
+  },
+  "qualification": {
+    "causal_floor": 1e-08,
+    "vanish_fraction": 0.2,
+    "vanish_absolute_tolerance": 1e-12,
+    "development_source_quorum": 5,
+    "native_reference_tolerance": 1e-10,
+    "equivariance_tolerance": 1e-09,
+    "dt_tolerance": 0.05,
+    "sham_source_tolerance": 1e-12,
+    "maximum_panel_seconds": 10800
+  },
+  "source_pin": "research/rrg/v0.2.1.import.json"
+}

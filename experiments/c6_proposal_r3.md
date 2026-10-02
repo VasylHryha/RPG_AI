@@ -125,7 +125,7 @@ unconstrained reciprocal source/bath evolution.
 | Paired condition | Source internal dynamics | Source input | Source→actual bath |
 |---|---|---|---|
 | INTACT | Full two-way C4 terms | Common reference-bath replay | Enabled |
-| NO-R | Internal J=0 and K=0 (closure ablated; attraction/repulsion retained) | Same replay | Enabled with resulting non-resonant constituents |
+| NO-R | Internal and incoming J=0 and K=0 (closure ablated; attraction/repulsion retained) | Same replay | Enabled with resulting non-resonant constituents |
 | NO-BACKREACTION | Identical to INTACT | Same replay | Zero outgoing geometry and phase contribution |
 
 Do not remove source nodes from neighbor selection to implement the sham. Compute
@@ -296,7 +296,8 @@ material change to this proposal returns to the owner before registration.
 
 Read-only reuse cannot change a frozen predecessor. A materially changed Arm A
 model requires a new qualified revision rather than citing the old acceptance.
-Semantic mutants must include nested-veto restoration, dead-direct-part promotion,
+Arm A's nested-veto/dead-direct-part mutants remain in the stopped predecessor,
+with no new A implementation or qualification claimed. Arm B semantic mutants must include
 publication-only fake BG, nonzero sham backreaction, omitted NO-R contrast,
 condition-label leakage, post-outcome port selection and second-turn restaging.
 Run mutation probes only through the generic pipeline, never directly.
@@ -349,8 +350,8 @@ generated README, with the proper freezes; no hypothesis automatically passes.
 Owner decisions, with audited sources now supplied and reconciled: approve or
 revise R3's separate arms and resolve A's known development STOP; approve or revise the explicit replay/directed
 apparatus, source fixtures, background direction/margins and conditional chain
-scope; retain the three-hour budget or split B into its own milestone. Until those
-decisions, no R3 experimental execution follows from this document.
+scope; retain the three-hour budget or split B into its own milestone. Decision 0014 records these scope decisions: retain A as stopped and implement
+B under the declared controls, fixtures and three-hour panel budget.
 
 ## 9. Drafter self-audit
 
@@ -405,3 +406,33 @@ Decision 0014 records the owner go-ahead. Implement and qualify Arm B now; retai
 Arm A as explicitly NOT_RUN because the unchanged R2 design stopped. No source
 realignment or approval claims to fix that stopped model. Full C6/Arm A completion
 remains separate from the new background apparatus.
+
+## Pre-run implementation self-audit (A1)
+
+No experimental data were used. The drafted NO-R specified zero internal J/K but
+left a two-way mode/geometry feedback channel in the incoming replay interaction.
+That is not a complete closure ablation. Apply source J=K=0 to internal and
+incoming channels, retaining the same replay inputs and phase-blind attraction/
+repulsion; outgoing bath terms stay intact. This repair implements the stated
+formation-ablation requirement rather than tuning a result.
+
+The complete G→M causal ablation must also share a **single unperturbed topology
+origin** across its paired runs. Recomputing initial neighbors separately after
+the geometry intervention would leak the geometry into the nominal ablation.
+Fix the internal and incoming phase indices/masks from that common origin; use
+unweighted phase coupling. Settings and per-world causal qualification rules
+are fixed in experiments/c6_r3_protocol.json before any development world: both
+intact effects >1e-8 and each complete-ablated absolute effect ≤20% of its intact
+effect or ≤1e-12. This conditional per-world qualification does not replace the
+world-level hypothesis intervals. Runtime and native convergence tolerances are
+explicit; no setting is chosen from final outcomes.
+
+Pre-run self-audit A2: numerical qualification covers both initial and formation
+snapshots for two time units, including dt/2 and dt/4. H-RBG requires complete
+measured chains; unreached turns remain INCONCLUSIVE, and engineering/provenance
+failures invalidate support at either turn. No development worlds informed these fixes.
+
+Pre-run self-audit A3: publication frequency is measured from the detected
+window, not assumed equal to intrinsic source omega under replay drive. The
+development gate requires all ten unique world IDs and rechecks the source pin
+after execution. These corrections preceded all development observations.

@@ -1,0 +1,37 @@
+{
+  "kind": "IMPLEMENTATION_CHECKS_ONLY",
+  "command": ".venv/bin/python -m pytest -q -x",
+  "tests_passed": 418,
+  "seconds": 108.58,
+  "accepted_freeze": "PASS",
+  "source_pin": {
+    "release": "RRG v0.2.1 audited publication companion",
+    "import_record_sha256": "3f34717f795415f5ed4b11df060cdfc3c36f0bd8b1d491853141778bbc2d3da2",
+    "source_files_verified": 25,
+    "verdict": "PASS"
+  },
+  "file_hashes": {
+    "geomind/c6_r3_background.py": "4595d8b5aaf96d19c33b6ccab29fa0696ddc4ad4f3607ce4b5a0bdd6847e776f",
+    "geomind/c6_r3_reference.py": "ba0882f2bda7a0b05e1aa017f467d938fc7c013d33341cdf767ed348e343fa7f",
+    "geomind/c6_r3_assay.py": "d1789574ae91b5bf2551dfc49c9286a041db428cb75eba4e33526dc188a3b84a",
+    "geomind/c6_r3_protocol.py": "e99d63013d6b9cd3624bc835b2aadf60d68f9fd1a32238cb5d207e57562d4c84",
+    "geomind/run_c6_r3.py": "eb8eed539e0cefa641f7d0177815553ae283a871c958d21a0ea86d997c4de5dc",
+    "native/c6_r3/background.cpp": "beaa576142876631fee8286d204b824025858ecf71d54ebdeccfcf42dffe4907",
+    "tools/c6_r3_mutants.py": "6ec605786deca41bba84dca470012fc2a3c883ae593044e29e0da432a02b4e3d",
+    "tools/c6_r3_design_gate.py": "1cd772aee76917f411b9f0c3e851807d8104fd5e28b077e8b7116b415deecba1",
+    "tools/build_c6_r3.py": "20d5b6a1700ec433bc73763449fa621f331cc439697084f981e8e31f5e8bff72",
+    "tests/test_c6_r3.py": "fcf8a2de3f9d499edbd1e48961ec0b7c5a552bcacb6ecb13ec15a6c8e17cd53b",
+    "geomind/c4_model.py": "4fafc161b65914a44dccaca6caefb59a5154079f17f564b4cdc4d44f58c59d33",
+    "geomind/c4_detect.py": "ba7fd94efc0edf028df137dc617666c9b8540b914ab4fca1ce793c84d78aacb8",
+    "geomind/c4_experiment.py": "53dc126a2c7c485e41273515c932fb91d113504b8e8351403b5d06cb0d11fc24",
+    "experiments/c4_manifest.json": "8e9878107814a126fced5b7e1110888e357fad9fa250985e88e52fcefa4d5684",
+    "experiments/c6_r3_protocol.json": "71e28eecb884cbb3f03e6abe9d03f2c261f7f461fad9152476a844536bb3b626",
+    "experiments/c6_proposal_r3.md": "f52d0432291b4d613adf8248487953a2912acf593786fcbe501b8cdd234cb8aa",
+    "pyproject.toml": "b13af15c4b02a76b429da4d76965cddf66f73d59198bca80d01fab7b51c705e2",
+    "uv.lock": "284881c4c71c8282aca81e9053794d2b0333f9ab10b21d9e425cba13bec918c8"
+  },
+  "semantic_mutants_defined": 19,
+  "mutation_probe": "NOT_RUN: only through registered pipeline",
+  "final_registration": "NOT_CREATED",
+  "panel": "NOT_RUN"
+}
