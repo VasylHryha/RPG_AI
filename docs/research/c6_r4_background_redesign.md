@@ -1,0 +1,54 @@
+# C6 redesign research: separate material units from a nonlinear medium
+
+Date: 2026-10-02. Author: Codex:gpt-6. Scope: literature/source reading and analytic design, with no experimental code, pilot, benchmark or world run. Documentation checks use status/hash/freeze tools only. Result: a concrete [R4 proposal](../../experiments/c6_proposal_r4.md), pending owner approval. The [design receipt](c6_r4_design_receipt.json) binds the proposal and research note hashes and records the reading/check scope.
+
+## The problem to solve
+
+R3 permits a source to influence the bath before it qualifies. Its mobile bath and source can merge into groups outside the registered pure-source scope. Its numerical checks cover short intact windows and refine integration against coarse replay. The [implementation audit](../reviews/c6_r3_implementation_self_audit_codex.md) is the source of these engineering findings; its immutable STOP is not rescored here.
+
+The owner handoff allows a background made of fields/signals and requires a formed unit to change a measured environment, followed by a matched later-formation assay. Source definitions and claims come from the pinned RRG documents and R5, rather than from the external examples below. This redesign remains an engineered computational projection.
+
+## Primary literature read
+
+| Source | What it supports | What it does not establish |
+|---|---|---|
+| O'Keeffe, Hong and Strogatz, [Oscillators that sync and swarm](https://www.nature.com/articles/s41467-017-01190-3), 2017 | Mobile oscillator models can couple position-dependent synchronization to phase-dependent motion and exhibit collective states. | The paper's law is not frozen C4's local law or the proposed smooth adapter, and it does not qualify this two-turn background experiment. |
+| [Metastable oscillatory modes emerge from synchronization in the brain spacetime connectome](https://www.nature.com/articles/s42005-022-00950-y), 2022 | Complex amplitude oscillators provide an explicit environmental state and distinguish damped from sustained oscillations in coupled networks. | Brain connectivity, delays and findings are not constraints or evidence for the proposed grid medium. |
+| Selivanov et al., [Adaptive synchronization in delay-coupled networks of Stuart-Landau oscillators](https://arxiv.org/abs/1107.4197), 2011 preprint / 2012 article | Network synchronization can depend on declared coupling mechanisms; modifying couplings is a substantive model choice. | Its goal-directed adaptation does not establish autonomous recursive unit generation. We do not add that adaptation controller. |
+| Berner et al., [Patterns of synchronized clusters in adaptive networks](https://www.nature.com/articles/s42005-024-01688-5), 2024 | Adaptive-network mechanisms provide a possible later route for state-dependent connectivity. | They are not needed to show a state-dependent nonlinear response, and no fitted plasticity rule is justified by the R3 failures. |
+
+No verbatim paper excerpts or transferred empirical results are used. The proposed parameters below are engineering hypotheses, not values calibrated from these papers.
+
+## Alternatives and choice
+
+| Alternative | Merit | Reason not selected for this revision |
+|---|---|---|
+| Reduce R3 dt or relax source thresholds | Small implementation change | Does not fix early treatment or the mixed-group/attribution problem; old failed outcomes cannot choose relaxed cuts. |
+| Count R3 mixed groups after extra recovery assays | Preserves the homogeneous particle world | Attribution and complete source-output ablation become difficult when a new unit includes bath or old-source members. A broad mixed-unit experiment deserves its own design. |
+| Use a linear field with additive source input | Cheap analytic reference | Its additive-state impulse operator is unchanged by forcing when the linear operator is fixed. State-dependent/nonlinear observables could differ, but an additive linear susceptibility would be a poor primary endpoint. |
+| Add adaptive coupling weights | Explicit durable environmental memory | Adds another law, timescale and causal path before the basic background experiment is qualified. |
+| Use a nonlinear complex oscillator medium with two amplitude basins | Distinct environmental variables, state-dependent response and retained state after finite forcing | **Selected.** The supplied basin structure is an apparatus assumption; it still needs new qualification and may produce a valid negative result. |
+
+## Analytic checks of the chosen ingredient
+
+For an isolated medium site, explicitly declare dz/dt = (mu + i Omega + |z|^2 - |z|^4) z. In polar coordinates, dr/dt = mu r + r^3 - r^5 and dphi/dt = Omega. At mu=-.18, r=0 is stable, the radius sqrt((1-sqrt(.28))/2), approximately .485206, is unstable, and sqrt((1+sqrt(.28))/2), approximately .874400, is stable radially. The nonzero stable radius describes a periodic solution when Omega is nonzero, with neutral common phase. Diffusion/forcing can change these isolated conclusions. This is a supplied nonlinear medium, not a derivation of a resonator from primordial noise. The RRG optional math note distinguishes a signed scalar bistability calculation from a complex oscillation; the complex equation here is separately defined.
+
+Exact unforced references include zero and the two constant radii with z(t)=r exp(i[phi0+Omega t]). In the separately configured cubic limit dr/dt=mu r-r^3, r(t)^2 = mu/[1+(mu/r(0)^2-1)exp(-2 mu t)] for positive mu and initial radius; its zero solution remains zero. The purely linear limit also has z(t)=z0 exp((mu+i Omega)t). These limiting/reference cases qualify kernel terms; they are not exact solutions for arbitrary forced network trajectories.
+
+Writing s=|z|^2, the linearized complex perturbation satisfies d(delta z)/dt = (mu+i Omega+2s-3s^2)delta z + (1-2s)z^2 conjugate(delta z). Its coefficients depend on the actual environmental state. Thus changed response is possible under the proposed law; neither a nonzero difference nor a later formation consequence is guaranteed.
+
+With symmetric nearest-site diffusion D/4 and energy E=.5 sum |z_a|^2, dE/dt = mu sum |z_a|^2 + sum |z_a|^4 - sum |z_a|^6 - D/4 sum_edges |z_a-z_b|^2 + Re sum conjugate(z_a) F_a. Source output and external forcing are bounded. The negative sixth-order term prevents unlimited amplitude growth in this finite system. This bound is not a discretization accuracy proof.
+
+The source's smooth geometric force has no inverse-distance singularity because sqrt(distance^2 + eps^2) is bounded below by eps=.05. Every source pair uses the same smooth law, avoiding hard top-k/radius switches. This changes the element model and therefore requires new causal/detector/numerical qualification rather than inheriting C4's acceptance.
+
+## Causal design and self-challenge
+
+Qualification precedes all output treatments. Three branches clone the same complete qualified snapshot. Current-source input comes from an independent carrier medium, evolved live in the owner state. Output changes the actual medium; it cannot secretly change the source's carrier in the sham comparison. After the fixed exposure the outgoing paths are disabled in every branch. All material/carrier states continue evolving, but later candidates and probes see the changed medium without an ongoing source drive. This isolates retained environmental mediation and intentionally does not test unrestricted mutual feedback or permanent emitting-source environments.
+
+Draft self-challenge found that a simple single-attractor cubic medium could wash out state differences and that common continuing R0 forcing could erase the contrast during the later assay. The replacement uses separately declared two-basin amplitude dynamics and switches output off after exposure. Diffusion remains small (D=.05) so that isolated-site bistability is not assumed to survive arbitrarily strong leakage. This reasoning motivates the design, not an empirical success claim.
+
+The later candidate population and detector are fixed before outcomes. Candidate episode zero is the only possible next source, and its full source/carrier/environment state must continue into the next operation. A saved publication or matching member list alone is insufficient.
+
+Counterexamples retained: the typed medium and supplied unformed material populations limit the claim; local closure can form without the environment being necessary; identical forcing can yield identical response; baseline formation can saturate and leave no formation contrast; source ablation can accidentally remain structurally persistent; chaotic trajectories can fail the numerical tolerance even if aggregate means look stable; a first-turn result can survive while recursion remains inconclusive. These are measured limitations or stops, not reasons to retune after outcomes.
+
+No empirical feasibility, runtime or source/chain yield has been established. The proposal fixes one candidate design and one development gate. It does not search model parameters until support appears.

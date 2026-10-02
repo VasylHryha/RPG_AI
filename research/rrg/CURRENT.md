@@ -31,4 +31,4 @@ Read directly for source reconciliation: current README, full 04, 05, 07, 08 and
 
 The earlier Downloads `RRG_CURRENT.zip` is an older v0.2 package and was not used as the current release. Historical locked-core hash `b6d3e7c75285889afe94cabf083ba5fb80f401c656613ba6a80d2f0149b655e1` remains definition continuity, not sole forward authority.
 
-Forward guidance: [GeoMind R5](../../GEOMIND_GEOMETRIC_AI_QUALITY_STANDARD_R5.md). The source-package block is resolved. [C6 R3](../../experiments/c6_proposal_r3.md) is ready for owner design review; it is not approved, registered or executed. Current experiment status remains solely in STATUS.json.
+Forward guidance: [GeoMind R5](../../GEOMIND_GEOMETRIC_AI_QUALITY_STANDARD_R5.md). The source-package block is resolved. [C6 R3](../../experiments/c6_proposal_r3.md) was approved and implemented, then stopped at development qualification under decision 0015; its evidence remains unchanged. The prospective replacement [C6 R4 draft](../../experiments/c6_proposal_r4.md) has a nonlinear-medium model and needs owner approval before implementation or experimental execution. Current experiment status remains solely in STATUS.json.

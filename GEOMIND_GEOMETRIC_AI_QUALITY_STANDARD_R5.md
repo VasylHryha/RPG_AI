@@ -176,8 +176,10 @@ not_run/reason, including diagnostics. No operational result implies intelligenc
 Follow AGENTS.md: propose → owner approval → committed registration before final
 seeds → new-file implementation → one ordered gated pipeline → committed evidence
 → one review by the other model family → status/acceptance or fresh revision.
-Complete all edits before a long run. Everyday tests follow code changes;
-documentation-only work uses affected status/hash/freeze checks. Do not run old panels.
+Complete all edits before a long run. Follow the owner's test timing rule in
+AGENTS.md: everyday tests run once after the completed planned change batch,
+with an earlier run only for a concrete progress blocker. Documentation-only
+work uses affected status/hash/freeze checks. Do not run old panels.
 An implementer design defect withdraws the revision through a decision without
 changing recorded evidence. Frozen predecessors require new adapters/requalification.
 
@@ -193,5 +195,6 @@ changing recorded evidence. Frozen predecessors require new adapters/requalifica
 | Simpler baseline dominates registered task quality/total cost? | Decide the bounded branch's next action | Owner |
 
 No milestone status is assigned by this document. No future proposal is approved
-by copying the standard. The next concrete design is `experiments/c6_proposal_r3.md`;
-its source prerequisites and owner decisions must be resolved before execution.
+by copying the standard. R3's development STOP remains unchanged. The replacement
+draft is `experiments/c6_proposal_r4.md`; its concrete model needs owner approval
+before implementation and new experimental execution.
