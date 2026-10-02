@@ -24,7 +24,7 @@ C6 serves both. It tests the recursion in a model small enough to build on. Ever
 
 **Optional, stronger RRG extensions, each reported with its own verdict and never required for H-C:**
 - **Same-law closure** (locked §7; doc 03 §13; proof matrix): the *same* element law, applied to the published summaries, predicts the next level (`same_law_closure`). Locked §7 allows different effective dynamics at different scales; same-law recurrence is a stronger universality result.
-- **Timescale separation** (doc 02 §5): higher levels are slower. It is a hypothesis to measure, not part of what a scale is (`timescale_hypothesis`).
+- **Scale separation** (doc 02 §5; the owner's expectation: mostly true): higher levels are larger, slower to relax and slower to form. C6 tests it as an explicit RRG prediction with its own verdict (`scale_separation`). It stays outside H-C only because the locked core does not define a scale by being slower. A test is stronger than an assumption: the time normalization *measures* τ at each level, so the method works whichever way the result comes out.
 
 **What C6 does not test, and where it belongs:**
 - *Variation (§6):* only a descriptive count of distinct level-3 forms (`variation`).
@@ -61,7 +61,7 @@ Hypotheses:
 - **H-M at level 3** (G ↔ M one level up, locked §3), and **H-M at level 2** replicated on fresh worlds.
 - **Optional extensions, each with its own verdict and never required for H-C:**
   - same-law closure (`same_law_closure_lN`);
-  - the timescale hypothesis (`timescale_hypothesis_lN`).
+  - scale separation (`scale_separation_lN`), a registered RRG prediction.
 
 **The cheap explanations C6 must rule out.**
 1. **"Level 3" is one bigger level-2 group**, so the middle level is bookkeeping. Three checks rule this out:
@@ -145,7 +145,7 @@ The capture region is relative (link factor × median spacing), and the persiste
 **Time normalization (C5 owner decision D2, generalized step-exactly).**
 - τ_n is the e-folding time of a level-n group's inter-part pattern after a zero-mean part-phase kick (RMS 0.3), against its unkicked control, sampled at 0.1 C_n.
 - *Measurement context, one definition per use:*
-  - **For normalization (C_n) and for the timescale hypothesis, τ is measured on the resonator alone**, decoupled from non-members, like the measured natural rate. It is a property of the resonator itself, the same at every level. τ₁ is measured the same way, so C₁ = 1 and C4's times are recovered exactly.
+  - **For normalization (C_n) and for scale separation, τ is measured on the resonator alone**, decoupled from non-members, like the measured natural rate. It is a property of the resonator itself, the same at every level. τ₁ is measured the same way, so C₁ = 1 and C4's times are recovered exactly.
   - **For the relaxation baselines, τ is measured in the world, on the intact control**, the context the excitation happens in. This is the declared calibration advantage of the strongest baseline.
   - C5 used the in-world τ₂ for both purposes. C6 separates them, so a group's neighbours cannot change its own timescale.
 - The cumulative factor is C_n = τ_n/τ₁, measured on C6 development worlds and **rounded to the 0.2 grid**. At n = 2 this is exactly C5's rule (C5 had C₂ = 3.2).
@@ -179,6 +179,7 @@ Invariant 1 is the governing rule: one rule at every level, normalized only by t
 | `unit_specificity` alternative groupings | level-(n−2) sub-parts regrouped into fake level-(n−1) parts | the same size profile, contiguous over the sub-part contact graph, each fake part mixing sub-parts of at least two real parts; composed by the same `compose_state` |
 | `unit_specificity` scoring (lift to elements) | elements outside the excited real part | each partition's prediction is lifted to elements through its published offsets: element phase = part phase + offset, element position = part position + offset. The error is RMS wrapped phase plus RMS position over the element spacing, on the same elements for every partition. |
 | Effective-state position and size bounds | level n | fractions of L, unchanged |
+| Formation time (`scale_separation`, reported) | the level-n group, from assembly | link rule on frames every C_n over the whole horizon; reported in C4 time units and in units of the parts' own τ; censored at 100 C_n |
 | Static-control rates (`not_a_clump`) | each level-(n−1) part | each part's rates shifted by one constant so its isolated rate is 0. This leaves its internal rates untouched. At level 2 it equals C5's "all rates 0"; at level 3, zeroing every element rate would turn the parts into different objects. |
 | In-place recovery of a level-k part inside a parent (`parts_in_situ`) | the part's own level k | pattern return within the part's own pattern tolerance after its own-level kick, over 30 C_k. **Not membership:** the part's level components inside a parent see the parent's whole cluster, so a Jaccard match against them would fail by construction. Membership is the parent's own criterion 5. |
 
@@ -264,7 +265,11 @@ Contracts and audit:
   - *World statistic:* the mean over the two excitations of (mean error of the alternatives − error of the real grouping).
   - *Why this tests real units:* in a flat blob, any contiguous grouping is as good a unit as any other, so the statistic is about 0.
   - *Cost:* coarse runs only, with no extra full-model runs.
-- **The timescale hypothesis (`timescale_hypothesis_lN`; optional RRG extension, doc 02 §5).** τ_n of the group alone ÷ the mean τ_{n−1} of its parts alone. It is reported with its own verdict and never required for H-C, because requiring "slower at higher levels" would narrow the locked definition of scale.
+- **Scale separation (`scale_separation_lN`; a registered RRG prediction, doc 02 §5).** Bigger scales should take more time and more distance.
+  - **Relaxation time (verdict):** τ_n of the group alone ÷ the mean τ_{n−1} of its parts alone, both measured by the same protocol on their own level's windows.
+  - **Formation time (reported):** the first time from assembly after which the eventually accepted group stays one locked component (the level-n link rule on frames every C_n over the whole horizon). It is given in C4 time units and in units of the parts' own τ, with censoring counted. It is not given a verdict because the formation horizon (100 C_n) itself grows with the measured C_n. A level-3 group can therefore show formation times that a level-2 run is too short to record, which biases the comparison toward "bigger is slower".
+  - **Size (reported):** L_n ÷ the median L of the parts. A composite is larger by construction, so size growth is reported, not tested.
+  - It never enters H-C. Requiring "slower" for a scale would narrow locked §7, but the prediction itself is tested.
 
 ## 6. Interventions, predictions and complete ablations
 
@@ -331,7 +336,7 @@ The minimum for any inferential verdict is **10 formed worlds** at that level; b
 - transition 2: `downward_effect_l2`, `emergent_transfer_l2`, `effective_state_l2`, `coarse_vs_full_l2`, `unit_specificity_l2` (5);
 - transition 3: the same five at level 3, plus `upward_transfer_l3` (6).
 
-Each composition endpoint tests a locked-core clause (§0). The optional extensions (`same_law_closure_lN`, `timescale_hypothesis_lN`) have their own truth-table rows and never enter H-C.
+Each composition endpoint tests a locked-core clause (§0). The optional extensions (`same_law_closure_lN`, `scale_separation_lN`) have their own truth-table rows and never enter H-C.
 
 | Endpoint | Rule (rows in order) |
 |---|---|
@@ -339,6 +344,7 @@ Each composition endpoint tests a locked-core clause (§0). The optional extensi
 | `level2_pool` (gate) | Every used level-2 template, alone with its shifted rates, is re-detected by `detect_level` at n = 2 (the harvest filter, re-checked). |
 | `harvest_isolation` (gate) | No C4 world feeds two level-2 worlds, and no level-2 harvest world feeds two level-3 worlds. Source paths are stored. |
 | `same_rule_audit` (gate) | Level-n thresholds equal `level2_thresholds(C4, C_n)`. Detector, promotion, composition, effective-model and unit-specificity calls are the same function objects at both levels, and the registered recipe and port variant are the same at both transitions. The static no-level-branch check passes. C₂, C₃, every τ and the final measured ratios are recorded. |
+| `backend_equivalence` (gate) | Checks 1–4 of §10, each yes/no; all must pass. |
 | `numerical_checks` (gate) | C4's checks on an assembled level-3 world (RK4 order, switching dt error, equivariance under permutation, translation, rotation and global phase), plus unit and group relabelling, plus exact decoupling (each group alone equals its decoupled run within 10⁻⁹). |
 | `level_interface` (gate, N1) | At both levels, exactly one published parent per accepted candidate **per world**, matched by unit set: no duplicates, omissions or swaps. Every numeric field finite. Ports and mode well-formed. S equal to the candidate's statistics. Digest derived from the children. Gate: not FAIL. |
 | `not_independent_l2/_l3`, `not_a_clump_l2/_l3` (gates) | Decoupled continuations with imposed candidates (the intact candidates, or proximity-only components when none exist). With the assembled rates, rejection is expected by criterion 3. With each part's isolated rate shifted to 0 by one constant per part (§3a), rejection is expected by criterion 5. **FAIL** if any candidate is accepted; **PASS** if at least one was tested and none was accepted; **NOT_TESTED** if none. Gate: all PASS. |
@@ -351,7 +357,7 @@ Each composition endpoint tests a locked-core clause (§0). The optional extensi
 | `coarse_vs_full_lN` | The registered recipe (§7). Six paired open-loop gains per world (2 excitation types × 3 baselines). (1) **INCONCLUSIVE** if fewer than 10 worlds; (2) **FAIL** if any gain CI upper bound < 0; (3) **PASS** if every gain CI lower bound > 0; (4) **INCONCLUSIVE** otherwise. Reopening, flags, the error split, frequency, recovery and work are reported, never scored. |
 | `unit_specificity_lN` | Per world, the mean over the two excitations of (mean lifted error of the K alternative groupings − lifted error of the real grouping). Groups with no valid alternative grouping are NOT_TESTED and counted. (1) **INCONCLUSIVE** if fewer than 10 tested worlds; (2) **FAIL** if the CI upper bound < 0; (3) **PASS** if the CI lower bound > 0; (4) **INCONCLUSIVE** otherwise. |
 | `same_law_closure_lN` (optional extension) | E1 with the registered port variant, scored exactly as `coarse_vs_full_lN` (same six gains, same rows). |
-| `timescale_hypothesis_lN` (optional extension) | Per world, τ_N of the group alone ÷ the mean τ_{N−1} of its parts alone. Censored values are counted lower bounds. (1) **INCONCLUSIVE** if fewer than 10 worlds; (2) **FAIL** if the CI upper bound < 1; (3) **PASS** if the CI lower bound > 1; (4) **INCONCLUSIVE** otherwise. |
+| `scale_separation_lN` (registered RRG prediction) | Formation time and size are reported (§5). Verdict on relaxation time: per world, τ_N of the group alone ÷ the mean τ_{N−1} of its parts alone. Censored values are counted lower bounds. (1) **INCONCLUSIVE** if fewer than 10 worlds; (2) **FAIL** if the CI upper bound < 1; (3) **PASS** if the CI lower bound > 1; (4) **INCONCLUSIVE** otherwise. |
 | `variation_lN` | Descriptive (locked §6): the distribution of formed groups by part count, phase-pattern type (all inter-part offsets within the pattern tolerance of 0 means in phase; otherwise offset), and shape (L of the group ÷ median L of its parts, in quartiles). |
 | `g_to_m_channels_l3`, `parts_alive_l3`, `parts_in_situ_l3` | Descriptive: single-channel effects; recursive criterion-6 values for every part of **every** candidate; in-place recovery and τ inside against alone. |
 | `interface_fidelity`, `coarse_error_decomposition`, `coarse_depth` | Descriptive (§3, §7). Raw values are stored. |
@@ -373,7 +379,7 @@ Each composition endpoint tests a locked-core clause (§0). The optional extensi
 | Same-law closure (optional RRG extension) | 1 | `same_law_closure_l2` or `_l3` = FAIL | NOT_SUPPORTED |
 | | 2 | H-C = SUPPORTED_WITHIN_SCOPE and both = PASS | SUPPORTED_WITHIN_SCOPE |
 | | 3 | otherwise | INCONCLUSIVE |
-| Timescale hypothesis (optional RRG extension) | 1 | `timescale_hypothesis_l2` or `_l3` = FAIL | NOT_SUPPORTED |
+| Scale separation (registered RRG prediction) | 1 | `scale_separation_l2` or `_l3` = FAIL | NOT_SUPPORTED |
 | | 2 | both = PASS | SUPPORTED_WITHIN_SCOPE |
 | | 3 | otherwise | INCONCLUSIVE |
 
@@ -455,7 +461,7 @@ If any check fails (stop rules 1–7 in §12), the implementer **stops and repor
 - `c5_coarse`: `run`, `CoarseState`, `links`, `rhs`. These are level-agnostic and used at both transitions.
 - `c5_experiment`: `assign_templates`, `efold`, `relaxation_prediction`, `response_error`, `margin_verdict`, `separation_verdict`, `control_verdict`, `mg_dose_rms`.
 
-`milestones/c6.json` lists the C4 and C5 files and both manifests as dependencies.
+`milestones/c6.json` lists the C4 and C5 files, both manifests and the C++ source and build tool as dependencies. The preflight stage builds the kernel and checks the compiler pin.
 
 **New files.**
 - `geomind/c6_levels.py`: owner tree, per-frame published series, `detect_level`, recursive criterion 6, threshold scaling, alternative groupings and the unit-specificity statistic.
@@ -464,6 +470,7 @@ If any check fails (stop rules 1–7 in §12), the implementer **stops and repor
 - `geomind/c6_compose.py`: level-n assembly with internal rates kept and the rotating-frame offset.
 - `geomind/c6_experiment.py`: one transition protocol called at n = 2 and n = 3, evaluation and truth tables.
 - `geomind/run_c6.py`: the runner, which calls `check("c6", "panel")` itself.
+- `native/c6/element_law.cpp`, `geomind/c6_native.py`, `tools/build_c6.py`: the C++ engine (§10).
 - `tests/test_c6.py`, `tools/c6_mutants.py`, `tools/c6_design_gate.py`.
 - `experiments/c6_manifest.json` and `milestones/c6.json`, registered before any final-seed run.
 
@@ -505,7 +512,7 @@ If any check fails (stop rules 1–7 in §12), the implementer **stops and repor
 - *Composition:* the size-weighted natural rate; capacities not folded.
 - *Coarse model and scoring:* reading level-1 states at level 3; scoring with reopening; pulse and push averaged; the push baseline using the phase τ; the relaxation τ taken from the wrong level.
 - *Unit specificity:* alternatives that are not contiguous; the real grouping included among the alternatives; partitions scored on different element sets.
-- *Theory alignment:* the timescale hypothesis or same-law closure entering H-C; E2 using a parameter fitted on scored excitations; a different recipe at each transition.
+- *Theory alignment:* scale separation or same-law closure entering H-C; formation time measured only in the window instead of over the whole horizon; E2 using a parameter fitted on scored excitations; a different recipe at each transition.
 - *Controls and harvest:* recovery ignoring the original group; the decoupled control leaking links; a harvest source shared across worlds; the harvest filter skipped.
 - *Doses:* a mixed dose family.
 - *Verdicts:* formation by point estimate; H-C ignoring one transition; a margin ignored.
@@ -521,17 +528,36 @@ If any check fails (stop rules 1–7 in §12), the implementer **stops and repor
 | One formed level-3 world | About 570 level-3 time units: formation 100, recovery 60, two controls with their recovery runs 180, G→M 50, M→G and excitations 100, upward 20, in-place checks 10, isolated rates 40; unit specificity adds coarse runs only. About 3.6× the measured 160-unit cost: **about 9 min** per process. An unformed world (about 340 units) takes about 5 min. |
 | 40 level-3 worlds at 75% formation | about 5.4 process-hours, so **about 40–45 min on 8 processes** |
 | Harvest (about 3,300 C4 and 400 level-2 worlds, with filter runs) and 40 transition-2 worlds | about 15–20 min wall |
-| **Recorded panel, 8 processes** | **≈ 1–1.5 h** at C₃ ≈ 10; **≈ 2 h** at C₃ ≈ 16 |
+| **Recorded panel, 8 processes** | NumPy ceiling: **≈ 1–1.5 h** at C₃ ≈ 10; **≈ 2 h** at C₃ ≈ 16. With the C++ engine: measured in the design gate (expected well below the ceiling). |
 | Tests / smoke (1 development level-3 world, small harvest) / mutation probe | < 2 min / ≈ 10–15 min / ≈ 2–5 min |
 | Design gate (development only, before registration; two formation passes) | ≈ 1–1.5 h |
 
-M = 7 would mean about 350 elements, roughly 3.4× the cost per step, so it is not proposed. If the design gate's projection exceeds **3 h**, the implementer returns to the owner before registering. The options would be:
-- n₃ = 30;
-- dropping the level-3 decomposition ablations;
-- a faster neighbour selection in a new file, contract-tested bit-identical to `c4_model.neighbors` (argpartition, then an exact (distance, index) sort, with a fallback on boundary ties); its gain is unmeasured;
-- a C++ backend.
+M = 7 would mean about 350 elements, roughly 3.4× the cost per step, so it is not proposed. If the design gate's projection exceeds **3 h**, the implementer returns to the owner before registering. The options would be n₃ = 30, or dropping the level-3 decomposition ablations.
 
-**C++ backend: not proposed.** It would raise G10: the toolchain is unpinned, and the binary and compiler would need to be recorded or locked. libm `exp`, `sin` and `cos` would not be bit-identical to NumPy, and neighbour switching makes long trajectories diverge, so an equivalence protocol would be needed, not only a tolerance. That is a separate owner decision.
+**C++ engine (the owner's D6 answer).** The full model's numerical step, the C4 element law with RK4 and the k-nearest neighbour rule, runs in a C++ kernel. Python keeps everything else: assembly, detection, statistics, receipts. The frozen NumPy `c4_model.simulate` stays the **reference**, and the kernel must prove it matches before any run that counts. The kernel also serves the AI goal (§0): a fast, verified element-law engine is what an RRG prototype would run on.
+- *Files:*
+  - `native/c6/element_law.cpp`: a batched RK4 step with the C4 neighbour rule (k nearest within the radius, stable ties by element index, held for the four stages), every `Params` field and ablation preset, and the frozen-topology path;
+  - `geomind/c6_native.py`: a ctypes wrapper with exactly the signature and return values of `c4_model.simulate`;
+  - `tools/build_c6.py`: the build.
+- *Build and toolchain pin (G10):*
+  - The build uses `clang++ -std=c++17 -O2 -fno-fast-math -ffp-contract=off`, the same flags as C2's kernel.
+  - The manifest registers the exact compiler identification line (now `Apple clang version 21.0.0 (clang-2100.3.34.2)`) and the flags.
+  - `tools/build_c6.py` refuses to build if either differs.
+  - The build record (compiler, flags, source and binary SHA-256) goes into the pipeline artifacts, and the receipt binds it.
+  - A container or Nix pin is out of scope. A changed compiler stops the work (stop rule 13), and silent drift is impossible.
+- *Equivalence protocol against the NumPy reference (gate `backend_equivalence`).* Each check is yes/no:
+  1. **Neighbour selection:** indices and masks are identical (exact integers) on 1,000 random states and every development state checked.
+  2. **One RK4 step:** max absolute difference ≤ 10⁻¹² in x and θ, for the intact model and every ablation preset, including frozen topology.
+  3. **Held-neighbour trajectories:** 1,000 steps, max difference ≤ 10⁻⁹.
+  4. **End to end on development worlds:** 10 level-2 and 5 level-3 development worlds run with both engines. In every world, the formation outcome and accepted candidate sets are identical, and every detector statistic agrees within 10⁻⁶ relative.
+- *Where the checks run:*
+  - checks 1–3 in the tests stage (fast);
+  - check 4 in the design gate before registration, and on one world in the smoke stage;
+  - any failure is stop rule 14.
+- *Why not bit-identical:* libm `exp`, `sin` and `cos` differ from NumPy's in the last bits. Check 4 shows that this does not change any registered outcome. If it ever does, the owner decides.
+- *Parallelism:* the kernel is single-threaded, and the runner uses 8 processes as before.
+- *Mutants:* they act on the wrapper and the kernel's flags (ignoring an ablation flag, wrong tie order, dropping the J term). The equivalence tests must detect each one.
+- *Speed:* unmeasured, because nothing may run before approval. The design gate measures it and re-projects the panel. The NumPy estimate above (about 1–2 h) is the ceiling.
 
 **Frozen environment.** `pyproject.toml` and `uv.lock` are frozen (Python 3.9, NumPy 2.0.2, pytest 8.4.2). That rules out:
 - SciPy, whose KD-trees would cut neighbour search but would change frozen files and tie order;
@@ -561,7 +587,7 @@ None is proposed.
 | Formation well clear of the threshold (C5 review qualifier) | 0.75 development target on 30 worlds per level; Wilson-lower-bound PASS; n = 40. |
 | Test inherited capacities and natural rate first (C5 review) | Corrected composition; design-gate fidelity check; `interface_fidelity`. |
 | An averaged score can hide a failing channel; a baseline must use the matching timescale (C5 receipt, found while drafting) | Per-excitation scoring, channel-matched τ, stored error parts, and a readiness check before the panel. |
-| The experiment must test the theory as locked, not a narrower version (RRG `05_CHANGE_CONTROL.md`) | §0 maps every claim to a locked clause. Same-law closure and the timescale hypothesis are optional extensions with their own verdicts. Units are judged by the theory's own criterion (§7 of the locked core). |
+| The experiment must test the theory as locked, not a narrower version (RRG `05_CHANGE_CONTROL.md`) | §0 maps every claim to a locked clause. Same-law closure is an optional extension and scale separation a registered prediction, each with its own verdict. Units are judged by the theory's own criterion (§7 of the locked core). |
 | Every check is measured in its own level's units (invariant 1; the level-mixing criterion 6 of drafts 1–2, caught by the owner) | Normalization ledger (§3a), reproduced by `same_rule_audit` with a contract for completeness. Parts are judged on windows of their own level's length. |
 
 ## 12. Responsibilities and rules (binary)
@@ -572,7 +598,7 @@ Each responsibility has exactly one owner. Each rule is a yes/no condition with 
 
 | Role | Who | Owns | Never |
 |---|---|---|---|
-| Owner | The project owner | Approving or rejecting this proposal; decisions D2–D7; the decision at every STOP; milestone status | — |
+| Owner | The project owner | Approving or rejecting this proposal; decisions D1–D7 (D2–D7 answered on 2026-10-02; D1 open); the decision at every STOP; milestone status | — |
 | Drafter | Claude (claude-opus-5-5) | This proposal's text, its ledger and its self-audits. Every defect found in the proposal, whoever finds it, is fixed by the drafter and recorded in a self-audit with its cause. | Runs code before approval unless the owner explicitly asks (an owner-requested pilot goes to `evidence/c6_dev_pilot/`); approves its own proposal |
 | Implementer | Codex (the owner's D5 answer) | The design gate, the registration (`experiments/c6_manifest.json`, `milestones/c6.json`), the `c6_*` code, its tests and mutants, the one pipeline run, the handoff | Changes the C4 law, a threshold, a margin, a dose, a baseline or a verdict rule after seeing any development or final outcome; edits frozen C4/C5 files or `.gate/`; bypasses a hook |
 | Reviewer | Claude, the other model family from the implementer | One review of the committed evidence, capped at 20 minutes, written to `evidence/c6_r001_review_<family>/INDEPENDENT_REVIEW.md` | Reruns the panel; edits evidence or code |
@@ -593,6 +619,8 @@ Each responsibility has exactly one owner. Each rule is a yes/no condition with 
 | 10 | Panel | Any gate in §8 fails | The run is not REVIEW_READY |
 | 11 | Before review | The implementer finds a design defect | Withdraw the revision through a decision record; the next revision uses fresh seeds |
 | 12 | Any time | A rule mixes levels outside the evaluator-side list in §3a | It is a defect: the drafter fixes the proposal before registration, or the implementer withdraws after |
+| 13 | Build | The compiler identification line or the flags differ from the registered ones | The build refuses; STOP |
+| 14 | Tests, design gate, smoke | Any `backend_equivalence` check fails | STOP; the owner decides between fixing the kernel and running on NumPy |
 
 **Verdicts are binary in their inputs.** Every endpoint rule in §8 and every truth-table row is an ordered list of yes/no conditions with exactly one outcome. No endpoint is decided by judgement.
 
@@ -637,11 +665,11 @@ Each responsibility has exactly one owner. Each rule is a yes/no condition with 
 
 1. **D1 — Approval. Recommended: approve as written.** This draft is aligned with the RRG locked core (§0). It includes the principle-derived rules: each part judged on its own level's windows, the normalization ledger (§3a), contact placement, the uniform τ and rate-spread definitions, units judged by the theory's own criterion, and the optional extensions separated from H-C.
 2. **D2 — Corrected composition rule** (measured isolated rate, sibling-folded capacities, one function at both promotions). **Owner's answer (2026-10-02): accepted.**
-3. **D3 — Formation rule:** PASS on the Wilson lower bound ≥ 0.5, FAIL on the upper bound < 0.5, INCONCLUSIVE otherwise; n = 40 per level; development target 0.75. **Recommended: accept.** The alternative, C5's point-estimate rule, leaves the C5 qualifier unresolved.
-4. **D4 — Predictive gate:** the registered effective recipe (E1 same-law or E2 linear response, chosen on development data) must beat three baselines, with channel-matched τ, for pulses and pushes separately. A development readiness check can stop the work before the panel. Same-law closure is reported as its own optional verdict. **Recommended: accept.** The alternative, C5's average with the same law only, would let a phase-only success hide a position failure and would test the optional extension as if it were the core.
+3. **D3 — Formation rule:** PASS on the Wilson lower bound ≥ 0.5 (at least 27 of 40), FAIL on the upper bound < 0.5, INCONCLUSIVE otherwise; n = 40 per level; development target 0.75. **Owner's answer (2026-10-02): accepted.**
+4. **D4 — Predictive gate:** the registered effective recipe (E1 same-law or E2 linear response, chosen on development data) must beat three baselines, with channel-matched τ, for pulses and pushes separately. A development readiness check can stop the work before the panel. Same-law closure is reported as its own optional verdict. **Owner's answer (2026-10-02): accepted** (separate scoring, with the stop).
 5. **D5 — Roles. Owner's answer (2026-10-02): Codex implements and Claude reviews** (§12 assigns every responsibility and stop rule). Optional: a short Codex critique of this proposal before approval.
-6. **D6 — Compute. Recommended: NumPy with 8 processes and no C++ backend.** From the pilot's measured costs, the panel takes about 1–2 h and the design gate about 1–1.5 h; a projection above 3 h comes back to the owner.
-7. **D7 — Record the theory alignment in the R4 standard. Recommended: accept.** On approval, the drafter writes decision record 0007, stating:
+6. **D6 — Compute. Owner's answer (2026-10-02): plan a C++ engine** (§10): toolchain pinned by registered compiler line and flags, the NumPy model kept as the reference, and the `backend_equivalence` gate with stop rules 13–14. A projection above 3 h still comes back to the owner.
+7. **D7 — Record the theory alignment in the R4 standard. Owner's answer (2026-10-02): accepted.** On approval, the drafter writes decision record 0007, stating:
    - invariant 1 ("same rule across scales") means the same procedure at every level: detection, promotion, composition, one effective-model recipe and thresholds scaled by measured size and time;
    - one physics in the full simulation;
    - the effective dynamics may differ from the element law (RRG locked §7), so same-law closure is an optional extension;
@@ -706,7 +734,7 @@ Each rule was checked against the normalization ledger and the frozen code.
 ## Fourth self-audit: alignment with the RRG theory (2026-10-02, owner-requested)
 
 The drafter read the RRG v0.2 package (`RPG_theory/research/RRG_CURRENT/`, documents 00–08), which earlier drafts had only known through the R4 standard's summary. Each change below follows a locked-core clause.
-1. **Timescale separation was a requirement for H-C (high).** It narrowed the locked definition of scale (§7; doc 02 §5 calls it a hypothesis to measure). It is now `timescale_hypothesis`, with its own verdict.
+1. **Timescale separation was a requirement for H-C (high).** It narrowed the locked definition of scale (§7; doc 02 §5 calls it a hypothesis to measure). It is now `timescale_hypothesis`, with its own verdict (renamed `scale_separation` and promoted to a registered prediction in the fifth revision).
 2. **The same-law coarse model was the core prediction test (high).** Locked §7 lets effective dynamics differ by scale; same-law closure is an optional extension (doc 03 §13; proof matrix).
    - *The fix:* H-C uses one registered recipe (E1 same-law or E2 linear response, the theory's own normal-mode reduction), and `same_law_closure` has its own verdict.
 3. **Prediction was called "C8 usefulness" in conversation (high).** That was wrong. Doc 03 §37 defines a new scale operationally by bounded prediction from reduced variables. It is central to H-C.
@@ -716,4 +744,15 @@ The drafter read the RRG v0.2 package (`RPG_theory/research/RRG_CURRENT/`, docum
 7. **Passive structures only (low; disclosed).** Doc 02 §13 and Phase E, in §13.
 8. **The AI goal is stated (§0).** C6 tests the abstraction mechanism an RRG-style AI would rest on, and makes no usefulness claim.
 9. **The R4 standard's invariant 1 is narrower than the locked core** where it implies same-law closure. D7 proposes recording the theory-consistent reading in decision 0007.
+
+## Fifth revision: the owner's answers and the C++ engine (2026-10-02)
+
+1. **D3, D4 and D7 accepted** as recommended. **D6:** the owner chose a C++ engine.
+   - §10 now plans it: compiler identification and flags registered and enforced (G10), the frozen NumPy model kept as the reference, and the four-check `backend_equivalence` gate.
+   - Stop rules 13–14 are added.
+   - Its speed is unmeasured until the design gate, because nothing runs before approval.
+2. **Scale separation promoted to a registered RRG prediction** (the owner: bigger scales mostly take more time and distance).
+   - *Verdict:* relaxation time.
+   - *Reported:* formation time, measured over the whole horizon, with its horizon-scaling bias stated; and size, which grows by construction.
+   - *Scope:* it still does not enter H-C, because the locked core does not define a scale by being slower. It is now a headline prediction with its own pass/fail result.
 
