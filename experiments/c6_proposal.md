@@ -291,6 +291,13 @@ Contracts and audit:
 - **Emergent transfer (`emergent_transfer_l3`).** Pulse a whole level-2 group's phase by 0.5 rad and measure the other groups' response, intact minus decoupled, margin 0.01 rad.
 - **Unit specificity (`unit_specificity_l2`, `_l3`; one function): are the real groups real units?** Locked §7 defines a scale as a level whose resonator works as a unit in further interactions. The test asks whether the *real* level-(n−1) parts of a group are better units than other groupings of the same material.
   - *Alternative groupings:* K = 20 seeded groupings of the group's level-(n−2) sub-parts into fake level-(n−1) parts. They have the true size profile, are contiguous over the sub-part contact graph, and each fake part mixes sub-parts of at least two real parts. At n = 2 the sub-parts are elements; at n = 3 they are level-1 units.
+  - *How alternatives are drawn: a registered seeded constructive sampler (amendment A2).*
+    - *One attempt:* shuffle the real size profile (seeded). For each target size in turn, start from a seeded uniformly random unassigned sub-part and grow a contiguous region by adding seeded uniformly random unassigned neighbours on the sub-part contact graph, until it reaches the target size. An attempt that gets stuck is discarded.
+    - *Acceptance:* every fake part mixes sub-parts of at least two real parts; the grouping differs from the real one; and it is not a duplicate of an accepted alternative, compared by canonical partition.
+    - *Limits:* at most 2,000 attempts per group, collecting up to K = 20 distinct alternatives.
+    - *Fewer than K:* use those found, with no replacement and no duplicates. Zero means NOT_TESTED for that group.
+    - *Recorded:* the attempts, acceptances and rejection reasons.
+    - *Not allowed:* exhaustive or depth-first enumeration, because it is not bounded at transition-2 sizes (35–60 elements), as the step-2a review found.
   - *Fake parts are published by exactly the same procedure as real parts:* `resonator_state` at level 1 and `compose_state` at level ≥ 2. That includes the measured isolated rate: each fake part is run alone over its own level's window, as real parts are. Any shortcut for fake parts, such as a size-weighted rate, would handicap them and bias the test toward the real grouping.
   - *The sub-part contact graph:* two sub-parts are adjacent when any of their elements are C4 neighbours (k nearest within the radius) at s₀.
   - *Partition-independent probes (Codex F14).* Exciting a *real* part rigidly would favour the real grouping by construction (Codex's first counterexample). So the specificity probes are chosen **before and without reference to any grouping**:
@@ -503,7 +510,11 @@ A NOT_SUPPORTED optional extension rejects that extension only. It never changes
      - pass 2 re-runs formation at both levels on fresh development worlds (same entropy, new purpose) at the measured and rounded C₂ and C₃, with δ_n = 0.096 / C_n.
    - Only pass 2 counts against the target. A further change in C between passes is reported, not iterated.
 2. **Timescales.** C₂ and C₃ are measured alone under contact placement. τ₁, τ₂ and τ₃ alone must each be censored in fewer than 50% of development measurements (stop rule 2), and C₂ must lie within [1.6, 6.4], which is C5's T = 3.2 within a factor of 2 (stop rule 3).
-3. **Interface fidelity.** C5's and C6's composition rules are compared on development parents: rate error against the observed rate, and coarse cross-link counts against the element-level census. C6's rule must be at least as faithful on both measures.
+3. **Interface fidelity (clarified in amendment A2).** C5's and C6's composition rules are compared on development parents.
+   - *The observed rate:* the reference is each parent's collective rate measured in an **independent** isolated run, 30 C_n from the snapshot at the end of its detection window, with the §3 estimator. It is not the run that produced C6's published rate; reusing that run would make C6's rate error 0 by construction.
+   - *The capacity reference:* the full model's element-level census of each port element's cross-part neighbours.
+   - *The comparison:* rate error |published − observed|, and capacity agreement, each **averaged over the development parents**.
+   - *The rule:* C6's rule must be at least as faithful as C5's on both means.
 4. **Coarse readiness.** At both transitions, on development groups, compute the six gains for each of the four pre-declared combinations (E1 or E2) × (V1 or V2), and the error decomposition.
    - The combination with the largest worst-cell mean gain at the worse transition is registered. This gain is selection-biased (the best of four) and is a readiness measurement only.
    - A combination whose E2 Jacobian fails the convergence check on more than half of the development groups is excluded.
@@ -674,7 +685,7 @@ M = 7 would mean about 350 elements, roughly 3.4× the cost per step, so it is n
   4. **End to end on development worlds:** 10 level-2 and 5 level-3 development worlds run with both engines. In every world, the formation outcome and accepted candidate sets are identical, and every detector statistic agrees within max(10⁻⁶ × its magnitude, 10⁻⁹). The absolute floor matters because some statistics are near 0: C5 recorded a shape CV of 3 × 10⁻¹³, where a relative-only test would fail on rounding noise.
 - *Where the checks run:*
   - checks 1–3 in the tests stage (fast);
-  - check 4 in the design gate before registration, **before** any formation pass, so every design-gate number comes from the engine already shown equivalent; and on one world in the smoke stage;
+  - check 4 in the design gate before registration, **before** any formation pass, so every design-gate number comes from the engine already shown equivalent. The harvest banks that feed check 4 itself are *inputs only*: the receipt labels them so, and no design-gate number (formation, τ, readiness, overlap or runtime) is computed from them (amendment A2); and on one world in the smoke stage;
   - any failure is stop rule 14.
 - *Why not bit-identical:* libm `exp`, `sin` and `cos` differ from NumPy's in the last bits.
 - *What check 4 shows, and what it does not:* it tests on 15 prespecified development worlds whether this changes any outcome. No failing world may be discarded to obtain equivalence. It does not prove equivalence of every verdict on every future world; that limit is stated.
@@ -733,7 +744,7 @@ Each responsibility has exactly one owner. Each rule is a yes/no condition with 
 | 1 | Design gate, formation pass 2 | Formation < 0.75 at level 2 **or** at level 3 | STOP |
 | 2 | Design gate, after formation pass 1 and before pass 2 | Fewer than 5 development τ₁, τ₂ **or** τ₃ measurements alone (none counts), or 50% or more of them censored, so a required median is undefined | STOP (pass 2 does not run) |
 | 3 | Design gate, after formation pass 1 and before pass 2 | Measured C₂ outside [1.6, 6.4] | STOP (pass 2 does not run) |
-| 4 | Design gate, interface fidelity | C6's composition is less faithful than C5's on rate **or** on capacity | STOP |
+| 4 | Design gate, interface fidelity | Over the development parents, C6's mean rate error against the independent observed rate exceeds C5's, **or** C6's mean capacity agreement is lower than C5's | STOP |
 | 5 | Design gate, coarse readiness | At either transition: fewer than 10 development groups, **or** fewer than 10 r-eligible groups for either type, **or** the selected combination's worst-cell mean gain ≤ 0, **or** its mean r > 0.5 for either type, **or** more than 10% censored in-world calibrations | STOP |
 | 6 | Design gate, overlap | Any intact touching pair of input templates (§9 step 5) has union-of-hulls overlap > 0.2, **or** the population is empty | STOP |
 | 7 | Design gate, runtime | Projected panel > 3 h on 8 processes | STOP |
@@ -992,4 +1003,13 @@ During step 2a, Codex (the implementer) found that §9 could not be implemented 
 - *The fix:* stop rules 2 and 3 are evaluated immediately after pass 1, and pass 2 runs only with a defined C₂ and C₃.
 - *The minimum count:* "defined" needs at least 5 measurements per median, none counting as undefined.
 - *Approval:* nothing else changes. Under stop rule 8 the owner re-approves this amendment.
+
+## Amendment A2 after approval (2026-10-02; gaps found in the step-2a code review)
+
+Claude's review of the step-2a code (`docs/reviews/c6_step2a_review_claude.md`) found three places where the plan left the implementation undetermined:
+1. **Alternative groupings.** §5 said "K = 20 seeded groupings" without a sampling rule, and the implemented exhaustive search does not finish at transition-2 sizes. A registered seeded constructive sampler is now specified (§5).
+2. **Interface fidelity.** Stop rule 4's "observed rate" was undefined, and the natural implementation compared C6 with its own measurement, which is vacuous. The reference is now an independent isolated run, and the comparison uses means over parents (§9 step 3, stop rule 4).
+3. **Check-4 inputs.** The harvest banks that feed check 4 necessarily run before check 4 passes. They are now explicitly inputs only, and no design-gate number comes from them (§10).
+
+Together with amendment A1, these need owner re-approval (stop rule 8). No threshold, rule or verdict changes.
 
