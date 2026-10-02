@@ -265,7 +265,7 @@ Contracts and audit:
   - *At least one complete window per part:* a parent faster than its parts would otherwise leave zero windows and pass vacuously (Codex F4). The formation horizon is therefore max(100 C_n, 30 C_k for every part level k), a generic rule that constrains no timescale ordering.
   - *Not observed means failed:* a part with no complete window still fails criterion 6, recorded as INSUFFICIENT_OBSERVATION.
 - **Geometric distinctness, which has no timescale.** No other part's shape covers more than 0.2 of its shape's area at any parent frame.
-- **Recursion.** A composite part satisfies criterion 6 for its own parts, each again on its own level's windows.
+- **Direct parts only (amendment A3).** Criterion 6 applies to the candidate's **direct** parts, the level-(n−1) resonators: each must stay alive (its own criteria 2–4 on its own windows) and distinct (geometry). Deeper levels may reorganize inside a part, and their validity is **reported, not required** (`parts_alive_l3` keeps the full recursive values).
 
 *Why per-window:* criteria 2–4 are fixed-amplitude tolerances (for example, pattern change ≤ 0.1 rad). Measured over a longer window, any slow, harmless drift accumulates beyond them. Judging a level-1 unit over a level-3 window (about 10× its own) mixes two levels in one rule and violates invariant 1. The first two drafts did exactly that. A real merger still fails through the geometric test, whatever the window.
 
@@ -1014,4 +1014,12 @@ Claude's review of the step-2a code (`docs/reviews/c6_step2a_review_claude.md`) 
 Together with amendment A1, these need owner re-approval (stop rule 8). No threshold, rule or verdict changes.
 
 **Owner re-approval (2026-10-02):** amendments A1 and A2 are re-approved, and the development design gate is authorized to run.
+
+## Amendment A3 (2026-10-02; the owner's principle)
+
+The owner restated the governing principle: the frequency ↔ geometry loop repeats, and each new turn happens at a bigger or different scale. A new level must stand on live resonators **one level down**. Deeper structure may reorganize; that is transformation, R_A → R_B (locked core §5, §12; doc 02 §2.5).
+- *What changed:* the recursive criterion 6, which required every level-1 unit inside every level-2 part to stay distinct, was a drafter's addition stricter than the principle and the locked core. It now applies to direct parts only.
+- *What is kept:* deeper validity is still computed and reported.
+- *The data:* the design gate that stopped C6 (decision 0009) failed on that deeper requirement: level-1 overlap in all 30 worlds, while the level-2 parts stayed distinct in 143 of 150. The change comes from the owner's principle, not from tuning against those numbers.
+- *Next:* the development gate is re-run. Every other rule and threshold is unchanged, and final seeds stay fresh.
 
