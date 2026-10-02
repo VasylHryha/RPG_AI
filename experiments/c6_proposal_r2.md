@@ -1,6 +1,6 @@
 # C6 revision 2: the loop repeats at the next scale
 
-Draft for owner approval; no registration or runs authorized yet. Current milestone status is in `STATUS.json`.
+Approved by the owner on 2026-10-02 (decision 0011); development implementation and gate authorized. Current milestone status is in `STATUS.json`.
 This proposal supersedes revision 1's operational plan; its evidence, decisions and reviews remain history.
 Authority: the owner's instruction, R4 C6 and recursive invariants, locked core §§3–8, and decisions 0007–0008 (D2–D8).
 Correction and audit: `docs/decisions/0010-c6-principle-correction.md`, `docs/reviews/c6_principle_audit_codex.md`.
