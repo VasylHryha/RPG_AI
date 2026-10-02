@@ -66,7 +66,7 @@ Hypotheses:
 **The cheap explanations C6 must rule out.**
 1. **"Level 3" is one bigger level-2 group**, so the middle level is bookkeeping. Three checks rule this out:
    - *Recursive criterion 6 (§4):* every level-2 part stays a valid, distinct level-2 unit, and so does every level-1 unit inside it.
-   - *`unit_specificity_l3` (§5):* the effective model built from the real level-2 groups predicts the full dynamics better than the same model built from contiguous alternative groupings of the same level-1 units. In a flat blob, no grouping is a better unit than another. This is the locked core's own test of a scale (§7), and it makes no timescale assumption.
+   - *`unit_specificity_l3` (§5):* the effective model built from the real level-2 groups predicts the full dynamics better than the same model built from contiguous alternative groupings of the same level-1 units. In a consensus system where every unprobed element responds identically, the pairwise contrast is exactly 0 for every grouping. A local medium with spatially varying responses need not give 0, so the statistic measures predictive grouping advantage with geometry included, alongside the other H-C gates. It is an operational test compatible with locked §7, not the definition of a unit, and it makes no timescale assumption.
    - *A disclosure:* the receipt reports whether the level-2 detector accepts the union of a level-3 group's units as a single level-2 resonator.
 2. **A dendrogram or connected-component tree.** Nested clustering at two distance thresholds always yields a tree. C6 requires dynamics at every level: locking, recovery after a kick, two-way causality with complete ablations, dose-response, upward and downward transfer, and units whose summaries predict better than other groupings. A static tree has none of these.
 3. **A different solver or threshold per level.** There is one generic level-n detector, one promotion function, one composition function and one effective-model recipe. Level-n thresholds come from one scaling function applied with the cumulative time factor. A static contract forbids level branches, and the `same_rule_audit` gate records function identities and every threshold at each level.
@@ -203,7 +203,8 @@ Invariant 1 is the governing rule: one rule at every level, normalized only by t
 | E2 finite differences and convergence | each part's own L; the level's C_n | steps of 10⁻⁴ L_part (position) and 10⁻⁴ rad (phase); convergence of J̃ = C_n D J D⁻¹ in the Frobenius norm, ≤ 10⁻³ × max(‖J̃‖, 1) |
 | Normalized error r and the response floor | the scored non-excited parts | r = error_model ÷ error_no-transfer, defined only when the response is ≥ 0.01 (the registered margin); ceiling 0.5 on the CI upper bound of the mean (D8) |
 | `unit_specificity` alternative groupings | level-(n−2) sub-parts regrouped into fake level-(n−1) parts | the same size profile, contiguous over the sub-part contact graph, each fake part mixing sub-parts of at least two real parts; composed by the same `compose_state` |
-| `unit_specificity` probes and scoring | probes: seeded level-(n−2) sub-parts chosen independently of any grouping; scoring: per pair, the elements outside both groupings' probe-containing parts | pulse 0.5 rad; push 0.2 × L*; linear paired-response summaries; a membership-only decoder fixed at t₀; RMS phase plus RMS position over the element spacing; same scored set within each pair; geometry not subtracted. Diagnostic: diffusion with the symmetrized unit-weight element C4 Laplacian at rate 1/(τ_n λ₂), NOT_COMPUTED if τ_n is censored or invalid or λ₂ is absent |
+| `unit_specificity` probes and scoring | probes: seeded level-(n−2) sub-parts chosen independently of any grouping; scoring: per pair, the elements outside both groupings' probe-containing parts | pulse 0.5 rad; push 0.2 × L*; linear paired-response summaries; a membership-only decoder fixed at t₀; RMS phase plus RMS position over the element spacing; same scored set within each pair; geometry not subtracted. Diagnostic: raw contrast under diffusion with the symmetrized unit-weight element C4 Laplacian at rate 1/(τ_n λ₂), with λ₂ the smallest positive eigenvalue and no ratio; NOT_COMPUTED if τ_n is censored or invalid, the graph is disconnected, or there is no positive eigenvalue |
+| `unit_specificity` compactness (reported only) | each grouping's level-(n−1) parts, measured on their level-(n−2) sub-part centroids | per part, the radius of gyration of its sub-part centroids divided by the median nearest-neighbour element spacing of the group at s₀; per grouping, the mean over its parts; reported for the real grouping and each alternative, with no verdict effect |
 | Paired-response summary (all scoring) | the members of a part | arithmetic mean of member paired responses: unwrapped phase and displacement; identical for real and fake parts and at every level |
 | Effective-state position and size bounds | level n | fractions of L, unchanged |
 | Formation time (`scale_separation`, reported) | the level-n group, from assembly | link rule on frames every C_n over the whole horizon; reported in C4 time units and in units of the parts' own τ; censored at the actual formation horizon max(100 C_n, 30 C_k) (§4) |
@@ -212,7 +213,7 @@ Invariant 1 is the governing rule: one rule at every level, normalized only by t
 
 **Cross-level reads, allowed only on the evaluator side.** The candidate path (detector, promotion, composition, effective model) never reads below the level it acts on. Six evaluator-side quantities cross levels deliberately, and each says so in its endpoint:
 - `upward_transfer_l3`: a level-1 pulse, read in level-2 states;
-- `unit_specificity`: predictions from different groupings lifted to the same elements, so they can be compared;
+- `unit_specificity`: predictions from different groupings lifted to the same elements, so they can be compared; plus its compactness (sub-part centroids over element spacing) and the geometric diffusion diagnostic on the element graph, both reported only;
 - `coarse_depth`: a flat model on level-1 states, as a comparison;
 - `coarse_error_decomposition`: a rigid reference on elements;
 - `interface_fidelity`: an element-level census;
@@ -312,8 +313,13 @@ Contracts and audit:
     - *The operator:* the combinatorial Laplacian of the **symmetrized** (undirected union) element C4 neighbour graph at s₀, with unit edge weights.
     - *The rate:* the generator is −L / (τ_n · λ₂), where λ₂ is the smallest positive eigenvalue and τ_n is the group's isolated τ.
     - *Sampling:* paired phase and displacement responses are both diffused at that one rate, at the same sample times. Channel-specific rates are not attempted, because there is no isolated position timescale.
-    - *Output:* the diagnostic contrast c_k^null(p) on each pair's scored set, and the share c^null / c of the observed contrast.
-    - *When it is not computed (yes/no, implementer-owned):* if τ_n is censored, non-positive or non-finite, or the graph is disconnected (no λ₂), the diagnostic is NOT_COMPUTED for that group. Such groups are counted, no value is imputed, and there is no verdict consequence.
+    - *Output:* the raw diagnostic contrast c_k^null(p) on each pair's scored set, reported next to the observed c_k(p). There is no ratio of the two (Codex R4-1: the denominator can be 0 or negative).
+    - *When it is not computed (yes/no, implementer-owned):* the diagnostic is NOT_COMPUTED for a group if any one of these holds:
+      - τ_n is censored, non-positive or non-finite;
+      - the symmetrized graph is disconnected;
+      - L has no positive eigenvalue.
+
+      Disconnection and a missing positive mode are separate conditions: a disconnected graph can still have a smallest positive eigenvalue. Such groups are counted, no value is imputed, and there is no verdict consequence.
   - *Compactness, reported:* each alternative's mean part spread (the radius of gyration of its sub-part centroids, in element spacings) against the real grouping's. This lets a reader see whether real parts win partly by being more compact.
   - *World statistic:* the mean over the 4 sites × 2 probe types × the K alternatives (pairs not skipped) of the uncorrected pairwise contrast c_k(p).
   - *Required contracts (the binary null criterion):*
@@ -323,7 +329,7 @@ Contracts and audit:
     - **Homogeneous flat null:** the same with equal phases must also give 0.
     - **Modular positive fixture:** two strongly coupled triples weakly coupled to each other must give a statistic > 0.
     - **Real-part alignment check:** probes must be drawn before groupings exist.
-  - *Why this tests real units:* in a flat blob, any contiguous grouping is as good a unit as any other, so the statistic is about 0.
+  - *What the statistic shows:* in any consensus system where every unprobed element responds identically, the pairwise contrast is exactly 0 (shown above). In other systems a positive value means the real parts predict the full dynamics better than other contiguous groupings, geometry included. It is one comparison alongside the other H-C gates, not on its own proof that the parts are units.
   - *Cost:* coarse runs, plus one isolated-rate run per fake part (K × parts runs, each over its own level's window, on 25–60 elements). That is small next to the level-3 runs.
 - **Scale separation (`scale_separation_lN`; a registered RRG prediction, doc 02 §5).** Bigger scales should take more time and more distance.
   - **Relaxation time (verdict):** τ_n of the group alone ÷ the mean τ_{n−1} of its parts alone, both measured by the same protocol on their own level's windows.
@@ -968,4 +974,14 @@ Codex's third re-check (`docs/reviews/c6_proposal_recheck3_codex.md`, committed 
 | R3-2 (medium): no total rule for the null | The Laplacian convention and the censored-τ case were unregistered | Symmetrized unit-weight element C4 Laplacian, rate 1/(τ_n λ₂). NOT_COMPUTED, counted and never imputed, for a censored, non-positive or non-finite τ_n or a missing λ₂. The implementer owns it, and it has no verdict consequence |
 | R3-3 (low): contract scope | The contracts kept the single-set wording | Same set within each pair; consensus contracts labelled uncorrected |
 | R3-4 (low): finite-kick wording | Identical phases were taken to imply exact equality | Exact only for rigid whole-part kicks; first order for identical phases with a non-uniform kick |
+
+## Eleventh self-audit: Codex's fourth re-check (2026-10-02)
+
+Codex's fourth re-check (`docs/reviews/c6_proposal_recheck4_codex.md`, verdict CHANGES_REQUIRED) confirmed R3-3 and R3-4. It also confirmed that the central scoring defect of R3-1 is resolved: geometry is included, the two-clique witness counts, and the diffusion null has no verdict path.
+
+| Finding | Cause in the draft | Fix |
+|---|---|---|
+| R3-1 residual (wording) | Two sentences still said any contiguous grouping in a "flat blob" is equally predictive, and called the statistic "the locked core's own test". The exactness proof covers only consensus systems where unprobed responses are identical. | Restricted to that consensus property; local media need not give 0; described as one operational comparison compatible with locked §7, alongside the other gates (§1, §5) |
+| R4-1 (medium): the diagnostic ratio is undefined | The ratio c^null / c was added without a domain; c can be 0 or negative | The ratio is removed and only the raw diagnostic contrast is reported. Disconnection and a missing positive eigenvalue are separate NOT_COMPUTED conditions, consistent in §5 and the ledger |
+| R4-2 (low): compactness missing from the ledger | A reported diagnostic was added without a ledger row | A ledger row (sub-part centroid radius of gyration over the group's median element spacing, mean per grouping, reported only) and an entry in the evaluator-side cross-level list |
 
