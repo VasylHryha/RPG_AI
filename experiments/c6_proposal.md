@@ -92,7 +92,12 @@ These dynamics are not new. Synchronization on hierarchical modular networks pro
 **One owner tree.** The evaluator-side owner keeps labels element → level-1 unit → level-2 group. Member lists stay owner-private at every level. Upper levels see only published `ResonatorState`s (C5's field set: level, X, L, Θ, Ω, natural rate, mode signature, boundary ports, size, S, member digest).
 
 **Publication.**
-- *Level-1 states:* `c5_units.resonator_state`, unchanged, except for the port rule if the coarse readiness check selects variant V2 (§7).
+- *Level-1 states:* one new C6 wrapper around the frozen `c5_units.resonator_state` (read-only), used for real **and** fake level-1 parts (§5). The frozen constructor always publishes `natural_rate` as the mean intrinsic element rate. Its `rate` argument changes only `collective_rate` and the mode signature, not the field the effective model reads (`c5_coarse.py:37`; Codex critique F1).
+  - *What the wrapper does:* it overwrites `natural_rate` with the part's **measured isolated rate**.
+  - *The estimator:* the part runs alone from its published snapshot for 30 C₁. The rate is (Θ(end) − Θ(start)) / duration, where Θ is the circular mean of member phases, unwrapped over frames every C₁.
+  - *Consistency:* for a real, homogeneous unit this equals ω_g, which a contract checks. For a fake part, which mixes rates, it is the honest measured value.
+  - *Ports:* the wrapper also applies the registered port variant (V2 adds active-contact members).
+  - *Contract:* a measured rate different from the intrinsic mean must reach the `natural_rate` field that `c5_coarse.CoarseState` reads.
 - *Level-n states (n ≥ 2):* one new function, `c6_units.compose_state`, used for **both** promotions. It equals C5's `compose_state` except for two corrections from the C5 review:
   1. **Natural rate = measured isolated rate.** The owner runs the parent alone (decoupled from everything else, over its own level's window) and publishes its measured collective rate. At level 1 this gives exactly ω_g (the rotating-frame symmetry), and a contract checks this, so the rule is the same at every level.
   2. **Port capacity includes sibling contacts.** A parent port's capacity list is the k smallest of its child's own-neighbour distances and its distances to the ports of the parent's other children. All of these come from published child states. Non-port sibling members stay invisible, a declared approximation.
@@ -113,7 +118,7 @@ These dynamics are not new. Synchronization on hierarchical modular networks pro
 **Rates (the same fixture rule, one level up).** C5 gave each unit one rate ω_g ~ U[−δ₂, δ₂] for all its members. That is an exact symmetry, because the unit is the accepted resonator in a rotating frame. C6 applies the rule to whole level-2 groups:
 - every element rate in group G is shifted by one constant, so the group's measured isolated rate becomes ω_G ~ U[−δ₃, δ₃];
 - the group's insides are untouched;
-- **The invariant is the dimensionless spread δ_n × C_n = 0.096**, C5's value (δ = 0.03 at C₂ = 3.2), held at every level. So δ₂ = 0.096 / C₂ (C₂ re-measured in C6) and δ₃ = 0.096 / C₃. Keeping C5's raw δ = 0.03 while C₂ changes would silently change the dimensionless spread. The non-vacuity bound then repeats exactly at both levels: median |Δω| × window = 0.586 × 0.096 × 30 ≈ 1.7 rad ≥ 1 rad.
+- **The invariant is the dimensionless spread δ_n × C_n = 0.096**, C5's value (δ = 0.03 at C₂ = 3.2), held at every level. So δ₂ = 0.096 / C₂ (C₂ re-measured in C6) and δ₃ = 0.096 / C₃. Keeping C5's raw δ = 0.03 while C₂ changes would silently change the dimensionless spread. The non-vacuity bound then repeats exactly at both levels: the **median** pair drift over a window is 0.586 × 0.096 × 30 ≈ 1.69 rad ≥ 1 rad. It is a typical value, not a guarantee for every pair.
 
 **Assembly: contact placement, the same rule at both levels.** The rule follows from the coupling law.
 - *Why disk placement cannot work at level 3:*
@@ -126,7 +131,9 @@ These dynamics are not new. Synchronization on hierarchical modular networks pro
 - *The rule:*
   - A level-n world holds M = 5 parts of level n−1. Each part gets a random rotation and a random global phase.
   - The first part sits at the origin.
-  - Each further part approaches the centroid of the parts already placed, from a uniformly random direction, and stops at the first position where some element pair across parts is at the element contact gap of 0.6. The 0.6 gap is element-scale and is not scaled by level, because it is a property of the element law.
+  - Each further part approaches the centroid of the parts already placed, from a uniformly random direction, until the minimum cross-part element distance first reaches the contact gap of 0.6. The 0.6 gap is element-scale and is not scaled by level, because it is a property of the element law.
+  - *Solving for the contact position:* bracket the crossing with steps of 0.02 element units, then bisect until the minimum distance is within [0.6, 0.6 + 10⁻⁶].
+  - *A miss:* if the approach reaches the centroid without contact, the next seeded direction is used, and every retry is recorded.
 - *Scale-free at both levels:* every part starts touching the cluster, and the dynamics decide what locks, merges or drifts. The rule applies to every assembled world: level-2 harvest worlds, transition-2 evidence worlds and level-3 worlds.
 - *Why it should raise formation, from the detector's definition:* a candidate needs a connected component of at least 3 close, locked parts. Disk placement often leaves fewer than 3 parts in contact, so the world is DRIFTING without any test of locking. With every part touching, that failure mode is removed and the locking criteria decide.
 - *At most one group per world:* with M = 5 and a minimum group size of 3, two disjoint groups cannot both exist. So each world contributes at most one group, and the world value is that group's value.
@@ -148,7 +155,14 @@ The capture region is relative (link factor × median spacing), and the persiste
   - **For normalization (C_n) and for scale separation, τ is measured on the resonator alone**, decoupled from non-members, like the measured natural rate. It is a property of the resonator itself, the same at every level. τ₁ is measured the same way, so C₁ = 1 and C4's times are recovered exactly.
   - **For the relaxation baselines, τ is measured in the world, on the intact control**, the context the excitation happens in. This is the declared calibration advantage of the strongest baseline.
   - C5 used the in-world τ₂ for both purposes. C6 separates them, so a group's neighbours cannot change its own timescale.
-- The cumulative factor is C_n = τ_n/τ₁, measured on C6 development worlds and **rounded to the 0.2 grid**. At n = 2 this is exactly C5's rule (C5 had C₂ = 3.2).
+- **The τ estimator:**
+  - *Horizon:* 10 C_n, sampled every 0.1 C_n.
+  - *Value:* τ is the first sample time at which the deviation falls to 1/e of its initial value (C5's `efold`).
+  - *Censoring:* if it never falls that far, τ is censored at 10 C_n and recorded as "> 10 C_n".
+- **The cumulative factor:** C_n = median τ_n of the development level-n groups alone ÷ median τ₁ of the development level-1 units alone. Censored values count as +∞ in the medians.
+  - It is defined only if fewer than 50% of either set is censored; otherwise stop rule 2 applies.
+  - It is **rounded to the nearest multiple of 0.2**, with ties rounded up. At n = 2 this is exactly C5's rule (C5 had C₂ = 3.2).
+  - Provisional C values are used only to schedule pass 1 of the design gate (§9).
 - Rounding the cumulative factor, not each ratio, keeps every scaled time a whole number of RK4 steps: the smallest is the 0.1 C sample interval, which is 5C steps. A per-level ratio T₃ rounded to 0.2 does not; for example T₃ = 3.2 gives 51.2 steps.
 - T₃ = C₃/C₂ is reported.
 - Level-n thresholds are `c5_detect.level2_thresholds(C4 thresholds, C_n)`. At n = 2 this is exactly C5's call.
@@ -169,16 +183,16 @@ Invariant 1 is the governing rule: one rule at every level, normalized only by t
 | Criterion 6 geometric overlap | geometry, no time | area fraction 0.2, at every parent frame |
 | Degenerate shape | the part's level | area ≤ 10⁻¹² L² |
 | Rate spread of parts | level n | δ_n = 0.096 / C_n (dimensionless spread held at C5's value) |
-| τ_n for normalization and separation; τ_n for baselines | the level-n resonator alone; the intact world | kick RMS 0.3, sampled at 0.1 C_n (§3) |
+| τ_n for normalization and separation; τ_n for baselines | the level-n resonator alone; the intact world | kick RMS 0.3; horizon 10 C_n, sampled every 0.1 C_n; e-folding estimator; censoring at the horizon recorded, never imputed (§3) |
 | G→M, M→G, excitation and τ windows; sample interval | level n | × C_n |
 | Doses (s, RMS), pulse 0.5 rad, margin 0.01 rad | level n | dimensionless, unchanged |
 | Push size | the excited part | 0.2 × its L |
 | Element contact gap 0.6; C4 law (A, B, J, K, k = 8, radius 3, dt) | element scale | **not scaled**: the physics does not rescale (§13) |
-| Placement | element scale | contact at the 0.6 gap, approached in steps of 0.02 element units (no level-scaled radius) |
+| Placement | element scale | contact at the 0.6 gap: bracketed in steps of 0.02 element units, then bisected to within 10⁻⁶ (no level-scaled radius) |
 | Parts per world M = 5; minimum group size 3; K = 20 alternative groupings | counts | the same at every level |
 | Effective-model recipe (E1 or E2, §7) | the published level-(n−1) states of a level-n group | built only from published fields; zero parameters fitted on scored excitations; the same recipe at both transitions; integrated at the element dt, sampled at 0.1 C_n |
 | `unit_specificity` alternative groupings | level-(n−2) sub-parts regrouped into fake level-(n−1) parts | the same size profile, contiguous over the sub-part contact graph, each fake part mixing sub-parts of at least two real parts; composed by the same `compose_state` |
-| `unit_specificity` scoring (lift to elements) | elements outside the excited real part | each partition's prediction is lifted to elements through its published offsets: element phase = part phase + offset, element position = part position + offset. The error is RMS wrapped phase plus RMS position over the element spacing, on the same elements for every partition. |
+| `unit_specificity` probes and scoring | probes: seeded level-(n−2) sub-parts chosen independently of any grouping; scoring: elements outside the probed sub-part | an evaluator-only decoder with identity-linked offsets fixed at t₀ per grouping; paired responses; RMS wrapped phase plus RMS position over the element spacing, on the same elements for every grouping |
 | Effective-state position and size bounds | level n | fractions of L, unchanged |
 | Formation time (`scale_separation`, reported) | the level-n group, from assembly | link rule on frames every C_n over the whole horizon; reported in C4 time units and in units of the parts' own τ; censored at 100 C_n |
 | Static-control rates (`not_a_clump`) | each level-(n−1) part | each part's rates shifted by one constant so its isolated rate is 0. This leaves its internal rates untouched. At level 2 it equals C5's "all rates 0"; at level 3, zeroing every element rate would turn the parts into different objects. |
@@ -232,7 +246,11 @@ Contracts and audit:
 **Criterion 5 keeps the original group** (the C4 R003 rule). The original part set must be matched in the control future and in the kicked future, and the two matched groups must agree, each with Jaccard ≥ 0.9. Kicks are rigid on whole parts and leave their insides bit-identical.
 
 **Criterion 6, stated once and applied recursively: parts alive and distinct, each judged on its own level's scale.** Each level-k part, tracked by its **original** member set and never re-matched, must satisfy three conditions:
-- **Dynamic validity, on its own timescale.** The parent's window is split into consecutive, non-overlapping windows of the part's **own** level length, 30 C_k, sampled at the part's own frame interval C_k. The part must pass its own criteria 2–4, with its own level's thresholds, in **every** one of those windows. A trailing remainder shorter than 30 C_k is not scored.
+- **Dynamic validity, on its own timescale.**
+  - *Windows:* the observation interval is the last W = max(30 C_n, 30 C_k) of the formation run. It is split into consecutive, non-overlapping windows of 30 C_k, sampled at the part's own interval C_k, and a trailing remainder shorter than 30 C_k is not scored.
+  - *The test:* the part must pass its own criteria 2–4, with its own level's thresholds, in **every** window.
+  - *At least one complete window per part:* a parent faster than its parts would otherwise leave zero windows and pass vacuously (Codex F4). The formation horizon is therefore max(100 C_n, 30 C_k for every part level k), a generic rule that constrains no timescale ordering.
+  - *Not observed means failed:* a part with no complete window still fails criterion 6, recorded as INSUFFICIENT_OBSERVATION.
 - **Geometric distinctness, which has no timescale.** No other part's shape covers more than 0.2 of its shape's area at any parent frame.
 - **Recursion.** A composite part satisfies criterion 6 for its own parts, each again on its own level's windows.
 
@@ -241,7 +259,7 @@ Contracts and audit:
 *Consequences:*
 - The owner records frames at the finest part level's interval (C₁ = 1 time unit) during every detection window. This is negligible extra storage.
 - At level 3, every level-2 group is checked over windows of 30 C₂ and every level-1 unit inside it over windows of 30 C₁.
-- *C5 inheritance:* C5 judged level-1 units over one level-2 window (3.2× their own). That made C5 stricter, never looser, so its accepted support stands. But some of C5's MERGED worlds may reflect this effect rather than real merging, and C6 does not reuse C5's MERGED counts as a merger rate.
+- *C5 inheritance:* C5 judged level-1 units over one level-2 window (3.2× their own). The old and new checks are **non-nested measurements**, not one stricter than the other. A longer window can reject slow drift, but it can also dilute a short excursion that one own-level window would catch (Codex F15 shows both on the frozen `window_statistics`). C5's accepted receipt and verdicts stand on their own registration. C6 uses neither C5's MERGED counts nor any claim of monotonic strictness, only its own fresh evidence.
 - *A unit's shape:* the convex hull of its elements for a level-1 unit, and the union of its level-1 hulls for a composite. At level 2 this is exactly C5's rule. At level 3 it avoids false MERGED verdicts from the empty space inside the convex hull of a concave composite.
 - *Area computation:* exact convex clipping at level 2. At level 3, an exact union-of-convex-pieces computation or a registered rasterization, with a contract bounding its error against exact clipping.
 - *Degenerate shapes:* area ≤ 10⁻¹² L² fails (N3).
@@ -262,9 +280,19 @@ Contracts and audit:
   - *Alternative groupings:* K = 20 seeded groupings of the group's level-(n−2) sub-parts into fake level-(n−1) parts. They have the true size profile, are contiguous over the sub-part contact graph, and each fake part mixes sub-parts of at least two real parts. At n = 2 the sub-parts are elements; at n = 3 they are level-1 units.
   - *Fake parts are published by exactly the same procedure as real parts:* `resonator_state` at level 1 and `compose_state` at level ≥ 2. That includes the measured isolated rate: each fake part is run alone over its own level's window, as real parts are. Any shortcut for fake parts, such as a size-weighted rate, would handicap them and bias the test toward the real grouping.
   - *The sub-part contact graph:* two sub-parts are adjacent when any of their elements are C4 neighbours (k nearest within the radius) at s₀.
-  - *Same excitations:* the held-out pulse and push of §6 hit one real part in the full model. Each grouping's effective model starts from its own published states of the excited full state, with the registered recipe (§7), open loop.
-  - *Common scoring:* every grouping's prediction is lifted to the same elements (§3a): all elements outside the excited real part, over the 10 C_n window.
-  - *World statistic:* the mean over the two excitations of (mean error of the alternatives − error of the real grouping).
+  - *Partition-independent probes (Codex F14).* Exciting a *real* part rigidly would favour the real grouping by construction. In a flat system with no hierarchy at all, the real grouping then scores 0 error and a mixed grouping 0.104 rad (Codex's analytic counterexample). So the specificity probes are chosen **before and without reference to any grouping**:
+    - four seeded level-(n−2) sub-parts per group, drawn uniformly; each one is pulsed by 0.5 rad and, separately, pushed by 0.2 × its own L, rigidly, in the full model;
+    - a sub-part lies inside exactly one part of every grouping, real or fake, so no grouping is aligned with the probe;
+    - these probes are separate from the real-part excitations of §6 and §7, which stay for `coarse_vs_full`.
+  - *Starting point:* each grouping's effective model starts from its own published states of the probed full state, with the registered recipe (§7), open loop.
+  - *The evaluator-only decoder (Codex F3).* Published states carry offsets only for ports, and their phase offsets are sorted and carry no identity, so a lift to every element cannot be rebuilt from them.
+    - *How the decoder works:* the lift is an evaluator-side decoder. It holds, for each grouping, the identity-linked offset (position and phase) of every element relative to its part, recorded **once** from that grouping's initial full snapshot at t₀.
+    - *What is predicted:* element state = part state + fixed offset.
+    - *Who sees it:* the effective model never sees the decoder, and no later full state ever updates it.
+    - *Paired scoring:* each prediction is the response, probed minus unprobed control, for both the model and the full system.
+  - *Common scoring:* every grouping is scored on the **same** elements, all elements outside the probed sub-part, over the 10 C_n window.
+  - *World statistic:* the mean over the 4 sites × 2 probe types of (mean lifted error of the alternatives − lifted error of the real grouping).
+  - *Required contracts:* an analytic flat-consensus null (no hierarchy) must give a statistic of 0 in expectation, and a positive specificity rate no higher than chance over seeded fixtures; a genuinely modular fixture must give a positive statistic.
   - *Why this tests real units:* in a flat blob, any contiguous grouping is as good a unit as any other, so the statistic is about 0.
   - *Cost:* coarse runs, plus one isolated-rate run per fake part (K × parts runs, each over its own level's window, on 25–60 elements). That is small next to the level-3 runs.
 - **Scale separation (`scale_separation_lN`; a registered RRG prediction, doc 02 §5).** Bigger scales should take more time and more distance.
@@ -288,6 +316,10 @@ The same protocol applies at both transitions. Every run is paired with an unper
 
 The primary doses are s = 1.25 and RMS 1.0. Single-channel ablations are decomposition only.
 
+*How level-n operations act:* each operates on the level-(n−1) **published** state.
+- *G→M scaling:* `c5_compose.scale_units` scales the published part centroids, which are unweighted centroids of child centroids. The resulting translations are applied rigidly to the owned elements with `shift_units`.
+- *Pushes:* a push uses the excited part's published L.
+
 ## 7. Full versus effective model at both transitions (locked §7; doc 03 §13 and §37)
 
 The locked core defines a scale through prediction: a reduced set of variables predicts the level's interactions with bounded error. It does **not** require the reduced dynamics to be the same law as the level below. C6 therefore separates two claims:
@@ -300,9 +332,12 @@ The locked core defines a scale through prediction: a reduced set of variables p
 
 **Two pre-declared recipes, each built only from published fields, with no parameter fitted on scored excitations:**
 - **E1, same law.** `c5_coarse.run`, unchanged: the C4 element law applied to the parts' ports, with links forming and breaking by the C4 neighbour rule.
-- **E2, linear response, the locked theory's own normal-mode reduction** (doc 03 §28 and §39: near a stable state, geometry, restoring force and modes come from the local Hessian).
-  - The Jacobian of E1's right-hand side with respect to the parts' (X, Θ) is taken at the published formed state, by central differences on published fields only, with links held at s₀.
-  - The prediction is δ(t) = exp(J t) δ₀, by eigendecomposition in NumPy.
+- **E2, linear response: a candidate linear-response reduction motivated by doc 03 §28 and §39.** It is not a guaranteed Hessian reduction, because the C4 law is first-order and not a gradient flow.
+  - *The Jacobian:* J is the Jacobian of E1's right-hand side with respect to the parts' (X, Θ). It is evaluated at the **published control state at t₀**, in the frame co-rotating with the control (E1 depends only on phase differences), with links held at t₀.
+  - *Central-difference steps:* position steps of 10⁻⁴ × the part's L (size-normalized, so the step is the same dimensionless size at every level) and phase steps of 10⁻⁴ rad.
+  - *A convergence check:* J at the step h and at h/2 must agree within 10⁻³ relative in the Frobenius norm. If they do not, E2 abstains for that group, and an abstention is scored as predicting no response.
+  - *The response:* δ₀ = published(excited, t₀) − published(control, t₀), with phases wrapped, and the paired prediction is δ(t) = exp(J t) δ₀.
+  - *The matrix exponential:* a general method, scaling and squaring with a Taylor or Padé core in NumPy, with no eigendecomposition. Contracts require it to match a diagonalizable case's eigen-solution, to return I + tJ for the Jordan block [[0,1],[0,0]], and to fail loudly on non-finite input.
   - This is a different, linear family, derived from the published summary.
 
 **Two pre-declared port variants:**
@@ -316,7 +351,11 @@ The locked core defines a scale through prediction: a reduced set of variables p
 **Scoring.**
 - *Open loop:* the scored prediction never receives full-model states. The reopening protocol (invariant 8) runs alongside and is reported: invalid flags, reopens, and error on flagged against unflagged excitations, which shows whether the validity bound carries information.
 - *Per excitation type (D4):* gain_{e,b} = error_b − error_model per world, for e ∈ {pulse, push} and each baseline b. The error is C5's response error over the non-excited parts: RMS wrapped phase plus RMS position over L. Phase and position parts are stored separately.
-- *Bounded predictive error,* operationally: strictly better than every cheap baseline, for both excitation types, at each transition. The conjunction only makes support harder to reach.
+- *Bounded predictive error* requires two things, for both excitation types, at each transition:
+  1. **The model beats every cheap baseline** (the six gains, as accepted in D4).
+  2. **The model's error has an absolute ceiling (Codex F5; D8).** The normalized error r = error_model ÷ error_no-transfer is the model's error relative to the size of the actual response (error_no-transfer is the error of predicting no response). Per world it is the mean over the excitations of that type; the CI upper bound of its mean across worlds must be ≤ **0.5**. The model must therefore capture at least half of the observed response, which baseline dominance alone does not guarantee: errors of 99.9 against 100 beat every baseline and still predict almost nothing.
+
+  The conjunction is an intersection-union requirement: all parts must pass.
 
 **Baselines,** the same at both transitions, all required:
 1. no transfer;
@@ -357,10 +396,10 @@ Each composition endpoint tests a locked-core clause (§0). The optional extensi
 | `dose_response_lN` | Per direction: (1) **INCONCLUSIVE** if fewer than 10 worlds; (2) **PASS** if the means do not decrease and the highest-minus-lowest CI > 0; (3) **FAIL** if that CI < 0; (4) **INCONCLUSIVE** otherwise. The endpoint fails if either direction fails and passes only if both pass. |
 | `downward_effect_lN`, `emergent_transfer_lN`, `upward_transfer_l3` | Margin 0.01 rad: (1) **INCONCLUSIVE** if fewer than 10 worlds; (2) **FAIL** if the CI upper bound < 0.01; (3) **PASS** if the CI lower bound > 0.01; (4) **INCONCLUSIVE** otherwise. |
 | `effective_state_lN` | C5's bounds (position 0.25 L, size 0.05, frequency 0.01 / C_N). (1) **INCONCLUSIVE** if fewer than 10 formed worlds; (2) **PASS** if ≥ 90% of published parents meet every bound; (3) **FAIL** otherwise. |
-| `coarse_vs_full_lN` | The registered recipe (§7). Six paired open-loop gains per world (2 excitation types × 3 baselines). (1) **INCONCLUSIVE** if fewer than 10 worlds; (2) **FAIL** if any gain CI upper bound < 0; (3) **PASS** if every gain CI lower bound > 0; (4) **INCONCLUSIVE** otherwise. Reopening, flags, the error split, frequency, recovery and work are reported, never scored. |
-| `unit_specificity_lN` | Per world, the mean over the two excitations of (mean lifted error of the K alternative groupings − lifted error of the real grouping). Groups with no valid alternative grouping are NOT_TESTED and counted. (1) **INCONCLUSIVE** if fewer than 10 tested worlds; (2) **FAIL** if the CI upper bound < 0; (3) **PASS** if the CI lower bound > 0; (4) **INCONCLUSIVE** otherwise. |
+| `coarse_vs_full_lN` | The registered recipe (§7). Six paired open-loop gains per world (2 excitation types × 3 baselines), and the normalized error r per excitation type. (1) **INCONCLUSIVE** if fewer than 10 worlds; (2) **FAIL** if any gain CI upper bound < 0, **or** any r CI lower bound > 0.5; (3) **PASS** if every gain CI lower bound > 0 **and** every r CI upper bound ≤ 0.5; (4) **INCONCLUSIVE** otherwise. Reopening, flags, the error split, frequency, recovery and work are reported, never scored. |
+| `unit_specificity_lN` | Per world, the mean over the 4 grouping-independent probe sites × 2 probe types of (mean lifted error of the K alternative groupings − lifted error of the real grouping). Groups with no valid alternative grouping are NOT_TESTED and counted. (1) **INCONCLUSIVE** if fewer than 10 tested worlds; (2) **FAIL** if the CI upper bound < 0; (3) **PASS** if the CI lower bound > 0; (4) **INCONCLUSIVE** otherwise. |
 | `same_law_closure_lN` (optional extension) | E1 with the registered port variant, scored exactly as `coarse_vs_full_lN` (same six gains, same rows). |
-| `scale_separation_lN` (registered RRG prediction) | Formation time and size are reported (§5). Verdict on relaxation time: per world, τ_N of the group alone ÷ the mean τ_{N−1} of its parts alone. Censored values are counted lower bounds. (1) **INCONCLUSIVE** if fewer than 10 worlds; (2) **FAIL** if the CI upper bound < 1; (3) **PASS** if the CI lower bound > 1; (4) **INCONCLUSIVE** otherwise. |
+| `scale_separation_lN` (registered RRG prediction) | Formation time and size are reported (§5). The verdict is on relaxation time, using **valid bounds only, never an imputed value** (Codex F7). Per world, the ratio is ρ = τ_N of the group alone ÷ the mean τ_{N−1} of its parts alone.<br>**Lower bound ρ_lo:**<br>• a censored numerator enters at its censoring limit, which is valid as a lower bound;<br>• if any denominator τ is censored, ρ_lo = 0, so that world gives no support.<br>**Upper bound ρ_hi:**<br>• a censored numerator gives ρ_hi = +∞, so that world cannot support FAIL;<br>• a censored denominator enters at its limit.<br>**Rows:** (1) **INCONCLUSIVE** if fewer than 10 worlds; (2) **PASS** if the bootstrap CI lower bound of mean ρ_lo > 1; (3) **FAIL** if the bootstrap CI upper bound of mean ρ_hi < 1 (worlds with ρ_hi = +∞ make this impossible); (4) **INCONCLUSIVE** otherwise.<br>These are bound-based claims: PASS means the true mean exceeds 1 even under the least favourable resolution of the censored values. |
 | `variation_lN` | Descriptive (locked §6): the distribution of formed groups by part count, phase-pattern type (all inter-part offsets within the pattern tolerance of 0 means in phase; otherwise offset), and shape (L of the group ÷ median L of its parts, in quartiles). |
 | `g_to_m_channels_l3`, `parts_alive_l3`, `parts_in_situ_l3` | Descriptive: single-channel effects; recursive criterion-6 values for every part of **every** candidate; in-place recovery and τ inside against alone. |
 | `interface_fidelity`, `coarse_error_decomposition`, `coarse_depth`, `compression_ratio` | Descriptive (§3, §7). Raw values are stored. |
@@ -387,6 +426,12 @@ Each composition endpoint tests a locked-core clause (§0). The optional extensi
 | | 3 | otherwise | INCONCLUSIVE |
 
 A NOT_SUPPORTED optional extension rejects that extension only. It never changes H-C or the locked core (proof matrix; `05_CHANGE_CONTROL.md`).
+
+**Multiplicity scope (Codex F12).**
+- Every individual endpoint interval and verdict is **nominal** (95%, uncorrected).
+- The central H-C claim is an **intersection-union** requirement: every component must pass, which only makes support harder.
+- Endpoint verdicts reported alongside are not family-wise evidence.
+- Development readiness gains are **selection-biased** (the best of four combinations) and are readiness measurements only. The final test of the selected recipe runs on fresh worlds.
 
 - **Formation and H-M.** Too few groups is no evidence about coupling (C4 R003), so formation failure alone never makes H-M NOT_SUPPORTED.
 - **Formation and H-C.** Composition that clearly does not happen is the H-C answer for this rule (C5 D3, applied at both levels).
@@ -416,9 +461,17 @@ A NOT_SUPPORTED optional extension rejects that extension only. It never changes
 2. **Timescales.** C₂ and C₃ are measured alone under contact placement. τ₃ must be finite for a majority of development groups (stop rule 2), and C₂ must lie within [1.6, 6.4], which is C5's T = 3.2 within a factor of 2 (stop rule 3).
 3. **Interface fidelity.** C5's and C6's composition rules are compared on development parents: rate error against the observed rate, and coarse cross-link counts against the element-level census. C6's rule must be at least as faithful on both measures.
 4. **Coarse readiness.** At both transitions, on development groups, compute the six gains for each of the four pre-declared combinations (E1 or E2) × (V1 or V2), and the error decomposition.
-   - The combination with the largest worst-cell mean gain at the worse transition is registered.
-   - It is used only if that worst-cell mean gain is > 0 at both transitions, computed on at least 10 development groups per transition. Fewer groups means stop and report.
-5. **Overlap calibration.** Record union-of-hulls overlap for touching accepted groups at level 3. Intact touching groups above 0.2 means stop.
+   - The combination with the largest worst-cell mean gain at the worse transition is registered. This gain is selection-biased (the best of four) and is a readiness measurement only.
+   - A combination whose E2 Jacobian fails the convergence check on more than half of the development groups is excluded.
+   - It is used only if both hold at both transitions, on at least 10 development groups per transition:
+     - its worst-cell mean gain is > 0;
+     - its mean normalized error r is ≤ 0.5 for each excitation type (the D8 ceiling).
+   - Otherwise, or with fewer groups, stop and report.
+5. **Overlap calibration, with a population that does not depend on acceptance (Codex F9).**
+   - *Population:* every pair of level-2 **input templates**, the harvested parts, in contact at the end of the development level-3 formation runs, **whether or not** any level-3 candidate is accepted.
+   - *"Intact":* both parts pass the dynamic part of criterion 6 (their own criteria 2–4 on own-level windows), which does not involve the geometric cut.
+   - *Recorded:* the pre-cut union-of-hulls overlap of every such pair, as raw values.
+   - *Stop:* any intact pair above 0.2 means stop (stop rule 6). An empty population also means stop.
 6. **Runtime projection** from measured per-world costs (§10).
 
 If any check fails (stop rules 1–7 in §12), the implementer **stops and reports to the owner before registration**. The law, the thresholds and the margins are never changed to make composition or prediction succeed. A failure here is itself a finding. The owner can then:
@@ -464,7 +517,13 @@ If any check fails (stop rules 1–7 in §12), the implementer **stops and repor
 - `c5_coarse`: `run`, `CoarseState`, `links`, `rhs`. These are level-agnostic and used at both transitions.
 - `c5_experiment`: `assign_templates`, `efold`, `relaxation_prediction`, `response_error`, `margin_verdict`, `separation_verdict`, `control_verdict`, `mg_dose_rms`.
 
-`milestones/c6.json` lists the C4 and C5 files, both manifests and the C++ source and build tool as dependencies. The preflight stage builds the kernel and checks the compiler pin.
+`milestones/c6.json` lists the C4 and C5 files, both manifests and the C++ source and build tool as dependencies.
+
+**Required pipeline engineering (Codex F10 note).** The current preflight has no native build step, and command stages time out at 3,600 s. Before any panel, the implementer extends the shared pipeline tools, which are pinned rather than frozen and may lawfully be improved for C6:
+- an enforced build of the kernel, with the compiler-pin check, in the preflight;
+- a registered per-stage timeout that covers the approved runtime projection.
+
+No unsupported extra stage is added to the exact-schema milestone configuration.
 
 **New files.**
 - `geomind/c6_levels.py`: owner tree, per-frame published series, `detect_level`, recursive criterion 6, threshold scaling, alternative groupings and the unit-specificity statistic.
@@ -497,8 +556,17 @@ If any check fails (stop rules 1–7 in §12), the implementer **stops and repor
   - a synthetic fixture with two rigid sub-groups, where the real grouping predicts better;
   - a flat fixture where no grouping is better;
   - alternative groupings are contiguous, keep the size profile and mix real parts;
-  - every grouping is scored on the same element set.
+  - every grouping is scored on the same element set;
+  - probes are drawn before any grouping exists;
+  - the decoder's offsets are fixed at t₀;
+  - the analytic flat-consensus null gives no specificity, and a modular fixture gives positive specificity (F14).
+- *Criterion 6 observation:* a parent faster than its parts still gets at least one complete own-level window per part, and a part with none fails as INSUFFICIENT_OBSERVATION (F4).
+- *Censoring:* the scale-separation bounds behave as defined, including the ρ_hi = +∞ case (F7).
+- *Placement:* the contact solve lands within [0.6, 0.6 + 10⁻⁶] (F11).
 - *Effective recipes:*
+  - the level-1 wrapper's measured rate reaches `natural_rate` (F1);
+  - the E2 matrix exponential matches the eigen-solution when J is diagonalizable, gives I + tJ on the Jordan block, and fails on non-finite input;
+  - E2 abstains when its Jacobian does not converge;
   - E2 matches E1 to first order for a small poke;
   - both receive only published states;
   - E1 is exactly `c5_coarse.run`.
@@ -514,7 +582,8 @@ If any check fails (stop rules 1–7 in §12), the implementer **stops and repor
 - *Publication (N1):* a global publication count; NaN fields accepted.
 - *Composition:* the size-weighted natural rate; capacities not folded.
 - *Coarse model and scoring:* reading level-1 states at level 3; scoring with reopening; pulse and push averaged; the push baseline using the phase τ; the relaxation τ taken from the wrong level.
-- *Unit specificity:* alternatives that are not contiguous; the real grouping included among the alternatives; partitions scored on different element sets.
+- *Unit specificity:* alternatives that are not contiguous; the real grouping included among the alternatives; groupings scored on different element sets; probes aligned to a real part; decoder offsets refreshed from later full states; fake parts published without the measured rate.
+- *Error ceiling and censoring:* the normalized-error ceiling ignored; a censored τ imputed as a point value; E2 run on an unconverged Jacobian.
 - *Theory alignment:* scale separation or same-law closure entering H-C; formation time measured only in the window instead of over the whole horizon; E2 using a parameter fitted on scored excitations; a different recipe at each transition.
 - *Controls and harvest:* recovery ignoring the original group; the decoupled control leaking links; a harvest source shared across worlds; the harvest filter skipped.
 - *Doses:* a mixed dose family.
@@ -547,7 +616,7 @@ M = 7 would mean about 350 elements, roughly 3.4× the cost per step, so it is n
   - The manifest registers the exact compiler identification line (now `Apple clang version 21.0.0 (clang-2100.3.34.2)`) and the flags.
   - `tools/build_c6.py` refuses to build if either differs.
   - The build record (compiler, flags, source and binary SHA-256) goes into the pipeline artifacts, and the receipt binds it.
-  - A container or Nix pin is out of scope. A changed compiler stops the work (stop rule 13), and silent drift is impossible.
+  - A container or Nix pin is out of scope. A changed compiler identification or flags stops the work (stop rule 13). This is a local toolchain check, not a hermetic pin: SDK and libm changes that leave the identification line unchanged are not covered, although checks 1–3 rerun at every tests stage would catch numerical drift. The remaining gap is a stated reproducibility limitation.
 - *Equivalence protocol against the NumPy reference (gate `backend_equivalence`).* Each check is yes/no:
   1. **Neighbour selection:** indices and masks are identical (exact integers) on 1,000 random states and every development state checked.
   2. **One RK4 step:** |difference| ≤ 10⁻¹² × max(1, |value|) in x and θ, for the intact model and every ablation preset, including frozen topology. θ is unwrapped and can grow large, so the bound is relative above 1.
@@ -557,7 +626,8 @@ M = 7 would mean about 350 elements, roughly 3.4× the cost per step, so it is n
   - checks 1–3 in the tests stage (fast);
   - check 4 in the design gate before registration, **before** any formation pass, so every design-gate number comes from the engine already shown equivalent; and on one world in the smoke stage;
   - any failure is stop rule 14.
-- *Why not bit-identical:* libm `exp`, `sin` and `cos` differ from NumPy's in the last bits. Check 4 shows that this does not change any registered outcome. If it ever does, the owner decides.
+- *Why not bit-identical:* libm `exp`, `sin` and `cos` differ from NumPy's in the last bits.
+- *What check 4 shows, and what it does not:* it tests on 15 prespecified development worlds whether this changes any outcome. No failing world may be discarded to obtain equivalence. It does not prove equivalence of every verdict on every future world; that limit is stated.
 - *Parallelism:* the kernel is single-threaded, and the runner uses 8 processes as before.
 - *Mutants:* they act on the wrapper and the kernel's flags (ignoring an ablation flag, wrong tie order, dropping the J term). The equivalence tests must detect each one.
 - *Speed:* unmeasured, because nothing may run before approval. The design gate measures it and re-projects the panel. The NumPy estimate above (about 1–2 h) is the ceiling.
@@ -601,7 +671,7 @@ Each responsibility has exactly one owner. Each rule is a yes/no condition with 
 
 | Role | Who | Owns | Never |
 |---|---|---|---|
-| Owner | The project owner | Approving or rejecting this proposal; decisions D1–D7 (D2–D7 answered on 2026-10-02; D1 open); the decision at every STOP; milestone status | — |
+| Owner | The project owner | Approving or rejecting this proposal; decisions D1–D8 (D2–D7 answered on 2026-10-02; D1 and D8 open); the decision at every STOP; milestone status | — |
 | Drafter | Claude (claude-opus-5-5) | This proposal's text, its ledger and its self-audits; decision record 0007 after approval. Every defect found in the proposal, whoever finds it, is fixed by the drafter and recorded in a self-audit with its cause. | Runs code before approval unless the owner explicitly asks (an owner-requested pilot goes to `evidence/c6_dev_pilot/`); approves its own proposal |
 | Implementer | Codex (the owner's D5 answer) | The written design critique (first task), the C++ engine, the design gate, the registration (`experiments/c6_manifest.json`, `milestones/c6.json`), the `c6_*` code, its tests and mutants, the one pipeline run, the handoff | Changes the C4 law, a threshold, a margin, a dose, a baseline or a verdict rule after seeing any development or final outcome; edits frozen C4/C5 files or `.gate/`; bypasses a hook |
 | Reviewer | Claude, the other model family from the implementer | One review of the committed evidence, capped at 20 minutes, written to `evidence/c6_r001_review_<family>/INDEPENDENT_REVIEW.md` | Reruns the panel; edits evidence or code |
@@ -614,11 +684,11 @@ Each responsibility has exactly one owner. Each rule is a yes/no condition with 
 | 2 | Design gate, timescales | τ₃ alone is not finite for a majority of development groups | STOP |
 | 3 | Design gate, timescales | Measured C₂ outside [1.6, 6.4] | STOP |
 | 4 | Design gate, interface fidelity | C6's composition is less faithful than C5's on rate **or** on capacity | STOP |
-| 5 | Design gate, coarse readiness | Fewer than 10 development groups at either transition, **or** the selected recipe-and-port combination's worst-cell mean gain ≤ 0 at either transition | STOP |
-| 6 | Design gate, overlap | Any intact touching development group has union-of-hulls overlap > 0.2 | STOP |
+| 5 | Design gate, coarse readiness | Fewer than 10 development groups at either transition, **or** the selected combination's worst-cell mean gain ≤ 0, **or** its mean r > 0.5 for either excitation type, at either transition | STOP |
+| 6 | Design gate, overlap | Any intact touching pair of input templates (§9 step 5) has union-of-hulls overlap > 0.2, **or** the population is empty | STOP |
 | 7 | Design gate, runtime | Projected panel > 3 h on 8 processes | STOP |
 | 8 | Before registration | Any proposal rule cannot be implemented as written | STOP (the drafter amends the proposal; the owner re-approves) |
-| 9 | Pipeline | Any stage fails | The pipeline stops; fix the code, then rerun from that stage (AGENTS.md) |
+| 9 | Pipeline | Any stage fails | The pipeline stops. Fix the cause, then rerun `tools/verify.py`: it skips only stages verified for **identical** code, and any code change reruns every stage its dependency fingerprint invalidates |
 | 10 | Panel | Any gate in §8 fails | The run is not REVIEW_READY |
 | 11 | Before review | The implementer finds a design defect | Withdraw the revision through a decision record; the next revision uses fresh seeds |
 | 12 | Any time | A rule mixes levels outside the evaluator-side list in §3a | It is a defect: the drafter fixes the proposal before registration, or the implementer withdraws after |
@@ -684,6 +754,10 @@ Each responsibility has exactly one owner. Each rule is a yes/no condition with 
    - scale separation is tested as a registered prediction, not required for something to count as a scale.
 
    The standard's C6 section gets a one-paragraph pointer to 0007, and nothing else in it changes.
+8. **D8 — Absolute error ceiling for bounded prediction (Codex F5). Recommended: accept r ≤ 0.5.** At each transition and for each excitation type, the CI upper bound of the mean normalized error error_model ÷ error_no-transfer must be ≤ 0.5: the model captures at least half of the actual response.
+   - *Why 0.5:* it is the round, interpretable point where the prediction carries more of the response than it misses.
+   - *Disclosure:* C5's accepted data were seen when drafting. There, the port law's median r was 0.38 on pulses and 1.09 on pushes, so pushes would fail unless C6's corrections help. The design gate's readiness check stops before the panel if they don't.
+   - *Alternative:* no ceiling, which narrows H-C to "better than baselines". Codex judges that insufficient for R4's bounded-error requirement.
 
 ## Self-audit of the first draft (2026-10-02, owner-requested)
 
@@ -785,4 +859,29 @@ The drafter read the RRG v0.2 package (`RPG_theory/research/RRG_CURRENT/`, docum
     - the rate-spread invariant and step-exactness;
     - E1 and E2 use only published fields;
     - the C5 functions named in §10 exist in the frozen code.
+
+## Seventh self-audit: Codex's design critique (2026-10-02)
+
+Codex's critique (`docs/reviews/c6_proposal_critique_codex.md`, commit 03a6a28, verdict CHANGES_REQUIRED) reviewed proposal commit 6660692. The drafter checked F1 and F3 against the frozen source before fixing them: `resonator_state` publishes the mean intrinsic rate, and published states carry only port offsets and sorted phase offsets. Every active finding is fixed.
+
+| Finding | Cause in the draft | Fix |
+|---|---|---|
+| F14 (high): specificity probes aligned with the real partition | The probe was chosen on a real part, so the comparison favoured the real grouping even in a flat system | Grouping-independent probes on seeded sub-parts; a flat-null contract and a modular positive contract (§5) |
+| F1 (high): fake level-1 parts could not get the measured rate | The rule relied on the frozen constructor, whose `rate` argument never reaches `natural_rate` | A C6 level-1 wrapper that writes the measured isolated rate into the consumed field; estimator and window specified; contract (§3) |
+| F3 (high): the element lift needed unpublished offsets | The scoring was written as if published states contained every element offset | An evaluator-only decoder with identity-linked offsets fixed at t₀; paired responses; no later updates (§5) |
+| F4 (high): criterion 6 could pass without observing a part | Incomplete windows were discarded, so a parent faster than its parts left zero windows | At least one complete own-level window per part, by a generic horizon rule; otherwise INSUFFICIENT_OBSERVATION fails (§4) |
+| F5 (high): baseline dominance is not a bounded error | "Bounded predictive error" was defined only relative to baselines | Added an absolute ceiling on normalized error, r ≤ 0.5 (D8, owner decision) (§7, §8) |
+| F7 (medium): censored ratios and C_n aggregation undefined | Censored values were called lower bounds even in the denominator, and no estimator was registered | τ horizon, estimator and median aggregation specified; scale separation decided on valid bounds only (§3, §8) |
+| F8 (medium): E2 not a complete recipe | Step scale, non-diagonalizable Jacobians and the reference convention were unspecified, and it was overclaimed as the theory's Hessian reduction | Size-normalized steps, a convergence check with abstention, a general matrix exponential, the reference convention, corrected wording (§7) |
+| F9 (medium): overlap calibration could be circular | The population was "accepted groups", which already pass the cut | An acceptance-independent population of input-template pairs; empty population means stop (§9, stop rule 6) |
+| F10 (medium): the restart rule conflicted with fingerprints | "Rerun from that stage" ignored stage invalidation | Stop rule 9 restated; the native build and stage timeout listed as required pipeline engineering (§10, §12) |
+| F15 (medium): "C5 was stricter" was false | Longer windows were assumed to be monotonically stricter | Non-nested measurements; C5 stands on its own registration (§4) |
+| F11 (low): contact stepping could not hit the gap exactly | A fixed step was specified with no final solve | Bracket, then bisect to within 10⁻⁶; seeded retry on a miss (§3) |
+| F12 (low): multiplicity scope unstated | The proposal had no explicit statement of scope | Individual verdicts nominal; H-C intersection-union; readiness gains labelled selection-biased (§8, §9) |
+
+Also fixed:
+- *Codex's §G notes:* the compiler check is described as local, not hermetic, and the scope of check 4 is stated (§10).
+- *Wording:* the rate-spread drift is a median, not a guarantee (ledger).
+- *F2 note:* published-centroid scaling is spelled out (§6).
+- *Withdrawn findings:* Codex withdrew F2, F6 and F13 as defects, and F2 and F6 are used as implementation notes. The critique file is the reviewer's record and is not edited.
 
