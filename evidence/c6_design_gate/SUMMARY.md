@@ -55,3 +55,21 @@ The commonest single cause, in 17 of 30 worlds, was level-1 overlap alone.
 These are development data, not a registered panel, so there is no H-C or H-M verdict. The proposal's
 next-step options apply (§9): run the recorded panel anyway to record the negative, write a decision record, or
 authorize a redesign in a new proposal. The owner decides.
+
+## Owner-requested diagnostic: the same level-2 groups alone (2026-10-02)
+
+**Method:** `alone_diagnostic/alone_check.py`; output in `alone_diagnostic/alone_check.json.gz`.
+1. Rebuild the level-3 pass-1 bank with the committed gate code: purpose 4300, development entropy 33333.
+2. Verify that the 150 rebuilt level-2 groups are **identical** to the gate's (source paths match: True).
+3. Run each group **alone** for the same horizon (960) and observation window (W = 288).
+4. Apply the same `recursive_validity` code.
+
+| Measure | Alone | Inside the level-3 worlds |
+|---|---|---|
+| Level-1 units with sibling overlap > 0.2 | **1 of 606** (median 0.000) | **167 of 606** (median 0.086) |
+| Level-1 units failing their own criteria 2–4 | 0 of 606 | 27 of 606 |
+| Groups with a level-1 overlap failure | **1 of 150** | **88 of 150** |
+| Fail in the world but not alone | 87 groups | |
+| Fail alone but not in the world | 0 groups | |
+
+**Reading:** the fusion is caused by **contact with neighbouring level-2 groups**, not by intrinsic ageing. Alone, a level-2 group keeps its C4 units distinct and valid over the whole level-3 time span. Pressed against its neighbours in a level-3 assembly, its inner units are compressed into each other. In this model, forming the higher level crushes the lowest level, which C6's "parts alive" requirement (locked §5: lower levels stay internally active) forbids. This is development data with no verdict; the owner decides the next step.
