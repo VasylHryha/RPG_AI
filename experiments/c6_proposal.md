@@ -1013,3 +1013,5 @@ Claude's review of the step-2a code (`docs/reviews/c6_step2a_review_claude.md`) 
 
 Together with amendment A1, these need owner re-approval (stop rule 8). No threshold, rule or verdict changes.
 
+**Owner re-approval (2026-10-02):** amendments A1 and A2 are re-approved, and the development design gate is authorized to run.
+
