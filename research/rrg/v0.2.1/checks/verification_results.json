@@ -1,0 +1,86 @@
+{
+  "status": "passed",
+  "number_of_test_groups": 9,
+  "scope": "Limited deterministic spot checks; not a universal proof, full PDE/stochastic check, or rerun of archived 32-cell simulation.",
+  "results": [
+    {
+      "test": "noise_filter_peak",
+      "status": "passed",
+      "values": {
+        "peak_angular_frequency": 1.2119199643540823,
+        "spectrum_at_peak": 0.5389473684210526
+      }
+    },
+    {
+      "test": "signed_scalar_branches",
+      "status": "passed",
+      "values": {
+        "x_minus": 0.4852060066544322,
+        "x_plus": 0.8743998691139306,
+        "lower_derivative": 0.24915026221291814,
+        "upper_derivative": -0.8091502622129179,
+        "equilibrium_count": 5
+      }
+    },
+    {
+      "test": "stationary_density_current",
+      "status": "passed",
+      "values": {
+        "diffusivity": 0.07,
+        "points_checked": 5
+      }
+    },
+    {
+      "test": "finite_domain_detuning",
+      "status": "passed",
+      "values": {
+        "continuous_maximum": 0.05,
+        "discrete_maximum": -0.07959999999999999,
+        "q": 0.6,
+        "L": 6.283185307179586
+      }
+    },
+    {
+      "test": "constant_intensity_relaxation",
+      "status": "passed",
+      "values": {
+        "equilibrium": 0.964575131106459,
+        "time_to_90_percent_from_B0": 4.605170185988092
+      }
+    },
+    {
+      "test": "implicit_background_can_be_unstable",
+      "status": "passed",
+      "values": {
+        "equilibrium": 1.0,
+        "linear_growth_rate": 0.5
+      }
+    },
+    {
+      "test": "conditional_next_mode_coefficient",
+      "status": "passed",
+      "values": {
+        "before": -0.5,
+        "after": 0.264575131106459,
+        "not_claimed": "a stable next resonator or newly existing mode"
+      }
+    },
+    {
+      "test": "assumed_wavelength_response",
+      "status": "passed",
+      "values": {
+        "larger_ratio": 1.5820873435527967,
+        "opposite_response_ratio": 0.6320763541122586
+      }
+    },
+    {
+      "test": "upper_bound_not_actual_divergence",
+      "status": "passed",
+      "values": {
+        "K": 2.0,
+        "zero_error_valid": true,
+        "upper_bound_at_N12": 81.9
+      }
+    }
+  ]
+}

@@ -1,0 +1,513 @@
+{
+  "version": "0.2.1",
+  "audit_date": "2026-10-02",
+  "scope": "Targeted primary-source verification, not a systematic review or independent replication",
+  "cases": [
+    {
+      "id": "E01",
+      "title": "Experimental Study of the Triplet Synchronization of Coupled Nonidentical Mechanical Metronomes",
+      "authors": "Jia, Song, Liu, Kurths & Xiao",
+      "year": 2015,
+      "doi": "10.1038/srep17008",
+      "url": "https://doi.org/10.1038/srep17008",
+      "publication": "Scientific Reports 5, 17008",
+      "evidence_type": "experiment",
+      "rrg_relation": "component / constraint",
+      "arrows": [
+        "C2"
+      ],
+      "finding": "Coupled nonidentical metronomes exhibit a collective triplet synchronization relation even where individual pairs are asynchronous.",
+      "externally_supplied": "Metronomes, their energy supply, and mechanical coupling already exist.",
+      "scope_limit": "Collective coordination need not mean every oscillator has one identical frequency or phase. This does not demonstrate the creation of the oscillators.",
+      "read_coverage": "Publisher HTML, including experimental description.",
+      "checked_on": "2026-10-02",
+      "notes": "",
+      "short_label": "Mechanical synchronization"
+    },
+    {
+      "id": "E02",
+      "title": "Controlling the motion of multiple objects on a Chladni plate",
+      "authors": "Zhou, Sariola, Latifi & Liimatainen",
+      "year": 2016,
+      "doi": "10.1038/ncomms12764",
+      "url": "https://doi.org/10.1038/ncomms12764",
+      "publication": "Nature Communications 7, 12764",
+      "evidence_type": "experiment",
+      "rrg_relation": "component",
+      "arrows": [
+        "C1",
+        "C3"
+      ],
+      "finding": "Plate vibrations can transport particles; the study uses controlled sequences of excitation to manipulate multiple objects.",
+      "externally_supplied": "A manufactured plate, particles, actuator, camera and control algorithm are provided.",
+      "scope_limit": "Distinguish ordinary nodal accumulation from the paper’s actively controlled manipulation. Neither establishes autonomous particle-to-field feedback or reproduction.",
+      "read_coverage": "Publisher HTML and author-institution abstract. Supplementary videos linked on the paper page were not watched.",
+      "checked_on": "2026-10-02",
+      "notes": "",
+      "short_label": "Chladni particle manipulation"
+    },
+    {
+      "id": "E03",
+      "title": "Independent trapping and manipulation of microparticles using dexterous acoustic tweezers",
+      "authors": "Courtney et al.",
+      "year": 2014,
+      "doi": "10.1063/1.4870489",
+      "url": "https://doi.org/10.1063/1.4870489",
+      "publication": "Applied Physics Letters 104, 154103",
+      "evidence_type": "experiment",
+      "rrg_relation": "component",
+      "arrows": [
+        "C3"
+      ],
+      "finding": "A phased ultrasonic array independently traps and manipulates microparticles; reported examples include 45 and 90 micrometre spheres.",
+      "externally_supplied": "An engineered transducer array, liquid medium and pre-existing particles are required.",
+      "scope_limit": "This particular experiment supports microscale manipulation, not a claim of nanoscale performance or a universal size–frequency law.",
+      "read_coverage": "Author-institution records and original-paper abstract; not a full methods or data audit.",
+      "checked_on": "2026-10-02",
+      "notes": "",
+      "short_label": "Acoustic microparticle trapping"
+    },
+    {
+      "id": "E04",
+      "title": "Noise-induced spatial periodicity in excitable chemical media",
+      "authors": "Matjaž Perc",
+      "year": 2005,
+      "doi": "10.1016/j.cplett.2005.05.042",
+      "url": "https://doi.org/10.1016/j.cplett.2005.05.042",
+      "publication": "Chemical Physics Letters 410, 49–53",
+      "evidence_type": "simulation",
+      "rrg_relation": "component",
+      "arrows": [
+        "C0"
+      ],
+      "finding": "Numerical excitable-chemical-media dynamics show an intermediate noise regime with enhanced spatial periodicity.",
+      "externally_supplied": "An Oregonator-type reaction model, diffusion, parameter choices and noisy forcing are specified.",
+      "scope_limit": "This is a numerical result, not a laboratory observation of the primordial background. Noise acts through existing nonlinear dynamics.",
+      "read_coverage": "Primary publisher record and abstract; equations and simulation data not independently reproduced.",
+      "checked_on": "2026-10-02",
+      "notes": "",
+      "short_label": "Noise-assisted patterning model"
+    },
+    {
+      "id": "E05",
+      "title": "Transition from a uniform state to hexagonal and striped Turing patterns",
+      "authors": "Ouyang & Swinney",
+      "year": 1991,
+      "doi": "10.1038/352610a0",
+      "url": "https://doi.org/10.1038/352610a0",
+      "publication": "Nature 352, 610–612",
+      "evidence_type": "experiment",
+      "rrg_relation": "component / comparator",
+      "arrows": [
+        "C0"
+      ],
+      "finding": "A chemically supplied reaction–diffusion experiment produces stationary patterned states from a uniform regime.",
+      "externally_supplied": "Specific reactions, diffusion, gel geometry and reagent supply are provided.",
+      "scope_limit": "A stationary spatial mode is not automatically a temporal oscillation or a self-maintaining resonator. Uniform-state instability is not identical to noise-induced ordering.",
+      "read_coverage": "Publisher abstract and bibliographic record.",
+      "checked_on": "2026-10-02",
+      "notes": "",
+      "short_label": "Stationary Turing patterns"
+    },
+    {
+      "id": "E06",
+      "title": "Resonant pattern formation in a chemical system",
+      "authors": "Petrov, Ouyang & Swinney",
+      "year": 1997,
+      "doi": "10.1038/41732",
+      "url": "https://doi.org/10.1038/41732",
+      "publication": "Nature 388, 655–657",
+      "evidence_type": "experiment",
+      "rrg_relation": "partial bridge",
+      "arrows": [
+        "C2",
+        "C3"
+      ],
+      "finding": "Periodic illumination of a photosensitive chemical oscillator locks responses to the forcing and changes the spatial pattern.",
+      "externally_supplied": "The reaction medium and periodic optical drive are supplied externally.",
+      "scope_limit": "The experiment links temporal forcing and spatial organization, not the spontaneous origin of the drive or new fundamental laws.",
+      "read_coverage": "Publisher abstract and record.",
+      "checked_on": "2026-10-02",
+      "notes": "",
+      "short_label": "Forced chemical patterns"
+    },
+    {
+      "id": "E07",
+      "title": "Dicke quantum phase transition with a superfluid gas in an optical cavity",
+      "authors": "Baumann, Guerlin, Brennecke & Esslinger",
+      "year": 2010,
+      "doi": "10.1038/nature09009",
+      "url": "https://doi.org/10.1038/nature09009",
+      "publication": "Nature 464, 1301–1306",
+      "evidence_type": "experiment",
+      "rrg_relation": "partial bridge",
+      "arrows": [
+        "C1",
+        "C3",
+        "C4"
+      ],
+      "finding": "A pumped atom–cavity system undergoes a collective transition with mutually coupled matter organization and optical-field dynamics.",
+      "externally_supplied": "Atoms, cavity boundaries and laser pumping are given.",
+      "scope_limit": "This is a close geometry–field feedback example, but not unstructured matter producing its own complete apparatus or successive autonomous levels.",
+      "read_coverage": "Publisher abstract and article record.",
+      "checked_on": "2026-10-02",
+      "notes": "",
+      "short_label": "Atom–cavity self-organization"
+    },
+    {
+      "id": "E08",
+      "title": "Tunable colloidal swarmalators with hydrodynamic coupling",
+      "authors": "Heuthe, Iyer, Gompper & Bechinger",
+      "year": 2025,
+      "doi": "10.1038/s41467-025-66830-5",
+      "url": "https://doi.org/10.1038/s41467-025-66830-5",
+      "publication": "Nature Communications 16, 10984",
+      "evidence_type": "experiment",
+      "rrg_relation": "partial bridge",
+      "arrows": [
+        "C1",
+        "C2",
+        "C3"
+      ],
+      "finding": "Colloidal oscillator phases and spatial organization co-evolve in collective states.",
+      "externally_supplied": "Feedback-controlled active particles and hydrodynamic interactions are part of the experimental mechanism.",
+      "scope_limit": "The control architecture is essential context; it cannot be omitted when describing how spontaneous the organization is.",
+      "read_coverage": "Publisher HTML, including setup/control description.",
+      "checked_on": "2026-10-02",
+      "notes": "Published 8 December 2025. The experiment is not a demonstration of an unprogrammed universal source law.",
+      "short_label": "Colloidal swarmalators"
+    },
+    {
+      "id": "E09",
+      "title": "Self-Organized Resonance during Search of a Diverse Chemical Space",
+      "authors": "Kachman, Owen & England",
+      "year": 2017,
+      "doi": "10.1103/PhysRevLett.119.038001",
+      "url": "https://doi.org/10.1103/PhysRevLett.119.038001",
+      "publication": "Physical Review Letters 119, 038001",
+      "evidence_type": "simulation",
+      "rrg_relation": "partial bridge",
+      "arrows": [
+        "C1",
+        "C4"
+      ],
+      "finding": "A driven reacting-particle model develops structures matched to periodic forcing; in the studied regime their energy absorption helps stabilization.",
+      "externally_supplied": "Toy reaction rules, Brownian dynamics and a periodic drive are specified.",
+      "scope_limit": "This is not laboratory evidence and does not show that maximum absorption is a universal selection rule. Compare E17.",
+      "read_coverage": "Original-paper abstract on APS and author-institution record.",
+      "checked_on": "2026-10-02",
+      "notes": "",
+      "short_label": "Simulated resonance selection"
+    },
+    {
+      "id": "E10",
+      "title": "Experimental observation of self-replicating spots in a reaction–diffusion system",
+      "authors": "Lee, McCormick, Pearson & Swinney",
+      "year": 1994,
+      "doi": "10.1038/369215a0",
+      "url": "https://doi.org/10.1038/369215a0",
+      "publication": "Nature 369, 215–218",
+      "evidence_type": "experiment",
+      "rrg_relation": "partial bridge",
+      "arrows": [
+        "C5"
+      ],
+      "finding": "Chemical spots grow and split repeatedly in a laboratory reaction–diffusion system.",
+      "externally_supplied": "Reactive chemicals and nonequilibrium experimental conditions are supplied.",
+      "scope_limit": "Pattern duplication is not automatically reproduction with heredity, or a new organizational level. Do not infer a resonant microscopic mechanism merely from the shared shape of the process.",
+      "read_coverage": "Publisher abstract and bibliographic record.",
+      "checked_on": "2026-10-02",
+      "notes": "",
+      "short_label": "Replicating chemical spots"
+    },
+    {
+      "id": "E11",
+      "title": "Self-Replicating Holes in a Vertically Vibrated Dense Suspension",
+      "authors": "Ebata & Sano",
+      "year": 2011,
+      "doi": "10.1103/PhysRevLett.107.088301",
+      "url": "https://doi.org/10.1103/PhysRevLett.107.088301",
+      "publication": "Physical Review Letters 107, 088301",
+      "evidence_type": "experiment",
+      "rrg_relation": "partial bridge",
+      "arrows": [
+        "C3",
+        "C5"
+      ],
+      "finding": "Holes in a vertically driven starch suspension deform and split under suitable forcing.",
+      "externally_supplied": "The suspension, container and sustained vertical vibration already exist.",
+      "scope_limit": "A hole is a spatial pattern in supplied material, not a newly manufactured independent resonator or organism. Shape instability is part of replication here.",
+      "read_coverage": "Original-paper abstract on APS.",
+      "checked_on": "2026-10-02",
+      "notes": "",
+      "short_label": "Replicating suspension holes"
+    },
+    {
+      "id": "E12",
+      "title": "Dynamic self-assembly of magnetized, millimetre-sized objects rotating at a liquid–air interface",
+      "authors": "Grzybowski, Stone & Whitesides",
+      "year": 2000,
+      "doi": "10.1038/35016528",
+      "url": "https://doi.org/10.1038/35016528",
+      "publication": "Nature 405, 1033–1036",
+      "evidence_type": "experiment",
+      "rrg_relation": "partial bridge",
+      "arrows": [
+        "C3",
+        "C4"
+      ],
+      "finding": "Magnetically driven objects organize through their motion and fluid-mediated interactions.",
+      "externally_supplied": "Fabricated magnetic objects, liquid interface and rotating external field are provided.",
+      "scope_limit": "The result connects maintained activity and spatial arrangement. It does not imply all stable structures need continuous external driving.",
+      "read_coverage": "Publisher abstract and bibliographic record.",
+      "checked_on": "2026-10-02",
+      "notes": "",
+      "short_label": "Driven magnetic assembly"
+    },
+    {
+      "id": "E13",
+      "title": "Spontaneous network formation among cooperative RNA replicators",
+      "authors": "Vaidya, Manapat, Chen, Xulvi-Brunet, Hayden & Lehman",
+      "year": 2012,
+      "doi": "10.1038/nature11549",
+      "url": "https://doi.org/10.1038/nature11549",
+      "publication": "Nature 491, 72–77",
+      "evidence_type": "experiment",
+      "rrg_relation": "structural analogue / partial bridge",
+      "arrows": [
+        "C5",
+        "C4"
+      ],
+      "finding": "RNA fragments assemble into catalytic networks; tested cooperative networks have growth advantages over competing autocatalytic cycles.",
+      "externally_supplied": "Selected RNA sequences, fragments and controlled chemical conditions are supplied.",
+      "scope_limit": "This supports chemical organizational feedback and cooperation, not an identical acoustic or fundamental-particle mechanism. A formal catalytic graph alone does not establish sustained kinetics.",
+      "read_coverage": "Publisher abstract and change history; full subscription methods not inspected.",
+      "checked_on": "2026-10-02",
+      "notes": "Publisher reports a minor Figure 1 typo corrected on 31 October 2012. No claim here depends on the corrected figure.",
+      "short_label": "Cooperative RNA networks"
+    },
+    {
+      "id": "E14",
+      "title": "Transport, Collective Motion, and Brownian Motion",
+      "authors": "Hazime Mori",
+      "year": 1965,
+      "doi": "10.1143/PTP.33.423",
+      "url": "https://doi.org/10.1143/PTP.33.423",
+      "publication": "Progress of Theoretical Physics 33, 423–455",
+      "evidence_type": "theory / mathematical derivation",
+      "rrg_relation": "partial bridge",
+      "arrows": [
+        "C6"
+      ],
+      "finding": "Projection of many-body dynamics leads to a reduced description involving collective variables, memory and effective fluctuating forces.",
+      "externally_supplied": "Microscopic dynamics and a projection/choice of resolved variables are supplied.",
+      "scope_limit": "Unresolved dynamics need not be white noise. Describing a system at lower resolution does not physically create a new medium or hierarchy.",
+      "read_coverage": "Original publisher abstract and record; historical derivation not independently re-proved.",
+      "checked_on": "2026-10-02",
+      "notes": "",
+      "short_label": "Collective reduction and memory"
+    },
+    {
+      "id": "E15",
+      "title": "Realization of the Hofstadter Hamiltonian with Ultracold Atoms in Optical Lattices",
+      "authors": "Aidelsburger, Atala, Lohse, Barreiro, Paredes & Bloch",
+      "year": 2013,
+      "doi": "10.1103/PhysRevLett.111.185301",
+      "url": "https://doi.org/10.1103/PhysRevLett.111.185301",
+      "publication": "Physical Review Letters 111, 185301",
+      "evidence_type": "experiment",
+      "rrg_relation": "partial bridge",
+      "arrows": [
+        "C7"
+      ],
+      "finding": "Laser-assisted tunnelling implements an effective lattice Hamiltonian with magnetic-field-like phases.",
+      "externally_supplied": "Cold atoms, an optical lattice and precisely controlled driving are provided.",
+      "scope_limit": "This demonstrates selected effective dynamics, not arbitrary alteration of fundamental laws or a frequency-only recipe.",
+      "read_coverage": "Original-paper abstract on APS.",
+      "checked_on": "2026-10-02",
+      "notes": "",
+      "short_label": "Engineered lattice dynamics"
+    },
+    {
+      "id": "E16",
+      "title": "A colloidal viewpoint on the sausage catastrophe and the finite sphere packing problem",
+      "authors": "Marín-Aguilar et al.",
+      "year": 2023,
+      "doi": "10.1038/s41467-023-43722-0",
+      "url": "https://doi.org/10.1038/s41467-023-43722-0",
+      "publication": "Nature Communications 14, 7896",
+      "evidence_type": "experiment and simulation",
+      "rrg_relation": "component / comparator",
+      "arrows": [
+        "C4"
+      ],
+      "finding": "Confinement of colloidal spheres in vesicles influences which packing geometries occur, including competing arrangements.",
+      "externally_supplied": "Pre-existing particles, confining membranes and their material properties are provided.",
+      "scope_limit": "This is evidence that geometry affects accessible organization, not evidence that every such effect requires resonance.",
+      "read_coverage": "Publisher HTML; not an independent reproduction of simulations.",
+      "checked_on": "2026-10-02",
+      "notes": "",
+      "short_label": "Confinement-dependent packing"
+    },
+    {
+      "id": "E17",
+      "title": "Drive-specific selection in multistable mechanical networks",
+      "authors": "Kedia, Pan, Slotine & England",
+      "year": 2023,
+      "doi": "10.1063/5.0171993",
+      "url": "https://doi.org/10.1063/5.0171993",
+      "publication": "Journal of Chemical Physics 159, 214106",
+      "evidence_type": "simulation; published report also includes experimental evidence",
+      "rrg_relation": "constraint",
+      "arrows": [
+        "C4"
+      ],
+      "finding": "In studied driven mechanical networks, selected configurations absorb relatively little work from the drive.",
+      "externally_supplied": "Multistable spring networks, their interaction landscape and an external drive are supplied.",
+      "scope_limit": "This constrains “strongest resonance always dominates”; it does not refute a conditional geometry–mode hypothesis. The experimental portion was not separately method-audited here.",
+      "read_coverage": "Author preprint arXiv:1908.09332 plus journal metadata and original abstract indexed by PubMed.",
+      "checked_on": "2026-10-02",
+      "notes": "The 2019 preprint title is Drive-specific adaptation in disordered mechanical networks of bistable springs. It is not an additional independent study.",
+      "short_label": "Low-absorption selection"
+    },
+    {
+      "id": "E18",
+      "title": "Optical binding",
+      "authors": "Burns, Fournier & Golovchenko",
+      "year": 1989,
+      "doi": "10.1103/PhysRevLett.63.1233",
+      "url": "https://doi.org/10.1103/PhysRevLett.63.1233",
+      "publication": "Physical Review Letters 63, 1233–1236",
+      "evidence_type": "experiment",
+      "rrg_relation": "partial bridge",
+      "arrows": [
+        "C3",
+        "C4"
+      ],
+      "finding": "Illuminated microspheres display light-mediated interactions and bound configurations.",
+      "externally_supplied": "An external optical field, microspheres and surrounding medium already exist.",
+      "scope_limit": "Field scattering and particle arrangement interact, but a bound pair is not yet a recursively reproducing hierarchy.",
+      "read_coverage": "Original-paper abstract and record on APS.",
+      "checked_on": "2026-10-02",
+      "notes": "",
+      "short_label": "Optical binding"
+    },
+    {
+      "id": "E19",
+      "title": "Controlling dispersion forces between small particles with artificially created random light fields",
+      "authors": "Brügger, Froufe-Pérez, Scheffold & Sáenz",
+      "year": 2015,
+      "doi": "10.1038/ncomms8460",
+      "url": "https://doi.org/10.1038/ncomms8460",
+      "publication": "Nature Communications 6, 7460",
+      "evidence_type": "experiment and theory",
+      "rrg_relation": "partial bridge",
+      "arrows": [
+        "C0",
+        "C4"
+      ],
+      "finding": "Artificially generated random light produces measured attractive interactions between dielectric microspheres.",
+      "externally_supplied": "Pre-existing spheres and a laser-generated, quasi-monochromatic random optical field are provided.",
+      "scope_limit": "Random does not mean broadband white noise. The experiment supports fluctuation-mediated interaction, not spontaneous creation of the spheres; broader interaction designs include theoretical proposals.",
+      "read_coverage": "Publisher HTML, including experimental versus theoretical scope.",
+      "checked_on": "2026-10-02",
+      "notes": "",
+      "short_label": "Random-light interactions"
+    },
+    {
+      "id": "E20",
+      "title": "Self-replicating segregation patterns in horizontally vibrated binary mixture of granules",
+      "authors": "Ebata & Inagaki",
+      "year": 2024,
+      "doi": "10.1038/s41598-024-55876-y",
+      "url": "https://doi.org/10.1038/s41598-024-55876-y",
+      "publication": "Scientific Reports 14, 5329",
+      "evidence_type": "experiment",
+      "rrg_relation": "partial bridge",
+      "arrows": [
+        "C3",
+        "C4",
+        "C5"
+      ],
+      "finding": "A shaken granular mixture develops bands that reproduce; segregation and flow/fluidity feedback participate in the dynamics.",
+      "externally_supplied": "Two grain populations, a container and continued horizontal shaking are supplied.",
+      "scope_limit": "This connects vibration, organization and pattern multiplication without biological copying machinery. It does not establish successive independent scales.",
+      "read_coverage": "Publisher HTML. Supplementary materials were not independently reproduced.",
+      "checked_on": "2026-10-02",
+      "notes": "Shares an author with E11; these are different systems, not independent replications of a single result.",
+      "short_label": "Replicating granular bands"
+    },
+    {
+      "id": "E21",
+      "title": "Pattern formation in a Swift-Hohenberg equation with spatially periodic coefficients",
+      "authors": "Kamphuis & Chirilus-Bruckner",
+      "year": 2026,
+      "doi": "10.1016/j.physd.2026.135239",
+      "url": "https://doi.org/10.1016/j.physd.2026.135239",
+      "publication": "Physica D 493, 135239",
+      "evidence_type": "theory / mathematical derivation",
+      "rrg_relation": "partial bridge",
+      "arrows": [
+        "C6"
+      ],
+      "finding": "A slow-amplitude description is justified for a specified pattern-forming equation near onset, under stated spectral and coefficient assumptions.",
+      "externally_supplied": "The equation, spatially periodic coefficients and near-instability regime are specified.",
+      "scope_limit": "A controlled change of scale in description is not an unlimited sequence of new physical levels. The environmental heterogeneity is given, not derived from the emerging pattern.",
+      "read_coverage": "Publisher HTML, including assumptions and approximation result. Not an independent formal proof check.",
+      "checked_on": "2026-10-02",
+      "notes": "2026 paper available by this audit; September 2026 issue.",
+      "short_label": "Controlled amplitude approximation"
+    },
+    {
+      "id": "E22",
+      "title": "Thermodynamics of bouncing grains",
+      "authors": "Devauchelle, Popović, Szymczak, Abramian & Lazarus",
+      "year": 2026,
+      "doi": "10.1103/zlsc-w7m4",
+      "url": "https://doi.org/10.1103/zlsc-w7m4",
+      "publication": "Physical Review E 114, 025420",
+      "evidence_type": "experiment",
+      "rrg_relation": "constraint / comparator",
+      "arrows": [
+        "C3",
+        "C6"
+      ],
+      "finding": "Grain transport is measured on a heterogeneous, nonresonating vibrating plate; effective statistical and transport descriptions are studied.",
+      "externally_supplied": "A driven plate, heterogeneity and grains are provided.",
+      "scope_limit": "Vibration-induced transport is not by itself proof of resonance. The earlier document incorrectly grouped this study as an unqualified resonant-mode example.",
+      "read_coverage": "Original-paper abstract on APS; no raw-data reanalysis.",
+      "checked_on": "2026-10-02",
+      "notes": "APS publication date: 24 August 2026; later index/crawl dates are not used as publication dates.",
+      "short_label": "Nonresonant granular transport"
+    }
+  ],
+  "further_reading": [
+    {
+      "id": "F01",
+      "title": "Spatiotemporal order out of noise",
+      "authors": "Francesc Sagués, José M. Sancho & Jordi García-Ojalvo",
+      "year": 2007,
+      "doi": "10.1103/RevModPhys.79.829",
+      "role": "Review / orientation only",
+      "note": "Corrects incomplete or incorrect authorship in prior notes. Review content is not counted as an additional independent experiment."
+    },
+    {
+      "id": "F02",
+      "title": "Engineering precise and robust effective Hamiltonians",
+      "authors": "Chen & Cory",
+      "year": 2026,
+      "doi": "10.1103/j65l-f8lf",
+      "role": "Theory / further reading",
+      "note": "The previously cited article exists. Retained as optional reading, not dismissed as fabricated or treated as experimental evidence. Published 2 April 2026."
+    },
+    {
+      "id": "F03",
+      "title": "Validity of the stochastic Ginzburg-Landau approximation in higher space dimensions: A Wiener algebra approach",
+      "authors": "Logioti & Schneider",
+      "year": 2026,
+      "doi": "10.1016/j.jde.2026.114601",
+      "role": "Theory / date-qualified further reading",
+      "note": "Online publisher record and abstract available at audit. Issue date is 25 October 2026, later than this audit; first-online date was not independently established. Result assumes specific anisotropic periodic domains and regularity of the noise, not arbitrary space-time white noise."
+    }
+  ]
+}

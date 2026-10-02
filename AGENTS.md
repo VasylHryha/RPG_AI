@@ -1,6 +1,6 @@
 # Agent rules for this repository (Codex, Claude Code, any other agent)
 
-GeoMind research workspace. Authority: `GEOMIND_GEOMETRIC_AI_QUALITY_STANDARD_R4.md`. Milestone status lives only in `STATUS.json` (README shows a generated table). Process design and rationale: `docs/PROCESS_REVIEW.md`.
+GeoMind research workspace. Forward guidance: `GEOMIND_GEOMETRIC_AI_QUALITY_STANDARD_R5.md`, aligned to the owner's `docs/RRG_V0_2_1_ALIGNMENT_HANDOFF.md`. Source identity and pin readiness: `research/rrg/CURRENT.md`. R4 remains unchanged historical guidance for accepted experiments. Milestone status lives only in `STATUS.json` (README shows a generated table). Process design and rationale: `docs/PROCESS_REVIEW.md`.
 
 ## Milestone lifecycle (C4 onward)
 
@@ -15,10 +15,10 @@ GeoMind research workspace. Authority: `GEOMIND_GEOMETRIC_AI_QUALITY_STANDARD_R4
 
 ## Proposal phase (every agent)
 
-- **Requirements come from the owner and the standard.** The owner's frequency → geometry → frequency → geometry loop repeats at a bigger or different scale. Resonators are its products. Physical analogies and downstream theory examples add no constraints to this AI experiment; operational tests do not redefine the principle.
+- **Scientific authority:** current owner decisions → unchanged RRG foundation definitions → current audited RRG interpretation → GeoMind R5/decisions → proposals/manifests → code → historical drafts. The local geometry↔mode loop is required for a resonator claim. Current RRG v0.2.1 additionally makes causal background transformation central to `B_n → R_n → B_{n+1}`. Each experiment names the subset it tests; staged composition alone does not establish source recursion. Physical examples do not impose literal physical-force equations on this AI model. Current interpretation guides future claims without changing old measurements. Consult `research/rrg/CURRENT.md`; missing or mismatched audited sources block source qualification and new experimental execution.
 - **The drafter owns the proposal.** Any defect found in it, by anyone, is fixed by the drafter. The fix is recorded in the proposal's self-audit with its cause.
 - **Before owner approval, run no project code.** That covers benchmarks, pilots and smoke runs, unless the owner explicitly asks. An owner-requested pilot uses its own pilot entropy and scratch code outside `geomind/`. Its scripts, raw results and a README stating its status are committed to `evidence/cN_dev_pilot/` in the same session.
-- **Every proposal has a normalization ledger.** It lists measured quantities, their levels and their normalization. R4 invariant 1 and decision 0007 require the same procedure without hand-tuning per level; they do not prohibit scale ratios, composition from child summaries or lawful up/down transmission. State each side's units and keep descendant reads owner/evaluator-side, outside the upper-level prediction API.
+- **Every proposal has a normalization ledger.** It lists measured quantities, their levels and their normalization. R5 and decision 0007 retain the same procedure without hand-tuning per level as an experimental constraint, not a universal identical-equation definition of RRG. Scale ratios, composition from child summaries and lawful up/down transmission are allowed. State each side's units and keep descendant reads owner/evaluator-side, outside the upper-level prediction API. Direct-part validity can veto promotion; deeper reorganization is diagnostic (0010), and all underlying elements keep evolving.
 - **Every stop condition is a yes/no row** with one action and one responsible role (owner, drafter, implementer or reviewer).
 
 ## Verification order (mandatory)

@@ -97,15 +97,19 @@
       }
     },
     "c6": {
-      "title": "Recursive composition R0 to R1 to R2",
-      "implementation": "BLOCKED",
-      "proposal": "experiments/c6_proposal_r2.md",
-      "outcome": "Revision 2 implemented and stopped at development gate rule 1 (55 minutes): pass-2 formation 14/30 at level 2 and 10/30 at level 3, below the approved 23/30 target. Direct-part criterion 6 is corrected; deeper diagnostics do not veto parents. Native/NumPy comparisons and numerical checks passed; 346 tests passed. Prediction readiness and final registration/panel/review were not reached; no hypothesis verdict. Await owner direction.",
-      "decision": "docs/decisions/0011-approve-c6-revision-2.md",
+      "title": "Source-aligned recursion: staged composition and background generation",
+      "implementation": "ACTIVE",
+      "proposal": "experiments/c6_proposal_r3.md",
+      "outcome": "Owner authorized R3 implementation (0014). Implementing the source-aligned background-generation arm with causal controls and two-turn assay. Arm A retains the R2 formation STOP (0013), explicitly NOT_RUN; no staged-composition completion or hypothesis verdict. Audited sources pinned and verified. Development qualification precedes final registration/panel.",
+      "decision": "docs/decisions/0014-approve-c6-r3-implementation.md",
       "stop_decision": "docs/decisions/0013-c6-r2-design-gate-stop.md",
-      "revision": "R002",
+      "revision": "R003",
+      "alignment_decision": "docs/decisions/0012-align-geomind-to-rrg-v0.2.1.md",
+      "source_pin": "research/rrg/CURRENT.md",
       "previous_stop_decision": "docs/decisions/0009-c6-stops-at-design-gate.md",
-      "development_evidence": "evidence/c6_r2_design_gate/SUMMARY.md"
+      "development_evidence": "evidence/c6_r2_design_gate/SUMMARY.md",
+      "arm_a": "BLOCKED: R2 development STOP preserved; unchanged protocol not rerun",
+      "arm_b": "ACTIVE: R3 implementation authorized by owner"
     },
     "c7": {
       "title": "Perturb, dissolve, survive and reform",
