@@ -68,6 +68,22 @@ def test_passive_factorization_matches_full_owner():
     assert np.max(np.abs(aa-bb))<1e-12
     assert a.identity()==b.identity()
 
+def test_all_off_probe_reuses_exact_source_flow_and_matches_coupled_owner(monkeypatch):
+    o=owner();o.cohorts[0].output=0.;F._PASSIVE_CACHE.clear()
+    a,aa=F.advance(o,.2,.005,.005);b,bb=F.advance(o,.2,.005,.005,_factor=False)
+    assert np.max(np.abs(aa-bb))<1e-12
+    keys=list(F._PASSIVE_CACHE);assert len(keys)==1
+    original=F.advance;independent_calls=[]
+    def observed(state,*args,**kwargs):
+        if kwargs.get('_factor') is False:independent_calls.append(len(state.cohorts))
+        return original(state,*args,**kwargs)
+    monkeypatch.setattr(F,'advance',observed)
+    perturbed=o.clone();perturbed.z[0]+=.05j
+    end,_=F.advance(perturbed,.2,.005,.005)
+    assert independent_calls==[0]  # only the changed actual medium evolves again
+    assert list(F._PASSIVE_CACHE)==keys
+    assert np.array_equal(end.cohorts[0].theta,a.cohorts[0].theta)
+
 def test_exact_bistable_periodic_and_zero_solutions():
     for r in (0.,R.isolated_radius(-.18,-1),R.isolated_radius(-.18,1)):
         o=F.Owner(np.array([r+0j]),np.zeros((1,2)),np.array([.2]),np.zeros((1,8)),np.zeros((1,1),'i4'),dict(P.load_settings()['model']),(0,))

@@ -1,6 +1,7 @@
 """Typed full owner for the approved R4 field/material law. No coarse replay."""
 import copy
 import ctypes
+from collections import OrderedDict
 from dataclasses import dataclass, field
 import hashlib
 import json
@@ -13,7 +14,7 @@ from tools import build_c6_r4 as build
 PARAMETER_NAMES = ('mu','diffusion','drive','output','incoming','soft_core','sigma','J','K')
 MODES = {'intact':0,'no_r':1,'no_geometry_to_mode':2,'no_mode_to_geometry':3}
 _NATIVE = None
-_PASSIVE_CACHE = {}
+_PASSIVE_CACHE = OrderedDict()
 
 def exact_steps(time, dt):
     value = round(time/dt)
@@ -165,21 +166,25 @@ def rhs(owner):
 def advance(owner,duration,dt,sample_dt=None,_factor=True):
     sample_dt=dt if sample_dt is None else sample_dt;steps=exact_steps(duration,dt);sample=exact_steps(sample_dt,dt)
     if sample<1 or steps%sample:raise ValueError('incomplete sample interval')
-    if _factor and len(owner.cohorts)>1 and all(c.output==0. for c in owner.cohorts[:-1]):
+    all_off=bool(owner.cohorts) and all(c.output==0. for c in owner.cohorts)
+    if _factor and owner.cohorts and (all_off or len(owner.cohorts)>1 and all(c.output==0. for c in owner.cohorts[:-1])):
         # Previous sources are causally independent of actual field/current
         # source. Reuse their exact same-grid evolution, never a coarse replay.
-        active=owner.clone();active.cohorts=active.cohorts[-1:]
+        active=owner.clone();active.cohorts=[] if all_off else active.cohorts[-1:]
         end,active_frames=advance(active,duration,dt,sample_dt,_factor=False)
         parts=[active_frames[:,:2*len(owner.z)]]
-        for cohort in owner.cohorts[:-1]:
+        for cohort in owner.cohorts if all_off else owner.cohorts[:-1]:
             passive=owner.clone();passive.z=np.zeros_like(owner.z);passive.cohorts=[copy.deepcopy(cohort)]
             key=(passive.identity(),duration,dt,sample_dt)
             if key not in _PASSIVE_CACHE:
                 _,path=advance(passive,duration,dt,sample_dt,_factor=False)
-                if len(_PASSIVE_CACHE)>=512:_PASSIVE_CACHE.clear()
                 _PASSIVE_CACHE[key]=path[:,2*len(owner.z):].copy()
+                _PASSIVE_CACHE[key].flags.writeable=False
+                if len(_PASSIVE_CACHE)>1024:_PASSIVE_CACHE.popitem(last=False)
+            _PASSIVE_CACHE.move_to_end(key)
             parts.append(_PASSIVE_CACHE[key])
-        parts.append(active_frames[:,2*len(owner.z):]);joined=np.concatenate(parts,axis=1)
+        if not all_off:parts.append(active_frames[:,2*len(owner.z):])
+        joined=np.concatenate(parts,axis=1)
         return owner.unpack(joined[-1],owner.time+duration),joined
     ns,n,nc,a=arguments(owner);frames=np.empty((steps//sample+1,len(a[0])),dtype='f8');lib,_=native()
     pointers=[v.ctypes.data_as(ctypes.POINTER(ctypes.c_int if i in (4,7) else ctypes.c_double)) for i,v in enumerate(a)]
