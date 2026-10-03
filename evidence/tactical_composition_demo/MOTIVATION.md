@@ -31,7 +31,7 @@ plus a tactics piece. Each level reuses the level below it.
 | Research and rethink (theory, outside projects, process guides) | Find a simpler, more direct test of the owner's real goal | Pieces that fit and compose are the core; the physics substrate is a later question |
 | Arithmetic demo | Do small taught pieces (add, multiply, divide, square root) compose and promote? | Wiring works at one level, but one big map matched it, errors build up over a chain, and an ordinary network was far more accurate: arithmetic is the wrong test |
 | Tactics, Stage 0 (AIM + MOVE) | The same question on a task where positions and ranges are natural | Two small separately taught pieces play almost as well as the scripted expert; one big controller of the same size is much weaker and needs 16 times the data to approach; the advantage comes from the wired structure |
-| Tactics, change-cost test (this step) | The "quick to change" hypothesis | In progress: see `REPORT_CHANGE.md` once it exists |
+| Tactics, change-cost test (Stage 0c) | The "quick to change" hypothesis | Inconclusive: the changed doctrine turned out not to be learnable at these data sizes by any design (my calibration did not check that), so change cost was not measured; reusing a piece unchanged kept its step correct (2 degrees against 15 to 26 for the big controllers). A second revision with a learnability check is proposed (`REPORT_CHANGE.md`) |
 
 ## Why the change-cost test (and not the "structure versus teaching" test)
 
@@ -51,7 +51,7 @@ the practical reason to want pieces at all. So the next test changes a rule and 
 
 ## What is still ahead (in order of how much each would teach)
 
-1. The change-cost test (now).
+1. The change-cost test, second revision with a learnability check on the changed rule (proposed; the first revision was inconclusive).
 2. A structured single network trained end to end (to separate structure from separate teaching, if the change-cost result leaves it open).
 3. Stage 0b: the mage's burst as a piece (needs a data design for a rare decision).
 4. Stage 1: goal memory (commitment); Stage 2: enemy memory (limited vision); Stage 3: a map (walls and cover). Each added only with a situation that
