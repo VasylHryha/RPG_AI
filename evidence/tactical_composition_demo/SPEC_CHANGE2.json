@@ -1,0 +1,98 @@
+{
+ "config": {
+  "absolute_agreement_levels": [
+   0.8,
+   0.9,
+   0.95
+  ],
+  "absolute_angle_bar_deg": 10.0,
+  "c2_refute_margin": 0.15,
+  "c2_rows": 1000,
+  "common_level": 0.8,
+  "eval_episodes": 40,
+  "ft_batch": 64,
+  "ft_epochs": 60,
+  "ft_lr": 0.002,
+  "ft_steps_cap": 2000,
+  "ft_steps_floor": 200,
+  "grid": [
+   100,
+   300,
+   1000,
+   3000,
+   6000,
+   12000
+  ],
+  "hard_cap": 3000.0,
+  "mono_equal": {
+   "hidden": 15,
+   "rows": 6000,
+   "steps": 8000
+  },
+  "mono_large": {
+   "hidden": 60,
+   "rows": 96000,
+   "steps": 32000
+  },
+  "recover_agreement_margin": 0.03,
+  "recover_angle_margin_deg": 3.0,
+  "rows_share": 0.5,
+  "scratch_batch": 128,
+  "scratch_epochs": 170,
+  "scratch_lr": 0.003,
+  "scratch_steps_cap": 16000,
+  "scratch_steps_floor": 500,
+  "seeds": 20,
+  "soft_cap": 2700.0,
+  "stage0": {
+   "batch": 128,
+   "lr": 0.003,
+   "n_aim": 3000,
+   "n_move": 3000,
+   "piece_hidden": 16,
+   "piece_steps": 4000
+  },
+  "test_episodes": 60,
+  "train_episodes": 600,
+  "workers": 8
+ },
+ "entropy": 70642206537600845400602417829,
+ "note": "Generated once by --write-spec; config refreshed from the code before the specification commit.",
+ "smoke_entropy": 65234800411426496706027716380,
+ "smoke_overrides": {
+  "c2_rows": 100,
+  "eval_episodes": 3,
+  "ft_steps_cap": 40,
+  "ft_steps_floor": 20,
+  "grid": [
+   50,
+   100
+  ],
+  "hard_cap": 800.0,
+  "mono_equal": {
+   "hidden": 15,
+   "rows": 600,
+   "steps": 300
+  },
+  "mono_large": {
+   "hidden": 60,
+   "rows": 2400,
+   "steps": 400
+  },
+  "scratch_steps_cap": 60,
+  "scratch_steps_floor": 30,
+  "seeds": 2,
+  "soft_cap": 600.0,
+  "stage0": {
+   "batch": 128,
+   "lr": 0.003,
+   "n_aim": 300,
+   "n_move": 300,
+   "piece_hidden": 16,
+   "piece_steps": 200
+  },
+  "test_episodes": 8,
+  "train_episodes": 40,
+  "workers": 2
+ }
+}

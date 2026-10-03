@@ -502,6 +502,25 @@ def change_metrics(chosen, pred_step, pool, lab):
     label = np.array([teacher_move(rel[k], pool['own'][k][4]) for k in range(n)])
     for key, value in move_metrics(pred_step, label, rel).items():
         out['step_'+key] = value
+    # chance baseline: the tie-aware agreement of a uniformly random living pick, and the chance-corrected agreement
+    tied_best = (np.where(alive, lab['scores'], -np.inf) >= best[:, None]-1e-9) & alive
+    chance = tied_best.sum(1)/np.maximum(alive.sum(1), 1)
+    out['chance_tie_aware_multi'] = float(np.mean(chance[multi]))
+    out['agree_corrected_multi'] = float((out['agree_tie_aware_multi']-out['chance_tie_aware_multi'])/(1.0-out['chance_tie_aware_multi']))
+    # step judged against the best-matching tied-best enemy (a step head cannot know which tied enemy the score head will pick)
+    angles, hold_ok, hold_n = [], 0, 0
+    for k in range(n):
+        labels = [teacher_move(pool['enemies'][k][j, 1:3], pool['own'][k][4]) for j in np.flatnonzero(tied_best[k])]
+        moving = [v for v in labels if float(np.hypot(*v)) > 0.5]
+        p = pred_step[k]
+        if moving:
+            angles.append(min(float(np.degrees(np.arccos(np.clip(float(p@v)/(np.hypot(*p)*np.hypot(*v)+1e-9), -1, 1)))) for v in moving))
+        else:
+            hold_n += 1
+            hold_ok += bool(np.hypot(*p) < 0.5)
+    if angles:
+        out['step_tiebest_median_angle_deg'], out['step_tiebest_p90_angle_deg'] = float(np.median(angles)), float(np.quantile(angles, 0.9))
+    out['step_tiebest_hold_agreement'] = float(hold_ok/hold_n) if hold_n else None
     return out
 
 
