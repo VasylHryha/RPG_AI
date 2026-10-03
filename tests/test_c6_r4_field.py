@@ -118,6 +118,20 @@ def test_equivariance_and_realized_intervention_covariance():
     o.cohorts[0].theta=pert['replacement'];changed.cohorts[0].theta=pert['replacement'][ep]+phase
     assert np.max(np.abs(gate.transform(o,ep,sp,angle,shift,phase).pack()-changed.pack()))<1e-12
 
+def test_covariance_carries_future_introduction_axis_and_realized_kicks():
+    o=owner();angle=.71;phase=.39;shift=np.array([1.3,-.2]);changed=gate.transform(o,angle=angle,shift=shift,phase=phase)
+    first=F.population(np.random.default_rng(8211),o,1,0,6)
+    second=F.population(np.random.default_rng(8211),changed,1,0,6)
+    expected=gate.transform(first,angle=angle,shift=shift,phase=phase)
+    assert np.max(np.abs(expected.pack()-second.pack()))<1e-12
+    assert expected.identity()==second.identity()
+    a=P.physical_perturbations(np.random.default_rng(421),first)
+    b=P.physical_perturbations(np.random.default_rng(421),second)
+    rotation=np.array([[np.cos(angle),-np.sin(angle)],[np.sin(angle),np.cos(angle)]])
+    assert np.array_equal(a['phase'],b['phase']) and np.array_equal(a['probe'],b['probe'])
+    assert np.max(np.abs(a['position']@rotation.T-b['position']))<1e-12
+    assert np.max(np.abs(a['replacement']+phase-b['replacement']))<1e-12
+
 def test_selection_is_physical_token_based_not_labels():
     rows=[{'members':[0,1,2]},{'members':[3,4,5]}];tokens=tuple(f'{i:032x}' for i in (5,6,7,1,2,3))
     winner=A.select_accepted(rows,tokens);assert winner['members']==[3,4,5]
@@ -158,9 +172,28 @@ def test_two_sided_change_truth_table(ci,n,margin,expected):assert E.change_verd
 def test_causal_numerical_spread_and_all_ablations_required():
     s=P.load_settings();effects={k:{'intact':[.01,.01,.01],'ablated':[0.,0.,0.]} for k in ('g_to_m','m_to_g')}
     assert A.closure_valid(effects,s)
-    bad=copy.deepcopy(effects);bad['g_to_m']['ablated'][2]=.003;assert not A.closure_valid(bad,s)
-    bad=copy.deepcopy(effects);bad['m_to_g']['intact'][0]=.02;assert not A.closure_valid(bad,s)
+    bad=copy.deepcopy(effects);bad['g_to_m']['ablated'][2]=.003
+    with pytest.raises(ValueError,match='ablation'):A.closure_valid(bad,s)
+    bad=copy.deepcopy(effects);bad['m_to_g']['intact'][0]=.02
+    with pytest.raises(A.NumericalFailure,match='refinement'):A.closure_valid(bad,s)
     bad=copy.deepcopy(effects);bad['m_to_g']['intact']=[0.,0.,0.];assert not A.closure_valid(bad,s)
+    bad=copy.deepcopy(effects);bad['g_to_m']['intact']=[0.,.01,.01]
+    with pytest.raises(A.NumericalFailure,match='grid-dependent'):A.closure_valid(bad,s)
+
+def test_rolling_windows_preserve_exact_clock_and_first_qualification_window():
+    s=P.load_settings();model=dict(s['model']);model['drive']=0.
+    random=np.random.default_rng(569);o=F.population(random,F.medium(random,model),0,0,3)
+    length=np.sqrt((1/(1+model['J']))**2-model['soft_core']**2)
+    o.z[:]=0.;c=o.cohorts[0];c.carrier[:]=0.;c.x=np.array([[0.,0.],[length,0.],[length/2,np.sqrt(3)*length/2]])
+    c.theta[:]=0.;c.rates[:]=.2
+    at100,prefix=F.advance(o,100.,s['dt'],1.);at200,operation=F.advance(at100,100.,s['dt'],1.)
+    rows=P.rolling_persistence(prefix,operation,at200,np.array([0,1,2]),s)
+    assert len(rows)==101 and [r['time'] for r in rows]==list(range(100,201))
+    assert all(r['stats']['freq_change']<1e-12 and r['passed'] for r in rows)
+    from geomind import c4_detect as D
+    xs,ths=A.frames(prefix[-31:],at100);locks=D.locked_pairs(ths,.1)
+    expected=D.window_statistics(xs,ths,np.array([0,1,2]),1.,1.5,locks)
+    assert rows[0]['stats']==expected
 
 def test_recursive_rule_engineering_quorum_fail_and_witness_precedence():
     good=['SUPPORTED_WITHIN_SCOPE']*6
@@ -210,7 +243,9 @@ def synthetic_chain(world):
         candidate=A.member_identity(o,np.array(members))
         return {'qualified':qualified,'selected_members':members,'selected_identity':candidate,
             'candidates':[{'members':members,'accepted':True,'stats':stats}],
-            'publication':{'candidate':candidate,'size':1.,'S':copy.deepcopy(stats),'ids':[c.ids[i] for i in members]} if qualified else None}
+            'publication':{'candidate':candidate,'snapshot':o.identity(),'size':1.,'centroid':[0.,0.],'phase':0.,'rate':.2,
+                           'units':{'size':'L0','centroid':'L0','phase':'rad','rate':'rad/C0'},
+                           'S':copy.deepcopy(stats),'ids':[c.ids[i] for i in members]} if qualified else None}
     for turn in (1,2):
         before=base.clone();after=base.clone();after.time+=100.
         introduced=F.population(np.random.default_rng(561+turn),after,turn,0,6)
@@ -236,7 +271,7 @@ def synthetic_chain(world):
 
 def test_exact_chain_provenance_and_invalid_controls_are_rejected():
     r=synthetic_chain(0);E.validate_world(r)
-    for change in ('source','restage','field','carrier','sham','no_r','inputs','witness'):
+    for change in ('source','restage','field','carrier','sham','no_r','inputs','witness','publication'):
         bad=copy.deepcopy(r)
         if change=='source':bad['links'][0]['next_operation_ids']=['wrong']*3
         if change=='restage':bad['turns'][1]['before_ids']=['wrong']*3
@@ -246,6 +281,7 @@ def test_exact_chain_provenance_and_invalid_controls_are_rejected():
         if change=='no_r':bad['turns'][0]['conditions']['no_r']['endpoint_qualification']['qualified']=True
         if change=='inputs':bad['turns'][0]['episodes']['no_r'][1]['inputs']={'unmatched':True}
         if change=='witness':bad['turns'][0]['witness_tuple']=[True,True,True]
+        if change=='publication':bad['turns'][0]['source']['publication']['snapshot']='0'*64
         with pytest.raises(ValueError):E.validate_world(bad)
 
 def test_supported_synthetic_chain_and_mechanical_mask_not_enabled_subset():
@@ -286,12 +322,14 @@ def test_physical_loss_is_valid_eligibility_and_late_error_preserves_first_turn(
     assert result['endpoint_coverage']['evaluated']['b_response_vs_no_r_turn1']['value']['n']==39
 
 def test_publication_not_validated_by_global_count():
+    member_hash=hashlib.sha256(json.dumps(['a','b','c']).encode()).hexdigest()
     q={'qualified':True,'candidates':[{'members':[0,1,2],'accepted':True,'stats':{'size':3}}],
-       'selected_members':[0,1,2],'selected_identity':'abc','publication':{'candidate':'abc','size':1.,'S':{'size':3},'ids':['a','b','c']}}
+       'selected_members':[0,1,2],'selected_identity':member_hash,'publication':{'candidate':member_hash,'snapshot':'a'*64,'size':1.,
+           'centroid':[0.,0.],'phase':0.,'rate':.2,'units':{'size':'L0','centroid':'L0','phase':'rad','rate':'rad/C0'},'S':{'size':3},'ids':['a','b','c']}}
     assert E.publication_valid(q)
     q['publication']['S']['size']=4;assert not E.publication_valid(q)
     q['publication']['S']['size']=3;q['publication']['candidate']='other';assert not E.publication_valid(q)
-    q['publication']['candidate']='abc';q['publication']['size']=float('nan');assert not E.publication_valid(q)
+    q['publication']['candidate']=member_hash;q['publication']['size']=float('nan');assert not E.publication_valid(q)
 
 def test_readiness_is_not_effect_selected():
     s=P.load_settings();rows=[row(i) for i in range(10)]
@@ -305,6 +343,12 @@ def test_panel_checks_gate_before_reading_manifest(tmp_path,monkeypatch):
     monkeypatch.setattr(runner.milestones,'check',lambda *args:['unverified'])
     with pytest.raises(RuntimeError,match='blocked'):runner.panel(tmp_path/'panel',tmp_path/'missing.xml')
     assert not (tmp_path/'panel').exists()
+
+def test_pending_development_registration_stops_before_output(tmp_path):
+    manifest=json.loads((P.ROOT/'experiments/c6_manifest.json').read_text())
+    if manifest['status']=='PENDING_DEVELOPMENT_APPROVAL':
+        with pytest.raises(SystemExit,match='owner-approved'):gate.main(['--output',str(tmp_path/'unapproved')])
+        assert not (tmp_path/'unapproved').exists()
 
 def test_loaded_kernel_identity_is_pinned(monkeypatch):
     F.native();lib,record=F._NATIVE;fake=dict(record);fake['source_sha256']='0'*64

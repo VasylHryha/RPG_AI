@@ -1,18 +1,18 @@
 {
-  "experiment_id": "geomind-c6-r5-004",
+  "experiment_id": "geomind-c6-r5-005",
   "milestone": "C6",
-  "status": "REGISTERED_DEVELOPMENT_ONLY",
+  "status": "PENDING_DEVELOPMENT_APPROVAL",
   "registered": "2026-10-03",
   "implementer_family": "Codex",
   "reviewer_family": "Claude",
   "proposal": "experiments/c6_proposal_r4.md",
   "decision_record": "docs/decisions/0019-approve-c6-r4-implementation.md",
   "protocol": "experiments/c6_r4_protocol.json",
-  "protocol_sha256": "86658d02cebff9e3a75d9917248ae07387d0885d466de5d220ee63afa4585d02",
-  "development_gate": "evidence/c6_r4_design_gate",
+  "protocol_sha256": "3ecbf5da03639445d28b9fcb57627694e7cee96cffa8b7440fc0b5b7091042dd",
+  "development_gate": "evidence/c6_r5_design_gate",
   "development_results_sha256": null,
   "final_entropy": null,
-  "bootstrap_entropy": 46034003,
+  "bootstrap_entropy": 46035003,
   "endpoints": {
     "b_response_vs_no_r_turn1": "World-paired two-sided CHANGE, adjusted percentile interval; margin .01 response or .10 probability. Conditional eligible/complete-chain scope.",
     "b_response_vs_no_backreaction_turn1": "World-paired two-sided CHANGE, adjusted percentile interval; margin .01 response or .10 probability. Conditional eligible/complete-chain scope.",
@@ -94,5 +94,7 @@
     "upward_transfer_l3": "NOT_RUN: retained Arm A STOP, decision 0013.",
     "level_interface": "NOT_RUN: retained Arm A STOP, decision 0013."
   },
-  "rules": "All approved protocol/proposal rules apply. No final entropy until measured development readiness. Primary family sixteen; conditional claims, source lifetime, held-out continuation and enabled-link witnesses kept distinct. Accepted predecessors and earlier STOP evidence preserved."
+  "rules": "All approved protocol/proposal rules apply. No final entropy until measured development readiness. Primary family sixteen; conditional claims, source lifetime, held-out continuation and enabled-link witnesses kept distinct. Accepted predecessors and earlier STOP evidence preserved.",
+  "withdrawal_decision": "docs/decisions/0020-c6-r004-withdraw-and-repair.md",
+  "withdrawn_development": "evidence/c6_r4_design_gate/INTERRUPTED.json"
 }

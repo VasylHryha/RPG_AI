@@ -133,13 +133,19 @@ def causal(grid,members,pert,scope):
     return values
 
 def closure_valid(effects,s):
+    qualified=True
     for direction in ('g_to_m','m_to_g'):
         values=effects[direction];intact=values['intact'];ablated=values['ablated'];iv=s['causal']
         if len(intact)!=3 or len(ablated)!=3 or not np.isfinite(intact+ablated).all() or min(intact+ablated)<0:raise ValueError('invalid causal grids')
         smallest=min(intact)
-        if smallest<=iv['floor'] or max(intact)-smallest>iv['relative_spread']*smallest:return False
-        if max(ablated)>max(iv['vanish_absolute'],iv['vanish_fraction']*smallest):return False
-    return True
+        decisions=[v>iv['floor'] for v in intact]
+        if len(set(decisions))!=1:raise NumericalFailure('grid-dependent causal qualification')
+        if all(decisions) and max(intact)-smallest>iv['relative_spread']*smallest:
+            raise NumericalFailure('causal effect refinement failed')
+        if max(ablated)>max(iv['vanish_absolute'],iv['vanish_fraction']*smallest):
+            raise ValueError('complete causal ablation leaves the named path')
+        qualified=qualified and all(decisions)
+    return qualified
 
 def qualification(grid,flows,pert,scope,forced_members=None):
     s=grid.s;d=s['detector'];count=F.exact_steps(s['window'],s['frame_dt'])+1

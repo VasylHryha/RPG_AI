@@ -1,0 +1,17 @@
+{
+  "kind": "INTERRUPTED_ENGINEERING_RUN",
+  "timestamp_utc": "2026-10-03T04:11:13.591178+00:00",
+  "status": "WITHDRAWN",
+  "source_commit": "743b71e05916a0c298a613dd4cd9c40877ecb3f3",
+  "original_receipt_sha256": "c8da1b3e6da031cdf1e0de83763765be9d5e43f544211bc890ce96f0b53775d0",
+  "original_artifacts": {
+    "world_000.json.gz": "82a0aec5bd6389812f0ff2d4861a8ab69ba42adfdd366c9c29f1604892113b04",
+    "world_001.json.gz": "f696a9b6b326403041c3d38b58f92f91a03f703d9452eecf5c64099522a0834e",
+    "world_003.json.gz": "4ce483de1fa1182dbb7150a694249bfab80bf8e6770a8593880fbfafcad19457",
+    "results.json": "c8da1b3e6da031cdf1e0de83763765be9d5e43f544211bc890ce96f0b53775d0",
+    "world_002.json.gz": "5e2e88210cc3a97e90b75846e62d2d1af2a4b514ecc1a38453bb79c5f99055fe"
+  },
+  "completed_worlds": 4,
+  "reason": "Rolling persistence window duplicates operation-start frame t=100 and omits t=70, causing false frequency-change failure on qualified sources. Source trajectories were not rescored; no scientific verdict or final entropy assigned.",
+  "action": "Stop workers, preserve original output bytes, repair engineering and require a prospective fresh revision before another development attempt."
+}

@@ -67,6 +67,8 @@ def reference_battery(settings,deadline=None):
 
 def transform(owner,element_order=None,site_order=None,angle=0.,shift=(0.,0.),phase=0.):
     o=owner.clone();rotation=np.array([[np.cos(angle),-np.sin(angle)],[np.sin(angle),np.cos(angle)]])
+    o.scene_origin=tuple(np.asarray(o.scene_origin)@rotation.T+shift)
+    o.scene_angle+=angle;o.phase_origin+=phase
     o.q=o.q@rotation.T+shift;o.z*=np.exp(1j*phase);o.psi+=phase
     for c in o.cohorts:
         c.x=c.x@rotation.T+shift;c.theta+=phase;c.carrier*=np.exp(1j*phase)
@@ -122,6 +124,9 @@ def main(argv=None):
         if receipt['kind']!='DEVELOPMENT_ONLY' or receipt['status']!='RUNNING' or receipt['file_hashes']!=dependencies() or args.worker not in range(10):raise ValueError('worker lacks live development receipt')
         row=P.run_world(s,s['development_entropy'],args.worker);write_world(args.output,row);return 0
     if args.output.exists():raise SystemExit('one-shot development evidence exists; never overwrite/repeat')
+    manifest=json.loads((ROOT/'experiments/c6_manifest.json').read_text())
+    if manifest.get('status')!='REGISTERED_DEVELOPMENT_ONLY' or args.output.resolve()!=(ROOT/manifest['development_gate']).resolve():
+        raise SystemExit('development requires owner-approved prospective registration and its exact output path')
     if subprocess.check_output(['git','status','--porcelain','--untracked-files=no'],cwd=ROOT,text=True).strip():raise SystemExit('commit all implementation before development')
     started=time.perf_counter();deadline=started+s['budget']['development_seconds'];before=dependencies();pin=validate_pin(ROOT)
     args.output.mkdir(parents=True);rows=[]

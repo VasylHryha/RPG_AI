@@ -1,5 +1,7 @@
 """Prospective 16-contrast analysis and complete 79-endpoint evidence coverage."""
 import copy
+import hashlib
+import json
 import numpy as np
 from geomind.c6_r4_integrity import finite, ordered_worlds
 from geomind import c6_r4_field_protocol as P
@@ -40,12 +42,22 @@ def recursive(required,n,witnesses,valid):
     if witnesses<10 or any(v!='SUPPORTED_WITHIN_SCOPE' for v in required):return 'INCONCLUSIVE'
     return 'SUPPORTED_WITHIN_SCOPE'
 
-def publication_valid(q):
+def publication_valid(q,expected_snapshot=None):
     p=q.get('publication')
     if not q['qualified']:return p is None
     matches=[r for r in q['candidates'] if r.get('accepted') and r['members']==q['selected_members']]
-    return (len(matches)==1 and isinstance(p,dict) and finite(p) and p.get('candidate')==q['selected_identity']
-            and p.get('size',0)>0 and p.get('S')==matches[0]['stats'] and len(set(p.get('ids',[])))==len(q['selected_members']))
+    required={'candidate','snapshot','ids','size','centroid','phase','rate','S','units'}
+    if not isinstance(p,dict) or set(p)!=required:return False
+    numeric=lambda v:isinstance(v,(int,float,np.number)) and not isinstance(v,(bool,np.bool_))
+    if (not all(numeric(p[k]) for k in ('size','phase','rate')) or not isinstance(p['centroid'],list)
+            or len(p['centroid'])!=2 or not all(numeric(v) for v in p['centroid'])
+            or not isinstance(p['ids'],list) or not all(isinstance(v,str) and v for v in p['ids'])):return False
+    member_hash=hashlib.sha256(json.dumps(sorted(p['ids'])).encode()).hexdigest()
+    return (len(matches)==1 and isinstance(p,dict) and set(p)==required and finite(p)
+            and p.get('candidate')==q['selected_identity']==member_hash and (expected_snapshot is None or p['snapshot']==expected_snapshot)
+            and p.get('size',0)>0 and len(p['centroid'])==2 and p.get('S')==matches[0]['stats']
+            and p['units']=={'size':'L0','centroid':'L0','phase':'rad','rate':'rad/C0'}
+            and len(set(p.get('ids',[])))==len(q['selected_members']))
 
 def validate_world(row):
     if type(row.get('chain_complete')) is not bool or type(row.get('enabled_witness')) is not bool:raise ValueError('invalid chain flags')
@@ -66,13 +78,13 @@ def validate_world(row):
                         or introduced['cohorts'][-1]['carrier_real_imag']!=after['fields_real_imag']):
                     raise ValueError('reset environment/carrier/previous source on introduction')
     for cell in row['turns']:
-        if not publication_valid(cell['source']):raise ValueError('invalid source publication')
+        if not publication_valid(cell['source'],cell['before_ids'][0]):raise ValueError('invalid source publication')
         if cell['operation_eligible']:
             if set(cell['episodes'])!=set(P.CONDITIONS) or set(cell['response'])!=set(P.CONDITIONS):raise ValueError('missing condition')
             for condition in P.CONDITIONS:
                 formation(cell['episodes'][condition])
                 for episode in cell['episodes'][condition]:
-                    if not publication_valid(episode['qualification']):raise ValueError('invalid episode publication')
+                    if not publication_valid(episode['qualification'],episode['qualified_ids'][0]):raise ValueError('invalid episode publication')
             for condition in P.CONTROLS:
                 for a,b in zip(cell['episodes']['intact'],cell['episodes'][condition]):
                     if a['inputs']!=b['inputs'] or a['perturbations']!=b['perturbations']:raise ValueError('unmatched candidate inputs')

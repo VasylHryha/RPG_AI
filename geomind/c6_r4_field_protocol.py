@@ -15,6 +15,11 @@ CONTROLS=CONDITIONS[1:]
 
 def load_settings():return json.loads(PROTOCOL.read_text())
 def rng(entropy,world,*purpose):return np.random.default_rng(np.random.SeedSequence([entropy,world,*purpose]))
+def physical_perturbations(random,owner):
+    pert=A.perturbations(random,len(owner.cohorts[-1].theta));angle=owner.scene_angle
+    rotation=np.array([[np.cos(angle),-np.sin(angle)],[np.sin(angle),np.cos(angle)]])
+    pert['position']=pert['position']@rotation.T;pert['replacement']+=owner.phase_origin
+    return pert
 def introduce(grid,entropy,world,generation,episode):
     states=[]
     for o in grid.owners:
@@ -25,7 +30,7 @@ def qualify_episode(background,entropy,world,generation,episode,scope):
     grid=introduce(background,entropy,world,generation,episode)
     initial=grid.identities();introduced_states=[snapshot(o) for o in grid.owners];arrays=grid.owners[0].cohorts[-1]
     inputs={'ids':list(arrays.ids),'tokens':list(arrays.tokens),'x':arrays.x.tolist(),'theta':arrays.theta.tolist(),'rates':arrays.rates.tolist()}
-    pert=A.perturbations(rng(entropy,world,20,generation,episode),len(arrays.theta))
+    pert=physical_perturbations(rng(entropy,world,20,generation,episode),grid.owners[0])
     flow=grid.run(grid.s['formation'],scope+'/prefix')
     q=A.qualification(grid,flow,pert,scope+'/qualification')
     return grid,q,{'episode':episode,'inputs':inputs,'initial_ids':initial,'qualified_ids':grid.identities(),
@@ -36,14 +41,17 @@ def qualify_episode(background,entropy,world,generation,episode,scope):
 def snapshot(o):
     return {'identity':o.identity(),'time':o.time,'fields_real_imag':np.stack((o.z.real,o.z.imag),axis=-1).tolist(),
             'site_ids':list(o.site_ids),'q':o.q.tolist(),'omega':o.omega.tolist(),'psi':o.psi.tolist(),
-            'adjacency':o.adjacency.tolist(),'model':o.model,'cohorts':[
+            'adjacency':o.adjacency.tolist(),'model':o.model,'scene_origin':list(o.scene_origin),
+            'scene_angle':o.scene_angle,'phase_origin':o.phase_origin,'cohorts':[
              {'x':c.x.tolist(),'theta':c.theta.tolist(),'rates':c.rates.tolist(),'carrier_real_imag':np.stack((c.carrier.real,c.carrier.imag),axis=-1).tolist(),
               'ids':list(c.ids),'tokens':list(c.tokens),'selected':list(c.selected),'output':c.output,'mode':c.mode,
               'origin':None if c.origin is None else c.origin.tolist()} for c in o.cohorts]}
 
 def rolling_persistence(prefix,operation,owner,members,s):
     window=F.exact_steps(s['window'],s['frame_dt']);px,pt=A.frames(prefix,owner);ox,ot=A.frames(operation,owner)
-    xs=np.concatenate((px[-window:],ox));ths=np.concatenate((pt[-window:],ot));rows=[]
+    # Operation frame zero already is the prefix endpoint. Include its thirty
+    # predecessors, excluding that endpoint, so every physical time occurs once.
+    xs=np.concatenate((px[-window-1:-1],ox));ths=np.concatenate((pt[-window-1:-1],ot));rows=[]
     d=s['detector']
     for i in range(len(ox)):
         x=xs[i:i+window+1];th=ths[i:i+window+1];locks=D.locked_pairs(th,d['lock_std'])
@@ -57,7 +65,7 @@ def rolling_persistence(prefix,operation,owner,members,s):
 def operation(grid,qualification,qualification_flows,entropy,world,turn,alpha,scope):
     s=grid.s;members=qualification['selected_members'];before=grid.identities()
     branches={};records={};operation_checks={}
-    pert=A.perturbations(rng(entropy,world,30,turn),s['elements'])
+    pert=physical_perturbations(rng(entropy,world,30,turn),grid.owners[0])
     for condition in CONDITIONS:
         branch=grid.clone()
         for o in branch.owners:

@@ -50,6 +50,9 @@ class Owner:
     site_ids: tuple
     time: float = 0.
     cohorts: list = field(default_factory=list)
+    scene_origin: tuple = (0.,0.)
+    scene_angle: float = 0.
+    phase_origin: float = 0.
 
     def clone(self): return copy.deepcopy(self)
     def validate(self):
@@ -57,7 +60,8 @@ class Owner:
         complex_arrays(self.z)
         if (self.q.shape!=(ns,2) or self.omega.shape!=(ns,) or self.psi.shape!=(ns,8)
                 or self.adjacency.shape!=(ns,ns) or len(set(self.site_ids))!=ns
-                or not np.isfinite(self.time) or set(self.model)!=set(PARAMETER_NAMES)):
+                or not np.isfinite(self.time) or set(self.model)!=set(PARAMETER_NAMES)
+                or len(self.scene_origin)!=2 or not np.isfinite([*self.scene_origin,self.scene_angle,self.phase_origin]).all()):
             raise ValueError('invalid medium inventory/schema')
         if not np.isfinite(np.r_[self.q.ravel(),self.omega,self.psi.ravel(),list(self.model.values())]).all():
             raise ValueError('nonfinite medium metadata')
@@ -105,7 +109,8 @@ class Owner:
         for i,c in enumerate(self.cohorts):
             arrays.extend((c.x,c.theta,c.rates,c.x if c.origin is None else c.origin));names.extend(f'{i}/{k}' for k in ('x','theta','rates','origin'))
             meta.append({'ids':list(c.ids),'tokens':list(c.tokens),'selected':list(c.selected),'output':c.output,'mode':c.mode,'has_origin':c.origin is not None})
-        return array_digest('c6-field-owner',*arrays,metadata={'fields':names,'time':self.time,'model':self.model,'site_ids':list(self.site_ids),'cohorts':meta})
+        return array_digest('c6-field-owner',*arrays,metadata={'fields':names,'time':self.time,'model':self.model,'site_ids':list(self.site_ids),'cohorts':meta,
+            'scene_origin':list(self.scene_origin),'scene_angle':self.scene_angle,'phase_origin':self.phase_origin})
 
 def medium(rng,model):
     q=np.array([(x,y) for x in (-4,-2,0,2,4) for y in (-4,-2,0,2,4)],float)
@@ -118,8 +123,10 @@ def medium(rng,model):
 def population(rng,owner,generation,episode,n=24):
     r=3*np.sqrt(rng.random(n));angle=rng.uniform(-np.pi,np.pi,n)
     x=np.c_[r*np.cos(angle)+2*generation,r*np.sin(angle)]
+    rotation=np.array([[np.cos(owner.scene_angle),-np.sin(owner.scene_angle)],[np.sin(owner.scene_angle),np.cos(owner.scene_angle)]])
+    x=x@rotation.T+owner.scene_origin
     tokens=tuple(rng.bytes(16).hex() for _ in range(n));order=rng.permutation(n)
-    c=Cohort(x[order],rng.uniform(-np.pi,np.pi,n)[order],rng.uniform(-.05,.45,n)[order],owner.z.copy(),
+    c=Cohort(x[order],rng.uniform(-np.pi,np.pi,n)[order]+owner.phase_origin,rng.uniform(-.05,.45,n)[order],owner.z.copy(),
              tuple(f'g{generation}/e{episode}/p{int(i)}' for i in order),tuple(tokens[i] for i in order))
     result=owner.clone();result.cohorts.append(c);return result.validate()
 

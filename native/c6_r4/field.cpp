@@ -11,12 +11,15 @@ extern "C" int field_rhs(int ns,int n,int nc,double t,const double* y,const doub
  const double* masks,const int* modes,const double* origins,const double* p,double* out){
  const int stride=3*n+2*ns, count=2*ns+nc*stride;
  std::fill(out,out+count,0.);
+ const double nu[8]={-.7,-.5,-.3,-.1,.1,.3,.5,.7};
+ std::vector<C> forcing(ns,C(0.));
+ for(int a=0;a<ns;a++)for(int m=0;m<8;m++)
+   forcing[a]+=p[2]/8.*std::polar(1.,(.2+nu[m])*t+psi[a*8+m]);
  auto medium=[&](const double* z,double* dz){
-   const double nu[8]={-.7,-.5,-.3,-.1,.1,.3,.5,.7};
    for(int a=0;a<ns;a++){
      C v=get(z,a);double s=std::norm(v);C r=C(p[0]+s-s*s,omega[a])*v;
      for(int b=0;b<ns;b++) if(adj[a*ns+b]) r+=p[1]/4.*(get(z,b)-v);
-     for(int m=0;m<8;m++)r+=p[2]/8.*std::polar(1.,(.2+nu[m])*t+psi[a*8+m]);
+     r+=forcing[a];
      put(dz,a,r);
    }
  };
@@ -27,31 +30,35 @@ extern "C" int field_rhs(int ns,int n,int nc,double t,const double* y,const doub
    medium(z,dv+3*n);
    int mode=modes[c];double J=(mode==1||mode==3)?0.:p[7],K=mode==1?0.:p[8];
    int selected=0;for(int i=0;i<n;i++)if(masks[c*n+i]!=0.)selected++;
+   const double* weights=mode==2?origins+2*n*c:x;
+   std::vector<C> phasors(n),saturated(ns);
+   std::vector<double> vx(n,0.),vy(n,0.),vt(n,0.);
+   for(int i=0;i<n;i++)phasors[i]=std::polar(1.,th[i]);
+   for(int a=0;a<ns;a++){C za=get(z,a);saturated[a]=za/std::sqrt(1.+std::norm(za));}
+   // Antisymmetric pair contributions use the same ascending neighbor order.
+   for(int i=0;i<n;i++)for(int j=i+1;j<n;j++){
+     double dx=x[2*j]-x[2*i],dy=x[2*j+1]-x[2*i+1];
+     double s=std::sqrt(dx*dx+dy*dy+p[5]*p[5]);
+     double phase=th[j]-th[i];double force=(1.+J*std::cos(phase))/s-1./(s*s);
+     double fx=dx*force/(n-1),fy=dy*force/(n-1);vx[i]+=fx;vy[i]+=fy;vx[j]-=fx;vy[j]-=fy;
+     double wx=weights[2*j]-weights[2*i],wy=weights[2*j+1]-weights[2*i+1];
+     double coupling=K*std::exp(-wx*wx-wy*wy)*std::sin(phase)/(n-1);vt[i]+=coupling;vt[j]-=coupling;
+   }
    for(int i=0;i<n;i++){
-     double vx=0.,vy=0.,vt=0.;
-     const double* weights=mode==2?origins+2*n*c:x;
-     for(int j=0;j<n;j++)if(j!=i){
-       double dx=x[2*j]-x[2*i],dy=x[2*j+1]-x[2*i+1];
-       double s=std::sqrt(dx*dx+dy*dy+p[5]*p[5]);
-       double phase=th[j]-th[i];double force=(1.+J*std::cos(phase))/s-1./(s*s);
-       vx+=dx*force/(n-1);vy+=dy*force/(n-1);
-       double wx=weights[2*j]-weights[2*i],wy=weights[2*j+1]-weights[2*i+1];
-       vt+=K*std::exp(-wx*wx-wy*wy)*std::sin(phase)/(n-1);
-     }
      C g=0.;double denom=0.;
      for(int a=0;a<ns;a++){
        double dx=q[2*a]-weights[2*i],dy=q[2*a+1]-weights[2*i+1];
-       double w=std::exp(-(dx*dx+dy*dy)/(2*p[6]*p[6]));C za=get(z,a);
-       g+=w*za/std::sqrt(1.+std::norm(za));denom+=w;
+       double w=std::exp(-(dx*dx+dy*dy)/(2*p[6]*p[6]));
+       g+=w*saturated[a];denom+=w;
        // Use the fixed selected-member inventory for normalization, then mask.
        if(selected){double ax=q[2*a]-x[2*i],ay=q[2*a+1]-x[2*i+1];
-         double ow=std::exp(-(ax*ax+ay*ay)/(2*p[6]*p[6]));
-         C emission=p[3]/selected*ow*std::polar(1.,th[i])*std::max(0.,masks[c*n+i]);
+         double ow=mode==2?std::exp(-(ax*ax+ay*ay)/(2*p[6]*p[6])):w;
+         C emission=p[3]/selected*ow*phasors[i]*std::max(0.,masks[c*n+i]);
          put(out,a,get(out,a)+emission);
        }
      }
      if(!(denom>1e-12))return 2;
-     dv[2*i]=vx;dv[2*i+1]=vy;dv[2*n+i]=rates[c*n+i]+vt+p[4]*std::imag(g/denom*std::polar(1.,-th[i]));
+     dv[2*i]=vx[i];dv[2*i+1]=vy[i];dv[2*n+i]=rates[c*n+i]+vt[i]+p[4]*std::imag(g/denom*std::conj(phasors[i]));
    }
  }
  for(int i=0;i<count;i++)if(!std::isfinite(out[i]))return 1;

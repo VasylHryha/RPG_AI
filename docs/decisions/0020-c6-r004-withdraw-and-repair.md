@@ -1,0 +1,13 @@
+# 0020 — Withdraw the R004 engineering run and repair its clock
+
+Date: 2026-10-03. Author: Codex:gpt-6.
+
+The owner approved implementation of the corrected R4 proposal in decision 0019. Its native/reference contracts and smoke passed. The development gate was then started once at commit 743b71e; four worlds completed before a deterministic persistence-window defect was identified and the parent/workers were stopped.
+
+The rolling-window join used prefix frames 71–100 plus operation frame 100, rather than 70–99 plus 100. It duplicated the boundary sample and shortened one half-window while assigning a 15-C0 denominator. Even an exactly stable .2-rad/C0 mode acquires a false frequency change .2/15=.013333..., exceeding .01. The reported losses at time 100 therefore cannot establish physical source loss. Original results and world bytes are retained in [the interrupted run](../../evidence/c6_r4_design_gate/README.md), with a separate interruption record; no recorded trajectory or verdict was rescored. No final entropy, panel or scientific verdict ran.
+
+Repairs restore each clock sample exactly once, add an actual-law exact-mode regression across 100-C0 prefix/operation horizons, and distinguish grid-dependent/unstable causal evidence and leaking ablations from physical nonformation. Scene transformations now carry the future introduction axis and realized perturbations, and diagnostic publications are checked against their world/episode snapshots. The same-law native implementation shares forcing/saturation/phasor calculations and symmetric pair work, addressing the measured development cost without changing any equation, cut, model coefficient or hypothesis. Those changes require fresh verification; the withdrawn run cannot qualify changed code.
+
+A prospective R005 registration reserves fresh development/smoke/bootstrap/reference entropy namespaces and a new output directory. Its development status is PENDING_DEVELOPMENT_APPROVAL. This does not authorize another run: the approved proposal explicitly says “No second development attempt for the same design.” The complete repaired code and its focused checks must be reviewable before asking the owner for an exception to that single-attempt rule. The runner enforces the pending status before creating output.
+
+C6 remains BLOCKED pending that decision and valid development evidence. Accepted milestones, R3 evidence, the original approved proposal and the R004 interrupted artifacts remain unchanged. Future final seeds remain absent; final execution still requires committed final registration, the ordered pipeline and independent Claude review.
