@@ -100,7 +100,7 @@
       "title": "Source-aligned recursion: staged composition and background generation",
       "implementation": "BLOCKED",
       "proposal": "experiments/c6_proposal_r4.md",
-      "outcome": "Performance repair measured 17.18x faster on the full descriptor fixture; 62 contracts, smoke, independent Claude engineering review and full reference/covariance pass. R006 readiness STOP: two valid complete worlds took 546.82/561.15s (registered maximum 360s), and neither completed the two-link chain. Early stop preserved raw evidence; no final entropy, panel or scientific verdict.",
+      "outcome": "R006 readiness STOP preserved: complete worlds took 546.82/561.15s versus the registered 360s maximum; neither completed the two-link chain. Post-stop audit repaired retained integration buffers, nonfinite checks, cache concurrency and comparison validation; 79 contracts and smoke pass. Current reserved descriptor fixture is 13.72x faster than the original baseline with numerical equivalence; no further or full-world speedup claim. Engineering repair REVIEW_READY, independent review outstanding; no final entropy, panel or scientific verdict.",
       "decision": "docs/decisions/0019-approve-c6-r4-implementation.md",
       "stop_decision": "docs/decisions/0024-c6-r006-runtime-stop.md",
       "revision": "R006",
@@ -140,7 +140,8 @@
       "runtime_stop": "evidence/c6_r6_design_gate/EARLY_STOP.json",
       "post_stop_audit": "docs/reviews/c6_r006_post_stop_audit_codex.md",
       "post_stop_repair_decision": "docs/decisions/0025-c6-r006-post-stop-engineering-audit.md",
-      "post_stop_repair_phase": "VALIDATION_PENDING; C6 remains BLOCKED/R006 STOP"
+      "post_stop_repair_phase": "REVIEW_READY; C6 remains BLOCKED/R006 STOP; independent review outstanding",
+      "post_stop_repair_validation": "evidence/c6_r006_post_stop_checks/CHECKS.json"
     },
     "c7": {
       "title": "Perturb, dissolve, survive and reform",

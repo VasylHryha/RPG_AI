@@ -1,4 +1,4 @@
-REPAIRS_IMPLEMENTED; VALIDATION_PENDING
+ENGINEERING_REPAIR_REVIEW_READY; C6_BLOCKED
 Reviewer family: Codex (implementer self-audit, not independent acceptance).
 
 Scope: audit of the R006 performance repair and runtime STOP at `8570072`, followed by task-owned C6 engineering repairs. The approved model, scientific thresholds, native equations and recorded evidence are preserved. C6 remains BLOCKED; this report does not assign a numeric score or a population verdict.
@@ -26,7 +26,15 @@ The new engineering implementation has a new dependency fingerprint. Old test/re
 
 ## Validation
 
-Pending one end-of-batch gated contracts/smoke run and one comparison against the preserved fixture baseline. No new development world, pilot, final entropy, mutation probe or recorded panel is part of this repair batch. Independent acceptance remains outstanding.
+Validated source commit: `8561ab596220387ac4c8bc90b8985d85ea2e0f13`. Evidence: `evidence/c6_r006_post_stop_checks/CHECKS.json`.
+
+- One gated end-of-batch run passed all **79 contracts** in 95.47 seconds, then smoke in 0.27 seconds. Its original generated stamps and artifact hashes are copied to `GATED_STAGES.json`; no mutation or panel stage ran.
+- The already reserved full 50-probe/three-grid/two-cohort descriptor fixture passed strict numerical comparison. Maximum raw-response difference against the preserved baseline is **6.8834e-14**, below 1e-10. All 51 numerical scopes and all 50 probes are accounted for.
+- The new fixture observation took **6.0720 seconds**, versus the original 83.3329-second baseline (**13.7241×**). The earlier optimized observation was 4.8511 seconds (17.1780×). These are single fresh-process observations on a shared workstation: this repair demonstrates correctness and bounded memory behavior, and does **not** demonstrate a further speedup or whole-world readiness. The historical comparison also passes the stricter new validator without rerunning either old fixture.
+- C1/C2 accepted receipt identities (24 and 43), R3-bound identities (18), 20 unique frozen C4/C5/environment files, all 16 committed R005/R006 artifacts, all 22 historical R006 implementation identities at `def6fd7`, and the audited source pin pass identity checks.
+- All 53 mutation targets match exactly once. Mutants were not executed; no kill rate is claimed.
+
+No new development world, pilot, final entropy, mutation probe or recorded panel ran. The repaired implementation is **REVIEW_READY**, not independently accepted. C6 stays BLOCKED.
 
 ## Remaining gaps and next work
 

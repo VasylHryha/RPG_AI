@@ -1,0 +1,85 @@
+{
+  "kind": "POST_STOP_ENGINEERING_CHECKS_ONLY",
+  "source_commit": "8561ab596220387ac4c8bc90b8985d85ea2e0f13",
+  "code_fingerprint": "5f65d57364c4256a3176fbc5c6f2db6bc84b2451ba36370695a7a6a052f32d2c",
+  "tests": {
+    "passed": 79,
+    "suite_seconds": 94.981,
+    "stage_seconds": 95.47
+  },
+  "smoke": {
+    "status": "PASS",
+    "seconds": 0.27
+  },
+  "comparison": {
+    "kind": "REPRODUCED_ENGINEERING_PERFORMANCE_COMPARISON",
+    "passed": true,
+    "tolerance": 1e-10,
+    "baseline_seconds": 83.332918125,
+    "optimized_seconds": 6.072003625000001,
+    "speedup": 13.724121932651185,
+    "baseline_calls": {
+      "advance": 31200,
+      "native_source_integrations": 600
+    },
+    "optimized_calls": {
+      "advance": 312,
+      "native_source_integrations": 6
+    },
+    "maximum_raw_response_error": 6.88338275267597e-14,
+    "maximum_per_probe_gain_error": 6.8833827526759706e-15,
+    "maximum_full_state_check_difference": 5.7163013955255714e-15,
+    "raw_artifacts_sha256": {
+      "evidence/c6_r006_performance_checks/baseline.json": "29e850c3499b8102e32be0b37ec1765dcc678f7cff60a63991a27bb622548c26",
+      "evidence/c6_r006_post_stop_checks/optimized.json": "d19c43f10fd32c8c7dc1d39aa823bcb5f08d9db604b32d823bdb8dd7498e7d8f"
+    }
+  },
+  "source_pin": {
+    "status": "PASS",
+    "source_files_verified": 25,
+    "owner_identities_verified": 12,
+    "manifest_entries_verified": 23,
+    "checksum_entries_verified": 24,
+    "handoff_sha256": "719781cbd5a302f58f0f57c064b32ca0a49e49546a1f88160582ba6235ca575e",
+    "expected_record_sha256": "37e8249338a95e32de72f4e30091e104697606faebd53b22bda8b90124e3bceb",
+    "import_record_sha256": "3f34717f795415f5ed4b11df060cdfc3c36f0bd8b1d491853141778bbc2d3da2"
+  },
+  "preserved": {
+    "receipt_bound_files": {
+      "evidence/c1_r006/results.json": 24,
+      "evidence/c2_r002/results.json": 43,
+      "evidence/c6_r3_design_gate/results.json": 18,
+      "unique_frozen_files": 20
+    },
+    "r005_r006_committed_artifact_count": 16,
+    "r006_historical_file_identities": 22,
+    "original_r006_receipt_sha256": "a11c9f74383c7ece2211ccb8b261359128c0a6c2cdb1f53004830c42a4d46919"
+  },
+  "registered_mutants": 53,
+  "mutation_targets_unique": true,
+  "mutants_run": false,
+  "recorded_panel_run": false,
+  "development_worlds_run": false,
+  "final_entropy": null,
+  "independent_review": "Outstanding; implementer self-audit and contracts do not establish independent acceptance.",
+  "source_hashes": {
+    "STATUS.json": "25434d080b08822e497721ecc27f8ec02541b037155e365f576db1de0473604b",
+    "docs/decisions/0025-c6-r006-post-stop-engineering-audit.md": "29780c4ca31dd92c5b1939bd8d1d8c3c9f30d23c7a3248e9a34a3e94820eba12",
+    "docs/reviews/c6_r006_post_stop_audit_codex.md": "3ef51c243d55a89534d54555f4d4b7536da948fbed1c4825b6b034b48a30c7eb",
+    "geomind/c6_r4_field.py": "ee3c775b918f165add8820a253ff87d190b2ec399f56219dcd5030abbf53e4fb",
+    "geomind/c6_r4_field_analysis.py": "c38cd9878a0f84b5cc6be4aaf0f38a356db650f4e4bb5a4be2757cb0cfff1852",
+    "geomind/c6_r4_field_assay.py": "1a246728e63c304d633c0f6bdb9d625017389953bf7602ecc61025466aceb3dd",
+    "geomind/c6_r4_field_protocol.py": "6a1671be6e810b6666c43b0dc77a71004c0140fc5d7c2113eff1009cc1ecb8f0",
+    "tests/test_c6_r4_field.py": "ea71dae9e3e6c98c44722506614137b452e0b4babb05b47debaa2d05ea9e3578",
+    "tools/c6_r4_mutants.py": "a5792756adf54018f210340cdd180f7d65589021f777222a39b91ce0798af2e4",
+    "tools/c6_r4_performance_report.py": "719194616a9f5fc6ae4ea1cf6e50fa0414c5c2f04bf0e08e0293cf8fb810abcf"
+  },
+  "artifacts": {
+    "optimized.json": "d19c43f10fd32c8c7dc1d39aa823bcb5f08d9db604b32d823bdb8dd7498e7d8f",
+    "COMPARISON.json": "90bafb25d8d3c7877673df98d90262fa544e3260595e9246b1d847d813cb67ae",
+    "GATED_STAGES.json": "f8ca61123a870eeddd2cbd8a61412672fcf984cbd3eeb922372b8688c0f7dc95",
+    "VALIDATED_HISTORICAL_COMPARISON.json": "94cfda9f818871010871fed9931f23b4994a7db7443220f84c6dd6d5124cebd5",
+    "smoke.json": "9475fba823b25e1f0ade4093d08f00b9cd6043592d09951bcde621c847b2cec0",
+    "contracts.xml": "56f94b1fd2ad495d9c6a2b8da5effb61001817ee22aab6dcdafebf048f1f089b"
+  }
+}

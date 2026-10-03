@@ -1,0 +1,23 @@
+{
+  "kind": "REPRODUCED_ENGINEERING_PERFORMANCE_COMPARISON",
+  "passed": true,
+  "tolerance": 1e-10,
+  "baseline_seconds": 83.332918125,
+  "optimized_seconds": 6.072003625000001,
+  "speedup": 13.724121932651185,
+  "baseline_calls": {
+    "advance": 31200,
+    "native_source_integrations": 600
+  },
+  "optimized_calls": {
+    "advance": 312,
+    "native_source_integrations": 6
+  },
+  "maximum_raw_response_error": 6.88338275267597e-14,
+  "maximum_per_probe_gain_error": 6.8833827526759706e-15,
+  "maximum_full_state_check_difference": 5.7163013955255714e-15,
+  "raw_artifacts_sha256": {
+    "evidence/c6_r006_performance_checks/baseline.json": "29e850c3499b8102e32be0b37ec1765dcc678f7cff60a63991a27bb622548c26",
+    "evidence/c6_r006_post_stop_checks/optimized.json": "d19c43f10fd32c8c7dc1d39aa823bcb5f08d9db604b32d823bdb8dd7498e7d8f"
+  }
+}

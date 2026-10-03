@@ -1,0 +1,162 @@
+{
+  "status": "PASS",
+  "kind": "SMOKE_ONLY",
+  "full_settings_qualified": false,
+  "source_pin": {
+    "status": "PASS",
+    "source_files_verified": 25,
+    "owner_identities_verified": 12,
+    "manifest_entries_verified": 23,
+    "checksum_entries_verified": 24,
+    "handoff_sha256": "719781cbd5a302f58f0f57c064b32ca0a49e49546a1f88160582ba6235ca575e",
+    "expected_record_sha256": "37e8249338a95e32de72f4e30091e104697606faebd53b22bda8b90124e3bceb",
+    "import_record_sha256": "3f34717f795415f5ed4b11df060cdfc3c36f0bd8b1d491853141778bbc2d3da2"
+  },
+  "checks": [
+    {
+      "scope": "smoke",
+      "start": 0.0,
+      "duration": 0.2,
+      "dt_values": [
+        0.005,
+        0.0025,
+        0.00125
+      ],
+      "max_errors": {
+        "position": 6.072789272671272e-14,
+        "phase": 1.021405182655144e-14,
+        "field": 1.804754948924499e-14
+      },
+      "normalization_sizes": [
+        2.2464288062961493
+      ],
+      "passed": true,
+      "initial_ids": [
+        "741a7a4906068eabdfdfc8867167e51b04419594c2879947f21e9fdc2fa4230d",
+        "741a7a4906068eabdfdfc8867167e51b04419594c2879947f21e9fdc2fa4230d",
+        "741a7a4906068eabdfdfc8867167e51b04419594c2879947f21e9fdc2fa4230d"
+      ],
+      "end_ids": [
+        "6e08668a28ab99c6dafccdf038c1e45fb16e814b63bd7882ab694638a5d29f48",
+        "7b6830acd09c57775d551d5575718aaf06bc92e7814894633acda86ede421d17",
+        "e6fcbd0d2b2ea68346f5b5c1280f65629181ffbd4ba937a451382300970c1ddd"
+      ],
+      "source_trace_hash_by_dt": [
+        "b80a8ccb3118728ed047c6928f1a02155ba800a3dde7f7bc6361f4a1fae3d6a8",
+        "8797c60596c0e0371c43646d1d0588c41eff5b0c1fed1689b385cf8099e8a0c4",
+        "1f9f6140d22d44188ff5705c1811e3781ce1b666484f04e7591ba046cf5ac0fc"
+      ],
+      "output_max_by_dt": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "output_power_by_dt": [
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "first_output_time_by_dt": [
+        null,
+        null,
+        null
+      ],
+      "output_check_method": "Full selected-member outgoing channels computed (or reused on identical physical inputs) before masks; bounded temporary arrays and byte-limited immutable cache. Python norms are derived diagnostics. All-off native actual-medium evolution omits cohorts; independent native RHS/channel contracts verify that path."
+    }
+  ],
+  "end_identities": [
+    "6e08668a28ab99c6dafccdf038c1e45fb16e814b63bd7882ab694638a5d29f48",
+    "7b6830acd09c57775d551d5575718aaf06bc92e7814894633acda86ede421d17",
+    "e6fcbd0d2b2ea68346f5b5c1280f65629181ffbd4ba937a451382300970c1ddd"
+  ],
+  "native_build": {
+    "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+    "flags": [
+      "-std=c++17",
+      "-O2",
+      "-fno-fast-math",
+      "-ffp-contract=off",
+      "-dynamiclib"
+    ],
+    "source_sha256": "be46eb613db693d7321070243d0ea3e4e35d8aeda620de62f01aed200d651e14",
+    "binary_sha256": "4830141d5585f6a0e684808ccf339314bc3205f7dd6a30c4a5838b0dce5e01f4"
+  }
+}
