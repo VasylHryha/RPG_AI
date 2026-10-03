@@ -3,6 +3,10 @@
 Plain-language record, written 2026-10-03 at the owner's request ("document why we did it and what the motivation"). It is a map of the
 reasoning, not a result. The results are in the `REPORT*.md` files and each step's `SPECIFICATION*.md`.
 
+**Corrected 2026-10-03** after a recheck: the trail and the "still ahead" list below were rewritten where the data did not support the earlier wording.
+The list of corrections, with their basis, is in `CORRECTIONS.md`. The earlier text is in git history (`e88354c`). Authority and scope of this whole line
+of work: `docs/decisions/0028-owner-directed-exploratory-composable-shapes.md`.
+
 ## The goal
 
 Show that an AI can be built from **small pieces ("shapes"), each responsible for one job**, that combine into bigger pieces which act as one piece,
@@ -26,20 +30,22 @@ plus a tactics piece. Each level reuses the level below it.
 
 | Step | What it was for | What it found |
 |---|---|---|
-| Physics route (C4 to C6) | Do oscillating units form stable groups, and groups of groups, by one rule? | Two levels worked; the third stalled. The route was slow and complicated, and I (Claude) misread the idea along the way |
-| Two-body pilot | Why does level three fail? Do groups fuse? | They do not fuse; level-3 failures were near-misses on one recovery test; the model has no way for a unit's shape to set its frequency |
+| Physics route (C4 to C6) | Do oscillating units form stable groups, and groups of groups, by one rule? | Two levels worked for the groups that formed (formation is near its threshold, so this is not a population claim); the third stalled. The route was slow and complicated, and I (Claude) misread the idea along the way |
+| Two-body pilot | Why does level three fail? Do groups fuse? | In pairs of level-2 groups, they do not fuse. The stored recovery data point to phase-pattern misses of about twice the threshold on one test (a hypothesis, not tested). A post-hoc table of the stored units shows no link from a unit's size or radius to its rate (`a_twobody/ADDENDUM.md`): the model has no shape-to-frequency link. Pairs only; five-group worlds untested |
 | Research and rethink (theory, outside projects, process guides) | Find a simpler, more direct test of the owner's real goal | Pieces that fit and compose are the core; the physics substrate is a later question |
 | Arithmetic demo | Do small taught pieces (add, multiply, divide, square root) compose and promote? | Wiring works at one level, but one big map matched it, errors build up over a chain, and an ordinary network was far more accurate: arithmetic is the wrong test |
-| Tactics, Stage 0 (AIM + MOVE) | The same question on a task where positions and ranges are natural | Two small separately taught pieces play almost as well as the scripted expert; one big controller of the same size is much weaker and needs 16 times the data to approach; the advantage comes from the wired structure |
-| Tactics, change-cost test (Stage 0c) | The "quick to change" hypothesis | First revision inconclusive (fine-tuning stalled; my explanation was wrong, corrected). Second revision: SUPPORTED within this sandbox. Retraining only the affected piece needed about 10 times fewer new rows than retraining a single block of the same size (100 against 1,000 rows for a common quality level; the block never reached 0.90 within 12,000), and the reused piece kept its step correct (2 degrees against 11 to 29). Marginal on how big the change was; part of the result restates the design (`REPORT_CHANGE2.md`) |
+| Tactics, Stage 0 (AIM + MOVE) | The same question on a task where positions and ranges are natural | Two small separately taught pieces play almost as well as the scripted expert; one big controller of the same size is much weaker. A block 16 times larger on 16 times the data comes within 0.05 on seen mixes and is ahead on the never-seen type. The wired design copies the teacher's own computation graph and the block is a plain network over fixed enemy slots, so structure, shared scoring and separate teaching are not separated (a structured end-to-end baseline was not run) |
+| Tactics, change-cost test (Stage 0c) | The "quick to change" hypothesis | First revision inconclusive (fine-tuning stalled; my explanation was wrong, corrected). Second revision: SUPPORTED within this sandbox, on a margin of 0.001 for its first gate. Retraining only the affected piece needed **at least** 10 times fewer new rows than retraining a single block of the same size (the wired unit reached the 0.80 level at the 100-row floor of the grid; the block needed 1,000, and reached 0.90 in only 2 of 20 seeds within 12,000). The reused piece kept its step correct (2 degrees against 11 for the block at 12,000 rows). Part of the result restates the design (`REPORT_CHANGE2.md`, `CORRECTIONS.md`) |
+| Recheck and shared library (2026-10-03) | Is this the best we can do? | Four same-family audits found no verdict that fails to re-derive, but several overclaims, fragile gates and code defects. Corrections are in `CORRECTIONS.md`; repaired shared tooling is in `tcd_common/`; the next experiment (0d) separates structure from composition (`PROPOSAL_0D.md`, draft) |
 
 ## Why the change-cost test (and not the "structure versus teaching" test)
 
 The natural next question after Stage 0 was whether the advantage comes from the wired *structure* (one scorer shared by all enemies, a step
-that depends on the chosen target) or from teaching the pieces *separately*. Looking closely, that question cannot be separated by training
-mode: the two pieces have separate parameters and each has its own practice answers, so training them together gives exactly the same
-computation as training them separately. What *can* differ is what happens when something changes. That is hypothesis 2 above, and it is
-the practical reason to want pieces at all. So the next test changes a rule and measures how much data each design needs to follow it.
+that depends on the chosen target) or from teaching the pieces *separately*. I judged then that training mode could not separate the two. That was
+too strong: training the same wired structure jointly, end to end, is a different computation and is exactly the missing baseline (the Stage 0
+report names it as the natural follow-up). It is now the first part of the next experiment (`PROPOSAL_0D.md`). What a rule change does *is* a separate
+and practical question (hypothesis 2 above): after a change, how much data does each design need? The change-cost test measured that, but only for a
+change that touches the piece the wired unit was told to retrain, so its advantage there partly holds by construction.
 
 ## What counts as success or failure of the idea
 
@@ -51,11 +57,15 @@ the practical reason to want pieces at all. So the next test changes a rule and 
 
 ## What is still ahead (in order of how much each would teach)
 
-1. A change that touches only MOVE, or both pieces (to check the change-cost result is not specific to AIM).
-2. The squad level: a focus piece plus three units, the second level of composition (so far only pieces into a unit have been tested). Recommended next.
-3. Stage 0b: the mage's burst as a piece (needs a data design for a rare decision).
-4. Stage 1: goal memory (commitment); Stage 2: enemy memory (limited vision); Stage 3: a map (walls and cover). Each added only with a situation that
+1. Experiment 0d (draft): separate structure from composition with an ablation ladder of baselines under equal tuning; a change that touches only MOVE
+   or both pieces, with freeze-the-head controls; a genuinely extrapolated unit type; effect-size bars with confidence intervals fixed in advance.
+2. Learning from outcomes (evolution strategies or policy gradient on win rate) instead of imitating scripted teachers.
+3. The squad level: a focus piece plus three units, the second level of composition (so far only pieces into a unit have been tested), against a
+   structured end-to-end baseline.
+4. Stage 0b: the mage's burst as a piece (needs a data design for a rare decision).
+5. Stage 1: goal memory (commitment); Stage 2: enemy memory (limited vision); Stage 3: a map (walls and cover). Each added only with a situation that
    fails without it.
-6. The real Astelia simulator, after its own repairs (the GeoTactics plan, GT0).
-7. The RRG-specific claim: the shapes and their links come from signature, rate and timing rules (compatible pieces connect; stable combinations
+6. An outside benchmark for external validity (for example SMACv2 for tactics, CompoSuite or gSCAN for recombining pieces). Not set up or checked here.
+7. The real Astelia simulator, after its own repairs (the GeoTactics plan, GT0).
+8. The RRG-specific claim: the shapes and their links come from signature, rate and timing rules (compatible pieces connect; stable combinations
    become the next level). This is where the oscillator work returns.

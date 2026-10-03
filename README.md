@@ -2,6 +2,18 @@
 
 Standalone CPU research workspace imported from `GEOMIND_R4_HIERARCHY_UPDATE.zip` on 1 October 2026. Forward research guidance is [GeoMind R5](GEOMIND_GEOMETRIC_AI_QUALITY_STANDARD_R5.md), following the owner's [RRG v0.2.1 alignment handoff](docs/RRG_V0_2_1_ALIGNMENT_HANDOFF.md); audited source availability is recorded in [research/rrg/CURRENT.md](research/rrg/CURRENT.md). [GeoMind R4](GEOMIND_GEOMETRIC_AI_QUALITY_STANDARD_R4.md) remains historical guidance for accepted experiments. The separate application lane uses [GeoTactics R3](GEOMIND_GEOTACTICS_ASTELIA_EXPERIMENT_PLAN_R3.md). The imported review report is historical context, not the current execution plan.
 
+## Current direction and exploratory lane
+
+Milestone work (C6) is `BLOCKED / R006 STOP`; see the status table below. In parallel, the owner directed an **exploratory, non-milestone** line testing whether AI can be
+built as small composable pieces ("shapes") that combine into bigger pieces ([decision 0028](docs/decisions/0028-owner-directed-exploratory-composable-shapes.md)):
+
+- [`evidence/c6_dev_pilot/a_twobody/`](evidence/c6_dev_pilot/a_twobody/ADDENDUM.md): two-body pilot on why level three stalls ([index](evidence/c6_dev_pilot/INDEX.md)).
+- [`evidence/geometric_composition_demo/`](evidence/geometric_composition_demo/README.md): arithmetic composition demo (the wrong test; kept as a record).
+- [`evidence/tactical_composition_demo/`](evidence/tactical_composition_demo/README.md): tactical sandbox, AIM and MOVE pieces, change-cost test; read its [corrections](evidence/tactical_composition_demo/CORRECTIONS.md) first.
+
+These are exploratory records, not milestone evidence. They use exploratory verdict words, sit outside the GT0–GT5 plan, and have no cross-family review. They test nothing
+about geometry, oscillators or "vibration". They change no milestone status.
+
 ## Status
 
 <!-- STATUS:BEGIN (generated from STATUS.json by tools/status.py; do not edit) -->

@@ -1,6 +1,11 @@
 # Geometric composition demo — NOT a milestone, NOT C6 evidence
 
-Status: SPECIFICATION (before any run). Requested by the owner on 2026-10-03: "lets do it and document", after the
+Status: COMPLETE (one run, report in `REPORT.md`; commits `a0c4499` specification and code, `9006f7b` run and report). This README is the original specification-time text;
+authority and scope of this exploratory line: `docs/decisions/0028-owner-directed-exploratory-composable-shapes.md`. No cross-family review exists and none is claimed.
+Corrections to `REPORT.md` (found by a same-family audit that recomputed them from `run/`; the report itself is unchanged): DISTANCE wires three taught pieces
+(multiply, add, square root), and MIX4 uses four; the self-audit lists seven pre-run corrections, not three; the "7 to 10 times lower" error ratios are 7.2 and 10.6
+against the composite but 6.3 (4,000 samples) and 3.6 (64,000 samples) against the geometric big map; the 0.43% P4 figure at 16x comes from 10 seeds, not 20.
+The tactical line's corrections are in `../tactical_composition_demo/CORRECTIONS.md`. Requested by the owner on 2026-10-03: "lets do it and document", after the
 owner restated the goal: show that AI can be built from **geometry instead of matrix computation**, as small pieces that
 each do one thing, combine into bigger pieces that act as one, and so on.
 

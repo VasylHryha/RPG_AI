@@ -1,0 +1,66 @@
+# Corrections to the recorded reports (additive; the reports and run records stay unchanged)
+
+Written 2026-10-03 after an owner-requested recheck ("check if it is the best we can do… issues, conflicts, gaps"). Four independent read-only
+audits (claims against raw data, scientific design, code, governance) were run by Claude subagents, which is the **same model family** as the
+author: this is a self-audit, not a cross-family review (see `docs/decisions/0028-owner-directed-exploratory-composable-shapes.md`).
+
+Nothing here changes a verdict. Recorded verdicts were re-derived independently from the per-seed files using only the specification text, and all
+eight (Stage 0 P1–P5, change-cost r2 C1–C3) matched. What follows corrects wording that the data do not support, states where a verdict is fragile,
+and records known defects of the recorded code. "Checked" means I recomputed it from the stored per-seed files myself; "audit" means a subagent
+reported it from the same files and I did not recompute it.
+
+## A. Verdicts that are fragile (read the verdict with these)
+
+| Item | Fact | Source |
+|---|---|---|
+| Change-cost r2 **C1** (SUPPORTED) | median 0.6989 against a bar of 0.70; 55% of seeds at or below it; the seed interquartile range is about 0.02. C2 and C3 are gated on C1, so the whole chain rests on a margin of 0.001. | audit; the report already says "marginal" |
+| C1 rule changed between revisions | r1 required 75% of seeds; r2 uses the median only, after r1 failed on the 75% rule. Recorded in decision 0028. | `change.py:179`, `change2.py:202` |
+| Stage 0 **P5** (INDETERMINATE) | "median and 75% of seeds" read jointly (both bars in the same seed) gives 65% of seeds, INDETERMINATE. Read per condition it gives 85% and 80%, which would be SUPPORTED. The specification does not say which. The recorded reading is the joint one. | audit |
+| C3 common level 0.80 | The phrase "at or below every design's own raw quality" is ambiguous: by median it gives 0.80; per seed the minimum is 0.7875, so no listed level qualifies. The level was set knowing the block's plateau. | audit |
+| Relative-view step metric | The spec does not say whether the relative view uses `step_move` or `step_tiebest`. Both give the same verdict (audit). | audit |
+
+## B. Statements to read differently
+
+| Where | Statement | Correction | Basis |
+|---|---|---|---|
+| `REPORT_CHANGE2.md`, `MOTIVATION.md` | "about 10 times fewer rows" | **At least 10 times** at the 0.80 level. The wired unit already reaches 0.80 at the grid floor of 100 rows in 20 of 20 seeds and 0.90 in 14 of 20, so its true need is below 100. The block reaches 0.80 in 19 of 20 seeds within the grid but never within 100 rows, and 0.90 in only 2 of 20 (equal size) and 3 of 20 (large). | checked |
+| same | "never recovers within 12,000" / "no design recovered in any seed" (fine-tuning) | In the relative view, retraining from scratch recovered the equal-size block in **5 of 20** seeds and the large block in 0 of 20. Fine-tuning recovered the equal-size block in **4 of 20** seeds (the wired unit in 0 of 20). Say "fewer than half of seeds". | checked |
+| same | "the big controllers' step angle was 11 to 13 degrees at 12,000" (`MOTIVATION.md`: "11 to 29") | At 12,000 rows the step angle is **11.2** (equal size) and **9.4** (large), the latter under the 10 degree bar. The 29 degrees is the 100-row value. | checked |
+| same | "below the rush rule's -0.212 at most row counts" | Below at **all six** row counts (-0.30 to -0.49). | checked |
+| same | "Part of this restates the design"; "supports … quick to change" | The change is a monotone function of one input feature; MOVE labels do not depend on the doctrine, and only AIM was retrained, so the cheapness of the wired unit holds by construction. The matching control (a block with everything frozen except its score head) was not run. | audit |
+| `REPORT.md` (Stage 0), `MOTIVATION.md` | "the advantage comes from the wired structure" | Structure, weight sharing across enemies, the target-conditioned step and separate teaching are **not separated**. A structured end-to-end baseline was not run. The flat model's step head regresses a multimodal target by squared error, which may explain part of its loss. | audit |
+| `MOTIVATION.md` | "cannot be separated by training mode … exactly the same computation" | Too strong. Joint training of the two pieces through the target choice is a different computation; the Stage 0 report itself names an end-to-end shared-scorer test as the natural follow-up. | audit |
+| `MOTIVATION.md` trail, Stage 0 row | "needs 16 times the data to approach" | The 96,000-row block (5,765 parameters) is within 0.05 of the composed unit on seen mixes (+0.05, 95% interval 0.04 to 0.06) and **ahead of it on the unseen type** (-0.05, interval -0.08 to -0.01). The report said this; the trail row left it out. | audit |
+| `REPORT.md` (Stage 0) | composed 0.708 on the unseen type | 0.708 is the median of per-seed cells; the prose 0.696 (and the 0.715 and 0.750 for the 4x and 16x blocks) are averages of per-opponent medians. By per-seed cells the larger blocks are 0.7125 and 0.748. The two columns are not comparable. | audit |
+| `REPORT.md` (Stage 0) | "no post-hoc analysis" | The causal explanations in the Reading ("error is set by its pieces and adds up", "the advantage comes from structure") are untested statements, not results. | audit |
+| `REPORT_CHANGE.md` | "972 s CPU" | 979.7 s (`run_change/SUMMARY.json`). | audit |
+| `REPORT_CHANGE.md` amendment | from-scratch AIM "0.994", "dev_learnability.py, below" | 0.994 was an earlier scratch look; the recorded development check is 0.998 (`dev_learnability.json`). | audit |
+| `SPECIFICATION.md` line 28 | skirmisher (70, 0.45, 3.5, 6, 3, 3.0) | Stale. `tactics.py` and the specification's own section 8.4 give hp 60, speed 0.30, range 6.0, damage 7, cooldown 4, preferred range 2.5. The runs used `tactics.py`. | audit |
+| Stage 0 P5, unseen type | "tests an unseen unit type" | The skirmisher is an archer with preferred range 2.5. The teacher's back-off rule flips at 2.0 and trained ranges are 1.2, 3.5 and 5.0, so the test asks where a smooth network puts a step function in an untrained gap. It is an interpolation test, not a test of composition. | audit |
+| `MOTIVATION.md` | "Two levels worked" | C5's formation caveat applies (AGENTS.md: H-M at level 2 is supported for the formed groups only; formation is near its threshold and the panel does not establish a population formation rate above 50%). | AGENTS.md |
+
+## C. Two-body pilot (`evidence/c6_dev_pilot/a_twobody/`) — see its `ADDENDUM.md`
+
+The same audit found wording issues there (pooled gaps diluting P1 and P3, "near-misses", "zero to machine precision", pooled "R shrinks"). They are
+recorded in `ADDENDUM.md`, which also adds the unit-table post-hoc result that `REPORT.md` omits and `MOTIVATION.md` cites.
+
+## D. Known defects of the recorded code (frozen; repaired in `tcd_common/`, see `tcd_common/CHANGES.md`)
+
+| Defect | Effect on recorded results |
+|---|---|
+| `tactics.change_metrics` step metrics run over all states, and `step_tiebest` drops hold labels when tied-best enemies mix hold and move labels, so a correct hold is scored as an angle error | Inflates the tie-best step angle (mean and p90 most, median only if more than half of states are affected), most under the changed doctrine (28% ties). It affects the relative view and C2's step test; it cannot be recomputed because the trained models were not stored. The verdict is unchanged under the `step_move` metric (audit). |
+| Stage 0 `aim_top1` and its nearest-enemy floor include single-enemy states, which agree trivially | Both numbers are inflated by the same states (0.979 and 0.862 in the report). The change-cost code already used multi-enemy states. |
+| `ratio_verdict(inf, inf)` returns SUPPORTED | Latent: C3's gate on C2 blocked it in the recorded run, and the common-level view had finite values. |
+| `run_jobs` reports "deadline" when the last job finishes after the soft deadline; the watchdog is cancelled after evaluation; `atomic_write` temporary names are shared by the watchdog and main threads | None in the recorded runs (all completed 20/20 before the caps). They could have mislabelled or corrupted a run that ran long. |
+| `tactics.py` was extended after the Stage 0 run (hash c0d849… then, 37fa0a… now) | By inspection every change is additive, except `batch=min(batch, len)` in `MLP.fit` (a no-op when the data have at least 128 rows). Checked: `tcd_common/LEGACY_EQUIVALENCE.json` records an exact (bit-for-bit) match of the current file with all three recorded versions on every primitive the harnesses call, and `tcd_common/SEED_REPRODUCTION.json` records that re-running seed 0 at HEAD reproduces the stored Stage 0 record (63 values) and change-cost r2 record (670 values) exactly, timing keys excluded. Other seeds were not re-run. |
+| Preflight tests create an empty directory (git never lists it) and the run-directory filter matches substrings | The filters were never exercised by the old tests. New tests in `tcd_common/test_common.py` use a real throwaway git repository. |
+| `dev_calibration.py`, `dev_doctrine.py`, `dev_learnability.py` execute at import and overwrite their committed JSON | **Do not run or import them.** They are hashed into the run records and left unchanged. |
+| `history_ability_attempt/dev_calibration_with_ability.py` cannot run (`import tactics` after changing `sys.path`) | Kept as history only. |
+| The `USE_BURST` global is read at call time by the opponent policy, labels and random action | It is `False` in every recorded run; flipping it would silently change the opponents. Stage 0b must pass it explicitly. |
+
+## E. What stays true
+
+The wired unit (AIM and MOVE) matches the scripted expert within about 0.03 on seen mixes, beats an equal-size flat block by a wide margin (+0.24, interval
+0.21 to 0.27, audit), and retraining only AIM needs at least ten times fewer new rows than retraining the flat block after a rule change (checked).
+These hold in one invented sandbox, with scripted teachers, imitation, and ordinary networks inside the pieces. They say nothing yet about geometry,
+oscillators or "vibration", about a second level of composition, or about learning from outcomes.
