@@ -1,0 +1,31 @@
+"""Semantic mutants for the full R4 field apparatus; only pipeline execution."""
+MUTANTS={
+ 'nonzero_sham':('native/c6_r4/field.cpp','std::max(0.,masks[c*n+i])','std::abs(masks[c*n+i])'),
+ 'masked_denominator':('native/c6_r4/field.cpp','p[3]/selected*ow','p[3]/n*ow'),
+ 'no_r_J_leak':('native/c6_r4/field.cpp','(mode==1||mode==3)?0.:p[7]','mode==3?0.:p[7]'),
+ 'no_r_K_leak':('native/c6_r4/field.cpp','K=mode==1?0.:p[8]','K=p[8]'),
+ 'gm_incoming_weight_leak':('native/c6_r4/field.cpp','mode==2?origins+2*n*c:x','x'),
+ 'phase_sign':('native/c6_r4/field.cpp','std::sin(phase)/(n-1)','std::sin(-phase)/(n-1)'),
+ 'carrier_contamination':('native/c6_r4/field.cpp','const double* z=v+3*n','const double* z=y'),
+ 'continuation_in_measurement':('geomind/c6_r4_field_analysis.py',"return sum(bool(e['qualification']['qualified']) for e in episodes if e['episode'] in (1,2,3,4))/4","return sum(bool(e['qualification']['qualified']) for e in episodes if e['episode'] in (0,1,2,3))/4"),
+ 'small_positive_margin_pass':('geomind/c6_r4_field_analysis.py',"if ci[0]>margin or ci[1]<-margin:","if ci[0]>0 or ci[1]<0:"),
+ 'negative_change_ignored':('geomind/c6_r4_field_analysis.py',"if ci[0]>margin or ci[1]<-margin:","if ci[0]>margin:"),
+ 'quorum_ignored':('geomind/c6_r4_field_analysis.py',"if ci is None or n<minimum:","if ci is None:"),
+ 'witness_shortfall_ignored':('geomind/c6_r4_field_analysis.py',"if witnesses<10 or any(v!='SUPPORTED_WITHIN_SCOPE' for v in required):","if any(v!='SUPPORTED_WITHIN_SCOPE' for v in required):"),
+ 'engineering_gate_ignored':('geomind/c6_r4_field_analysis.py',"if not valid or n<10:","if n<10:"),
+ 'false_enablement_allowed':('geomind/c6_r4_field_analysis.py',"if row['enabled_witness'] and (not row['chain_complete'] or any(c.get('witness_tuple')!=[True,False,False] for c in row['turns'])):","if False:"),
+ 'enabled_subset_cherry_pick':('geomind/c6_r4_field_analysis.py',"chain=[r['world'] for r in rows if r['chain_complete']]","chain=[r['world'] for r in rows if r['enabled_witness']]"),
+ 'restaged_next_source':('geomind/c6_r4_field_analysis.py',"if i==0 and link['next_operation_ids']!=row['turns'][1]['before_ids']:","if False:"),
+ 'sham_check_omitted':('geomind/c6_r4_field_analysis.py',"if intact['source_trace_hash_by_dt']!=sham['source_trace_hash_by_dt'] or any(sham['output_max_by_dt']):","if False:"),
+ 'field_numerics_ignored':('geomind/c6_r4_field_assay.py',"passed=all(maxima[k]<=limits[k] for k in maxima)","passed=True"),
+ 'causal_ablation_ignored':('geomind/c6_r4_field_assay.py',"if max(ablated)>max(iv['vanish_absolute'],iv['vanish_fraction']*smallest):","if False:"),
+ 'causal_spread_ignored':('geomind/c6_r4_field_assay.py',"if smallest<=iv['floor'] or max(intact)-smallest>iv['relative_spread']*smallest:","if smallest<=iv['floor']:"),
+ 'publication_link_ignored':('geomind/c6_r4_field_analysis.py',"p.get('candidate')==q['selected_identity']","True"),
+ 'publication_S_ignored':('geomind/c6_r4_field_analysis.py',"p.get('S')==matches[0]['stats']","True"),
+ 'loaded_native_hash_ignored':('geomind/c6_r4_field.py',"if record['source_sha256']!=source or hashlib.sha256(build.LIBRARY.read_bytes()).hexdigest()!=record['binary_sha256']:","if False:"),
+ 'complex_imaginary_hash_omitted':('geomind/c6_r4_field.py',"arrays.extend((r,im));names.extend", "arrays.extend((r,r));names.extend"),
+ 'selection_storage_order':('geomind/c6_r4_field_assay.py',"tuple(sorted(tokens[i] for i in r['members']))", "tuple(sorted(r['members']))"),
+ 'endpoint_omission':('geomind/c6_r4_field_analysis.py',"+GLOBAL+ARM_A", "+GLOBAL+ARM_A[:-1]"),
+}
+KNOWN_BACKSTOPS=set()
+EXPECTED_TIMEOUTS=set()

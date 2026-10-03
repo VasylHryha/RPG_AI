@@ -1,0 +1,86 @@
+{
+  "milestone": "c6",
+  "manifest": "experiments/c6_manifest.json",
+  "evidence_prefix": "c6",
+  "implementer_family": "Codex",
+  "deps": [
+    "geomind/c6_r4_field*.py",
+    "geomind/run_c6_r4.py",
+    "geomind/c6_r4_integrity.py",
+    "geomind/c4_model.py",
+    "geomind/c4_detect.py",
+    "tools/c6_r4_design_gate.py",
+    "tools/build_c6_r4.py",
+    "tools/c6_r3_design_gate.py",
+    "tests/test_c6_r4_field.py",
+    "native/c6_r4/field.cpp",
+    "experiments/c6_r4_protocol.json",
+    "experiments/c6_proposal_r4.md",
+    "docs/decisions/0019-approve-c6-r4-implementation.md",
+    "research/rrg/v0.2.1.import.json",
+    "research/rrg/v0.2.1.expected.json",
+    "docs/RRG_V0_2_1_ALIGNMENT_HANDOFF.md",
+    "pyproject.toml",
+    "uv.lock"
+  ],
+  "mutants": "tools/c6_r4_mutants.py",
+  "stages": {
+    "tests": {
+      "cmd": [
+        "{python}",
+        "-m",
+        "pytest",
+        "-x",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_c6_r4_field.py",
+        "--junitxml={staging}/contracts.xml"
+      ],
+      "artifacts": [
+        "{staging}/contracts.xml"
+      ]
+    },
+    "smoke": {
+      "cmd": [
+        "{python}",
+        "-m",
+        "geomind.run_c6_r4",
+        "--smoke",
+        "--output",
+        "{staging}/smoke.json"
+      ],
+      "artifacts": [
+        "{staging}/smoke.json"
+      ]
+    },
+    "mutation": {
+      "cmd": [
+        "{python}",
+        "tools/milestone_mutation.py",
+        "--milestone",
+        "{milestone}",
+        "--out",
+        "{staging}/mutation.json"
+      ],
+      "artifacts": [
+        "{staging}/mutation.json"
+      ]
+    },
+    "panel": {
+      "cmd": [
+        "{python}",
+        "-m",
+        "geomind.run_c6_r4",
+        "--output",
+        "{output}",
+        "--contract-report",
+        "{staging}/contracts.xml"
+      ],
+      "artifacts": [
+        "{output}/results.json"
+      ],
+      "timeout_seconds": 10800
+    }
+  }
+}

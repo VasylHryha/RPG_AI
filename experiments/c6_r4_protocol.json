@@ -1,0 +1,106 @@
+{
+  "schema": "geomind-c6-field/1",
+  "proposal_sha256": "8bbe0e5c4f38f0b1b370a114f29c315f005ca8be93c1f6f88697c297f161cbb5",
+  "conditions": [
+    "intact",
+    "no_r",
+    "no_backreaction"
+  ],
+  "development_entropy": 46034001,
+  "smoke_entropy": 46034002,
+  "bootstrap_entropy": 46034003,
+  "development_worlds": 10,
+  "final_worlds": 40,
+  "measurement_episodes": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "continuation_episode": 0,
+  "elements": 24,
+  "formation": 100.0,
+  "exposure": 100.0,
+  "window": 30.0,
+  "descriptor": 10.0,
+  "probe_sample_dt": 0.1,
+  "frame_dt": 1.0,
+  "dt": 0.005,
+  "refinement_factors": [
+    1,
+    2,
+    4
+  ],
+  "worlds_minimum": 10,
+  "bootstrap_resamples": 100000,
+  "ci_level": 0.996875,
+  "margins": {
+    "response": 0.01,
+    "later_formation": 0.1
+  },
+  "model": {
+    "mu": -0.18,
+    "diffusion": 0.05,
+    "drive": 0.02,
+    "output": 0.3,
+    "incoming": 0.2,
+    "soft_core": 0.05,
+    "sigma": 2.0,
+    "J": 0.8,
+    "K": 1.0
+  },
+  "detector": {
+    "min_size": 3,
+    "link_factor": 1.5,
+    "membership_jaccard": 0.95,
+    "shape_cv": 0.05,
+    "lock_std": 0.1,
+    "freq_tol": 0.01,
+    "pattern_tol": 0.1,
+    "kick_position": 0.1,
+    "kick_phase": 0.3,
+    "recovery_time": 30.0,
+    "recovery_jaccard": 0.9
+  },
+  "causal": {
+    "gm_window": 5.0,
+    "mg_window": 10.0,
+    "gm_scale": 1.5,
+    "phase_rms": 0.3,
+    "floor": 1e-08,
+    "vanish_absolute": 1e-12,
+    "vanish_fraction": 0.2,
+    "relative_spread": 0.1
+  },
+  "numerics": {
+    "position": 0.05,
+    "phase": 0.05,
+    "field": 0.05,
+    "response": 0.001,
+    "equivariance": 1e-09,
+    "reference": 1e-10
+  },
+  "budget": {
+    "development_seconds": 1800,
+    "panel_seconds": 10800,
+    "development_sources": 5,
+    "development_chains": 5,
+    "workers": 2
+  },
+  "reference_battery": {
+    "entropy": 46034004,
+    "exposure": 100.0,
+    "recovery": 30.0,
+    "probe": 10.0,
+    "dt": 0.005,
+    "conditions": [
+      "intact",
+      "no_r",
+      "no_backreaction",
+      "no_geometry_to_mode",
+      "no_mode_to_geometry"
+    ],
+    "state_scopes": "full owner including actual nonlinear field, carrier and heterogeneous material; maximum over every production step"
+  },
+  "arm_a_stop": "docs/decisions/0013-c6-r2-design-gate-stop.md"
+}
