@@ -47,7 +47,8 @@ class GridSet:
                             'max_errors':maxima,'normalization_sizes':scales,'passed':passed,
                             'initial_ids':[o.identity() for o in initial],'end_ids':self.identities(),
                             'source_trace_hash_by_dt':[h.hexdigest() for h in trace],'output_max_by_dt':out_max,
-                            'output_power_by_dt':[p.tolist() for p in powers],'first_output_time_by_dt':first})
+                            'output_power_by_dt':[p.tolist() for p in powers],'first_output_time_by_dt':first,
+                            'output_check_method':'Full outgoing channel computed then masked; Python norms are derived diagnostics. All-off native actual-medium evolution omits cohorts; independent native RHS/channel contracts verify that path.'})
         if not passed:raise NumericalFailure(scope,maxima)
         return [np.array(c) for c in collected]
 
@@ -204,8 +205,9 @@ def descriptor(grid,alpha,scope):
     ns=len(grid.owners[0].z);values=[[] for _ in range(3)];raw=[]
     for port in range(ns):
         for quadrature in (0,1):
-            probe=off.clone();impulse=.05*np.exp(1j*(alpha+quadrature*np.pi/2))
-            for o in probe.owners:o.z[port]+=impulse
+            probe=off.clone()
+            for o in probe.owners:
+                impulse=.05*np.exp(1j*(alpha+o.phase_origin+quadrature*np.pi/2));o.z[port]+=impulse
             flows=probe.run(s['descriptor'],scope+f'/port{port}/q{quadrature}',s['probe_sample_dt'])
             responses=[]
             for k in range(3):
@@ -213,7 +215,11 @@ def descriptor(grid,alpha,scope):
                 delta=(flows[k][1:,:2*ns]-unperturbed[k][1:,:2*ns]).copy().view('c16')/.05
                 gain=float(np.sqrt(np.mean(np.abs(delta)**2)));values[k].append(gain)
                 if k==0:responses=np.stack((delta.real,delta.imag),axis=-1).tolist()
-            raw.append({'port':grid.owners[0].site_ids[port],'quadrature':quadrature,'response_real_imag':responses})
+            raw.append({'port':grid.owners[0].site_ids[port],'quadrature':quadrature,
+                        'probe_phase_by_dt':[alpha+o.phase_origin+quadrature*np.pi/2 for o in off.owners],
+                        'response_real_imag':responses})
     gains=[float(np.mean(v)) for v in values]
     if max(abs(gains[k]-gains[2]) for k in (0,1))>s['numerics']['response']:raise NumericalFailure('response gain refinement')
-    return {'gain_by_dt':gains,'per_probe_by_dt':values,'raw':raw,'alpha':alpha,'site_ids':list(grid.owners[0].site_ids),'snapshot_ids':grid.identities()}
+    return {'gain_by_dt':gains,'per_probe_by_dt':values,'raw':raw,'alpha':alpha,
+            'phase_origin_by_dt':[o.phase_origin for o in off.owners],
+            'site_ids':list(grid.owners[0].site_ids),'snapshot_ids':grid.identities()}

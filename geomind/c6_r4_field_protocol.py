@@ -4,6 +4,7 @@ import hashlib
 import json
 from pathlib import Path
 import resource
+import sys
 import time
 import numpy as np
 from geomind import c4_detect as D
@@ -22,7 +23,7 @@ def physical_perturbations(random,owner):
     return pert
 def introduce(grid,entropy,world,generation,episode):
     states=[]
-    for o in grid.owners:
+    for k,o in enumerate(grid.owners):
         states.append(F.population(rng(entropy,world,10,generation,episode),o,generation,episode,grid.s['elements']))
     return A.GridSet(states,grid.s,grid.checks)
 
@@ -102,8 +103,11 @@ def operation(grid,qualification,qualification_flows,entropy,world,turn,alpha,sc
     # Keep all reached field/output data and scheduled operation even on loss.
     cell={'turn':turn,'before_ids':before,'source':qualification,'operation_eligible':bool(eligible),
           'physical_outcome':outcome,'first_loss_time':first_loss,'conditions':records,'controls_passed':True,'response':{},'episodes':{},'before_formation':None,'before_response':None}
-    if not eligible:return cell,None
     cell['before_response']=A.descriptor(grid,alpha,scope+'/before-response')
+    for condition in CONDITIONS:
+        cell['response'][condition]=A.descriptor(branches[condition],alpha,scope+'/response/'+condition)
+    # Loss removes causal eligibility, never the scheduled diagnostic assay.
+    if not eligible:return cell,None
     # Before candidates are diagnostics only, same arrays at the earlier clock.
     diagnostics=[]
     for episode in s['measurement_episodes']:
@@ -113,7 +117,6 @@ def operation(grid,qualification,qualification_flows,entropy,world,turn,alpha,sc
     continuation=None
     for condition in CONDITIONS:
         branch=branches[condition]
-        cell['response'][condition]=A.descriptor(branch,alpha,scope+'/response/'+condition)
         episodes=[]
         for episode in [0,*s['measurement_episodes']]:
             next_grid,q,record=qualify_episode(branch,entropy,world,turn,episode,scope+f'/{condition}/e{episode}')
@@ -157,7 +160,9 @@ def run_world(settings,entropy,world):
                 else:
                     row['chain_complete']=True
                     row['enabled_witness']=all(c['witness_tuple']==[True,False,False] for c in row['turns'])
-        else:row['stop_reason']='INITIAL_SOURCE_NOT_QUALIFIED'
+        else:
+            row['stop_reason']='INITIAL_SOURCE_NOT_QUALIFIED'
+            initial['no_treatment_response']=A.descriptor(source,alpha,'turn1/source/no-treatment-response')
     except (ValueError,RuntimeError,FloatingPointError) as exc:
         row['invalid']={'type':type(exc).__name__,'message':str(exc),'turn':current_turn}
     # Prefix arrays are transient state, not JSON evidence fields.
@@ -169,6 +174,13 @@ def run_world(settings,entropy,world):
             for v in value:discard(v)
     discard(row)
     row['seconds']=time.perf_counter()-started
-    row['peak_rss_bytes']=int(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
+    row.update(process_memory())
     row['native_build']=F.native()[1]
     return row
+
+def process_memory():
+    raw=int(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
+    unit='bytes' if sys.platform=='darwin' else 'KiB'
+    return {'peak_rss_bytes':raw if unit=='bytes' else raw*1024,
+            'memory_measurement':{'platform':sys.platform,'raw_ru_maxrss':raw,'raw_unit':unit,
+                                  'scope':'Lifetime peak RSS of the executing worker process; may include earlier worlds in a reused panel worker.'}}

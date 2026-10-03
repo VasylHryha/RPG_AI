@@ -81,6 +81,10 @@ def validate_world(row):
         if not publication_valid(cell['source'],cell['before_ids'][0]):raise ValueError('invalid source publication')
         if cell['operation_eligible']:
             if set(cell['episodes'])!=set(P.CONDITIONS) or set(cell['response'])!=set(P.CONDITIONS):raise ValueError('missing condition')
+            if not isinstance(cell['before_formation'],list) or [e['episode'] for e in cell['before_formation']]!=[1,2,3,4]:
+                raise ValueError('before episode inventory mismatch')
+            for episode in cell['before_formation']:
+                if not publication_valid(episode['qualification'],episode['qualified_ids'][0]):raise ValueError('invalid before episode publication')
             for condition in P.CONDITIONS:
                 formation(cell['episodes'][condition])
                 for episode in cell['episodes'][condition]:
@@ -103,6 +107,8 @@ def bootstrap(values,draws,level):
     return np.quantile(means,[tail,1-tail]).tolist()
 
 def evaluate(records,settings,entropy,engineering):
+    if settings['ci_level']<1-.05/len(PRIMARY):raise ValueError('uncorrected primary confidence level')
+    if settings['bootstrap_empty_policy']!='INCONCLUSIVE_IF_ANY_EMPTY':raise ValueError('unregistered empty bootstrap policy')
     rows=ordered_worlds(records,range(settings['final_worlds']))
     for row in rows:validate_world(row)
     ev={};nr={};hyp={};n=len(rows)
@@ -113,7 +119,7 @@ def evaluate(records,settings,entropy,engineering):
     grid_verdicts_valid=True
     for prefix in ('','chain_'):
         for turn in (1,2):
-            valid=gate and not invalid_turn[turn];claims={}
+            valid=gate and not (any(invalid_turn.values()) if prefix else invalid_turn[turn]);claims={}
             for kind in ('response','later_formation'):
                 verdicts=[]
                 for control in P.CONTROLS:
@@ -138,7 +144,9 @@ def evaluate(records,settings,entropy,engineering):
                     verdict=vv[0] if effective_valid else 'INCONCLUSIVE';verdicts.append(verdict)
                     name=f'b_{prefix}{kind}_vs_{control}_turn{turn}'
                     ev[name]={'value':{'world_ids':ids,'values_by_dt':[[None if not np.isfinite(x) else float(x) for x in v] for v in values_by_grid],
-                        'ci_by_dt':cis,'ci95':bootstrap(values_by_grid[0],draws,.95) if ids else None,'margin':margin,'n':len(ids)},
+                        'ci_by_dt':cis,'ci95':bootstrap(values_by_grid[0],draws,.95) if ids else None,'margin':margin,'n':len(ids),
+                        'empty_resamples':int(np.sum(np.isfinite(values_by_grid[0])[draws].sum(1)==0)),
+                        'bootstrap_empty_policy':settings['bootstrap_empty_policy']},
                         'verdict':verdict,'engineering_valid':effective_valid,'reason':None if effective_valid else 'engineering scope or grid-verdict agreement failed'}
                     if not numeric_agreement:valid=False;grid_verdicts_valid=False
                 background=None if kind=='response' else claims['H-BG']
@@ -182,7 +190,8 @@ def evaluate(records,settings,entropy,engineering):
         'b_chain_yield':{'complete':len(chain),'worlds':n,'eligible_first':sum(bool(r['turns'] and r['turns'][0]['operation_eligible']) for r in rows),'ids':chain},
         'b_chain_provenance':[{'world':r['world'],'links':r['links']} for r in rows],
         'b_enablement_witnesses':{'count':witnesses,'worlds':n,'ids':[r['world'] for r in rows if r['enabled_witness']]},
-        'b_costs':[{'world':r['world'],'seconds':r['seconds'],'peak_rss_bytes':r['peak_rss_bytes'],'native_build':r['native_build']} for r in rows],
+        'b_costs':[{'world':r['world'],'seconds':r['seconds'],'peak_rss_bytes':r['peak_rss_bytes'],
+                    'memory_measurement':r['memory_measurement'],'native_build':r['native_build']} for r in rows],
         'b_sensitivity':{'eligible_chains':len(chain),'minimum_worlds':10,'approximate_halfwidth_coefficient':2.96,'bootstrap_resamples':settings['bootstrap_resamples']}}
     for key in ('b_reference_equivalence','b_transform_equivariance','source_pin'):globals_values[key]=engineering[key]
     for key in GLOBAL:ev[key]={'value':globals_values[key],'verdict':'PASS' if gate else 'FAIL'}

@@ -17,8 +17,13 @@ from geomind.c6_r4_integrity import sha256,validate_pin,load_worlds,finite
 from tools.c6_r3_design_gate import write_world,jsonable
 
 def dependencies():
+    """World/readiness identity; final pipeline separately binds tests/mutants.
+
+    Owner chose review Finding 2(a) before any R005 development. Changing a
+    result-producing or interpreting dependency still invalidates readiness.
+    """
     patterns=('geomind/c6_r4_field*.py','geomind/run_c6_r4.py','native/c6_r4/*.cpp','tools/c6_r4_design_gate.py',
-       'tools/build_c6_r4.py','tools/c6_r4_mutants.py','tests/test_c6_r4_field.py','geomind/c6_r4_integrity.py',
+       'tools/build_c6_r4.py','tools/c6_r3_design_gate.py','milestones/c6.json','geomind/c6_r4_integrity.py',
        'geomind/c4_model.py','geomind/c4_detect.py','experiments/c6_r4_protocol.json','experiments/c6_proposal_r4.md',
        'docs/decisions/0019-approve-c6-r4-implementation.md','research/rrg/v0.2.1.import.json',
        'research/rrg/v0.2.1.expected.json','docs/RRG_V0_2_1_ALIGNMENT_HANDOFF.md','pyproject.toml','uv.lock')
@@ -86,7 +91,7 @@ def transform(owner,element_order=None,site_order=None,angle=0.,shift=(0.,0.),ph
     return o.validate()
 
 def equivariance(settings):
-    rng=np.random.default_rng(46034005);o=F.population(rng,F.medium(rng,settings['model']),0,0)
+    rng=np.random.default_rng(settings['equivariance_entropy']);o=F.population(rng,F.medium(rng,settings['model']),0,0)
     o.cohorts[0].selected=(0,2,4);o.cohorts[0].output=1.
     ep=rng.permutation(len(o.cohorts[0].theta));sp=rng.permutation(len(o.z));angle=.71;phase=.29;shift=np.array([1.1,-.7])
     transformed=transform(o,ep,sp,angle,shift,phase)

@@ -16,6 +16,11 @@ from tools.c6_r3_design_gate import write_world,jsonable
 from tools.c6_r4_design_gate import dependencies,readiness
 ROOT=P.ROOT;MANIFEST=ROOT/'experiments/c6_manifest.json'
 
+def validate_final_entropy(entropy,settings):
+    reserved=settings['reserved_entropy']
+    if type(entropy) is not int or entropy<0:raise ValueError('final entropy must be a nonnegative integer')
+    if entropy in reserved.values():raise ValueError('final entropy reused from a reserved C6 namespace')
+
 def development_pass(manifest):
     folder=ROOT/manifest['development_gate'];receipt=json.loads((folder/'results.json').read_text())
     if receipt['kind']!='DEVELOPMENT_ONLY' or receipt['status']!='PASS' or receipt['file_hashes']!=dependencies():raise ValueError('missing/stale development PASS')
@@ -43,7 +48,7 @@ def panel(output,contract_report):
     if set(manifest['endpoints'])!=set(E.ENDPOINTS) or manifest['status']!='REGISTERED_FINAL':raise ValueError('final registration incomplete')
     development=development_pass(manifest);s=P.load_settings()
     if manifest['protocol_sha256']!=sha256(P.PROTOCOL) or type(manifest['final_entropy']) is not int:raise ValueError('protocol/final entropy registration mismatch')
-    if manifest['final_entropy'] in (s['development_entropy'],s['smoke_entropy'],s['bootstrap_entropy']):raise ValueError('final entropy reused')
+    validate_final_entropy(manifest['final_entropy'],s)
     cases=list(ET.parse(contract_report).getroot().iter('testcase'))
     if not cases or any(list(c.iter('failure')) or list(c.iter('error')) or list(c.iter('skipped')) for c in cases):raise ValueError('complete passing contracts required')
     if output.exists():raise FileExistsError('recorded evidence exists')

@@ -4,6 +4,7 @@ import hashlib
 import inspect
 import json
 from pathlib import Path
+from types import SimpleNamespace
 import numpy as np
 import pytest
 from geomind import c6_r4_field as F,c6_r4_field_reference as R,c6_r4_field_assay as A,c6_r4_field_protocol as P,c6_r4_field_analysis as E
@@ -60,6 +61,11 @@ def test_invalid_normalization_and_duplicate_inventory():
     with pytest.raises(ValueError,match='identity'):o.pack()
     o=owner();o.cohorts[0].selected=(0,0)
     with pytest.raises(ValueError):o.pack()
+    o=owner();o.cohorts[0].ids=(o.cohorts[0].ids[0],)*6
+    with pytest.raises(ValueError,match='identity'):o.pack()
+    o=owner();o=F.population(np.random.default_rng(552),o,1,0,6)
+    o.cohorts[-1].ids=o.cohorts[0].ids
+    with pytest.raises(ValueError,match='duplicate physical IDs'):o.pack()
 
 def test_passive_factorization_matches_full_owner():
     o=owner();o.cohorts[0].output=0.
@@ -155,6 +161,17 @@ def test_finite_probe_descriptor_ports_and_numerical_margin():
     assert grid.owners[0].identity()==o.identity()  # probes are forks.
     assert max(value['gain_by_dt'])>0.
 
+def test_descriptor_common_phase_covariance_including_realized_raw_probes():
+    s=P.load_settings();s['descriptor']=.1;o=owner();o.cohorts[0].output=0.;phase=.71
+    changed=gate.transform(o,phase=phase)
+    first=A.descriptor(A.GridSet([o]*3,s),.3,'original-fixture')
+    second=A.descriptor(A.GridSet([changed]*3,s),.3,'rotated-fixture')
+    assert np.max(np.abs(np.asarray(first['per_probe_by_dt'])-second['per_probe_by_dt']))<1e-10
+    for a,b in zip(first['raw'],second['raw']):
+        assert np.max(np.abs(np.asarray(b['probe_phase_by_dt'])-np.asarray(a['probe_phase_by_dt'])-phase))<1e-12
+        za=np.asarray(a['response_real_imag']);zb=np.asarray(b['response_real_imag'])
+        assert np.max(np.abs((za[...,0]+1j*za[...,1])*np.exp(1j*phase)-(zb[...,0]+1j*zb[...,1])))<1e-10
+
 def episodes(values):return [{'episode':i,'qualification':{'qualified':v}} for i,v in enumerate(values)]
 def test_continuation_is_held_out_and_denominator_fixed():
     assert E.formation(episodes([True,False,False,False,False]))==0.
@@ -209,7 +226,8 @@ def test_recursive_rule_engineering_quorum_fail_and_witness_precedence():
 
 def row(world=0):
     return {'world':world,'turns':[],'checks':[],'invalid':None,'chain_complete':False,'enabled_witness':False,'links':[],
-            'initial_source':{'qualification':{'qualified':False,'candidates':[]}},'seconds':1.,'peak_rss_bytes':100,'native_build':{'fixture':True}}
+            'initial_source':{'qualification':{'qualified':False,'candidates':[]}},'seconds':1.,'peak_rss_bytes':100,
+            'memory_measurement':{'scope':'Synthetic fixture, no measured RSS'},'native_build':{'fixture':True}}
 
 def test_no_formation_panel_has_complete_endpoint_coverage_and_no_fake_support():
     s=P.load_settings();s['bootstrap_resamples']=1000
@@ -263,7 +281,8 @@ def synthetic_chain(world):
             'endpoint_qualification':q(after,c!='no_r'),'persistence_by_dt':[[{'passed':True}]]*3} for c in P.CONDITIONS}
         cell={'turn':turn,'source':q(before),'before_ids':[before.identity()]*3,'operation_eligible':True,'controls_passed':True,
             'episodes':episodes_by_condition,'conditions':conditions,'response':{c:{'gain_by_dt':[.1 if c=='intact' else 0.]*3} for c in P.CONDITIONS},
-            'witness_tuple':[True,False,False],'physical_outcome':'PERSISTENT_UNIT','before_formation':None}
+            'witness_tuple':[True,False,False],'physical_outcome':'PERSISTENT_UNIT',
+            'before_formation':copy.deepcopy(episodes_by_condition['intact'][1:])}
         result['turns'].append(cell);result['links'].append({'episode':0,'clock':qualified.time,'after_ids':[after.identity()]*3,
             'introduced_ids':[introduced.identity()]*3,'qualified_ids':[qualified.identity()]*3,'next_operation_ids':[qualified.identity()]*3})
         base=qualified
@@ -271,18 +290,23 @@ def synthetic_chain(world):
 
 def test_exact_chain_provenance_and_invalid_controls_are_rejected():
     r=synthetic_chain(0);E.validate_world(r)
-    for change in ('source','restage','field','carrier','sham','no_r','inputs','witness','publication'):
+    for change in ('source','restage','field','carrier','clock','sham','no_r','inputs','perturbations','witness','publication','before_publication'):
         bad=copy.deepcopy(r)
         if change=='source':bad['links'][0]['next_operation_ids']=['wrong']*3
         if change=='restage':bad['turns'][1]['before_ids']=['wrong']*3
         if change=='field':bad['turns'][0]['episodes']['intact'][0]['introduced_states'][0]['fields_real_imag'][0][0]+=.1
         if change=='carrier':bad['turns'][0]['episodes']['intact'][0]['introduced_states'][0]['cohorts'][-1]['carrier_real_imag'][0][0]+=.1
+        if change=='clock':bad['links'][0]['clock']-=100.
         if change=='sham':bad['turns'][0]['conditions']['no_backreaction']['output_check']['output_max_by_dt'][0]=.001
         if change=='no_r':bad['turns'][0]['conditions']['no_r']['endpoint_qualification']['qualified']=True
         if change=='inputs':bad['turns'][0]['episodes']['no_r'][1]['inputs']={'unmatched':True}
+        if change=='perturbations':bad['turns'][0]['episodes']['no_r'][1]['perturbations']={'unmatched':True}
         if change=='witness':bad['turns'][0]['witness_tuple']=[True,True,True]
         if change=='publication':bad['turns'][0]['source']['publication']['snapshot']='0'*64
+        if change=='before_publication':bad['turns'][0]['before_formation'][0]['qualification']['publication']['snapshot']='0'*64
         with pytest.raises(ValueError):E.validate_world(bad)
+    bad=copy.deepcopy(r);bad['enabled_witness']=False;bad['turns'][0]['witness_tuple']=[True,True,True]
+    with pytest.raises(ValueError,match='witness tuple'):E.validate_world(bad)
 
 def test_supported_synthetic_chain_and_mechanical_mask_not_enabled_subset():
     s=P.load_settings();s['bootstrap_resamples']=1000
@@ -316,6 +340,12 @@ def test_physical_loss_is_valid_eligibility_and_late_error_preserves_first_turn(
     result=E.evaluate(rows,s,41,engineering)
     assert result['hypotheses']['H-BG_turn1']=='SUPPORTED_WITHIN_SCOPE'
     assert result['hypotheses']['H-BG_turn2']=='INCONCLUSIVE'
+    for key in E.PRIMARY:
+        if key.startswith('b_chain_'):
+            assert result['endpoint_coverage']['evaluated'][key]['verdict']=='INCONCLUSIVE'
+            assert not result['endpoint_coverage']['evaluated'][key]['engineering_valid']
+    assert result['hypotheses']['H-BG_chain_turn1']=='INCONCLUSIVE'
+    assert result['hypotheses']['H-PS_chain_turn1']=='INCONCLUSIVE'
     rows[0]['invalid']=None;rows[0]['turns'][0]['operation_eligible']=False;rows[0]['turns'][0]['physical_outcome']='SOURCE_LOST_DURING_OPERATION'
     result=E.evaluate(rows,s,41,engineering)
     assert result['gates']['controls_numerics']
@@ -344,11 +374,16 @@ def test_panel_checks_gate_before_reading_manifest(tmp_path,monkeypatch):
     with pytest.raises(RuntimeError,match='blocked'):runner.panel(tmp_path/'panel',tmp_path/'missing.xml')
     assert not (tmp_path/'panel').exists()
 
-def test_pending_development_registration_stops_before_output(tmp_path):
-    manifest=json.loads((P.ROOT/'experiments/c6_manifest.json').read_text())
-    if manifest['status']=='PENDING_DEVELOPMENT_APPROVAL':
-        with pytest.raises(SystemExit,match='owner-approved'):gate.main(['--output',str(tmp_path/'unapproved')])
-        assert not (tmp_path/'unapproved').exists()
+def test_pending_development_registration_stops_before_output(tmp_path,monkeypatch):
+    manifest=json.loads((P.ROOT/'experiments/c6_manifest.json').read_text());root=tmp_path/'fixture-root'
+    (root/'experiments').mkdir(parents=True);monkeypatch.setattr(gate,'ROOT',root)
+    for status in ('PENDING_DEVELOPMENT_APPROVAL','REGISTERED_DEVELOPMENT_ONLY'):
+        manifest.update(status=status,development_gate='registered-output')
+        (root/'experiments/c6_manifest.json').write_text(json.dumps(manifest))
+        # Pending refuses even the exact path; registered refuses a wrong path.
+        output=root/('registered-output' if status.startswith('PENDING') else 'wrong-output')
+        with pytest.raises(SystemExit,match='owner-approved'):gate.main(['--output',str(output)])
+        assert not output.exists()
 
 def test_loaded_kernel_identity_is_pinned(monkeypatch):
     F.native();lib,record=F._NATIVE;fake=dict(record);fake['source_sha256']='0'*64
@@ -359,3 +394,145 @@ def test_detector_api_has_no_condition_or_expected_subset():
     from geomind import c4_detect as D
     assert set(inspect.signature(D.components).parameters)=={'X','link_factor','locked'}
     assert 'condition' not in inspect.signature(A.select_accepted).parameters
+
+
+def test_introductions_pair_inputs_but_keep_each_grids_actual_carrier():
+    s=P.load_settings();s['elements']=6;base=owner();base.cohorts[0].output=0.
+    states=[base.clone() for _ in range(3)]
+    for k,o in enumerate(states):o.z[0]+=.01j*k
+    grid=P.introduce(A.GridSet(states,s),882902,0,1,0)
+    first=grid.owners[0].cohorts[-1]
+    for original,o in zip(states,grid.owners):
+        c=o.cohorts[-1]
+        assert np.array_equal(c.carrier,original.z)
+        assert np.array_equal(c.x,first.x) and np.array_equal(c.theta,first.theta)
+        assert np.array_equal(c.rates,first.rates) and c.ids==first.ids and c.tokens==first.tokens
+
+
+def test_qualification_prefix_emits_nothing_before_acceptance(monkeypatch):
+    s=P.load_settings();s['elements']=6;base=owner();base.cohorts[0].output=0.;seen=[]
+    def fake_run(grid,*args):
+        seen.extend(c.output for o in grid.owners for c in o.cohorts)
+        return [np.tile(o.pack(),(31,1)) for o in grid.owners]
+    monkeypatch.setattr(A.GridSet,'run',fake_run)
+    monkeypatch.setattr(A,'qualification',lambda *a,**kw:{'qualified':False})
+    _,q,_=P.qualify_episode(A.GridSet([base]*3,s),882902,0,1,0,'synthetic-prefix')
+    assert not q['qualified'] and seen and not any(seen)
+
+
+def synthetic_operation(monkeypatch,source_lost=False,reserved_qualified=False):
+    """Exercise the real operation caller with fabricated assays; no dynamics."""
+    s=P.load_settings();s['elements']=6;base=owner();base.time=100.;base.cohorts[0].output=0.
+    grid=A.GridSet([base]*3,s);descriptor_calls=[];reserved_ids=[]
+    def fake_run(branch,duration,scope,*args):
+        flows=[]
+        for o in branch.owners:
+            initial=o.pack();o.time+=duration;flows.append(np.array([initial,o.pack()]))
+        branch.checks.append({'scope':scope,'source_trace_hash_by_dt':['paired-source']*3,
+                             'output_max_by_dt':[0.]*3})
+        return flows
+    def fake_qualification(branch,*args,**kw):
+        return {'qualified':not source_lost and branch.owners[0].cohorts[-1].mode!='no_r'}
+    def fake_episode(background,entropy,world,generation,episode,scope):
+        next_grid=background.clone()
+        for o in next_grid.owners:o.time+=100.;o.z[0]+=.01*episode
+        accepted=reserved_qualified if episode==0 else True
+        if '/no_r/' in scope or '/no_backreaction/' in scope:accepted=False
+        q={'qualified':accepted}
+        record={'episode':episode,'qualification':q,'qualified_ids':next_grid.identities()}
+        if '/intact/e0' in scope:reserved_ids.extend(record['qualified_ids'])
+        return next_grid,q,record
+    def fake_descriptor(branch,alpha,scope):
+        descriptor_calls.append(scope)
+        return {'gain_by_dt':[.1]*3,'snapshot_ids':branch.identities()}
+    monkeypatch.setattr(A.GridSet,'run',fake_run);monkeypatch.setattr(A,'qualification',fake_qualification)
+    monkeypatch.setattr(P,'rolling_persistence',lambda *a:[{'passed':not source_lost,'time':100.}])
+    monkeypatch.setattr(P,'qualify_episode',fake_episode);monkeypatch.setattr(A,'descriptor',fake_descriptor)
+    cell,continuation=P.operation(grid,{'selected_members':[0,1,2]},None,882902,0,1,.3,'fixture-turn')
+    return cell,continuation,descriptor_calls,reserved_ids
+
+
+def test_real_operation_never_replaces_reserved_continuation(monkeypatch):
+    cell,continuation,calls,_=synthetic_operation(monkeypatch,reserved_qualified=False)
+    assert cell['episodes']['intact'][1]['qualification']['qualified']
+    assert continuation is None and cell['witness_tuple']==[False,False,False]
+    cell,continuation,calls,ids=synthetic_operation(monkeypatch,reserved_qualified=True)
+    assert continuation[0].identities()==ids
+    assert len(calls)==4
+
+
+def test_physical_source_loss_keeps_all_response_diagnostics(monkeypatch):
+    cell,continuation,calls,_=synthetic_operation(monkeypatch,source_lost=True)
+    assert not cell['operation_eligible'] and cell['physical_outcome']=='SOURCE_LOST_DURING_OPERATION'
+    assert cell['first_loss_time']==100. and continuation is None and not cell['episodes']
+    assert set(cell['response'])==set(P.CONDITIONS) and cell['before_response']
+    assert len(calls)==4
+
+
+def test_unqualified_initial_source_has_no_treatment_response(monkeypatch):
+    s=P.load_settings();s['elements']=6;seen=[]
+    def unqualified(grid,*args):
+        return grid,{'qualified':False},{'qualification':{'qualified':False},'_prefixes':[]}
+    monkeypatch.setattr(P,'qualify_episode',unqualified)
+    def diagnostic(grid,alpha,scope):
+        seen.append((scope,[c.output for o in grid.owners for c in o.cohorts]));return {'fixture':True}
+    monkeypatch.setattr(A,'descriptor',diagnostic);monkeypatch.setattr(F,'native',lambda:(None,{'fixture':True}))
+    result=P.run_world(s,882902,0)
+    assert result['invalid'] is None and not result['turns'] and not result['chain_complete']
+    assert result['initial_source']['no_treatment_response']=={'fixture':True}
+    assert seen==[('turn1/source/no-treatment-response',[])]
+
+
+def test_primary_ci_correction_and_empty_resample_policy():
+    s=P.load_settings();s['ci_level']=.95;s['bootstrap_resamples']=1
+    with pytest.raises(ValueError,match='uncorrected'):E.evaluate([row(i) for i in range(40)],s,65,{})
+    values=[.2,np.nan];draws=np.array([[0,0],[1,1]])
+    assert E.bootstrap(values,draws,.996875) is None
+    assert E.bootstrap(values,np.array([[0,0],[0,1]]),.996875)==[.2,.2]
+    assert P.load_settings()['bootstrap_empty_policy']=='INCONCLUSIVE_IF_ANY_EMPTY'
+
+
+def test_final_entropy_excludes_old_development_reference_and_fixture_namespaces():
+    s=P.load_settings()
+    required={33333,46033001,46033002,46033009,*range(46034001,46034006),*range(46035001,46035005)}
+    assert required<=set(s['reserved_entropy'].values())
+    for entropy in s['reserved_entropy'].values():
+        with pytest.raises(ValueError,match='reused'):runner.validate_final_entropy(entropy,s)
+    for entropy in (True,-1,None,1.):
+        with pytest.raises(ValueError):runner.validate_final_entropy(entropy,s)
+    runner.validate_final_entropy(2**127+813,s)  # validation only; no RNG or final registration.
+
+
+def test_development_binding_keeps_world_producers_and_excludes_check_sources():
+    bound=gate.dependencies()
+    assert 'tests/test_c6_r4_field.py' not in bound and 'tools/c6_r4_mutants.py' not in bound
+    assert {'geomind/c6_r4_field_analysis.py','tools/c6_r3_design_gate.py','milestones/c6.json'}<=set(bound)
+    final={str(p.relative_to(P.ROOT)) for p in runner.milestones.dependency_files('c6')}
+    assert {'tests/test_c6_r4_field.py','tools/c6_r4_mutants.py'}<=final
+
+
+@pytest.mark.parametrize('platform,unit,factor',[('darwin','bytes',1),('linux','KiB',1024)])
+def test_peak_memory_reports_platform_units_and_worker_lifetime(monkeypatch,platform,unit,factor):
+    monkeypatch.setattr(P.sys,'platform',platform)
+    monkeypatch.setattr(P.resource,'getrusage',lambda *a:SimpleNamespace(ru_maxrss=123))
+    value=P.process_memory()
+    assert value['peak_rss_bytes']==123*factor
+    assert value['memory_measurement']['raw_unit']==unit
+    assert 'Lifetime peak' in value['memory_measurement']['scope']
+
+
+def test_chain_contrasts_use_one_complete_world_mask_for_every_turn_and_control():
+    s=P.load_settings();s['bootstrap_resamples']=1000;rows=[synthetic_chain(i) for i in range(40)]
+    incomplete=rows[0];incomplete['chain_complete']=False;incomplete['enabled_witness']=False
+    incomplete['turns']=incomplete['turns'][:1];incomplete['links']=[]
+    reserved=incomplete['turns'][0]['episodes']['intact'][0]['qualification']
+    reserved['qualified']=False;reserved['publication']=None
+    incomplete['turns'][0]['witness_tuple']=[False,False,False]
+    engineering={k:{'passed':True} for k in ('source_pin','b_reference_equivalence','b_transform_equivariance')}
+    result=E.evaluate(rows,s,42,engineering)
+    for key in E.PRIMARY:
+        cell=result['endpoint_coverage']['evaluated'][key]
+        if key.startswith('b_chain_'):
+            assert cell['value']['world_ids']==list(range(1,40))
+        elif key.endswith('turn1'):
+            assert cell['value']['world_ids']==list(range(40))
