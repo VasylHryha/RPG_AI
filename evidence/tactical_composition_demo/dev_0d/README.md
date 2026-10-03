@@ -23,11 +23,18 @@ Pools are cached outside the repository (`ZD_CACHE`, default `/tmp/zd_cache`) an
 - **What this suggests for the recorded run, and what it does not.** The development data already point toward "the gain is the structure" (S1, trained jointly, is within about 0.02 of C and 0.4 above the flat models). That is an expectation, not a result: it uses different seeds, the margins and intervals have not been applied, and the recorded run decides.
 - **Defect found and fixed during implementation:** the discordance rule was undefined for non-directional verdicts (a first implementation made EQUIVALENT unreachable with enough seeds). Fixed in `PROPOSAL_0D.md` section 4 and `zd_run.py` before registration.
 
+## What changed in the code after the development runs (pre-run review, provenance)
+
+- `zd_models.py` (22:59, after `tuned2.json` 22:52 and `gates_results.json` 22:57): `fit_f0` now takes hidden size and steps from the recipe passed in instead of hard-coding 15 and 8,000. The gates run passed the recorded recipe (15, 8,000), so it is behaviourally identical. Nothing else changed.
+- `zd_run.py`: after the cost run (23:11) only the caps in `BASE_CONFIG` changed; later, after the pre-run review, the V3 rule was aligned with the specification and the caps raised (these do not touch `run_seed`).
+- `tcd_common/harness.py`: after the review it also records the load average and CPU count in `RUN_STARTED.json`.
+- The cost run recorded no file hashes; `COST_SEED_REPRODUCTION.json` shows that seed 0 of the cost run re-runs identically under the registered code.
+
 ## Cost (step 4)
 
 Step 4 ran 8 seeds at full size on 8 workers (one wave) through the real harness on fresh entropy (`cost_spec.json`): wall **576.7 s** (jobs 576.6 s, evaluation 0.1 s), children CPU 1,335 s, peak 0.33 GB per worker,
 all 8 seeds complete. Per seed 563 to 576 s; mean fit seconds at N = 3,000: F0 3.2, F1 2.5, F2 10.4, C 16.5, S1 60.8; closed-loop play 175 s per seed. Thirty seeds on 8 workers are four waves, so about 38 minutes;
-caps set in `SPECIFICATION_0D.md` section 4 (soft 3,600 s, hard 3,900 s, evaluation 300 s).
+caps set in `SPECIFICATION_0D.md` section 4 (after the pre-run review: soft 7,200 s, hard 7,500 s, evaluation 300 s; the measurement was made on a heavily loaded machine).
 
 **Disclosure: this cost run also executed the verdict code on 8 development seeds.** Its output (`cost_run/SUMMARY.json`) shows V1 SUPPORTED, V2 EQUIVALENT, V3 SUPPORTED, V4 SUPPORTED, V5 REFUTED, with E1 median 0.411 (interval 0.401 to 0.420)
 and E2 median 0.017 (0.013 to 0.027). It was not used to choose anything: every setting, margin, rule, seed count and cap had already been fixed from steps 1 to 3 and from the specification text, and the recorded run uses new

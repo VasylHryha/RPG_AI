@@ -84,7 +84,7 @@ def run_experiment(*, spec_path, here, root, files, run_dirs, run_name, seed_job
         for var in THREAD_VARS:
             os.environ[var] = '1'
         write_json(run_dir/'RUN_STARTED.json', {
-            'smoke': smoke, 'guard': guard, 'numpy': np.__version__, 'python': sys.version.split()[0], 'platform': platform.platform(), 'workers': cfg['workers'],
+            'smoke': smoke, 'guard': guard, 'load_average_1_5_15': list(os.getloadavg()), 'cpu_count': os.cpu_count(), 'numpy': np.__version__, 'python': sys.version.split()[0], 'platform': platform.platform(), 'workers': cfg['workers'],
             'hashes': {n: hashlib.sha256((Path(here)/n).read_bytes()).hexdigest() for n in files if (Path(here)/n).exists()},
             'wall_clock': time.strftime('%Y-%m-%dT%H:%M:%S%z')})
         pool = cf.ProcessPoolExecutor(max_workers=cfg['workers'], mp_context=mp.get_context('spawn'))

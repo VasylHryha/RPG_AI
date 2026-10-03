@@ -1,4 +1,4 @@
-# Experiment 0d, Part A — structure versus composition (REVISION 2, DRAFT for owner approval; nothing is built or run)
+# Experiment 0d, Part A — structure versus composition (REVISION 2; registered with `SPECIFICATION_0D.md`, which fixes the run and supersedes any difference here)
 
 Exploratory line under decision 0028; not a milestone, not C6 evidence. Revision 1 (commit `3084b68`) was reviewed by Codex (cross-family; `docs/reviews/tactical_composition_0d_review_codex.md`,
 verdict CHANGES_REQUIRED, R1–R8). This revision narrows the experiment to **Part A only** and fixes the defects the review found; each fix and its cause is in section 9.

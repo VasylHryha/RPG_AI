@@ -41,13 +41,13 @@ Discordance with the closed-loop win score (exploratory; enters no verdict excep
 are discordant if hi(W) < 0; V1 REFUTED is discordant if lo(W) ≥ δ_sup; V2 JOINT_BETTER if lo(W) > 0; V2 EQUIVALENT if lo(W) ≥ δ_eq or hi(W) ≤ −δ_eq; a discordant row becomes INDETERMINATE.
 Gates from development (fixed in `SPEC_0D.json`): C adequate (mean development `a_joint` 0.957 ≥ 0.90) and S1 adequate (scorer admissible 0.967 ≥ 0.85, step success on moving states 0.921 ≥ 0.85);
 if `s1_adequate` were false V2 and V3 would be INDETERMINATE. No multiplicity adjustment: five separately pre-registered rows, every interval unadjusted. Seeds replicate one environment, not independent tasks.
-Equality cases are strict (`>` and `<`). V3 uses the directly estimated E1, E2 and E3.
+Equality cases are strict (`>` and `<`). V3 uses the directly estimated E1, E2 and E3. Two clarifications fixed before the run (found by the pre-run review): (a) a discordant V2 counts as **no V2 label** for V3, so V3 can still be REFUTED through `hi(E3) < δ_sup` when V1 is SUPPORTED; V3 SUPPORTED needs a non-discordant V2 EQUIVALENT; (b) if S1 is inadequate V3 is INDETERMINATE (E3 is meaningless against an inadequate baseline).
 
 ## 4. Caps and cost (measured in `dev_0d/cost_run/`, one wave of 8 full-size seeds on fresh development entropy)
 
 Measured: one wave of 8 full-size seeds on 8 workers took **577 s** wall (evaluation 0.1 s, children CPU 1,335 s, peak 0.33 GB per worker; per-seed time 563 to 576 s: S1 fits 61 s,
 C 17 s, F2 10 s, F0 3 s, F1 3 s per N; 175 s of closed-loop play per seed; three values of N per model). Thirty seeds on 8 workers are four waves (8, 8, 8, 6), so the expected wall time is
-**about 38 minutes**. Caps: jobs soft cap **3,600 s** (1.5 times the expected time), hard cap **3,900 s**, evaluation and summary write bound (`eval_cap`) **300 s**. The cost run also exercised
+**about 38 minutes**. **The measurement was made on a heavily loaded machine** (another project's jobs: load averages above 90 on 10 cores, children CPU only 29% of wall), so it is conservative, but the load can change. Caps: jobs soft cap **7,200 s** (about three times the loaded estimate; raised from 3,600 s after the pre-run review), hard cap **7,500 s**, evaluation and summary write bound (`eval_cap`) **300 s**. The run starts only when the one-minute load average is below about 20, and the load average at the start is recorded in `RUN_STARTED.json` and reported. The cost run also exercised
 the harness, the evaluation and the verdict code at full size on development entropy (its output is not used: see `dev_0d/README.md`). If the soft cap is reached the run is INCOMPLETE; no thresholds,
 seeds or N values are changed afterwards.
 
@@ -62,6 +62,11 @@ and refuses a dirty tree).
 
 | Weakness | Consequence | Acknowledgement |
 |---|---|---|
+| V2 EQUIVALENT is borderline: development per-seed E2 ranged 0.008 to 0.029 (median about 0.02), the 8-seed cost run gave `hi(E2)` = 0.027 against the limit 0.03 | the recorded V2 and V3 may come out INDETERMINATE (a legal outcome, perhaps 10 to 20% likely by the pre-run reviewer's estimate), and "S = 30 reaches equivalence" is a precision statement only | stated before the run; INDETERMINATE will be reported as such, not re-run |
+| S1's "joint" training is weakly joint: its step head sees only (relative position, preferred range) and the coupling to the scorer is the straight-through gradient and the change in the head's training inputs | V2 says little about joint versus separate teaching in general | the report states that V2 applies to this straight-through design |
+| The flat search is 24 random settings; F1 and F2 landed at the lowest learning rate and highest decay of the extended grid, F1 at the smallest hidden size | V4 and V5 are claims about this search; V5 REFUTED ("a discrete head does not matter") is the least robust | reported as such; the gap in V1 (about 0.41 against a 0.06 margin) is not sensitive to it |
+| The forgiving tie-set step diagnostic (`step_tiebest`) is not computed in this run; stream keys are not saved | a diagnostic is missing | it is not a verdict input; every key is derivable: pools (1,seed) and (2,seed), source order (4,seed), fits (3,seed,model code,N), win episodes (7,seed,opponent code), bootstrap keys 10 to 15, 20 to 26, 40 to 42 on `boot_entropy` |
+| The cost run was made without file hashes (`files=()`) and `zd_models.py` / `zd_run.py` changed slightly after the development runs | provenance of the cost-run claim | `dev_0d/README.md` lists what changed; `dev_0d/COST_SEED_REPRODUCTION.json` records that seed 0 of the cost run re-runs identically under the registered code |
 | S1 was tuned to 9,283 parameters, 12 times C's 787 | C-versus-S1 compares unequal capacity; "equivalent" is then conservative for C, "joint better" is confounded with capacity | parameter counts are reported; the grid and trial budget were the same for every family |
 | S1 queries the teacher's rule on its own selection; C does not | S1 gets extra supervision | counted and reported (`oracle_queries`); favours S1 |
 | `a_joint` has a 10 degree step tolerance | flat models are penalized for angular noise below the tolerance's scale as well as for gross errors | the median step angle on moving states and the strata are reported |

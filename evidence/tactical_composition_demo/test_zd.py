@@ -356,3 +356,34 @@ def test_the_spec_builder_reads_the_committed_development_records(tmp_path):
     cfg = R.build_config()
     assert cfg['f_star'] in ('F1', 'F2') and set(cfg['hps']) == {'F1', 'F2', 'C', 'S1'} and cfg['seeds'] in (30, 45, 60)
     assert cfg['c_adequate'] is True and cfg['s1_adequate'] is True and cfg['delta_eq'] == 0.03 and cfg['delta_sup'] == 0.06
+
+
+def test_v3_can_be_refuted_through_e3_even_when_v2_is_discordant_and_is_indeterminate_for_an_inadequate_s1():
+    """Found by the pre-run review: the code made V3 INDETERMINATE whenever V2 was discordant, the specification does not."""
+    win = {'teacher': 0.65, 'rush': 0.40, 'F0': 0.40, 'F*': 0.42, 'C': 0.70, 'S1': 0.55}      # makes V2 (EQUIVALENT by fidelity) discordant
+    means = dict(F0=0.47, F1=0.90, F2=0.54, C=0.975, S1=0.95)                                 # E1 = 0.075 > 0.06, E2 = 0.025 inside 0.03 (EQUIVALENT by fidelity), E3 = 0.05 < 0.06
+    out = R.evaluate(synthetic_rows(means, win=win), cfg_for())
+    assert out['V1_the_wired_unit_beats_the_tuned_flat_model']['verdict'] == 'SUPPORTED'
+    assert 'discordant' in out['V2_training_mode_C_versus_S1']['verdict']
+    assert out['V3_structure_explains_the_gain']['E3']['hi'] < 0.06 and out['V3_structure_explains_the_gain']['verdict'] == 'REFUTED'
+    out = R.evaluate(synthetic_rows(means, win=win), cfg_for(s1_adequate=False))
+    assert out['V3_structure_explains_the_gain']['verdict'] == 'INDETERMINATE'
+
+
+def test_teacher_forced_joint_training_reproduces_separate_training_exactly():
+    """PROPOSAL_0D.md section 2: teacher-forced structured training with disjoint parameters and additive losses is mechanically separable and equals C (matched batches)."""
+    rng = np.random.default_rng(0)
+    Xa, Ya = rng.normal(size=(300, 7)), rng.normal(size=(300, 1))
+    Xm, Ym = rng.normal(size=(300, 3)), rng.normal(size=(300, 2))
+    sep_a, sep_m = Z.Net(7, 6, 1, np.random.default_rng(1)), Z.Net(3, 6, 2, np.random.default_rng(2))
+    joint_a, joint_m = Z.Net(7, 6, 1, np.random.default_rng(1)), Z.Net(3, 6, 2, np.random.default_rng(2))
+    mask = [True]*3+[False]*3
+
+    def grad(net, X, Y):
+        return lambda b: net.backward(net.forward(X[b])[1], 2.0*(net.forward(X[b])[0]-Y[b])/(len(b)*Y.shape[1]))[0]
+    Z.adam_train(sep_a.params(), grad(sep_a, Xa, Ya), 300, 200, 64, 0.01, 1e-3, np.random.default_rng(3), mask)
+    Z.adam_train(sep_m.params(), grad(sep_m, Xm, Ym), 300, 200, 64, 0.01, 1e-3, np.random.default_rng(3), mask)      # same batch order as the scorer
+    ga, gm = grad(joint_a, Xa, Ya), grad(joint_m, Xm, Ym)
+    Z.adam_train(joint_a.params()+joint_m.params(), lambda b: ga(b)+gm(b), 300, 200, 64, 0.01, 1e-3, np.random.default_rng(3), mask+mask)
+    for a, b in zip(sep_a.params()+sep_m.params(), joint_a.params()+joint_m.params()):
+        assert np.allclose(a, b, atol=1e-12)

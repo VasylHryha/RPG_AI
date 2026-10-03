@@ -330,6 +330,7 @@ def test_run_experiment_complete_run_latch_and_hashes(tmp_path):
     run = tmp_path/'smoke_run'
     started = json.loads((run/'RUN_STARTED.json').read_text())
     assert started['hashes']['a.py'] and started['smoke'] is True
+    assert len(started['load_average_1_5_15']) == 3 and started['cpu_count'] >= 1
     assert sorted(p.name for p in (run/'seeds').iterdir()) == ['seed_00.json', 'seed_01.json'] and not list(run.rglob('*.tmp*'))
     assert json.loads((run/'SUMMARY.json').read_text())['evaluation']['X']['verdict'] == 'SUPPORTED'
     with pytest.raises(SystemExit, match='latch'):

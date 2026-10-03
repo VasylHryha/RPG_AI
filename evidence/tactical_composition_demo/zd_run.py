@@ -36,7 +36,7 @@ FILES = ('PROPOSAL_0D.md', 'SPECIFICATION_0D.md', 'SPEC_0D.json', 'zd_run.py', '
          'tcd_common/test_common.py', 'dev_0d/DEV_SPEC.json', 'dev_0d/tuned2.json', 'dev_0d/gates_results.json', 'dev_0d/README.md')
 
 BASE_CONFIG = {
-    'seeds': 30, 'workers': 8, 'soft_cap': 3600.0, 'hard_cap': 3900.0, 'eval_cap': 300.0,
+    'seeds': 30, 'workers': 8, 'soft_cap': 7200.0, 'hard_cap': 7500.0, 'eval_cap': 300.0,
     'train_episodes': 600, 'test_episodes': 100, 'n_primary': 3000, 'n_extra': [1000, 9000], 'win_episodes': 200,
     'f_star': 'F1', 'hps': {}, 'delta_eq': 0.03, 'delta_sup': 0.06, 'resamples': 4000, 'angle_deg': 10.0, 'min_stratum': 30,
     'require_strata': True, 'c_adequate': None, 'c_adequate_basis': 'dev gates', 's1_adequate': None, 's1_adequate_basis': 'dev gates'}
@@ -211,11 +211,12 @@ def evaluate(rows, cfg):
                   or (label2 == 'EQUIVALENT' and (w2['lo'] >= d['eq'] or w2['hi'] <= -d['eq'])))
     s1_ok = bool(cfg['s1_adequate'])
     verdict2 = 'INDETERMINATE (S1 baseline inadequate)' if not s1_ok else 'INDETERMINATE (discordant with closed-loop win score)' if discordant else label2
-    if not s1_ok or discordant:
-        verdict3 = 'INDETERMINATE'
-    elif verdict1 == 'SUPPORTED' and E['E3']['lo'] > d['sup'] and label2 == 'EQUIVALENT':
+    effective2 = None if discordant else label2        # a discordant V2 counts as no V2 label
+    if not s1_ok:
+        verdict3 = 'INDETERMINATE'                     # E3 is meaningless against an inadequate baseline
+    elif verdict1 == 'SUPPORTED' and E['E3']['lo'] > d['sup'] and effective2 == 'EQUIVALENT':
         verdict3 = 'SUPPORTED'
-    elif verdict1 == 'SUPPORTED' and (label2 == 'SEPARATE_BETTER' or E['E3']['hi'] < d['sup']):
+    elif verdict1 == 'SUPPORTED' and (effective2 == 'SEPARATE_BETTER' or E['E3']['hi'] < d['sup']):
         verdict3 = 'REFUTED'
     else:
         verdict3 = 'INDETERMINATE'
