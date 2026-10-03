@@ -1,0 +1,70 @@
+{
+  "kind": "B1_ENGINEERING_REPAIR_CHECKS_ONLY",
+  "verified_commit": "8b9afac76831cf86c86d60444ad599c9e304a54d",
+  "review": "docs/reviews/c6_r005_predevelopment_recheck_claude.md",
+  "review_sha256": "41e5e0b2f9ae415f698b86339d4c8d3bf12b614f807e37e370b35d56bdf29e3c",
+  "owner_completion_decision": "docs/decisions/0022-authorize-c6-r005-completion.md",
+  "fingerprint": "544ea7aa9b5892c68fc8f408f584376a3f10f1014cd59071551b1a533473df76",
+  "stage_attestation": {
+    "preflight": {
+      "artifacts": {},
+      "commit": "8b9afac76831cf86c86d60444ad599c9e304a54d",
+      "seconds": 0.13
+    },
+    "tests": {
+      "artifacts": {
+        ".gate/c6/544ea7aa9b5892c68fc8f408f584376a3f10f1014cd59071551b1a533473df76/contracts.xml": "ba96afe629d3183633b1bff285ff43210b2ef934f005c36080aba87f410ab557"
+      },
+      "commit": "8b9afac76831cf86c86d60444ad599c9e304a54d",
+      "seconds": 69.07
+    },
+    "smoke": {
+      "artifacts": {
+        ".gate/c6/544ea7aa9b5892c68fc8f408f584376a3f10f1014cd59071551b1a533473df76/smoke.json": "133b04a99d137210dc1d6b42b5e3b2df3701b75651786b9f0bfa5067612d37b2"
+      },
+      "commit": "8b9afac76831cf86c86d60444ad599c9e304a54d",
+      "seconds": 0.39
+    }
+  },
+  "tests_passed": 59,
+  "tests_seconds": 69.07,
+  "smoke": "PASS",
+  "artifact_sha256": {
+    "evidence/c6_r005_b1_checks/contracts.xml": "ba96afe629d3183633b1bff285ff43210b2ef934f005c36080aba87f410ab557",
+    "evidence/c6_r005_b1_checks/smoke.json": "133b04a99d137210dc1d6b42b5e3b2df3701b75651786b9f0bfa5067612d37b2"
+  },
+  "development_file_hashes": {
+    "geomind/c6_r4_field.py": "976d5475740971af549d8d65a9a7a9e03c5d759486bca7c0ded6466cc453e94b",
+    "geomind/c6_r4_field_protocol.py": "a8255e101da7d3f35217fa20226dabc1abbf5041fd8a3520ed47eadcc2e5dfbb",
+    "geomind/c6_r4_field_analysis.py": "99de2b0be3ac59deeb0efd1dc3e9b6ed7c21a0551b859cd53aa17d75740d1f27",
+    "geomind/c6_r4_field_reference.py": "a1606da2941e8a21d87172b8eac5b03cf876982995f4289a0378ffd1000638e1",
+    "geomind/c6_r4_field_assay.py": "c9ecb63e71fdb48aae3519a66b8448b3144039ff85f47ada8b08e8235a622e18",
+    "geomind/run_c6_r4.py": "d61874c4efdc713178be0f94a99a18cdf1ea08493240ba876f8fe89ba6ffdf02",
+    "native/c6_r4/field.cpp": "2fb7718106563cb26e5b25b4eccc38c3782e8dcfe464b2da1c81745d2fd4cfc6",
+    "tools/c6_r4_design_gate.py": "a6a0f33ebdb510148d7ba9b87543544999ffa1c8abd7fe7aa4b7b7bb0527609f",
+    "tools/build_c6_r4.py": "6d25aca638b73194ca656b9df58a0f53615f4a98d163e3780aeedb456452ec6b",
+    "tools/c6_r3_design_gate.py": "1cd772aee76917f411b9f0c3e851807d8104fd5e28b077e8b7116b415deecba1",
+    "milestones/c6.json": "1e5cbbfdaa8584db89133e2089e6321e22522c4ea8935a7a3eb85993c1ba874d",
+    "geomind/c6_r4_integrity.py": "8e3af230381d1294bd22d74c4c91b99f64116a86b6d56310533ff610cb60602d",
+    "geomind/c4_model.py": "4fafc161b65914a44dccaca6caefb59a5154079f17f564b4cdc4d44f58c59d33",
+    "geomind/c4_detect.py": "ba7fd94efc0edf028df137dc617666c9b8540b914ab4fca1ce793c84d78aacb8",
+    "experiments/c6_r4_protocol.json": "a06c087a5bc997d8076b2653e90c99a2e930d933fe0210341bb0b04e7860f3db",
+    "experiments/c6_proposal_r4.md": "8bbe0e5c4f38f0b1b370a114f29c315f005ca8be93c1f6f88697c297f161cbb5",
+    "docs/decisions/0019-approve-c6-r4-implementation.md": "feae1b982e26836b37744a7ce24e70488a59db0082331de5dc3117bcb7cff9b3",
+    "research/rrg/v0.2.1.import.json": "3f34717f795415f5ed4b11df060cdfc3c36f0bd8b1d491853141778bbc2d3da2",
+    "research/rrg/v0.2.1.expected.json": "37e8249338a95e32de72f4e30091e104697606faebd53b22bda8b90124e3bceb",
+    "docs/RRG_V0_2_1_ALIGNMENT_HANDOFF.md": "719781cbd5a302f58f0f57c064b32ca0a49e49546a1f88160582ba6235ca575e",
+    "pyproject.toml": "b13af15c4b02a76b429da4d76965cddf66f73d59198bca80d01fab7b51c705e2",
+    "uv.lock": "284881c4c71c8282aca81e9053794d2b0333f9ab10b21d9e425cba13bec918c8"
+  },
+  "registered_mutants": 46,
+  "mutation_execution": "NOT_RUN",
+  "scientific_execution": {
+    "r005_development": "NOT_RUN",
+    "final_entropy": null,
+    "final_panel": "NOT_RUN",
+    "independent_panel_review": "NOT_RUN"
+  },
+  "scope": "B1 pointer repair: raw no-treatment descriptor stays in world artifact, aggregate retains scalar/per-probe metadata and a raw-data pointer; real evaluator/serializer contract verifies both with unchanged original world bytes.",
+  "remaining": "Independent Claude B1-only closure check; then owner-authorized one-shot development and conditional final lifecycle."
+}

@@ -1,0 +1,162 @@
+{
+  "status": "PASS",
+  "kind": "SMOKE_ONLY",
+  "full_settings_qualified": false,
+  "source_pin": {
+    "status": "PASS",
+    "source_files_verified": 25,
+    "owner_identities_verified": 12,
+    "manifest_entries_verified": 23,
+    "checksum_entries_verified": 24,
+    "handoff_sha256": "719781cbd5a302f58f0f57c064b32ca0a49e49546a1f88160582ba6235ca575e",
+    "expected_record_sha256": "37e8249338a95e32de72f4e30091e104697606faebd53b22bda8b90124e3bceb",
+    "import_record_sha256": "3f34717f795415f5ed4b11df060cdfc3c36f0bd8b1d491853141778bbc2d3da2"
+  },
+  "checks": [
+    {
+      "scope": "smoke",
+      "start": 0.0,
+      "duration": 0.2,
+      "dt_values": [
+        0.005,
+        0.0025,
+        0.00125
+      ],
+      "max_errors": {
+        "position": 1.5776600578281635e-12,
+        "phase": 1.7985612998927536e-13,
+        "field": 1.1012748222987993e-14
+      },
+      "normalization_sizes": [
+        2.3266500356262596
+      ],
+      "passed": true,
+      "initial_ids": [
+        "95442b356918560829fb1a379f2975bce3dcce4c8ecdc8eaff327658e81c26a0",
+        "95442b356918560829fb1a379f2975bce3dcce4c8ecdc8eaff327658e81c26a0",
+        "95442b356918560829fb1a379f2975bce3dcce4c8ecdc8eaff327658e81c26a0"
+      ],
+      "end_ids": [
+        "0671ccb2b651efd7be5de58f6e23fde873f1da9515e7959caa210a3a0cd49da9",
+        "d69a83c77321508e2476634f057e6ac7c737b12e72310aec41af4154654282c2",
+        "c74bb4f8fbca015a77954bb7cb1613bbf94887babe36663fb0cc7ea641d0d56e"
+      ],
+      "source_trace_hash_by_dt": [
+        "a58e764a2666be51b093843dfb39adcb4c9ddf0b10720fd87f7a7ece6f0b0146",
+        "5615455938a383aaca96505dbf9e1af2f29408a0ae574d59a85ea7bfcb86de97",
+        "2cd723a1a5aafb66cfc5add58c865aa724a08804b2782fa08db3aeb6154f3f90"
+      ],
+      "output_max_by_dt": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "output_power_by_dt": [
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      ],
+      "first_output_time_by_dt": [
+        null,
+        null,
+        null
+      ],
+      "output_check_method": "Full outgoing channel computed then masked; Python norms are derived diagnostics. All-off native actual-medium evolution omits cohorts; independent native RHS/channel contracts verify that path."
+    }
+  ],
+  "end_identities": [
+    "0671ccb2b651efd7be5de58f6e23fde873f1da9515e7959caa210a3a0cd49da9",
+    "d69a83c77321508e2476634f057e6ac7c737b12e72310aec41af4154654282c2",
+    "c74bb4f8fbca015a77954bb7cb1613bbf94887babe36663fb0cc7ea641d0d56e"
+  ],
+  "native_build": {
+    "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+    "flags": [
+      "-std=c++17",
+      "-O2",
+      "-fno-fast-math",
+      "-ffp-contract=off",
+      "-dynamiclib"
+    ],
+    "source_sha256": "2fb7718106563cb26e5b25b4eccc38c3782e8dcfe464b2da1c81745d2fd4cfc6",
+    "binary_sha256": "7041642506aab15c98e0208f8670057199d5766d844c13e730800065e8b4b088"
+  }
+}
