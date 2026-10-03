@@ -1,80 +1,50 @@
-# 0026 — Authorize C6 unblocking review only
+# 0026 — C6 unblocking review: scope and authorization
 
-Date: 2026-10-03. Owner instruction. This decision follows 0024 (R006 runtime STOP) and 0025 (post-stop engineering audit).
+**Revision 2 — 3 October 2026.** Corrects this decision's first wording after the owner's recheck request. The earlier text remains in Git history; decisions 0019 and 0023–0025, registered protocols and historical evidence are not amended here.
 
-## Decision
+## 1. What is authorized now
 
-The owner authorizes one **independent review and planning pass only** to determine how to unblock GeoMind C6.
+The owner's supplied request authorizes **review and planning only**. The assigned independent reviewer is Claude. The task is to inspect the post-stop engineering repairs and recommend a concrete way forward, using [the review brief](../reviews/c6_unblocking_review_request.md), then write `docs/reviews/c6_unblocking_review_claude.md`.
 
-This authorization does **not** authorize:
-- a new C6 development attempt or R007 registration;
-- any experiment, pilot, benchmark, panel, mutation probe or final entropy;
-- rerunning tests or recorded evidence;
-- implementation changes;
-- threshold/model/protocol tuning from the two completed R006 worlds;
-- changing C6 from `BLOCKED` or reassigning any scientific verdict;
-- editing accepted/frozen C0–C5 code or historical R005/R006 evidence.
+This task does not authorize implementation changes, tests, builds, experiments, pilots, benchmarks, mutation probes, new development attempts, final entropy, panels, source-release changes, or milestone-status changes. C6 remains BLOCKED / R006 STOP at the recorded baseline.
 
-The requested review output is:
+Allowed inspection includes read-only Git/file operations, diffs, SHA-256 calculation, bounded decompression and parsing of existing JSON/XML/text records, and arithmetic on recorded values using standard utilities or a standalone standard-library script. Do not import project modules, load native binaries, invoke runners/evaluators, recompute scientific verdicts, execute downloaded code or create/modify gate stamps. Reading evidence is not rerunning it.
 
-`docs/reviews/c6_unblocking_review_claude.md`
+Only the review report is a repository deliverable of the Claude task. Preserve existing reports; do not overwrite another reviewer's work. Report a path/ownership conflict and continue independent inspection without replacing it.
 
-The complete review brief is:
+## 2. Existing authority is not replaced
 
-`docs/reviews/c6_unblocking_review_request.md`
+Use the authority ordering already specified by AGENTS.md and GeoMind R5, including explicit current owner decisions, foundation definitions as qualified by the audited release, and the actual pinned RRG source. RRG v0.2.1 is the source pin at the recorded baseline, not a permanent ban on an explicitly authorized later edition. Do not use an older locked-core hash as sole forward authority or infer source access from a hash alone.
 
-## Scientific authority
+Decision 0019 already approved the identified C6 R4 model. Old `DRAFT` text in the proposal or source index does not undo that approval. Decisions 0023–0025 describe subsequent attempts, STOP and repairs. Decision 0024 requires a **new prospective owner-directed revision before another development attempt**; changing an output directory cannot supply authorization.
 
-Future interpretation is governed by:
-1. explicit current owner decisions;
-2. the pinned audited RRG v0.2.1 source in `research/rrg/CURRENT.md`;
-3. `GEOMIND_GEOMETRIC_AI_QUALITY_STANDARD_R5.md`;
-4. applicable accepted decisions and the prospective C6 R4 protocol;
-5. implementation and historical material.
+This review request neither revokes unrelated existing authorizations nor grants new execution authority. Where later engineering work is already authorized, name the decision and its exact remaining scope rather than inventing an additional approval requirement. Review-only scope still governs this task. A new or changed scope needs an owner decision before execution.
 
-Older v0.2 locked-core references remain provenance/history; they are not the sole forward authority.
+## 3. Separate the conclusions
 
-The reviewer must preserve the R5 distinctions between staged composition and source/background recursion. In particular:
-- runtime readiness is not scientific support;
-- staged hierarchy alone is not H-RBG;
-- C6 R006 STOP does not disprove RRG;
-- two development worlds do not establish a population verdict;
-- engineering acceptance of repairs does not establish full-world readiness or a scientific claim.
+The reviewer must separate: repair correctness, complete-world/runtime readiness, scientific evidence within the registered claim scope, and authorization to proceed. An engineering review may be favorable while C6 remains blocked. No scientific acceptance is needed merely to assess an engineering repair; no engineering assessment accepts C6.
 
-## Current fixed record
+R5 distinguishes H-COMP, H-BG, H-PS, H-RBG, H-PRED, H-AI and H-EFF. The current R4 experiment is Arm B; do not reactivate stopped Arm A or impose its direct-part/prediction requirements on this model. Preserve the difference between a mechanically complete chain and the protocol's stronger enabled witness. These are operational conditions of this experiment, not definitions of all possible RRG realizations.
 
-At source HEAD `7a1e89e46a9a7ebd0f2a7d540edd8f148506e7ac`:
-- C6 remains `BLOCKED / R006 STOP`;
-- the registered readiness runtime rule implies a 360 s maximum measured world time;
-- the two complete R006 worlds took 561.151 s and 546.817 s;
-- neither completed the required two-link chain;
-- the first-link witness tuple in both completed worlds was `[true, false, true]`;
-- turn-2 source qualification was lost at times 315 and 301;
-- these are bounded development observations only;
-- post-stop repairs passed 79 contracts plus smoke and preserved the descriptor fixture numerically;
-- the current reserved descriptor fixture took 6.072 s versus the original 83.333 s baseline (13.724x), while the earlier optimized observation was 4.851 s (17.178x); no further speedup or full-world speedup claim follows;
-- no full development world has run with the latest post-stop repair batch;
-- independent review of those repairs remains outstanding;
-- no final entropy, mutation probe or recorded panel exists.
+The numerical/history summary lives in the brief with its pinned evidence references. It is input to verify, not a second status tracker. This document assigns no hypothesis verdict or acceptance.
 
-The original R006 evidence and EARLY_STOP record remain unchanged.
+## 4. Forward order after the review
 
-## What the independent review may do
+The report recommends one route and identifies the authority needed for it. An owner decision may cover a coherent, bounded sequence conditionally; this decision does not require a separate approval for every routine substep.
 
-The reviewer may inspect current code, the native kernel, profiles, manifests, source pins and raw evidence. The reviewer may recompute hashes and reason from recorded artifacts. The reviewer may draft a prospective optimization, diagnostic, budget change or redesign.
+The order is **review → applicable owner authorization → prospective diagnostic/development registration as required → authorized changes → one affected end-of-batch validation → authorized bounded diagnostic/readiness → later gated stages only if prerequisites pass**. A diagnostic is specified and authorized before its inputs are generated or it runs. Final entropy remains absent until the approved readiness/registration lifecycle permits it. A favorable review does not authorize R007.
 
-The reviewer must not execute project code or experiments under this authorization.
+Any proposed change to the model, probes, grids, thresholds, controls, evidence rules or budget must be explicit and prospective. Preserved R005/R006 evidence is never overwritten or retrospectively rescored to clear a gate.
 
-## What requires another owner decision
+## 5. Stops for this review
 
-After the review, a new owner decision is required before any of the following:
-- implementation of a prospective unblocking repair that changes the current reviewed dependency set;
-- a new development diagnostic using fresh entropy;
-- R007 or another registered C6 revision;
-- a runtime-budget/protocol change;
-- a scientific-model redesign;
-- final entropy, mutation or panel execution.
+| Yes/no condition | One action | Responsible role |
+|---|---|---|
+| A required fact or identity cannot be established from accessible evidence? | Mark the affected conclusion NOT_VERIFIED and continue independent items. | Reviewer |
+| Establishing a point would require project execution? | Specify the missing diagnostic without executing it. | Reviewer |
+| New work lacks applicable execution authority? | Leave that work at the owner-decision gate. | Implementer |
+| Current branch/report differs from the assumed baseline? | Reconcile the changed scope without resetting or overwriting others' work. | Reviewer |
+| Review coverage cannot be completed within the agreed review cap? | Deliver the completed findings and explicit unreviewed scope without acceptance. | Reviewer |
+| A scientific claim is inferred from two development worlds or an engineering fixture? | Restrict the claim to the evidence actually inspected. | Reviewer |
 
-The owner may choose engineering optimization, a bounded diagnostic, a prospective protocol/budget revision, a model redesign, or pausing C6. The reviewer recommends; the owner decides.
-
-No milestone status changes in this decision.
+Revision-2 rationale: [brief recheck](../reviews/c6_unblocking_brief_recheck_chatgpt.md). This is a correction to forward instructions, not a Claude engineering review or a new C6 attempt.
