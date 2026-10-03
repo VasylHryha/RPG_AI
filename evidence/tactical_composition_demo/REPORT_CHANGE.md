@@ -54,3 +54,11 @@ check** on its own development entropy (a piece trained on the new doctrine from
 checks; (2) keep the relative recovery bars, the tie-aware measure and the schedule; (3) keep C1's bar but state it on the median only, so a borderline share cannot gate the rest.
 Candidate doctrines to be tried: ones whose score differences are not tiny between same-type enemies (for example threat first with a distance tie-break, a health-first rule, or a
 combined rule), judged by the rule, not by this result.
+
+## Amendment (2026-10-03, after the run; the recorded results above are unchanged)
+
+A later development check on separate entropy (`dev_learnability.py`, below, and an earlier scratch look at the same candidates) found that the new doctrine **is** learnable: a piece trained from
+scratch on 3,000 one-enemy rows reaches 0.994 tie-aware agreement with it. The "most likely reason" given above, that the doctrine is badly conditioned for learning, is therefore wrong. What the
+recorded run did show is that **fine-tuning from the old weights** (60 epochs over the new rows, original output scaling kept, learning rate 0.002) stalled at 0.84 to 0.88 agreement, while training from
+scratch on the same 3,000 rows reaches 0.99. So the defect is in the update procedure of this revision, not in the doctrine, and the first revision's inconclusive result stands as recorded.
+Revision 2 uses retraining from scratch on the new rows as the primary protocol (the wired unit retrains only AIM, the big controller retrains whole) and keeps fine-tuning as a secondary, reported comparison.
