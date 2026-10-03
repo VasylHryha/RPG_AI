@@ -1,0 +1,60 @@
+{
+  "kind": "ENGINEERING_CHECKS_ONLY",
+  "source_commit": "5ec9ccc25683ec8d76ea42eae429ebb8a2ea788a",
+  "code_fingerprint": "5e7442e9c75e627eb594f403b7e00bb51af09af3386ad7b00b92d26c2fa11b7a",
+  "tests": {
+    "passed": 62,
+    "seconds": 70.94
+  },
+  "smoke": {
+    "status": "PASS",
+    "seconds": 0.31
+  },
+  "comparison": {
+    "kind": "ENGINEERING_PERFORMANCE_COMPARISON",
+    "baseline_commit": "441f8f78d8a3bac0fc9e47cd9d10363c5cff9a65",
+    "optimized_commit": "5ec9ccc25683ec8d76ea42eae429ebb8a2ea788a",
+    "baseline_seconds": 83.332918125,
+    "optimized_seconds": 4.851149375,
+    "speedup": 17.177974060013355,
+    "baseline_calls": {
+      "advance": 31200,
+      "native_source_integrations": 600
+    },
+    "optimized_calls": {
+      "advance": 312,
+      "native_source_integrations": 6
+    },
+    "maximum_raw_response_error": 6.88338275267597e-14,
+    "maximum_per_probe_gain_error": 6.8833827526759706e-15,
+    "maximum_full_state_check_difference": 5.7163013955255714e-15,
+    "passed": true,
+    "tolerance": 1e-10,
+    "scope": "One reserved engineering fixture: two 24-element live cohorts, full 10-C0 response assay, all 50 probes, three grids. Sequential fresh processes. Single observations on shared workstation, not a statistical speedup estimate or full-world/panel readiness.",
+    "artifacts": {
+      "baseline.json": "29e850c3499b8102e32be0b37ec1765dcc678f7cff60a63991a27bb622548c26",
+      "optimized.json": "bca40413e42e6edcddacc58b0e248d06382d9d4a1aa00609dcd42f9dd2f66c59"
+    }
+  },
+  "source_pin": {
+    "status": "PASS",
+    "source_files_verified": 25,
+    "owner_identities_verified": 12,
+    "manifest_entries_verified": 23,
+    "checksum_entries_verified": 24,
+    "handoff_sha256": "719781cbd5a302f58f0f57c064b32ca0a49e49546a1f88160582ba6235ca575e",
+    "expected_record_sha256": "37e8249338a95e32de72f4e30091e104697606faebd53b22bda8b90124e3bceb",
+    "import_record_sha256": "3f34717f795415f5ed4b11df060cdfc3c36f0bd8b1d491853141778bbc2d3da2"
+  },
+  "registered_mutants": 49,
+  "mutants_run": false,
+  "recorded_panel_run": false,
+  "final_entropy": null,
+  "artifacts": {
+    "optimized.json": "bca40413e42e6edcddacc58b0e248d06382d9d4a1aa00609dcd42f9dd2f66c59",
+    "COMPARISON.json": "69b2c0acaacdd82d773b87325977b3b1c744a4af685e7b0259bde5abfc591175",
+    "baseline.json": "29e850c3499b8102e32be0b37ec1765dcc678f7cff60a63991a27bb622548c26",
+    "smoke.json": "049b7d26c998d6635c1e8af08475c713abb7d5327dfccda13f54287d2a4bc4dc",
+    "contracts.xml": "91c1adf644ec2b9759ee1ea8f977fc646b96f3954ad2640d77129906e7cd613f"
+  }
+}
