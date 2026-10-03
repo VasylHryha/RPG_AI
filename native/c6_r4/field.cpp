@@ -51,7 +51,7 @@ extern "C" int field_rhs(int ns,int n,int nc,double t,const double* y,const doub
        }
      }
      if(!(denom>1e-12))return 2;
-     dv[2*i]=vx;dv[2*i+1]=vy;dv[2*n+i]=rates[c*n+i]+p[4]*std::imag(g/denom*std::polar(1.,-th[i]));
+     dv[2*i]=vx;dv[2*i+1]=vy;dv[2*n+i]=rates[c*n+i]+vt+p[4]*std::imag(g/denom*std::polar(1.,-th[i]));
    }
  }
  for(int i=0;i<count;i++)if(!std::isfinite(out[i]))return 1;
