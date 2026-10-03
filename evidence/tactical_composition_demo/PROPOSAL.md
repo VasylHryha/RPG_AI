@@ -1,21 +1,25 @@
 # Tactical composition demo — PROPOSAL (draft for owner approval)
 
-Status: DRAFT. Nothing is implemented or run. Not a milestone, not C6 evidence; it changes no status, accepted file or threshold.
+Status: DRAFT, revision 2 (owner direction: a "shape" is any reusable piece with a clear job; ordinary AI inside is fine). Nothing is implemented or run. Not a milestone, not C6 evidence; it changes no status, accepted file or threshold.
 Drafter: Claude, 2026-10-03, at the owner's request after the arithmetic demo (`evidence/geometric_composition_demo/REPORT.md`).
 Authority: owner goal ("AI as geometry, small pieces that combine into bigger ones that act as one"), RRG 01 §13 and 03 §21,
 GeoTactics R3 §1.1 (hierarchy is deferred there), AGENTS pilot rule (own entropy, scratch code outside `geomind/`).
 
 ## 1. Goal and the question
 
-Arithmetic was the wrong test: matrix methods are near-perfect there, and the demo could not separate two questions. Tactics is
-natural for geometry (positions, ranges, directions). This demo asks two separate questions on a small tactical game:
+Owner direction (2026-10-03): use ordinary AI where it is good, but find **shapes** that each handle one part of the problem
+properly, build them quickly, and combine them into what tactics needs. A *shape* here is a reusable piece with a clear job and a
+clear input and output; what is inside it (a small neural network, a map of points, a rule) is an implementation choice. Arithmetic
+was the wrong test: matrix methods are near-perfect there. Tactics is natural for shapes (positions, ranges, directions, roles).
 
-1. **Does composition help?** Small pieces, each taught one job, wired into a unit controller and then a squad controller, against one
-   big controller taught directly.
-2. **Does geometry help?** Pieces made of points in space (as in the arithmetic demo) against pieces made of an ordinary small neural
-   network, wired the same way.
+The questions, in order of importance:
 
-The four cells of that 2 x 2 table (geometric or ordinary, composed or one big controller) answer both questions without mixing them.
+1. **Does composition help?** Small shapes, each taught one job, wired into a unit controller and then a squad controller, against one
+   big controller taught directly: in quality, in unseen squad mixes, and in how quickly they are built.
+2. **Is it quick to build and to change?** Samples and time to bring each shape to its bar, to assemble a squad, and to **add a new
+   unit type** (composed: teach one new shape; one big controller: retrain everything).
+3. **Does the inside of a shape matter?** Shapes made of points in space against shapes made of a small ordinary network, wired the
+   same way. This is reported but decides nothing: if ordinary networks are better inside the shapes, we use them.
 
 ## 2. The world, the pieces, the compositions
 
@@ -37,6 +41,9 @@ One AIM, MOVE and ABILITY are reused across all three units and across unit type
 
 ## 3. The comparison (2 x 2) and the fairness rules
 
+The 2 x 2 is composed or one big controller, by points-in-space or ordinary-network inside. The first axis is the main question; the
+second is descriptive.
+
 - Composed: pieces taught separately, wired. One big controller: a single map from the whole squad state to all three units' actions,
   taught from the same scripted full controller's actions (end-to-end labels).
 - Equal accounting: the same total training samples and the same total parameters (points or weights) for composed and one big.
@@ -52,6 +59,9 @@ Primary: **closed-loop win rate** and mean health advantage against the scripted
 20 seeds), not just copying accuracy. Also per level: fidelity of each piece to its teacher, error after wiring, error after
 promotion, and change in win rate when a level is added (so error build-up over depth is visible, the lesson of the arithmetic demo).
 Unseen condition: squad type mixes never seen in training (for example a squad with two mages when training had at most one).
+Build and change cost: training samples and wall-clock to reach each shape's bar and to assemble the squad; and the cost of adding a new
+unit type with its own ability (composed: teach one new shape and reuse the rest; one big controller: retrain from the labels of the
+new full controller), measured as the samples needed to regain the original win rate.
 
 ## 5. Predictions and pass/fail (stated now, numbers fixed after the development calibration, then frozen)
 
@@ -65,13 +75,13 @@ nothing.
 | P2 | The composed geometric squad plays | win rate within 10 points of the teacher and at least 15 points above "rush nearest" |
 | P3 | Composition helps (same representation, equal data) | composed beats one big controller by >= 10 points on trained mixes and >= 15 points on unseen mixes; REFUTED if the gap is under 3 points |
 | P4 | Data to match | the equal-data big controller does not match the composed win rate; report the scale at which it does |
-| P5 | Geometry competes with ordinary pieces | composed geometric within 10 points of composed ordinary; REFUTED (not competitive) if more than 20 points below |
+| P5 | Inside of a shape (descriptive, no verdict) | report win rate and build cost of points-in-space shapes against ordinary-network shapes; the cheaper or better one is used for the rest |
 | P6 | No error build-up | each added level costs at most 5 win-rate points against the teacher at that level |
+| P7 | Quick to build and to change | adding a new unit type costs the composed controller at least 5 times fewer samples than the one big controller needs to regain the original win rate; REFUTED if under 2 times |
 
 Reading, as written: P3 SUPPORTED with P5 not refuted means composed geometric pieces are useful for this tactical control. P3
-REFUTED means one big controller does as well and composition adds nothing here. P5 REFUTED means geometry was not competitive
-with ordinary pieces in this setting, even if composition helped. Either result is reported as it is. It would still be one
-sandbox, not a general claim.
+REFUTED means one big controller does as well and composition adds nothing here. P7 SUPPORTED means the shapes are quick to change as well as good. Which inside works better (P5) only chooses what to use; it does
+not change the verdict on composition. Either result is reported as it is. It would still be one sandbox, not a general claim.
 
 ## 6. Lessons from the arithmetic demo, built in
 
@@ -94,6 +104,12 @@ compute: minutes for training, perhaps 10 to 60 minutes for the closed-loop epis
 risk; the development run measures it before the cap is chosen).
 
 ## 8. Limits and out of scope
+
+Honest note on what this can claim. If a shape may be anything with a job and an interface, the claim is ordinary modular AI (skills,
+options, mixtures of experts), which is already known to work in places. What this demo can add is a measured, quick recipe for
+building the pieces and combining them for tactics, and whether it beats one big controller on unseen mixes and on the cost of
+change. The RRG-specific claim, that the shapes and the links between them come out of frequency and geometry rules (compatible
+shapes connect, stable combinations become the next level), is a separate and later question that this demo does not test.
 
 One invented sandbox and one set of scripted opponents; the teachers are scripted rules, so this tests whether pieces can learn and
 compose known skills, not whether they discover tactics. The pieces are prototype maps or small networks, not oscillators and not the
@@ -124,7 +140,9 @@ C4 law; the RRG physics is not tested. The real Astelia simulator needs its own 
 ## 11. Decisions for the owner
 
 1. Approve this scope (own sandbox first, real Astelia simulator later)?
-2. Are the three unit types and the three pieces (aim, move, ability, plus a focus piece for the squad) the right ones, or do you want
+2. Are the three unit types and the pieces (aim, move, ability, plus a focus piece for the squad) the right ones, or do you want
    different pieces?
-3. Are the bars acceptable (composed beats one big controller by 10 points, 15 on unseen mixes; geometry within 10 points of ordinary
-   pieces)? They are fixed only after the development calibration, then frozen.
+3. Are the bars acceptable (composed beats one big controller by 10 points, 15 on unseen mixes; adding a unit type costs at least 5 times
+   fewer samples)? They are fixed only after the development calibration, then frozen.
+4. Is it right that the inside of a shape is chosen by what works (points in space or an ordinary network), with the RRG-specific claim
+   left for later?
