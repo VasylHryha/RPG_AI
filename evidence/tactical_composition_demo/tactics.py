@@ -127,6 +127,16 @@ def teacher_scores(own, enemies):
     return np.where(enemies[:, 0] > 0, s, -9.0)
 
 
+DOCTRINE2 = (4.0, 0.1, 0.0, 0.0)   # threat first: weights of enemy damage, missing health, in range, distance
+
+
+def teacher2_scores(own, enemies):
+    """The changed targeting doctrine of the change-cost test: hit the most dangerous (highest damage) enemy first."""
+    wd, wh, wr, wdist = DOCTRINE2
+    s = wd*enemies[:, 6]/10.0+wh*(1.0-enemies[:, 4])+wr*(enemies[:, 3] <= own[2])-wdist*enemies[:, 3]
+    return np.where(enemies[:, 0] > 0, s, -9.0)
+
+
 def teacher_move(rel, pref):
     """Close in beyond the preferred range, back off (ranged units only) inside it, otherwise hold."""
     d = float(np.hypot(*rel))
@@ -152,6 +162,12 @@ def teacher_policy(own, enemies):
     scores = teacher_scores(own, enemies)
     target = int(np.argmax(scores))
     return teacher_move(enemies[target, 1:3], own[4]), target, USE_BURST and teacher_fire(own, enemies, target)
+
+
+def teacher2_policy(own, enemies):
+    """The unit controller under the changed doctrine: threat first, same stepping rule."""
+    target = int(np.argmax(teacher2_scores(own, enemies)))
+    return teacher_move(enemies[target, 1:3], own[4]), target, False
 
 
 def rush_policy(own, enemies):
@@ -225,13 +241,15 @@ class MLP:
         h2 = np.tanh(h1@self.W[1]+self.b[1])
         return h1, h2, h2@self.W[2]+self.b[2]
 
-    def fit(self, X, Y, rng, steps, batch=128, lr=0.003):
-        self.mx, self.sx = X.mean(0), X.std(0)+1e-6
-        self.my, self.sy = Y.mean(0), Y.std(0)+1e-6
+    def fit(self, X, Y, rng, steps, batch=128, lr=0.003, keep_scaling=False):
+        if not keep_scaling:      # fine-tuning keeps the original input and output scaling
+            self.mx, self.sx = X.mean(0), X.std(0)+1e-6
+            self.my, self.sy = Y.mean(0), Y.std(0)+1e-6
         Z, T = (X-self.mx)/self.sx, (Y-self.my)/self.sy
         params = self.W+self.b
         m = [np.zeros_like(p) for p in params]
         v = [np.zeros_like(p) for p in params]
+        batch = min(batch, len(Z))
         order, pos = rng.permutation(len(Z)), 0
         for step in range(1, steps+1):
             if pos+batch > len(Z):
@@ -289,8 +307,9 @@ def collect(rng, episodes, mixes, noise=0.3, opponents=None):
     return {'own': np.array(rows['own']), 'enemies': np.array(rows['enemies'])}
 
 
-def labels(pool):
-    """Teacher labels for every logged state."""
+def labels(pool, scores_fn=None):
+    """Teacher labels for every logged state (the changed doctrine when scores_fn is teacher2_scores)."""
+    scores_fn = teacher_scores if scores_fn is None else scores_fn
     n = len(pool['own'])
     scores = np.zeros((n, N_UNITS))
     target = np.zeros(n, int)
@@ -298,7 +317,7 @@ def labels(pool):
     fire = np.zeros(n)
     for k in range(n):
         own, enemies = pool['own'][k], pool['enemies'][k]
-        scores[k] = teacher_scores(own, enemies)
+        scores[k] = scores_fn(own, enemies)
         target[k] = int(np.argmax(scores[k]))
         move[k] = teacher_move(enemies[target[k], 1:3], own[4])
         fire[k] = float(USE_BURST and teacher_fire(own, enemies, target[k]))
@@ -322,6 +341,14 @@ def piece_datasets(pool, lab, n_aim, n_move, rng, n_ability=0):
         X = np.array([ability_features(pool['own'][k], pool['enemies'][k], lab['target'][k]) for k in pick])
         out['ABILITY'] = (X, lab['fire'][pick][:, None])
     return out
+
+
+def aim_dataset(pool, lab, n, rng):
+    """AIM rows only (one living enemy per row), labelled by whichever doctrine `lab` holds."""
+    rows = [(k, j) for k in range(len(pool['own'])) for j in alive_slots(pool['enemies'][k])]
+    pick = rng.choice(len(rows), min(n, len(rows)), replace=False)
+    X = np.array([aim_features(pool['own'][rows[p][0]], pool['enemies'][rows[p][0]], rows[p][1]) for p in pick])
+    return X, np.array([[lab['scores'][rows[p][0]][rows[p][1]]] for p in pick])
 
 
 def mono_dataset(pool, lab, n, rng):
@@ -437,3 +464,60 @@ def mono_fidelity(model, pool, lab):
     out = {'aim_top1': float(np.mean(np.argmax(scores, axis=1) == lab['target']))}
     out.update(move_metrics(pred[:, :2], lab['move'], target_rel(pool, lab)))
     return out
+
+
+def composed_fidelity(aim, move, pool, lab):
+    """End-to-end agreement of the wired unit with a teacher: its own chosen target, and the step it then takes."""
+    hat = np.zeros(len(pool['own']), int)
+    for k in range(len(pool['own'])):
+        alive = alive_slots(pool['enemies'][k])
+        scores = aim.predict(np.array([aim_features(pool['own'][k], pool['enemies'][k], j) for j in alive]))[:, 0]
+        hat[k] = alive[int(np.argmax(scores))]
+    rel = np.array([pool['enemies'][k][hat[k], 1:3] for k in range(len(hat))])
+    pred = move.predict(np.array([move_features(rel[k], pool['own'][k][4]) for k in range(len(hat))]))
+    out = {'aim_top1': float(np.mean(hat == lab['target']))}
+    out.update(move_metrics(pred, lab['move'], target_rel(pool, lab)))
+    return out
+
+
+# ---------------------------------------------------------------- tie-aware change-cost metrics (the changed doctrine has exact ties)
+
+def multi_enemy(pool):
+    return np.array([(e[:, 0] > 0).sum() > 1 for e in pool['enemies']])
+
+
+def change_metrics(chosen, pred_step, pool, lab):
+    """Agreement counts any enemy tied for the teacher's best score; the step is judged toward the enemy the controller itself chose.
+    Reported on states with more than one living enemy (single-enemy states agree trivially)."""
+    n = len(pool['own'])
+    alive = pool['enemies'][:, :, 0] > 0
+    best = np.where(alive, lab['scores'], -np.inf).max(1)
+    got = lab['scores'][np.arange(n), chosen]
+    tie_aware = (got >= best-1e-9) & alive[np.arange(n), chosen]
+    multi = multi_enemy(pool)
+    out = {'agree_tie_aware_multi': float(np.mean(tie_aware[multi])), 'agree_strict_multi': float(np.mean((chosen == lab['target'])[multi])),
+           'agree_tie_aware_all': float(np.mean(tie_aware)),
+           'tie_share_multi': float(np.mean(((np.where(alive, lab['scores'], -np.inf) >= best[:, None]-1e-9) & alive).sum(1)[multi] > 1))}
+    rel = np.array([pool['enemies'][k][chosen[k], 1:3] for k in range(n)])
+    label = np.array([teacher_move(rel[k], pool['own'][k][4]) for k in range(n)])
+    for key, value in move_metrics(pred_step, label, rel).items():
+        out['step_'+key] = value
+    return out
+
+
+def change_fidelity_composed(aim, move, pool, lab):
+    chosen = np.zeros(len(pool['own']), int)
+    for k in range(len(pool['own'])):
+        alive = alive_slots(pool['enemies'][k])
+        scores = aim.predict(np.array([aim_features(pool['own'][k], pool['enemies'][k], j) for j in alive]))[:, 0]
+        chosen[k] = alive[int(np.argmax(scores))]
+    rel = np.array([pool['enemies'][k][chosen[k], 1:3] for k in range(len(chosen))])
+    pred = move.predict(np.array([move_features(rel[k], pool['own'][k][4]) for k in range(len(chosen))]))
+    return change_metrics(chosen, pred, pool, lab)
+
+
+def change_fidelity_mono(model, pool, lab):
+    X = np.array([mono_features(o, e) for o, e in zip(pool['own'], pool['enemies'])])
+    pred = model.predict(X)
+    scores = np.where(pool['enemies'][:, :, 0] > 0, pred[:, 2:2+N_UNITS], -np.inf)
+    return change_metrics(np.argmax(scores, axis=1), pred[:, :2], pool, lab)
