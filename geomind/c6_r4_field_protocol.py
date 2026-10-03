@@ -131,7 +131,7 @@ def operation(grid,qualification,qualification_flows,entropy,world,turn,alpha,sc
     return cell,continuation
 
 def run_world(settings,entropy,world):
-    started=time.perf_counter();checks=[]
+    started=time.perf_counter();cpu_started=time.process_time();checks=[]
     row={'world':world,'turns':[],'checks':checks,'invalid':None,'chain_complete':False,'enabled_witness':False,'links':[]}
     current_turn=1
     try:
@@ -174,6 +174,7 @@ def run_world(settings,entropy,world):
             for v in value:discard(v)
     discard(row)
     row['seconds']=time.perf_counter()-started
+    row['cpu_seconds']=time.process_time()-cpu_started
     row.update(process_memory())
     row['native_build']=F.native()[1]
     return row
@@ -183,4 +184,4 @@ def process_memory():
     unit='bytes' if sys.platform=='darwin' else 'KiB'
     return {'peak_rss_bytes':raw if unit=='bytes' else raw*1024,
             'memory_measurement':{'platform':sys.platform,'raw_ru_maxrss':raw,'raw_unit':unit,
-                                  'scope':'Lifetime peak RSS of the executing worker process; may include earlier worlds in a reused panel worker.'}}
+                                  'scope':'Lifetime peak RSS sampled at run_world completion, before result serialization; may include earlier worlds in a reused panel worker. Serialization/transport peaks are not included in this measurement.'}}

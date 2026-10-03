@@ -6,6 +6,7 @@ from dataclasses import dataclass, field
 import hashlib
 import json
 import math
+import threading
 from pathlib import Path
 import numpy as np
 from geomind.c6_r4_integrity import array_digest
@@ -16,10 +17,18 @@ MODES = {'intact':0,'no_r':1,'no_geometry_to_mode':2,'no_mode_to_geometry':3}
 _NATIVE = None
 _PASSIVE_CACHE = OrderedDict()
 _PASSIVE_CACHE_BYTES = 64*1024*1024
+_EMISSION_CACHE = OrderedDict()
+_EMISSION_CACHE_BYTES = 16*1024*1024
+_CACHE_LOCK = threading.Lock()
+_NATIVE_LOCK = threading.Lock()
 
 def exact_steps(time, dt):
-    value = round(time/dt)
-    if dt <= 0 or time < 0 or abs(value*dt-time)>1e-9: raise ValueError('nonintegral time grid')
+    if not math.isfinite(time) or not math.isfinite(dt) or dt <= 0 or time < 0:
+        raise ValueError('nonintegral time grid')
+    ratio=time/dt
+    if not math.isfinite(ratio):raise ValueError('nonintegral time grid')
+    value = round(ratio)
+    if abs(value*dt-time)>1e-9: raise ValueError('nonintegral time grid')
     return value
 
 def complex_arrays(value):
@@ -59,21 +68,23 @@ class Owner:
     def validate(self):
         ns=len(self.z)
         complex_arrays(self.z)
-        if (self.q.shape!=(ns,2) or self.omega.shape!=(ns,) or self.psi.shape!=(ns,8)
-                or self.adjacency.shape!=(ns,ns) or len(set(self.site_ids))!=ns
+        if (ns<1 or self.z.ndim!=1 or self.q.shape!=(ns,2) or self.omega.shape!=(ns,) or self.psi.shape!=(ns,8)
+                or self.adjacency.shape!=(ns,ns) or len(self.site_ids)!=ns or len(set(self.site_ids))!=ns
                 or not np.isfinite(self.time) or set(self.model)!=set(PARAMETER_NAMES)
                 or len(self.scene_origin)!=2 or not np.isfinite([*self.scene_origin,self.scene_angle,self.phase_origin]).all()):
             raise ValueError('invalid medium inventory/schema')
         if not np.isfinite(np.r_[self.q.ravel(),self.omega,self.psi.ravel(),list(self.model.values())]).all():
             raise ValueError('nonfinite medium metadata')
-        if not np.array_equal(self.adjacency,self.adjacency.T) or np.any(np.diag(self.adjacency)):
+        if self.model['sigma']<=0 or self.model['soft_core']<=0:raise ValueError('invalid material normalization')
+        if (not np.isin(self.adjacency,(0,1)).all() or not np.array_equal(self.adjacency,self.adjacency.T)
+                or np.any(np.diag(self.adjacency))):
             raise ValueError('invalid medium adjacency')
         sizes={len(c.theta) for c in self.cohorts}
         if len(sizes)>1: raise ValueError('cohort shape mismatch')
         all_ids=[]
         for c in self.cohorts:
             n=len(c.theta);complex_arrays(c.carrier)
-            if (n<3 or c.x.shape!=(n,2) or c.rates.shape!=(n,) or c.carrier.shape!=(ns,)
+            if (n<3 or c.theta.shape!=(n,) or c.x.shape!=(n,2) or c.rates.shape!=(n,) or c.carrier.shape!=(ns,)
                 or len(c.ids)!=n or len(set(c.ids))!=n or len(c.tokens)!=n or len(set(c.tokens))!=n
                 or any(not isinstance(t,str) or len(t)!=32 or any(ch not in '0123456789abcdef' for ch in t) for t in c.tokens)
                 or c.mode not in MODES or c.output not in (0.,1.)
@@ -132,6 +143,10 @@ def population(rng,owner,generation,episode,n=24):
     result=owner.clone();result.cohorts.append(c);return result.validate()
 
 def native():
+    # ctypes releases the GIL; serialize first build/load and identity checks.
+    with _NATIVE_LOCK:return _native_checked()
+
+def _native_checked():
     global _NATIVE
     source=hashlib.sha256(build.SOURCE.read_bytes()).hexdigest()
     if _NATIVE is not None:
@@ -184,18 +199,10 @@ def advance(owner,duration,dt,sample_dt=None,_factor=True):
         for cohort in owner.cohorts if all_off else owner.cohorts[:-1]:
             passive=owner.clone();passive.z=np.zeros_like(owner.z);passive.cohorts=[copy.deepcopy(cohort)]
             key=(passive.identity(),duration,dt,sample_dt)
-            if key not in _PASSIVE_CACHE:
+            def compute_source():
                 _,path=advance(passive,duration,dt,sample_dt,_factor=False)
-                source_path=path[:,2*len(owner.z):].copy();source_path.flags.writeable=False
-                if source_path.nbytes>_PASSIVE_CACHE_BYTES:
-                    parts.append(source_path);continue
-                _PASSIVE_CACHE[key]=source_path
-                # Long exact paths are shared across all probes. Bound memory
-                # by actual array bytes, rather than by a misleading key count.
-                while len(_PASSIVE_CACHE)>1 and sum(v.nbytes for v in _PASSIVE_CACHE.values())>_PASSIVE_CACHE_BYTES:
-                    _PASSIVE_CACHE.popitem(last=False)
-            _PASSIVE_CACHE.move_to_end(key)
-            parts.append(_PASSIVE_CACHE[key])
+                return path[:,2*len(owner.z):].copy()
+            parts.append(cached_array(_PASSIVE_CACHE,_PASSIVE_CACHE_BYTES,key,compute_source))
         if not all_off:parts.append(active_frames[:,2*len(owner.z):])
         joined=np.concatenate(parts,axis=1)
         return owner.unpack(joined[-1],owner.time+duration),joined
@@ -205,22 +212,61 @@ def advance(owner,duration,dt,sample_dt=None,_factor=True):
     if err:raise ValueError('native flow invalid: '+str(err))
     return owner.unpack(frames[-1],owner.time+duration),frames
 
+def cached_array(cache,limit,key,compute):
+    """Immutable result with atomic lookup/eviction, outside-lock computation.
+
+    Keep a local reference after lookup: another caller may evict the key while
+    this caller uses the array. Never iterate a cache while a caller changes it.
+    """
+    with _CACHE_LOCK:
+        result=cache.get(key)
+        if result is not None:
+            cache.move_to_end(key);return result
+    result=compute();result.flags.writeable=False
+    if result.nbytes>limit:return result
+    with _CACHE_LOCK:
+        previous=cache.get(key)
+        if previous is not None:
+            cache.move_to_end(key);return previous
+        cache[key]=result
+        while sum(v.nbytes for v in cache.values())>limit:cache.popitem(last=False)
+    return result
+
 def output(owner):
-    value=np.zeros(len(owner.z),complex)
-    for c in owner.cohorts:
-        if c.selected:
-            m=np.array(c.selected);w=np.exp(-np.sum((owner.q[:,None]-c.x[m][None])**2,axis=-1)/(2*owner.model['sigma']**2))
-            full=owner.model['output']*np.mean(w*np.exp(1j*c.theta[m]),axis=1)
-            value+=full*c.output
-    return value
+    return emissions(owner,owner.pack()[None,:])[0]
 
 def emissions(owner,flow):
-    """Every production-step outgoing value, computed before each zero mask."""
-    ns=len(owner.z);offset=2*ns;values=np.zeros((len(flow),ns),complex)
+    """Full selected-member channels first, then masks, at every returned step.
+
+    Output depends on material x/theta, site geometry and channel parameters,
+    never actual medium z or the treatment mask. Identical inputs may reuse a
+    full unmasked channel. Zero-mask channels are computed, not skipped.
+    """
+    owner.validate();ns=len(owner.z);offset=2*ns
+    width=offset+sum(3*len(c.theta)+2*ns for c in owner.cohorts)
+    flow=np.asarray(flow)
+    if flow.ndim!=2 or flow.shape[1]!=width or not np.isfinite(flow).all():
+        raise ValueError('invalid full outgoing state')
+    values=np.zeros((len(flow),ns),complex)
     for c in owner.cohorts:
         n=len(c.theta);x=flow[:,offset:offset+2*n].reshape(-1,n,2);theta=flow[:,offset+2*n:offset+3*n];offset+=3*n+2*ns
         if c.selected:
-            m=list(c.selected);w=np.exp(-np.sum((owner.q[None,:,None,:]-x[:,None,m,:])**2,axis=-1)/(2*owner.model['sigma']**2))
-            full=owner.model['output']*np.mean(w*np.exp(1j*theta[:,None,m]),axis=-1)
+            m=list(c.selected)
+            key=array_digest('c6-full-outgoing',owner.q,x[:,m],theta[:,m],
+                metadata={'sigma':owner.model['sigma'],'output':owner.model['output']})
+            def compute_channel():
+                full=np.empty((len(flow),ns),complex)
+                # For the approved inventory, at most 65536 site/member pairs
+                # per temporary, independent of scope length (at least one
+                # frame for larger inventories). Per-frame order is unchanged.
+                chunk=max(1,65536//(ns*len(m)))
+                for begin in range(0,len(flow),chunk):
+                    end=min(begin+chunk,len(flow))
+                    w=np.exp(-np.sum((owner.q[None,:,None,:]-x[begin:end,None,m,:])**2,axis=-1)/(2*owner.model['sigma']**2))
+                    full[begin:end]=owner.model['output']*np.mean(w*np.exp(1j*theta[begin:end,None,m]),axis=-1)
+                if not np.isfinite(full).all():raise ValueError('nonfinite full outgoing channel')
+                return full
+            full=cached_array(_EMISSION_CACHE,_EMISSION_CACHE_BYTES,key,compute_channel)
             values+=full*c.output
+    if not np.isfinite(values).all():raise ValueError('nonfinite outgoing sum')
     return values

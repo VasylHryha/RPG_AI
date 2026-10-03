@@ -24,7 +24,7 @@ class GridSet:
         scales=[]
         for c in self.owners[0].cohorts:
             scale=D.radius_of_gyration(c.x)
-            if scale<=0:raise ValueError('zero initial material normalization')
+            if not np.isfinite(scale) or scale<=0:raise ValueError('invalid initial material normalization')
             scales.append(scale)
         # Block at requested sample times, compare every production step; never
         # keep every refined step or feed fine owners a coarse carrier.
@@ -37,7 +37,11 @@ class GridSet:
             flows=[]
             for k in range(3):
                 self.owners[k],flow=F.advance(self.owners[k],block_duration,dt/(2**k),dt)
-                flows.append(flow);collected[k].extend(flow[F.exact_steps(sample_dt,dt)::F.exact_steps(sample_dt,dt)])
+                flows.append(flow)
+                # Views of sampled rows would pin every full production-grid
+                # block until the end of the scope, defeating streaming.
+                stride=F.exact_steps(sample_dt,dt)
+                collected[k].extend(flow[stride::stride].copy())
                 trace[k].update(flow[1:,2*len(initial[k].z):].tobytes())
                 outgoing=F.emissions(initial[k],flow)
                 powers[k]+=np.sum(np.abs(outgoing[1:])**2,axis=0)*dt
@@ -52,7 +56,7 @@ class GridSet:
                             'initial_ids':[o.identity() for o in initial],'end_ids':self.identities(),
                             'source_trace_hash_by_dt':[h.hexdigest() for h in trace],'output_max_by_dt':out_max,
                             'output_power_by_dt':[p.tolist() for p in powers],'first_output_time_by_dt':first,
-                            'output_check_method':'Full outgoing channel computed then masked; Python norms are derived diagnostics. All-off native actual-medium evolution omits cohorts; independent native RHS/channel contracts verify that path.'})
+                            'output_check_method':'Full selected-member outgoing channels computed (or reused on identical physical inputs) before masks; bounded temporary arrays and byte-limited immutable cache. Python norms are derived diagnostics. All-off native actual-medium evolution omits cohorts; independent native RHS/channel contracts verify that path.'})
         if not passed:raise NumericalFailure(scope,maxima)
         return [np.array(c) for c in collected]
 
@@ -60,8 +64,14 @@ class NumericalFailure(ValueError):pass
 
 def state_errors(owner,flows,scales):
     errors={'position':0.,'phase':0.,'field':0.};ns=len(owner.z)
+    width=2*ns+sum(3*len(c.theta)+2*ns for c in owner.cohorts)
+    if (len(flows)!=3 or any(f.ndim!=2 or f.shape[0]<1 or f.shape[1]!=width or not np.isfinite(f).all() for f in flows)
+            or any(f.shape!=flows[0].shape for f in flows) or len(scales)!=len(owner.cohorts)
+            or any(not np.isfinite(L) or L<=0 for L in scales)):
+        raise NumericalFailure('invalid full-scope state/normalization')
     for coarse in flows[:2]:
         delta=coarse-flows[2]
+        if not np.isfinite(delta).all():raise NumericalFailure('nonfinite full-scope difference')
         errors['field']=max(errors['field'],float(np.max(np.abs(delta[:,:2*ns].copy().view('c16')))))
         offset=2*ns
         for c,L in zip(owner.cohorts,scales):
@@ -69,6 +79,7 @@ def state_errors(owner,flows,scales):
             errors['position']=max(errors['position'],float(np.linalg.norm(dx,axis=-1).max()/L))
             errors['phase']=max(errors['phase'],float(np.abs(wrap(delta[:,offset:offset+n])).max()));offset+=n
             errors['field']=max(errors['field'],float(np.abs(delta[:,offset:offset+2*ns].copy().view('c16')).max()));offset+=2*ns
+    if not np.isfinite(list(errors.values())).all():raise NumericalFailure('nonfinite full-scope error')
     return errors
 
 def frames(flow,owner,index=-1):

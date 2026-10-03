@@ -199,7 +199,9 @@ def evaluate(records,settings,entropy,engineering):
         'b_chain_yield':{'complete':len(chain),'worlds':n,'eligible_first':sum(bool(r['turns'] and r['turns'][0]['operation_eligible']) for r in rows),'ids':chain},
         'b_chain_provenance':[{'world':r['world'],'links':r['links']} for r in rows],
         'b_enablement_witnesses':{'count':witnesses,'worlds':n,'ids':[r['world'] for r in rows if r['enabled_witness']]},
-        'b_costs':[{'world':r['world'],'seconds':r['seconds'],'peak_rss_bytes':r['peak_rss_bytes'],
+        'b_costs':[{'world':r['world'],'seconds':r['seconds'],'cpu_seconds':r.get('cpu_seconds'),
+                    'cpu_measurement':'Worker process CPU during run_world' if 'cpu_seconds' in r else 'Not measured by historical/synthetic record',
+                    'peak_rss_bytes':r['peak_rss_bytes'],
                     'memory_measurement':r['memory_measurement'],'native_build':r['native_build']} for r in rows],
         'b_sensitivity':{'eligible_chains':len(chain),'minimum_worlds':10,'approximate_halfwidth_coefficient':2.96,'bootstrap_resamples':settings['bootstrap_resamples']}}
     for key in ('b_reference_equivalence','b_transform_equivariance','source_pin'):globals_values[key]=engineering[key]

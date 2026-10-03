@@ -601,3 +601,127 @@ def test_descriptor_shares_full_exact_source_paths_and_keeps_all_probes(monkeypa
     assert all(np.array(p['response_real_imag']).shape==(3,25,2) for p in result['raw'])
     assert all(c['source_trace_hash_by_dt']==grid.checks[0]['source_trace_hash_by_dt'] for c in grid.checks)
     assert sum(v.nbytes for v in F._PASSIVE_CACHE.values())<=F._PASSIVE_CACHE_BYTES
+
+
+@pytest.mark.parametrize('time,dt',[(0.,0.),(1.,float('inf')),(float('inf'),.005),(0.,float('nan'))])
+def test_time_grid_rejects_nonfinite_and_zero_before_division(time,dt):
+    with pytest.raises(ValueError,match='time grid'):F.exact_steps(time,dt)
+
+@pytest.mark.parametrize('column',[0,50,62,68])
+def test_full_scope_errors_reject_nonfinite_in_every_channel(column):
+    o=owner();flows=[np.tile(o.pack(),(3,1)) for _ in range(3)]
+    flows[1][1,column]=float('nan')
+    with pytest.raises(A.NumericalFailure):A.state_errors(o,flows,[1.])
+
+@pytest.mark.parametrize('scale',[0.,float('nan'),float('inf')])
+def test_full_scope_errors_reject_invalid_scale(scale):
+    o=owner();flows=[np.tile(o.pack(),(3,1)) for _ in range(3)]
+    with pytest.raises(A.NumericalFailure):A.state_errors(o,flows,[scale])
+
+def test_full_scope_errors_reject_overflowing_phase_difference():
+    o=owner();flows=[np.tile(o.pack(),(3,1)) for _ in range(3)]
+    flows[0][:,62]=1e308;flows[2][:,62]=-1e308
+    with np.errstate(over='ignore',invalid='ignore'),pytest.raises(A.NumericalFailure):
+        A.state_errors(o,flows,[1.])
+
+def test_channel_cache_computes_full_signal_before_zero_mask_and_reuses_physics():
+    o=owner();o.cohorts[0].output=0.;F._EMISSION_CACHE.clear()
+    _,flow=F.advance(o,.1,.005,.005)
+    assert np.array_equal(F.emissions(o,flow),np.zeros((len(flow),25),complex))
+    assert len(F._EMISSION_CACHE)==1
+    full=next(iter(F._EMISSION_CACHE.values()))
+    assert np.max(np.abs(full))>1e-5 and not full.flags.writeable
+    on=o.clone();on.cohorts[0].output=1.
+    actual=F.emissions(on,flow)
+    assert len(F._EMISSION_CACHE)==1 and np.array_equal(actual,full)
+    expected=[]
+    for i,state in enumerate(flow):
+        a=on.unpack(state,i*.005);b=a.clone();b.cohorts[0].output=0.
+        expected.append((R.rhs(a)-R.rhs(b))[:50].copy().view('c16'))
+    assert np.max(np.abs(actual-np.array(expected)))<1e-13
+    changed=flow.copy();changed[:,:50]+=.2
+    assert np.array_equal(F.emissions(on,changed),actual)  # actual field cannot alter output law
+    assert len(F._EMISSION_CACHE)==1
+    changed=on.clone();changed.model['sigma']*=1.1
+    assert np.max(np.abs(F.emissions(changed,flow)-actual))>1e-6
+    assert len(F._EMISSION_CACHE)==2
+
+def test_channel_cache_cannot_hide_nonfinite_state_or_change_selection():
+    o=owner();_,flow=F.advance(o,.1,.005,.005);F.emissions(o,flow)
+    bad=flow.copy();bad[0,0]=float('nan')
+    with pytest.raises(ValueError,match='outgoing'):F.emissions(o,bad)
+    original=F.emissions(o,flow);changed=o.clone();changed.cohorts[0].selected=(1,2,3)
+    assert np.max(np.abs(F.emissions(changed,flow)-original))>1e-6
+
+def test_concurrent_independent_flows_keep_cache_eviction_safe(monkeypatch):
+    from concurrent.futures import ThreadPoolExecutor
+    base=owner();base.cohorts[0].output=0.;F._PASSIVE_CACHE.clear();F._EMISSION_CACHE.clear()
+    states=[base.clone() for _ in range(12)]
+    for i,o in enumerate(states):o.cohorts[0].theta[0]+=.01*i
+    expected=[F.advance(o,.1,.005,.005,_factor=False)[1] for o in states]
+    monkeypatch.setattr(F,'_PASSIVE_CACHE_BYTES',24000)
+    monkeypatch.setattr(F,'_EMISSION_CACHE_BYTES',20000)
+    def integrate(o):
+        _,flow=F.advance(o,.1,.005,.005);out=F.emissions(o,flow)
+        return flow,out
+    with ThreadPoolExecutor(max_workers=4) as pool:actual=list(pool.map(integrate,states))
+    for (flow,out),reference in zip(actual,expected):
+        assert np.max(np.abs(flow-reference))<1e-12
+        assert np.array_equal(out,np.zeros_like(out))
+    assert sum(v.nbytes for v in F._PASSIVE_CACHE.values())<=24000
+    assert sum(v.nbytes for v in F._EMISSION_CACHE.values())<=20000
+
+def test_reproducible_comparison_rejects_fabricated_gains_coverage_and_nan():
+    from tools.c6_r4_performance_report import descriptor_contract
+    # Contract-only fixture: fixed raw gains, exact ports, source hashes and
+    # clocks. No new simulated world, pilot entropy or recorded panel.
+    raw=[{'port':i,'quadrature':q,'probe_phase_by_dt':[.3+q*np.pi/2]*3,
+          'response_real_imag':[[[1.,0.]]*25 for _ in range(100)]} for i in range(25) for q in (0,1)]
+    checks=[{'scope':'fixture/'+('control' if i==0 else f'port{(i-1)//2}/q{(i-1)%2}'),
+        'duration':10.,'start':17.3,'passed':True,'dt_values':[.005,.0025,.00125],
+        'max_errors':{'position':0.,'phase':0.,'field':0.},'normalization_sizes':[1.,1.],
+        'output_max_by_dt':[0.]*3,'output_power_by_dt':[[0.]*25]*3,'first_output_time_by_dt':[None]*3,
+        'source_trace_hash_by_dt':['a'*64]*3} for i in range(51)]
+    record={'seconds':1.,'resolutions':[.005,.0025,.00125],'checks':checks,
+        'descriptor':{'alpha':.3,'phase_origin_by_dt':[0.]*3,'site_ids':list(range(25)),
+            'gain_by_dt':[1.]*3,'per_probe_by_dt':[[1.]*50 for _ in range(3)],'raw':raw}}
+    descriptor_contract(record)
+    for defect in ('nan','mean','per_probe','duplicate','scope','source_hash','hash_count','hash_format','power','phase','clock','probe_clock','normalization','check_count','error_limit'):
+        changed=copy.deepcopy(record)
+        if defect=='nan':changed['checks'][0]['max_errors']['position']=float('nan')
+        if defect=='mean':changed['descriptor']['gain_by_dt'][0]+=.1
+        if defect=='per_probe':changed['descriptor']['per_probe_by_dt'][0][0]+=.1;changed['descriptor']['gain_by_dt'][0]+=.002
+        if defect=='duplicate':changed['descriptor']['raw'][1]=copy.deepcopy(changed['descriptor']['raw'][0])
+        if defect=='scope':changed['checks'][1]['scope']='fixture/control'
+        if defect=='source_hash':changed['checks'][1]['source_trace_hash_by_dt'][0]='b'*64
+        if defect=='hash_count':changed['checks'][0]['source_trace_hash_by_dt']=[]
+        if defect=='hash_format':changed['checks'][0]['source_trace_hash_by_dt']=['z'*64]*3
+        if defect=='power':changed['checks'][0]['output_power_by_dt'][0][0]=.1
+        if defect=='phase':changed['descriptor']['raw'][0]['probe_phase_by_dt'][0]+=.1
+        if defect=='clock':changed['checks'][0]['start']=float('inf')
+        if defect=='probe_clock':changed['checks'][1]['start']+=1.
+        if defect=='normalization':changed['checks'][0]['normalization_sizes']=[]
+        if defect=='check_count':changed['checks'].pop()
+        if defect=='error_limit':changed['checks'][0]['max_errors']['field']=.051
+        with pytest.raises(ValueError):descriptor_contract(changed)
+
+
+def test_streaming_samples_release_full_blocks_and_keep_emitted_power(monkeypatch):
+    import weakref
+    s=P.load_settings();base=owner();base.time=17.3;released=[];references=[];durations=[]
+    def constant_flow(o,duration,dt,sample_dt,_factor=True):
+        if len(references)==3:released.append(references[0]() is None)
+        count=F.exact_steps(duration,sample_dt)
+        flow=np.tile(o.pack(),(count+1,1));references.append(weakref.ref(flow));durations.append(duration)
+        return o.unpack(flow[-1],o.time+duration),flow
+    monkeypatch.setattr(F,'advance',constant_flow)
+    grid=A.GridSet([base]*3,s);flows=grid.run(21.,'streaming-emitter',1.)
+    assert released==[True]  # first full block freed before second block starts
+    assert durations==[10.]*6+[1.]*3
+    assert all(f.shape==(22,len(base.pack())) for f in flows)
+    assert all(np.array_equal(f,np.tile(base.pack(),(22,1))) for f in flows)
+    signal=F.output(base);check=grid.checks[0]
+    assert np.allclose(check['output_power_by_dt'],np.tile(21*np.abs(signal)**2,(3,1)),rtol=0.,atol=1e-12)
+    assert np.allclose(check['output_max_by_dt'],np.abs(signal).max(),rtol=0.,atol=1e-12)
+    assert np.allclose(check['first_output_time_by_dt'],[17.3]*3,rtol=0.,atol=1e-12)
+    assert all(abs(o.time-38.3)<1e-12 for o in grid.owners)
