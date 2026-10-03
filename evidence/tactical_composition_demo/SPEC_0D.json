@@ -1,0 +1,75 @@
+{
+ "config": {
+  "angle_deg": 10.0,
+  "boot_entropy": 62389445872329298908968987766,
+  "c_adequate": true,
+  "c_adequate_basis": "dev gates",
+  "delta_eq": 0.03,
+  "delta_sup": 0.06,
+  "eval_cap": 300.0,
+  "f_star": "F1",
+  "hard_cap": 3900.0,
+  "hps": {
+   "C": {
+    "hidden": 16,
+    "lr": 0.001,
+    "steps": 32000,
+    "wd": 0.0001
+   },
+   "F1": {
+    "hidden": 8,
+    "lr": 0.0003,
+    "steps": 8000,
+    "wd": 0.01
+   },
+   "F2": {
+    "hidden": 32,
+    "lr": 0.0003,
+    "steps": 16000,
+    "wd": 0.01
+   },
+   "S1": {
+    "hidden": 64,
+    "lr": 0.003,
+    "steps": 16000,
+    "wd": 0.001
+   }
+  },
+  "min_stratum": 30,
+  "n_extra": [
+   1000,
+   9000
+  ],
+  "n_primary": 3000,
+  "require_strata": true,
+  "resamples": 4000,
+  "s1_adequate": true,
+  "s1_adequate_basis": "dev gates",
+  "seeds": 30,
+  "soft_cap": 3600.0,
+  "test_episodes": 100,
+  "train_episodes": 600,
+  "win_episodes": 200,
+  "workers": 8
+ },
+ "entropy": 13167213789077322165999057480,
+ "note": "Generated once by --write-spec from dev_0d/tuned2.json and dev_0d/gates_results.json; caps measured in dev_0d/cost_*.json.",
+ "smoke_entropy": 8737579654957910458412003581,
+ "smoke_overrides": {
+  "eval_cap": 120.0,
+  "hard_cap": 1100.0,
+  "hps_step_cap": 300,
+  "n_extra": [
+   150,
+   450
+  ],
+  "n_primary": 300,
+  "require_strata": false,
+  "seeds": 2,
+  "soft_cap": 900.0,
+  "test_episodes": 10,
+  "train_episodes": 40,
+  "win_episodes": 4,
+  "workers": 2
+ }
+}

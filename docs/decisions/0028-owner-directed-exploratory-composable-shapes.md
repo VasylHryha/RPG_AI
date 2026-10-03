@@ -18,6 +18,7 @@ These are the author's transcriptions and readings, not primary records. Any ite
 4. On defining the pieces: "so it 's up to you, no it ahve all hp, sped and other params - oyu shoudld eifen what is enogu or we cna start trying". My reading: authorization to define the pieces and begin the Stage 0 build and run. **[R]**
 5. "lets do it then just doimcen why we di it adn what the motvistion" (`MOTIVATION.md`).
 6. "ok go ahead" to the change-cost revision 2. Today: "Recheck what you did please, check if it is the best we can do … it's fine to break the things or fully rework", then "ok go ahead" to the recheck plan (steps 1 and 2: documents and a shared library; no experiment run).
+7. After the Codex review and my plain-language summary of revision 2 of the 0d plan ("what are we doig and why pxalin in simple terms"), and my request to approve or reject it: "continue then". My reading: approval to start the **development phase** of `PROPOSAL_0D.md` revision 2 (own entropy, scratch code, committed with raw results), not approval of a recorded run, which stays gated by the registration commit and the pre-run review in that plan. **[R]**
 
 ## What was done (all committed; every run was one-shot with its own entropy)
 

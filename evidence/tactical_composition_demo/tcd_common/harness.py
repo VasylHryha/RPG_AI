@@ -80,6 +80,7 @@ def run_experiment(*, spec_path, here, root, files, run_dirs, run_name, seed_job
     rows, errors, pool, watchdog = {}, {}, None, None
     try:
         (run_dir/'seeds').mkdir()
+        cfg['run_dir'] = str(run_dir)   # workers may write per-seed artifacts (for example model weights) under it
         for var in THREAD_VARS:
             os.environ[var] = '1'
         write_json(run_dir/'RUN_STARTED.json', {

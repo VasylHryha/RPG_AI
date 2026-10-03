@@ -1,0 +1,59 @@
+{
+ "config": {
+  "angle_deg": 10.0,
+  "boot_entropy": 41524192872023903970238962717,
+  "c_adequate": true,
+  "c_adequate_basis": "dev gates",
+  "delta_eq": 0.03,
+  "delta_sup": 0.06,
+  "eval_cap": 300.0,
+  "f_star": "F1",
+  "hard_cap": 3300.0,
+  "hps": {
+   "C": {
+    "hidden": 16,
+    "lr": 0.001,
+    "steps": 32000,
+    "wd": 0.0001
+   },
+   "F1": {
+    "hidden": 8,
+    "lr": 0.0003,
+    "steps": 8000,
+    "wd": 0.01
+   },
+   "F2": {
+    "hidden": 32,
+    "lr": 0.0003,
+    "steps": 16000,
+    "wd": 0.01
+   },
+   "S1": {
+    "hidden": 64,
+    "lr": 0.003,
+    "steps": 16000,
+    "wd": 0.001
+   }
+  },
+  "min_stratum": 30,
+  "n_extra": [
+   1000,
+   9000
+  ],
+  "n_primary": 3000,
+  "require_strata": true,
+  "resamples": 4000,
+  "s1_adequate": true,
+  "s1_adequate_basis": "dev gates",
+  "seeds": 8,
+  "soft_cap": 3000.0,
+  "test_episodes": 100,
+  "train_episodes": 600,
+  "win_episodes": 200,
+  "workers": 8
+ },
+ "entropy": 0,
+ "note": "cost measurement spec: full-size config on fresh development entropy; NOT the registered SPEC_0D.json",
+ "smoke_entropy": 64093539157957528113766107688,
+ "smoke_overrides": {}
+}

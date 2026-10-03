@@ -61,7 +61,7 @@ def test_streams_differ_by_key_and_entropy_and_refuse_short_entropy():
 
 def test_spec_entropies_are_pairwise_distinct():
     values = []
-    for path in list(HERE.glob('SPEC*.json'))+[ROOT/'evidence/geometric_composition_demo/SPEC.json', ROOT/'evidence/c6_dev_pilot/a_twobody/SPEC.json']:
+    for path in list(HERE.glob('SPEC*.json'))+[ROOT/'evidence/geometric_composition_demo/SPEC.json', ROOT/'evidence/c6_dev_pilot/a_twobody/SPEC.json', HERE/'dev_0d'/'DEV_SPEC.json']:
         spec = json.loads(path.read_text())
         values += [(path.name, k, spec[k]) for k in ('entropy', 'smoke_entropy') if k in spec]
     assert len(values) >= 6 and len({v for _, _, v in values}) == len(values), values   # isolation between runs rests on distinct entropies

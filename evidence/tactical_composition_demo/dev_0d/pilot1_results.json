@@ -1,0 +1,472 @@
+{
+ "note": "development pilot 1; default setting {'hidden': 16, 'lr': 0.003, 'wd': 0.0, 'steps': 8000}; seeds 0..2 of DEV_SPEC entropy",
+ "data_seconds": 10.8,
+ "total_seconds": 19.2,
+ "results": [
+  {
+   "a_joint": 0.5236833006799585,
+   "aim_alone_admissible": 0.8631439437593639,
+   "aim_alone_agree_corrected": 0.785194229638674,
+   "move_alone_joint_on_teacher_target": 0.6066612884637548,
+   "step_ok_given_admissible": 0.6067160691634955,
+   "independent_prediction": 0.5236360170507424,
+   "connection_gap": 4.7283629216132717e-05,
+   "strata": {
+    "n_stratum_hold": 5881,
+    "a_joint_stratum_hold": 0.822309131100153,
+    "n_stratum_moving": 11473,
+    "a_joint_stratum_moving": 0.3706092565152968,
+    "n_stratum_backoff": 1961,
+    "a_joint_stratum_backoff": 0.1922488526262111
+   },
+   "step_angle_median_moving_deg": 14.333180460313201,
+   "n_multi": 17354,
+   "model": "F0",
+   "seed": 0,
+   "fit_seconds": 1.41,
+   "n_params": 770,
+   "supervision": null,
+   "oracle_queries": 0,
+   "hp": {
+    "hidden": 16,
+    "lr": 0.003,
+    "wd": 0.0,
+    "steps": 8000
+   }
+  },
+  {
+   "a_joint": 0.5021896968998502,
+   "aim_alone_admissible": 0.8540970381468249,
+   "aim_alone_agree_corrected": 0.7709944376611042,
+   "move_alone_joint_on_teacher_target": 0.5897199492912297,
+   "step_ok_given_admissible": 0.5879773309944677,
+   "independent_prediction": 0.5036780620257351,
+   "connection_gap": -0.001488365125884905,
+   "strata": {
+    "n_stratum_hold": 5881,
+    "a_joint_stratum_hold": 0.7799693929603809,
+    "n_stratum_moving": 11473,
+    "a_joint_stratum_moving": 0.3598012725529504,
+    "n_stratum_backoff": 1961,
+    "a_joint_stratum_backoff": 0.1223865374808771
+   },
+   "step_angle_median_moving_deg": 14.952424063405815,
+   "n_multi": 17354,
+   "model": "F1",
+   "seed": 0,
+   "fit_seconds": 1.55,
+   "n_params": 837,
+   "supervision": 15000,
+   "oracle_queries": 0,
+   "hp": {
+    "hidden": 16,
+    "lr": 0.003,
+    "wd": 0.0,
+    "steps": 8000
+   }
+  },
+  {
+   "a_joint": 0.4645614843840037,
+   "aim_alone_admissible": 0.802120548576697,
+   "aim_alone_agree_corrected": 0.6894134671912449,
+   "move_alone_joint_on_teacher_target": 0.6008413045983635,
+   "step_ok_given_admissible": 0.5791666666666667,
+   "independent_prediction": 0.48194715685197764,
+   "connection_gap": -0.017385672467973956,
+   "strata": {
+    "n_stratum_hold": 5881,
+    "a_joint_stratum_hold": 0.7789491583064104,
+    "n_stratum_moving": 11473,
+    "a_joint_stratum_moving": 0.3034080013945786,
+    "n_stratum_backoff": 1961,
+    "a_joint_stratum_backoff": 0.13564507904130546
+   },
+   "step_angle_median_moving_deg": 20.387674132869527,
+   "n_multi": 17354,
+   "model": "F2",
+   "seed": 0,
+   "fit_seconds": 2.29,
+   "n_params": 1364,
+   "supervision": 12000,
+   "oracle_queries": 0,
+   "hp": {
+    "hidden": 16,
+    "lr": 0.003,
+    "wd": 0.0,
+    "steps": 8000
+   }
+  },
+  {
+   "a_joint": 0.9446237178748416,
+   "aim_alone_admissible": 0.9811570819407629,
+   "aim_alone_agree_corrected": 0.9704246370913037,
+   "move_alone_joint_on_teacher_target": 0.962775152702547,
+   "step_ok_given_admissible": 0.9627650202619369,
+   "independent_prediction": 0.9446336593907034,
+   "connection_gap": -9.941515861866534e-06,
+   "strata": {
+    "n_stratum_hold": 5881,
+    "a_joint_stratum_hold": 0.9699030777078728,
+    "n_stratum_moving": 11473,
+    "a_joint_stratum_moving": 0.9316656497864552,
+    "n_stratum_backoff": 1961,
+    "a_joint_stratum_backoff": 0.9826619071902091
+   },
+   "step_angle_median_moving_deg": 1.3720957841666594,
+   "n_multi": 17354,
+   "model": "C",
+   "seed": 0,
+   "fit_seconds": 2.64,
+   "n_params": 787,
+   "supervision": 13910,
+   "oracle_queries": 0,
+   "hp": {
+    "hidden": 16,
+    "lr": 0.003,
+    "wd": 0.0,
+    "steps": 8000
+   }
+  },
+  {
+   "a_joint": 0.9204218047712343,
+   "aim_alone_admissible": 0.9536129998847528,
+   "aim_alone_agree_corrected": 0.9271921494143714,
+   "move_alone_joint_on_teacher_target": 0.9651953440129077,
+   "step_ok_given_admissible": 0.9651942715571938,
+   "independent_prediction": 0.9204228274789449,
+   "connection_gap": -1.0227077106295113e-06,
+   "strata": {
+    "n_stratum_hold": 5881,
+    "a_joint_stratum_hold": 0.952899166808366,
+    "n_stratum_moving": 11473,
+    "a_joint_stratum_moving": 0.9037740782707225,
+    "n_stratum_backoff": 1961,
+    "a_joint_stratum_backoff": 0.9398266190719021
+   },
+   "step_angle_median_moving_deg": 1.5105745307940641,
+   "n_multi": 17354,
+   "model": "S1",
+   "seed": 0,
+   "fit_seconds": 5.26,
+   "n_params": 787,
+   "supervision": 13910,
+   "oracle_queries": 1024000,
+   "hp": {
+    "hidden": 16,
+    "lr": 0.003,
+    "wd": 0.0,
+    "steps": 8000
+   }
+  },
+  {
+   "a_joint": 0.4838032563680717,
+   "aim_alone_admissible": 0.8220911102286266,
+   "aim_alone_agree_corrected": 0.7214590241591663,
+   "move_alone_joint_on_teacher_target": 0.60004538492086,
+   "step_ok_given_admissible": 0.5885032088882755,
+   "independent_prediction": 0.4932919766771534,
+   "connection_gap": -0.00948872030908171,
+   "strata": {
+    "n_stratum_hold": 5505,
+    "a_joint_stratum_hold": 0.8098092643051771,
+    "n_stratum_moving": 12122,
+    "a_joint_stratum_moving": 0.33575317604355714,
+    "n_stratum_backoff": 2343,
+    "a_joint_stratum_backoff": 0.1784037558685446
+   },
+   "step_angle_median_moving_deg": 15.81990700749554,
+   "n_multi": 17627,
+   "model": "F0",
+   "seed": 1,
+   "fit_seconds": 1.51,
+   "n_params": 770,
+   "supervision": null,
+   "oracle_queries": 0,
+   "hp": {
+    "hidden": 16,
+    "lr": 0.003,
+    "wd": 0.0,
+    "steps": 8000
+   }
+  },
+  {
+   "a_joint": 0.4573665399670959,
+   "aim_alone_admissible": 0.8249276677823794,
+   "aim_alone_agree_corrected": 0.7259000473709143,
+   "move_alone_joint_on_teacher_target": 0.5694672944914052,
+   "step_ok_given_admissible": 0.5544322948903102,
+   "independent_prediction": 0.4697693271231363,
+   "connection_gap": -0.012402787156040374,
+   "strata": {
+    "n_stratum_hold": 5505,
+    "a_joint_stratum_hold": 0.7603996366939146,
+    "n_stratum_moving": 12122,
+    "a_joint_stratum_moving": 0.31974921630094044,
+    "n_stratum_backoff": 2343,
+    "a_joint_stratum_backoff": 0.1489543320529236
+   },
+   "step_angle_median_moving_deg": 17.679308093016523,
+   "n_multi": 17627,
+   "model": "F1",
+   "seed": 1,
+   "fit_seconds": 1.5,
+   "n_params": 837,
+   "supervision": 15000,
+   "oracle_queries": 0,
+   "hp": {
+    "hidden": 16,
+    "lr": 0.003,
+    "wd": 0.0,
+    "steps": 8000
+   }
+  },
+  {
+   "a_joint": 0.4638906223407273,
+   "aim_alone_admissible": 0.7950870823169002,
+   "aim_alone_agree_corrected": 0.6791804831833254,
+   "move_alone_joint_on_teacher_target": 0.5953366993816305,
+   "step_ok_given_admissible": 0.5834463075276489,
+   "independent_prediction": 0.4733445193075141,
+   "connection_gap": -0.009453896966786779,
+   "strata": {
+    "n_stratum_hold": 5505,
+    "a_joint_stratum_hold": 0.7665758401453224,
+    "n_stratum_moving": 12122,
+    "a_joint_stratum_moving": 0.32643128196667215,
+    "n_stratum_backoff": 2343,
+    "a_joint_stratum_backoff": 0.16688006828851898
+   },
+   "step_angle_median_moving_deg": 19.562830451937284,
+   "n_multi": 17627,
+   "model": "F2",
+   "seed": 1,
+   "fit_seconds": 2.25,
+   "n_params": 1364,
+   "supervision": 12000,
+   "oracle_queries": 0,
+   "hp": {
+    "hidden": 16,
+    "lr": 0.003,
+    "wd": 0.0,
+    "steps": 8000
+   }
+  },
+  {
+   "a_joint": 0.9550121971974811,
+   "aim_alone_admissible": 0.9880864582742384,
+   "aim_alone_agree_corrected": 0.9813477025106584,
+   "move_alone_joint_on_teacher_target": 0.9665286208657173,
+   "step_ok_given_admissible": 0.9665269564218867,
+   "independent_prediction": 0.9550138418118908,
+   "connection_gap": -1.6446144096571302e-06,
+   "strata": {
+    "n_stratum_hold": 5505,
+    "a_joint_stratum_hold": 0.9776566757493188,
+    "n_stratum_moving": 12122,
+    "a_joint_stratum_moving": 0.9447285926414783,
+    "n_stratum_backoff": 2343,
+    "a_joint_stratum_backoff": 0.9628681177976952
+   },
+   "step_angle_median_moving_deg": 1.1508165249326108,
+   "n_multi": 17627,
+   "model": "C",
+   "seed": 1,
+   "fit_seconds": 2.3,
+   "n_params": 787,
+   "supervision": 13977,
+   "oracle_queries": 0,
+   "hp": {
+    "hidden": 16,
+    "lr": 0.003,
+    "wd": 0.0,
+    "steps": 8000
+   }
+  },
+  {
+   "a_joint": 0.9274408577750043,
+   "aim_alone_admissible": 0.957905485902309,
+   "aim_alone_agree_corrected": 0.9340952155376597,
+   "move_alone_joint_on_teacher_target": 0.9674363192829183,
+   "step_ok_given_admissible": 0.9681966242226828,
+   "independent_prediction": 0.9267125575022451,
+   "connection_gap": 0.0007283002727591636,
+   "strata": {
+    "n_stratum_hold": 5505,
+    "a_joint_stratum_hold": 0.9654859218891917,
+    "n_stratum_moving": 12122,
+    "a_joint_stratum_moving": 0.9101633393829401,
+    "n_stratum_backoff": 2343,
+    "a_joint_stratum_backoff": 0.9632949210413999
+   },
+   "step_angle_median_moving_deg": 1.1775963061338195,
+   "n_multi": 17627,
+   "model": "S1",
+   "seed": 1,
+   "fit_seconds": 4.45,
+   "n_params": 787,
+   "supervision": 13977,
+   "oracle_queries": 1024000,
+   "hp": {
+    "hidden": 16,
+    "lr": 0.003,
+    "wd": 0.0,
+    "steps": 8000
+   }
+  },
+  {
+   "a_joint": 0.4649716886865771,
+   "aim_alone_admissible": 0.8405129343843677,
+   "aim_alone_agree_corrected": 0.7481628657832838,
+   "move_alone_joint_on_teacher_target": 0.5630065504607528,
+   "step_ok_given_admissible": 0.553199920744997,
+   "independent_prediction": 0.4732142878053879,
+   "connection_gap": -0.008242599118810756,
+   "strata": {
+    "n_stratum_hold": 5738,
+    "a_joint_stratum_hold": 0.7699546880446149,
+    "n_stratum_moving": 12276,
+    "a_joint_stratum_moving": 0.3224177256435321,
+    "n_stratum_backoff": 2994,
+    "a_joint_stratum_backoff": 0.14562458249833
+   },
+   "step_angle_median_moving_deg": 16.878667933575862,
+   "n_multi": 18014,
+   "model": "F0",
+   "seed": 2,
+   "fit_seconds": 1.61,
+   "n_params": 770,
+   "supervision": null,
+   "oracle_queries": 0,
+   "hp": {
+    "hidden": 16,
+    "lr": 0.003,
+    "wd": 0.0,
+    "steps": 8000
+   }
+  },
+  {
+   "a_joint": 0.48018208060397466,
+   "aim_alone_admissible": 0.8548351282335961,
+   "aim_alone_agree_corrected": 0.7707782436558606,
+   "move_alone_joint_on_teacher_target": 0.5720550682802265,
+   "step_ok_given_admissible": 0.5617247873238522,
+   "independent_prediction": 0.48901276765000595,
+   "connection_gap": -0.008830687046031294,
+   "strata": {
+    "n_stratum_hold": 5738,
+    "a_joint_stratum_hold": 0.7814569536423841,
+    "n_stratum_moving": 12276,
+    "a_joint_stratum_moving": 0.33936135549038776,
+    "n_stratum_backoff": 2994,
+    "a_joint_stratum_backoff": 0.16733466933867736
+   },
+   "step_angle_median_moving_deg": 16.894036089216428,
+   "n_multi": 18014,
+   "model": "F1",
+   "seed": 2,
+   "fit_seconds": 1.67,
+   "n_params": 837,
+   "supervision": 15000,
+   "oracle_queries": 0,
+   "hp": {
+    "hidden": 16,
+    "lr": 0.003,
+    "wd": 0.0,
+    "steps": 8000
+   }
+  },
+  {
+   "a_joint": 0.48606639280559566,
+   "aim_alone_admissible": 0.8369046297324303,
+   "aim_alone_agree_corrected": 0.7424651930634486,
+   "move_alone_joint_on_teacher_target": 0.5911513267458643,
+   "step_ok_given_admissible": 0.580790660652693,
+   "independent_prediction": 0.49473728222608254,
+   "connection_gap": -0.008670889420486882,
+   "strata": {
+    "n_stratum_hold": 5738,
+    "a_joint_stratum_hold": 0.7640292784942488,
+    "n_stratum_moving": 12276,
+    "a_joint_stratum_moving": 0.35614206581948515,
+    "n_stratum_backoff": 2994,
+    "a_joint_stratum_backoff": 0.18069472277889112
+   },
+   "step_angle_median_moving_deg": 17.793521601199522,
+   "n_multi": 18014,
+   "model": "F2",
+   "seed": 2,
+   "fit_seconds": 2.15,
+   "n_params": 1364,
+   "supervision": 12000,
+   "oracle_queries": 0,
+   "hp": {
+    "hidden": 16,
+    "lr": 0.003,
+    "wd": 0.0,
+    "steps": 8000
+   }
+  },
+  {
+   "a_joint": 0.9649716886865771,
+   "aim_alone_admissible": 0.9882313755967581,
+   "aim_alone_agree_corrected": 0.9814168212829989,
+   "move_alone_joint_on_teacher_target": 0.976351726434995,
+   "step_ok_given_admissible": 0.9764633187282328,
+   "independent_prediction": 0.9648614096811248,
+   "connection_gap": 0.0001102790054523517,
+   "strata": {
+    "n_stratum_hold": 5738,
+    "a_joint_stratum_hold": 0.9803067270826071,
+    "n_stratum_moving": 12276,
+    "a_joint_stratum_moving": 0.9578038449006191,
+    "n_stratum_backoff": 2994,
+    "a_joint_stratum_backoff": 0.9779559118236473
+   },
+   "step_angle_median_moving_deg": 1.068488695389104,
+   "n_multi": 18014,
+   "model": "C",
+   "seed": 2,
+   "fit_seconds": 2.5,
+   "n_params": 787,
+   "supervision": 13899,
+   "oracle_queries": 0,
+   "hp": {
+    "hidden": 16,
+    "lr": 0.003,
+    "wd": 0.0,
+    "steps": 8000
+   }
+  },
+  {
+   "a_joint": 0.9283890307538581,
+   "aim_alone_admissible": 0.9490951482180526,
+   "aim_alone_agree_corrected": 0.9196189863986324,
+   "move_alone_joint_on_teacher_target": 0.9782391473298545,
+   "step_ok_given_admissible": 0.9781833070129262,
+   "independent_prediction": 0.9284420285277297,
+   "connection_gap": -5.2997773871577e-05,
+   "strata": {
+    "n_stratum_hold": 5738,
+    "a_joint_stratum_hold": 0.9552108748692925,
+    "n_stratum_moving": 12276,
+    "a_joint_stratum_moving": 0.9158520690778755,
+    "n_stratum_backoff": 2994,
+    "a_joint_stratum_backoff": 0.938877755511022
+   },
+   "step_angle_median_moving_deg": 1.21898079294568,
+   "n_multi": 18014,
+   "model": "S1",
+   "seed": 2,
+   "fit_seconds": 4.11,
+   "n_params": 787,
+   "supervision": 13899,
+   "oracle_queries": 1024000,
+   "hp": {
+    "hidden": 16,
+    "lr": 0.003,
+    "wd": 0.0,
+    "steps": 8000
+   }
+  }
+ ]
+}

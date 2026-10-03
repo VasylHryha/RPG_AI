@@ -32,7 +32,7 @@ Only the third needs new mechanism. A positive result bounds a claim about imita
 |---|---|---|
 | F0 | flat network, recorded recipe (15 hidden, lr 0.003, 8,000 steps, batch 128), **not tuned** | the historical baseline, now concurrent |
 | F1 | flat network over fixed enemy slots, tuned | fair flat baseline, squared-error step head |
-| F2 | F1 with a discrete move head (hold or one of 8 directions, cross-entropy; a move step is the unit direction) | does the step head's output form explain the flat model's loss? |
+| F2 | F1 with a discrete move head (hold or one of 32 directions, cross-entropy; a move step is the unit direction of the class; the largest quantization error is 5.6 degrees, under the 10 degree tolerance) | does the step head's output form explain the flat model's loss? |
 | C | composed: AIM (a shared per-enemy scorer) and MOVE (target-conditioned step) taught separately and wired; one tuned setting applied to both pieces | the design under test |
 | S1 | structured **own-selection** network, below | joint training with its own selection feeding movement |
 
@@ -73,7 +73,7 @@ Executable rules (strict inequalities; the three outcomes of each row are mutual
 | V5 a discrete move head matters | `lo(T2) > δ_eq` | `−δ_eq < lo(T2)` and `hi(T2) < δ_eq` | otherwise |
 
 Prerequisite gates: **S1 adequacy** (on the development validation set, at its tuned setting, its scorer's tie-aware agreement is at least 0.85 and its step success on moving states at least 0.85; and the finite-difference and straight-through consistency tests pass). If S1 is inadequate the V2 and V3 rows are INDETERMINATE ("baseline inadequate") and S1's numbers are reported only. **C adequacy** (development `a_joint` of C at least 0.90). If C fails it, the experiment's premise fails and the run does not start.
-Closed-loop win score (200 paired episodes per cell, seen mixes, both opponents, for the teacher, rush, F0, F*, C, S1) is **secondary and exploratory**: it enters no verdict except discordance: if the win-score paired interval for the same contrast as V1 or V2 excludes 0 with the opposite sign to the fidelity verdict, that row becomes INDETERMINATE (discordant). No multiplicity adjustment is applied: the five rows are separately pre-registered and every interval is labelled unadjusted. Seeds are replicates of one environment, not independent tasks; the intervals describe seed noise only.
+Closed-loop win score (200 paired episodes per cell, seen mixes, both opponents, for the teacher, rush, F0, F*, C, S1) is **secondary and exploratory**: it enters no verdict except discordance. For the contrast of a row, let `W = [wlo, whi]` be the win-score paired interval for the same contrast. The row becomes INDETERMINATE (discordant) when the fidelity verdict claims an effect that the win score contradicts: a verdict that C is better by at least δ_sup (V1 SUPPORTED, V2 SEPARATE_BETTER) is discordant if `whi < 0`; a verdict that the effect is below δ_sup (V1 REFUTED) is discordant if `wlo ≥ δ_sup`; V2 JOINT_BETTER is discordant if `wlo > 0`; V2 EQUIVALENT is discordant if `wlo ≥ δ_eq` or `whi ≤ −δ_eq` (a closed-loop difference at least as large as the equivalence margin). The same margins are used on the win-score scale because they are the only registered practical tolerances. No multiplicity adjustment is applied: the five rows are separately pre-registered and every interval is labelled unadjusted. Seeds are replicates of one environment, not independent tasks; the intervals describe seed noise only.
 
 Because `E1 = E2 + E3` holds within seed only for the same comparator, V3 uses the directly estimated E1, E2 and E3, never sums of medians.
 
@@ -130,6 +130,7 @@ Order: (1) owner approval; (2) development on its own entropy, committed with ra
 | R5 movement metric hides failures | wrong move on an all-hold state dropped; denominators depended on correctness; chance = 1 undefined | I special-cased the mixed tie and stopped | `metrics.py`: every eligible state scored, strata with counts, stop on undefined populations; tests |
 | R6 extrapolated type confounded | speed is not an AIM/MOVE input; type, stats and opponent unspecified | I added a condition without checking inputs | Part C removed; Appendix A |
 | R7 tuning and ledger incomplete | space, splits, objective, per-piece budgets, stop rows not defined | drafted as an outline | sections 2, 6, 7 |
+| (found while implementing) discordance undefined for non-directional verdicts | revision 2 said "excludes 0 with the opposite sign", which has no meaning for EQUIVALENT or REFUTED; a first implementation flagged any significant win difference, which can make EQUIVALENT unreachable with enough seeds | I wrote a sign rule and did not test it on a non-directional verdict | explicit margin-based rule in section 4; synthetic-row tests for each verdict |
 | R8 power and timing | no precision basis; 30/2 smoke scaling; accounting omitted controls | optimistic estimate | section 5 precision rule, section 8 inventory, measured caps, separate evaluation bound |
 
 ## Appendix A — what Part B and C would need (not approved)
