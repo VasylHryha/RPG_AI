@@ -1,0 +1,73 @@
+{
+ "chosen_hidden": 16,
+ "dev_entropy": 62950736746438293986205801818,
+ "monolith_hidden_equal_parameters": 15,
+ "monolith_parameters": [
+  770,
+  1985,
+  5765
+ ],
+ "monolith_scaled_hidden": [
+  15,
+  30,
+  60
+ ],
+ "piece_sizes": {
+  "16": {
+   "aim_nearest_enemy_floor": 0.8669594420046499,
+   "aim_top1": 0.9801946094893653,
+   "meets_rule": true,
+   "move_hold_agreement": 0.9901196047841914,
+   "move_median_angle_deg": 1.372471124199989,
+   "move_p90_angle_deg": 4.744431065547006,
+   "move_share_moving": 0.6688194265047791
+  },
+  "32": {
+   "aim_nearest_enemy_floor": 0.8669594420046499,
+   "aim_top1": 0.9662447257383966,
+   "meets_rule": false,
+   "move_hold_agreement": 0.9807592303692148,
+   "move_median_angle_deg": 1.2707069531805162,
+   "move_p90_angle_deg": 4.240707678873832,
+   "move_share_moving": 0.6688194265047791
+  },
+  "64": {
+   "aim_nearest_enemy_floor": 0.8669594420046499,
+   "aim_top1": 0.9823473693274778,
+   "meets_rule": true,
+   "move_hold_agreement": 0.9859594383775351,
+   "move_median_angle_deg": 1.338466506631383,
+   "move_p90_angle_deg": 3.9486690682301027,
+   "move_share_moving": 0.6688194265047791
+  }
+ },
+ "pieces_total_parameters": 787,
+ "rows": {
+  "test_states": 11613,
+  "train_states": 45741
+ },
+ "seconds": 14.975754261016846,
+ "task_checks": {
+  "random_vs_rush_at_most_0.20": true,
+  "rush_below_teacher_by_0.20_vs_kiter": true,
+  "rush_below_teacher_by_0.20_vs_rush": true,
+  "rush_vs_rush_in_0.43_0.57": true,
+  "teacher_vs_kiter_in_0.40_0.85": true,
+  "teacher_vs_rush_in_0.65_0.95": true,
+  "unseen_rush_below_teacher_by_0.15_vs_kiter": true,
+  "unseen_rush_below_teacher_by_0.15_vs_rush": true,
+  "unseen_teacher_vs_rush_in_0.55_0.95": true
+ },
+ "task_ok": true,
+ "win_scores": {
+  "random_vs_rush": 0.01,
+  "rush_vs_kiter": 0.315,
+  "rush_vs_rush": 0.495,
+  "teacher_vs_kiter": 0.515,
+  "teacher_vs_rush": 0.825,
+  "unseen_rush_vs_kiter": 0.25,
+  "unseen_rush_vs_rush": 0.485,
+  "unseen_teacher_vs_kiter": 0.57,
+  "unseen_teacher_vs_rush": 0.93
+ }
+}

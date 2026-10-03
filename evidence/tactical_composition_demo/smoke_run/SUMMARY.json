@@ -1,0 +1,518 @@
+{
+ "children_cpu_seconds": 5.849615,
+ "config": {
+  "batch": 128,
+  "eval_episodes": 4,
+  "hard_cap": 800.0,
+  "lr": 0.003,
+  "monolith": [
+   {
+    "hidden": 15,
+    "rows": 600,
+    "steps": 600
+   },
+   {
+    "hidden": 30,
+    "rows": 1200,
+    "steps": 800
+   },
+   {
+    "hidden": 60,
+    "rows": 2400,
+    "steps": 1000
+   }
+  ],
+  "n_aim": 300,
+  "n_move": 300,
+  "piece_hidden": 16,
+  "piece_steps": 300,
+  "seeds": 2,
+  "soft_cap": 600.0,
+  "test_episodes": 8,
+  "train_episodes": 40,
+  "workers": 2
+ },
+ "evaluation": {
+  "P1_pieces_learn": {
+   "aim_nearest_enemy_floor": {
+    "median": 0.8356695927207719,
+    "n": 2,
+    "q1": 0.8302571566088331,
+    "q3": 0.8410820288327107
+   },
+   "aim_top1": {
+    "median": 0.8822935527491921,
+    "n": 2,
+    "q1": 0.8666080309871422,
+    "q3": 0.8979790745112419
+   },
+   "move_backoff_median_angle_deg": {
+    "median": 13.092097260533935,
+    "n": 2,
+    "q1": 9.843812880687093,
+    "q3": 16.340381640380777
+   },
+   "move_hold_agreement": {
+    "median": 0.9319660014781965,
+    "n": 2,
+    "q1": 0.9070399113082039,
+    "q3": 0.9568920916481892
+   },
+   "move_median_angle_deg": {
+    "median": 3.4518270885827262,
+    "n": 2,
+    "q1": 3.1460684266398573,
+    "q3": 3.757585750525595
+   },
+   "share_of_seeds_meeting_all_bars": 0.0,
+   "verdict": "REFUTED"
+  },
+  "P2_composed_unit_plays": {
+   "composed": {
+    "median": 0.84375,
+    "n": 2,
+    "q1": 0.828125,
+    "q3": 0.859375
+   },
+   "composed_minus_rush": {
+    "median": 0.40625,
+    "n": 2,
+    "q1": 0.359375,
+    "q3": 0.453125
+   },
+   "composed_minus_teacher": {
+    "median": -0.03125,
+    "n": 2,
+    "q1": -0.046875,
+    "q3": -0.015625
+   },
+   "rush": {
+    "median": 0.4375,
+    "n": 2,
+    "q1": 0.40625,
+    "q3": 0.46875
+   },
+   "share_of_seeds_meeting_bar": 1.0,
+   "teacher": {
+    "median": 0.875,
+    "n": 2,
+    "q1": 0.875,
+    "q3": 0.875
+   },
+   "verdict": "SUPPORTED"
+  },
+  "P3_composition_beats_one_big_controller": {
+   "baseline_adequate_largest_mono_beats_rush_by_0.15": false,
+   "composed_clears_P2": true,
+   "composed_minus_mono_equal_budget_seen": {
+    "median": 0.65625,
+    "n": 2,
+    "q1": 0.609375,
+    "q3": 0.703125
+   },
+   "composed_minus_mono_equal_budget_unseen_type": {
+    "median": 0.3125,
+    "n": 2,
+    "q1": 0.28125,
+    "q3": 0.34375
+   },
+   "largest_mono_minus_rush": {
+    "median": -0.1875,
+    "n": 2,
+    "q1": -0.21875,
+    "q3": -0.15625
+   },
+   "mono_equal_budget_seen": {
+    "median": 0.1875,
+    "n": 2,
+    "q1": 0.15625,
+    "q3": 0.21875
+   },
+   "verdict": "INDETERMINATE"
+  },
+  "P4_data_needed_to_match": {
+   "composed_median_seen": 0.84375,
+   "matches": [
+    false,
+    false,
+    false
+   ],
+   "mono_medians_seen": [
+    0.1875,
+    0.3125,
+    0.25
+   ],
+   "scales": [
+    {
+     "hidden": 15,
+     "rows": 600,
+     "steps": 600
+    },
+    {
+     "hidden": 30,
+     "rows": 1200,
+     "steps": 800
+    },
+    {
+     "hidden": 60,
+     "rows": 2400,
+     "steps": 1000
+    }
+   ],
+   "smallest_matching_scale_index": null,
+   "verdict": "INDETERMINATE"
+  },
+  "P5_new_unit_type_without_retraining": {
+   "composed_minus_rush": {
+    "median": 0.125,
+    "n": 2,
+    "q1": 0.125,
+    "q3": 0.125
+   },
+   "composed_minus_teacher": {
+    "median": -0.0625,
+    "n": 2,
+    "q1": -0.09375,
+    "q3": -0.03125
+   },
+   "composed_unseen": {
+    "median": 0.75,
+    "n": 2,
+    "q1": 0.75,
+    "q3": 0.75
+   },
+   "mono_equal_budget_unseen": {
+    "median": 0.4375,
+    "n": 2,
+    "q1": 0.40625,
+    "q3": 0.46875
+   },
+   "rush_unseen": {
+    "median": 0.625,
+    "n": 2,
+    "q1": 0.625,
+    "q3": 0.625
+   },
+   "share_of_seeds_meeting_bar": 0.0,
+   "teacher_unseen": {
+    "median": 0.8125,
+    "n": 2,
+    "q1": 0.78125,
+    "q3": 0.84375
+   },
+   "verdict": "INDETERMINATE"
+  },
+  "descriptive": {
+   "build_seconds_monolith": [
+    {
+     "median": 0.06254143749999996,
+     "n": 2,
+     "q1": 0.06250544824999998,
+     "q3": 0.06257742674999994
+    },
+    {
+     "median": 0.10917370800000004,
+     "n": 2,
+     "q1": 0.10909281200000004,
+     "q3": 0.10925460400000003
+    },
+    {
+     "median": 0.20552141700000004,
+     "n": 2,
+     "q1": 0.20509220850000004,
+     "q3": 0.20595062550000004
+    }
+   ],
+   "build_seconds_pieces": {
+    "median": 0.05816808300000004,
+    "n": 2,
+    "q1": 0.05810589550000003,
+    "q3": 0.05823027050000004
+   },
+   "monolith_fidelity_to_teacher": {
+    "mono_0": {
+     "aim_top1": {
+      "median": 0.8122687997066306,
+      "n": 2,
+      "q1": 0.8090864293736104,
+      "q3": 0.8154511700396507
+     },
+     "move_backoff_median_angle_deg": {
+      "median": 58.58404902569657,
+      "n": 2,
+      "q1": 58.466994505559384,
+      "q3": 58.70110354583376
+     },
+     "move_hold_agreement": {
+      "median": 0.7544961813254496,
+      "n": 2,
+      "q1": 0.7024513426952451,
+      "q3": 0.8065410199556541
+     },
+     "move_median_angle_deg": {
+      "median": 20.08748937237864,
+      "n": 2,
+      "q1": 19.639732474129236,
+      "q3": 20.53524627062805
+     }
+    },
+    "mono_1": {
+     "aim_top1": {
+      "median": 0.7713300176480026,
+      "n": 2,
+      "q1": 0.7595780523022622,
+      "q3": 0.783081982993743
+     },
+     "move_backoff_median_angle_deg": {
+      "median": 58.73566197634211,
+      "n": 2,
+      "q1": 55.235639205670225,
+      "q3": 62.23568474701399
+     },
+     "move_hold_agreement": {
+      "median": 0.6676706085242671,
+      "n": 2,
+      "q1": 0.6661523774328653,
+      "q3": 0.6691888396156689
+     },
+     "move_median_angle_deg": {
+      "median": 19.881724742299546,
+      "n": 2,
+      "q1": 18.524543890141445,
+      "q3": 21.23890559445765
+     }
+    },
+    "mono_2": {
+     "aim_top1": {
+      "median": 0.8630205587770163,
+      "n": 2,
+      "q1": 0.8588165524512388,
+      "q3": 0.8672245651027939
+     },
+     "move_backoff_median_angle_deg": {
+      "median": 72.47888389914678,
+      "n": 2,
+      "q1": 69.23174431615536,
+      "q3": 75.7260234821382
+     },
+     "move_hold_agreement": {
+      "median": 0.751010101010101,
+      "n": 2,
+      "q1": 0.7098484848484848,
+      "q3": 0.7921717171717172
+     },
+     "move_median_angle_deg": {
+      "median": 18.488803722549676,
+      "n": 2,
+      "q1": 17.34016889353181,
+      "q3": 19.63743855156754
+     }
+    }
+   },
+   "parameters_monolith": [
+    770,
+    1985,
+    5765
+   ],
+   "parameters_pieces": 787,
+   "pool_states": {
+    "median": 8058.5,
+    "n": 2,
+    "q1": 8011.25,
+    "q3": 8105.75
+   },
+   "rows_monolith_actual": [
+    600,
+    1200,
+    2400
+   ],
+   "rows_pieces": 600,
+   "seconds_per_seed": {
+    "median": 2.8537058335000003,
+    "n": 2,
+    "q1": 2.85306231275,
+    "q3": 2.85434935425
+   },
+   "win_score_by_opponent_seen": {
+    "composed": {
+     "kiter": {
+      "median": 0.75,
+      "n": 2,
+      "q1": 0.75,
+      "q3": 0.75
+     },
+     "rush": {
+      "median": 0.9375,
+      "n": 2,
+      "q1": 0.90625,
+      "q3": 0.96875
+     }
+    },
+    "mono_0": {
+     "kiter": {
+      "median": 0.375,
+      "n": 2,
+      "q1": 0.3125,
+      "q3": 0.4375
+     },
+     "rush": {
+      "median": 0.0,
+      "n": 2,
+      "q1": 0.0,
+      "q3": 0.0
+     }
+    },
+    "mono_1": {
+     "kiter": {
+      "median": 0.375,
+      "n": 2,
+      "q1": 0.3125,
+      "q3": 0.4375
+     },
+     "rush": {
+      "median": 0.25,
+      "n": 2,
+      "q1": 0.25,
+      "q3": 0.25
+     }
+    },
+    "mono_2": {
+     "kiter": {
+      "median": 0.5,
+      "n": 2,
+      "q1": 0.5,
+      "q3": 0.5
+     },
+     "rush": {
+      "median": 0.0,
+      "n": 2,
+      "q1": 0.0,
+      "q3": 0.0
+     }
+    },
+    "rush": {
+     "kiter": {
+      "median": 0.125,
+      "n": 2,
+      "q1": 0.0625,
+      "q3": 0.1875
+     },
+     "rush": {
+      "median": 0.75,
+      "n": 2,
+      "q1": 0.75,
+      "q3": 0.75
+     }
+    },
+    "teacher": {
+     "kiter": {
+      "median": 0.75,
+      "n": 2,
+      "q1": 0.75,
+      "q3": 0.75
+     },
+     "rush": {
+      "median": 1.0,
+      "n": 2,
+      "q1": 1.0,
+      "q3": 1.0
+     }
+    }
+   },
+   "win_score_by_opponent_unseen_type": {
+    "composed": {
+     "kiter": {
+      "median": 0.625,
+      "n": 2,
+      "q1": 0.5625,
+      "q3": 0.6875
+     },
+     "rush": {
+      "median": 0.875,
+      "n": 2,
+      "q1": 0.8125,
+      "q3": 0.9375
+     }
+    },
+    "mono_0": {
+     "kiter": {
+      "median": 0.375,
+      "n": 2,
+      "q1": 0.3125,
+      "q3": 0.4375
+     },
+     "rush": {
+      "median": 0.5,
+      "n": 2,
+      "q1": 0.5,
+      "q3": 0.5
+     }
+    },
+    "mono_1": {
+     "kiter": {
+      "median": 0.4375,
+      "n": 2,
+      "q1": 0.34375,
+      "q3": 0.53125
+     },
+     "rush": {
+      "median": 0.8125,
+      "n": 2,
+      "q1": 0.78125,
+      "q3": 0.84375
+     }
+    },
+    "mono_2": {
+     "kiter": {
+      "median": 0.5,
+      "n": 2,
+      "q1": 0.375,
+      "q3": 0.625
+     },
+     "rush": {
+      "median": 0.75,
+      "n": 2,
+      "q1": 0.75,
+      "q3": 0.75
+     }
+    },
+    "rush": {
+     "kiter": {
+      "median": 0.5,
+      "n": 2,
+      "q1": 0.375,
+      "q3": 0.625
+     },
+     "rush": {
+      "median": 0.75,
+      "n": 2,
+      "q1": 0.625,
+      "q3": 0.875
+     }
+    },
+    "teacher": {
+     "kiter": {
+      "median": 0.625,
+      "n": 2,
+      "q1": 0.5625,
+      "q3": 0.6875
+     },
+     "rush": {
+      "median": 1.0,
+      "n": 2,
+      "q1": 1.0,
+      "q3": 1.0
+     }
+    }
+   }
+  }
+ },
+ "max_child_rss_bytes": 47611904,
+ "reason": "complete",
+ "seed_errors": [],
+ "seeds_complete": 2,
+ "seeds_expected": 2,
+ "smoke": true,
+ "status": "COMPLETE",
+ "wall_seconds": 2.960388083
+}

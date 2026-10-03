@@ -1,6 +1,6 @@
 # Tactical composition demo — PROPOSAL (draft for owner approval)
 
-Status: DRAFT, revision 2 (owner direction: a "shape" is any reusable piece with a clear job; ordinary AI inside is fine). Nothing is implemented or run. Not a milestone, not C6 evidence; it changes no status, accepted file or threshold.
+Status: DRAFT, revision 3 (Stage 0 is now AIM + MOVE only, with a new unseen unit type; the authoritative design is SPECIFICATION.md), revision 2 (owner direction: a "shape" is any reusable piece with a clear job; ordinary AI inside is fine). Nothing is implemented or run. Not a milestone, not C6 evidence; it changes no status, accepted file or threshold.
 Drafter: Claude, 2026-10-03, at the owner's request after the arithmetic demo (`evidence/geometric_composition_demo/REPORT.md`).
 Authority: owner goal ("AI as geometry, small pieces that combine into bigger ones that act as one"), RRG 01 §13 and 03 §21,
 GeoTactics R3 §1.1 (hierarchy is deferred there), AGENTS pilot rule (own entropy, scratch code outside `geomind/`).

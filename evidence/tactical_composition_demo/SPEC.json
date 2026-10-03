@@ -1,0 +1,66 @@
+{
+ "config": {
+  "batch": 128,
+  "eval_episodes": 60,
+  "hard_cap": 3000.0,
+  "lr": 0.003,
+  "monolith": [
+   {
+    "hidden": 15,
+    "rows": 6000,
+    "steps": 8000
+   },
+   {
+    "hidden": 30,
+    "rows": 24000,
+    "steps": 16000
+   },
+   {
+    "hidden": 60,
+    "rows": 96000,
+    "steps": 32000
+   }
+  ],
+  "n_aim": 3000,
+  "n_move": 3000,
+  "piece_hidden": 16,
+  "piece_steps": 4000,
+  "seeds": 20,
+  "soft_cap": 2700.0,
+  "test_episodes": 60,
+  "train_episodes": 600,
+  "workers": 8
+ },
+ "entropy": 8179967016081836495236879718,
+ "note": "Generated once by --write-spec; config refreshed from the code before the specification commit.",
+ "smoke_entropy": 64784865299337696452883454307,
+ "smoke_overrides": {
+  "eval_episodes": 4,
+  "hard_cap": 800.0,
+  "monolith": [
+   {
+    "hidden": 15,
+    "rows": 600,
+    "steps": 600
+   },
+   {
+    "hidden": 30,
+    "rows": 1200,
+    "steps": 800
+   },
+   {
+    "hidden": 60,
+    "rows": 2400,
+    "steps": 1000
+   }
+  ],
+  "n_aim": 300,
+  "n_move": 300,
+  "piece_steps": 300,
+  "seeds": 2,
+  "soft_cap": 600.0,
+  "test_episodes": 8,
+  "train_episodes": 40,
+  "workers": 2
+ }
+}

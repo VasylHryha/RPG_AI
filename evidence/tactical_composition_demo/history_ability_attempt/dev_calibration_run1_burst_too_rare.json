@@ -1,0 +1,70 @@
+{
+ "chosen_hidden": 64,
+ "dev_entropy": 66563991666916979374345440483,
+ "monolith_hidden_for_equal_parameters": 103,
+ "monolith_parameters": 14426,
+ "piece_sizes": {
+  "16": {
+   "ability_balanced_accuracy": 0.48227132579650567,
+   "ability_positive_rate": 0.011178861788617886,
+   "ability_recall": 0.0,
+   "ability_specificity": 0.9645426515930113,
+   "aim_nearest_enemy_floor": 0.8686100902104912,
+   "aim_top1": 0.9842131640494487,
+   "meets_rule": false,
+   "move_hold_agreement": 0.9753086419753086,
+   "move_median_angle_deg": 1.1915385217778547,
+   "move_p90_angle_deg": 4.993133570681815,
+   "move_share_moving": 0.6887738055462747
+  },
+  "32": {
+   "ability_balanced_accuracy": 0.47918807810894143,
+   "ability_positive_rate": 0.011178861788617886,
+   "ability_recall": 0.0,
+   "ability_specificity": 0.9583761562178829,
+   "aim_nearest_enemy_floor": 0.8686100902104912,
+   "aim_top1": 0.9817073170731707,
+   "meets_rule": false,
+   "move_hold_agreement": 0.9685990338164251,
+   "move_median_angle_deg": 1.4435426822710822,
+   "move_p90_angle_deg": 4.372672139564523,
+   "move_share_moving": 0.6887738055462747
+  },
+  "64": {
+   "ability_balanced_accuracy": 0.48150051387461457,
+   "ability_positive_rate": 0.011178861788617886,
+   "ability_recall": 0.0,
+   "ability_specificity": 0.9630010277492291,
+   "aim_nearest_enemy_floor": 0.8686100902104912,
+   "aim_top1": 0.9898095556298029,
+   "meets_rule": false,
+   "move_hold_agreement": 0.9696725711218465,
+   "move_median_angle_deg": 1.0976462118317236,
+   "move_p90_angle_deg": 4.6591227305302985,
+   "move_share_moving": 0.6887738055462747
+  }
+ },
+ "pieces_total_parameters": 14340,
+ "rows": {
+  "test_states": 11972,
+  "train_states": 30588
+ },
+ "seconds_for_600_episodes": 7.558772087097168,
+ "task_checks": {
+  "random_vs_rush_at_most_0.20": true,
+  "rush_below_teacher_by_0.20_vs_kiter": true,
+  "rush_below_teacher_by_0.20_vs_rush": true,
+  "rush_vs_rush_in_0.40_0.60": true,
+  "teacher_vs_kiter_in_0.40_0.85": true,
+  "teacher_vs_rush_in_0.65_0.95": true
+ },
+ "task_ok": true,
+ "win_scores": {
+  "kiter_vs_rush": 0.725,
+  "random_vs_rush": 0.0,
+  "rush_vs_kiter": 0.17,
+  "rush_vs_rush": 0.515,
+  "teacher_vs_kiter": 0.65,
+  "teacher_vs_rush": 0.835
+ }
+}
