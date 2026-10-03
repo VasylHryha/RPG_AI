@@ -1,0 +1,91 @@
+{
+  "kind": "EARLY_READINESS_BUDGET_STOP",
+  "status": "STOP",
+  "hypotheses": "NOT_ASSIGNED",
+  "timestamp_utc": "2026-10-03T08:07:22.434821+00:00",
+  "source_commit": "def6fd75e83f3e80c4551172a8829f28a127a33f",
+  "original_receipt_sha256": "a11c9f74383c7ece2211ccb8b261359128c0a6c2cdb1f53004830c42a4d46919",
+  "original_artifacts": {
+    "world_000.json.gz": "938ad2f76f8b9c7d7daad98cd997a142b78111018fcd9350a5524faa87d00d0d",
+    "world_001.json.gz": "65683e893b185c0781b677dcedce1dec7068b44e5d1bedc8e25e2fb41f6ad376",
+    "results.json": "a11c9f74383c7ece2211ccb8b261359128c0a6c2cdb1f53004830c42a4d46919"
+  },
+  "completed_worlds": 2,
+  "world": 0,
+  "worker_pid": 92702,
+  "earliest_observed_active_time": "2026-10-03T10:58:47.854000+03:00",
+  "latest_observed_active_time": "2026-10-03T11:05:21.949000+03:00",
+  "sample_duration_subtracted_seconds": 2.0,
+  "world_runtime_lower_bound_seconds": 392.095,
+  "maximum_world_seconds_compatible_with_panel_budget": 360.0,
+  "conservative_panel_runtime_lower_bound_seconds": 11762.85,
+  "panel_budget_seconds": 10800,
+  "derivation": "A readiness PASS requires at least five complete chains. Under that best-case assumption its registered projection is max(all measured world seconds)*40/2*1.5. One still-computing world already exceeds 360 seconds, so no completion of the remaining worlds can produce a budget PASS. Both profiles show field evaluate during the sole run_world call of the same worker/launch. Use only the interval between samples minus their 2-second sampling duration, not process startup or serialization time.",
+  "reason": "Registered final-panel runtime budget is unattainable for this revision on the measured shared workstation. Two worlds completed just before shutdown at 546.82 and 561.15 s, both above 360 s. Independent reference/covariance pass; complete source/chain quorums and population scientific outcomes remain unmeasured.",
+  "action": "Terminate the exact parent and workers, retain original RUNNING receipt, retain profiles/build identity, record STOP separately. No repeat development or final panel for this revision.",
+  "proof_artifacts": {
+    "worker0_early.sample.txt": "0a41c54cc3851a6642caa3c31675724e6c1a35cb12d8477aec916929b4321a91",
+    "worker0_late.sample.txt": "cb05e63dceff8ea5e0bca1fb9b833f6456fd05593d5bb36014824f394f33114c",
+    "NATIVE_BUILD.dylib": "4830141d5585f6a0e684808ccf339314bc3205f7dd6a30c4a5838b0dce5e01f4",
+    "NATIVE_BUILD.json": "13fb44fad5adac8043b466e31d5869210b7fa5976ca991ce34f6b6308a9fe949"
+  },
+  "completed_worlds_summary": [
+    {
+      "world": 0,
+      "seconds": 561.151037333,
+      "initial_source_qualified": true,
+      "chain_complete": false,
+      "invalid": null,
+      "turns": [
+        {
+          "turn": 1,
+          "operation_eligible": true,
+          "physical_outcome": "PERSISTENT_UNIT",
+          "first_loss_time": null,
+          "witness_tuple": [
+            true,
+            false,
+            true
+          ]
+        },
+        {
+          "turn": 2,
+          "operation_eligible": false,
+          "physical_outcome": "SOURCE_LOST_DURING_OPERATION",
+          "first_loss_time": 315.0,
+          "witness_tuple": null
+        }
+      ]
+    },
+    {
+      "world": 1,
+      "seconds": 546.8168024160001,
+      "initial_source_qualified": true,
+      "chain_complete": false,
+      "invalid": null,
+      "turns": [
+        {
+          "turn": 1,
+          "operation_eligible": true,
+          "physical_outcome": "PERSISTENT_UNIT",
+          "first_loss_time": null,
+          "witness_tuple": [
+            true,
+            false,
+            true
+          ]
+        },
+        {
+          "turn": 2,
+          "operation_eligible": false,
+          "physical_outcome": "SOURCE_LOST_DURING_OPERATION",
+          "first_loss_time": 301.0,
+          "witness_tuple": null
+        }
+      ]
+    }
+  ],
+  "measured_maximum_world_seconds": 561.151037333,
+  "best_case_projected_panel_lower_bound_seconds": 16834.531119990002,
+  "shutdown_note": "Original two workers completed before the termination command. Parent terminated; post-shutdown process inventory confirmed no C6 development parent/worker remained. No data or verdict was rescored."
+}
