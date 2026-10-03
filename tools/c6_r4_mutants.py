@@ -45,6 +45,7 @@ MUTANTS={
  'late_error_dropped_from_chain':('geomind/c6_r4_field_analysis.py','any(invalid_turn.values()) if prefix else invalid_turn[turn]','invalid_turn[turn]'),
  'before_publication_unchecked':('geomind/c6_r4_field_analysis.py',"if not publication_valid(episode['qualification'],episode['qualified_ids'][0]):raise ValueError('invalid before episode publication')","if False:raise ValueError('invalid before episode publication')"),
  'final_entropy_reuse_allowed':('geomind/run_c6_r4.py','if entropy in reserved.values():','if False:'),
+ 'raw_descriptor_duplicated':('geomind/c6_r4_field_analysis.py','source_inputs_summary(r)',"r.get('initial_source')"),
 }
 KNOWN_BACKSTOPS=set()
 EXPECTED_TIMEOUTS=set()

@@ -106,6 +106,15 @@ def bootstrap(values,draws,level):
     tail=(1-level)/2
     return np.quantile(means,[tail,1-tail]).tolist()
 
+def source_inputs_summary(row):
+    initial=row.get('initial_source')
+    if initial is None:return None
+    summary=dict(initial)
+    if initial.get('no_treatment_response') is not None:
+        summary['no_treatment_response']={**initial['no_treatment_response'],
+            'raw':{'artifact':f"world_{row['world']:03d}.json.gz",'json_pointer':'/initial_source/no_treatment_response/raw'}}
+    return summary
+
 def evaluate(records,settings,entropy,engineering):
     if settings['ci_level']<1-.05/len(PRIMARY):raise ValueError('uncorrected primary confidence level')
     if settings['bootstrap_empty_policy']!='INCONCLUSIVE_IF_ANY_EMPTY':raise ValueError('unregistered empty bootstrap policy')
@@ -186,7 +195,7 @@ def evaluate(records,settings,entropy,engineering):
             if values:
                 nr.pop('b_source_qualification_turn1',None)
                 ev['b_source_qualification_turn1']={'value':values,'verdict':'PASS' if not invalid_turn[1] else 'FAIL'}
-    globals_values={'b_source_population_inputs':[{'world':r['world'],'source':r.get('initial_source'),'invalid':r['invalid']} for r in rows],
+    globals_values={'b_source_population_inputs':[{'world':r['world'],'source':source_inputs_summary(r),'invalid':r['invalid']} for r in rows],
         'b_chain_yield':{'complete':len(chain),'worlds':n,'eligible_first':sum(bool(r['turns'] and r['turns'][0]['operation_eligible']) for r in rows),'ids':chain},
         'b_chain_provenance':[{'world':r['world'],'links':r['links']} for r in rows],
         'b_enablement_witnesses':{'count':witnesses,'worlds':n,'ids':[r['world'] for r in rows if r['enabled_witness']]},

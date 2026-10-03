@@ -1,6 +1,7 @@
 """Engineering contracts on separate fixtures; never final/dev world rehearsals."""
 import copy
 import hashlib
+import gzip
 import inspect
 import json
 from pathlib import Path
@@ -536,3 +537,21 @@ def test_chain_contrasts_use_one_complete_world_mask_for_every_turn_and_control(
             assert cell['value']['world_ids']==list(range(1,40))
         elif key.endswith('turn1'):
             assert cell['value']['world_ids']==list(range(40))
+
+def test_unsuccessful_source_raw_response_stays_in_world_artifact(tmp_path):
+    s=P.load_settings();s['bootstrap_resamples']=1000;rows=[row(i) for i in range(40)]
+    raw=[{'port':i,'quadrature':q,'response_real_imag':[[[0.,0.]]*25 for _ in range(100)]}
+         for i in range(25) for q in (0,1)]
+    response={'raw':raw,'gain_by_dt':[0.]*3,'per_probe_by_dt':[[0.]*50]*3,'alpha':.3,
+              'phase_origin_by_dt':[0.]*3,'snapshot_ids':['a'*64]*3,'site_ids':list(range(25))}
+    rows[0]['initial_source']['no_treatment_response']=response
+    original=json.dumps(rows[0],sort_keys=True)
+    engineering={k:{'passed':True} for k in ('source_pin','b_reference_equivalence','b_transform_equivariance')}
+    result=E.evaluate(rows,s,42,engineering)
+    value=result['endpoint_coverage']['evaluated']['b_source_population_inputs']['value'][0]['source']['no_treatment_response']
+    assert value['raw']=={'artifact':'world_000.json.gz','json_pointer':'/initial_source/no_treatment_response/raw'}
+    assert {k:v for k,v in value.items() if k!='raw'}=={k:v for k,v in response.items() if k!='raw'}
+    assert json.dumps(rows[0],sort_keys=True)==original
+    gate.write_world(tmp_path,rows[0])
+    saved=json.loads(gzip.decompress((tmp_path/value['raw']['artifact']).read_bytes()))
+    assert saved['initial_source']['no_treatment_response']['raw']==raw
