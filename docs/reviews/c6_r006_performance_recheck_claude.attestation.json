@@ -1,0 +1,33 @@
+{
+  "kind": "INDEPENDENT_CLAUDE_PREDEVELOPMENT_PERFORMANCE_RECHECK",
+  "reviewed_commit": "7ac1e3347cb8e82bdd0cd51759d02e89790d3548",
+  "review_sha256": "c53bfc79c671ddf9be227f3c0f9696987d4a8e675ce4a1428c64b7f903345a44",
+  "raw_report_sha256": "0286ef05581a25030a88d049bb7ebfa0fee7b96f07c0c926faa1c7067e28b67a",
+  "verdict": "READY_FOR_DEVELOPMENT",
+  "seconds": 134.485,
+  "cli_model_usage": {
+    "claude-opus-5-5": {
+      "inputTokens": 24,
+      "outputTokens": 12241,
+      "cacheReadInputTokens": 484933,
+      "cacheCreationInputTokens": 63767,
+      "webSearchRequests": 0,
+      "costUSD": 0.8520386000000001,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 6277,
+      "canonicalModel": "claude-opus-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "cli_session_id": "7029b25c-309d-492e-8926-11d49fa2dd8f",
+  "cli_total_cost_usd": 0.8520386000000001,
+  "raw_cli_sha256": "5dc104cc6e6e872f1468bc63e9b954725c0b4eb309f3f9bec0e8df51671a3027",
+  "tools_allowed": [
+    "Read",
+    "Glob",
+    "Grep"
+  ],
+  "transport_note": "Controller initially refused output because Claude included the non-review preface \"Review done; writing up the report now.\" before the requested first-line verdict. Full response retained in RAW.md; canonical review removes only that preface. All substantive review text, verdict and author attribution are unchanged. No review rerun."
+}
