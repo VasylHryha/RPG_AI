@@ -448,7 +448,7 @@ def synthetic_operation(monkeypatch,source_lost=False,reserved_qualified=False):
     monkeypatch.setattr(A.GridSet,'run',fake_run);monkeypatch.setattr(A,'qualification',fake_qualification)
     monkeypatch.setattr(P,'rolling_persistence',lambda *a:[{'passed':not source_lost,'time':100.}])
     monkeypatch.setattr(P,'qualify_episode',fake_episode);monkeypatch.setattr(A,'descriptor',fake_descriptor)
-    cell,continuation=P.operation(grid,{'selected_members':[0,1,2]},None,882902,0,1,.3,'fixture-turn')
+    cell,continuation=P.operation(grid,{'selected_members':[0,1,2]},[None]*3,882902,0,1,.3,'fixture-turn')
     return cell,continuation,descriptor_calls,reserved_ids
 
 
