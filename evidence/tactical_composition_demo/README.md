@@ -1,7 +1,8 @@
 # Tactical composition demo — exploratory line, NOT a milestone, NOT C6 evidence
 
 Authority and scope: `docs/decisions/0028-owner-directed-exploratory-composable-shapes.md`. Verdict words here (SUPPORTED, REFUTED, INDETERMINATE) are
-exploratory vocabulary, not milestone verdicts. The work is outside the GeoTactics GT0–GT5 plan. No cross-family review exists and none is claimed.
+exploratory vocabulary, not milestone verdicts. The work is outside the GeoTactics GT0–GT5 plan. No cross-family review of the recorded results exists and none is claimed for them
+(Codex reviewed the decision record, the corrections, the tooling and the next proposal).
 **Read `CORRECTIONS.md` before quoting any number from the reports.**
 
 **The idea:** build an AI unit from small pieces, each with one job, instead of one big learned block. A unit is two pieces, **AIM** (which enemy to hit)
@@ -9,8 +10,8 @@ and **MOVE** (where to step), wired together. The questions: do the wired pieces
 examples; do they cope with a unit type nobody trained on; how cheap are they to build and to change.
 
 **What is established (one invented sandbox, scripted teachers, imitation, ordinary small networks):** the wired pieces match the scripted expert within about
-0.03 on seen mixes and beat an equal-size flat block widely; retraining only AIM after a targeting-rule change needs at least ten times fewer new rows than
-retraining the flat block. **Not established:** that the advantage comes from composition rather than from the structure copied from the teacher (no structured
+0.03 on seen mixes and beat an equal-size flat block widely; after a targeting-rule change, retraining only AIM reached the 0.80 level at the grid floor (100 rows) where the flat block first reached it at 1,000 rows
+(a ratio of registered first-success grid values, not a bound on the need). **Not established:** that the advantage comes from composition rather than from the structure copied from the teacher (no structured
 end-to-end baseline), anything about a second level (squad), learning from outcomes, geometry, oscillators or "vibration". Why this exists: `MOTIVATION.md`.
 
 ## Runs (each one-shot; the run directory is the latch)
@@ -23,7 +24,7 @@ end-to-end baseline), anything about a second level (squad), learning from outco
 
 Names: Stage 0 = AIM + MOVE; 0b = the mage's burst piece (deferred); 0c = the change-cost test, r1 and r2 its revisions. Each `RUN_STARTED.json` carries the
 hashes of the files the run depends on. The current `tactics.py` differs from the Stage 0 and r1 versions (additive changes); `tcd_common/LEGACY_EQUIVALENCE.json`
-records an exact match on every primitive the harnesses call, and `tcd_common/SEED_REPRODUCTION.json` an exact re-run of seed 0 of Stage 0 and of change-cost r2. `MOTIVATION.md` has been edited since the change runs hashed it, so its hash in those records no longer
+`tactics.py` is frozen and pinned by hash; `tcd_common/SEED_REPRODUCTION.json` records an exact re-run of seed 0 of Stage 0 and of change-cost r2 (one seed each). `MOTIVATION.md` has been edited since the change runs hashed it, so its hash in those records no longer
 matches HEAD; the `SPEC*`, specification and code hashes do.
 
 ## Superseded or history (kept, do not use as current)
@@ -37,7 +38,7 @@ matches HEAD; the `SPEC*`, specification and code hashes do.
 ## Current work
 
 - `tcd_common/`: repaired shared tooling (see `tcd_common/CHANGES.md`); new experiments use it, the recorded harnesses stay frozen.
-- `PROPOSAL_0D.md` (draft, not approved): the next experiment. Nothing in it runs before the owner approves it.
+- `PROPOSAL_0D.md` (revision 2, draft, not approved): the next experiment, narrowed to Part A after a Codex review (`docs/reviews/tactical_composition_0d_review_codex.md`). Nothing in it runs before the owner approves it.
 
 ## Tests
 

@@ -1,121 +1,138 @@
-# Experiment 0d — structure versus composition (DRAFT for owner approval; nothing is built or run)
+# Experiment 0d, Part A — structure versus composition (REVISION 2, DRAFT for owner approval; nothing is built or run)
 
-Exploratory line under decision 0028; not a milestone, not C6 evidence. Drafted 2026-10-03 after the recheck (`CORRECTIONS.md`). **Before approval no project code runs**
-(AGENTS.md). Code, if approved, goes in new files only (`tcd_common` plus `zd_*.py`), the recorded harnesses stay frozen.
+Exploratory line under decision 0028; not a milestone, not C6 evidence. Revision 1 (commit `3084b68`) was reviewed by Codex (cross-family; `docs/reviews/tactical_composition_0d_review_codex.md`,
+verdict CHANGES_REQUIRED, R1–R8). This revision narrows the experiment to **Part A only** and fixes the defects the review found; each fix and its cause is in section 9.
+**Before approval no project code runs** (AGENTS.md). If approved, code goes in new files only (`tcd_common` plus `zd_*.py`); `tactics.py` and the recorded harnesses stay frozen.
 
-## 1. What this must settle (from the recheck)
+Not part of this approval: a MOVE-only or both-piece change test (old Part B), an extrapolated unit type (old Part C), learning from outcomes, the squad level, an outside benchmark, geometry,
+oscillators, "vibration". Appendix A records what Part B and C would need before they could be proposed.
 
-1. **Structure or composition?** The wired unit copies the teacher's computation graph (one scorer shared by every enemy, then a step conditioned on the chosen target); the baseline is a
-   plain network over fixed enemy slots. Until a baseline with the same structure but trained jointly exists, "composition beats flat" may only mean "structure helps imitation".
-2. **Is the change-cost advantage built in?** Only AIM changed and only AIM was retrained. The matching control (a flat or structured network with everything frozen except the head that changed)
-   and a change that touches MOVE or both pieces are missing.
-3. **Extrapolation, not interpolation.** The recorded "unseen" type sat inside the trained range and probed where a smooth net places the teacher's range threshold.
-4. **A fair baseline.** The flat model got the composed recipe unchanged (one learning rate, no search, no weight decay).
-5. **Evidence strength.** Verdicts rested on medians and 75%-of-seeds rules, one gate passed by 0.001, no intervals.
+## 1. The question
 
-Not in scope: the squad level, learning from outcomes, a second sandbox or outside benchmark, geometry, oscillators, "vibration". They follow only if 0d says the pieces idea survives.
+The wired unit (AIM + MOVE) copies the teacher's computation graph; the recorded baseline was a plain network over fixed enemy slots, trained with the composed recipe unchanged. Part A asks, on the
+Stage 0 task and with one data budget:
+
+1. Is the recorded flat baseline under-tuned? (concurrent comparison, not against an old number)
+2. Does a tuned flat model, with or without a discrete move head, still lose to the wired unit?
+3. Does a structured network of the same graph, trained jointly with its own selection feeding its movement, do as well as the separately taught pieces?
+
+Only the third needs new mechanism. A positive result bounds a claim about imitation of a scripted teacher in one sandbox; it says nothing about geometry or RRG.
 
 ## 2. Design
 
-**Task, teacher, opponents, seen mixes:** exactly as Stage 0 (`tactics.py`, `SPECIFICATION.md`): 3 against 3, teacher scores per enemy, argmax, step rule; opponents rush and kiter; training pool from the
-teacher's play with 30% random actions. Data row budgets as Stage 0 (3,000 AIM rows plus 3,000 MOVE rows; 6,000 flat rows). Seeds: 30 (the recorded line used 20); an independent entropy in `SPEC_0D.json`.
+**Task, teacher, opponents, mixes:** exactly as Stage 0 (`tactics.py`): 3 against 3, teacher scores per enemy, argmax, step rule; opponents rush and kiter; seen mixes only. Pools come from the teacher's play with 30% random actions.
 
-**Part A, models (the ablation ladder; every one gets the same tuning budget, section 3):**
+**Splits by independent episode (no state-level leakage):** per seed, a training pool of 600 episodes and an independent held-out test pool of 100 episodes. Development uses its own entropy with a training pool of 400 episodes and an independent validation pool of 100.
 
-| Id | Model | Question it answers |
+**One shared supervision (matched source states and label content):** per seed, `N` source states are drawn from the training pool (primary `N = 3,000`; descriptive `N = 1,000` and `N = 9,000`, using the settings tuned at 3,000). Every model sees the same states and the same label content: the teacher's score for every living enemy and the teacher's step toward its own chosen target. Packaging differs by design: C's AIM rows are the living (state, enemy) pairs and its MOVE rows the (relative target position, preferred range) pairs; flat and structured models see one row per state. Reported for every model: unique source states, scalar supervision count, parameters, trainable parameters.
+
+**Models (every family gets the same search space and the same 12 trials):**
+
+| Id | Model | Role |
 |---|---|---|
-| F0 | flat network over fixed enemy slots, recorded recipe | reproduces the Stage 0 baseline |
-| F1 | flat network, tuned (hidden size, learning rate, weight decay, steps; parameter count within 10% of the composed unit) | is the recorded baseline just under-tuned? |
-| F2 | F1 with a discrete move head (hold or one of 8 directions, cross-entropy) instead of squared error on a multimodal step | does the step head's output form explain the flat model's loss? |
-| S1 | structured end to end: one scorer shared by every enemy, softmax selection, a step head that reads the model's own selected enemy; one optimizer, one joint loss on the same rows as F1 | same graph as the composed unit, trained jointly: structure without separate teaching |
-| S2 | S1 plus set context (the scorer also sees the mean over living enemies, DeepSets style) | does a standard permutation-aware design do better than the hand-built graph? |
-| C | composed unit: AIM and MOVE taught separately and wired (the recorded design, same tuning budget) | the claim under test |
-| L | large flat block, 96,000 rows (reference only) | how far data alone goes |
+| F0 | flat network, recorded recipe (15 hidden, lr 0.003, 8,000 steps, batch 128), **not tuned** | the historical baseline, now concurrent |
+| F1 | flat network over fixed enemy slots, tuned | fair flat baseline, squared-error step head |
+| F2 | F1 with a discrete move head (hold or one of 8 directions, cross-entropy; a move step is the unit direction) | does the step head's output form explain the flat model's loss? |
+| C | composed: AIM (a shared per-enemy scorer) and MOVE (target-conditioned step) taught separately and wired; one tuned setting applied to both pieces | the design under test |
+| S1 | structured **own-selection** network, below | joint training with its own selection feeding movement |
 
-Parameter counts and rows are reported for every model, with the number of labels per row (a flat row carries three scores and a step; an AIM row one score).
+**S1, fully specified.** Scorer `g`: the AIM-piece architecture, one weight set applied to every living enemy (inputs `aim_features`). Move head `f`: the MOVE-piece architecture (inputs `move_features`: relative position of the selected enemy and own preferred range). Standardization of inputs and outputs is learned from the training rows at the start and then frozen. Training selection: straight-through hard selection. The forward pass takes the hard argmax enemy (identical to inference); the backward pass uses the softmax weights `w = softmax(z)` over living enemies with `z` the standardized scores, so the step loss sends gradient to the scorer through `w` (`h = onehot(argmax) + w − stopgrad(w)`, selected relative position `Σ_j h_j rel_j`). Masks: dead enemies have `-inf` score. Loss: `L = L_score + L_step`, equal weights, both on standardized targets: `L_score` is the squared error of `g` on the teacher's scores of living enemies; `L_step` is the squared error of `f` against the teacher's step rule **applied to the enemy S1 itself selected** (the teacher's movement rule is an analytic function, so this is an oracle query on S1's own choice). This gives S1 more supervision than C (C's MOVE only ever sees the teacher's chosen enemy); the extra information favours S1, so a C-versus-S1 result where C is not worse is conservative for C. One Adam optimizer over all parameters, one shared set of minibatches of source states. Inference: argmax enemy, then `f`.
+**Teacher-forced structured training is not a recorded arm.** Feeding `f` the teacher's chosen enemy with disjoint parameters and additive losses is mechanically separable and reduces to C; it appears only as a unit test of the training code (matched batches reproduce separate training), as a mechanics reference.
 
-**Endpoints (all paired within seed):**
-- E1 = C minus the better of F1 and F2; E2 = C minus S1; E3 = S1 minus the better of F1 and F2 (each: seen mixes, win score averaged over the two opponents, and tie-aware chance-corrected agreement).
-  Held-out fidelity is the primary measure (at least 2,000 multi-enemy states per seed); closed-loop win score uses 200 paired episodes per cell and is the second measure.
-- Each endpoint is the median over 30 seeds of the paired difference with a 95% bootstrap interval (`tcd_common.stats.paired_median_ci`).
+**Tuning (development entropy only):** search space (same for every family): hidden `{8, 16, 32}`, learning rate `{0.001, 0.003, 0.01}`, L2 weight decay `{0, 1e-4, 1e-3}`, steps `{4000, 8000, 16000}`; batch 128; 12 random trials per family (C: one trial = one setting used by both pieces, so C also gets 12), 5 development seeds per trial, selection objective = mean development-validation `a_joint` (section 3), ties broken by fewer parameters then lower trial index. If a chosen value lies on the boundary of the grid, the grid is extended once on the same family and the extra trials are added to its budget (budget reported). F0 is deliberately untuned. The comparator `F*` is whichever of F1 and F2 has the higher development-validation objective (ties to F1), fixed before the recorded run.
 
-**Change-cost (Part B), three changes, each retrained from scratch on n new rows (n = 100, 300, 1,000, 3,000, 6,000, 12,000):**
+**Saved for every recorded model:** weights (compressed), the held-out state set digest, and the seed's stream keys, so metrics can be recomputed later.
 
-| Change | Teacher | Wired unit retrains | Flat, structured retrain | Frozen-head control |
-|---|---|---|---|---|
-| B1 AIM only | doctrine 2 (as r2) | AIM | whole | F1 and S1 with everything frozen except the score head |
-| B2 MOVE only | a new stepping rule (for example, ranged units keep a longer standoff band), same targeting | MOVE | whole | F1 and S1 with everything frozen except the step head |
-| B3 both | doctrine 2 plus the new stepping rule | AIM and MOVE | whole | none (reported for completeness) |
+## 3. Primary estimand (the joint action) and strata
 
-Rows needed are reported in the relative view (back within a margin of the design's own pre-change quality) and in a common-level view (raw 0.80 and 0.90), using the repaired metrics
-(`tcd_common.metrics`: multi-enemy states, hold-aware tie-best step). The unit of comparison is the share of seeds that have recovered at each n, not only the median, and the grid floor is lowered to 30 rows
-so the wired unit's need is not truncated.
+On held-out **multi-enemy** states (single-enemy states agree trivially and are excluded). A state succeeds (`a_joint`) when the chosen enemy is **tied-best** for the registered teacher **and** the step toward that enemy matches the teacher's step for that enemy: a hold (`|step| < 0.5`) where the teacher holds, otherwise a move (`|step| ≥ 0.5`) within **10°** of the teacher's step. The teacher's movement function is passed explicitly to evaluation. Strata, defined by the teacher's own label toward its own target (independent of the controller): hold, moving, back-off (moving away from the target). Every stratum's success rate, count and denominator are reported; a stratum rate is reported only with at least 30 states per seed. Diagnostics (not verdict inputs): tie-aware chance-corrected target agreement, step angle on moving states, and the forgiving tie-set step score in which every eligible state counts (a wrong hold and a wrong move on a hold state each count 90°).
+The evaluation stops (run INCOMPLETE, no value invented) on an empty multi-enemy population, a chosen enemy that is not alive, non-finite data, or a stratum below 30 states in a seed. Implemented in `tcd_common.metrics.joint_action` (new, with hand-computed tests before any run).
 
-**Extrapolated unit type (Part C):** one type whose speed and range lie outside every trained value (trained speed 0.25–0.30, trained range 1.5–6.0; the new type has speed 0.45, range 8.0, preferred range 6.5)
-and a third scripted opponent that none of the models saw. Zero-shot fidelity to the teacher and win score for F1, F2, S1, S2, C. The teacher must beat rush on this type with margin (section 3), or the type is dropped.
+## 4. Endpoints and pre-registered verdicts (words are exploratory vocabulary)
 
-## 3. Development before the recorded run (own entropy, scratch code outside `geomind/`, committed with raw results and a README)
+Everything is paired within seed and built from explicit seed identities (`tcd_common.stats.paired_by_seed`; a missing or non-finite endpoint is an error, never a dropped seed). `A(M)` is the model's per-seed `a_joint` at N = 3,000. Each contrast is the median over seeds of the paired difference with a 95% percentile bootstrap interval `I(·) = [lo, hi]`.
+Fixed practical margins (set now by design, not from development comparisons): **equivalence δ_eq = 0.03**, **superiority δ_sup = 0.06**, in units of `a_joint`.
 
-- **Tuning:** 12 random-search trials per model class on development entropy, scored on a development validation split; the chosen settings are written into `SPEC_0D.json` and frozen before the recorded run.
-  The search space and trial budget are identical for F1, F2, S1, S2 and C's pieces.
-- **Learnability gate (the lesson of three earlier failures):** each new thing must be learnable at its planned size by the design intended to learn it, on development entropy, before any bar is fixed:
-  the new stepping rule by a wired MOVE piece (agreement 0.95 or step 5 degrees at 3,000 rows), the discrete head by F2, the structured nets by S1 and S2 (no divergence, loss falling), the extrapolated type
-  by the teacher (it beats rush by at least 0.10).
-- **Margins:** the equivalence margin for "same as" (E2) is fixed from the development spread of paired differences (not below 0.03) and the superiority margin for "better than" is twice that, both written before the recorded run.
-- **Gradient check:** S1 and S2 are trained with hand-written backpropagation; a finite-difference test must pass before any run.
+| Contrast | Definition |
+|---|---|
+| E0 | A(C) − A(F0) |
+| E1 | A(C) − A(F*) |
+| E2 | A(C) − A(S1) |
+| E3 | A(S1) − A(F*) |
+| T1 | A(F*) − A(F0) (tuning effect) |
+| T2 | A(F2) − A(F1) (output form) |
 
-## 4. Pre-registered verdicts (words are exploratory vocabulary)
+Executable rules (strict inequalities; the three outcomes of each row are mutually exclusive and exhaustive):
 
-| Row | SUPPORTED | REFUTED | else |
+| Row | SUPPORTED | REFUTED | INDETERMINATE |
 |---|---|---|---|
-| H-struct: the gap is structure | E3 above the superiority margin with lower interval bound above 0, and E2 inside the equivalence margin (interval inside ±margin) | E1 above the superiority margin with lower bound above 0, and E2 above the superiority margin with lower bound above 0 (separate teaching adds) | INDETERMINATE |
-| H-base: the recorded baseline was under-tuned | E1 (tuned) smaller than the Stage 0 gap by more than the superiority margin | E1 within the margin of the Stage 0 gap | INDETERMINATE |
-| H-change: the change-cost advantage is not specific to AIM or to a built-in freeze | for B1 and B2, the wired unit reaches the common level 0.90 with at least 3 times fewer rows than the better of the frozen-head control and the structured retrain, by the share-of-seeds rule at every grid value | wired needs as many rows as the frozen-head control in either change | INDETERMINATE |
-| H-extrap: pieces cope with a truly new type | C within the equivalence margin of the teacher-relative win score of S2, and above F1 by the superiority margin | C below F1 | INDETERMINATE |
+| V1 the wired unit beats the tuned flat model | `lo(E1) > δ_sup` | `hi(E1) < δ_sup` | otherwise |
+| V2 training mode (C versus S1) | label SEPARATE_BETTER if `lo(E2) > δ_sup`; JOINT_BETTER if `hi(E2) < −δ_sup`; EQUIVALENT if `−δ_eq < lo(E2)` and `hi(E2) < δ_eq` | (labels, not a refutation) | otherwise |
+| V3 structure explains the gain | `V1` SUPPORTED and `lo(E3) > δ_sup` and V2 EQUIVALENT | V1 SUPPORTED and (V2 SEPARATE_BETTER or `hi(E3) < δ_sup`) | otherwise (including V1 not SUPPORTED) |
+| V4 the recorded baseline was under-tuned | `lo(T1) > δ_eq` | `−δ_eq < lo(T1)` and `hi(T1) < δ_eq` | otherwise |
+| V5 a discrete move head matters | `lo(T2) > δ_eq` | `−δ_eq < lo(T2)` and `hi(T2) < δ_eq` | otherwise |
 
-Every row is paired within seed; SUPPORTED requires the median and the interval bound to clear the bar, not the median alone. Nothing in this table was fixed after seeing a recorded result.
+Prerequisite gates: **S1 adequacy** (on the development validation set, at its tuned setting, its scorer's tie-aware agreement is at least 0.85 and its step success on moving states at least 0.85; and the finite-difference and straight-through consistency tests pass). If S1 is inadequate the V2 and V3 rows are INDETERMINATE ("baseline inadequate") and S1's numbers are reported only. **C adequacy** (development `a_joint` of C at least 0.90). If C fails it, the experiment's premise fails and the run does not start.
+Closed-loop win score (200 paired episodes per cell, seen mixes, both opponents, for the teacher, rush, F0, F*, C, S1) is **secondary and exploratory**: it enters no verdict except discordance: if the win-score paired interval for the same contrast as V1 or V2 excludes 0 with the opposite sign to the fidelity verdict, that row becomes INDETERMINATE (discordant). No multiplicity adjustment is applied: the five rows are separately pre-registered and every interval is labelled unadjusted. Seeds are replicates of one environment, not independent tasks; the intervals describe seed noise only.
 
-## 5. Normalization ledger
+Because `E1 = E2 + E3` holds within seed only for the same comparator, V3 uses the directly estimated E1, E2 and E3, never sums of medians.
+
+## 5. Seeds and precision (fixed before the recorded run)
+
+On development entropy, from 10 development seeds run through the full pipeline, estimate the standard deviation `sd` of the per-seed paired differences E1, E2, E3, T1, T2. The seed count `S` is the smallest of `{30, 45, 60}` for which `1.96 × 1.253 × max(sd) / √S ≤ 0.015` (half of δ_eq; the factor 1.253 is the large-sample inflation of the median's standard error over the mean's); if even 60 fails, `S = 60` and the report states that EQUIVALENT cannot be reached at this precision. `S` and the estimated `sd` are written into the specification. This is a sensitivity calculation under a normal approximation, not a measured power.
+
+## 6. Normalization ledger
 
 | Quantity | Level | Unit | Normalization |
 |---|---|---|---|
-| tie-aware agreement | decision (state), multi-enemy states only | share | chance-corrected by the uniform living pick; no cross-level use |
-| step angle | decision | degrees | toward the chosen enemy and against the best-matching tied-best enemy; hold-aware |
-| win score | episode | win 1, draw 0.5, loss 0 | teacher-relative (minus the teacher's own score on the same cell) |
-| rows | decision | labelled rows | label count per row reported; parameters reported |
+| a_joint, strata rates | decision (multi-enemy state) | share | teacher-defined success; no cross-level use |
+| target agreement | decision | share | tie-aware; chance-corrected by the uniform living pick; None if chance = 1 |
+| step angle | decision | degrees | toward the chosen enemy; 90° for a hold/move violation; only moving states |
+| inputs | per piece or per model | feature units as in `tactics.py` | standardized by training-row mean and std, frozen after the start (for fine-tuning there is none in Part A) |
+| outputs | per model | step: vector in sandbox length; scores: teacher score units | standardized for training; evaluated unstandardized |
+| win score | episode | win 1, draw 0.5, loss 0 | teacher-relative (minus the teacher's score on the same cell) |
+| rows | decision | labelled rows | reported with unique source states, scalar supervision count, parameters |
+| cost | run | wall and CPU seconds | jobs, evaluation and total reported separately |
 | time | none | ticks | no across-level time is compared; one level only (piece into unit) |
 
-The same procedure applies to every model; hyperparameters differ only through the one shared tuning budget. No squad-level or oscillator quantity appears.
+The same procedure, search space and trial budget apply to every family. No squad-level or oscillator quantity appears.
 
-## 6. Stop conditions (yes/no, one action, one role)
+## 7. Stop conditions (measurable yes/no; one action; one role)
 
 | Condition | Action | Role |
 |---|---|---|
-| Owner has not approved this proposal? | build and run nothing | drafter |
-| A gradient check or equivalence test fails? | fix before any run | implementer |
-| Any learnability gate fails on development entropy? | drop or redesign that item, record it, re-register | drafter |
-| Tuning picks a boundary value of the search space for any model? | extend the space once, on development entropy only | implementer |
-| The extrapolated teacher does not beat rush by 0.10? | drop Part C, record it | drafter |
-| Smoke wall time times 30/2 seeds predicts more than the stated cap? | report to the owner and wait | implementer |
-| The recorded run is INCOMPLETE (cap, error, missing seed)? | no resume, no seed replacement; report | implementer |
-| A bar or margin would be changed after a recorded result exists? | no; register a new revision on fresh entropy | drafter |
-| Cross-family review requested for a qualifying claim? | out of scope for this exploratory run; owner decides | owner |
+| Is the proposal unapproved by the owner? | build and run nothing | drafter |
+| Is any dependency of the run uncommitted, or does the registration commit differ from the clean tree at run time? | refuse to start (preflight) | implementer |
+| Is the run directory already present (latch consumed)? | refuse to start; no resume | implementer |
+| Does a finite-difference or straight-through consistency test fail? | fix before any run | implementer |
+| Does C fail its development adequacy gate (a_joint ≥ 0.90)? | stop; report the premise failed | drafter |
+| Does S1 fail its adequacy gate at its tuned setting? | keep S1 as reported-only; mark V2 and V3 INDETERMINATE | implementer |
+| Is any tuned value on the boundary of the grid? | extend the grid once for that family on development entropy | implementer |
+| Does the measured full-size single-seed development run predict more than the cap set from it? | report to the owner; narrow N or seeds, never thresholds | implementer |
+| Is any planned endpoint missing, non-finite or not-run for any seed? | run is INCOMPLETE; no seed dropped or replaced | implementer |
+| Is the recorded run INCOMPLETE (cap, error, missing seed)? | report; no resume, no retry | implementer |
+| Would any margin, row or bar change after a recorded result exists? | no change; register a new revision on fresh entropy | drafter |
+| Did the pre-run review (see 8) return CHANGES_REQUIRED? | fix and re-review before the run | drafter |
 
-## 7. Cost and order (estimates; measured on the smoke run first)
+## 8. Cost and order
 
-Stage 0 took 174 s wall on 8 workers for 20 seeds with 60 episodes per cell. 0d adds seven models, three change types with a 6-point grid and 3 designs each, 200 paired episodes per win cell and 30 seeds.
-Estimate: development (tuning, learnability, gradient check) about 15 minutes of CPU on one machine; the recorded run **20 to 40 minutes** wall on 8 workers, dominated by closed-loop episodes and the three change grids.
-I will state the measured smoke time before the recorded run. Order: (1) approval; (2) development and the gradient check, committed with raw results; (3) specification, code, tests committed; (4) smoke; (5) one recorded run; (6) report with corrections-first wording; (7) one same-family review before the run (as before), no cross-family claim.
+Inventory per seed: pool collection (600 + 100 episodes), fits for F0, F1, F2, C (two pieces), S1 at three values of N (15 fits + 3 reference F0 fits), `a_joint` evaluation of five models on the test pool, and closed-loop cells (6 policies × 2 opponents × 200 episodes). Stage 0, for scale, took 174 s wall on 8 workers for 20 seeds with 60 episodes per cell; the closed-loop cells dominate. **No time estimate is claimed here.** A full-size single-seed development run (not a smoke multiplication: the worker count, config and evaluation differ) sets: jobs soft cap = 1.5 × the measured per-wave time × the number of waves, hard cap = soft cap + 300 s, evaluation cap (`eval_cap`) = 300 s. Jobs, evaluation and total wall and CPU seconds are recorded separately. Before the recorded run I state the measured time. If the budget is insufficient the experiment is narrowed (N values, win cells, seeds), never the thresholds.
+Order: (1) owner approval; (2) development on its own entropy, committed with raw results and a README: gradient and straight-through tests, tuning, adequacy gates, `sd` and `S`, full-size cost; (3) specification, `SPEC_0D.json` (tuned settings, margins, S, caps), code, tests, committed — **this commit is the registration boundary**; (4) a same-family review of the registered files before the run, and a Codex review if the owner wants one; (5) smoke on its own entropy; (6) one recorded run from a clean tree at the registration commit; (7) report with corrections-first wording. Test timing: tests run once at the end of each change batch, with any earlier run preceded by its blocking need.
 
-## 8. Self-audit (the drafter's known weaknesses)
+## 9. Review disposition (the drafter's defects, causes and fixes — AGENTS.md)
 
-| Weakness | Consequence | Mitigation or acknowledgement |
-|---|---|---|
-| Teachers are hand-written rules, so every result is imitation | a result here does not say pieces can be learned from outcomes | named as the next experiment; not claimed |
-| S1 and S2 are my own implementations of structured baselines | a weak implementation would flatter C | gradient check, parameter match, same tuning budget; the numbers of both are reported |
-| One sandbox, 30 seeds are replicates of one environment | intervals describe seed noise, not task variety | the intervals are labelled as such; external benchmark listed as later |
-| The new stepping rule and the extrapolated type are my design | easy to choose ones that favour C | both are fixed on development entropy under the learnability gate, before any recorded result |
-| The margins come from development spread | could be loose or tight | written before the run; the report shows the raw intervals so the reader can apply others |
-| "Wired retrains only the changed piece" is built in | B1 and B2 favour C by construction | the frozen-head control exists to take that away; if it closes the gap, H-change is REFUTED |
+| Review item | Defect in revision 1 | Cause | Fix in this revision |
+|---|---|---|---|
+| R1 H-change cannot measure a MOVE-only change; wrong teacher in metric | raw target agreement levels cannot see a movement change; metric code defaulted to the old movement rule | I picked one level for both changes and reused `change_metrics` without checking its interface | Part B removed from this approval; `joint_action` takes the registered `teacher_move` explicitly; Appendix A lists the n = 0 negative control and strata Part B must add |
+| R2 S1 unspecified; teacher forcing collapses the comparison | "softmax selection … own selected enemy" had several implementations | I described intent, not training | section 2: straight-through selection, masks, loss, features, normalization, label access; teacher-forced training demoted to a unit test |
+| R3 verdict rules ambiguous, margins not fixed | one margin for two scales; "better of F1 and F2" undefined; asymmetric H-struct; sum-of-medians inference | rules written as prose | section 4: one estimand, fixed δ, strict inequalities, symmetric V2, V3 from direct E1–E3, comparator chosen on development only, discordance rule |
+| R4 frozen-head control weaker than a full retrained piece | head-only freezing is a poorer control | defined "head" as final layer | Part B removed; Appendix A requires full affected-branch retraining as the matched control |
+| R5 movement metric hides failures | wrong move on an all-hold state dropped; denominators depended on correctness; chance = 1 undefined | I special-cased the mixed tie and stopped | `metrics.py`: every eligible state scored, strata with counts, stop on undefined populations; tests |
+| R6 extrapolated type confounded | speed is not an AIM/MOVE input; type, stats and opponent unspecified | I added a condition without checking inputs | Part C removed; Appendix A |
+| R7 tuning and ledger incomplete | space, splits, objective, per-piece budgets, stop rows not defined | drafted as an outline | sections 2, 6, 7 |
+| R8 power and timing | no precision basis; 30/2 smoke scaling; accounting omitted controls | optimistic estimate | section 5 precision rule, section 8 inventory, measured caps, separate evaluation bound |
 
-Files if approved: `SPECIFICATION_0D.md`, `SPEC_0D.json`, `zd_models.py` (F0, F1, F2, S1, S2 with hand-written backpropagation), `zd_run.py`, `test_zd.py`, `dev_0d/` (scripts, raw results, README).
+## Appendix A — what Part B and C would need (not approved)
+
+- **Part B (MOVE-only or both-piece change):** the exact new stepping rule and affected strata fixed in advance; recovery defined as a conjunction of target quality, movement quality, hold accuracy and back-off quality with tolerances and minimum stratum counts; the registered movement teacher passed explicitly to evaluation; an unchanged old controller scored at n = 0 and required to fail recovery in the changed behaviour, with a minimum change magnitude declared; full affected-branch retraining of the structured policy as the matched control (final-layer controls only as additional); a complete grid fixed once; the row-cost statistic, censoring and two-failure rule defined; B3's AIM and MOVE rows allocated explicitly.
+- **Part C (extrapolated type):** all type statistics, mixes and opponent rules fixed; type-only, opponent-only and combined conditions separated; input differences disclosed (speed reaches the flat model but not the pieces); teacher headroom and stratum coverage gated; an in-domain positive control on separate development entropy; no zero-shot policy trained on the held-out type; an absolute teacher-fidelity gate.

@@ -1,6 +1,6 @@
 """One-shot experiment harness for new exploratory runs: commit guard, run-directory latch, spawn pool, watchdog, atomic summary.
 
-Generic over the job function and the evaluation. The registered rules live in the experiment's own evaluate(); nothing here judges a result.
+Generic over the job function and the evaluation. Every stage is bounded: the jobs by soft_cap and hard_cap, evaluation and the summary write by eval_cap. The registered rules live in the experiment's own evaluate(); nothing here judges a result.
 """
 import concurrent.futures as cf
 import hashlib
@@ -61,7 +61,7 @@ def max_rss_bytes(usage):
     return int(usage.ru_maxrss) * (1 if sys.platform == 'darwin' else 1024)
 
 
-def run_experiment(*, spec_path, here, root, files, run_dirs, run_name, seed_job, evaluate, smoke, exit_fn=os._exit):
+def run_experiment(*, spec_path, here, root, files, run_dirs, run_name, seed_job, evaluate, smoke, exit_fn=os._exit, kill_children=True):
     """The single recorded run (or the smoke run). `run_dirs` are all of this experiment's run and smoke directory names; `run_name` is this one.
     Returns (exit_code, summary)."""
     spec = json.loads(Path(spec_path).read_text())
@@ -87,7 +87,7 @@ def run_experiment(*, spec_path, here, root, files, run_dirs, run_name, seed_job
             'hashes': {n: hashlib.sha256((Path(here)/n).read_bytes()).hexdigest() for n in files if (Path(here)/n).exists()},
             'wall_clock': time.strftime('%Y-%m-%dT%H:%M:%S%z')})
         pool = cf.ProcessPoolExecutor(max_workers=cfg['workers'], mp_context=mp.get_context('spawn'))
-        watchdog = Watchdog(run_dir, cfg['hard_cap'], cleanup=lambda: terminate(pool), exit_fn=exit_fn).start()
+        watchdog = Watchdog(run_dir, cfg['hard_cap'], cleanup=lambda: terminate(pool), exit_fn=exit_fn, kill_children=kill_children).start()
 
         def on_result(job, result):
             seed = job[2]
@@ -111,22 +111,32 @@ def run_experiment(*, spec_path, here, root, files, run_dirs, run_name, seed_job
         # all jobs are over: stop the watchdog BEFORE evaluation, so a finished run is never relabelled INCOMPLETE by a late hard stop
         if watchdog is not None and not watchdog.cancel():
             return 3, summary   # the hard stop already fired and owns the exit
+        jobs_seconds = time.monotonic()-started
         usage = resource.getrusage(resource.RUSAGE_CHILDREN)
         ordered = [rows[s] for s in sorted(rows)]
-        summary.update({'wall_seconds': time.monotonic()-started, 'children_cpu_seconds': usage.ru_utime+usage.ru_stime,
+        summary.update({'jobs_wall_seconds': jobs_seconds, 'children_cpu_seconds': usage.ru_utime+usage.ru_stime,
                         'max_child_rss_bytes': max_rss_bytes(usage), 'seeds_expected': cfg['seeds'], 'seeds_complete': len(rows),
                         'seed_errors': list(errors.values()), 'config': cfg})
+        # evaluation and the summary write run under their OWN bound (cfg['eval_cap'], default 300 s), so no stage is unbounded and the time is accounted for
+        eval_watchdog = Watchdog(run_dir, cfg.get('eval_cap', 300.0), exit_fn=exit_fn, kill_children=kill_children).start()
+        eval_started = time.monotonic()
         try:
             if summary['reason'] == 'complete' and not errors and len(rows) == cfg['seeds']:
                 summary['evaluation'] = evaluate(ordered, cfg)
                 summary['status'] = 'COMPLETE'
         except Exception as error:  # noqa: BLE001
             summary['evaluation_error'] = repr(error)
+        summary['evaluation_seconds'] = time.monotonic()-eval_started
+        summary['total_wall_seconds'] = time.monotonic()-started
+        if eval_watchdog.fired:
+            return 3, summary   # the evaluation bound fired: its HARD_STOP and INCOMPLETE summary stand
         try:
             write_json(run_dir/'SUMMARY.json', summary)
         except Exception as error:  # noqa: BLE001
             atomic_write(run_dir/'SUMMARY.json', json.dumps({'status': 'INCOMPLETE', 'reason': 'summary write failed: '+repr(error)}).encode())
-    print(json.dumps({k: summary[k] for k in ('status', 'reason', 'wall_seconds', 'seeds_complete') if k in summary}, indent=1))
+        if not eval_watchdog.cancel():
+            return 3, summary   # the evaluation bound fired and owns the exit
+    print(json.dumps({k: summary[k] for k in ('status', 'reason', 'total_wall_seconds', 'seeds_complete') if k in summary}, indent=1))
     if summary['status'] == 'COMPLETE':
         print(json.dumps({k: v['verdict'] for k, v in summary['evaluation'].items() if isinstance(v, dict) and 'verdict' in v}, indent=1))
     return (0 if summary['status'] == 'COMPLETE' else 1), summary

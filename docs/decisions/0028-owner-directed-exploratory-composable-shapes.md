@@ -6,9 +6,11 @@
 
 ## Why this record exists
 
-Between decision 0027 and today an owner-requested line of work was built without a decision record: a two-body C6 pilot, an arithmetic composition demo, a tactical composition demo (Stage 0 and two change-cost revisions). A governance audit (same model family as the author, 2026-10-03) found the authorizations existed only in chat, the pivot away from C6 was undocumented, and the top-level documents did not mention the work. This record fixes that.
+Between decision 0027 and today an owner-requested line of work was built without a decision record: a two-body C6 pilot, an arithmetic composition demo, a tactical composition demo (Stage 0 and two change-cost revisions). A governance audit (same model family as the author, 2026-10-03) found the authorizations are reported only as chat messages, which this repository cannot authenticate, the pivot away from C6 was undocumented, and the top-level documents did not mention the work. This record fixes that.
 
-## Owner messages this work rests on (verbatim, typos kept; chronological)
+## Owner messages this work rests on (as transcribed by the author; typos kept; chronological; message references are not available in the repository)
+
+These are the author's transcriptions and readings, not primary records. Any item whose only support is such a reading is in the ratification list: the owner confirms, amends or rejects it.
 
 1. After the C6 stall and the Codex recheck of the Q/H pilot: "ok elts do it" and "do it then, just rechekc that oyu got all properly". My reading: authorize the exploratory two-body pilot that tested why level three stalls. **[R]** (0027 left the Q/H pilot "PROPOSED, NOT AUTHORIZED"; the Q/H pilot approval itself is stated only in `evidence/c6_dev_pilot/r4_sensitivity/README.md`.)
 2. The redirect: "ok we go in soem worng direction, our goal is to pvie that we cna use AI as geimtry not as math comtuion … we have sieml goentry that repsibek fri soem ai actions, and then it cna eb combieed into siemthin bigegr … and then this biiger thgins can eb combien ot and so on". Then "lets do it and coeumtn" (the arithmetic composition demo, documented).
@@ -29,7 +31,7 @@ Between decision 0027 and today an owner-requested line of work was built withou
 
 ## Records that were missing
 
-- **Change-cost r1 was not withdrawn; it completed and was recorded INDETERMINATE.** r2 is a new revision on fresh entropy (`SPEC_CHANGE2.json`), registered after the r1 report. AGENTS.md's withdrawal path applies before review; it was not needed.
+- **Change-cost r1 was not withdrawn.** It completed and was recorded INDETERMINATE. AGENTS.md's withdrawal path belongs to registered milestone revisions (before independent review of a registered revision); this line is exploratory and outside that lifecycle, which is the scope reason no withdrawal record applies. r2 is a new revision on fresh entropy (`SPEC_CHANGE2.json`), registered after the r1 report.
 - **The C1 gate was changed after seeing r1.** r1 required 75% of seeds to meet its bar; r2 requires the median only (`change.py:179`, `change2.py:202`, `test_change2.py:72`). r2 then passed by 0.001 (median 0.6989 against 0.70, 55% of seeds at or below). C2 and C3 depend on C1. The verdict is recorded as SUPPORTED (marginal), as the pre-registered rule gives, and must be read with this change in mind.
 - **The tactical PROPOSAL.md was never approved as written** (it still says DRAFT for owner approval). It is superseded by `SPECIFICATION*.md` and the owner messages above; status of the superseded proposal is flagged in the folder README. **[R]**
 
@@ -43,7 +45,7 @@ Between decision 0027 and today an owner-requested line of work was built withou
 
 - The verdict words SUPPORTED / REFUTED / INDETERMINATE in these folders are **exploratory vocabulary**, not milestone verdicts (SUPPORTED_WITHIN_SCOPE, NOT_SUPPORTED).
 - The tactical work is **outside the GT0–GT5 plan** of GeoTactics R3 (sections 1.1 and 13). It is an invented sandbox with scripted teachers. It supports no hierarchy claim unless an accepted C4–C8 mechanism is imported.
-- **No cross-family independent review exists for any of it, and none is claimed.** Earlier "independent reviews" were Claude subagents. 0027 reasons that an explicitly owner-requested development pilot does not need the other family; a qualifying claim, acceptance or milestone would.
+- **No cross-family review of the recorded results exists, and none is claimed for them.** Earlier "independent reviews" were Claude subagents. A Codex (cross-family) review of the later material exists: `docs/reviews/tactical_composition_0d_review_codex.md` examined this record, `CORRECTIONS.md`, `tcd_common` and `PROPOSAL_0D.md` (verdict CHANGES_REQUIRED for the proposal; its spot-checks of `CORRECTIONS.md` matched the stored data; its errors-in-my-documents findings are applied). It did not review the historical experiments. 0027 reasons that an explicitly owner-requested development pilot does not need the other family; a qualifying claim, acceptance or milestone would.
 - What the results do and do not establish is in `evidence/tactical_composition_demo/CORRECTIONS.md` (section E) and `MOTIVATION.md`. Nothing tests geometry, oscillators or "vibration".
 
 ## Process notes
@@ -54,7 +56,7 @@ Between decision 0027 and today an owner-requested line of work was built withou
 ## Forward order
 
 1. `evidence/tactical_composition_demo/tcd_common/` (corrected shared tooling) and `CORRECTIONS.md` land with this record.
-2. `evidence/tactical_composition_demo/PROPOSAL_0D.md` (draft): separate structure from composition; second change type; extrapolated unit type; effect-size bars with intervals fixed in advance. **Nothing in it runs until the owner approves it.**
+2. `evidence/tactical_composition_demo/PROPOSAL_0D.md` (revision 2 after the Codex review, narrowed to Part A: structure versus composition under one tuning budget; fixed effect-size margins with paired intervals). A MOVE-only or both-piece change and an extrapolated unit type are deferred (its Appendix A). **Nothing in it runs until the owner approves it.**
 3. Later, only if the owner chooses: learning from outcomes, the squad level, an outside benchmark, the real simulator, and the RRG-specific shape-to-signature claim.
 
 ## What the owner can do with this record

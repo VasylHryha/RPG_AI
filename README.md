@@ -11,7 +11,7 @@ built as small composable pieces ("shapes") that combine into bigger pieces ([de
 - [`evidence/geometric_composition_demo/`](evidence/geometric_composition_demo/README.md): arithmetic composition demo (the wrong test; kept as a record).
 - [`evidence/tactical_composition_demo/`](evidence/tactical_composition_demo/README.md): tactical sandbox, AIM and MOVE pieces, change-cost test; read its [corrections](evidence/tactical_composition_demo/CORRECTIONS.md) first.
 
-These are exploratory records, not milestone evidence. They use exploratory verdict words, sit outside the GT0–GT5 plan, and have no cross-family review. They test nothing
+These are exploratory records, not milestone evidence. They use exploratory verdict words, sit outside the GT0–GT5 plan, and have no cross-family review of their recorded results (Codex reviewed the later proposal and tooling). They test nothing
 about geometry, oscillators or "vibration". They change no milestone status.
 
 ## Status

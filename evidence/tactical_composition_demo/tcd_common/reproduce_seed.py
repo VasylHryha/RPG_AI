@@ -5,8 +5,11 @@
 This is not a rerun of the recorded run and re-analyses nothing: it calls the harness's own `run_seed` for one seed on the recorded entropy and writes only
 `SEED_REPRODUCTION.json` here. The run directories and the one-shot latch are not touched. Timing keys are excluded from the comparison.
 """
+import hashlib
 import json
 import os
+import platform
+import subprocess
 import sys
 import time
 from pathlib import Path
@@ -36,8 +39,14 @@ def main(argv):
         keys = sorted(set(stored)|set(fresh))
         compared = [k for k in keys if not volatile(k)]
         differs = [k for k in compared if stored.get(k) != fresh.get(k)]
-        results['%s_seed%s' % (name, seed)] = {'keys_compared': len(compared), 'keys_excluded_as_timing': len(keys)-len(compared), 'identical': not differs,
-                                                'differing_keys': differs[:20], 'seconds': round(time.time()-started, 1)}
+        digest = hashlib.sha256(json.dumps({k: fresh.get(k) for k in compared}, sort_keys=True).encode()).hexdigest()
+        git = lambda *a: subprocess.run(['git', *a], cwd=PARENT, capture_output=True, text=True).stdout.strip()
+        results['%s_seed%s' % (name, seed)] = {
+            'keys_compared': len(compared), 'keys_excluded_as_timing': len(keys)-len(compared), 'identical': not differs, 'differing_keys': differs[:20],
+            'seconds': round(time.time()-started, 1), 'fresh_values_sha256': digest,
+            'provenance': {'git_head': git('rev-parse', 'HEAD'), 'tree_clean_for_folder': not git('status', '--porcelain', '--', '.'),
+                           'python': sys.version.split()[0], 'numpy': __import__('numpy').__version__, 'platform': platform.platform(),
+                           'sha256': {n: hashlib.sha256((PARENT/n).read_bytes()).hexdigest() for n in ('tactics.py', module+'.py', 'demo.py', spec_file)}}}
         print(name, seed, results['%s_seed%s' % (name, seed)])
     fileio.write_json(out_path, results)
     return 0 if all(r['identical'] for r in results.values()) else 1

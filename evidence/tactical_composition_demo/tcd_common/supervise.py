@@ -65,8 +65,8 @@ def run_jobs(pool, fn, jobs, on_result, deadline, workers, ident=lambda job: job
 class Watchdog:
     """Hard stop. `cancel()` and the expiry are mutually exclusive: cancel() returns True only if the watchdog had not fired and now never will."""
 
-    def __init__(self, run_dir, hard_cap, cleanup=None, exit_fn=os._exit):
-        self.run_dir, self.hard_cap, self.cleanup, self.exit_fn = Path(run_dir), hard_cap, cleanup, exit_fn
+    def __init__(self, run_dir, hard_cap, cleanup=None, exit_fn=os._exit, kill_children=True):
+        self.run_dir, self.hard_cap, self.cleanup, self.exit_fn, self.kill_children = Path(run_dir), hard_cap, cleanup, exit_fn, kill_children
         self._lock = threading.Lock()
         self.fired = False
         self.cancelled = False
@@ -96,11 +96,12 @@ class Watchdog:
                 self.cleanup()
         except Exception as error:  # noqa: BLE001
             record['cleanup_error'] = repr(error)
-        try:
-            result = subprocess.run(['pkill', '-9', '-P', str(os.getpid())], capture_output=True, timeout=10)
-            record['pkill_returncode'] = result.returncode   # 1 means no child was left to kill
-        except Exception as error:  # noqa: BLE001
-            record['pkill_error'] = repr(error)
+        if self.kill_children:
+            try:
+                result = subprocess.run(['pkill', '-9', '-P', str(os.getpid())], capture_output=True, timeout=10)
+                record['pkill_returncode'] = result.returncode   # 1 means no child was left to kill
+            except Exception as error:  # noqa: BLE001
+                record['pkill_error'] = repr(error)
         try:
             write_json(self.run_dir/'HARD_STOP.json', record)
             if not (self.run_dir/'SUMMARY.json').exists():

@@ -16,7 +16,7 @@ import numpy as np
 import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from tcd_common import fileio, harness, legacy, metrics, selftest_jobs, stats, supervise  # noqa: E402
+from tcd_common import fileio, harness, metrics, selftest_jobs, stats, supervise  # noqa: E402
 import tactics as T  # noqa: E402
 
 HERE = Path(__file__).resolve().parents[1]
@@ -135,11 +135,15 @@ def test_metrics_use_only_multi_enemy_states():
     assert chosen['step_chosen_move_median_angle_deg'] < 0.01
 
 
-def test_chance_corrected_agreement_is_zero_for_a_random_like_pick():
+def test_chance_corrected_agreement_for_a_wrong_pick_and_a_balanced_population():
     pool = make_pool([(1, 6.0, 0.0, 6.0), (1, 3.0, 0.0, 3.0), (1, 9.0, 0.0, 9.0)])
     lab = {'scores': np.array([[0.1, 0.9, 0.2]]), 'target': np.array([1])}
     out = metrics.agreement(np.array([0]), pool, lab)
     assert out['chance_tie_aware_multi'] == pytest.approx(1/3) and out['agree_tie_aware_multi'] == 0.0 and out['agree_corrected_multi'] == pytest.approx(-0.5)
+    three = {'own': np.repeat(pool['own'], 3, 0), 'enemies': np.repeat(pool['enemies'], 3, 0)}
+    lab3 = {'scores': np.repeat(lab['scores'], 3, 0), 'target': np.repeat(lab['target'], 3)}
+    balanced = metrics.agreement(np.array([0, 1, 2]), three, lab3)                    # right one time in three: exactly the chance level
+    assert balanced['agree_tie_aware_multi'] == pytest.approx(1/3) and balanced['agree_corrected_multi'] == pytest.approx(0.0, abs=1e-12)
 
 
 def test_change_metrics_agrees_with_recorded_tie_aware_agreement_on_real_states():
@@ -230,13 +234,13 @@ def test_watchdog_fires_writes_stop_and_summary_and_exits_3(tmp_path):
 def test_watchdog_keeps_an_existing_summary_and_cancel_wins_before_expiry(tmp_path):
     (tmp_path/'SUMMARY.json').write_text('{"status": "COMPLETE"}')
     codes = []
-    w = supervise.Watchdog(tmp_path, 0.2, exit_fn=codes.append).start()
+    w = supervise.Watchdog(tmp_path, 0.2, exit_fn=codes.append, kill_children=False).start()
     time.sleep(0.6)
     assert json.loads((tmp_path/'SUMMARY.json').read_text())['status'] == 'COMPLETE' and codes == [3]
     other = tmp_path/'b'
     other.mkdir()
     codes.clear()
-    w2 = supervise.Watchdog(other, 0.3, exit_fn=codes.append).start()
+    w2 = supervise.Watchdog(other, 0.3, exit_fn=codes.append, kill_children=False).start()
     assert w2.cancel() and not w2.fired
     time.sleep(0.6)
     assert codes == [] and not (other/'HARD_STOP.json').exists()                 # a cancelled watchdog never fires
@@ -247,7 +251,7 @@ def test_watchdog_cleanup_error_is_recorded_not_fatal(tmp_path):
 
     def bad():
         raise RuntimeError('cleanup failed')
-    supervise.Watchdog(tmp_path, 0.1, cleanup=bad, exit_fn=codes.append).start()
+    supervise.Watchdog(tmp_path, 0.1, cleanup=bad, exit_fn=codes.append, kill_children=False).start()
     time.sleep(0.6)
     assert codes == [3] and 'cleanup failed' in json.loads((tmp_path/'HARD_STOP.json').read_text())['cleanup_error']
 
@@ -357,7 +361,7 @@ def test_run_experiment_cancels_the_watchdog_before_evaluating(tmp_path):
         time.sleep(4.0)           # evaluation outlasts the hard cap: a finished run must still be recorded as COMPLETE
         return {'X': {'verdict': 'SUPPORTED'}}
     code, summary = harness.run_experiment(spec_path=spec, here=tmp_path, root=tmp_path, files=(), run_dirs=('run',), run_name='run', seed_job=selftest_jobs.echo_job,
-                                           evaluate=slow_evaluate, smoke=True, exit_fn=codes.append)
+                                           evaluate=slow_evaluate, smoke=True, exit_fn=codes.append, kill_children=False)
     assert code == 0 and summary['status'] == 'COMPLETE' and codes == [] and not (tmp_path/'run'/'HARD_STOP.json').exists()
 
 
@@ -367,25 +371,144 @@ def test_max_rss_is_normalised_to_bytes():
     assert harness.max_rss_bytes(U) == (1000 if sys.platform == 'darwin' else 1000*1024)
 
 
-# ------------------------------------------------------------------ regression gate against the recorded tactics.py versions
+# ------------------------------------------------------------------ tactics.py is frozen
 
-def test_current_tactics_reproduces_every_recorded_version_exactly():
-    differs = {}
-    for name, (rev, short) in legacy.RECORDED.items():
-        try:
-            source = legacy.source_at(rev)
-        except LookupError:
-            pytest.skip('git history for %s is not available in this clone' % rev)
-        assert legacy.identity(source).startswith(short), name                     # the recovered file is the one the run recorded
-        result = legacy.compare(T, legacy.load(source, 'tactics_'+name), seeds=(0,), episodes=6, n_aim=200, n_move=200, steps=100, eval_episodes=2)
-        if not result['equal']:
-            differs[name] = result['differs']
-    assert not differs, differs
+def test_tactics_py_is_pinned_to_the_hash_recorded_by_the_latest_run():
+    """tactics.py is frozen: every recorded run pins it by hash in RUN_STARTED.json, and the latest recorded run (change-cost r2) pins the current bytes.
+    New models and metrics go in new files; an edit here must fail loudly (and would void SEED_REPRODUCTION.json)."""
+    import hashlib
+    recorded = json.loads((HERE/'run_change2'/'RUN_STARTED.json').read_text())['hashes']['tactics.py']
+    assert hashlib.sha256((HERE/'tactics.py').read_bytes()).hexdigest() == recorded
 
 
-def test_the_gate_detects_a_changed_primitive():
-    source = legacy.source_at(legacy.RECORDED['stage0'][0]).decode()
-    broken = source.replace("def teacher_move(rel, pref):", "def teacher_move(rel, pref):\n    pref = pref+0.01", 1)
-    assert broken != source
-    result = legacy.compare(T, legacy.load(broken.encode(), 'tactics_broken'), seeds=(0,), episodes=4, n_aim=100, n_move=100, steps=50, eval_episodes=2)
-    assert not result['equal'] and any(k.startswith('labels') or k.startswith('pool') for k in result['differs'])
+# ------------------------------------------------------------------ the joint action estimand and the repaired movement scoring
+
+def repeat_pool(pool, lab, times=40):
+    return ({'own': np.repeat(pool['own'], times, 0), 'enemies': np.repeat(pool['enemies'], times, 0)},
+            {k: np.repeat(v, times, 0) for k, v in lab.items()})
+
+
+def two_enemy_case(e0, e1, scores, pref=1.2, times=40):
+    """Two living enemies; the lab is the registered teacher's: its scores, its target and its own step toward that target."""
+    pool = make_pool([(1, e0[0], e0[1], float(np.hypot(*e0))), (1, e1[0], e1[1], float(np.hypot(*e1))), (0, 0, 0, 0)], pref)
+    target = int(np.argmax(scores))
+    rel = (e0, e1)[target]
+    lab = {'scores': np.array([list(scores)+[-9.0]]), 'target': np.array([target]), 'move': np.array([T.teacher_move(np.array(rel, float), pref)])}
+    return repeat_pool(pool, lab, times)
+
+
+def joint(pool, lab, chosen, step, **kw):
+    n = len(pool['own'])
+    return metrics.joint_action(np.full(n, chosen), np.tile(np.array(step, float), (n, 1)), pool, lab, **kw)
+
+
+def test_joint_action_perfect_and_each_single_failure():
+    pool, lab = two_enemy_case((6.0, 0.0), (0.0, 7.0), (1.0, 0.2))
+    perfect = joint(pool, lab, 0, (1.0, 0.0))
+    assert perfect['a_joint'] == 1.0 and perfect['a_target_admissible'] == 1.0 and perfect['a_step_given_admissible'] == 1.0
+    assert perfect['n_stratum_moving'] == 40 and perfect['a_joint_stratum_moving'] == 1.0 and perfect['a_joint_stratum_hold'] is None and not perfect['strata_adequate']
+    wrong_target = joint(pool, lab, 1, (0.0, 1.0))                                # the step is right for the enemy it chose, but that enemy is not admissible
+    assert wrong_target['a_joint'] == 0.0 and wrong_target['a_target_admissible'] == 0.0 and wrong_target['a_step_given_admissible'] is None
+    wrong_step = joint(pool, lab, 0, (0.0, 1.0))                                  # admissible target, step 90 degrees off
+    assert wrong_step['a_joint'] == 0.0 and wrong_step['a_target_admissible'] == 1.0 and wrong_step['a_step_given_admissible'] == 0.0
+    hold = joint(pool, lab, 0, (0.0, 0.0))
+    assert hold['a_joint'] == 0.0 and hold['step_angle_median_moving_deg'] == 90.0   # a hold where a move is required (counted 90 degrees, no direction)
+    c, s = np.cos(np.radians(9.0)), np.sin(np.radians(9.0))
+    assert joint(pool, lab, 0, (c, s))['a_joint'] == 1.0                          # inside the 10 degree tolerance
+    c, s = np.cos(np.radians(11.0)), np.sin(np.radians(11.0))
+    assert joint(pool, lab, 0, (c, s))['a_joint'] == 0.0                          # outside it
+
+
+def test_joint_action_scores_a_wrong_move_on_a_state_where_the_teacher_holds():
+    pool, lab = two_enemy_case((1.2, 0.0), (6.0, 0.0), (1.0, 0.2))                # the target is in the hold band
+    assert float(np.hypot(*lab['move'][0])) < 0.5
+    assert joint(pool, lab, 0, (1.0, 0.0))['a_joint'] == 0.0                      # moving where the teacher holds fails (the recorded tie-best metric dropped this)
+    held = joint(pool, lab, 0, (0.0, 0.0))
+    assert held['a_joint'] == 1.0 and held['n_stratum_hold'] == 40 and held['a_joint_stratum_hold'] == 1.0 and held['a_joint_stratum_moving'] is None
+
+
+def test_joint_action_is_strict_about_the_chosen_target_unlike_the_tie_set_diagnostic():
+    pool, lab = two_enemy_case((6.0, 0.0), (0.0, 7.0), (1.0, 1.0))               # two tied-best enemies
+    assert joint(pool, lab, 0, (1.0, 0.0))['a_joint'] == 1.0 and joint(pool, lab, 1, (0.0, 1.0))['a_joint'] == 1.0
+    mixed = joint(pool, lab, 0, (0.0, 1.0))                                       # chose enemy 0 but stepped toward the other tied enemy
+    assert mixed['a_joint'] == 0.0
+    forgiving = metrics.step_tiebest(np.tile([0.0, 1.0], (40, 1)), pool, lab)
+    assert forgiving['step_tiebest_median_angle_deg'] < 0.01                       # the forgiving diagnostic accepts it; the primary estimand does not
+
+
+def test_joint_action_scores_against_the_registered_movement_rule_not_the_default():
+    pool, lab = two_enemy_case((6.0, 0.0), (0.0, 7.0), (1.0, 0.2))
+    new_rule = lambda rel, pref: np.zeros(2) if float(np.hypot(*rel)) <= 7.0 else rel/float(np.hypot(*rel))     # a longer standoff band: hold up to distance 7
+    old_controller = (1.0, 0.0)                                                    # an unchanged controller that still moves toward a target at distance 6
+    assert joint(pool, lab, 0, old_controller)['a_joint'] == 1.0                   # scored by the default (old) rule it looks perfect
+    lab_new = dict(lab, move=np.zeros_like(lab['move']))                           # the registered teacher's own step toward its target is now a hold
+    assert joint(pool, lab_new, 0, old_controller, teacher_move=new_rule)['a_joint'] == 0.0     # n = 0 negative control: the unchanged controller fails the changed behaviour
+    assert joint(pool, lab_new, 0, (0.0, 0.0), teacher_move=new_rule)['a_joint'] == 1.0
+    chosen_metric = metrics.step_toward_chosen(np.tile([1.0, 0.0], (40, 1)), np.zeros(40, int), pool, teacher_move=new_rule)
+    assert chosen_metric['step_chosen_move_hold_agreement'] == 0.0
+
+
+def test_tiebest_scores_a_wrong_move_on_an_all_hold_state():
+    pool = make_pool([(1, 1.2, 0.0, 1.2), (1, 0.0, 1.2, 1.2), (0, 0, 0, 0)])    # two tied enemies, both inside the teacher's hold band
+    lab = {'scores': np.array([[1.0, 1.0, -9.0]]), 'target': np.array([0])}
+    wrong = metrics.step_tiebest(np.array([[1.0, 0.0]]), pool, lab)
+    assert wrong['step_tiebest_n'] == 1 and wrong['step_tiebest_median_angle_deg'] == 90.0 and wrong['step_tiebest_wrong_move_share'] == 1.0
+    assert wrong['step_tiebest_hold_agreement'] == 0.0                              # the recorded metric returned no angle and n = 0 here
+    right = metrics.step_tiebest(np.array([[0.0, 0.0]]), pool, lab)
+    assert right['step_tiebest_n'] == 1 and right['step_tiebest_median_angle_deg'] == 0.0 and right['step_tiebest_wrong_move_share'] == 0.0
+
+
+def test_metrics_stop_on_undefined_populations():
+    single = make_pool([(1, 6.0, 0.0, 6.0), (0, 0, 0, 0), (0, 0, 0, 0)])
+    lab1 = {'scores': np.array([[1.0, -9.0, -9.0]]), 'target': np.array([0]), 'move': np.array([[1.0, 0.0]])}
+    with pytest.raises(ValueError, match='empty'):
+        metrics.agreement(np.array([0]), single, lab1)
+    pool, lab = two_enemy_case((6.0, 0.0), (0.0, 7.0), (1.0, 0.2), times=2)
+    with pytest.raises(ValueError, match='not alive'):
+        metrics.agreement(np.array([2, 2]), pool, lab)                              # slot 2 is dead
+    with pytest.raises(ValueError, match='non-finite'):
+        metrics.joint_action(np.array([0, 0]), np.array([[np.nan, 0.0], [1.0, 0.0]]), pool, lab)
+    with pytest.raises(ValueError, match='same states'):
+        metrics.joint_action(np.array([0]), np.array([[1.0, 0.0]]), pool, lab)
+    tied_pool, tied_lab = two_enemy_case((6.0, 0.0), (0.0, 7.0), (1.0, 1.0), times=2)
+    out = metrics.agreement(np.array([0, 0]), tied_pool, tied_lab)
+    assert out['chance_tie_aware_multi'] == 1.0 and out['agree_corrected_multi'] is None   # chance level 1: the corrected value is undefined, not 0/0
+
+
+# ------------------------------------------------------------------ pairing by seed identity
+
+def test_paired_by_seed_never_mispairs_or_drops_a_seed():
+    rows = [{'seed': 0, 'a': 0.2, 'b': None}, {'seed': 1, 'a': None, 'b': 0.5}, {'seed': 2, 'a': 0.8, 'b': 0.8}]
+    with pytest.raises(ValueError, match='missing'):
+        stats.paired_by_seed(rows, 'a', 'b')              # col() would give [0.2, 0.8] and [0.5, 0.8]: seed 0 paired with seed 1
+    good = [{'seed': 2, 'a': 0.9, 'b': 0.6}, {'seed': 0, 'a': 0.5, 'b': 0.4}, {'seed': 1, 'a': 0.7, 'b': 0.7}]
+    assert list(stats.paired_by_seed(good, 'a', 'b')) == pytest.approx([0.1, 0.0, 0.3])        # ordered by seed, not by row order
+    with pytest.raises(ValueError, match='duplicate'):
+        stats.by_seed(good+[{'seed': 1, 'a': 0.0, 'b': 0.0}], 'a')
+    with pytest.raises(ValueError, match='non-finite'):
+        stats.by_seed([{'seed': 0, 'a': float('inf')}], 'a')
+    with pytest.raises(ValueError, match='same shape'):
+        stats.paired_median_ci(np.ones(3), np.ones(5), np.random.default_rng(1))              # no broadcasting
+    with pytest.raises(ValueError, match='at least two'):
+        stats.bootstrap_median_ci(np.ones(1), np.random.default_rng(1))
+
+
+# ------------------------------------------------------------------ evaluation is bounded and accounted for
+
+def test_run_experiment_bounds_evaluation_and_records_its_time(tmp_path):
+    spec = spec_for(tmp_path, seeds=2, eval_cap=1.0)
+    codes = []
+
+    def slow_evaluate(rows, cfg):
+        time.sleep(3.0)
+        return {'X': {'verdict': 'SUPPORTED'}}
+    code, summary = harness.run_experiment(spec_path=spec, here=tmp_path, root=tmp_path, files=(), run_dirs=('run',), run_name='run', seed_job=selftest_jobs.echo_job,
+                                           evaluate=slow_evaluate, smoke=True, exit_fn=codes.append, kill_children=False)
+    assert code == 3 and codes == [3] and (tmp_path/'run'/'HARD_STOP.json').exists()          # the evaluation bound fired
+    assert json.loads((tmp_path/'run'/'SUMMARY.json').read_text())['status'] == 'INCOMPLETE'  # and its INCOMPLETE summary was not overwritten
+    fast = tmp_path/'b'
+    fast.mkdir()
+    code, summary = harness.run_experiment(spec_path=spec_for(fast, seeds=2), here=fast, root=fast, files=(), run_dirs=('run',), run_name='run',
+                                           seed_job=selftest_jobs.echo_job, evaluate=evaluate_echo, smoke=True)
+    assert code == 0 and {'jobs_wall_seconds', 'evaluation_seconds', 'total_wall_seconds'} <= set(summary)
+    assert summary['total_wall_seconds'] >= summary['jobs_wall_seconds'] and summary['evaluation_seconds'] >= 0
