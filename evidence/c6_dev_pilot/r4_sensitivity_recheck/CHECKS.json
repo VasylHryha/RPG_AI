@@ -1,0 +1,37 @@
+{
+  "kind": "SELF_AUDIT_NOT_INDEPENDENT_ACCEPTANCE",
+  "reviewed_commit": "e2a31cc",
+  "preparation_commit": "9d72c5a",
+  "verdict": "CHANGES_REQUIRED_FOR_HARNESS_REUSE; STORED_PILOT_OBSERVATIONS_RECHECKED; C6_BLOCKED",
+  "tests": {
+    "command": ".venv/bin/python -m pytest -q -x evidence/c6_dev_pilot/r4_sensitivity_recheck/test_recheck.py",
+    "passed": 12,
+    "seconds": 2.61,
+    "scope": "synthetic/stub faults and saved-state reconstruction only; no new pilot inputs, native execution, build, development, mutation or panel"
+  },
+  "confirmed_fault_probes": [
+    "direct --worker bypasses consumed run latch (worker stub only)",
+    "post-guard artifact drift reaches original loader build fallback (compiler stub rejects)",
+    "malformed partial JSON prevents final SUMMARY",
+    "cleanup exception prevents final SUMMARY",
+    "last-worker CPU breach is not assigned a STOP",
+    "final receipt write is outside recorded wall accounting and deadline enforcement",
+    "completed leader leaves descendant alive/unmonitored (owned synthetic group cleaned up)",
+    "duplicate arm identity silently accepted by archived interpret()"
+  ],
+  "new_auditor_negative_controls": [
+    "duplicate JSON keys and nonfinite literals rejected",
+    "duplicate/bool/out-of-range/missing arm identities rejected",
+    "missing scope checks rejected",
+    "changed rolling frequency statistic rejected",
+    "native loader disabled during saved-state checker"
+  ],
+  "original_pilot_files_modified": false,
+  "new_experiment_authorized": false,
+  "new_files_phase": "REVIEW_READY",
+  "file_hashes": {
+    "audit.py": "4e6aa0a751331cd6d74cfb049cf601a38caa42a6decff8e6f5239f02baf4502a",
+    "STORED_RECHECK.json": "392b6cfa5e1eadf7b7fc234066752bd030cf34d3c4339e1665f2c93a85122fde",
+    "test_recheck.py": "cd89f48086859078a756846a5c8a50ac1bd17a168bf8ed7a828ded7c3a78af88"
+  }
+}
