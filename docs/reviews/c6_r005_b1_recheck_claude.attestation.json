@@ -1,0 +1,31 @@
+{
+  "kind": "INDEPENDENT_CLAUDE_PREDEVELOPMENT_DIFF_RECHECK",
+  "reviewed_commit": "2285b92586dea07e4fb64abf037a9f4476481560",
+  "review_sha256": "df8b33fdb1f9e33e3d514bf9b24721da7fd0ea2ac5c82c4deace76b9c87e150c",
+  "seconds": 57.4,
+  "cli_model_usage": {
+    "claude-opus-5-5": {
+      "inputTokens": 10,
+      "outputTokens": 5683,
+      "cacheReadInputTokens": 94279,
+      "cacheCreationInputTokens": 26630,
+      "webSearchRequests": 0,
+      "costUSD": 0.3455958,
+      "contextWindow": 1000000,
+      "maxOutputTokens": 128000,
+      "thinkingTokens": 1508,
+      "canonicalModel": "claude-opus-5-5",
+      "provider": "firstParty",
+      "costBasis": "list"
+    }
+  },
+  "cli_session_id": "30e763ed-3a0d-41b1-9be8-018611afaa3b",
+  "cli_total_cost_usd": 0.3455958,
+  "raw_cli_sha256": "d0b2677a60bfbc094daf43435a248a7ecfc6181558cfb9aef2ef2330defc87c2",
+  "tools_allowed": [
+    "Read",
+    "Glob",
+    "Grep"
+  ],
+  "verdict": "READY_FOR_DEVELOPMENT"
+}
