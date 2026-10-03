@@ -1,0 +1,137 @@
+{
+ "config": {
+  "M_promote": 64,
+  "diag_domain": [
+   1.0,
+   3.0
+  ],
+  "distance_domain": [
+   1.0,
+   4.3
+  ],
+  "lloyd_iterations": 20,
+  "mix_hi": [
+   3.0,
+   3.0,
+   4.0,
+   3.0
+  ],
+  "mix_lo": [
+   1.0,
+   1.0,
+   0.3,
+   0.3
+  ],
+  "mlp": [
+   {
+    "N": 4000,
+    "epochs": 300
+   },
+   {
+    "N": 64000,
+    "epochs": 40
+   }
+  ],
+  "mlp_batch": 256,
+  "mlp_hidden": 64,
+  "mlp_lr": 0.003,
+  "monolith": [
+   {
+    "M": 320,
+    "N": 4000,
+    "seeds": 20
+   },
+   {
+    "M": 1280,
+    "N": 16000,
+    "seeds": 20
+   },
+   {
+    "M": 5120,
+    "N": 64000,
+    "seeds": 10
+   }
+  ],
+  "n_linear": 3000,
+  "n_piece": 1000,
+  "n_promote": 2000,
+  "n_test": 5000,
+  "pieces": {
+   "ADD": {
+    "M": 16,
+    "hi": [
+     20.0,
+     20.0
+    ],
+    "lo": [
+     -2.0,
+     -2.0
+    ]
+   },
+   "DIV": {
+    "M": 256,
+    "hi": [
+     4.0,
+     3.0
+    ],
+    "lo": [
+     0.3,
+     0.3
+    ]
+   },
+   "MUL": {
+    "M": 32,
+    "hi": [
+     5.0,
+     5.0
+    ],
+    "lo": [
+     1.0,
+     1.0
+    ]
+   },
+   "SQRT": {
+    "M": 16,
+    "hi": [
+     40.0
+    ],
+    "lo": [
+     1.0
+    ]
+   }
+  },
+  "ridge": 1e-08,
+  "seeds": 20,
+  "sigma_factor": 1.2,
+  "soft_cap": 2700.0
+ },
+ "entropy": 24036307954880720200613976015,
+ "note": "Generated once by --write-spec; config and smoke_overrides refreshed from demo.py before the specification commit (entropies unchanged, no recorded sampling had used them).",
+ "smoke_entropy": 73649276505581875118789250559,
+ "smoke_overrides": {
+  "mlp": [
+   {
+    "N": 1200,
+    "epochs": 20
+   }
+  ],
+  "monolith": [
+   {
+    "M": 320,
+    "N": 1200,
+    "seeds": 2
+   },
+   {
+    "M": 640,
+    "N": 2400,
+    "seeds": 2
+   }
+  ],
+  "n_linear": 900,
+  "n_piece": 300,
+  "n_promote": 600,
+  "n_test": 500,
+  "seeds": 2,
+  "soft_cap": 600.0
+ }
+}
