@@ -15,7 +15,6 @@ PARAMETER_NAMES = ('mu','diffusion','drive','output','incoming','soft_core','sig
 MODES = {'intact':0,'no_r':1,'no_geometry_to_mode':2,'no_mode_to_geometry':3}
 _NATIVE = None
 _PASSIVE_CACHE = OrderedDict()
-_PASSIVE_CACHE_BYTES = 64*1024*1024
 
 def exact_steps(time, dt):
     value = round(time/dt)
@@ -186,14 +185,9 @@ def advance(owner,duration,dt,sample_dt=None,_factor=True):
             key=(passive.identity(),duration,dt,sample_dt)
             if key not in _PASSIVE_CACHE:
                 _,path=advance(passive,duration,dt,sample_dt,_factor=False)
-                source_path=path[:,2*len(owner.z):].copy();source_path.flags.writeable=False
-                if source_path.nbytes>_PASSIVE_CACHE_BYTES:
-                    parts.append(source_path);continue
-                _PASSIVE_CACHE[key]=source_path
-                # Long exact paths are shared across all probes. Bound memory
-                # by actual array bytes, rather than by a misleading key count.
-                while len(_PASSIVE_CACHE)>1 and sum(v.nbytes for v in _PASSIVE_CACHE.values())>_PASSIVE_CACHE_BYTES:
-                    _PASSIVE_CACHE.popitem(last=False)
+                _PASSIVE_CACHE[key]=path[:,2*len(owner.z):].copy()
+                _PASSIVE_CACHE[key].flags.writeable=False
+                if len(_PASSIVE_CACHE)>1024:_PASSIVE_CACHE.popitem(last=False)
             _PASSIVE_CACHE.move_to_end(key)
             parts.append(_PASSIVE_CACHE[key])
         if not all_off:parts.append(active_frames[:,2*len(owner.z):])

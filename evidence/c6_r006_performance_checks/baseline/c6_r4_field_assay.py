@@ -29,21 +29,17 @@ class GridSet:
         # Block at requested sample times, compare every production step; never
         # keep every refined step or feed fine owners a coarse carrier.
         intervals=F.exact_steps(duration,sample_dt)
-        # Bound transient full-resolution memory while amortizing owner copies,
-        # native guards and exact passive-source cache keys across probe samples.
-        block_intervals=max(1,int(10./sample_dt))
-        for begin in range(0,intervals,block_intervals):
-            block_duration=min(block_intervals,intervals-begin)*sample_dt
+        for _ in range(intervals):
             flows=[]
             for k in range(3):
-                self.owners[k],flow=F.advance(self.owners[k],block_duration,dt/(2**k),dt)
-                flows.append(flow);collected[k].extend(flow[F.exact_steps(sample_dt,dt)::F.exact_steps(sample_dt,dt)])
+                self.owners[k],flow=F.advance(self.owners[k],sample_dt,dt/(2**k),dt)
+                flows.append(flow);collected[k].append(flow[-1])
                 trace[k].update(flow[1:,2*len(initial[k].z):].tobytes())
                 outgoing=F.emissions(initial[k],flow)
                 powers[k]+=np.sum(np.abs(outgoing[1:])**2,axis=0)*dt
                 out_max[k]=max(out_max[k],float(np.abs(outgoing).max()))
                 indices=np.flatnonzero(np.max(np.abs(outgoing),axis=1)>0)
-                if first[k] is None and len(indices):first[k]=self.owners[k].time-block_duration+int(indices[0])*dt
+                if first[k] is None and len(indices):first[k]=self.owners[k].time-sample_dt+int(indices[0])*dt
             errors=state_errors(initial[0],flows,scales)
             for name in maxima:maxima[name]=max(maxima[name],errors[name])
         limits=self.s['numerics'];passed=all(maxima[k]<=limits[k] for k in maxima)

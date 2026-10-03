@@ -1,0 +1,13 @@
+{
+  "kind": "INTERRUPTED_ENGINEERING_RUN",
+  "timestamp_utc": "2026-10-03T07:37:53.270371+00:00",
+  "status": "WITHDRAWN",
+  "source_commit": "441f8f78d8a3bac0fc9e47cd9d10363c5cff9a65",
+  "original_receipt_sha256": "5706bbc9e470c7e1209ccb70c2001b4f7e543a2089f21889945eedc1f4a476fe",
+  "original_artifacts": {
+    "results.json": "5706bbc9e470c7e1209ccb70c2001b4f7e543a2089f21889945eedc1f4a476fe"
+  },
+  "completed_worlds": 0,
+  "reason": "Owner requested profiling and performance improvements instead of continued waiting. Both active workers exceeded 15 minutes without completing a world. No recorded scientific outcome is changed or inferred.",
+  "action": "Terminate exactly the parent and two C6 workers, preserve original RUNNING receipt and compiled kernel, profile redundant work and optimize before any prospective fresh run."
+}

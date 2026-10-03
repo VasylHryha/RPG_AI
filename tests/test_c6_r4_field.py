@@ -555,3 +555,49 @@ def test_unsuccessful_source_raw_response_stays_in_world_artifact(tmp_path):
     gate.write_world(tmp_path,rows[0])
     saved=json.loads(gzip.decompress((tmp_path/value['raw']['artifact']).read_bytes()))
     assert saved['initial_source']['no_treatment_response']['raw']==raw
+
+
+def test_cached_drive_tracks_absolute_time_phases_and_amplitude():
+    # Exercise reuse and invalidation against the independent law, including a
+    # nonzero clock and returning to an older key after other inputs were used.
+    base=owner();base.time=17.3
+    changed_phase=base.clone();changed_phase.psi[3,2]+=.4
+    changed_drive=base.clone();changed_drive.model['drive']*=2
+    changed_clock=base.clone();changed_clock.time+=.1
+    for o in (base,base,changed_phase,changed_drive,changed_clock,base):
+        _,actual=F.advance(o,.2,.005,.005,_factor=False)
+        _,expected=R.advance(o,.2,.005,.005)
+        assert np.max(np.abs(actual-expected))<1e-11
+
+
+def test_blocked_assay_retains_every_sample_and_independent_full_scope():
+    s=P.load_settings();base=owner();base.cohorts[0].output=0.;duration=.3
+    grid=A.GridSet([base]*3,s);flows=grid.run(duration,'blocked-fixture',.1)
+    reference=[]
+    for k in range(3):
+        _,fine=R.advance(base,duration,s['dt']/2**k,s['dt'])
+        reference.append(fine)
+        assert np.max(np.abs(flows[k]-fine[::F.exact_steps(.1,s['dt'])]))<1e-11
+        check=grid.checks[-1]
+        assert check['source_trace_hash_by_dt'][k]==hashlib.sha256(
+            F.advance(base,duration,s['dt']/2**k,s['dt'])[1][1:,50:].tobytes()).hexdigest()
+        assert check['output_power_by_dt'][k]==[0.]*25
+    expected=A.state_errors(base,reference,[A.D.radius_of_gyration(base.cohorts[0].x)])
+    for key,value in expected.items():assert abs(grid.checks[-1]['max_errors'][key]-value)<1e-11
+
+
+def test_descriptor_shares_full_exact_source_paths_and_keeps_all_probes(monkeypatch):
+    s=P.load_settings();s['descriptor']=.3;base=owner();base.cohorts[0].output=0.
+    F._PASSIVE_CACHE.clear();original=F.advance;source_calls=[]
+    def observed(state,*args,**kwargs):
+        if kwargs.get('_factor') is False and state.cohorts:source_calls.append(len(state.cohorts))
+        return original(state,*args,**kwargs)
+    monkeypatch.setattr(F,'advance',observed)
+    grid=A.GridSet([base]*3,s);result=A.descriptor(grid,.3,'reuse-fixture')
+    # Exact live body/carrier evolves once per resolution, then remains present
+    # in every probe's full-state comparison, hash and returned response.
+    assert source_calls==[1,1,1]
+    assert len(grid.checks)==51 and len(result['raw'])==50
+    assert all(np.array(p['response_real_imag']).shape==(3,25,2) for p in result['raw'])
+    assert all(c['source_trace_hash_by_dt']==grid.checks[0]['source_trace_hash_by_dt'] for c in grid.checks)
+    assert sum(v.nbytes for v in F._PASSIVE_CACHE.values())<=F._PASSIVE_CACHE_BYTES

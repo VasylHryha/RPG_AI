@@ -1,5 +1,8 @@
 """Semantic mutants for the full R4 field apparatus; only pipeline execution."""
 MUTANTS={
+ 'cached_drive_clock_ignored':('native/c6_r4/field.cpp','it->start==start','true'),
+ 'cached_drive_phases_ignored':('native/c6_r4/field.cpp','std::equal(it->psi.begin(),it->psi.end(),psi)','true'),
+ 'cached_drive_amplitude_ignored':('native/c6_r4/field.cpp','it->amplitude==amplitude','true'),
  'nonzero_sham':('native/c6_r4/field.cpp','std::max(0.,masks[c*n+i])','std::abs(masks[c*n+i])'),
  'masked_denominator':('native/c6_r4/field.cpp','p[3]/selected*ow','p[3]/n*ow'),
  'no_r_J_leak':('native/c6_r4/field.cpp','(mode==1||mode==3)?0.:p[7]','mode==3?0.:p[7]'),
