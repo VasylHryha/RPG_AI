@@ -29,6 +29,7 @@ These are the author's transcriptions and readings, not primary records. Any ite
 | Tactical Stage 0 `evidence/tactical_composition_demo/` | `bc5ce29` spec+code, `ff6e00b` run + report | P1, P2, P4 SUPPORTED; P3, P5 INDETERMINATE |
 | Change-cost r1 | `d32485a`, `9dfb7b1`, amendment `b07eae3` | all INDETERMINATE (fine-tuning procedure was the defect; my first explanation was wrong) |
 | Change-cost r2 | `3381e03` spec+code, `e88354c` run + report | C1, C2, C3 SUPPORTED, C1 by a margin of 0.001 |
+| 0d Part A (after a Codex review of the proposal and a same-family pre-run review) | `c747e76` registration, run record and `REPORT_0D.md` in the following commit | V1, V3, V4 SUPPORTED, V2 EQUIVALENT, V5 REFUTED: the gain is the structure; V4 holds on fidelity only |
 
 ## Records that were missing
 
@@ -57,8 +58,8 @@ These are the author's transcriptions and readings, not primary records. Any ite
 ## Forward order
 
 1. `evidence/tactical_composition_demo/tcd_common/` (corrected shared tooling) and `CORRECTIONS.md` land with this record.
-2. `evidence/tactical_composition_demo/PROPOSAL_0D.md` (revision 2 after the Codex review, narrowed to Part A: structure versus composition under one tuning budget; fixed effect-size margins with paired intervals). A MOVE-only or both-piece change and an extrapolated unit type are deferred (its Appendix A). **Nothing in it runs until the owner approves it.**
-3. Later, only if the owner chooses: learning from outcomes, the squad level, an outside benchmark, the real simulator, and the RRG-specific shape-to-signature claim.
+2. `evidence/tactical_composition_demo/PROPOSAL_0D.md` revision 2 (after the Codex review, narrowed to Part A) was registered (`c747e76`) and run once: `REPORT_0D.md`. A MOVE-only or both-piece change and an extrapolated unit type stay deferred (its Appendix A).
+3. Next, owner's choice (recommended order): the squad level, then learning the pieces from outcomes; later an outside benchmark, the real simulator, and the RRG-specific shape-to-signature claim. Each needs its own proposal.
 
 ## What the owner can do with this record
 
