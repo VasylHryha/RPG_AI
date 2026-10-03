@@ -1,0 +1,404 @@
+{
+  "kind": "EXPLORATORY_NOT_C6_EVIDENCE",
+  "pilot_entropy": 328971379575872667725298599539775542927,
+  "entropy_namespace": "c6/exploratory/qh/2026-10-03/one-shot; pair + purpose SeedSequence, never final",
+  "settings": {
+    "schema": "geomind-c6-field/1",
+    "proposal_sha256": "8bbe0e5c4f38f0b1b370a114f29c315f005ca8be93c1f6f88697c297f161cbb5",
+    "conditions": [
+      "intact",
+      "no_r",
+      "no_backreaction"
+    ],
+    "development_entropy": 46036001,
+    "smoke_entropy": 46036002,
+    "bootstrap_entropy": 46036003,
+    "development_worlds": 10,
+    "final_worlds": 40,
+    "measurement_episodes": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "continuation_episode": 0,
+    "elements": 24,
+    "formation": 100.0,
+    "exposure": 100.0,
+    "window": 30.0,
+    "descriptor": 10.0,
+    "probe_sample_dt": 0.1,
+    "frame_dt": 1.0,
+    "dt": 0.005,
+    "refinement_factors": [
+      1,
+      2,
+      4
+    ],
+    "worlds_minimum": 10,
+    "bootstrap_resamples": 100000,
+    "ci_level": 0.996875,
+    "margins": {
+      "response": 0.01,
+      "later_formation": 0.1
+    },
+    "model": {
+      "mu": -0.18,
+      "diffusion": 0.05,
+      "drive": 0.02,
+      "output": 0.3,
+      "incoming": 0.2,
+      "soft_core": 0.05,
+      "sigma": 2.0,
+      "J": 0.8,
+      "K": 1.0
+    },
+    "detector": {
+      "min_size": 3,
+      "link_factor": 1.5,
+      "membership_jaccard": 0.95,
+      "shape_cv": 0.05,
+      "lock_std": 0.1,
+      "freq_tol": 0.01,
+      "pattern_tol": 0.1,
+      "kick_position": 0.1,
+      "kick_phase": 0.3,
+      "recovery_time": 30.0,
+      "recovery_jaccard": 0.9
+    },
+    "causal": {
+      "gm_window": 5.0,
+      "mg_window": 10.0,
+      "gm_scale": 1.5,
+      "phase_rms": 0.3,
+      "floor": 1e-08,
+      "vanish_absolute": 1e-12,
+      "vanish_fraction": 0.2,
+      "relative_spread": 0.1
+    },
+    "numerics": {
+      "position": 0.05,
+      "phase": 0.05,
+      "field": 0.05,
+      "response": 0.001,
+      "equivariance": 1e-09,
+      "reference": 1e-10
+    },
+    "budget": {
+      "development_seconds": 1800,
+      "panel_seconds": 10800,
+      "development_sources": 5,
+      "development_chains": 5,
+      "workers": 2
+    },
+    "reference_battery": {
+      "entropy": 46036004,
+      "exposure": 100.0,
+      "recovery": 30.0,
+      "probe": 10.0,
+      "dt": 0.005,
+      "conditions": [
+        "intact",
+        "no_r",
+        "no_backreaction",
+        "no_geometry_to_mode",
+        "no_mode_to_geometry"
+      ],
+      "state_scopes": "full owner including actual nonlinear field, carrier and heterogeneous material; maximum over every production step"
+    },
+    "arm_a_stop": "docs/decisions/0013-c6-r2-design-gate-stop.md",
+    "equivariance_entropy": 46034005,
+    "bootstrap_empty_policy": "INCONCLUSIVE_IF_ANY_EMPTY",
+    "bootstrap_empty_policy_note": "Original-world resampling retains the fixed eligible mask. Any empty eligible resample makes the interval undefined and the endpoint INCONCLUSIVE. No draws are dropped or redrawn. At 10 eligible of 40 and 100000 resamples, expected empty draws are about 1.006 and chance of at least one is about 63.4%; the ten-world minimum is necessary, not sufficient for a defined interval.",
+    "development_binding_policy": "Experiment-producing code, readiness/analysis, protocol, native/build, support tools, source pins, environment and milestone configuration. Tests and mutants are bound by the final milestone fingerprint, not the development receipt.",
+    "response_descriptor_scope": "Every reached source-operation prefix B_before and all B_after branches, even after physical source loss; unqualified R0 prefix has an explicit no-treatment response. Candidate qualification snapshots are retained in full; their response assay is scheduled only if they become a reached operation source.",
+    "reserved_entropy": {
+      "c6_r1_r2_development": 33333,
+      "c6_r3_development": 46033001,
+      "c6_r3_bootstrap": 46033002,
+      "c6_r004_development": 46034001,
+      "c6_r004_smoke": 46034002,
+      "c6_r004_bootstrap": 46034003,
+      "c6_r004_reference": 46034004,
+      "c6_covariance_fixture": 46034005,
+      "c6_r005_development": 46035001,
+      "c6_r005_smoke": 46035002,
+      "c6_r005_smoke_medium": 46035003,
+      "c6_r005_bootstrap": 46035003,
+      "c6_r005_reference": 46035004,
+      "fixture_owner": 882901,
+      "fixture_passive": 552,
+      "fixture_transform": 43,
+      "fixture_introduction": 8211,
+      "fixture_kick": 421,
+      "fixture_exact_mode": 569,
+      "fixture_analysis_a": 65,
+      "fixture_analysis_b": 42,
+      "fixture_analysis_c": 41,
+      "fixture_synthetic_turn1": 562,
+      "fixture_synthetic_turn2": 563,
+      "fixture_r3": 812,
+      "fixture_r1_neighbors": 610101,
+      "fixture_r1_grouping": 1234,
+      "c6_r3_smoke": 46033009,
+      "fixture_caller": 882902,
+      "fixture_r1_610202": 610202,
+      "fixture_r1_610203": 610203,
+      "fixture_r1_610204": 610204,
+      "fixture_r1_610205": 610205,
+      "fixture_r1_610301": 610301,
+      "fixture_r1_610302": 610302,
+      "fixture_r1_610401": 610401,
+      "fixture_r1_610402": 610402,
+      "fixture_r1_610403": 610403,
+      "fixture_r1_610501": 610501,
+      "fixture_r1_610502": 610502,
+      "c6_r006_development": 46036001,
+      "c6_r006_smoke": 46036002,
+      "c6_r006_smoke_medium": 46036003,
+      "c6_r006_bootstrap": 46036003,
+      "c6_r006_reference": 46036004
+    }
+  },
+  "file_hashes": {
+    "geomind/c6_r3_background.py": "4595d8b5aaf96d19c33b6ccab29fa0696ddc4ad4f3607ce4b5a0bdd6847e776f",
+    "geomind/c6_units.py": "5aa1b6e7c92dd84395d3cda970a2cf428caa44c6f8fb502aa181eb32cfe94639",
+    "geomind/c6_r4_integrity.py": "8e3af230381d1294bd22d74c4c91b99f64116a86b6d56310533ff610cb60602d",
+    "geomind/c6_r4_field.py": "ee3c775b918f165add8820a253ff87d190b2ec399f56219dcd5030abbf53e4fb",
+    "geomind/c2_reference.py": "1e0db46bd99f2007de98cc1193d60627f56d3b18b84af3569d9caa5d29fb91d3",
+    "geomind/c4_model.py": "4fafc161b65914a44dccaca6caefb59a5154079f17f564b4cdc4d44f58c59d33",
+    "geomind/c6_experiment.py": "f357e46bcbbce002fbbee86e56980a1cd36d744ffdd227b8602e022ff270be49",
+    "geomind/run_c2.py": "3cf4406144bbb31ecb7d4268966cab084e75a6eea6f2a2940a77d106c7ba14ca",
+    "geomind/run_c6_r4.py": "d61874c4efdc713178be0f94a99a18cdf1ea08493240ba876f8fe89ba6ffdf02",
+    "geomind/c1_cases.py": "56f080e4e06eecdcfcc2910250003d9b5d5a745b37f32d65b564c7876348bf05",
+    "geomind/c6_r4_field_protocol.py": "6a1671be6e810b6666c43b0dc77a71004c0140fc5d7c2113eff1009cc1ecb8f0",
+    "geomind/c5_experiment.py": "207ad017274bbda6f15b9a56370fe057883fcbdbc94863a7023ee803cbc5ca27",
+    "geomind/c5_detect.py": "19e1153c1d85ddc48eba765d46b66c87567da6ea1aff7309ad19df7390739f9a",
+    "geomind/references.py": "771f9b355083240fa2bf1a5e713bb1f964f9fd493d7e485aa2d4ba1f5e5255f9",
+    "geomind/c6_compose.py": "5de81b9d7f45578c177bb1de8921b04864dbd6e8548333fdd50a8e95285863e9",
+    "geomind/c6_r4_field_analysis.py": "c38cd9878a0f84b5cc6be4aaf0f38a356db650f4e4bb5a4be2757cb0cfff1852",
+    "geomind/c6_r4_field_reference.py": "a1606da2941e8a21d87172b8eac5b03cf876982995f4289a0378ffd1000638e1",
+    "geomind/c2_network.py": "f455862a5f8d1e07d0bb58a30b32cfeca592c876b09fb7cdd40874fd1d22a319",
+    "geomind/c6_r3_reference.py": "ba0882f2bda7a0b05e1aa017f467d938fc7c013d33341cdf767ed348e343fa7f",
+    "geomind/c5_coarse.py": "9912363d5303593b145994851ff8bc6bdd92da9f31285a96272a4413a0752638",
+    "geomind/c6_protocol.py": "8d38467c8bdc24722010e5f98b314dea75531ef3cc8a901bf6b7dfc842c90f18",
+    "geomind/__init__.py": "c68e2354ec176b189254b853c52029546321c6fbe5b85ac554e38986adc43039",
+    "geomind/c6_r4_analysis.py": "8efab94ae08dfc961249931a147c976260e57c8c0dc4d604ae55d48829d029e5",
+    "geomind/c6_native.py": "8bb6d0e829e414698ae393a1464b8bbf9101d63f8e5815d5ca8530d8da83d7e1",
+    "geomind/c4_detect.py": "ba7fd94efc0edf028df137dc617666c9b8540b914ab4fca1ce793c84d78aacb8",
+    "geomind/c6_r4_field_assay.py": "1a246728e63c304d633c0f6bdb9d625017389953bf7602ecc61025466aceb3dd",
+    "geomind/dataset.py": "003fa18f0519bdb177f4594b1565ca91006b8fad8c0b4ca3d1e450ac2927b48e",
+    "geomind/c2_cases.py": "d2711692ee486f223bdef96dfaa441c1141fe90a1aaee0187743845b2df834f8",
+    "geomind/geometry.py": "973740d321705d9c8633a6cd2da1696af91cec930e53bcb6b6b4831e280066f0",
+    "geomind/c5_compose.py": "beb4cd098a028df42988b8abcded523b5959c89261265be599f86e21872f9a8a",
+    "geomind/c5_units.py": "70576cc2357a19024b8db79694dd55ee89f767deb65cc11191d0aa159128205b",
+    "geomind/run_c1.py": "c561625056311ecee9ff795844b67775567db49a7b40f1697b4e6a9c74cbdeb5",
+    "geomind/c4_experiment.py": "53dc126a2c7c485e41273515c932fb91d113504b8e8351403b5d06cb0d11fc24",
+    "geomind/c6_effective.py": "4f6e66c4ee76e9bf8bbd434f91c207dbf59bd3a07adc49e5df7400d9d32c26d5",
+    "geomind/run_c6_r3.py": "eb8eed539e0cefa641f7d0177815553ae283a871c958d21a0ea86d997c4de5dc",
+    "geomind/run_c5.py": "50648958637ace8c114283f9a606bb24ed8b6c5af1572e369af03a272b12b6db",
+    "geomind/c1_reference.py": "1f853a205d18a26b7c9e544d8c3dd04980096ac56ced259672e40486a3c14df4",
+    "geomind/c6_r3_assay.py": "d1789574ae91b5bf2551dfc49c9286a041db428cb75eba4e33526dc188a3b84a",
+    "geomind/c6_levels.py": "2181f8156233903b54f9c1afcf2f9568eb05bab68035a1bbbbf813cb2b1d9204",
+    "geomind/run_c4.py": "248b02f7f7d41eae6363995d08c1f060620e115214d24c48cd32a54da743658e",
+    "geomind/run_c0.py": "75708d230390bac8297c8f3a9ebfbf910b37d5d9b688f13989e27b98ba84f0ea",
+    "geomind/incremental.py": "fcbb18a41f151da3d93c47f9779af0ae46adc3e45fe2f61581f825ab66118b23",
+    "geomind/c6_r3_protocol.py": "e99d63013d6b9cd3624bc835b2aadf60d68f9fd1a32238cb5d207e57562d4c84",
+    "tools/build_c6_r4.py": "6d25aca638b73194ca656b9df58a0f53615f4a98d163e3780aeedb456452ec6b",
+    "native/c6_r4/field.cpp": "be46eb613db693d7321070243d0ea3e4e35d8aeda620de62f01aed200d651e14",
+    "build/c6_r4/BUILD.json": "13fb44fad5adac8043b466e31d5869210b7fa5976ca991ce34f6b6308a9fe949",
+    "build/c6_r4/field.dylib": "4830141d5585f6a0e684808ccf339314bc3205f7dd6a30c4a5838b0dce5e01f4",
+    "experiments/c6_r4_protocol.json": "559a7638e60c3eeabec3b1a4e25b1f5c6557f32f4f98b1e8430398dba1ec7aab",
+    "experiments/c6_manifest.json": "175508818d618889c21beaf19bb17d18b119ad78c051dc7fcefdd58c46790df4",
+    "STATUS.json": "3c809da05733af7df0384a3bd5d553920500f56191e95952c416041ed517523f",
+    "pyproject.toml": "b13af15c4b02a76b429da4d76965cddf66f73d59198bca80d01fab7b51c705e2",
+    "uv.lock": "284881c4c71c8282aca81e9053794d2b0333f9ab10b21d9e425cba13bec918c8",
+    "docs/RRG_V0_2_1_ALIGNMENT_HANDOFF.md": "719781cbd5a302f58f0f57c064b32ca0a49e49546a1f88160582ba6235ca575e",
+    "research/rrg/v0.2.1/sources.json": "f7a167a819063873ac8d6df3d9fb67aa7f4f1ef667c876b5c9531916b6d80d7b",
+    "research/rrg/v0.2.1/CHANGELOG.md": "b477cf252760dc2bac3b57202df23383ab2811117b65ec610e21e5ac475f91d2",
+    "research/rrg/v0.2.1/06_evidence_catalog.md": "1306d8e0f86c3c25a09037dadbde0f140f9df30199b89e684f9bc71a6c96a5dc",
+    "research/rrg/v0.2.1/05_mathematical_source_model.md": "659e8640c91cb21815f32c45fb6cef9ddda302205cf20027607303721ee9bfab",
+    "research/rrg/v0.2.1/README.md": "0f5c2daaf6be3f3fac88832d566408ea6cdc2c16c42b397c448af83a8af418e7",
+    "research/rrg/v0.2.1/08_claim_coverage.md": "b63eaf69ec9f62085bdafb97536c642eb9d8ea8d2d5f09a377c4fbe28c04568e",
+    "research/rrg/v0.2.1/MANIFEST.json": "ee60e0ffc5134596549a5cdc6f6faf6088db62effce5ca34b389036365009f02",
+    "research/rrg/v0.2.1/04_recursive_background_generation.md": "e87a91d6ada03000bf231ebddc6eca0b4c6f31798b5588ebc79c904e69697f47",
+    "research/rrg/v0.2.1/07_audit_report.md": "222487df50faa457b85d5748a846f728f2c4fd9845b4a33ffac181d6e45ebfa7",
+    "research/rrg/v0.2.1/SHA256SUMS.txt": "ecdfadd256b520b2dbef4accb9f4a2df690bb5cf434c1ea9ca59d3a21ef2b9ac",
+    "research/rrg/v0.2.1/archive/06_evidence_catalog.md": "4c8bc30ce5e65d3cfef308bcb77e45131733024ba1584cc6a86a1f1d322a068d",
+    "research/rrg/v0.2.1/archive/rrg_research_2026-10-02.zip": "887a21c2afa955da8099dff967ad6f102a0a7a30fd5bacb581d8dd72333b2de6",
+    "research/rrg/v0.2.1/archive/05_mathematical_source_model.md": "0ea55a0b7ccdd9463d1282706e23736dff4e645537d37fb46589b5a3ec859d64",
+    "research/rrg/v0.2.1/archive/rrg_math_source_model_bundle.zip": "43a14dffd3ea8cbc8810c563eab7e5c241dd048d39398952dd2c3af417a8f274",
+    "research/rrg/v0.2.1/archive/README_v0.1.md": "33712698f2416a63237820b54240827b69775db1dda039b052758f50eced5c6f",
+    "research/rrg/v0.2.1/archive/04_recursive_background_generation.md": "3629e52a40d3d00bcc30800c7148291fa6b59afb332b3e92a7add8ad73da6a3f",
+    "research/rrg/v0.2.1/checks/baseline_hashes.json": "a12e129e5dabf397e94dad7394c0e7acb4833b2f1f4174e6eb0bab61d5faea3a",
+    "research/rrg/v0.2.1/checks/verify_small_results.py": "45b0ff7be762f2dc0ce66dd3acde6341d62e12df21f1325ed5b8b6014f8e6248",
+    "research/rrg/v0.2.1/checks/package_validation.json": "08119204887af30f804c7b8a6a7031a90f5be43ce8ba03f68601b72f75136353",
+    "research/rrg/v0.2.1/checks/validate_package.py": "6cc75c079176b3ec0a90527beba0159f454fe25519ed9efb205cf91e7057ea23",
+    "research/rrg/v0.2.1/checks/verification_results.json": "5586ec3ebf23e4df60afff048f1714c086ae36329f167af2ada69a4634d68133",
+    "research/rrg/v0.2.1/foundations/03_mathematical_core.md": "57d1aaa129d7edb780b83886b8b8ede40f7b30cf77a2d6b1f400c651ad1f92e4",
+    "research/rrg/v0.2.1/foundations/ERRATA.md": "d01091bbc9fec01e1cb7ad16763b344849747b27b32b6e378d5f04d02e65b58f",
+    "research/rrg/v0.2.1/foundations/01_world_explanation.md": "a3c4f376d4a81bf8fc158d3c786c92e5c88b454aeead88173c4139420f4bbddb",
+    "research/rrg/v0.2.1/foundations/02_scientific_framework.md": "269b6e4bd7c76e15f19f4c0ff752276ba2a1de76e0b84294516d2d3ef8c998c5",
+    "research/rrg/v0.2.1.expected.json": "37e8249338a95e32de72f4e30091e104697606faebd53b22bda8b90124e3bceb",
+    "research/rrg/v0.2.1.import.json": "3f34717f795415f5ed4b11df060cdfc3c36f0bd8b1d491853141778bbc2d3da2",
+    "docs/reviews/c6_unblocking_synthesis_gpt.md": "c926677751aaefe4d0e3251179c97a1a4a923d4111ddff516ace59dc9799e510",
+    "evidence/c6_dev_pilot/r4_sensitivity/pilot.py": "24f7b0bf85686c512d089248e1fdb3686d8c2b99dbade37fbc93a4c82e3950ef",
+    "evidence/c6_dev_pilot/r4_sensitivity/test_harness.py": "b5db90eec0d57919d5e66940c77211974a039794075f0c9abcc486f48ad462fb",
+    "evidence/c6_dev_pilot/r4_sensitivity/SPECIFICATION.md": "f3f0197f82cba5d40744aefffead004fca011f7d91e55d2fd903346bc811e5c7",
+    ".venv/bin/python": "6e7ae61f68a3838094fc56590f84c52069a97d7816f6bb79e0e85995b340e464"
+  },
+  "native_build": {
+    "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+    "flags": [
+      "-std=c++17",
+      "-O2",
+      "-fno-fast-math",
+      "-ffp-contract=off",
+      "-dynamiclib"
+    ],
+    "source_sha256": "be46eb613db693d7321070243d0ea3e4e35d8aeda620de62f01aed200d651e14",
+    "binary_sha256": "4830141d5585f6a0e684808ccf339314bc3205f7dd6a30c4a5838b0dce5e01f4"
+  },
+  "quiet_duration": 100.0,
+  "patch_radius": 0.8744,
+  "amplitude_boundary": 0.485206,
+  "continuation_duration": 100.0,
+  "schedule": [
+    [
+      0,
+      "Q"
+    ],
+    [
+      0,
+      "H"
+    ],
+    [
+      1,
+      "H"
+    ],
+    [
+      1,
+      "Q"
+    ],
+    [
+      2,
+      "Q"
+    ],
+    [
+      2,
+      "H"
+    ],
+    [
+      3,
+      "H"
+    ],
+    [
+      3,
+      "Q"
+    ],
+    [
+      4,
+      "Q"
+    ],
+    [
+      4,
+      "H"
+    ],
+    [
+      5,
+      "H"
+    ],
+    [
+      5,
+      "Q"
+    ],
+    [
+      6,
+      "Q"
+    ],
+    [
+      6,
+      "H"
+    ],
+    [
+      7,
+      "H"
+    ],
+    [
+      7,
+      "Q"
+    ],
+    [
+      8,
+      "Q"
+    ],
+    [
+      8,
+      "H"
+    ],
+    [
+      9,
+      "H"
+    ],
+    [
+      9,
+      "Q"
+    ],
+    [
+      10,
+      "Q"
+    ],
+    [
+      10,
+      "H"
+    ],
+    [
+      11,
+      "H"
+    ],
+    [
+      11,
+      "Q"
+    ],
+    [
+      12,
+      "Q"
+    ],
+    [
+      12,
+      "H"
+    ],
+    [
+      13,
+      "H"
+    ],
+    [
+      13,
+      "Q"
+    ],
+    [
+      14,
+      "Q"
+    ],
+    [
+      14,
+      "H"
+    ],
+    [
+      15,
+      "H"
+    ],
+    [
+      15,
+      "Q"
+    ]
+  ],
+  "caps": {
+    "workers": 2,
+    "wall_seconds": 900.0,
+    "cancel_wall_seconds": 870.0,
+    "cpu_seconds": 1800.0,
+    "worker_rss_bytes": 2147483648,
+    "arm_wall_seconds": 300.0
+  }
+}
