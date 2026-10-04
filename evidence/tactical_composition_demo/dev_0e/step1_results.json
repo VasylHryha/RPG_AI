@@ -1,0 +1,871 @@
+{
+ "note": "0e development step 1; seeds 0-9; 200 episodes per opponent per cell",
+ "summary": {
+  "headroom_D_median": 0.253125,
+  "headroom_D_min": 0.21625000000000005,
+  "headroom_by_opponent_median": {
+   "rush": 0.28,
+   "kiter": 0.22874999999999998
+  },
+  "headroom_exact_95": [
+   0.22875,
+   0.28874999999999995
+  ],
+  "ref_distance": 4.72128062851051,
+  "L": {
+   "aim_admissible": 0.9869477956900126,
+   "n_unique_best": 17458.7,
+   "move_alone": 0.9738232307657327,
+   "move_hold": 0.9772528508155893,
+   "move_approach": 0.9712265666589722,
+   "move_backoff": 0.9752304713620241,
+   "n_hold": 5450.9,
+   "n_approach": 9407.1,
+   "n_backoff": 2600.7,
+   "joint": 0.9610447103025563,
+   "macro": 0.9648091146086848,
+   "n_params": 787.0,
+   "min_unique_best": 17110,
+   "min_backoff_states": 2058
+  },
+  "J": {
+   "aim_admissible": 0.9679678072721488,
+   "n_unique_best": 17458.7,
+   "move_alone": 0.9730002572738554,
+   "move_hold": 0.9887751679825723,
+   "move_approach": 0.9652958380746226,
+   "move_backoff": 0.9674801162089188,
+   "n_hold": 5450.9,
+   "n_approach": 9407.1,
+   "n_backoff": 2600.7,
+   "joint": 0.941680604373847,
+   "macro": 0.9492660783249571,
+   "n_params": 9283.0,
+   "min_unique_best": 17110,
+   "min_backoff_states": 2058
+  },
+  "seconds": {
+   "seconds_data": 34.46101129055023,
+   "seconds_fit_L": 13.448886728286743,
+   "seconds_fit_J": 40.864116954803464,
+   "seconds_fixed_state_metrics": 0.4761819839477539,
+   "seconds_reference_cells": 29.28860421180725,
+   "seconds_one_learned_cell": 12.256992506980897,
+   "seconds_total": 130.7957942008972
+  },
+  "LL_rush_score_mean": 0.77,
+  "wall_seconds": 224.4
+ },
+ "rows": [
+  {
+   "seed": 0,
+   "train_states": 116228,
+   "val_states": 19170,
+   "seconds_data": 35.57430696487427,
+   "seconds_fit_L": 14.678658723831177,
+   "seconds_fit_J": 45.70030117034912,
+   "ref_distance_median_to_teacher_target": 4.75054027698312,
+   "L": {
+    "aim_admissible": 0.9850711856591158,
+    "n_unique_best": 17349,
+    "move_alone": 0.9790189636290276,
+    "move_hold": 0.9805089334055225,
+    "move_approach": 0.9779781879194631,
+    "move_backoff": 0.9797535211267606,
+    "n_hold": 5541,
+    "n_approach": 9536,
+    "n_backoff": 2272,
+    "joint": 0.9643207101273849,
+    "macro": 0.9684794284619617,
+    "n_params": 787
+   },
+   "J": {
+    "aim_admissible": 0.9691624877514554,
+    "n_unique_best": 17349,
+    "move_alone": 0.9684131650239207,
+    "move_hold": 0.9747338025627144,
+    "move_approach": 0.9587877516778524,
+    "move_backoff": 0.9933978873239436,
+    "n_hold": 5541,
+    "n_approach": 9536,
+    "n_backoff": 2272,
+    "joint": 0.9384402559225316,
+    "macro": 0.9527624220267575,
+    "n_params": 9283
+   },
+   "score_teacher_rush": {
+    "score": 0.77,
+    "episodes": 200,
+    "win": 152,
+    "loss": 44,
+    "draw": 4,
+    "timeout": 0
+   },
+   "score_rush_rush": {
+    "score": 0.4875,
+    "episodes": 200,
+    "win": 94,
+    "loss": 99,
+    "draw": 7,
+    "timeout": 0
+   },
+   "score_teacher_kiter": {
+    "score": 0.505,
+    "episodes": 200,
+    "win": 99,
+    "loss": 97,
+    "draw": 4,
+    "timeout": 0
+   },
+   "score_rush_kiter": {
+    "score": 0.21,
+    "episodes": 200,
+    "win": 40,
+    "loss": 156,
+    "draw": 4,
+    "timeout": 0
+   },
+   "score_LL_rush": {
+    "score": 0.755,
+    "episodes": 200,
+    "win": 149,
+    "loss": 47,
+    "draw": 4,
+    "timeout": 0
+   },
+   "seconds_fixed_state_metrics": 0.5376830101013184,
+   "seconds_reference_cells": 33.01319694519043,
+   "seconds_one_learned_cell": 13.790292024612427,
+   "seconds_total": 143.29443979263306
+  },
+  {
+   "seed": 1,
+   "train_states": 118206,
+   "val_states": 19515,
+   "seconds_data": 36.44385313987732,
+   "seconds_fit_L": 14.218851089477539,
+   "seconds_fit_J": 45.18420886993408,
+   "ref_distance_median_to_teacher_target": 4.717426787042332,
+   "L": {
+    "aim_admissible": 0.9862653419053186,
+    "n_unique_best": 17110,
+    "move_alone": 0.9713617767387492,
+    "move_hold": 0.9840926944226237,
+    "move_approach": 0.9603324099722992,
+    "move_backoff": 0.9829602405613097,
+    "n_hold": 5092,
+    "n_approach": 9025,
+    "n_backoff": 2993,
+    "joint": 0.9578609000584454,
+    "macro": 0.9648691979949282,
+    "n_params": 787
+   },
+   "J": {
+    "aim_admissible": 0.9714202220923437,
+    "n_unique_best": 17110,
+    "move_alone": 0.9739333722969024,
+    "move_hold": 0.9913589945011784,
+    "move_approach": 0.9697506925207756,
+    "move_backoff": 0.9568994320080187,
+    "n_hold": 5092,
+    "n_approach": 9025,
+    "n_backoff": 2993,
+    "joint": 0.9469316189362945,
+    "macro": 0.950362374092537,
+    "n_params": 9283
+   },
+   "score_teacher_rush": {
+    "score": 0.77,
+    "episodes": 200,
+    "win": 152,
+    "loss": 44,
+    "draw": 4,
+    "timeout": 0
+   },
+   "score_rush_rush": {
+    "score": 0.4925,
+    "episodes": 200,
+    "win": 95,
+    "loss": 98,
+    "draw": 7,
+    "timeout": 0
+   },
+   "score_teacher_kiter": {
+    "score": 0.5325,
+    "episodes": 200,
+    "win": 102,
+    "loss": 89,
+    "draw": 9,
+    "timeout": 0
+   },
+   "score_rush_kiter": {
+    "score": 0.3025,
+    "episodes": 200,
+    "win": 58,
+    "loss": 137,
+    "draw": 5,
+    "timeout": 0
+   },
+   "score_LL_rush": {
+    "score": 0.765,
+    "episodes": 200,
+    "win": 150,
+    "loss": 44,
+    "draw": 6,
+    "timeout": 0
+   },
+   "seconds_fixed_state_metrics": 0.4796760082244873,
+   "seconds_reference_cells": 32.08240604400635,
+   "seconds_one_learned_cell": 14.226816892623901,
+   "seconds_total": 142.63581323623657
+  },
+  {
+   "seed": 2,
+   "train_states": 116754,
+   "val_states": 19726,
+   "seconds_data": 35.76010608673096,
+   "seconds_fit_L": 14.211556911468506,
+   "seconds_fit_J": 45.586483001708984,
+   "ref_distance_median_to_teacher_target": 4.679514799181187,
+   "L": {
+    "aim_admissible": 0.9895018985928077,
+    "n_unique_best": 17908,
+    "move_alone": 0.9658253294616931,
+    "move_hold": 0.9803751302535603,
+    "move_approach": 0.9588192036978674,
+    "move_backoff": 0.959331052831623,
+    "n_hold": 5758,
+    "n_approach": 9519,
+    "n_backoff": 2631,
+    "joint": 0.9558856377038195,
+    "macro": 0.9585000670565841,
+    "n_params": 787
+   },
+   "J": {
+    "aim_admissible": 0.9676680813044449,
+    "n_unique_best": 17908,
+    "move_alone": 0.9676122403395131,
+    "move_hold": 0.9935741576936437,
+    "move_approach": 0.9654375459607102,
+    "move_backoff": 0.9186621056632459,
+    "n_hold": 5758,
+    "n_approach": 9519,
+    "n_backoff": 2631,
+    "joint": 0.9358387312932768,
+    "macro": 0.9352248420962548,
+    "n_params": 9283
+   },
+   "score_teacher_rush": {
+    "score": 0.7725,
+    "episodes": 200,
+    "win": 149,
+    "loss": 40,
+    "draw": 11,
+    "timeout": 0
+   },
+   "score_rush_rush": {
+    "score": 0.495,
+    "episodes": 200,
+    "win": 94,
+    "loss": 96,
+    "draw": 10,
+    "timeout": 0
+   },
+   "score_teacher_kiter": {
+    "score": 0.5225,
+    "episodes": 200,
+    "win": 100,
+    "loss": 91,
+    "draw": 9,
+    "timeout": 0
+   },
+   "score_rush_kiter": {
+    "score": 0.295,
+    "episodes": 200,
+    "win": 56,
+    "loss": 138,
+    "draw": 6,
+    "timeout": 0
+   },
+   "score_LL_rush": {
+    "score": 0.7575,
+    "episodes": 200,
+    "win": 147,
+    "loss": 44,
+    "draw": 9,
+    "timeout": 0
+   },
+   "seconds_fixed_state_metrics": 0.6063330173492432,
+   "seconds_reference_cells": 32.60856890678406,
+   "seconds_one_learned_cell": 13.941589832305908,
+   "seconds_total": 142.71463894844055
+  },
+  {
+   "seed": 3,
+   "train_states": 117583,
+   "val_states": 19919,
+   "seconds_data": 36.80205202102661,
+   "seconds_fit_L": 15.288561820983887,
+   "seconds_fit_J": 45.644174098968506,
+   "ref_distance_median_to_teacher_target": 4.73594941078659,
+   "L": {
+    "aim_admissible": 0.9911062657792059,
+    "n_unique_best": 17428,
+    "move_alone": 0.9740647234335552,
+    "move_hold": 0.9745475113122172,
+    "move_approach": 0.9749443207126949,
+    "move_backoff": 0.9707379134860051,
+    "n_hold": 5304,
+    "n_approach": 8980,
+    "n_backoff": 3144,
+    "joint": 0.9652857470736745,
+    "macro": 0.9666483334173996,
+    "n_params": 787
+   },
+   "J": {
+    "aim_admissible": 0.9696465457883865,
+    "n_unique_best": 17428,
+    "move_alone": 0.972802386963507,
+    "move_hold": 0.9843514328808446,
+    "move_approach": 0.9628062360801781,
+    "move_backoff": 0.9818702290076335,
+    "n_hold": 5304,
+    "n_approach": 8980,
+    "n_backoff": 3144,
+    "joint": 0.942563690612807,
+    "macro": 0.9528071381581852,
+    "n_params": 9283
+   },
+   "score_teacher_rush": {
+    "score": 0.7675,
+    "episodes": 200,
+    "win": 151,
+    "loss": 44,
+    "draw": 5,
+    "timeout": 0
+   },
+   "score_rush_rush": {
+    "score": 0.4625,
+    "episodes": 200,
+    "win": 88,
+    "loss": 103,
+    "draw": 9,
+    "timeout": 0
+   },
+   "score_teacher_kiter": {
+    "score": 0.48,
+    "episodes": 200,
+    "win": 92,
+    "loss": 100,
+    "draw": 8,
+    "timeout": 0
+   },
+   "score_rush_kiter": {
+    "score": 0.2875,
+    "episodes": 200,
+    "win": 55,
+    "loss": 140,
+    "draw": 5,
+    "timeout": 0
+   },
+   "score_LL_rush": {
+    "score": 0.77,
+    "episodes": 200,
+    "win": 151,
+    "loss": 43,
+    "draw": 6,
+    "timeout": 0
+   },
+   "seconds_fixed_state_metrics": 0.7204113006591797,
+   "seconds_reference_cells": 34.372928619384766,
+   "seconds_one_learned_cell": 11.644968271255493,
+   "seconds_total": 144.47309613227844
+  },
+  {
+   "seed": 4,
+   "train_states": 117865,
+   "val_states": 19370,
+   "seconds_data": 36.098771810531616,
+   "seconds_fit_L": 14.691397905349731,
+   "seconds_fit_J": 45.09243321418762,
+   "ref_distance_median_to_teacher_target": 4.73053292517636,
+   "L": {
+    "aim_admissible": 0.9871041369472182,
+    "n_unique_best": 17525,
+    "move_alone": 0.9714122681883024,
+    "move_hold": 0.9678714859437751,
+    "move_approach": 0.9672881910369644,
+    "move_backoff": 0.98944,
+    "n_hold": 5229,
+    "n_approach": 9171,
+    "n_backoff": 3125,
+    "joint": 0.9589728958630528,
+    "macro": 0.965354766555982,
+    "n_params": 787
+   },
+   "J": {
+    "aim_admissible": 0.9675320970042796,
+    "n_unique_best": 17525,
+    "move_alone": 0.9755206847360913,
+    "move_hold": 0.9934978007267163,
+    "move_approach": 0.9627085377821394,
+    "move_backoff": 0.98304,
+    "n_hold": 5229,
+    "n_approach": 9171,
+    "n_backoff": 3125,
+    "joint": 0.9434522111269615,
+    "macro": 0.9524248757335995,
+    "n_params": 9283
+   },
+   "score_teacher_rush": {
+    "score": 0.775,
+    "episodes": 200,
+    "win": 154,
+    "loss": 44,
+    "draw": 2,
+    "timeout": 0
+   },
+   "score_rush_rush": {
+    "score": 0.525,
+    "episodes": 200,
+    "win": 100,
+    "loss": 90,
+    "draw": 10,
+    "timeout": 0
+   },
+   "score_teacher_kiter": {
+    "score": 0.525,
+    "episodes": 200,
+    "win": 103,
+    "loss": 93,
+    "draw": 4,
+    "timeout": 0
+   },
+   "score_rush_kiter": {
+    "score": 0.3175,
+    "episodes": 200,
+    "win": 61,
+    "loss": 134,
+    "draw": 5,
+    "timeout": 0
+   },
+   "score_LL_rush": {
+    "score": 0.7525,
+    "episodes": 200,
+    "win": 149,
+    "loss": 48,
+    "draw": 3,
+    "timeout": 0
+   },
+   "seconds_fixed_state_metrics": 0.5410456657409668,
+   "seconds_reference_cells": 33.81198835372925,
+   "seconds_one_learned_cell": 13.063216924667358,
+   "seconds_total": 143.29885387420654
+  },
+  {
+   "seed": 5,
+   "train_states": 117168,
+   "val_states": 19475,
+   "seconds_data": 36.439857959747314,
+   "seconds_fit_L": 14.330390930175781,
+   "seconds_fit_J": 45.523093938827515,
+   "ref_distance_median_to_teacher_target": 4.725134469978686,
+   "L": {
+    "aim_admissible": 0.9856649395509499,
+    "n_unique_best": 17370,
+    "move_alone": 0.9775474956822107,
+    "move_hold": 0.9807000946073794,
+    "move_approach": 0.9758830434318643,
+    "move_backoff": 0.9771554900515844,
+    "n_hold": 5285,
+    "n_approach": 9371,
+    "n_backoff": 2714,
+    "joint": 0.9633275762809441,
+    "macro": 0.9672501422969598,
+    "n_params": 787
+   },
+   "J": {
+    "aim_admissible": 0.9674150834772597,
+    "n_unique_best": 17370,
+    "move_alone": 0.9726540011514104,
+    "move_hold": 0.9784295175023652,
+    "move_approach": 0.9629708675701633,
+    "move_backoff": 0.9948415622697127,
+    "n_hold": 5285,
+    "n_approach": 9371,
+    "n_backoff": 2714,
+    "joint": 0.9406447898675878,
+    "macro": 0.955794959894274,
+    "n_params": 9283
+   },
+   "score_teacher_rush": {
+    "score": 0.78,
+    "episodes": 200,
+    "win": 154,
+    "loss": 42,
+    "draw": 4,
+    "timeout": 0
+   },
+   "score_rush_rush": {
+    "score": 0.4875,
+    "episodes": 200,
+    "win": 93,
+    "loss": 98,
+    "draw": 9,
+    "timeout": 0
+   },
+   "score_teacher_kiter": {
+    "score": 0.4975,
+    "episodes": 200,
+    "win": 97,
+    "loss": 98,
+    "draw": 5,
+    "timeout": 0
+   },
+   "score_rush_kiter": {
+    "score": 0.28,
+    "episodes": 200,
+    "win": 55,
+    "loss": 143,
+    "draw": 2,
+    "timeout": 0
+   },
+   "score_LL_rush": {
+    "score": 0.785,
+    "episodes": 200,
+    "win": 154,
+    "loss": 40,
+    "draw": 6,
+    "timeout": 0
+   },
+   "seconds_fixed_state_metrics": 0.5103070735931396,
+   "seconds_reference_cells": 32.30302715301514,
+   "seconds_one_learned_cell": 13.760479927062988,
+   "seconds_total": 142.8671579360962
+  },
+  {
+   "seed": 6,
+   "train_states": 117355,
+   "val_states": 19297,
+   "seconds_data": 36.366329193115234,
+   "seconds_fit_L": 14.523086786270142,
+   "seconds_fit_J": 45.582759141922,
+   "ref_distance_median_to_teacher_target": 4.691190423286664,
+   "L": {
+    "aim_admissible": 0.986851799376594,
+    "n_unique_best": 17645,
+    "move_alone": 0.9801643525077925,
+    "move_hold": 0.9843530239099859,
+    "move_approach": 0.9804020608142237,
+    "move_backoff": 0.967444120505345,
+    "n_hold": 5688,
+    "n_approach": 9899,
+    "n_backoff": 2058,
+    "joint": 0.9671294984414849,
+    "macro": 0.9675638063332138,
+    "n_params": 787
+   },
+   "J": {
+    "aim_admissible": 0.9521677529045055,
+    "n_unique_best": 17645,
+    "move_alone": 0.9792009067724567,
+    "move_hold": 0.9987693389592124,
+    "move_approach": 0.9681786038993838,
+    "move_backoff": 0.978134110787172,
+    "n_hold": 5688,
+    "n_approach": 9899,
+    "n_backoff": 2058,
+    "joint": 0.9318787191839047,
+    "macro": 0.9444342470401828,
+    "n_params": 9283
+   },
+   "score_teacher_rush": {
+    "score": 0.7925,
+    "episodes": 200,
+    "win": 156,
+    "loss": 39,
+    "draw": 5,
+    "timeout": 0
+   },
+   "score_rush_rush": {
+    "score": 0.505,
+    "episodes": 200,
+    "win": 96,
+    "loss": 94,
+    "draw": 10,
+    "timeout": 0
+   },
+   "score_teacher_kiter": {
+    "score": 0.505,
+    "episodes": 200,
+    "win": 98,
+    "loss": 96,
+    "draw": 6,
+    "timeout": 0
+   },
+   "score_rush_kiter": {
+    "score": 0.2275,
+    "episodes": 200,
+    "win": 43,
+    "loss": 152,
+    "draw": 5,
+    "timeout": 0
+   },
+   "score_LL_rush": {
+    "score": 0.795,
+    "episodes": 200,
+    "win": 155,
+    "loss": 37,
+    "draw": 8,
+    "timeout": 0
+   },
+   "seconds_fixed_state_metrics": 0.5155138969421387,
+   "seconds_reference_cells": 32.797223806381226,
+   "seconds_one_learned_cell": 13.496655225753784,
+   "seconds_total": 143.28156805038452
+  },
+  {
+   "seed": 7,
+   "train_states": 117420,
+   "val_states": 19595,
+   "seconds_data": 35.90116095542908,
+   "seconds_fit_L": 14.785959005355835,
+   "seconds_fit_J": 45.451170921325684,
+   "ref_distance_median_to_teacher_target": 4.66140361422638,
+   "L": {
+    "aim_admissible": 0.9861554238833181,
+    "n_unique_best": 17552,
+    "move_alone": 0.966841385597083,
+    "move_hold": 0.9690850607576841,
+    "move_approach": 0.9655319603030627,
+    "move_backoff": 0.9667311411992263,
+    "n_hold": 5596,
+    "n_approach": 9371,
+    "n_backoff": 2585,
+    "joint": 0.9534525979945305,
+    "macro": 0.9569061065826595,
+    "n_params": 787
+   },
+   "J": {
+    "aim_admissible": 0.968094804010939,
+    "n_unique_best": 17552,
+    "move_alone": 0.9735642661804923,
+    "move_hold": 0.994639027877055,
+    "move_approach": 0.9686266140219827,
+    "move_backoff": 0.9458413926499033,
+    "n_hold": 5596,
+    "n_approach": 9371,
+    "n_backoff": 2585,
+    "joint": 0.9423427529626254,
+    "macro": 0.9444932300112477,
+    "n_params": 9283
+   },
+   "score_teacher_rush": {
+    "score": 0.7575,
+    "episodes": 200,
+    "win": 148,
+    "loss": 45,
+    "draw": 7,
+    "timeout": 0
+   },
+   "score_rush_rush": {
+    "score": 0.5075,
+    "episodes": 200,
+    "win": 97,
+    "loss": 94,
+    "draw": 9,
+    "timeout": 0
+   },
+   "score_teacher_kiter": {
+    "score": 0.5075,
+    "episodes": 200,
+    "win": 98,
+    "loss": 95,
+    "draw": 7,
+    "timeout": 0
+   },
+   "score_rush_kiter": {
+    "score": 0.2625,
+    "episodes": 200,
+    "win": 51,
+    "loss": 146,
+    "draw": 3,
+    "timeout": 0
+   },
+   "score_LL_rush": {
+    "score": 0.7375,
+    "episodes": 200,
+    "win": 144,
+    "loss": 49,
+    "draw": 7,
+    "timeout": 0
+   },
+   "seconds_fixed_state_metrics": 0.4601478576660156,
+   "seconds_reference_cells": 32.062705278396606,
+   "seconds_one_learned_cell": 13.836915016174316,
+   "seconds_total": 142.49805903434753
+  },
+  {
+   "seed": 8,
+   "train_states": 117776,
+   "val_states": 19354,
+   "seconds_data": 27.26618003845215,
+   "seconds_fit_L": 8.857213973999023,
+   "seconds_fit_J": 22.599152088165283,
+   "ref_distance_median_to_teacher_target": 4.67814775654753,
+   "L": {
+    "aim_admissible": 0.9833570817896836,
+    "n_unique_best": 17545,
+    "move_alone": 0.9756625819321744,
+    "move_hold": 0.9820065430752454,
+    "move_approach": 0.9725721251523771,
+    "move_backoff": 0.9736243747157799,
+    "n_hold": 5502,
+    "n_approach": 9844,
+    "n_backoff": 2199,
+    "joint": 0.9593616414933029,
+    "macro": 0.9638590905920319,
+    "n_params": 787
+   },
+   "J": {
+    "aim_admissible": 0.970703904246224,
+    "n_unique_best": 17545,
+    "move_alone": 0.9722998005129666,
+    "move_hold": 0.9903671392221011,
+    "move_approach": 0.9638358390898009,
+    "move_backoff": 0.9649840836743975,
+    "n_hold": 5502,
+    "n_approach": 9844,
+    "n_backoff": 2199,
+    "joint": 0.944086634368766,
+    "macro": 0.9492938445129403,
+    "n_params": 9283
+   },
+   "score_teacher_rush": {
+    "score": 0.7975,
+    "episodes": 200,
+    "win": 157,
+    "loss": 38,
+    "draw": 5,
+    "timeout": 0
+   },
+   "score_rush_rush": {
+    "score": 0.47,
+    "episodes": 200,
+    "win": 90,
+    "loss": 102,
+    "draw": 8,
+    "timeout": 0
+   },
+   "score_teacher_kiter": {
+    "score": 0.54,
+    "episodes": 200,
+    "win": 106,
+    "loss": 90,
+    "draw": 4,
+    "timeout": 0
+   },
+   "score_rush_kiter": {
+    "score": 0.25,
+    "episodes": 200,
+    "win": 48,
+    "loss": 148,
+    "draw": 4,
+    "timeout": 0
+   },
+   "score_LL_rush": {
+    "score": 0.7625,
+    "episodes": 200,
+    "win": 150,
+    "loss": 45,
+    "draw": 5,
+    "timeout": 0
+   },
+   "seconds_fixed_state_metrics": 0.2020261287689209,
+   "seconds_reference_cells": 14.862745761871338,
+   "seconds_one_learned_cell": 7.562619209289551,
+   "seconds_total": 81.34993720054626
+  },
+  {
+   "seed": 9,
+   "train_states": 117684,
+   "val_states": 19030,
+   "seconds_data": 27.957494735717773,
+   "seconds_fit_L": 8.90319013595581,
+   "seconds_fit_J": 22.277393102645874,
+   "ref_distance_median_to_teacher_target": 4.8013726830075445,
+   "L": {
+    "aim_admissible": 0.9883998834159138,
+    "n_unique_best": 17155,
+    "move_alone": 0.9763334304867386,
+    "move_hold": 0.9689880304678999,
+    "move_approach": 0.9785141635489043,
+    "move_backoff": 0.9851268591426072,
+    "n_hold": 5514,
+    "n_approach": 9355,
+    "n_backoff": 2286,
+    "joint": 0.9648498979889245,
+    "macro": 0.9686602067951289,
+    "n_params": 787
+   },
+   "J": {
+    "aim_admissible": 0.9758670941416496,
+    "n_unique_best": 17155,
+    "move_alone": 0.9740017487612941,
+    "move_hold": 0.9880304678998912,
+    "move_approach": 0.9698556921432389,
+    "move_backoff": 0.9571303587051618,
+    "n_hold": 5514,
+    "n_approach": 9355,
+    "n_backoff": 2286,
+    "joint": 0.9506266394637132,
+    "macro": 0.9550628496835935,
+    "n_params": 9283
+   },
+   "score_teacher_rush": {
+    "score": 0.81,
+    "episodes": 200,
+    "win": 160,
+    "loss": 36,
+    "draw": 4,
+    "timeout": 0
+   },
+   "score_rush_rush": {
+    "score": 0.56,
+    "episodes": 200,
+    "win": 105,
+    "loss": 81,
+    "draw": 14,
+    "timeout": 0
+   },
+   "score_teacher_kiter": {
+    "score": 0.455,
+    "episodes": 200,
+    "win": 88,
+    "loss": 106,
+    "draw": 6,
+    "timeout": 0
+   },
+   "score_rush_kiter": {
+    "score": 0.2725,
+    "episodes": 200,
+    "win": 53,
+    "loss": 144,
+    "draw": 3,
+    "timeout": 0
+   },
+   "score_LL_rush": {
+    "score": 0.82,
+    "episodes": 200,
+    "win": 161,
+    "loss": 33,
+    "draw": 6,
+    "timeout": 0
+   },
+   "seconds_fixed_state_metrics": 0.1886758804321289,
+   "seconds_reference_cells": 14.971251249313354,
+   "seconds_one_learned_cell": 7.246371746063232,
+   "seconds_total": 81.54437780380249
+  }
+ ]
+}

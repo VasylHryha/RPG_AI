@@ -1,0 +1,23 @@
+{
+ "note": "Development entropy for experiment 0e (PROPOSAL_0E.md). Not used by any recorded run; distinct from every SPEC*.json and dev_0d/DEV_SPEC.json.",
+ "entropy": 27896454499370292010730406672,
+ "config": {
+  "train_episodes": 600,
+  "val_episodes": 100,
+  "n_states": 3000,
+  "L_recipe": {
+   "hidden": 16,
+   "lr": 0.001,
+   "wd": 0.0001,
+   "steps": 32000,
+   "source": "dev_0d/tuned2.json C"
+  },
+  "J_recipe": {
+   "hidden": 64,
+   "lr": 0.003,
+   "wd": 0.001,
+   "steps": 16000,
+   "source": "dev_0d/tuned2.json S1"
+  }
+ }
+}
