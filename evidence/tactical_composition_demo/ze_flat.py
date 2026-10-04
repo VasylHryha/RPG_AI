@@ -101,7 +101,8 @@ class FlatPlus:
         L = len(self.net.W)
         Z.adam_train(self.net.params(), grad_fn, len(Zi), hp['steps'], Z.BATCH, hp['lr'], hp['wd'], rng, [True]*L+[False]*L)
         self.n_params = self.net.n_params
-        self.oracle_queries = int(alive.sum()) if self.head == 'perslot' else 0
+        self.oracle_queries = int(alive.sum()) if self.head == 'perslot' else 0          # living supervised per-slot labels
+        self.oracle_labels_computed = int(alive.size) if self.head == 'perslot' else 0   # labels computed for every slot (dead ones masked out of the loss)
         return self
 
     def scores(self, A):

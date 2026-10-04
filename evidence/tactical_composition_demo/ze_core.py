@@ -184,6 +184,30 @@ class Wire:
         raise ValueError('unknown wire kind %r' % k)
 
 
+# ------------------------------------------------------------------ the action contract (rejection, never silent repair)
+
+def validate_choice(A, chosen):
+    """A chosen identity must be one integer per state, inside [0, N), and a LIVING enemy. A snapshot with no living enemy is outside the nonterminal policy API
+    (the world never asks a policy to act once a team is wiped out). Violations raise, so a seed records ERROR and the run is INCOMPLETE."""
+    chosen = np.asarray(chosen)
+    if chosen.shape != (A.n,) or not np.issubdtype(chosen.dtype, np.integer):
+        raise ValueError('chosen identities must be one integer per state, got shape %s dtype %s' % (chosen.shape, chosen.dtype))
+    if not A.alive.any(axis=1).all():
+        raise ValueError('a snapshot has no living enemy: outside the nonterminal policy API')
+    if (chosen < 0).any() or (chosen >= N).any():
+        raise ValueError('a chosen identity is out of range')
+    if not A.alive[np.arange(A.n), chosen].all():
+        raise ValueError('a chosen enemy is not alive')
+    return chosen
+
+
+def validate_vectors(x, n, what):
+    x = np.asarray(x, float)
+    if x.shape != (n, 2) or not np.isfinite(x).all():
+        raise ValueError('%s must be finite two-component vectors, one per state' % what)
+    return x
+
+
 # ------------------------------------------------------------------ assemblies
 
 class Assembly:
@@ -195,9 +219,10 @@ class Assembly:
         return '%s_%s%s' % (self.aim.name, self.move.name, '' if self.wire.kind == 'intact' else '|'+self.wire.label)
 
     def act(self, A, rng):
-        chosen = self.aim.choose(A)
+        chosen = validate_choice(A, self.aim.choose(A))
         rel, applied = self.wire(A, chosen, rng)
-        return chosen, self.move.step(A, rel), applied
+        rel = validate_vectors(rel, A.n, 'the message')
+        return chosen, validate_vectors(self.move.step(A, rel), A.n, 'the step'), applied
 
     def policy(self, rng):
         def policy(own, enemies):
@@ -250,10 +275,8 @@ def joint3(chosen, step, A, angle_deg=ANGLE_OK):
     multi = A.alive.sum(1) > 1
     if not multi.any():
         raise ValueError('no multi-enemy state')
-    if not A.alive[rows, chosen].all():
-        raise ValueError('a chosen enemy is not alive')
-    if not np.isfinite(step).all():
-        raise ValueError('non-finite step')
+    chosen = validate_choice(A, chosen)
+    step = validate_vectors(step, A.n, 'the step')
     ok_target = tied[rows, chosen]
     v = Z.teacher_move_batch(A.REL[rows, chosen], A.PREF)
     vh = np.hypot(v[:, 0], v[:, 1]) < HOLD

@@ -169,3 +169,47 @@ def test_degraded_pieces_are_really_degraded(world):
     nearest = E.joint3(*E.Assembly(E.AimNearest(), E.MoveOracle()).act(A, np.random.default_rng(0))[:2], A)
     approach = E.joint3(*E.Assembly(E.AimOracle(), E.MoveApproach()).act(A, np.random.default_rng(0))[:2], A)
     assert oracle['a_joint'] == 1.0 and nearest['a_joint'] < 0.95 and approach['a_hold'] == 0.0 and approach['a_approach'] == 1.0
+
+
+class _FixedAim:
+    name, kind = 'X', 'test'
+
+    def __init__(self, chosen):
+        self.chosen = chosen
+
+    def choose(self, A):
+        return self.chosen
+
+
+class _NanMove:
+    name, kind = 'N', 'test'
+
+    def step(self, A, rel):
+        out = np.zeros((A.n, 2))
+        out[0, 0] = np.nan
+        return out
+
+
+def test_the_action_contract_rejects_invalid_identities_and_non_finite_actions(world):
+    """Codex registration review R3: invalid identities and non-finite actions raise (the seed records ERROR, the run is INCOMPLETE); nothing is silently repaired."""
+    _, _, A = world
+    rng = np.random.default_rng(0)
+    good = E.AimOracle().choose(A)
+    dead = good.copy()
+    k = int(np.flatnonzero(~A.alive.all(1))[0])                                    # a state with a dead enemy slot
+    dead[k] = int(np.flatnonzero(~A.alive[k])[0])
+    with pytest.raises(ValueError, match='not alive'):
+        E.Assembly(_FixedAim(dead), E.MoveOracle()).act(A, rng)
+    neg = good.copy()
+    neg[0] = -1
+    with pytest.raises(ValueError, match='out of range'):
+        E.Assembly(_FixedAim(neg), E.MoveOracle()).act(A, rng)
+    with pytest.raises(ValueError, match='one integer per state'):
+        E.Assembly(_FixedAim(good.astype(float)), E.MoveOracle()).act(A, rng)
+    with pytest.raises(ValueError, match='finite'):
+        E.Assembly(E.AimOracle(), _NanMove()).act(A, rng)
+    with pytest.raises(ValueError, match='not alive|out of range'):
+        E.joint3(neg, np.zeros((A.n, 2)), A)
+    empty = Z.Arrays({'own': A.own[:1], 'enemies': np.zeros((1, 3, 7))})
+    with pytest.raises(ValueError, match='no living enemy'):
+        E.validate_choice(empty, np.array([0]))

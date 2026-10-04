@@ -31,7 +31,7 @@ from tcd_common.fileio import stream, write_json  # noqa: E402
 OPP = ('rush', 'kiter')
 RUN_DIRS = ('run_0e', 'smoke_run_0e')
 FILES = ('PROPOSAL_0E.md', 'SPECIFICATION_0E.md', 'SPEC_0E.json', 'ze_run.py', 'ze_core.py', 'ze_flat.py', 'tactics_e2.py', 'test_ze.py', 'test_ze_run.py',
-         'zd_models.py', 'tactics.py', 'tcd_common/__init__.py', 'tcd_common/fileio.py', 'tcd_common/supervise.py', 'tcd_common/harness.py',
+         'zd_models.py', 'tactics.py', 'tcd_common/__init__.py', 'tcd_common/fileio.py', 'tcd_common/metrics.py', 'tcd_common/supervise.py', 'tcd_common/harness.py',
          'dev_0e/DEV_SPEC.json', 'dev_0e/README.md', 'dev_0e/step4_results.json', 'dev_0e/step5_results.json')
 BASE = {
     'seeds': 30, 'workers': 8, 'soft_cap': 7200.0, 'hard_cap': 7500.0, 'eval_cap': 600.0, 'max_load_1min': 20.0,
@@ -39,7 +39,7 @@ BASE = {
     'L_recipe': {'hidden': 16, 'lr': 0.001, 'wd': 0.0001, 'steps': 32000}, 'J_recipe': {'hidden': 64, 'lr': 0.003, 'wd': 0.001, 'steps': 16000},
     'Fp_recipe': {'head': 'perslot', 'hidden': 32, 'depth': 2, 'lr': 0.003, 'wd': 0.0001, 'steps': 32000},
     'Fflat_recipe': {'head': 'mse', 'hidden': 128, 'depth': 2, 'lr': 0.003, 'wd': 0.0001, 'steps': 32000},
-    'ref_distance': None, 'alpha': 0.0125,
+    'ref_distance': None, 'alpha': 0.01,
     'bars': {'headroom': 0.15, 'headroom_per_opponent': 0.10, 'necessity': 0.03, 'aim_admissible': 0.85, 'move_success': 0.90, 'move_stratum': 0.85,
              'replace_oracle': -0.05, 'replace_J': -0.03, 'cut_raw': 0.02, 'cut_norm': 0.05, 'directed': 0.10, 'function': 0.03, 'repeat_gain': 0.10,
              'repeat_share': 0.80, 'iqr': 0.05, 'fault_abs': 0.03, 'fault_rel': 0.03, 'baseline_gate': 0.03, 'stronger': 0.03},
@@ -66,7 +66,7 @@ def cell_assemblies(cfg, L, J, Fp):
     c = {'OO': E.Assembly(O_a, O_m), 'LO': E.Assembly(La, O_m), 'OL': E.Assembly(O_a, Lm), 'LL': E.Assembly(La, Lm),
          'JJ': E.Assembly(Ja, Jm), 'JL': E.Assembly(Ja, Lm), 'LJ': E.Assembly(La, Jm),
          'DO': E.Assembly(E.AimNearest(), O_m), 'OD': E.Assembly(O_a, E.MoveApproach()), 'OO|default': E.Assembly(O_a, O_m, W('default')),
-         'FhO': E.Assembly(E.AimFlatOutput(Fp, 'Fh'), O_m), 'OFh': E.Assembly(O_a, E.MoveFlatOutput(Fp, 'Fh'))}
+         'FpO': E.Assembly(E.AimFlatOutput(Fp, 'Fp'), O_m), 'OFp': E.Assembly(O_a, E.MoveFlatOutput(Fp, 'Fp'))}
     for k in cfg['cuts']:
         c['LL|'+k] = E.Assembly(La, Lm, W(k))
     for k, v in cfg['small_faults_abs']+cfg['small_faults_rel']+cfg['dose_faults']:
@@ -83,6 +83,8 @@ def flat_policy(m):
         def policy(own, enemies):
             A = Z.Arrays({'own': own[None], 'enemies': enemies[None]})
             ch, st = m.act(A)
+            ch = E.validate_choice(A, ch)
+            st = E.validate_vectors(st, 1, 'the step')
             return st[0], int(ch[0]), False
         return policy
     return make
@@ -120,7 +122,7 @@ def run_seed(cfg, entropy, seed):
     h.update(np.ascontiguousarray(te['own']).tobytes())
     h.update(np.ascontiguousarray(te['enemies']).tobytes())
     out = {'seed': seed, 'train_states': int(A_tr.n), 'test_states': int(A_te.n), 'test_digest': h.hexdigest(), 'fit_seconds': time.time()-t0,
-           'params': {'L': L.n_params, 'J': J.n_params, 'Fp': Fp.n_params, 'Fflat': Ff.n_params}, 'oracle_queries': {'J': J.oracle_queries, 'Fp': Fp.oracle_queries},
+           'params': {'L': L.n_params, 'J': J.n_params, 'Fp': Fp.n_params, 'Fflat': Ff.n_params}, 'oracle_queries': {'J': J.oracle_queries, 'Fp': Fp.oracle_queries, 'Fp_labels_computed': Fp.oracle_labels_computed},
            'prequal': {}, 'fixed': {}, 'play': {}, 'applied': {}}
     rows = np.arange(A_te.n)
     for name, model in (('L', L), ('J', J)):
@@ -222,49 +224,55 @@ def evaluate(rows, cfg):
     nec = {k: interval(paired(rows, lambda r, c=c: W(r, 'OO')-W(r, c)), a) for k, c in (('aim', 'DO'), ('connection', 'OO|default'), ('move', 'OD'))}
     nec_ok = {k: v['lo'] > b['necessity'] for k, v in nec.items()}
     base = {}
-    for name in ('Fp', 'Fflat'):
+    for name in ('Fp', 'Fflat', 'JJ'):
         g = interval(paired(rows, lambda r, n=name: W(r, n)-W(r, 'R')), a)
         go = {o: interval(paired(rows, lambda r, n=name, o=o: Wo(r, n, o)-Wo(r, 'R', o)), a) for o in OPP}
         base[name] = {'gain_over_rush': g, 'per_opponent': go, 'qualified': bool(g['lo'] > b['baseline_gate'] and all(v['lo'] > 0 for v in go.values()))}
-    out['gates'] = {'headroom_D': Dint, 'headroom_per_opponent': head_opp, 'headroom_ok': bool(headroom_ok), 'teacher_necessity': nec,
+    out['gates'] = {'map': {'headroom': ['B1'], 'connection_necessity': ['B1'], 'Fp_qualified': ['B3'], 'J_qualified (JJ over rush)': ['A2'],
+                            'aim_necessity, move_necessity': 'diagnostics only (task qualification was done in development, step 4); they gate no claim'},
+                    'headroom_D': Dint, 'headroom_per_opponent': head_opp, 'headroom_ok': bool(headroom_ok), 'teacher_necessity': nec,
                     'teacher_necessity_ok': {k: bool(v) for k, v in nec_ok.items()}, 'baselines': base}
-    Dhalf = interval(D, a/2)
-
-    def norm(x):
-        num = interval(x, a/2)
-        rb = E.ratio_bounds((num['lo'], num['hi']), (Dhalf['lo'], Dhalf['hi']))
-        return None if rb is None else {'lo': rb[0], 'hi': rb[1], 'median_ratio': float(np.median(x))/Dint['median']}
-    # ---- A. replacement
+    def norm(x, err):
+        """Ratio interval of the median gain over the median headroom: numerator and denominator intervals each at err/2 (joint error at most err)."""
+        num, den = interval(x, err/2), interval(D, err/2)
+        rb = E.ratio_bounds((num['lo'], num['hi']), (den['lo'], den['hi']))
+        return None if rb is None else {'lo': rb[0], 'hi': rb[1], 'median_ratio': float(np.median(x))/Dint['median'], 'error': err}
+    # ---- A1. learned pieces replace the scripted ones; A2. swaps with the conventional conditional policy J (gated on J beating rush)
     comps = []
     pre = lambda key, name: paired(rows, lambda r: r['prequal'][name][key])
     for name in ('L',):
         comps.append(('prequal AIM admissible (%s)' % name, pre('aim_admissible', name), 'above', b['aim_admissible']))
         comps.append(('prequal MOVE success (%s)' % name, pre('move_success', name), 'above', b['move_success']))
-        for s in ('hold', 'approach', 'backoff'):
-            comps.append(('prequal MOVE %s (%s)' % (s, name), pre(s, name), 'above', b['move_stratum']))
+        for s_ in ('hold', 'approach', 'backoff'):
+            comps.append(('prequal MOVE %s (%s)' % (s_, name), pre(s_, name), 'above', b['move_stratum']))
     for cell in ('LO', 'OL', 'LL'):
         comps.append(('win %s-OO' % cell, paired(rows, lambda r, c=cell: W(r, c)-W(r, 'OO')), 'above', b['replace_oracle']))
         for o in OPP:
             comps.append(('win %s-OO vs %s' % (cell, o), paired(rows, lambda r, c=cell, o=o: Wo(r, c, o)-Wo(r, 'OO', o)), 'above', b['replace_oracle']))
         comps.append(('fidelity %s-OO' % cell, paired(rows, lambda r, c=cell: Fid(r, c)-Fid(r, 'OO')), 'above', b['replace_oracle']))
+    cA1 = [component(n, x, a, len(comps), k, t) for n, x, k, t in comps]
+    out['A1_replacement_of_scripted_pieces'] = {'components': cA1, 'verdict': compound(cA1)}
+    comps = []
     for cell in ('JL', 'LJ'):
         comps.append(('win %s-JJ' % cell, paired(rows, lambda r, c=cell: W(r, c)-W(r, 'JJ')), 'above', b['replace_J']))
         comps.append(('fidelity %s-JJ' % cell, paired(rows, lambda r, c=cell: Fid(r, c)-Fid(r, 'JJ')), 'above', b['replace_J']))
-    cA = [component(n, x, a, len(comps), k, t) for n, x, k, t in comps]
-    out['A_replacement'] = {'components': cA, 'verdict': compound(cA)}
+    cA2 = [component(n, x, a, len(comps), k, t) for n, x, k, t in comps]
+    vA2 = compound(cA2) if base['JJ']['qualified'] else 'INDETERMINATE (gate: J not qualified as a host)'
+    out['A2_swap_with_conventional_policy'] = {'components': cA2, 'verdict': vA2}
     # ---- B1. useful connection (requires the connection-necessity gate and the directed sensitivity control)
     comps = []
     for c in cfg['cuts']:
         comps.append(('win LL - LL|%s' % c, paired(rows, lambda r, c=c: W(r, 'LL')-W(r, 'LL|'+c)), 'above', b['cut_raw']))
     comps.append(('directed control: fidelity LL - LL|reverse', paired(rows, lambda r: Fid(r, 'LL')-Fid(r, 'LL|reverse')), 'above', b['directed']))
-    cB1 = [component(n, x, a, len(comps)+len(cfg['cuts']), k, t) for n, x, k, t in comps]
+    m1 = len(comps)+len(cfg['cuts'])
+    cB1 = [component(n, x, a, m1, k, t) for n, x, k, t in comps]
     normd = {}
     for c in cfg['cuts']:
-        nb = norm(paired(rows, lambda r, c=c: W(r, 'LL')-W(r, 'LL|'+c)))
-        ok = nb is not None and nb['lo'] > b['cut_norm']
-        normd[c] = nb
-        cB1.append({'name': 'normalized win gain over LL|%s' % c, 'kind': 'above', 'threshold': b['cut_norm'], 'interval': nb, 'passed': bool(ok),
-                    'negative_witness': bool(nb is not None and nb['hi'] < b['cut_norm'])})
+        x = paired(rows, lambda r, c=c: W(r, 'LL')-W(r, 'LL|'+c))
+        pos, neg = norm(x, a), norm(x, a/m1)          # positive test at the claim error; negative witness at error / m (like every other component)
+        normd[c] = pos
+        cB1.append({'name': 'normalized win gain over LL|%s' % c, 'kind': 'above', 'threshold': b['cut_norm'], 'interval': pos, 'negative_interval': neg,
+                    'passed': bool(pos is not None and pos['lo'] > b['cut_norm']), 'negative_witness': bool(neg is not None and neg['hi'] < b['cut_norm'])})
     v = compound(cB1)
     if not nec_ok['connection'] or not headroom_ok:
         v = 'INDETERMINATE (gate: %s)' % ('connection necessity' if not nec_ok['connection'] else 'headroom')
@@ -296,7 +304,9 @@ def evaluate(rows, cfg):
     cB3 = [component(n, x, a, 1, k, t) for n, x, k, t in comps]
     v3 = compound(cB3) if base['Fp']['qualified'] else 'INDETERMINATE (gate: conventional baseline not qualified)'
     out['B3_stronger_than_conventional'] = {'components': cB3, 'verdict': v3,
-                                            'secondary_iqr_difference_note': 'reported descriptively', 'flat_family': {
+                                            'iqr_descriptive': {'LL': float(np.subtract(*np.percentile(paired(rows, lambda r: W(r, 'LL')), [75, 25]))),
+                                                                'Fp': float(np.subtract(*np.percentile(paired(rows, lambda r: W(r, 'Fp')), [75, 25])))},
+                                            'flat_family': {
                                                 'qualified': base['Fflat']['qualified'], 'win_LL_minus_Fflat': interval(paired(rows, lambda r: W(r, 'LL')-W(r, 'Fflat')), a)}}
     # ---- descriptive
     cells = sorted({k.rsplit('_', 1)[0] for k in rows[0]['play']})
@@ -307,8 +317,9 @@ def evaluate(rows, cfg):
                                  ('a_joint', 'a_macro', 'a_hold', 'a_approach', 'a_backoff', 'a_target_admissible')} for c in rows[0]['fixed']},
         'normalized_cut_gains': normd, 'headroom_D_median': Dint['median'], 'params': rows[0]['params'], 'oracle_queries': rows[0]['oracle_queries'],
         'seconds_per_seed': float(np.median([r['seconds'] for r in rows])),
-        'note': 'every interval in a verdict is an exact order-statistic (medians) or Clopper-Pearson (shares) interval at the claim error 0.0125; unadjusted across claims'}
-    out['endpoint_coverage'] = {k: 'evaluated' for k in ('gates', 'A_replacement', 'B1_useful_connection', 'B2_stable_within_envelope', 'B3_stronger_than_conventional', 'descriptive')}
+        'note': 'every interval in a verdict is an exact order-statistic (medians) or Clopper-Pearson (shares) interval at the claim error 0.01 (five claims); unadjusted across claims'}
+    out['endpoint_coverage'] = {k: 'evaluated' for k in ('gates', 'A1_replacement_of_scripted_pieces', 'A2_swap_with_conventional_policy', 'B1_useful_connection',
+                                                         'B2_stable_within_envelope', 'B3_stronger_than_conventional', 'descriptive')}
     return out
 
 

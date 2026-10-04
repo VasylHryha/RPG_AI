@@ -118,3 +118,7 @@ The owner answered the questions of the first draft with "this are the questio f
 2. **Later studies and their order**, each its own proposal: (a) a small **connection-discovery pilot** (a bag of frozen pieces with distractors and declared port signatures; a rule assembles units by declared compatibility without supplied pairings; compared with random and exhaustive wiring) because it is the part of the owner's idea that ordinary modular AI does not already contain; (b) the three-piece ladder if the burst ability qualifies; (c) the squad level with a coordination-necessity gate; (d) learning from outcomes. Adapter calibration only if discovery needs it.
 3. **Review.** Codex (the cross-family reviewer named in `AGENTS.md`) reviews the registered files before the recorded run; every fix is re-reviewed; GPT optional.
 4. **Not delegable:** the ratification of decision 0028's **[R]** items, and the approval of the registered 0e specification before its recorded run. Both need an explicit owner message.
+
+## 13. Registration notes (2026-10-04)
+
+The registered design is `SPECIFICATION_0E.md`; where it differs from this proposal, it governs, and its section 1 lists every difference and its reason: the task revision V3 (the original sandbox fails the teacher-necessity gate), the per-slot conventional comparator, scale-fault stability relative to the teacher, 300 episodes per cell, the bounded flat search, the replacement claim split into A1 and A2 with J's host gate (five claims at error 0.01 each), and the reporting items that are deferred.

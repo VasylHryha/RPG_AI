@@ -6,7 +6,8 @@ Exploratory; NOT a milestone. `tactics.py` stays frozen: this module reuses its 
 - the teacher's targeting doctrine (a linear score over what a unit observes); the teacher's stepping rule is unchanged (`tactics.teacher_move`);
 - team mixes: only mixed teams (melee and ranged together).
 
-Three variants are declared before any measurement (VARIANTS, in order); `dev_0e/dev_step4_task.py` applies the fixed selection rule.
+Three variants were declared before measurement by the author's account (VARIANTS, in order; git first records them together with the step-4 results, `9583017`);
+`dev_0e/dev_step4_task.py` applies the fixed selection rule.
 """
 import numpy as np
 
