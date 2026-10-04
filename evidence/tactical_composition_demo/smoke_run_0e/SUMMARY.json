@@ -1,0 +1,1643 @@
+{
+ "children_cpu_seconds": 18.298687,
+ "config": {
+  "Fflat_recipe": {
+   "depth": 2,
+   "head": "mse",
+   "hidden": 128,
+   "lr": 0.003,
+   "steps": 32000,
+   "wd": 0.0001
+  },
+  "Fp_recipe": {
+   "depth": 2,
+   "head": "perslot",
+   "hidden": 32,
+   "lr": 0.003,
+   "steps": 32000,
+   "wd": 0.0001
+  },
+  "J_recipe": {
+   "hidden": 64,
+   "lr": 0.003,
+   "steps": 16000,
+   "wd": 0.001
+  },
+  "L_recipe": {
+   "hidden": 16,
+   "lr": 0.001,
+   "steps": 32000,
+   "wd": 0.0001
+  },
+  "alpha": 0.0125,
+  "bars": {
+   "aim_admissible": 0.85,
+   "baseline_gate": 0.03,
+   "cut_norm": 0.05,
+   "cut_raw": 0.02,
+   "directed": 0.1,
+   "fault_abs": 0.03,
+   "fault_rel": 0.03,
+   "function": 0.03,
+   "headroom": 0.15,
+   "headroom_per_opponent": 0.1,
+   "iqr": 0.05,
+   "move_stratum": 0.85,
+   "move_success": 0.9,
+   "necessity": 0.03,
+   "repeat_gain": 0.1,
+   "repeat_share": 0.8,
+   "replace_J": -0.03,
+   "replace_oracle": -0.05,
+   "stronger": 0.03
+  },
+  "cuts": [
+   "default",
+   "wrong",
+   "zero"
+  ],
+  "dose_faults": [
+   [
+    "noise",
+    0.05
+   ],
+   [
+    "noise",
+    0.1
+   ],
+   [
+    "wrongfrac",
+    0.05
+   ],
+   [
+    "wrongfrac",
+    0.1
+   ],
+   [
+    "scale",
+    0.5
+   ],
+   [
+    "scale",
+    2.0
+   ]
+  ],
+  "episodes": 3,
+  "eval_cap": 120.0,
+  "hard_cap": 1400.0,
+  "max_load_1min": 20.0,
+  "min_stratum": 30,
+  "min_unique_best": 100,
+  "n_states": 500,
+  "ref_distance": 4.9727357103471475,
+  "require_counts": false,
+  "resamples_note": "no bootstrap in verdicts: exact order-statistic and Clopper-Pearson intervals only",
+  "run_dir": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/smoke_run_0e",
+  "seeds": 3,
+  "small_faults_abs": [
+   [
+    "noise",
+    0.02
+   ],
+   [
+    "wrongfrac",
+    0.01
+   ]
+  ],
+  "small_faults_rel": [
+   [
+    "scale",
+    0.9
+   ],
+   [
+    "scale",
+    1.1
+   ]
+  ],
+  "soft_cap": 1200.0,
+  "steps_cap": 200,
+  "task": "V3",
+  "test_episodes": 10,
+  "train_episodes": 30,
+  "workers": 3
+ },
+ "evaluation": {
+  "A_replacement": {
+   "components": [
+    {
+     "interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": 0.9123711340206185,
+      "n": 3
+     },
+     "kind": "above",
+     "name": "prequal AIM admissible (L)",
+     "negative_interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": 0.9123711340206185,
+      "n": 3
+     },
+     "negative_witness": false,
+     "passed": false,
+     "threshold": 0.85
+    },
+    {
+     "interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": 0.7625418060200669,
+      "n": 3
+     },
+     "kind": "above",
+     "name": "prequal MOVE success (L)",
+     "negative_interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": 0.7625418060200669,
+      "n": 3
+     },
+     "negative_witness": false,
+     "passed": false,
+     "threshold": 0.9
+    },
+    {
+     "interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": 1.0,
+      "n": 3
+     },
+     "kind": "above",
+     "name": "prequal MOVE hold (L)",
+     "negative_interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": 1.0,
+      "n": 3
+     },
+     "negative_witness": false,
+     "passed": false,
+     "threshold": 0.85
+    },
+    {
+     "interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": 0.7355555555555555,
+      "n": 3
+     },
+     "kind": "above",
+     "name": "prequal MOVE approach (L)",
+     "negative_interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": 0.7355555555555555,
+      "n": 3
+     },
+     "negative_witness": false,
+     "passed": false,
+     "threshold": 0.85
+    },
+    {
+     "interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": 0.0,
+      "n": 3
+     },
+     "kind": "above",
+     "name": "prequal MOVE backoff (L)",
+     "negative_interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": 0.0,
+      "n": 3
+     },
+     "negative_witness": false,
+     "passed": false,
+     "threshold": 0.85
+    },
+    {
+     "interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": 0.16666666666666663,
+      "n": 3
+     },
+     "kind": "above",
+     "name": "win LO-OO",
+     "negative_interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": 0.16666666666666663,
+      "n": 3
+     },
+     "negative_witness": false,
+     "passed": false,
+     "threshold": -0.05
+    },
+    {
+     "interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": 0.33333333333333337,
+      "n": 3
+     },
+     "kind": "above",
+     "name": "win LO-OO vs rush",
+     "negative_interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": 0.33333333333333337,
+      "n": 3
+     },
+     "negative_witness": false,
+     "passed": false,
+     "threshold": -0.05
+    },
+    {
+     "interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": 0.0,
+      "n": 3
+     },
+     "kind": "above",
+     "name": "win LO-OO vs kiter",
+     "negative_interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": 0.0,
+      "n": 3
+     },
+     "negative_witness": false,
+     "passed": false,
+     "threshold": -0.05
+    },
+    {
+     "interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": -0.08762886597938147,
+      "n": 3
+     },
+     "kind": "above",
+     "name": "fidelity LO-OO",
+     "negative_interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": -0.08762886597938147,
+      "n": 3
+     },
+     "negative_witness": false,
+     "passed": false,
+     "threshold": -0.05
+    },
+    {
+     "interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": -0.33333333333333337,
+      "n": 3
+     },
+     "kind": "above",
+     "name": "win OL-OO",
+     "negative_interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": -0.33333333333333337,
+      "n": 3
+     },
+     "negative_witness": false,
+     "passed": false,
+     "threshold": -0.05
+    },
+    {
+     "interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": -0.33333333333333337,
+      "n": 3
+     },
+     "kind": "above",
+     "name": "win OL-OO vs rush",
+     "negative_interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": -0.33333333333333337,
+      "n": 3
+     },
+     "negative_witness": false,
+     "passed": false,
+     "threshold": -0.05
+    },
+    {
+     "interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": -0.3333333333333333,
+      "n": 3
+     },
+     "kind": "above",
+     "name": "win OL-OO vs kiter",
+     "negative_interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": -0.3333333333333333,
+      "n": 3
+     },
+     "negative_witness": false,
+     "passed": false,
+     "threshold": -0.05
+    },
+    {
+     "interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": -0.23745819397993306,
+      "n": 3
+     },
+     "kind": "above",
+     "name": "fidelity OL-OO",
+     "negative_interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": -0.23745819397993306,
+      "n": 3
+     },
+     "negative_witness": false,
+     "passed": false,
+     "threshold": -0.05
+    },
+    {
+     "interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": -0.4166666666666667,
+      "n": 3
+     },
+     "kind": "above",
+     "name": "win LL-OO",
+     "negative_interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": -0.4166666666666667,
+      "n": 3
+     },
+     "negative_witness": false,
+     "passed": false,
+     "threshold": -0.05
+    },
+    {
+     "interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": -0.33333333333333337,
+      "n": 3
+     },
+     "kind": "above",
+     "name": "win LL-OO vs rush",
+     "negative_interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": -0.33333333333333337,
+      "n": 3
+     },
+     "negative_witness": false,
+     "passed": false,
+     "threshold": -0.05
+    },
+    {
+     "interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": -0.6666666666666666,
+      "n": 3
+     },
+     "kind": "above",
+     "name": "win LL-OO vs kiter",
+     "negative_interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": -0.6666666666666666,
+      "n": 3
+     },
+     "negative_witness": false,
+     "passed": false,
+     "threshold": -0.05
+    },
+    {
+     "interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": -0.3003344481605351,
+      "n": 3
+     },
+     "kind": "above",
+     "name": "fidelity LL-OO",
+     "negative_interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": -0.3003344481605351,
+      "n": 3
+     },
+     "negative_witness": false,
+     "passed": false,
+     "threshold": -0.05
+    },
+    {
+     "interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": -0.33333333333333326,
+      "n": 3
+     },
+     "kind": "above",
+     "name": "win JL-JJ",
+     "negative_interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": -0.33333333333333326,
+      "n": 3
+     },
+     "negative_witness": false,
+     "passed": false,
+     "threshold": -0.03
+    },
+    {
+     "interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": -0.13244147157190633,
+      "n": 3
+     },
+     "kind": "above",
+     "name": "fidelity JL-JJ",
+     "negative_interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": -0.13244147157190633,
+      "n": 3
+     },
+     "negative_witness": false,
+     "passed": false,
+     "threshold": -0.03
+    },
+    {
+     "interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": -0.16666666666666663,
+      "n": 3
+     },
+     "kind": "above",
+     "name": "win LJ-JJ",
+     "negative_interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": -0.16666666666666663,
+      "n": 3
+     },
+     "negative_witness": false,
+     "passed": false,
+     "threshold": -0.03
+    },
+    {
+     "interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": -0.02577319587628868,
+      "n": 3
+     },
+     "kind": "above",
+     "name": "fidelity LJ-JJ",
+     "negative_interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": -0.02577319587628868,
+      "n": 3
+     },
+     "negative_witness": false,
+     "passed": false,
+     "threshold": -0.03
+    }
+   ],
+   "verdict": "INDETERMINATE"
+  },
+  "B1_useful_connection": {
+   "components": [
+    {
+     "interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": 0.16666666666666666,
+      "n": 3
+     },
+     "kind": "above",
+     "name": "win LL - LL|default",
+     "negative_interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": 0.16666666666666666,
+      "n": 3
+     },
+     "negative_witness": false,
+     "passed": false,
+     "threshold": 0.02
+    },
+    {
+     "interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": 0.16666666666666663,
+      "n": 3
+     },
+     "kind": "above",
+     "name": "win LL - LL|wrong",
+     "negative_interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": 0.16666666666666663,
+      "n": 3
+     },
+     "negative_witness": false,
+     "passed": false,
+     "threshold": 0.02
+    },
+    {
+     "interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": 0.3333333333333333,
+      "n": 3
+     },
+     "kind": "above",
+     "name": "win LL - LL|zero",
+     "negative_interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": 0.3333333333333333,
+      "n": 3
+     },
+     "negative_witness": false,
+     "passed": false,
+     "threshold": 0.02
+    },
+    {
+     "interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": 0.37993311036789296,
+      "n": 3
+     },
+     "kind": "above",
+     "name": "directed control: fidelity LL - LL|reverse",
+     "negative_interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": 0.37993311036789296,
+      "n": 3
+     },
+     "negative_witness": false,
+     "passed": false,
+     "threshold": 0.1
+    },
+    {
+     "interval": null,
+     "kind": "above",
+     "name": "normalized win gain over LL|default",
+     "negative_witness": false,
+     "passed": false,
+     "threshold": 0.05
+    },
+    {
+     "interval": null,
+     "kind": "above",
+     "name": "normalized win gain over LL|wrong",
+     "negative_witness": false,
+     "passed": false,
+     "threshold": 0.05
+    },
+    {
+     "interval": null,
+     "kind": "above",
+     "name": "normalized win gain over LL|zero",
+     "negative_witness": false,
+     "passed": false,
+     "threshold": 0.05
+    }
+   ],
+   "verdict": "INDETERMINATE (gate: connection necessity)"
+  },
+  "B2_stable_within_envelope": {
+   "components": [
+    {
+     "interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": -0.16666666666666669,
+      "n": 3
+     },
+     "kind": "above",
+     "name": "function: win LL - R",
+     "negative_interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": -0.16666666666666669,
+      "n": 3
+     },
+     "negative_witness": false,
+     "passed": false,
+     "threshold": 0.03
+    },
+    {
+     "interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": 0.0,
+      "n": 3
+     },
+     "kind": "below",
+     "name": "win loss under LL|noise_0.02",
+     "negative_interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": 0.0,
+      "n": 3
+     },
+     "negative_witness": false,
+     "passed": false,
+     "threshold": 0.03
+    },
+    {
+     "interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": 0.004013377926421424,
+      "n": 3
+     },
+     "kind": "below",
+     "name": "fidelity loss under LL|noise_0.02",
+     "negative_interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": 0.004013377926421424,
+      "n": 3
+     },
+     "negative_witness": false,
+     "passed": false,
+     "threshold": 0.03
+    },
+    {
+     "interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": 0.0,
+      "n": 3
+     },
+     "kind": "below",
+     "name": "win loss under LL|wrongfrac_0.01",
+     "negative_interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": 0.0,
+      "n": 3
+     },
+     "negative_witness": false,
+     "passed": false,
+     "threshold": 0.03
+    },
+    {
+     "interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": 0.004013377926421424,
+      "n": 3
+     },
+     "kind": "below",
+     "name": "fidelity loss under LL|wrongfrac_0.01",
+     "negative_interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": 0.004013377926421424,
+      "n": 3
+     },
+     "negative_witness": false,
+     "passed": false,
+     "threshold": 0.03
+    },
+    {
+     "interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": -0.08333333333333333,
+      "n": 3
+     },
+     "kind": "below",
+     "name": "win loss under LL|scale_0.9 minus the teacher's",
+     "negative_interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": -0.08333333333333333,
+      "n": 3
+     },
+     "negative_witness": false,
+     "passed": false,
+     "threshold": 0.03
+    },
+    {
+     "interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": -0.09096989966555191,
+      "n": 3
+     },
+     "kind": "below",
+     "name": "fidelity loss under LL|scale_0.9 minus the teacher's",
+     "negative_interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": -0.09096989966555191,
+      "n": 3
+     },
+     "negative_witness": false,
+     "passed": false,
+     "threshold": 0.03
+    },
+    {
+     "interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": -0.08333333333333348,
+      "n": 3
+     },
+     "kind": "below",
+     "name": "win loss under LL|scale_1.1 minus the teacher's",
+     "negative_interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": -0.08333333333333348,
+      "n": 3
+     },
+     "negative_witness": false,
+     "passed": false,
+     "threshold": 0.03
+    },
+    {
+     "interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": -0.16348055372445602,
+      "n": 3
+     },
+     "kind": "below",
+     "name": "fidelity loss under LL|scale_1.1 minus the teacher's",
+     "negative_interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": -0.16348055372445602,
+      "n": 3
+     },
+     "negative_witness": false,
+     "passed": false,
+     "threshold": 0.03
+    },
+    {
+     "interval": {
+      "hi": 0.8157984250679806,
+      "k": 0,
+      "lo": 0.0,
+      "n": 3
+     },
+     "kind": "above",
+     "name": "share of seeds with W(LL)-W(R) > 0.1",
+     "negative_witness": false,
+     "passed": false,
+     "threshold": 0.8
+    },
+    {
+     "interval": {
+      "hi": 1.0,
+      "lo": 0.0
+     },
+     "kind": "below",
+     "name": "IQR of W(LL) across seeds",
+     "negative_witness": false,
+     "passed": false,
+     "threshold": 0.05
+    }
+   ],
+   "verdict": "INDETERMINATE"
+  },
+  "B3_stronger_than_conventional": {
+   "components": [
+    {
+     "interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": -0.25,
+      "n": 3
+     },
+     "kind": "above",
+     "name": "win LL - Fp",
+     "negative_interval": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": -0.25,
+      "n": 3
+     },
+     "negative_witness": false,
+     "passed": false,
+     "threshold": 0.03
+    }
+   ],
+   "flat_family": {
+    "qualified": false,
+    "win_LL_minus_Fflat": {
+     "hi": "Infinity",
+     "lo": "-Infinity",
+     "median": -0.08333333333333337,
+     "n": 3
+    }
+   },
+   "secondary_iqr_difference_note": "reported descriptively",
+   "verdict": "INDETERMINATE (gate: conventional baseline not qualified)"
+  },
+  "alpha_per_claim": 0.0125,
+  "descriptive": {
+   "fidelity_by_cell": {
+    "DO": {
+     "a_approach": 0.49948400412796695,
+     "a_backoff": 0.7926267281105991,
+     "a_hold": 0.7725,
+     "a_joint": 0.6333762886597938,
+     "a_macro": 0.6994866871479775,
+     "a_target_admissible": 0.6333762886597938
+    },
+    "Fflat": {
+     "a_approach": 0.21878224974200206,
+     "a_backoff": 0.08294930875576037,
+     "a_hold": 0.57,
+     "a_joint": 0.27384020618556704,
+     "a_macro": 0.2680201399556238,
+     "a_target_admissible": 0.8259723137771918
+    },
+    "FhO": {
+     "a_approach": 0.739938080495356,
+     "a_backoff": 0.8986175115207373,
+     "a_hold": 0.8549019607843137,
+     "a_joint": 0.782860824742268,
+     "a_macro": 0.7884280593958014,
+     "a_target_admissible": 0.782860824742268
+    },
+    "Fp": {
+     "a_approach": 0.4282765737874097,
+     "a_backoff": 0.0,
+     "a_hold": 0.7434782608695653,
+     "a_joint": 0.4877577319587629,
+     "a_macro": 0.39058494488565837,
+     "a_target_admissible": 0.782860824742268
+    },
+    "JJ": {
+     "a_approach": 0.8454545454545455,
+     "a_backoff": 0.2601626016260163,
+     "a_hold": 0.9695652173913043,
+     "a_joint": 0.8154251812788398,
+     "a_macro": 0.6972299027137737,
+     "a_target_admissible": 0.9380355965721819
+    },
+    "JL": {
+     "a_approach": 0.6755555555555556,
+     "a_backoff": 0.0,
+     "a_hold": 0.9695652173913043,
+     "a_joint": 0.717056856187291,
+     "a_macro": 0.5485185185185185,
+     "a_target_admissible": 0.9380355965721819
+    },
+    "LJ": {
+     "a_approach": 0.7832817337461301,
+     "a_backoff": 0.2682926829268293,
+     "a_hold": 0.9372549019607843,
+     "a_joint": 0.7893041237113402,
+     "a_macro": 0.6642929214996821,
+     "a_target_admissible": 0.9123711340206185
+    },
+    "LL": {
+     "a_approach": 0.6454545454545455,
+     "a_backoff": 0.0,
+     "a_hold": 0.9372549019607843,
+     "a_joint": 0.6996655518394649,
+     "a_macro": 0.52756981580511,
+     "a_target_admissible": 0.9123711340206185
+    },
+    "LL|default": {
+     "a_approach": 0.3570691434468524,
+     "a_backoff": 0.0,
+     "a_hold": 0.9372549019607843,
+     "a_joint": 0.5019329896907216,
+     "a_macro": 0.4327911637576465,
+     "a_target_admissible": 0.9123711340206185
+    },
+    "LL|noise_0.02": {
+     "a_approach": 0.6386363636363637,
+     "a_backoff": 0.0,
+     "a_hold": 0.9372549019607843,
+     "a_joint": 0.6956521739130435,
+     "a_macro": 0.5252970885323827,
+     "a_target_admissible": 0.9123711340206185
+    },
+    "LL|noise_0.05": {
+     "a_approach": 0.634090909090909,
+     "a_backoff": 0.0,
+     "a_hold": 0.9372549019607843,
+     "a_joint": 0.6929765886287625,
+     "a_macro": 0.5237819370172311,
+     "a_target_admissible": 0.9123711340206185
+    },
+    "LL|noise_0.1": {
+     "a_approach": 0.6329545454545454,
+     "a_backoff": 0.0,
+     "a_hold": 0.9372549019607843,
+     "a_joint": 0.6894329896907216,
+     "a_macro": 0.5234031491384433,
+     "a_target_admissible": 0.9123711340206185
+    },
+    "LL|relabel": {
+     "a_approach": 0.6454545454545455,
+     "a_backoff": 0.0,
+     "a_hold": 0.9372549019607843,
+     "a_joint": 0.6996655518394649,
+     "a_macro": 0.52756981580511,
+     "a_target_admissible": 0.9123711340206185
+    },
+    "LL|reverse": {
+     "a_approach": 0.0,
+     "a_backoff": 0.0,
+     "a_hold": 0.9372549019607843,
+     "a_joint": 0.27899484536082475,
+     "a_macro": 0.31241830065359477,
+     "a_target_admissible": 0.9123711340206185
+    },
+    "LL|scale_0.5": {
+     "a_approach": 0.2545454545454545,
+     "a_backoff": 0.0,
+     "a_hold": 0.9372549019607843,
+     "a_joint": 0.4632731958762887,
+     "a_macro": 0.39726678550207967,
+     "a_target_admissible": 0.9123711340206185
+    },
+    "LL|scale_0.9": {
+     "a_approach": 0.5784090909090909,
+     "a_backoff": 0.0,
+     "a_hold": 0.9372549019607843,
+     "a_joint": 0.6602006688963211,
+     "a_macro": 0.505221330956625,
+     "a_target_admissible": 0.9123711340206185
+    },
+    "LL|scale_1.1": {
+     "a_approach": 0.7,
+     "a_backoff": 0.0,
+     "a_hold": 0.9372549019607843,
+     "a_joint": 0.7210051546391752,
+     "a_macro": 0.545751633986928,
+     "a_target_admissible": 0.9123711340206185
+    },
+    "LL|scale_2": {
+     "a_approach": 0.6534090909090909,
+     "a_backoff": 0.0,
+     "a_hold": 0.3565217391304348,
+     "a_joint": 0.5197324414715719,
+     "a_macro": 0.34982917409388,
+     "a_target_admissible": 0.9123711340206185
+    },
+    "LL|sham": {
+     "a_approach": 0.6454545454545455,
+     "a_backoff": 0.0,
+     "a_hold": 0.9372549019607843,
+     "a_joint": 0.6996655518394649,
+     "a_macro": 0.52756981580511,
+     "a_target_admissible": 0.9123711340206185
+    },
+    "LL|wrong": {
+     "a_approach": 0.08181818181818182,
+     "a_backoff": 0.0,
+     "a_hold": 0.49,
+     "a_joint": 0.17270929466051418,
+     "a_macro": 0.1877777777777778,
+     "a_target_admissible": 0.9123711340206185
+    },
+    "LL|wrongfrac_0.01": {
+     "a_approach": 0.6386363636363637,
+     "a_backoff": 0.0,
+     "a_hold": 0.9372549019607843,
+     "a_joint": 0.6956521739130435,
+     "a_macro": 0.5252970885323827,
+     "a_target_admissible": 0.9123711340206185
+    },
+    "LL|wrongfrac_0.05": {
+     "a_approach": 0.615909090909091,
+     "a_backoff": 0.0,
+     "a_hold": 0.8956521739130435,
+     "a_joint": 0.6720360824742269,
+     "a_macro": 0.5131461675579323,
+     "a_target_admissible": 0.9123711340206185
+    },
+    "LL|wrongfrac_0.1": {
+     "a_approach": 0.5931818181818181,
+     "a_backoff": 0.0,
+     "a_hold": 0.8695652173913043,
+     "a_joint": 0.6469072164948454,
+     "a_macro": 0.4970736779560309,
+     "a_target_admissible": 0.9123711340206185
+    },
+    "LL|zero": {
+     "a_approach": 0.0,
+     "a_backoff": 0.0,
+     "a_hold": 0.9372549019607843,
+     "a_joint": 0.27899484536082475,
+     "a_macro": 0.31241830065359477,
+     "a_target_admissible": 0.9123711340206185
+    },
+    "LO": {
+     "a_approach": 0.8998968008255934,
+     "a_backoff": 0.9032258064516129,
+     "a_hold": 0.9372549019607843,
+     "a_joint": 0.9123711340206185,
+     "a_macro": 0.9145467243473081,
+     "a_target_admissible": 0.9123711340206185
+    },
+    "OD": {
+     "a_approach": 1.0,
+     "a_backoff": 0.0,
+     "a_hold": 0.0,
+     "a_joint": 0.5932762030323006,
+     "a_macro": 0.3333333333333333,
+     "a_target_admissible": 1.0
+    },
+    "OFh": {
+     "a_approach": 0.4577777777777778,
+     "a_backoff": 0.009523809523809525,
+     "a_hold": 0.7565217391304347,
+     "a_joint": 0.5032216494845361,
+     "a_macro": 0.4011247214370111,
+     "a_target_admissible": 1.0
+    },
+    "OL": {
+     "a_approach": 0.7355555555555555,
+     "a_backoff": 0.0,
+     "a_hold": 1.0,
+     "a_joint": 0.7625418060200669,
+     "a_macro": 0.5785185185185185,
+     "a_target_admissible": 1.0
+    },
+    "OO": {
+     "a_approach": 1.0,
+     "a_backoff": 1.0,
+     "a_hold": 1.0,
+     "a_joint": 1.0,
+     "a_macro": 1.0,
+     "a_target_admissible": 1.0
+    },
+    "OO|default": {
+     "a_approach": 0.52218782249742,
+     "a_backoff": 0.8064516129032258,
+     "a_hold": 0.888235294117647,
+     "a_joint": 0.6615384615384615,
+     "a_macro": 0.7271505376344086,
+     "a_target_admissible": 1.0
+    },
+    "OO|noise_0.02": {
+     "a_approach": 0.9966666666666667,
+     "a_backoff": 0.975609756097561,
+     "a_hold": 0.9575,
+     "a_joint": 0.984179301252472,
+     "a_macro": 0.977413808261114,
+     "a_target_admissible": 1.0
+    },
+    "OO|reverse": {
+     "a_approach": 0.0,
+     "a_backoff": 0.0,
+     "a_hold": 1.0,
+     "a_joint": 0.2963917525773196,
+     "a_macro": 0.3333333333333333,
+     "a_target_admissible": 1.0
+    },
+    "OO|scale_0.9": {
+     "a_approach": 0.9411111111111111,
+     "a_backoff": 1.0,
+     "a_hold": 0.7375,
+     "a_joint": 0.8958470665787739,
+     "a_macro": 0.8928703703703703,
+     "a_target_admissible": 1.0
+    },
+    "OO|scale_1.1": {
+     "a_approach": 1.0,
+     "a_backoff": 0.7419354838709677,
+     "a_hold": 0.59,
+     "a_joint": 0.8549769281476599,
+     "a_macro": 0.7773118279569893,
+     "a_target_admissible": 1.0
+    },
+    "OO|wrongfrac_0.01": {
+     "a_approach": 0.99,
+     "a_backoff": 1.0,
+     "a_hold": 0.99,
+     "a_joint": 0.990771259063942,
+     "a_macro": 0.9917972350230415,
+     "a_target_admissible": 1.0
+    }
+   },
+   "headroom_D_median": 0.2500000000000001,
+   "normalized_cut_gains": {
+    "default": null,
+    "wrong": null,
+    "zero": null
+   },
+   "note": "every interval in a verdict is an exact order-statistic (medians) or Clopper-Pearson (shares) interval at the claim error 0.0125; unadjusted across claims",
+   "oracle_queries": {
+    "Fp": 1288,
+    "J": 25600
+   },
+   "outcomes_by_cell": {
+    "DO": {
+     "draw": 2,
+     "loss": 7,
+     "timeout": 0,
+     "win": 9
+    },
+    "Fflat": {
+     "draw": 0,
+     "loss": 12,
+     "timeout": 0,
+     "win": 6
+    },
+    "FhO": {
+     "draw": 0,
+     "loss": 6,
+     "timeout": 0,
+     "win": 12
+    },
+    "Fp": {
+     "draw": 0,
+     "loss": 9,
+     "timeout": 0,
+     "win": 9
+    },
+    "JJ": {
+     "draw": 2,
+     "loss": 4,
+     "timeout": 0,
+     "win": 12
+    },
+    "JL": {
+     "draw": 2,
+     "loss": 10,
+     "timeout": 0,
+     "win": 6
+    },
+    "LJ": {
+     "draw": 1,
+     "loss": 7,
+     "timeout": 0,
+     "win": 10
+    },
+    "LL": {
+     "draw": 2,
+     "loss": 12,
+     "timeout": 0,
+     "win": 4
+    },
+    "LL|default": {
+     "draw": 0,
+     "loss": 15,
+     "timeout": 0,
+     "win": 3
+    },
+    "LL|noise_0.02": {
+     "draw": 1,
+     "loss": 12,
+     "timeout": 0,
+     "win": 5
+    },
+    "LL|noise_0.05": {
+     "draw": 1,
+     "loss": 12,
+     "timeout": 0,
+     "win": 5
+    },
+    "LL|noise_0.1": {
+     "draw": 1,
+     "loss": 12,
+     "timeout": 0,
+     "win": 5
+    },
+    "LL|scale_0.5": {
+     "draw": 0,
+     "loss": 16,
+     "timeout": 0,
+     "win": 2
+    },
+    "LL|scale_0.9": {
+     "draw": 1,
+     "loss": 12,
+     "timeout": 0,
+     "win": 5
+    },
+    "LL|scale_1.1": {
+     "draw": 1,
+     "loss": 12,
+     "timeout": 0,
+     "win": 5
+    },
+    "LL|scale_2": {
+     "draw": 0,
+     "loss": 10,
+     "timeout": 0,
+     "win": 8
+    },
+    "LL|wrong": {
+     "draw": 1,
+     "loss": 16,
+     "timeout": 0,
+     "win": 1
+    },
+    "LL|wrongfrac_0.01": {
+     "draw": 1,
+     "loss": 13,
+     "timeout": 0,
+     "win": 4
+    },
+    "LL|wrongfrac_0.05": {
+     "draw": 2,
+     "loss": 13,
+     "timeout": 0,
+     "win": 3
+    },
+    "LL|wrongfrac_0.1": {
+     "draw": 1,
+     "loss": 14,
+     "timeout": 0,
+     "win": 3
+    },
+    "LL|zero": {
+     "draw": 0,
+     "loss": 18,
+     "timeout": 0,
+     "win": 0
+    },
+    "LO": {
+     "draw": 1,
+     "loss": 4,
+     "timeout": 0,
+     "win": 13
+    },
+    "OD": {
+     "draw": 0,
+     "loss": 12,
+     "timeout": 0,
+     "win": 6
+    },
+    "OFh": {
+     "draw": 0,
+     "loss": 10,
+     "timeout": 0,
+     "win": 8
+    },
+    "OL": {
+     "draw": 1,
+     "loss": 10,
+     "timeout": 0,
+     "win": 7
+    },
+    "OO": {
+     "draw": 1,
+     "loss": 5,
+     "timeout": 0,
+     "win": 12
+    },
+    "OO|default": {
+     "draw": 2,
+     "loss": 9,
+     "timeout": 0,
+     "win": 7
+    },
+    "OO|noise_0.02": {
+     "draw": 1,
+     "loss": 5,
+     "timeout": 0,
+     "win": 12
+    },
+    "OO|scale_0.9": {
+     "draw": 1,
+     "loss": 7,
+     "timeout": 0,
+     "win": 10
+    },
+    "OO|scale_1.1": {
+     "draw": 0,
+     "loss": 6,
+     "timeout": 0,
+     "win": 12
+    },
+    "OO|wrongfrac_0.01": {
+     "draw": 1,
+     "loss": 5,
+     "timeout": 0,
+     "win": 12
+    },
+    "R": {
+     "draw": 0,
+     "loss": 11,
+     "timeout": 0,
+     "win": 7
+    }
+   },
+   "params": {
+    "Fflat": 20997,
+    "Fp": 2313,
+    "J": 9283,
+    "L": 787
+   },
+   "seconds_per_seed": 9.564257860183716,
+   "win_by_cell": {
+    "DO": {
+     "all": 0.5,
+     "kiter": 0.3333333333333333,
+     "rush": 0.6666666666666666
+    },
+    "Fflat": {
+     "all": 0.5,
+     "kiter": 0.3333333333333333,
+     "rush": 0.6666666666666666
+    },
+    "FhO": {
+     "all": 0.6666666666666666,
+     "kiter": 0.6666666666666666,
+     "rush": 0.6666666666666666
+    },
+    "Fp": {
+     "all": 0.5,
+     "kiter": 0.3333333333333333,
+     "rush": 0.6666666666666666
+    },
+    "JJ": {
+     "all": 0.75,
+     "kiter": 0.5,
+     "rush": 1.0
+    },
+    "JL": {
+     "all": 0.5,
+     "kiter": 0.3333333333333333,
+     "rush": 0.6666666666666666
+    },
+    "LJ": {
+     "all": 0.5833333333333334,
+     "kiter": 0.3333333333333333,
+     "rush": 1.0
+    },
+    "LL": {
+     "all": 0.3333333333333333,
+     "kiter": 0.0,
+     "rush": 0.6666666666666666
+    },
+    "LL|default": {
+     "all": 0.16666666666666666,
+     "kiter": 0.0,
+     "rush": 0.3333333333333333
+    },
+    "LL|noise_0.02": {
+     "all": 0.3333333333333333,
+     "kiter": 0.0,
+     "rush": 0.6666666666666666
+    },
+    "LL|noise_0.05": {
+     "all": 0.3333333333333333,
+     "kiter": 0.0,
+     "rush": 0.6666666666666666
+    },
+    "LL|noise_0.1": {
+     "all": 0.3333333333333333,
+     "kiter": 0.0,
+     "rush": 0.6666666666666666
+    },
+    "LL|scale_0.5": {
+     "all": 0.16666666666666666,
+     "kiter": 0.3333333333333333,
+     "rush": 0.0
+    },
+    "LL|scale_0.9": {
+     "all": 0.3333333333333333,
+     "kiter": 0.16666666666666666,
+     "rush": 0.3333333333333333
+    },
+    "LL|scale_1.1": {
+     "all": 0.41666666666666663,
+     "kiter": 0.16666666666666666,
+     "rush": 0.6666666666666666
+    },
+    "LL|scale_2": {
+     "all": 0.5,
+     "kiter": 0.3333333333333333,
+     "rush": 0.6666666666666666
+    },
+    "LL|wrong": {
+     "all": 0.0,
+     "kiter": 0.0,
+     "rush": 0.0
+    },
+    "LL|wrongfrac_0.01": {
+     "all": 0.16666666666666666,
+     "kiter": 0.0,
+     "rush": 0.3333333333333333
+    },
+    "LL|wrongfrac_0.05": {
+     "all": 0.16666666666666666,
+     "kiter": 0.0,
+     "rush": 0.3333333333333333
+    },
+    "LL|wrongfrac_0.1": {
+     "all": 0.16666666666666666,
+     "kiter": 0.0,
+     "rush": 0.3333333333333333
+    },
+    "LL|zero": {
+     "all": 0.0,
+     "kiter": 0.0,
+     "rush": 0.0
+    },
+    "LO": {
+     "all": 0.75,
+     "kiter": 0.5,
+     "rush": 1.0
+    },
+    "OD": {
+     "all": 0.5,
+     "kiter": 0.3333333333333333,
+     "rush": 0.6666666666666666
+    },
+    "OFh": {
+     "all": 0.5,
+     "kiter": 0.3333333333333333,
+     "rush": 0.6666666666666666
+    },
+    "OL": {
+     "all": 0.5,
+     "kiter": 0.3333333333333333,
+     "rush": 0.6666666666666666
+    },
+    "OO": {
+     "all": 0.6666666666666666,
+     "kiter": 0.6666666666666666,
+     "rush": 0.6666666666666666
+    },
+    "OO|default": {
+     "all": 0.41666666666666663,
+     "kiter": 0.3333333333333333,
+     "rush": 0.6666666666666666
+    },
+    "OO|noise_0.02": {
+     "all": 0.6666666666666666,
+     "kiter": 0.6666666666666666,
+     "rush": 0.6666666666666666
+    },
+    "OO|scale_0.9": {
+     "all": 0.5833333333333333,
+     "kiter": 0.5,
+     "rush": 0.6666666666666666
+    },
+    "OO|scale_1.1": {
+     "all": 0.6666666666666666,
+     "kiter": 0.6666666666666666,
+     "rush": 0.6666666666666666
+    },
+    "OO|wrongfrac_0.01": {
+     "all": 0.6666666666666666,
+     "kiter": 0.6666666666666666,
+     "rush": 0.6666666666666666
+    },
+    "R": {
+     "all": 0.5,
+     "kiter": 0.3333333333333333,
+     "rush": 0.6666666666666666
+    }
+   }
+  },
+  "endpoint_coverage": {
+   "A_replacement": "evaluated",
+   "B1_useful_connection": "evaluated",
+   "B2_stable_within_envelope": "evaluated",
+   "B3_stronger_than_conventional": "evaluated",
+   "descriptive": "evaluated",
+   "gates": "evaluated"
+  },
+  "gates": {
+   "baselines": {
+    "Fflat": {
+     "gain_over_rush": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": 0.0,
+      "n": 3
+     },
+     "per_opponent": {
+      "kiter": {
+       "hi": "Infinity",
+       "lo": "-Infinity",
+       "median": 0.0,
+       "n": 3
+      },
+      "rush": {
+       "hi": "Infinity",
+       "lo": "-Infinity",
+       "median": 0.0,
+       "n": 3
+      }
+     },
+     "qualified": false
+    },
+    "Fp": {
+     "gain_over_rush": {
+      "hi": "Infinity",
+      "lo": "-Infinity",
+      "median": 0.16666666666666663,
+      "n": 3
+     },
+     "per_opponent": {
+      "kiter": {
+       "hi": "Infinity",
+       "lo": "-Infinity",
+       "median": 0.3333333333333333,
+       "n": 3
+      },
+      "rush": {
+       "hi": "Infinity",
+       "lo": "-Infinity",
+       "median": 0.0,
+       "n": 3
+      }
+     },
+     "qualified": false
+    }
+   },
+   "headroom_D": {
+    "hi": "Infinity",
+    "lo": "-Infinity",
+    "median": 0.2500000000000001,
+    "n": 3
+   },
+   "headroom_ok": false,
+   "headroom_per_opponent": {
+    "kiter": {
+     "hi": "Infinity",
+     "lo": "-Infinity",
+     "median": 0.3333333333333333,
+     "n": 3
+    },
+    "rush": {
+     "hi": "Infinity",
+     "lo": "-Infinity",
+     "median": 0.33333333333333337,
+     "n": 3
+    }
+   },
+   "teacher_necessity": {
+    "aim": {
+     "hi": "Infinity",
+     "lo": "-Infinity",
+     "median": 0.16666666666666663,
+     "n": 3
+    },
+    "connection": {
+     "hi": "Infinity",
+     "lo": "-Infinity",
+     "median": 0.25,
+     "n": 3
+    },
+    "move": {
+     "hi": "Infinity",
+     "lo": "-Infinity",
+     "median": 0.41666666666666674,
+     "n": 3
+    }
+   },
+   "teacher_necessity_ok": {
+    "aim": false,
+    "connection": false,
+    "move": false
+   }
+  },
+  "seeds": 3
+ },
+ "evaluation_seconds": 0.01579262499999956,
+ "jobs_wall_seconds": 9.781443291999999,
+ "max_child_rss_bytes": 64012288,
+ "reason": "complete",
+ "seed_errors": [],
+ "seeds_complete": 3,
+ "seeds_expected": 3,
+ "smoke": true,
+ "status": "COMPLETE",
+ "total_wall_seconds": 9.798043333999999
+}
