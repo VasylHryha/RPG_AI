@@ -71,7 +71,8 @@ void commander(World& w,uint8_t team){
   else if(r.exposed&&r.ourShoot>=r.theirShoot&&enabled(Plan::Push))plan=Plan::Push;
   else if(r.exposed&&r.ourMelee>=4&&enabled(Plan::Flank))plan=Plan::Flank;
   Tactics combo;combo.role.fill(plan);
-  if(w.config->hasForcePlan&&team==w.config->forceTeam)combo=w.config->forcePlan;
+  if(const auto* goal=planGoal(w,team))combo=goal->tactics;
+  else if(w.config->hasForcePlan&&team==w.config->forceTeam)combo=w.config->forcePlan;
   else if(p.lookPlan!=Plan::None)combo.role.fill(p.lookPlan);
   const bool differs=combo.role!=p.combo.role;
   if(differs&&(combo.role[0]==Plan::Hold||w.time-p.planSince>=2))setPlan(w,team,combo);

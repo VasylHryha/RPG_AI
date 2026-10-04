@@ -39,6 +39,7 @@ public:
   std::vector<Spawn> spawnQueue;
   std::vector<MeleeHit> meleeHits;
   std::vector<Hit> hitLog;
+  std::vector<OrderEvent> orderEvents;
   std::vector<Vec2> pushes;
   SpatialGrid liveGrid, shotGrid, separationGrid;
   Rng random;
@@ -51,7 +52,10 @@ public:
   uint64_t membershipVersion=0;
   uint32_t skirmishLeft=0;
   double timeReference=0, lastHit=-99;
-  bool branch=false, burnTick=false;
+  bool branch=false, burnTick=false,skirmishActive=false;
+  mutable std::array<double,2> ratesTime{-1,-1};
+  mutable std::array<uint64_t,2> ratesVersion{UINT64_MAX,UINT64_MAX};
+  mutable std::array<std::array<double,4>,2> rates{};
 
   explicit World(std::shared_ptr<const Config> c):config(std::move(c)),random(toUint32(config->seed)){}
   UnitHot* resolve(UnitRef r);

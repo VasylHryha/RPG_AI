@@ -76,3 +76,19 @@ def test_custom_kind_uses_game_role_protection(native_formation):
     raw=json.dumps(req)+'\n';cpp=[json.loads(s) for s in subprocess.check_output([str(native_formation)],input=raw,text=True).splitlines()]
     js=[json.loads(s) for s in subprocess.check_output(['node',str(ROOT/'js_host.cjs')],input=raw,text=True).splitlines()]
     assert cpp[-1]==js[-1] and cpp[-1]['total']>0
+
+
+def test_combo_observation_and_director_are_battle_local(native_formation):
+    req=dict(mode='reactive',trace=True,options=dict(seed=20261005,scenario='mirror',duration=2,
+        army={'melee':6,'ranged':10,'artillery':3},ai=[{'brain':'rules','skills':{'combos':['tchain','fixlob']}},{'level':'novice'}]))
+    raw=json.dumps(req)+'\n';first=subprocess.check_output([str(native_formation)],input=raw,text=True)
+    assert first==subprocess.check_output([str(native_formation)],input=raw,text=True)
+    assert validate_rows(req,[json.loads(s) for s in first.splitlines()])=='completed'
+
+
+def test_carried_skirmish_uses_ordinary_lifecycle(native_formation):
+    req=dict(mode='alone',options=dict(seed=20261005,scenario='skirmish',rules='game',duration=.1,ours=[{'role':'melee','kind':'brute','hp':100}],ai=[{'level':'novice'},{'level':'novice'}]))
+    raw=json.dumps(req)+'\n'
+    cpp=json.loads(subprocess.check_output([str(native_formation)],input=raw,text=True))
+    js=json.loads(subprocess.check_output(['node',str(ROOT/'js_host.cjs')],input=raw,text=True))
+    assert cpp==js and cpp['t']>=.1

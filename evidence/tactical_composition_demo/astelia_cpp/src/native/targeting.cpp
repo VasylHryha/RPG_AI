@@ -48,6 +48,7 @@ UnitRef shooterTarget(const World& w,uint32_t i,bool released){
     else if(f.shooterFocus==ShooterFocus::Protect)tier=threat?0:1e6+distance(h.pos,u.pos)*1e3;
     else if(f.shooterFocus==ShooterFocus::Soft)tier=(melee(h.role)?1e6:0)+(threat?0:1e5);
     else tier=threat?0:pinned(w,j)?1e6:2e6;
+    if(const auto* goal=engageGoal(w,u.team))if(!containsId(goal,h.id))tier+=3e6;
     const double ks=sk.killSpeed?10/std::max(.1,h.damage/std::max(.3,w.state[j].cooldownMax)):1;
     candidates.push_back({tier+(sk.fireControl?left/hitLineProbability(w,u.team,w.reference(j),w.reference(i)):left)*ks,w.reference(j)});
   }

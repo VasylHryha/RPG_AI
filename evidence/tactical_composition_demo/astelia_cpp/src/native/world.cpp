@@ -98,7 +98,7 @@ UnitRef World::add(uint8_t team,Role role,Vec2 pos,uint32_t kind) {
 void World::rebuildTeams() {
   teams[0].clear(); teams[1].clear();
   for (auto i:active) if (units[i].alive) teams[units[i].team].push_back(i);
-  foesVersion_={UINT64_MAX,UINT64_MAX};
+  foesVersion_={UINT64_MAX,UINT64_MAX};ratesVersion={UINT64_MAX,UINT64_MAX};
 }
 const std::vector<uint32_t>& World::foes(uint8_t team) const {
   if(foesVersion_[team]==membershipVersion&&foesTime_[team]==time)return foes_[team];
@@ -115,7 +115,10 @@ const std::vector<uint32_t>& World::foes(uint8_t team) const {
 uint32_t World::survivors(uint8_t team) const {
   uint32_t n=0; for (auto i:active) if (units[i].alive && units[i].team==team) ++n; return n;
 }
-bool World::done() const { return time>=config->duration || !survivors(0) || ((config->mirror || config->scenario==Scenario::Skirmish) && !survivors(1)); }
+bool World::done() const {
+  if(skirmishActive)return time>=config->duration||!survivors(1)||(!survivors(0)&&skirmishLeft==0);
+  return time>=config->duration||!survivors(0)||(config->mirror&&!survivors(1));
+}
 World World::create(std::shared_ptr<const Config> c) {
   if (!(c->dt>0) || !std::isfinite(c->dt) || !(c->duration>=0) || !std::isfinite(c->duration) ||
       !(c->width>0) || !(c->height>0) || !std::isfinite(c->width) || !std::isfinite(c->height) || !std::isfinite(c->seed) ||
@@ -123,7 +126,6 @@ World World::create(std::shared_ptr<const Config> c) {
     throw std::invalid_argument("invalid world configuration");
   World w(c);
   w.spawnRandom=Rng(toUint32(c->seed*7919));
-  if(c->scenario==Scenario::Skirmish && c->temporal)w.timeReference=6.62;
   constexpr std::array<Vec2,3> zones{Vec2{240,60},Vec2{150,90},Vec2{80,60}};
   constexpr std::array<double,3> band{120,150,120};
   struct Placement{Role role;uint32_t kind;Vec2 pos;};std::vector<Placement> layout;
@@ -143,6 +145,7 @@ World World::create(std::shared_ptr<const Config> c) {
     }
   } else if(c->scenario==Scenario::Skirmish) {
     if(c->rules!=Rules::Game||c->skirmishKinds.empty()||!c->skirmishMaxAlive)throw std::invalid_argument("invalid skirmish configuration");
+    w.skirmishActive=true;if(c->temporal)w.timeReference=6.62;
     w.skirmishLeft=c->skirmishCount;
     while(w.skirmishLeft && w.survivors(0)<c->skirmishMaxAlive)w.spawnSkirmish();
     w.add(1,Role::Player,{c->width-260,c->height/2});
@@ -229,7 +232,7 @@ void World::reclaim() {
   for (auto i:active) if (units[i].alive) {
     retained_[i]=1; retain(units[i].target); retain(state[i].meleeAttacker);
     const auto& s=state[i];
-    const auto& t=tactical[i];retain(t.assigned);retain(t.fireOrder);retain(t.squadFocus);
+    const auto& t=tactical[i];retain(t.assigned);retain(t.fireOrder);retain(t.squadFocus);retain(t.order.target);
     if(s.ability!=invalidSlot){const auto& a=abilities[s.ability];retain(a.chargeTarget);retain(a.aimTarget);}
     if(s.player!=invalidSlot){const auto& p=players[s.player];retain(p.manualTarget);for(const auto& l:p.limbs)retain(l.target);}
   }
@@ -251,6 +254,7 @@ void World::copyFrom(const World& p) {
   shots=p.shots; shells=p.shells; fields=p.fields; dots=p.dots; hitLog=p.hitLog;
   abilities=p.abilities;players=p.players;freeAbilities=p.freeAbilities;freePlayers=p.freePlayers;spawnQueue=p.spawnQueue;
   spawnRandom=p.spawnRandom;skirmishLeft=p.skirmishLeft;timeReference=p.timeReference;lastHit=p.lastHit;nextShot=p.nextShot;burnTick=false;
+  skirmishActive=p.skirmishActive;orderEvents=p.orderEvents;ratesTime={-1,-1};ratesVersion={UINT64_MAX,UINT64_MAX};
   stats=p.stats; random=p.random; time=p.time; nextId=p.nextId; branch=true;
   counters=WorkCounters{}; meleeHits.clear(); order.clear(); pushes.clear();
   membershipVersion=p.membershipVersion;foesVersion_={UINT64_MAX,UINT64_MAX};foesTime_={-1,-1};

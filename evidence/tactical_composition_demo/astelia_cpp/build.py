@@ -12,7 +12,7 @@ COMBAT_SOURCES = ['src/native/world.cpp', 'src/native/combat.cpp', 'src/native/s
                   'src/native/combat_rules.cpp', 'src/native/abilities.cpp', 'src/native/player.cpp',
                   'src/native/formation.cpp', 'src/native/formation_tables.cpp', 'src/native/commander.cpp',
                   'src/native/targeting.cpp', 'src/native/coord_abilities.cpp', 'src/native/dodge.cpp',
-                  'src/native/decisions.cpp']
+                  'src/native/decisions.cpp', 'src/native/director.cpp']
 TARGETS = {
     'legacy': ('astelia', ['src/main.cpp', 'src/formation_sim.cpp', 'src/v8_ieee754.cpp']),
     'native': ('astelia_native', ['src/native/host.cpp', 'src/native/config_codec.cpp', *COMBAT_SOURCES]),

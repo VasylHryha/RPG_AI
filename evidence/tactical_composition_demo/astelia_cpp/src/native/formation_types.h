@@ -37,7 +37,19 @@ struct Formation {
 struct Tactics {std::array<Plan,4> role{Plan::None,Plan::None,Plan::None,Plan::None};};
 struct Wing {UnitRef unit;int8_t side=0;};
 struct ShapeSlots {std::array<std::vector<Vec2>,3> role;}; // x depth, y lateral
+struct GoalIds {std::vector<UnitId> ids;double until=0;};
+struct GoalPlace {Vec2 point,face;double until=0;bool hasFace=false;};
+struct GoalPlan {Tactics tactics;double until=0;};
+struct PackGoals {GoalPlace place;GoalIds engage,release;GoalPlan plan;};
+struct Observation {Vec2 oursCenter,theirsCenter,axis;std::array<uint32_t,3> oursByRole{},theirsByRole{};
+  uint32_t ours=0,theirs=0;double hpOurs=0,hpTheirs=0,gapNear=std::numeric_limits<double>::infinity(),centers=0,spread=0,columnRatio=0,speedAlong=0,approach=0,chaseShare=0,wallDist=0;bool finishing=false;};
+struct ComboRole {UnitRef unit;uint8_t role=0;};
+struct DirectorEvent {double time;ComboKind combo;uint8_t phase,what;};
+struct Director {PackGoals goals;Observation observation;std::vector<ComboRole> roles;std::vector<DirectorEvent> log;
+  std::array<double,2> cool{};Vec2 away;double ratio0=0,last=-99,selected=-99,start=0,phaseStart=0;
+  uint32_t startEnemies=0,starts=0,aborts=0,successes=0,switches=0;ComboKind combo=ComboKind::Tchain;uint8_t phase=0;bool active=false;};
 struct Pack {
+  PackGoals commands;Director director;
   Formation base, formation;
   Vec2 anchor, facing{1,0}, away;
   std::array<uint32_t,3> shapeCounts{};
@@ -58,6 +70,7 @@ struct Pack {
   bool enabled=false, formed=false, waiting=false, diving=false, hasAway=false, caught=false, raidSpent=false, flankStarted=false;
 };
 struct TacticalState {
+  UnitOrder order;
   UnitRef assigned, squadFocus, fireOrder;
   Vec2 flankGoal, surroundGoal;
   double aimOffset=0, jinkUntil=0, holdSince=-1, waitFrom=-1, reservedUntil=0;

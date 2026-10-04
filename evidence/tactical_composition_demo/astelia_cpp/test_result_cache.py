@@ -123,3 +123,47 @@ def test_different_js_host_cannot_import_legacy_results(tmp_path):
         assert prime_legacy(engine)==0
         assert not list(engine.cache.root.glob('*.gz'))
     finally:engine.close()
+
+
+def test_stderr_flood_cannot_deadlock_response(tmp_path):
+    host=tmp_path/'chatty.py'
+    host.write_text('import json,sys\nfor line in sys.stdin:\n sys.stderr.write("x"*200000);sys.stderr.flush()\n print('+repr(json.dumps(SUMMARY))+',flush=True)\n')
+    engine=Engine('test',[sys.executable,str(host)],tmp_path/'cache',request_timeout=3)
+    try:
+        assert engine.fight({'seed':4})==[SUMMARY]
+        assert engine.executed==1
+    finally:engine.close()
+
+
+@pytest.mark.parametrize('body', ['for line in sys.stdin: time.sleep(30)',
+    'for line in sys.stdin:\n print("{bad json}",flush=True);time.sleep(30)'])
+def test_unresponsive_or_invalid_host_is_killed_without_cache(tmp_path,body):
+    import time
+    host=tmp_path/'bad.py';host.write_text('import sys,time\n'+body+'\n')
+    engine=Engine('test',[sys.executable,str(host)],tmp_path/'cache',request_timeout=.3,shutdown_timeout=1)
+    start=time.monotonic()
+    with pytest.raises((RuntimeError,ValueError)):
+        engine.fight({'seed':9})
+    assert time.monotonic()-start<3 and engine.process is None
+    assert engine.executed==0 and not engine.cache.path({'seed':9}).exists()
+    engine.close()
+
+
+def test_host_ignoring_input_cannot_block_large_request(tmp_path):
+    host=tmp_path/'unread.py';host.write_text('import time\ntime.sleep(30)\n')
+    engine=Engine('test',[sys.executable,str(host)],None,request_timeout=.3,shutdown_timeout=1)
+    with pytest.raises(RuntimeError,match='timed out'):
+        engine.fight({'large':'x'*1000000})
+    assert engine.process is None
+    engine.close()
+
+
+def test_host_refusing_eof_has_bounded_close(tmp_path):
+    import time
+    host=tmp_path/'eof.py';host.write_text('import json,sys,time\nfor line in sys.stdin: print('+repr(json.dumps(SUMMARY))+',flush=True)\ntime.sleep(30)\n')
+    engine=Engine('test',[sys.executable,str(host)],None,shutdown_timeout=.3)
+    assert engine.fight({'seed':1})==[SUMMARY]
+    start=time.monotonic()
+    with pytest.raises(RuntimeError,match='combat host exit'):
+        engine.close()
+    assert time.monotonic()-start<2 and engine.process is None

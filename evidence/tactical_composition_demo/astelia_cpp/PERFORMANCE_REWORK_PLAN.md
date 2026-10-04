@@ -257,27 +257,24 @@ cannot be claimed by suppressing an error or skipping a mechanic.
 
 ## 6. Implementation stages after approval
 
-2026-10-04 checkpoint: stage B's bounded novice sandbox core is implemented
-and has limited checks; see [native_checkpoint_r1/README.md](native_checkpoint_r1/README.md).
-The eight-fight core diagnostic measured 15.6309x elapsed speed-up with identical
-summaries and audited operation counts, zero cache hits, and no branch work.
-The 28 focused tests and sanitizer contract checks passed. The balanced geometry
-layout probe found only a roughly 4% difference; typed records remain the current
-candidate pending complete branch-state profiling. The subsequent
-[self-recheck](native_checkpoint_review_r1/RECHECK.md) found numeric/spawn defects,
-cache/timing admission holes, and insufficient layout/isolation evidence. Its
-complete repair batch is in progress; stage B is not architecture-accepted.
-Cause: the first tests exercised common geometry/early forks and schema shape
-without boundary arithmetic, active effect copies, or hostile admission controls.
-The old core source/binary are archived by hash; its receipts remain historical.
-This is not full-engine
-qualification. Stages C–F and full feature/clone coverage remain pending; the
-provisional estimates below are unchanged.
+2026-10-05 implementation checkpoint: the typed core, game combat, abilities,
+player/spawn lifecycle, formations/non-search commanders and combo/order controls
+are implemented and have focused checks. See
+[native_combat_checkpoint_r1](native_combat_checkpoint_r1/README.md),
+[native_formation_checkpoint_r1](native_formation_checkpoint_r1/README.md), and
+[native_director_checkpoint_r1](native_director_checkpoint_r1/README.md).
+These are development checkpoints; full coverage and timing remain pending.
+The historical novice-only 15.6309x diagnostic does not qualify the latest source
+or full engine. The first layout probe was weak and B remains unaccepted.
+The owner explicitly directed continued full migration and rework; C–E are
+implementation prototypes while the final layout remains revisable. Production
+kernel and equivalent complete-copy probes must support the layout selection
+before F qualification. No independent engineering acceptance is claimed.
 
 | Stage | Deliverable | Completion gate | Work estimate |
 |---|---|---|---|
 | A. Freeze the engineering contract | Feature/clone/field-access ledgers; workload/input hashes; native API, input constraints and behavior-change list | Every supported feature has an owner module and a check. Fix original 50 and supplemental workloads, timing order, metrics and success rules before timings. | 1–2 h |
-| B. Native core and architecture checkpoint | Typed configuration, units/world, RNG, geometry, grid, create/step/done/summary; simplest brain; bounded record/column and copy comparison | Independent geometry/mechanics checks pass; deterministic basic fights complete; native hot path has no dynamic JS runtime. Profile the vertical slice and select layout before C–E. | 4–6 h, provisional |
+| B. Native core and architecture checkpoint | Typed configuration, units/world, RNG, geometry, grid, create/step/done/summary; simplest brain; bounded record/column and copy comparison | Independent geometry/mechanics checks pass; deterministic basic fights complete; native hot path has no dynamic JS runtime. Profile the vertical slice; C–E may be prototyped under the owner continuation instruction, but select and validate the production layout before F qualification. | 4–6 h, provisional |
 | C. Complete combat | Shots/shells, sandbox abilities, game casting/energy, dodge/block, player limbs, effects and all spawn modes | Focused mechanics and scenario checks cover both rules and all unit/ability variants. | 3–5 h |
 | D. Tactics and formations | All brains, presets, plans, skills, target ranking and explicit pack contexts | Feature ledger complete for non-look-ahead behavior; no features silently disabled for speed. | 4–6 h |
 | E. Branching AI | Independent native forks, network features/inference, look-ahead, elite-fast/elite and artillery rollout | Parent world remains unchanged after branch execution; branch state and RNG are independent; budgets/horizons retained. | 3–5 h |
@@ -433,3 +430,12 @@ entity lifetimes, a bounded early layout checkpoint, and exhaustive diagnostic
 coverage. The working implementation is unchanged by this document revision.
 Its repairs remain required work; this self-audit does not replace cross-family
 review. No tests, benchmarks or simulation runs were performed for this review.
+
+
+2026-10-05 self-audit correction: the earlier progress paragraph still described
+C–D as entirely pending after their development checkpoints, and the B wording
+implied migration prototypes required accepted layout selection first. Cause:
+the status text was not refreshed alongside staged implementation and the
+owner continuation instruction. Corrected above without accepting B or relaxing
+its production-kernel/complete-copy gate. This documentation correction required
+no simulation run.

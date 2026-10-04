@@ -31,18 +31,29 @@ void decideUnit(World& w,uint32_t i){
       const auto delta=u.pos-sh.pos;const double along=dot(delta,sh.direction),cross=delta.x*sh.direction.y-delta.y*sh.direction.x;
       if(along>0&&along<=std::min(sh.left,sh.speed*.4)&&std::abs(cross)<=u.radius+3&&along<bt){best=&sh;bt=along;side=cross;}}
     if(best){const double k=side>=0?1:-1;goTo(d,u.pos+Vec2{best->direction.y*30*k,-best->direction.x*30*k});return;}}
-  if(u.role==Role::Player){d.release=Release::Player;return;}
-  if(formed&&saveWounded(w,i))return;
-  if(w.config->rules==Rules::Game&&s.standoff>0){const auto near=nearest(w,i);const auto* t=w.resolve(near);
+  bool ordered=false,orderAttack=false;const auto order=ts.order;
+  if(order.kind!=OrderKind::None){const auto* target=w.resolve(order.target);const bool arrived=(order.kind==OrderKind::Move||order.kind==OrderKind::Retreat)&&distance(u.pos,order.point)<=order.radius;
+    const bool dead=order.kind==OrderKind::Attack&&(!target||!target->alive);
+    if(order.until<=w.time||arrived||dead){w.orderEvents.push_back({w.time,u.id,order.kind,uint8_t(arrived?1:dead?2:0)});ts.order={};}
+    else{ordered=true;orderAttack=order.kind==OrderKind::Attack;
+      if(order.kind==OrderKind::Move||order.kind==OrderKind::Retreat){if(distance(u.pos,order.point)>4)goTo(d,order.point);if(order.kind==OrderKind::Retreat)return;}
+      if(!orderAttack)d.keep=true;}}
+  if(u.role==Role::Player&&!ordered){d.release=Release::Player;return;}
+  if(formed&&!ordered&&saveWounded(w,i))return;
+  if(!ordered&&w.config->rules==Rules::Game&&s.standoff>0){const auto near=nearest(w,i);const auto* t=w.resolve(near);
     if(t){const double l=distance(u.pos,t->pos);if(l<s.standoff){goTo(d,t->pos+(u.pos-t->pos)*(s.standoff/(l>0?l:1)),0,.5);d.keep=true;}}}
-  const bool surround=formed&&pack.formation.surround&&ts.hasSurroundGoal&&prior&&prior->alive;
-  const bool released=formed&&(pack.formation.release&(1<<size_t(u.role)))&&!(u.role==Role::Melee&&ts.wing);
+  const bool surround=!ordered&&formed&&pack.formation.surround&&ts.hasSurroundGoal&&prior&&prior->alive;
+  const bool released=formed&&(containsId(releaseGoal(w,u.team),u.id)||((pack.formation.release&(1<<size_t(u.role)))&&!(u.role==Role::Melee&&ts.wing)));
   if(surround){if(!engaged)goTo(d,ts.surroundGoal);d.keep=true;if(melee(u.role))d.post=true;}
-  else if(shellDodge(w,u.team)&&(released||(formed&&sk.lockedDodge)||!engaged)){Vec2 goal;if(dodgeGoal(w,i,goal)){goTo(d,goal);if(formed&&!released&&u.role==Role::Ranged)d.release=Release::DodgeFire;return;}}
+  else if(!ordered&&shellDodge(w,u.team)&&(released||(formed&&sk.lockedDodge)||!engaged)){Vec2 goal;if(dodgeGoal(w,i,goal)){goTo(d,goal);if(formed&&!released&&u.role==Role::Ranged)d.release=Release::DodgeFire;return;}}
   UnitRef target;
-  if(formed&&surround)target=u.target;
-  else if(formed&&u.role==Role::Melee){if(ts.hasFlankGoal&&!ts.answering){goTo(d,ts.flankGoal);return;}target=released?releasedMelee(w,i):u.target;
-    if(!target){goTo(d,s.slot);return;}}
+  if(ordered){if(orderAttack)target=order.target;else{double nearestGap=INFINITY;UnitRef fallback;double fallbackGap=INFINITY;
+    for(auto j:w.foes(u.team)){const auto& e=w.units[j];const double g=u.role==Role::Artillery?distance(u.pos,e.pos):gap(u,e);if(g>u.range)continue;
+      if(g<fallbackGap){fallbackGap=g;fallback=w.reference(j);}if((u.role!=Role::Ranged||laneClear(w,i,w.reference(j)))&&g<nearestGap){nearestGap=g;target=w.reference(j);}}
+    if(!target)target=fallback;}}
+  else if(formed&&surround)target=u.target;
+  else if(formed&&u.role==Role::Melee){if(!released&&ts.hasFlankGoal&&!ts.answering){goTo(d,ts.flankGoal);return;}target=released?releasedMelee(w,i):u.target;
+    if(!target&&!engageGoal(w,u.team)){goTo(d,s.slot);return;}}
   else if(formed&&u.role==Role::Artillery){const auto* old=w.resolve(u.target);target=u.cooldown>0&&!released?(old&&old->alive?u.target:UnitRef{}):artilleryTarget(w,i);}
   else if(formed)target=shooterTarget(w,i,released);
   else{if(melee(u.role)){const auto* a=w.resolve(s.meleeAttacker);if(a&&a->alive&&w.time-s.meleeAt<1&&gap(*a,u)<24)target=s.meleeAttacker;}
@@ -51,6 +62,8 @@ void decideUnit(World& w,uint32_t i){
       const auto* near=w.resolve(target);UnitRef soft;double bd=INFINITY;for(auto j:w.foes(u.team))if(!melee(w.units[j].role)){const double l=distance(u.pos,w.units[j].pos);if(l<bd){bd=l;soft=w.reference(j);}}
       if(near&&soft&&bd<distance(u.pos,near->pos)+60)target=soft;
       const auto block=nearest(w,i,false,true);const auto* b=w.resolve(block);if(b&&gap(u,*b)<6)target=block;}}}
+  if(melee(u.role)){const auto* eng=engageGoal(w,u.team);const auto* current=w.resolve(target);
+    if(eng&&!(s.prep>0)&&!(current&&current->alive&&containsId(eng,current->id))){double g=INFINITY;for(auto j:w.foes(u.team))if(containsId(eng,w.units[j].id)){const double x=gap(u,w.units[j]);if(x<g){g=x;target=w.reference(j);}}}}
   if(melee(u.role)&&w.config->rules==Rules::Game){const auto* t=w.resolve(target);
     if(t&&sk.weaponsFree&&gap(u,*t)>u.range){double bd=u.range;for(auto j:w.foes(u.team)){const double g=gap(u,w.units[j]);if(g<=bd){bd=g;target=w.reference(j);}}}
     if(sk.meleeFocus&&!(s.prep>0)){double best=INFINITY;UnitRef focus;
@@ -62,11 +75,11 @@ void decideUnit(World& w,uint32_t i){
     if(w.config->rules==Rules::Game){if(!s.inReach){const double radius=std::max(2*u.radius,.65*(u.range+u.radius+12)),a=u.id*2.399963;goTo(d,t->pos+Vec2{std::cos(a)*radius,std::sin(a)*radius});}}
     else if(gap(u,*t)>u.range*.9)goTo(d,sk.pursuitCut&&gap(u,*t)>30?interceptPoint(w,u.pos,target,u.speed,u.team):t->pos,u.range*.8+t->radius+u.radius);
     return;}
-  if(u.role==Role::Artillery){d.release=Release::Artillery;d.bound=formed&&!released;d.post=d.bound;
+  if(u.role==Role::Artillery){d.release=Release::Artillery;d.bound=(ordered&&!orderAttack)||(formed&&!released&&!ordered);d.post=d.bound;
     if(d.bound)goTo(d,surround?u.pos:s.slot);if(!t)return;const double l=distance(u.pos,t->pos);s.inReach=l<=u.range&&l>=s.minRange;
     if(!d.bound){if(l>u.range)goTo(d,t->pos,u.range*.9);else if(l<s.minRange+20)goTo(d,u.pos*2-t->pos);}return;}
   d.release=Release::Direct;d.post=true;s.inReach=t&&gap(u,*t)<=u.range;
-  const bool free=!formed||released;const Vec2 base=free||surround?u.pos:s.slot;const double leash=surround?0:pack.formation.laneLeash+pack.formation.kiteLeash;
+  const bool free=ordered||!formed||released;const Vec2 base=free||surround?u.pos:s.slot;const double leash=ordered?(orderAttack?INFINITY:0):surround?0:pack.formation.laneLeash+pack.formation.kiteLeash;
   Vec2 goal=base;double stop=0;bool slot=!free;
   const auto near=nearest(w,i,false,true);const auto* threat=w.resolve(near);
   if(threat&&distance(u.pos,threat->pos)<sk.kite){const auto delta=u.pos-threat->pos;const double l=length(delta);goal=u.pos+delta*(40/(l>0?l:1));slot=false;}

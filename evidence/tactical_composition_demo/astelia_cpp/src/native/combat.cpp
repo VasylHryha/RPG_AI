@@ -100,7 +100,7 @@ void coreStep(World& w) {
   const uint32_t packTick=toUint32(std::floor(w.time/dt+.5));
   Rng packRandom(toUint32(w.config->seed*2654435761.0)^toUint32(double(packTick)*40503));packRandom();packRandom();
   const std::array<uint8_t,2> packOrder=packRandom()<.5?std::array<uint8_t,2>{0,1}:std::array<uint8_t,2>{1,0};
-  for(auto team:packOrder)if(w.packs[team].enabled){commander(w,team);formationPlan(w,team);
+  for(auto team:packOrder)if(w.packs[team].enabled){directorStep(w,team);commander(w,team);formationPlan(w,team);
     if(w.config->abilities&&w.config->skills[team].abilities==AbilityPolicy::Coordinated&&
       (w.config->brains[team]!=Brain::Rules||w.packs[team].formation.coordAbilities))coordAbilities(w,team);}
   w.order=w.active;
@@ -157,12 +157,12 @@ void coreStep(World& w) {
   w.stats.aliveSeconds=aliveSeconds;
   for(const auto& spawn:w.spawnQueue)if(spawn.at<=w.time)w.spawnHunter(spawn.role);
   w.spawnQueue.erase(std::remove_if(w.spawnQueue.begin(),w.spawnQueue.end(),[&](const Spawn& q){return q.at<=w.time;}),w.spawnQueue.end());
-  if(w.config->scenario==Scenario::Skirmish)while(w.skirmishLeft&&w.survivors(0)<w.config->skirmishMaxAlive)w.spawnSkirmish();
+  if(w.skirmishActive)while(w.skirmishLeft&&w.survivors(0)<w.config->skirmishMaxAlive)w.spawnSkirmish();
   w.burnTick=true;for(auto& d:w.dots){const auto* target=w.resolve(d.target);if(!target||!target->alive||d.until<=w.time)continue;
     d.accumulated+=d.dps*dt;if(d.accumulated>=1){const double n=std::floor(d.accumulated);d.accumulated-=n;w.damage(d.source,d.target,n);}}
   w.burnTick=false;
   w.dots.erase(std::remove_if(w.dots.begin(),w.dots.end(),[&](const Dot& d){const auto* t=w.resolve(d.target);return !t||!t->alive||d.until<=w.time;}),w.dots.end());
   for(auto& p:w.packs)for(uint32_t i=0;i<p.pending.size();++i)if(!w.units[i].alive)p.pending[i]=0;
-  w.reclaim();w.rebuildTeams();
+  w.reclaim();
 }
 } // namespace astelia

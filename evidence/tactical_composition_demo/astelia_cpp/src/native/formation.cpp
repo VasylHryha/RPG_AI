@@ -56,9 +56,14 @@ UnitRef meleeAnswer(const World& w,uint32_t i){const auto& s=w.state[i];const au
   return a&&a->alive&&w.time-s.meleeAt<1&&gap(*a,w.units[i])<24?s.meleeAttacker:UnitRef{};}
 void positionAnchor(World& w,uint8_t team){
   auto& p=w.packs[team];const auto& f=p.formation;const auto& ms=w.teams[team];const auto& es=w.foes(team);
-  const auto center=centroid(w,ms);auto near=nearestTo(w,center,es);const auto& shape=p.shape;
+  const auto* place=placeGoal(w,team);if(place){auto near=nearestTo(w,p.anchor,es);const auto* enemy=w.resolve(near);const auto face=place->hasFace?place->face:enemy?enemy->pos:p.anchor;
+    const auto delta=face-p.anchor;const double l=length(delta);p.facing=p.facing+(delta*(1/(l>0?l:1))-p.facing)*f.turnRate;
+    const double fl=length(p.facing);p.facing=p.facing*(1/(fl>0?fl:1));const auto move=place->point-p.anchor;const double d=length(move);
+    if(d>1)p.anchor=p.anchor+move*(std::min(d,paceOf(w,team)*.9*w.config->dt)/d);p.phase=PackPhase::Ordered;p.waiting=false;return;}
+  const auto* engage=engageGoal(w,team);const auto center=centroid(w,ms);auto near=engage?nearestTo(w,center,es,[&](uint32_t i){return containsId(engage,w.units[i].id);}):UnitRef{};
+  if(!near)near=nearestTo(w,center,es);const auto& shape=p.shape;
   const double rear=maxDepth(shape.role[1],0);p.waiting=false;
-  if(f.oblique&&es.size()>2&&near){auto lo=es[0],hi=es[0];for(auto i:es){if(lateral(p,w.units[i].pos)<lateral(p,w.units[lo].pos))lo=i;if(lateral(p,w.units[i].pos)>lateral(p,w.units[hi].pos))hi=i;}
+  if(f.oblique&&es.size()>2&&near&&!engage){auto lo=es[0],hi=es[0];for(auto i:es){if(lateral(p,w.units[i].pos)<lateral(p,w.units[lo].pos))lo=i;if(lateral(p,w.units[i].pos)>lateral(p,w.units[hi].pos))hi=i;}
     const auto crowd=[&](uint32_t i){uint32_t n=0;for(auto j:es)if(distance(w.units[j].pos,w.units[i].pos)<250)++n;return n;};near=w.reference(crowd(lo)<=crowd(hi)?lo:hi);}
   if(near){const auto& nearest=w.units[near.slot];Vec2 aim;double closing=0;uint32_t n=0;
     for(auto i:es)if(distance(w.units[i].pos,nearest.pos)<250){aim=aim+w.units[i].pos;closing-=dot(w.units[i].velocity,p.facing);++n;}
@@ -180,12 +185,16 @@ void surroundOrders(World& w,uint8_t team){
   points.clear();for(size_t i=0;i<a.size();++i)points.push_back(at(home+(a.size()>1?double(i)/(a.size()-1)-.5:0)*120*pi/180,.85*reach(a[i])));assign(a,std::move(points));
 }
 } // namespace
-double reachOf(const World& w,uint8_t team,Role role){if(w.config->rules!=Rules::Game)return w.config->roles[size_t(role)].range;
-  std::vector<double> values;for(auto i:w.teams[team])if(w.units[i].alive&&w.units[i].role==role)values.push_back(w.units[i].range);
-  if(values.empty())return w.config->roles[size_t(role)].range;const auto mid=values.begin()+values.size()/2;std::nth_element(values.begin(),mid,values.end());return *mid;}
-double paceOf(const World& w,uint8_t team){if(w.config->rules!=Rules::Game)return w.config->roles[2].speed;
-  std::vector<double> values;for(auto i:w.teams[team])if(w.units[i].alive)values.push_back(w.units[i].speed);
-  if(values.empty())return w.config->roles[2].speed;const auto mid=values.begin()+values.size()/2;std::nth_element(values.begin(),mid,values.end());return *mid;}
+namespace {
+void cacheRates(const World& w,uint8_t team){if(w.ratesTime[team]==w.time&&w.ratesVersion[team]==w.membershipVersion)return;
+  std::array<std::vector<double>,4> values;for(auto i:w.teams[team])if(w.units[i].alive){const auto& u=w.units[i];if(size_t(u.role)<3)values[size_t(u.role)].push_back(u.range);values[3].push_back(u.speed);}
+  for(size_t k=0;k<4;++k){auto& v=values[k];double rate=k==3?w.config->roles[2].speed:w.config->roles[k].range;
+    if(!v.empty()){const auto mid=v.begin()+v.size()/2;std::nth_element(v.begin(),mid,v.end());rate=*mid;}w.rates[team][k]=rate;}
+  w.ratesTime[team]=w.time;w.ratesVersion[team]=w.membershipVersion;
+}
+}
+double reachOf(const World& w,uint8_t team,Role role){if(w.config->rules!=Rules::Game||size_t(role)>2)return w.config->roles[size_t(role)].range;cacheRates(w,team);return w.rates[team][size_t(role)];}
+double paceOf(const World& w,uint8_t team){if(w.config->rules!=Rules::Game)return w.config->roles[2].speed;cacheRates(w,team);return w.rates[team][3];}
 bool pinned(const World& w,uint32_t i){const auto& u=w.units[i];const auto* t=w.resolve(u.target);return t&&t->alive&&t->role==Role::Melee&&gap(u,*t)<24;}
 bool inZone(const World& w,uint8_t team,uint32_t i){const auto& p=w.packs[team];const auto pos=w.units[i].pos;const double d=depth(p,pos),l=lateral(p,pos);
   return distance(pos,p.cover)<=p.coverRadius&&d>=p.zoneFront&&d<=p.zoneBack&&l>=p.zoneMinL&&l<=p.zoneMaxL;}

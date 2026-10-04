@@ -73,7 +73,8 @@ void skills(CombatSkills& s,V v) {
   if(present(v,"artyModel")){const auto name=string(v,"artyModel","");if(name!="simple"&&name!="exact")throw std::invalid_argument("unknown artillery model");s.artyExact=name=="exact";}
   if(present(v,"artyFollow")){const auto x=js::get(v,"artyFollow");s.followShooters=x.tag==V::String&&js::str(x)=="shooters";
     if(x.tag!=V::Boolean&&!s.followShooters)throw std::invalid_argument("unknown artillery follow");s.artyFollow=s.followShooters||bool(x.n);}
-  for(const auto field:{"holdFire","artyRollout","combos"})if(present(v,field)&&js::truth(js::get(v,field)))throw std::invalid_argument(std::string(field)+" pending native migration");
+  if(present(v,"combos")){const auto list=js::get(v,"combos");s.combosEnabled=list.tag!=V::Null;s.combos.clear();if(s.combosEnabled)for(auto entry:array(list)){const auto name=js::str(entry);if(name=="tchain")s.combos.push_back(ComboKind::Tchain);else if(name=="fixlob")s.combos.push_back(ComboKind::Fixlob);else throw std::invalid_argument("unknown combo: "+name);}}
+  for(const auto field:{"holdFire","artyRollout"})if(present(v,field)&&js::truth(js::get(v,field)))throw std::invalid_argument(std::string(field)+" pending native migration");
 }
 Brain brain(const std::string& name){if(name=="alone")return Brain::Alone;if(name=="formation")return Brain::Formation;if(name=="rules"||name=="reactive")return Brain::Rules;
   if(name=="storm")return Brain::Storm;if(name=="wolfpack")return Brain::Wolfpack;if(name=="gamepack")return Brain::Gamepack;throw std::invalid_argument("unknown brain: "+name);}

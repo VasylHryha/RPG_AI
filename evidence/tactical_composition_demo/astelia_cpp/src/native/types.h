@@ -112,6 +112,10 @@ struct PlayerState {
   uint8_t manual=0; // 0 idle, 1 ember, 2 pulse
 };
 struct Spawn { double at=0; Role role=Role::Hunter; };
+enum class ComboKind : uint8_t { Tchain, Fixlob };
+enum class OrderKind : uint8_t { None, Move, Attack, Hold, Retreat };
+struct UnitOrder {OrderKind kind=OrderKind::None;Vec2 point;UnitRef target;double until=0,radius=14;};
+struct OrderEvent {double time;UnitId id;OrderKind kind;uint8_t reason;};
 struct CombatSkills {
   Lead lead=Lead::None;
   AbilityPolicy abilities=AbilityPolicy::Off;
@@ -123,6 +127,7 @@ struct CombatSkills {
   bool leaderFire=false,lockedDodge=false,reactAim=true,fireControl=false,killSpeed=false;
   bool planShells=false,smartShells=false,artyPlan=false,artyBattery=false,artyOwn=false,artyExact=false;
   bool meleeFocus=false,weaponsFree=false,castDodge=false,artyFollow=false,followShooters=false;
+  bool combosEnabled=false;std::vector<ComboKind> combos;
 };
 
 } // namespace astelia

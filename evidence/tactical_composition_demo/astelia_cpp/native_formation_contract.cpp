@@ -43,5 +43,43 @@ void targeting(){
   require(dodgeGoal(dodger,unit.slot,goal)&&distance(goal,shell.pos)>shell.splash+dodger.units[unit.slot].radius,"smart dodge selected covered spot");
   const auto current=dodger.units[unit.slot].pos;dodger.units[unit.slot].pos=goal;require(!dodgeGoal(dodger,unit.slot,goal),"smart dodge moved although already safe");dodger.units[unit.slot].pos=current;
 }
+void lifecycleAndOrders(){
+  auto c=gameConfig();c.scenario=Scenario::Skirmish;c.mirror=false;c.skirmishCount=2;c.skirmishMaxAlive=1;
+  auto w=World::create(std::make_shared<const Config>(c));require(w.skirmishActive&&w.skirmishLeft==1,"skirmish setup lost reserve");
+  const auto monster=w.reference(w.teams[0][0]),player=w.reference(w.teams[1][0]);w.damage(player,monster,1e9);require(!w.done(),"skirmish ended before reserve refill");
+  coreStep(w);require(w.survivors(0)==1&&w.skirmishLeft==0,"reserve monster was not spawned");w.damage(player,w.reference(w.teams[0][0]),1e9);require(w.done(),"exhausted skirmish did not finish");
+  c.hasCarried=true;c.carried={{Role::Melee,0,100}};auto carry=World::create(std::make_shared<const Config>(c));require(!carry.skirmishActive&&carry.timeReference==0&&!carry.done(),"carried skirmish incorrectly started player/time scaling");
+  auto config=sandboxConfig();config.brains[0]=Brain::Formation;auto ordered=empty(config);const auto unit=ordered.add(0,Role::Ranged,{100,200}),enemy=ordered.add(1,Role::Melee,{200,200});formationPlan(ordered,0);
+  UnitOrder retreat;retreat.kind=OrderKind::Retreat;retreat.point={40,200};retreat.until=10;issueOrder(ordered,unit,retreat);decideUnit(ordered,unit.slot);
+  require(ordered.state[unit.slot].decision.move&&ordered.state[unit.slot].decision.release==Release::None,"retreat order attacked or lost walk");
+  UnitOrder hold;hold.kind=OrderKind::Hold;hold.until=10;issueOrder(ordered,unit,hold);decideUnit(ordered,unit.slot);require(!ordered.state[unit.slot].decision.move&&ordered.units[unit.slot].target==enemy,"hold order did not stay and select reachable enemy");
+  UnitOrder attack;attack.kind=OrderKind::Attack;attack.until=10;attack.target=enemy;issueOrder(ordered,unit,attack);ordered.damage(unit,enemy,1e9);decideUnit(ordered,unit.slot);
+  require(ordered.tactical[unit.slot].order.kind==OrderKind::None&&ordered.orderEvents.back().reason==2,"dead attack order did not unwind to own AI");
+  ordered.tactical[unit.slot].order=retreat;ordered.units[unit.slot].pos=retreat.point;decideUnit(ordered,unit.slot);require(ordered.orderEvents.back().reason==1,"arrival order did not finish");
+  ordered.tactical[unit.slot].order=hold;ordered.time=11;decideUnit(ordered,unit.slot);require(ordered.orderEvents.back().reason==0,"expired order did not finish");
+  ordered.packs[0].director.goals.plan.until=20;ordered.packs[0].director.goals.plan.tactics.role.fill(Plan::Widehold);ordered.packs[0].commands.plan.until=12;ordered.packs[0].commands.plan.tactics.role.fill(Plan::Push);
+  require(planGoal(ordered,0)->tactics.role[0]==Plan::Push,"external goals did not override director");ordered.time=13;require(planGoal(ordered,0)->tactics.role[0]==Plan::Widehold,"expired external goal did not fall back to director");
+  auto leased=BranchPool{};auto clone=leased.fork(ordered);clone.world().packs[0].director.goals.plan.until=0;clone.world().orderEvents.clear();require(planGoal(ordered,0)&&!ordered.orderEvents.empty(),"branch shared commands or order event history");
+  ordered.units[enemy.slot].alive=false;const auto before=ordered.shots.size();fireShot(ordered,unit.slot,enemy);require(ordered.shots.size()==before+1,"ordinary release silently skipped a dead resolved target");
 }
-int main(){shapes();plansAndForks();targeting();std::cout<<"native formation contracts passed\n";}
+void directors(){
+  auto c=sandboxConfig();c.width=2200;c.brains[0]=Brain::Rules;c.skills[0].combosEnabled=true;c.skills[0].combos={ComboKind::Tchain};auto w=empty(c);
+  for(int i=0;i<6;++i)w.add(0,Role::Melee,{1200+double(i),350});for(int i=0;i<10;++i)w.add(0,Role::Ranged,{1250,250+i*20.0});
+  for(int i=0;i<6;++i){const auto r=w.add(1,Role::Melee,{500+i*10.0,350});w.units[r.slot].velocity={40,0};}
+  for(int i=0;i<8;++i){const auto r=w.add(1,Role::Ranged,{450+i*10.0,350});w.units[r.slot].velocity={40,0};}
+  w.packs[0].anchor={1200,350};directorStep(w,0);auto& d=w.packs[0].director;
+  require(d.active&&d.starts==1&&d.roles.size()==16&&placeGoal(w,0),"tchain did not select typed roles and lure goal");
+  require(d.observation.columnRatio>2.2&&d.observation.chaseShare==1,"column/chase observation incorrect");
+  w.time=2;w.units[w.teams[1][0]].pos={1000,350};directorStep(w,0);require(d.phase==1&&planGoal(w,0)->tactics.role[0]==Plan::Widehold,"tchain did not switch to cross");
+  w.time=3.5;w.units[w.teams[1][0]].pos={1150,350};directorStep(w,0);require(d.phase==2&&releaseGoal(w,0)->ids.size()==5&&engageGoal(w,0)->ids.size()==6,"envelop did not release wings or rank engaged melee");
+  for(size_t i=0;i<6;++i)w.units[w.teams[1][i]].alive=false;w.rebuildTeams();w.time=6;directorStep(w,0);
+  require(!d.active&&d.successes==1&&!releaseGoal(w,0)&&d.cool[0]==14,"success did not clear goals or schedule cooldown");
+  auto fix=c;fix.skills[0].combos={ComboKind::Fixlob};auto f=empty(fix);for(int i=0;i<6;++i)f.add(0,Role::Melee,{480,320+i*10.0});
+  for(int i=0;i<3;++i)f.add(0,Role::Artillery,{450,320+i*20.0});for(int i=0;i<6;++i)f.add(1,Role::Melee,{500,320+i*10.0});for(int i=0;i<6;++i)f.add(1,Role::Melee,{650,350.0+i});
+  f.packs[0].anchor={400,350};directorStep(f,0);require(f.packs[0].director.active&&f.packs[0].director.combo==ComboKind::Fixlob,"fixlob did not detect contact plus separated clump");
+  f.time=1.5;directorStep(f,0);require(f.packs[0].director.phase==1,"fixlob did not switch to lob");f.time=7;directorStep(f,0);require(!f.packs[0].director.active&&f.packs[0].director.aborts==1,"timed-out director did not abort");
+  BranchPool pool;auto branch=pool.fork(w);branch.world().time=30;directorStep(branch.world(),0);require(branch.world().packs[0].director.starts==1,"branch recursively ran the director");
+}
+
+}
+int main(){shapes();plansAndForks();targeting();lifecycleAndOrders();directors();std::cout<<"native formation contracts passed\n";}

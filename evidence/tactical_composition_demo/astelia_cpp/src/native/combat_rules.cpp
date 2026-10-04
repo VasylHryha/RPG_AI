@@ -38,7 +38,7 @@ void released(World& w,uint32_t i) {
   w.state[i].prep=0;if(w.config->rules==Rules::Sandbox)w.units[i].cooldown=w.state[i].cooldownMax-windup(w,i);
 }
 void fireShot(World& w,uint32_t i,UnitRef target,double damage) {
-  const auto* t=w.resolve(target);if(!t||!t->alive)return;
+  const auto* t=w.resolve(target);if(!t)return;
   const auto& u=w.units[i];const auto& s=w.state[i];
   Shot p;p.pos=u.pos;p.source=w.reference(i);p.target=target;p.damage=p.pending=damage>0?damage:u.damage;
   p.born=w.time;p.aimed=w.config->aimedShots;p.ordinal=w.nextShot++;
