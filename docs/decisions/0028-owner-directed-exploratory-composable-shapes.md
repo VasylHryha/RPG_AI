@@ -33,7 +33,7 @@ These are the author's transcriptions and readings, not primary records. Any ite
 | Change-cost r1 | `d32485a`, `9dfb7b1`, amendment `b07eae3` | all INDETERMINATE (fine-tuning procedure was the defect; my first explanation was wrong) |
 | Change-cost r2 | `3381e03` spec+code, `e88354c` run + report | C1, C2, C3 SUPPORTED, C1 by a margin of 0.001 |
 | 0d Part A (after a Codex review of proposal revision 1 and a same-family pre-run review) | `c747e76` registration, `eae0b29` run record and `REPORT_0D.md`, corrected 2026-10-04 | V1, V3, V4 SUPPORTED, V2 EQUIVALENT, V5 REFUTED against a **weak** flat baseline; V4 holds on fidelity only; run approval is **[R]** (item 8) |
-| 0e development and registration (under item 9) | `f8748bd` steps 1-3, registration commit adding `SPECIFICATION_0E.md` | development: the original sandbox cannot show a useful connection (teacher necessity fails); task revised to V3 by a fixed rule; registered, corrected after the Codex pre-run review (CHANGES_REQUIRED, R1-R5), **not run** (needs Codex's re-review and the owner's explicit approval of the specification) |
+| 0e development and registration (under item 9) | `f8748bd` steps 1-3, registration commit adding `SPECIFICATION_0E.md` | development: the original sandbox cannot show a useful connection (teacher necessity fails); task revised to V3 by a fixed rule; registered, corrected after the Codex pre-run review (R1-R5), re-reviewed (APPROVE_WITH_NOTES), approved by the owner (item 10), **run once** from `1d21533`: A1, A2, B1 SUPPORTED, B2 INDETERMINATE, B3 REFUTED (`REPORT_0E.md`) |
 
 ## Records that were missing
 
