@@ -1,0 +1,188 @@
+{
+ "note": "0f development step 3: atomic scorer pieces, greedy growth from nearest-enemy; seeds 20-23",
+ "rows": [
+  {
+   "seed": 20,
+   "path": [
+    {
+     "spec": {
+      "pieces": {
+       "DIST": 1.0
+      },
+      "memory": false
+     },
+     "selection": 0.5825
+    },
+    {
+     "spec": {
+      "pieces": {
+       "DIST": 1.0,
+       "DMG": 2.0
+      },
+      "memory": false
+     },
+     "selection": 0.7725
+    },
+    {
+     "spec": {
+      "pieces": {
+       "DIST": 1.0,
+       "DMG": 2.0,
+       "MISS": 0.5
+      },
+      "memory": false
+     },
+     "selection": 0.7925
+    }
+   ],
+   "final": {
+    "pieces": {
+     "DIST": 1.0,
+     "DMG": 2.0,
+     "MISS": 0.5
+    },
+    "memory": false
+   },
+   "n_pieces_final": 3,
+   "evaluations": 50,
+   "confirmation": {
+    "final": 0.7925,
+    "start": 0.6225,
+    "teacher": 0.7537499999999999,
+    "rush": 0.395
+   },
+   "seconds": 125.85411214828491
+  },
+  {
+   "seed": 21,
+   "path": [
+    {
+     "spec": {
+      "pieces": {
+       "DIST": 1.0
+      },
+      "memory": false
+     },
+     "selection": 0.54
+    },
+    {
+     "spec": {
+      "pieces": {
+       "DIST": 1.0,
+       "RANGED": 0.5
+      },
+      "memory": false
+     },
+     "selection": 0.7324999999999999
+    },
+    {
+     "spec": {
+      "pieces": {
+       "DIST": 1.0,
+       "RANGED": 0.5
+      },
+      "memory": true
+     },
+     "selection": 0.77
+    }
+   ],
+   "final": {
+    "pieces": {
+     "DIST": 1.0,
+     "RANGED": 0.5
+    },
+    "memory": true
+   },
+   "n_pieces_final": 2,
+   "evaluations": 52,
+   "confirmation": {
+    "final": 0.80375,
+    "start": 0.625,
+    "teacher": 0.75625,
+    "rush": 0.42000000000000004
+   },
+   "seconds": 130.50080800056458
+  },
+  {
+   "seed": 22,
+   "path": [
+    {
+     "spec": {
+      "pieces": {
+       "DIST": 1.0
+      },
+      "memory": false
+     },
+     "selection": 0.6
+    },
+    {
+     "spec": {
+      "pieces": {
+       "DIST": 1.0,
+       "DMG": 1.0
+      },
+      "memory": false
+     },
+     "selection": 0.8574999999999999
+    }
+   ],
+   "final": {
+    "pieces": {
+     "DIST": 1.0,
+     "DMG": 1.0
+    },
+    "memory": false
+   },
+   "n_pieces_final": 2,
+   "evaluations": 35,
+   "confirmation": {
+    "final": 0.78625,
+    "start": 0.5775,
+    "teacher": 0.7150000000000001,
+    "rush": 0.42874999999999996
+   },
+   "seconds": 94.8679711818695
+  },
+  {
+   "seed": 23,
+   "path": [
+    {
+     "spec": {
+      "pieces": {
+       "DIST": 1.0
+      },
+      "memory": false
+     },
+     "selection": 0.5725
+    },
+    {
+     "spec": {
+      "pieces": {
+       "DIST": 1.0,
+       "DMG": 1.0
+      },
+      "memory": false
+     },
+     "selection": 0.8125
+    }
+   ],
+   "final": {
+    "pieces": {
+     "DIST": 1.0,
+     "DMG": 1.0
+    },
+    "memory": false
+   },
+   "n_pieces_final": 2,
+   "evaluations": 35,
+   "confirmation": {
+    "final": 0.8049999999999999,
+    "start": 0.58125,
+    "teacher": 0.77,
+    "rush": 0.435
+   },
+   "seconds": 94.24295115470886
+  }
+ ],
+ "wall_seconds": 130.6
+}
