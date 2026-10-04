@@ -1,0 +1,589 @@
+{
+ "started": "2026-10-04T10:39:40.076Z",
+ "settings": {
+  "SEL_SEEDS": [
+   101,
+   102
+  ],
+  "CONF_SEEDS": [
+   301,
+   302,
+   303
+  ],
+  "OPP_SEL": [
+   "wolfpack",
+   "storm",
+   "line",
+   "swarm",
+   "loose skirmish",
+   "box",
+   "crescent",
+   "alone"
+  ],
+  "BEAM": 2,
+  "RACE_TOP": 8,
+  "PAIRS": 30,
+  "TRIPLES": 20,
+  "MIN_GAIN": 1,
+  "rules": "game",
+  "lookahead": "excluded in this run"
+ },
+ "snapshot": "astelia_snapshot/SOURCE.md",
+ "rounds": [
+  {
+   "round": 1,
+   "members": [
+    {
+     "from": "novice",
+     "pieces": 0,
+     "score": -1.125,
+     "top_singles": [
+      {
+       "move": "dodgeShells=true",
+       "gain": 27.09,
+       "se": 1.46
+      },
+      {
+       "move": "dodgeShells=\"smart\"",
+       "gain": 24.03,
+       "se": 1.31
+      },
+      {
+       "move": "dodgeShots=true",
+       "gain": 9.69,
+       "se": 2.16
+      },
+      {
+       "move": "brain=formation",
+       "gain": 0.78,
+       "se": 1.22
+      },
+      {
+       "move": "lead=\"smooth\"",
+       "gain": 0.59,
+       "se": 1.29
+      },
+      {
+       "move": "lead=\"raw\"",
+       "gain": 0.72,
+       "se": 1.02
+      },
+      {
+       "move": "shotReact=0.12",
+       "gain": 0,
+       "se": 0
+      },
+      {
+       "move": "shotReact=0.2",
+       "gain": 0,
+       "se": 0
+      }
+     ]
+    }
+   ],
+   "beam": [
+    {
+     "path": [
+      "novice",
+      "dodgeShells=true"
+     ],
+     "pieces": [
+      "dodgeShells=true"
+     ],
+     "n_pieces": 1,
+     "score_long": 25.97,
+     "how": "single"
+    },
+    {
+     "path": [
+      "novice",
+      "dodgeShells=\"smart\""
+     ],
+     "pieces": [
+      "dodgeShells=\"smart\""
+     ],
+     "n_pieces": 1,
+     "score_long": 22.91,
+     "how": "single"
+    }
+   ],
+   "fights_so_far": 784
+  },
+  {
+   "round": 2,
+   "members": [
+    {
+     "from": "dodgeShells=true",
+     "pieces": 1,
+     "score": 25.96875,
+     "top_singles": [
+      {
+       "move": "dodgeShots=true",
+       "gain": 6.09,
+       "se": 1.03
+      },
+      {
+       "move": "shotReact=0.12",
+       "gain": 0,
+       "se": 0
+      },
+      {
+       "move": "shotReact=0.2",
+       "gain": 0,
+       "se": 0
+      },
+      {
+       "move": "pursuit=\"cut\"",
+       "gain": 0,
+       "se": 0
+      },
+      {
+       "move": "kite=70",
+       "gain": 0,
+       "se": 0
+      },
+      {
+       "move": "abilities=\"coordinated\"",
+       "gain": 0,
+       "se": 0
+      },
+      {
+       "move": "abilities=\"auto\"",
+       "gain": 0,
+       "se": 0
+      },
+      {
+       "move": "leaderBracket=0",
+       "gain": 0,
+       "se": 0
+      }
+     ]
+    },
+    {
+     "from": "dodgeShells=\"smart\"",
+     "pieces": 1,
+     "score": 22.90625,
+     "top_singles": [
+      {
+       "move": "castDodge=true",
+       "gain": 7.06,
+       "se": 0.74
+      },
+      {
+       "move": "dodgeShots=true",
+       "gain": 6.06,
+       "se": 1.15
+      },
+      {
+       "move": "dodgeShells=true",
+       "gain": 3.06,
+       "se": 0.88
+      },
+      {
+       "move": "meleeFocus=true",
+       "gain": 0.63,
+       "se": 0.45
+      },
+      {
+       "move": "shotReact=0.12",
+       "gain": 0,
+       "se": 0
+      },
+      {
+       "move": "shotReact=0.2",
+       "gain": 0,
+       "se": 0
+      },
+      {
+       "move": "pursuit=\"cut\"",
+       "gain": 0,
+       "se": 0
+      },
+      {
+       "move": "kite=70",
+       "gain": 0,
+       "se": 0
+      }
+     ]
+    }
+   ],
+   "beam": [
+    {
+     "path": [
+      "novice",
+      "dodgeShells=\"smart\"",
+      "castDodge=true"
+     ],
+     "pieces": [
+      "dodgeShells=\"smart\"",
+      "castDodge=true"
+     ],
+     "n_pieces": 2,
+     "score_long": 29.97,
+     "how": "single"
+    },
+    {
+     "path": [
+      "novice",
+      "dodgeShells=true",
+      "dodgeShots=true"
+     ],
+     "pieces": [
+      "dodgeShots=true",
+      "dodgeShells=true"
+     ],
+     "n_pieces": 2,
+     "score_long": 32.06,
+     "how": "single"
+    }
+   ],
+   "fights_so_far": 2208
+  },
+  {
+   "round": 3,
+   "members": [
+    {
+     "from": "castDodge=true",
+     "pieces": 2,
+     "score": 29.96875,
+     "top_singles": [
+      {
+       "move": "dodgeShots=true",
+       "gain": 5.69,
+       "se": 0.56
+      },
+      {
+       "move": "meleeFocus=true",
+       "gain": 0.25,
+       "se": 0.43
+      },
+      {
+       "move": "waves=3",
+       "gain": -0.13,
+       "se": 0.53
+      },
+      {
+       "move": "shotReact=0.12",
+       "gain": 0,
+       "se": 0
+      },
+      {
+       "move": "shotReact=0.2",
+       "gain": 0,
+       "se": 0
+      },
+      {
+       "move": "pursuit=\"cut\"",
+       "gain": 0,
+       "se": 0
+      },
+      {
+       "move": "kite=70",
+       "gain": 0,
+       "se": 0
+      },
+      {
+       "move": "abilities=\"coordinated\"",
+       "gain": 0,
+       "se": 0
+      }
+     ]
+    },
+    {
+     "from": "dodgeShots=true",
+     "pieces": 2,
+     "score": 32.0625,
+     "top_singles": [
+      {
+       "move": "shotReact=0.12",
+       "gain": -1.53,
+       "se": 0.95
+      },
+      {
+       "move": "waves=3",
+       "gain": -0.34,
+       "se": 0.75
+      },
+      {
+       "move": "pursuit=\"cut\"",
+       "gain": 0,
+       "se": 0
+      },
+      {
+       "move": "kite=70",
+       "gain": 0,
+       "se": 0
+      },
+      {
+       "move": "abilities=\"coordinated\"",
+       "gain": 0,
+       "se": 0
+      },
+      {
+       "move": "abilities=\"auto\"",
+       "gain": 0,
+       "se": 0
+      },
+      {
+       "move": "leaderBracket=0",
+       "gain": 0,
+       "se": 0
+      },
+      {
+       "move": "leaderFire=true",
+       "gain": 0,
+       "se": 0
+      }
+     ],
+     "top_2": [
+      {
+       "moves": "fireControl=true + abilities=\"auto\"",
+       "gain": 0,
+       "se": 0
+      },
+      {
+       "moves": "holdFire={\"wave\":0.45,\"sync\":0.5} + killSpeed=true",
+       "gain": 0,
+       "se": 0
+      },
+      {
+       "moves": "fireControl=true + abilities=\"coordinated\"",
+       "gain": 0,
+       "se": 0
+      },
+      {
+       "moves": "pursuit=\"cut\" + abilities=\"auto\"",
+       "gain": 0,
+       "se": 0
+      },
+      {
+       "moves": "fireDepth=0.25 + leaderFire=true",
+       "gain": 0,
+       "se": 0
+      }
+     ],
+     "top_3": [
+      {
+       "moves": "killSpeed=true + pursuit=\"cut\" + leaderFire=true",
+       "gain": 0,
+       "se": 0
+      },
+      {
+       "moves": "fireControl=true + jink=14 + pursuit=\"cut\"",
+       "gain": 0,
+       "se": 0
+      },
+      {
+       "moves": "kite=70 + lockedDodge=true + reactAim=true",
+       "gain": 0,
+       "se": 0
+      },
+      {
+       "moves": "fireDepth=0.25 + kite=70 + abilities=\"auto\"",
+       "gain": 0,
+       "se": 0
+      },
+      {
+       "moves": "fireControl=true + killSpeed=true + reactAim=true",
+       "gain": 0,
+       "se": 0
+      }
+     ]
+    }
+   ],
+   "beam": [
+    {
+     "path": [
+      "novice",
+      "dodgeShells=\"smart\"",
+      "castDodge=true",
+      "dodgeShots=true"
+     ],
+     "pieces": [
+      "dodgeShots=true",
+      "dodgeShells=\"smart\"",
+      "castDodge=true"
+     ],
+     "n_pieces": 3,
+     "score_long": 35.66,
+     "how": "single"
+    }
+   ],
+   "fights_so_far": 5216
+  },
+  {
+   "round": 4,
+   "members": [
+    {
+     "from": "dodgeShots=true",
+     "pieces": 3,
+     "score": 35.65625,
+     "top_singles": [
+      {
+       "move": "shotReact=0.12",
+       "gain": 0.69,
+       "se": 0.4
+      },
+      {
+       "move": "lead=\"smooth\"",
+       "gain": 0.28,
+       "se": 0.4
+      },
+      {
+       "move": "shotReact=0.2",
+       "gain": 0.66,
+       "se": 0.38
+      },
+      {
+       "move": "lead=\"raw\"",
+       "gain": 0.19,
+       "se": 0.51
+      },
+      {
+       "move": "waves=3",
+       "gain": 0.63,
+       "se": 0.41
+      },
+      {
+       "move": "pursuit=\"cut\"",
+       "gain": 0,
+       "se": 0
+      },
+      {
+       "move": "kite=70",
+       "gain": 0,
+       "se": 0
+      },
+      {
+       "move": "abilities=\"coordinated\"",
+       "gain": 0,
+       "se": 0
+      }
+     ],
+     "top_2": [
+      {
+       "moves": "shotReact=0.12 + abilities=\"auto\"",
+       "gain": 0.69,
+       "se": 0.4
+      },
+      {
+       "moves": "shotReact=0.12 + reactAim=true",
+       "gain": 0.69,
+       "se": 0.4
+      },
+      {
+       "moves": "shotReact=0.2 + abilities=\"auto\"",
+       "gain": 0.66,
+       "se": 0.38
+      },
+      {
+       "moves": "leaderFire=true + shotReact=0.2",
+       "gain": 0.66,
+       "se": 0.38
+      },
+      {
+       "moves": "shotReact=0.2 + pursuit=\"cut\"",
+       "gain": 0.66,
+       "se": 0.38
+      }
+     ],
+     "top_3": [
+      {
+       "moves": "shotReact=0.12 + pursuit=\"cut\" + leaderBracket=0",
+       "gain": 0.69,
+       "se": 0.4
+      },
+      {
+       "moves": "shotReact=0.12 + reactAim=true + fireDepth=0.25",
+       "gain": 0.69,
+       "se": 0.4
+      },
+      {
+       "moves": "shotReact=0.12 + lockedDodge=true + kite=70",
+       "gain": 0.69,
+       "se": 0.4
+      },
+      {
+       "moves": "shotReact=0.12 + leaderFire=true + abilities=\"auto\"",
+       "gain": 0.69,
+       "se": 0.4
+      },
+      {
+       "moves": "shotReact=0.12 + reactAim=true + abilities=\"coordinated\"",
+       "gain": 0.69,
+       "se": 0.4
+      }
+     ]
+    }
+   ],
+   "stopped": "no single change, pair or triple was accepted for any beam member"
+  }
+ ],
+ "synergies": [],
+ "final": {
+  "path": [
+   "novice",
+   "dodgeShells=\"smart\"",
+   "castDodge=true",
+   "dodgeShots=true"
+  ],
+  "pieces": [
+   "dodgeShots=true",
+   "dodgeShells=\"smart\"",
+   "castDodge=true"
+  ],
+  "n_pieces": 3,
+  "profile": {
+   "brain": "alone",
+   "lookahead": null,
+   "skills": {
+    "dodgeShots": true,
+    "shotReact": 0.3,
+    "dodgeShells": "smart",
+    "lead": "none",
+    "pursuit": "chase",
+    "kite": 0,
+    "abilities": "off",
+    "reactAim": false,
+    "castDodge": true
+   }
+  },
+  "score_selection": 35.65625
+ },
+ "confirmation": {
+  "novice": {
+   "margin": -0.61,
+   "won": 0.368,
+   "n": 114
+  },
+  "found": {
+   "margin": 35.17,
+   "won": 1,
+   "n": 114
+  },
+  "veteran": {
+   "margin": 12.81,
+   "won": 0.904,
+   "n": 114
+  },
+  "regular": {
+   "margin": 12.11,
+   "won": 0.921,
+   "n": 114
+  },
+  "found_minus_novice": {
+   "mean": 35.77,
+   "se": 0.76
+  },
+  "found_minus_regular": {
+   "mean": 23.05,
+   "se": 0.74
+  },
+  "found_minus_veteran": {
+   "mean": 22.36,
+   "se": 0.86
+  }
+ },
+ "fights": 7520,
+ "finished": "2026-10-04T10:53:06.264Z"
+}

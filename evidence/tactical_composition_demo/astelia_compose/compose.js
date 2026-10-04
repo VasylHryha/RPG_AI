@@ -18,12 +18,14 @@ const env = (k, d) => (process.env[k] !== undefined ? process.env[k] : d);
 const SEL_SEEDS = env('SEL_SEEDS', '101,102').split(',').map(Number);
 const CONF_SEEDS = env('CONF_SEEDS', '301,302,303').split(',').map(Number);
 const OPP_SEL = env('OPP_SEL', 'wolfpack,storm,line,swarm,loose skirmish,box,crescent,alone').split(',');
+const ENEMY_LEVEL = env('ENEMY_LEVEL', '');   // opponents' skills: '' = the pool doctrines' defaults; a LEVELS name = those skills (as ai_lab.js ENEMY_LEVEL)
+const ENEMY = ENEMY_LEVEL ? { skills: S.LEVELS[ENEMY_LEVEL].skills } : {};
 const BEAM = +env('BEAM', 2), RACE_TOP = +env('RACE_TOP', 8), PAIRS = +env('PAIRS', 30), TRIPLES = +env('TRIPLES', 20), MIN_GAIN = +env('MIN_GAIN', 1.0);
 
 // ---------------------------------------------------------------- one fight (as ai_lab.js, game rules)
 function fight({ profile, opp, seed, swap }) {
 	const o = Object.assign({ seed, scenario: 'mirror', duration: 150, abilities: true, swapSides: swap, rules: 'game' }, S.enemyOf(opp));
-	o.ai = [profile, {}];
+	o.ai = [profile, ENEMY];
 	const r = S.run('reactive', o);
 	return { m: r.survivors - r.enemySurvivors, win: r.enemySurvivors === 0 && r.survivors > 0 ? 1 : 0 };
 }
@@ -119,7 +121,7 @@ async function combos(cur, singles, k, n) {
 
 async function main() {
 	const OUT = process.argv[2], CAP = +(process.argv[3] || 40);
-	const log = { started: new Date().toISOString(), settings: { SEL_SEEDS, CONF_SEEDS, OPP_SEL, BEAM, RACE_TOP, PAIRS, TRIPLES, MIN_GAIN, rules: 'game', lookahead: 'excluded in this run' },
+	const log = { started: new Date().toISOString(), settings: { ENEMY_LEVEL: ENEMY_LEVEL || 'pool defaults', SEL_SEEDS, CONF_SEEDS, OPP_SEL, BEAM, RACE_TOP, PAIRS, TRIPLES, MIN_GAIN, rules: 'game', lookahead: 'excluded in this run' },
 		snapshot: 'astelia_snapshot/SOURCE.md', rounds: [], synergies: [] };
 	const save = () => fs.writeFileSync(OUT, JSON.stringify(log, null, 1));
 	let beam = [{ p: NOVICE, path: ['novice'] }];
@@ -163,6 +165,7 @@ async function main() {
 	if (!process.env.NO_CONFIRM) {   // fresh seeds, the whole opponent pool, both sides
 		const CONF = battles(CONF_SEEDS, S.POOL);
 		const ref = { novice: { level: 'novice' }, regular: { level: 'regular' }, veteran: { level: 'veteran' } };
+		if (process.env.CONF_ELITE) ref['elite-fast'] = { level: 'elite-fast' };
 		const tasks = [];
 		for (const b of CONF) { tasks.push(Object.assign({ profile: toAi(final.p), who: 'found' }, b)); for (const [n, a] of Object.entries(ref)) tasks.push(Object.assign({ profile: a, who: n }, b)); }
 		const res = await runAll(tasks);
