@@ -2,6 +2,7 @@
 #include <array>
 #include <cstdint>
 #include <limits>
+#include <string>
 #include <vector>
 
 namespace astelia {
@@ -9,6 +10,12 @@ constexpr uint32_t invalidSlot = std::numeric_limits<uint32_t>::max();
 using UnitId = uint32_t;
 enum class Role : uint8_t { Melee, Ranged, Artillery, Hunter, Archer, Player };
 enum class Rules : uint8_t { Sandbox, Game };
+enum class Scenario : uint8_t { Mirror, Hunters, Skirmish };
+enum class Lead : uint8_t { None, Raw, Smooth };
+enum class Dodge : uint8_t { None, Kiter, Storm, Skittish };
+enum class Ability : uint8_t { Charge, Shield, Aimed, Disengage, Barrage, Slow };
+enum class AbilityPolicy : uint8_t { Off, Auto, Coordinated };
+enum class PlayerStyle : uint8_t { Kite, Orbit, Press };
 enum class Release : uint8_t { None, Melee, Direct, DodgeFire, Artillery, Player };
 inline bool melee(Role r) { return r == Role::Melee || r == Role::Hunter; }
 struct Vec2 { double x=0, y=0; };
@@ -44,15 +51,20 @@ struct UnitState {
   double longSpeed=0, stepTime=0, dealt=0, meleeAt=-1;
   UnitRef meleeAttacker;
   int8_t strafe=1;
-  bool hasSlot=false;
+  uint32_t kind=invalidSlot, ability=invalidSlot, player=invalidSlot;
+  double standoff=0, dashReady=0, guardUntil=0, blockReady=0, guardDirection=0, lastShotHit=-9;
+  Dodge dodge=Dodge::None;
+  bool hasSlot=false, inReach=false, castOk=true, block=false;
+  std::vector<uint64_t> rolledShots;
   Decision decision;
 };
 struct Shot {
   Vec2 pos, direction;
   UnitRef source, target;
   double speed=0, damage=0, pending=0, left=0, born=0;
-  uint32_t ordinal=0, pierce=0;
-  bool aimed=true, dodgeable=true, done=false;
+  uint64_t ordinal=0;
+  uint32_t pierce=0;
+  bool aimed=true, dodgeable=true, done=false, manual=false;
   std::vector<UnitRef> hitSet;
 };
 struct Shell {
@@ -73,12 +85,59 @@ struct RoleStats {
   double hp=0, speed=0, radius=0, range=0, damage=0, cooldown=0;
   double minRange=0, shotSpeed=0, flight=0, splash=0;
 };
+struct Kind {
+  std::string name;
+  Role role=Role::Melee;
+  double hp=0, speed=0, radius=0, damage=0, reach=0, windup=0, cooldown=0;
+  double energy=0, regen=0, cost=0, protection=0, shot=0, lob=0, splash=0, minRange=0, acc=1, launch=0;
+  Dodge dodge=Dodge::None;
+  bool block=false;
+  double blockCost=40, blockCooldown=2, blockDuration=1, blockMultiplier=.5, blockHalfArc=1.5707963267948966;
+};
+struct ArmyEntry { Role role; uint32_t kind=invalidSlot, count=0; };
+struct CarriedUnit { Role role; uint32_t kind=invalidSlot; double hp=0; };
+struct AbilityState {
+  std::array<double,6> ready{};
+  double lock=0, chargeEnd=0, shieldUntil=0, aimUntil=0, disengageEnd=0;
+  UnitRef chargeTarget, aimTarget;
+  Vec2 disengageGoal;
+  bool chargeBonus=false, manual=false;
+};
+struct Limb { double multiplier=1, prep=0; uint8_t sequence=0; UnitRef target; };
+struct PlayerState {
+  std::array<Limb,4> limbs{Limb{1},Limb{1},Limb{1.1025},Limb{1.1025}};
+  Vec2 dashDirection;
+  double dashReady=0, dashUntil=0, manualPrep=0;
+  UnitRef manualTarget;
+  uint8_t manual=0; // 0 idle, 1 ember, 2 pulse
+};
+struct Spawn { double at=0; Role role=Role::Hunter; };
+struct CombatSkills {
+  Lead lead=Lead::None;
+  AbilityPolicy abilities=AbilityPolicy::Off;
+  double kite=0, shotReact=.3;
+  bool pursuitCut=false, dodgeShots=false, dodgeSoft=false, dodgeShells=false;
+  bool lobLead=false, adaptiveLobLead=false;
+};
 struct Config {
   double seed=7, dt=1.0/30, duration=90, width=1200, height=700;
   double shotSpeed=350;
   std::array<uint32_t,3> army{10,30,10};
   std::array<RoleStats,6> roles;
+  std::vector<Kind> kinds;
+  std::vector<ArmyEntry> customArmy;
+  std::vector<CarriedUnit> carried;
+  std::array<uint32_t,3> enemyArmy{};
+  std::array<CombatSkills,2> skills;
+  std::array<std::array<bool,6>,2> abilityOff{};
+  std::vector<uint32_t> skirmishKinds;
+  uint32_t hunterMelee=10, hunterArchers=4, skirmishCount=18, skirmishMaxAlive=8, attackerCap=0;
+  double respawn=3;
   Rules rules=Rules::Sandbox;
+  Scenario scenario=Scenario::Mirror;
+  PlayerStyle playerStyle=PlayerStyle::Kite;
+  std::string mode="alone";
   bool mirror=true, swapSides=false, aimedShots=true, windUp=false;
+  bool abilities=false, temporal=true, perception=false, hasEnemyArmy=false, hasCarried=false, hasCustomArmy=false;
 };
 } // namespace astelia

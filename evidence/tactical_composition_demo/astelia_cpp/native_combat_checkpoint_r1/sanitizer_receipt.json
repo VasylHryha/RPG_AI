@@ -1,0 +1,42 @@
+{
+  "command": [
+    ".venv/bin/python",
+    "evidence/tactical_composition_demo/astelia_cpp/build.py",
+    "--engine",
+    "combat-check",
+    "--sanitize"
+  ],
+  "run": [
+    "evidence/tactical_composition_demo/astelia_cpp/build/native_combat_contract_sanitized"
+  ],
+  "elapsed_seconds": 11.115096166999999,
+  "exit_code": 0,
+  "build": {
+    "manifest_sha256": "b4fd65ee6c78fc6938a5f6d5b096e67ebfdd501e6aa82dc6cf29de13eaa587c3",
+    "binary_sha256": "b3d32e454ecf264bcb495b717cbfb033b7ec9bf47d96b3d0e983f570c42e59a0",
+    "sources": {
+      "native_combat_contract.cpp": "9fc36234f0ad141483118416752d0413c0f2ce19b459304103481062a88fa7af",
+      "src/native/world.cpp": "124375cf80fe35035c38e9dae21cf7f90d034f191570890fc5d9219e6b53b054",
+      "src/native/combat.cpp": "6d452de0b71f62c3d4672e6cffccd2af150e2e5a2a946ca26f272ae281a6fe69",
+      "src/native/spatial.cpp": "48f3c99270d96a35e55455fc866b2d70e1e8007a6173ba83dd00e18e16a1170d",
+      "src/native/combat_rules.cpp": "18329512234594f8ea74a08ce7cc1b22437d5ae56e45b8be4e125151cb293c81",
+      "src/native/abilities.cpp": "203aff9e382bb406cad34a1ad95c574c75b401ff2b9a1c0b442358f2ff93ff66",
+      "src/native/player.cpp": "06916e242a984af10ac3e09ef2df06ad701847ffa4d74ade8ae17595b0333e21",
+      "src/builtins.h": "7fcd2fba1ec05aa2b671cb2acb9012a11c73ca827c932c159dc7db787624aed6",
+      "src/formation_sim.h": "364dfea1b77be5743b14ba31a8368c11ea264a6ce513dffe7d32727a56e789c2",
+      "src/js_value.h": "bb028815111ddbab5ffe8aa3de98f1076b2420d605104336c970e332f783c32c",
+      "src/native/config_codec.h": "b81b1c53d0ff86b981872681c567ad8cb33876734a7147cd6536a7ce05c42fc0",
+      "src/native/geometry.h": "7ce862ed036dd7c9a3cd78269648db33072888a5434c9e0d6528649a2e825364",
+      "src/native/rng.h": "2fcc6197704f4de20bf4041136828b15fd30fe7bea9d83e8500254b95a625083",
+      "src/native/spatial.h": "0f08b40eae031d50dbb18fef9f9c1e51a568f5568c1f6cd1694fb88d345ee0f6",
+      "src/native/types.h": "ecc6cd55d2e0aa7a59b3b7e926c1c42241baf1f8efb26d235e8a904b782faf80",
+      "src/native/world.h": "e7a84bd63bea5f29dffbcb4dd5d5955fc7b3b73c11bbf0c20bfcda84836a5b0e",
+      "src/v8_ieee754.h": "72a68fcc9d908180c9dff5eced89b1b12b4ad9df68b1886b0307ab82104b5855",
+      "build.py": "a1d2ca8392bd65ae925db86d40190ad85fb325e03692e090dd8b73599fe890e4"
+    },
+    "engine": "combat-check",
+    "scope": "native_combat_checkpoint",
+    "sanitized": true,
+    "portable": false
+  }
+}

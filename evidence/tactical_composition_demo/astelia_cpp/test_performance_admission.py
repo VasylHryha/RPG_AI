@@ -108,8 +108,9 @@ def test_compiler_bytes_and_object_bytes_invalidate_build_cache(tmp_path,monkeyp
     builder=importlib.util.module_from_spec(spec);spec.loader.exec_module(builder)
     monkeypatch.setattr(builder,'ROOT',tmp_path)
     (tmp_path/'src/native').mkdir(parents=True)
-    for name in ('host','world','combat','spatial'):
-        (tmp_path/'src/native'/f'{name}.cpp').write_text('fixture translation unit\n')
+    for name in builder.TARGETS['native'][1]:
+        (tmp_path/name).write_text('fixture translation unit\n')
+    object_count=len(builder.TARGETS['native'][1])
     (tmp_path/'build.py').write_bytes((ROOT/'build.py').read_bytes())
     compiler=tmp_path/'compiler';log=tmp_path/'compiles.log'
     def write_compiler(variant):
@@ -119,8 +120,8 @@ def test_compiler_bytes_and_object_bytes_invalidate_build_cache(tmp_path,monkeyp
             ' if "-c" in sys.argv:\n  with pathlib.Path('+repr(str(log))+').open("a") as f:f.write("compile\\n")\n')
         compiler.chmod(0o755)
     monkeypatch.setattr(sys,'argv',['build.py','--engine','native','--portable','--compiler',str(compiler)])
-    write_compiler('first');builder.main();assert len(log.read_text().splitlines())==4
+    write_compiler('first');builder.main();assert len(log.read_text().splitlines())==object_count
     # Same --version, different executable: every object must be rebuilt.
-    write_compiler('second');builder.main();assert len(log.read_text().splitlines())==8
+    write_compiler('second');builder.main();assert len(log.read_text().splitlines())==2*object_count
     (tmp_path/'build/astelia_native_world.o').write_bytes(b'changed object')
-    builder.main();assert len(log.read_text().splitlines())==9
+    builder.main();assert len(log.read_text().splitlines())==2*object_count+1

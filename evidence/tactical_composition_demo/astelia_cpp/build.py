@@ -8,11 +8,14 @@ import shutil
 import subprocess
 
 ROOT = pathlib.Path(__file__).resolve().parent
+COMBAT_SOURCES = ['src/native/world.cpp', 'src/native/combat.cpp', 'src/native/spatial.cpp',
+                  'src/native/combat_rules.cpp', 'src/native/abilities.cpp', 'src/native/player.cpp']
 TARGETS = {
     'legacy': ('astelia', ['src/main.cpp', 'src/formation_sim.cpp', 'src/v8_ieee754.cpp']),
-    'native': ('astelia_native', ['src/native/host.cpp', 'src/native/world.cpp', 'src/native/combat.cpp', 'src/native/spatial.cpp']),
-    'core-check': ('native_core_contract', ['native_core_contract.cpp', 'src/native/world.cpp', 'src/native/combat.cpp', 'src/native/spatial.cpp']),
-    'layout': ('native_layout_probe', ['native_layout_probe.cpp', 'src/native/world.cpp', 'src/native/combat.cpp', 'src/native/spatial.cpp']),
+    'native': ('astelia_native', ['src/native/host.cpp', 'src/native/config_codec.cpp', *COMBAT_SOURCES]),
+    'core-check': ('native_core_contract', ['native_core_contract.cpp', *COMBAT_SOURCES]),
+    'combat-check': ('native_combat_contract', ['native_combat_contract.cpp', *COMBAT_SOURCES]),
+    'layout': ('native_layout_probe', ['native_layout_probe.cpp', *COMBAT_SOURCES]),
 }
 
 
@@ -90,7 +93,7 @@ def main():
                   link=command, binary_sha256=sha(target), source_hashes=input_hashes,
                   object_hashes=object_hashes,
                   portable=args.portable, sanitized=args.sanitize,
-                  scope='native_core_slice' if args.engine != 'legacy' else 'legacy_mechanical_port')
+                  scope='native_combat_checkpoint' if args.engine != 'legacy' else 'legacy_mechanical_port')
     manifest = target.with_suffix('.build.json')
     manifest.write_text(json.dumps(record, indent=2) + '\n')
     if args.engine == 'legacy' and not args.sanitize:
