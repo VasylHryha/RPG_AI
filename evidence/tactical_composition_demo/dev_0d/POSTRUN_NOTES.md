@@ -27,5 +27,5 @@ Median step angle on moving states for hidden 64 falls from 13.8 to 5.7 degrees 
 ## Reading and limits
 
 - The flat family **does** climb with capacity, data and training; the plateau of the registered F1 is a property of its small, heavily regularized setting. The statement in `REPORT_0D.md` that the flat models gain little from data was corrected accordingly.
-- Even so, at 60,000 states the flat models (0.735 to 0.737) are below C at 3,000 states (0.957): a data advantage of at least 20 times for this measure and this sandbox, and the gap at N = 9,000 is nearer 0.35 than 0.42 for a flat model tuned at that N. V1 and V3 keep their direction; their size against "flat networks" is not established.
+- Even so, at 60,000 states the flat models (0.735 to 0.737) are below C at 3,000 states (0.957): an observed comparison of 3,000 against 60,000 states for this measure and this sandbox (no strong-baseline threshold or continuous data requirement was measured), and the gap at N = 9,000 is nearer 0.35 than 0.42 for a flat model not tuned at that N and not retrained for it. V1 and V3 keep their direction; their size against "flat networks" is not established.
 - Three development seeds, no per-N tuning, no closed-loop play, no depth or architecture changes. It does not replace a registered experiment (recommended next: 0e, see `MOTIVATION.md`).
