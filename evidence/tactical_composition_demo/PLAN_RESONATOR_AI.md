@@ -77,6 +77,18 @@ Every arm is tuned with the same number of fights on development seeds, then jud
 
 The largest uncertainty is the development step. If the resonator AI cannot beat novice after the tuning budget, we stop and report that before registering anything.
 
+## 5b. Changes after the owner's review (2026-10-04)
+
+`DESIGN_0G.md` section 3 replaces sections 2 and 4 of this plan where they differ:
+- the score is units left (main) and damage difference (second);
+- four arms (resonator, plain morale, push-pull, nearest), and the J=0 / K=0 / no-groups / no-damage ablations are development diagnostics only;
+- at most about 10 knobs;
+- start small, then scale;
+- watch fights;
+- a Codex review of the design before code.
+
+P2 becomes "beats plain morale" and P3 "beats push-pull", with the same rule (a paired difference in units left above a registered margin). P4 stays a diagnostic unless development shows it is attainable.
+
 ## 6. Implementation plan: sessions, checks and acceptance criteria
 
 Each session ends with a commit and a short report to the owner. A session that fails its acceptance stops the plan at that point: the next session does not start

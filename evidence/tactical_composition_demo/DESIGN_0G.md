@@ -89,17 +89,35 @@ group's members share its phase through the K term. When a group breaks, its uni
 
 The initial phases come from the seed.
 
-## 3. The arms (every arm gets the same tuning budget; P2 and P3)
+## 3. Score and arms (simplified at the owner's request, 2026-10-04: "why you complicate it")
 
-| Arm | Differs from the resonator v0 by | Answers |
+**Score (the owner's two numbers):**
+1. **Units left at the end**: our survivors minus the enemy's. This is the main score and the margin used so far.
+2. **Damage difference**: damage we dealt minus damage we took, in hit points. It is the second score and separates fights with similar unit counts.
+
+Won and lost fights are reported alongside these two scores.
+
+**Arms (four; every arm gets the same knob count and the same tuning budget):**
+
+| Arm | What it is | Question it answers |
 |---|---|---|
-| resonator v0 | none | |
-| J=0 | phase does not change motion (J = J_e = 0) | does mode→geometry matter? |
-| K=0 | no phase coupling between units or to targets (K = K_t = 0; phases free-run at ω) | does synchronization matter? |
-| no groups | ψ_j = φ_j always (no group phase), so units do not share a target through phase | do the groups matter? |
-| no damage input | κ_out = κ_in = 0, φ_j relaxes at ω_enemy only | does the damage drive matter? |
-| potential field | forces only (J = J_e = 0, no phases), target = nearest in reach: physicomimetics-style, the closest known method | does any of this beat known swarm control? |
-| nearest | walk to the nearest enemy, attack it | the floor |
+| **resonator** | section 2 | the AI under test |
+| **plain morale** | the same controller with each phase replaced by one real number (morale): damage pulls it up or down, neighbours average it, enemies get the same number | does the beat (a circular phase that can label several groups at once) matter, or would a number do? |
+| **push-pull** | forces only, target = nearest in reach (physicomimetics-style) | is this just known swarm control? |
+| **nearest** | walk to the nearest enemy and attack it | the floor |
+
+The ablations J=0, K=0, no groups and no damage input are **development diagnostics only**: run to understand the controller, never registered as claims.
+
+**Knobs:** at most about 10, shared across roles where possible (for example one A_e with a role factor fixed by range). The same count for every arm.
+
+**Development order (owner, point 3):**
+1. 10 vs 10, melee only, against novice.
+2. Full armies (50 vs 50, all roles) against novice and regular.
+3. The full ladder.
+
+Each step's fights are recorded and **watched** in Astelia's fight viewers (copies in our snapshot folder; owner, point 4) before moving on.
+
+**Review (owner, point 5):** Codex reviews this design before any controller code is written.
 
 ## 4. Reference values for the S3 check
 
