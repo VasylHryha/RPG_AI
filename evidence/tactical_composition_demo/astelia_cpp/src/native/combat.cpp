@@ -1,6 +1,7 @@
 #include "world.h"
 #include "formation.h"
 #include "search.h"
+#include "artillery.h"
 
 namespace astelia {
 namespace {
@@ -35,7 +36,7 @@ void actNovice(World& w,uint32_t i,double dt) {
 void shots(World& w,double dt) {
   w.shotGrid.build(w.units,w.active,w.config->width,w.config->height,64);
   for (auto& s:w.shots) {
-    ++w.counters.projectileSteps;
+    ++w.counters.projectileSteps;if(w.branch)++w.work->branchProjectileSteps;
     const auto* src=w.resolve(s.source);const auto* target=w.resolve(s.target);
     if (!src) throw std::logic_error("missing shot source");
     const auto settle=[&](bool hitTarget){s.done=true;addPending(w,s.source,s.target,-s.pending);
@@ -112,12 +113,14 @@ void coreStep(World& w) {
   if(w.config->rules==Rules::Game)for(auto i:w.order)gameReflexes(w,i);
   for (auto i:w.order) decideUnit(w,i);
   if(w.config->rules==Rules::Game){for(auto i:w.order){auto& s=w.state[i];s.castOk=true;const auto& sk=w.config->skills[w.units[i].team];
-      const auto* t=w.resolve(w.units[i].target);if(sk.waves>0&&!(s.prep>0)&&w.units[i].cooldown<=0&&s.inReach&&t&&t->alive&&s.energy>=s.cost&&windup(w,i)>0){
+      const auto* t=w.resolve(w.units[i].target);if(!(s.prep>0)&&w.units[i].cooldown<=0&&s.inReach&&t&&t->alive&&s.energy>=s.cost&&windup(w,i)>0&&(sk.holdWave>0||sk.holdSync>0)&&!fireGate(w,i)){s.castOk=false;continue;}
+      if(sk.waves>0&&!(s.prep>0)&&w.units[i].cooldown<=0&&s.inReach&&t&&t->alive&&s.energy>=s.cost&&windup(w,i)>0){
         uint32_t n=0;for(auto j:w.teams[w.units[i].team])if(w.units[j].alive&&w.state[j].inReach&&w.units[j].cooldown<=0&&!(w.state[j].prep>0)&&w.state[j].windup>0)++n;
         auto& ts=w.tactical[i];if(ts.waitFrom<0)ts.waitFrom=w.time;if(n<sk.waves&&w.time-ts.waitFrom<1)s.castOk=false;else ts.waitFrom=-1;}}
     for(auto i:w.active)gamePrep(w,i,dt*w.state[i].timeRate);}
+  for(auto team:packOrder)if(w.packs[team].enabled)artilleryVolley(w,team);
   w.meleeHits.clear();for (auto i:w.order) if (w.units[i].alive) {
-    ++w.counters.unitActions;
+    ++w.counters.unitActions;if(w.branch)++w.work->branchUnitActions;
     if(w.config->abilities){if(busyAct(w,i,dt))continue;const auto team=w.units[i].team;
       const bool coordinated=w.packs[team].enabled&&w.config->skills[team].abilities==AbilityPolicy::Coordinated&&
         (w.brains[team]!=Brain::Rules||w.packs[team].formation.coordAbilities);
@@ -132,9 +135,12 @@ void coreStep(World& w) {
   for (auto& shell:w.shells) if (w.time>=shell.at) {
     const auto* src=w.resolve(shell.source);if (!src) throw std::logic_error("missing shell source");
     if(shell.slow){w.fields.push_back({shell.pos,45,w.time,w.time+3,src->team});shell.done=true;continue;}
-    bool hit=false;
+    bool hit=false;auto& out=w.stats.shellOut[src->team];auto& attack=w.stats.attacks[src->team][size_t(shell.family)*2+(shell.finisher?1:0)];++attack.shells;
+    if(shell.hasPrediction){++out.planShells;out.planPred+=shell.prediction;}
     const auto& candidates=shell.lob?w.active:w.teams[1-src->team];
     for (auto i:candidates) if (w.reference(i)!=shell.source && w.units[i].alive && distance(w.units[i].pos,shell.pos)<=shell.splash+w.units[i].radius) {
+      const double raw=std::min(shell.damage,w.units[i].hp);if(w.units[i].team!=src->team){attack.damage+=raw;if(shell.damage>=w.units[i].hp)++attack.kills;}else attack.own+=raw;
+      if(!shell.barrage){++out.hits;out.damage+=raw;if(shell.hasPrediction)out.planDamage+=raw;}
       w.damage(shell.source,w.reference(i),shell.damage);hit=true;
     }
     if (!hit && src->team==0) w.stats.wasted+=shell.damage;shell.done=true;

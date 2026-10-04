@@ -12,11 +12,12 @@ COMBAT_SOURCES = ['src/native/world.cpp', 'src/native/combat.cpp', 'src/native/s
                   'src/native/combat_rules.cpp', 'src/native/abilities.cpp', 'src/native/player.cpp',
                   'src/native/formation.cpp', 'src/native/formation_tables.cpp', 'src/native/commander.cpp',
                   'src/native/targeting.cpp', 'src/native/coord_abilities.cpp', 'src/native/dodge.cpp',
-                  'src/native/decisions.cpp', 'src/native/director.cpp', 'src/native/network.cpp', 'src/native/network_tables.cpp', 'src/native/search.cpp']
+                  'src/native/decisions.cpp', 'src/native/director.cpp', 'src/native/network.cpp', 'src/native/network_tables.cpp', 'src/native/search.cpp', 'src/native/artillery_prediction.cpp', 'src/native/artillery.cpp']
 TARGETS = {
     'legacy': ('astelia', ['src/main.cpp', 'src/formation_sim.cpp', 'src/v8_ieee754.cpp']),
     'native': ('astelia_native', ['src/native/host.cpp', 'src/native/config_codec.cpp', *COMBAT_SOURCES]),
     'core-check': ('native_core_contract', ['native_core_contract.cpp', *COMBAT_SOURCES]),
+    'artillery-check': ('native_artillery_contract', ['native_artillery_contract.cpp', *COMBAT_SOURCES]),
     'search-check': ('native_search_contract', ['native_search_contract.cpp', *COMBAT_SOURCES]),
     'formation-check': ('native_formation_contract', ['native_formation_contract.cpp', *COMBAT_SOURCES]),
     'combat-check': ('native_combat_contract', ['native_combat_contract.cpp', *COMBAT_SOURCES]),
@@ -100,7 +101,7 @@ def main():
                   link=command, binary_sha256=sha(target), source_hashes=input_hashes,
                   object_hashes=object_hashes,
                   portable=args.portable, sanitized=args.sanitize,
-                  scope='native_search_checkpoint' if args.engine != 'legacy' else 'legacy_mechanical_port')
+                  scope='native_artillery_checkpoint' if args.engine != 'legacy' else 'legacy_mechanical_port')
     manifest = target.with_suffix('.build.json')
     manifest.write_text(json.dumps(record, indent=2) + '\n')
     if args.engine == 'legacy' and not args.sanitize:

@@ -245,7 +245,7 @@ void World::reclaim() {
   for (const auto& s:shots) {retain(s.source);retain(s.target);for (auto h:s.hitSet) retain(h);}
   for (const auto& s:shells) retain(s.source);
   for (const auto& d:dots) {retain(d.source);retain(d.target);}
-  for(const auto& p:packs){retain(p.focus);retain(p.surroundTarget);for(const auto& wing:p.wings)retain(wing.unit);}
+  for(const auto& p:packs){retain(p.focus);retain(p.surroundTarget);for(const auto& wing:p.wings)retain(wing.unit);for(const auto& q:p.artilleryQueue)retain(q.gun);for(auto ref:p.cutOff)retain(ref);}
   for (auto i:active) if (!units[i].alive) liveGrid.remove(i);
   active.erase(std::remove_if(active.begin(),active.end(),[&](auto i){return !units[i].alive;}),active.end());
   for (uint32_t i=0;i<units.size();++i) if (units[i].occupied && !retained_[i]) {

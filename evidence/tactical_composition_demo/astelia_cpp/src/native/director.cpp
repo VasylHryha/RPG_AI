@@ -40,7 +40,7 @@ Observation observe(const World& w,uint8_t team){Observation o;const auto& ours=
   o.axis={std::cos(th),std::sin(th)};o.columnRatio=std::sqrt((tr/2+v)/std::max(1.0,tr/2-v));o.speedAlong=dot(velocity*(1/n),o.axis);o.spread/=n;
   o.centers=length(o.oursCenter-o.theirsCenter);if(!(o.centers>0))o.centers=1;o.approach=dot(velocity*(1/n),o.oursCenter-o.theirsCenter)/o.centers;
   o.chaseShare=meleeCount?double(chasing)/meleeCount:0;o.wallDist=std::min({o.oursCenter.x,w.config->width-o.oursCenter.x,o.oursCenter.y,w.config->height-o.oursCenter.y});
-  o.finishing=o.theirs>0&&(o.theirs<=2||o.ours>=4*o.theirs);return o;
+  o.finishing=w.config->rules==Rules::Game&&o.theirs>0&&(o.theirs<=2||o.ours>=4*o.theirs);return o;
 }
 void directorStep(World& w,uint8_t team){if(!w.config->skills[team].combosEnabled||(w.branch&&!(w.thinkTeams&(1<<team))))return;auto& p=w.packs[team];auto& d=p.director;
   if(w.time-d.last<.5-1e-9)return;d.last=w.time;d.observation=observe(w,team);const auto& o=d.observation;

@@ -45,7 +45,7 @@ V fight(V request,astelia::WorkCounters& counts,uint64_t& fights) {
   const auto dump=[&](){std::cout<<js::stringify(js::obj({{"step",double(tick)},{"state",state(w,history,debug)}}))<<'\n';};
   if (trace) dump();
   while (!w.done()) {astelia::coreStep(w);++tick;if (trace) dump();}
-  counts.branchSteps+=w.work->branchSteps;counts.forks+=w.work->forks;counts.searchCalls+=w.work->searchCalls;counts.inferenceCalls+=w.work->inferenceCalls;counts.candidateModels+=w.work->candidateModels;counts.artilleryRollouts+=w.work->artilleryRollouts;
+  counts.branchUnitActions+=w.work->branchUnitActions;counts.branchProjectileSteps+=w.work->branchProjectileSteps;counts.branchSteps+=w.work->branchSteps;counts.forks+=w.work->forks;counts.searchCalls+=w.work->searchCalls;counts.inferenceCalls+=w.work->inferenceCalls;counts.candidateModels+=w.work->candidateModels;counts.artilleryRollouts+=w.work->artilleryRollouts;counts.artilleryPredictions+=w.work->artilleryPredictions;counts.artilleryCandidates+=w.work->artilleryCandidates;counts.predictionSteps+=w.work->predictionSteps;counts.predictionUnitSteps+=w.work->predictionUnitSteps;
   counts.outerSteps+=w.counters.outerSteps;counts.unitActions+=w.counters.unitActions;counts.projectileSteps+=w.counters.projectileSteps;
   return summary(w);
   } catch (const std::exception& e) { return js::obj({{"error",e.what()}}); }
@@ -68,6 +68,6 @@ int main(int argc,char** argv) {
     js::collect({},0);
   }
   if (metrics) std::cerr<<"{\"executed_fights\":"<<fights<<",\"executed_steps\":"<<counts.outerSteps
-    <<",\"branch_steps\":"<<counts.branchSteps<<",\"forks\":"<<counts.forks<<",\"search_calls\":"<<counts.searchCalls<<",\"inference_calls\":"<<counts.inferenceCalls<<",\"candidate_models\":"<<counts.candidateModels<<",\"artillery_rollouts\":"<<counts.artilleryRollouts<<",\"unit_actions\":"<<counts.unitActions<<",\"projectile_steps\":"<<counts.projectileSteps
-    <<",\"cache_hits\":0,\"scope\":\"native_search_checkpoint\"}\n";
+    <<",\"branch_steps\":"<<counts.branchSteps<<",\"forks\":"<<counts.forks<<",\"search_calls\":"<<counts.searchCalls<<",\"inference_calls\":"<<counts.inferenceCalls<<",\"candidate_models\":"<<counts.candidateModels<<",\"artillery_rollouts\":"<<counts.artilleryRollouts<<",\"artillery_predictions\":"<<counts.artilleryPredictions<<",\"artillery_candidates\":"<<counts.artilleryCandidates<<",\"prediction_steps\":"<<counts.predictionSteps<<",\"prediction_unit_steps\":"<<counts.predictionUnitSteps<<",\"branch_unit_actions\":"<<counts.branchUnitActions<<",\"branch_projectile_steps\":"<<counts.branchProjectileSteps<<",\"unit_actions\":"<<counts.unitActions<<",\"projectile_steps\":"<<counts.projectileSteps
+    <<",\"cache_hits\":0,\"scope\":\"native_artillery_checkpoint\"}\n";
 }

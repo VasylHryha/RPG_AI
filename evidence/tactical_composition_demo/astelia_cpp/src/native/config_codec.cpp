@@ -2,6 +2,7 @@
 #include "config_codec.h"
 #include "world.h"
 #include "formation.h"
+#include "artillery.h"
 #include "../js_value.h"
 #include <set>
 
@@ -74,7 +75,11 @@ void skills(CombatSkills& s,V v) {
   if(present(v,"artyFollow")){const auto x=js::get(v,"artyFollow");s.followShooters=x.tag==V::String&&js::str(x)=="shooters";
     if(x.tag!=V::Boolean&&!s.followShooters)throw std::invalid_argument("unknown artillery follow");s.artyFollow=s.followShooters||bool(x.n);}
   if(present(v,"combos")){const auto list=js::get(v,"combos");s.combosEnabled=list.tag!=V::Null;s.combos.clear();if(s.combosEnabled)for(auto entry:array(list)){const auto name=js::str(entry);if(name=="tchain")s.combos.push_back(ComboKind::Tchain);else if(name=="fixlob")s.combos.push_back(ComboKind::Fixlob);else throw std::invalid_argument("unknown combo: "+name);}}
-  for(const auto field:{"holdFire","artyRollout"})if(present(v,field)&&js::truth(js::get(v,field)))throw std::invalid_argument(std::string(field)+" pending native migration");
+  if(present(v,"holdFire")){s.holdWave=s.holdSync=0;const auto h=js::get(v,"holdFire");if(js::truth(h)){only(h,{"wave","sync"});s.holdWave=number(h,"wave",0);s.holdSync=number(h,"sync",0);if(s.holdWave<0||s.holdSync<0)throw std::invalid_argument("invalid fire gate");}}
+  if(present(v,"artyRollout")){s.rollout={};const auto ro=js::get(v,"artyRollout");if(js::truth(ro)){only(ro,{"top","horizon","shape","score","dt","every"});s.rollout.enabled=true;s.rollout.top=count(ro,"top",5);s.rollout.horizon=number(ro,"horizon",2);s.rollout.dt=number(ro,"dt",0);s.rollout.every=number(ro,"every",0);
+    const auto score=string(ro,"score","");if(score!=""&&score!="ltd2"&&score!="hp")throw std::invalid_argument("unknown rollout score");s.rollout.ltd2=score=="ltd2";
+    if(present(ro,"shape"))for(auto name:array(js::get(ro,"shape")))s.rollout.shape.push_back(attackByName(js::str(name)));
+    if(!s.rollout.top||s.rollout.top>100000||s.rollout.horizon<=0||s.rollout.dt<0||s.rollout.every<0)throw std::invalid_argument("invalid artillery rollout budget/horizon");}}
 }
 Brain brain(const std::string& name){if(name=="alone")return Brain::Alone;if(name=="formation")return Brain::Formation;if(name=="rules"||name=="reactive")return Brain::Rules;
   if(name=="storm")return Brain::Storm;if(name=="wolfpack")return Brain::Wolfpack;if(name=="gamepack")return Brain::Gamepack;throw std::invalid_argument("unknown brain: "+name);}
@@ -217,6 +222,7 @@ Config configuration(const js::V& request) {
     // Profile skill defaults read the legacy formation before the level's
     // formation replacement, exactly as buildProfile does.
     auto& s=c.skills[t];s.abilities=c.brains[t]==Brain::Rules&&boolean(o,"coordAbilities",true)?AbilityPolicy::Coordinated:AbilityPolicy::Auto;
+    if(present(baseForm,"holdFire"))skills(s,js::obj({{"holdFire",js::get(baseForm,"holdFire")}}));
     s.reactAim=boolean(o,"reactAim",true);s.fireControl=boolean(baseForm,"fireControl",false);s.fireDepth=number(baseForm,"fireDepth",0);s.jink=number(baseForm,"jink",0);
     s.planShells=c.rules==Rules::Sandbox&&!boolean(o,"shellDodgeAll",true);
     if(c.rules==Rules::Sandbox){
@@ -227,7 +233,7 @@ Config configuration(const js::V& request) {
     if(level=="novice"){s.dodgeShots=s.dodgeSoft=s.dodgeShells=s.planShells=s.smartShells=false;s.shotReact=.3;s.lead=Lead::None;s.pursuitCut=false;s.kite=0;s.abilities=AbilityPolicy::Off;s.reactAim=false;}
     if(level=="regular"){s.dodgeShots=s.dodgeSoft=false;s.shotReact=.2;s.dodgeShells=true;s.planShells=s.smartShells=false;s.lead=Lead::Raw;s.pursuitCut=false;s.abilities=AbilityPolicy::Auto;s.reactAim=false;baseForm=js::obj({{"preset","line"}});}
     if(level=="veteran"||level=="elite"||level=="elite-fast"){s.artyPlan=s.lockedDodge=true;baseForm=js::obj({{"preset","wide line"}});}
-    if(level=="elite"||level=="elite-fast"){s.smartShells=true;s.dodgeShells=s.planShells=false;s.castDodge=s.weaponsFree=s.artyBattery=true;s.saveWounded=.3;js::set(baseForm,"oblique",true);}
+    if(level=="elite"||level=="elite-fast"){s.smartShells=true;s.dodgeShells=s.planShells=false;s.castDodge=s.weaponsFree=s.artyBattery=true;s.saveWounded=.3;s.rollout.enabled=s.rollout.ltd2=true;s.rollout.shape={AttackFamily::Battery,AttackFamily::Split,AttackFamily::Herd};if(level=="elite-fast"){s.rollout.dt=.1;s.rollout.every=.3;}js::set(baseForm,"oblique",true);}
     if(present(p,"formation"))baseForm=js::get(p,"formation");
     const auto preset=string(baseForm,"preset",c.brains[t]==Brain::Rules?"wide line":"");c.formations[t]=presetFormation(preset);formation(c.formations[t],baseForm);
     if(c.brains[t]==Brain::Storm)c.formations[t]=presetFormation("line anvil");
@@ -236,7 +242,6 @@ Config configuration(const js::V& request) {
     if(present(p,"skills"))skills(s,js::get(p,"skills"));
     const V la=present(p,"lookahead")?js::get(p,"lookahead"):(level=="elite"||level=="elite-fast")?js::obj({{"extends","fast"},{"terminal",6},{"stall",10}}):!level.empty()?V(nullptr):t==0&&present(o,"lookahead")?js::get(o,"lookahead"):V(nullptr);
     c.lookahead[t]=look(la);if(c.lookahead[t].enabled&&present(p,"objective")){const auto objective=string(p,"objective","");if(objective!="hp"&&objective!="deaths")throw std::invalid_argument("unknown profile objective");c.lookahead[t].hasObjective=true;c.lookahead[t].deaths=objective=="deaths";}
-    if(s.artyPlan)throw std::invalid_argument("artillery planner pending native migration");
     if(present(o,"ab"))thresholds(c.abilityThresholds[t],js::get(o,"ab"));if(present(p,"ab"))thresholds(c.abilityThresholds[t],js::get(p,"ab"));
     if(present(p,"disablePlans")||(t==0&&present(o,"disablePlans"))){const auto value=present(p,"disablePlans")?js::get(p,"disablePlans"):js::get(o,"disablePlans");
       for(auto name:array(value))c.disabledPlans[t].push_back(planByName(js::str(name)));}

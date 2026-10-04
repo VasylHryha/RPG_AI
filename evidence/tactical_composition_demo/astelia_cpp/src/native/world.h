@@ -9,8 +9,8 @@ Config sandboxConfig();
 Config gameConfig();
 const char* roleName(Role role);
 struct WorkCounters {
-  uint64_t outerSteps=0, branchSteps=0, forks=0, unitActions=0, projectileSteps=0;
-  uint64_t searchCalls=0, inferenceCalls=0, candidateModels=0,artilleryRollouts=0;
+  uint64_t outerSteps=0, branchSteps=0, forks=0, unitActions=0, projectileSteps=0,branchUnitActions=0,branchProjectileSteps=0;
+  uint64_t searchCalls=0, inferenceCalls=0, candidateModels=0,artilleryRollouts=0,artilleryPredictions=0,artilleryCandidates=0,predictionSteps=0,predictionUnitSteps=0;
 };
 // Typed authority. Configuration is immutable; all mutable state belongs to
 // the world and is copied when a branch is leased.
@@ -96,7 +96,7 @@ double windup(const World& w,uint32_t slot);
 bool prepared(const World& w,uint32_t slot);
 void released(World& w,uint32_t slot);
 void fireShot(World& w,uint32_t slot,UnitRef target,double damage=0);
-void fireShellAt(World& w,uint32_t slot,Vec2 point);
+void fireShellAt(World& w,uint32_t slot,Vec2 point,double prediction=0,bool hasPrediction=false,AttackFamily family=AttackFamily::Own,bool finisher=false,uint16_t variant=0);
 void gamePrep(World& w,uint32_t slot,double dt);
 void gameReflexes(World& w,uint32_t slot);
 bool abilityReady(const World& w,uint32_t slot,Ability name,bool byHand=false);

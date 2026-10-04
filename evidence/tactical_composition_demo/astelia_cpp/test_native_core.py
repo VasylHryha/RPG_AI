@@ -39,16 +39,16 @@ def test_fresh_core_trace_and_batch(native_core,shots):
     assert validate_rows(req,rows)=='completed'
     assert rows[0]['step']==0 and len(rows)>2
     good=request(seed=20261005)
-    bad=request();bad['options']['ai'][0]={'level':'elite'}
+    bad=request();bad['options']['ai'][0]={'level':'unknown'}
     batch=json.loads(subprocess.check_output([str(native_core)],input=json.dumps([bad,good])+'\n',text=True))
     assert 'error' in batch[0] and validate_rows(good,[batch[1]])=='completed'
-    assert admit(native_core)['scope']=='native_search_checkpoint'
+    assert admit(native_core)['scope']=='native_artillery_checkpoint'
 
 
-def test_unimplemented_feature_is_explicit_error(native_core):
+def test_complete_elite_profile_is_supported(native_core):
     req=request();req['options']['ai'][0]={'level':'elite'}
     row=json.loads(subprocess.check_output([str(native_core)],input=json.dumps(req)+'\n',text=True))
-    assert 'error' in row and 'pending' in row['error']
+    assert validate_rows(req,[row])=='completed'
 
 
 def test_aggregate_overflow_is_explicit_error(native_core):

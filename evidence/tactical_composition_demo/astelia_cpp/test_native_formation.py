@@ -62,13 +62,6 @@ def test_authored_slots_match_frozen_js(native_formation):
             assert cpp[1]['state']['debug']['packs']['0']['anchor'][key]==pytest.approx(js[1]['state']['debug']['packs']['0']['anchor'][key],abs=1e-9)
 
 
-def test_unmigrated_search_and_artillery_planner_reject_without_fallback(native_formation):
-    for profile in ({'level':'elite'},{'level':'veteran'}):
-        req={'mode':'reactive','options':{'scenario':'mirror','ai':[profile,{'level':'novice'}]}}
-        row=json.loads(subprocess.check_output([str(native_formation)],input=json.dumps(req)+'\n',text=True))
-        assert 'error' in row and 'pending' in row['error']
-
-
 def test_custom_kind_uses_game_role_protection(native_formation):
     req={'mode':'alone','trace':True,'options':{'scenario':'mirror','rules':'game','duration':3,'width':600,
         'ai':[{'level':'novice'},{'level':'novice'}],

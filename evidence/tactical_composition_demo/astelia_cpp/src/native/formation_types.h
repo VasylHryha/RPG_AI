@@ -53,6 +53,9 @@ struct SearchState {Tactics choice;double last=-99,progress=0,score=0;uint8_t tu
 struct Pack {
   TacticalRead read;SearchState search;
   PackGoals commands;Director director;
+  std::vector<PlannedShot> artilleryQueue;std::vector<UnitRef> cutOff;
+  double artilleryNext=0,rolloutNext=-1,cutOffUntil=0,gateTime=-1,gateUntil=0;uint32_t artilleryReady=0;
+  AttackFamily artilleryLast=AttackFamily::Own;uint16_t artilleryVariant=0;
   Formation base, formation;
   Vec2 anchor, facing{1,0}, away;
   std::array<uint32_t,3> shapeCounts{};

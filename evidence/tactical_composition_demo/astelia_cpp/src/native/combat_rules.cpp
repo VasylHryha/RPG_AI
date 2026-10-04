@@ -53,8 +53,9 @@ void fireShot(World& w,uint32_t i,UnitRef target,double damage) {
   const Vec2 delta=point-u.pos;
   const double d=length(delta);p.direction=delta*(1/(d>0?d:1));p.left=u.range*1.3;addPending(w,p.source,target,p.pending);w.shots.push_back(std::move(p));
 }
-void fireShellAt(World& w,uint32_t i,Vec2 point) {
+void fireShellAt(World& w,uint32_t i,Vec2 point,double prediction,bool hasPrediction,AttackFamily family,bool finisher,uint16_t variant) {
   const auto& u=w.units[i];const auto& s=w.state[i];Shell sh;
+  ++w.stats.shellOut[u.team].shells;sh.prediction=prediction;sh.hasPrediction=hasPrediction;sh.family=family;sh.finisher=finisher;sh.variant=variant;
   sh.pos=point;sh.source=w.reference(i);sh.born=w.time;sh.lob=w.config->rules==Rules::Game;
   sh.at=w.time+(sh.lob?distance(u.pos,point)/((s.lobSpeed>0?s.lobSpeed:300)*s.launch):w.config->roles[2].flight);
   sh.damage=u.damage;sh.splash=s.splash>0?s.splash:w.config->roles[2].splash;w.shells.push_back(sh);
@@ -67,7 +68,7 @@ void gamePrep(World& w,uint32_t i,double dt) {
     if(w.config->attackerCap){uint32_t n=0;for(auto j:w.teams[u.team])if(w.units[j].alive&&w.state[j].prep>0)++n;
       if(n>=w.config->attackerCap)return;}
     if(u.role==Role::Ranged&&!laneClear(w,i,u.target))return;
-    s.energy-=s.cost;u.cooldown=s.cooldownMax;s.prep=0;
+    s.energy-=s.cost;u.cooldown=s.cooldownMax;s.prep=0;s.castTime=w.time;
   }
   s.prep+=dt;
 }

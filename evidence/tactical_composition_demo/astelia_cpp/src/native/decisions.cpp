@@ -24,7 +24,9 @@ UnitRef releasedMelee(const World& w,uint32_t i){const auto& u=w.units[i];const 
 void decideUnit(World& w,uint32_t i){
   auto& u=w.units[i];auto& s=w.state[i];auto& d=s.decision;auto& ts=w.tactical[i];d=Decision{};s.inReach=false;
   const auto& sk=w.config->skills[u.team];const auto& pack=w.packs[u.team];const bool formed=pack.enabled;
-  if(ts.assignedSet)u.target=ts.assigned;if(s.guardUntil>w.time)return;
+  if(ts.assignedSet)u.target=ts.assigned;
+  if(formed&&melee(u.role)&&!sk.followShooters&&w.time<pack.cutOffUntil){const auto* current=w.resolve(u.target);if(!(current&&current->alive&&gap(u,*current)<=u.range)){double bd=200;for(auto r:pack.cutOff){const auto* enemy=w.resolve(r);if(enemy&&enemy->alive&&distance(u.pos,enemy->pos)<bd){bd=distance(u.pos,enemy->pos);u.target=r;}}}}
+  if(s.guardUntil>w.time)return;
   const auto* prior=w.resolve(u.target);const bool engaged=melee(u.role)&&prior&&prior->alive&&gap(u,*prior)<=u.range;
   if(sk.dodgeShots&&!(sk.dodgeSoft&&melee(u.role))&&!engaged){const Shot* best=nullptr;double bt=INFINITY,side=0;
     for(const auto& sh:w.shots){const auto* src=w.resolve(sh.source);if(!sh.aimed||!src||src->team==u.team||w.time-sh.born<sk.shotReact)continue;

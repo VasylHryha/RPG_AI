@@ -5,7 +5,7 @@ namespace {
 struct Result {double our=0,their=0,flyOur=0,flyTheir=0,posOur=0,posTheir=0;double killsOur=0,killsTheir=0;};
 double hp(const World& w,uint8_t team){double sum=0;for(auto i:w.teams[team])if(w.units[i].alive)sum+=std::max(0.0,w.units[i].hp);return sum;}
 Tactics uniform(Plan plan){Tactics c;c.role.fill(plan);return c;}
-bool finishing(const World& w,uint8_t me){const auto ours=w.teams[me].size(),theirs=w.foes(me).size();return theirs>0&&(theirs<=2||ours>=4*theirs);}
+bool finishing(const World& w,uint8_t me){if(w.config->rules!=Rules::Game)return false;const auto ours=w.teams[me].size(),theirs=w.foes(me).size();return theirs>0&&(theirs<=2||ours>=4*theirs);}
 Result playout(World& w,uint8_t me,const Lookahead& la,const Tactics& plan,EnemyModel model){
   auto lease=w.branches().fork(w);auto& c=lease.world();++w.work->candidateModels;c.hasForced=true;c.forced=plan;c.forcedTeam=me;c.duration=w.time+la.horizon;c.dt=la.dt>0?la.dt:w.dt;
   if(!std::isfinite(c.duration)||!(c.dt>0)||c.duration/c.dt>1e7)throw std::invalid_argument("invalid lookahead branch horizon");

@@ -52,6 +52,7 @@ struct UnitState {
   UnitRef meleeAttacker;
   int8_t strafe=1;
   uint32_t kind=invalidSlot, ability=invalidSlot, player=invalidSlot;
+  double castTime=-1;
   double standoff=0, dashReady=0, guardUntil=0, blockReady=0, guardDirection=0, lastShotHit=-9;
   Dodge dodge=Dodge::None;
   bool hasSlot=false, inReach=false, castOk=true, block=false;
@@ -67,7 +68,11 @@ struct Shot {
   bool aimed=true, dodgeable=true, done=false, manual=false;
   std::vector<UnitRef> hitSet;
 };
+enum class AttackFamily : uint8_t { Singles,Focus,Net,Wall,Herd,Split,Trap,Sweep,Battery,Dashnet,Left,Own,Count };
+struct PlannedShot {Vec2 point;UnitRef gun;double at=0,prediction=0;bool finisher=false,hasPrediction=false;AttackFamily family=AttackFamily::Own;uint16_t variant=0;};
+struct ArtilleryRollout {uint32_t top=5;double horizon=2,dt=0,every=0;bool enabled=false,ltd2=false;std::vector<AttackFamily> shape;};
 struct Shell {
+  AttackFamily family=AttackFamily::Own;uint16_t variant=0;bool finisher=false;
   Vec2 pos;
   UnitRef source;
   double at=0, born=0, damage=0, splash=0, prediction=0;
@@ -77,7 +82,10 @@ struct Field { Vec2 pos; double radius=0, from=0, until=0; uint8_t team=0; };
 struct Dot { UnitRef source, target; double dps=0, until=0, accumulated=0; };
 struct MeleeHit { UnitRef source, target; double multiplier=1; };
 struct Hit { double time=0, amount=0; uint8_t from=0, to=0; };
+struct AttackStats {uint64_t used=0,shells=0,kills=0;double damage=0,own=0;};
+struct ShellStats {uint64_t shells=0,hits=0,planShells=0;double damage=0,planPred=0,planDamage=0;};
 struct Stats {
+  std::array<std::array<AttackStats,size_t(AttackFamily::Count)*2>,2> attacks;std::array<ShellStats,2> shellOut;
   double melee=0, ranged=0, artillery=0, wasted=0, aliveSeconds=0, enemyDamage=0;
   uint32_t monsterDeaths=0, hunterKills=0;
 };
@@ -119,7 +127,8 @@ struct OrderEvent {double time;UnitId id;OrderKind kind;uint8_t reason;};
 struct CombatSkills {
   Lead lead=Lead::None;
   AbilityPolicy abilities=AbilityPolicy::Off;
-  double kite=0, shotReact=.3;
+  double kite=0, shotReact=.3,holdWave=0,holdSync=0;
+  ArtilleryRollout rollout;
   bool pursuitCut=false, dodgeShots=false, dodgeSoft=false, dodgeShells=false;
   bool lobLead=false, adaptiveLobLead=false;
   double leaderBracket=12, fireDepth=0, jink=0, saveWounded=0, artyRobust=.5, artyHerd=0, artyEvery=.25;
