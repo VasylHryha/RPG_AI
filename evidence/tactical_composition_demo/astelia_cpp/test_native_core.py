@@ -42,13 +42,13 @@ def test_fresh_core_trace_and_batch(native_core,shots):
     bad=request();bad['options']['ai'][0]={'level':'elite'}
     batch=json.loads(subprocess.check_output([str(native_core)],input=json.dumps([bad,good])+'\n',text=True))
     assert 'error' in batch[0] and validate_rows(good,[batch[1]])=='completed'
-    assert admit(native_core)['scope']=='native_combat_checkpoint'
+    assert admit(native_core)['scope']=='native_formation_checkpoint'
 
 
 def test_unimplemented_feature_is_explicit_error(native_core):
     req=request();req['options']['ai'][0]={'level':'elite'}
     row=json.loads(subprocess.check_output([str(native_core)],input=json.dumps(req)+'\n',text=True))
-    assert 'error' in row and 'novice' in row['error']
+    assert 'error' in row and 'pending' in row['error']
 
 
 def test_aggregate_overflow_is_explicit_error(native_core):

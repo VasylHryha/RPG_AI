@@ -1,6 +1,7 @@
 // JSON boundary only. The simulation modules never include the legacy value API.
 #include "world.h"
 #include "config_codec.h"
+#include "formation.h"
 #include "../js_value.h"
 #include <set>
 #include <map>
@@ -14,7 +15,7 @@ V summary(const astelia::World& w) {
     {"hunterKills",double(s.hunterKills)},{"aliveSeconds",s.aliveSeconds},{"enemyDamage",s.enemyDamage},
     {"survivors",double(w.survivors(0))},{"enemySurvivors",double(w.survivors(1))},{"t",w.time}});
 }
-V state(const astelia::World& w,std::map<astelia::UnitId,V>& history) {
+V state(const astelia::World& w,std::map<astelia::UnitId,V>& history,bool debug) {
   for (const auto& u:w.units) if (u.id && (u.occupied || !history.count(u.id) || js::truth(js::get(history.at(u.id),"alive")))) {
     const auto* t=w.resolve(u.target);
     history[u.id]=js::obj({{"id",double(u.id)},{"team",double(u.team)},
@@ -23,9 +24,13 @@ V state(const astelia::World& w,std::map<astelia::UnitId,V>& history) {
       {"target",t?V(double(t->id)):V(nullptr)}});
     const auto kind=w.state[size_t(&u-w.units.data())].kind;
     if(kind!=astelia::invalidSlot)js::set(history[u.id],"kind",w.config->kinds.at(kind).name);
+    if(debug){const auto& s=w.state[size_t(&u-w.units.data())];js::set(history[u.id],"debug",js::obj({{"prep",s.prep},{"ep",s.energy},{"slotX",s.slot.x},{"slotY",s.slot.y},{"hasSlot",s.hasSlot}}));}
   }
   js::Args units;for (const auto& entry:history) units.push_back(entry.second);
-  return js::obj({{"t",w.time},{"units",js::arr(std::move(units))}});
+  auto out=js::obj({{"t",w.time},{"units",js::arr(std::move(units))}});
+  if(debug){V packs=js::obj({});for(uint8_t team=0;team<2;++team){const auto& p=w.packs[team];if(!p.enabled)continue;
+    js::set(packs,std::to_string(team),js::obj({{"plan",astelia::planName(p.plan)},{"anchor",js::obj({{"x",p.anchor.x},{"y",p.anchor.y},{"ax",p.facing.x},{"ay",p.facing.y}})},{"formed",p.formed}}));}
+    js::set(out,"debug",js::obj({{"packs",packs}}));}return out;
 }
 V fight(V request,astelia::WorkCounters& counts,uint64_t& fights) {
   try {
@@ -33,7 +38,8 @@ V fight(V request,astelia::WorkCounters& counts,uint64_t& fights) {
   auto w=astelia::World::create(config); ++fights;
   uint64_t tick=0; const bool trace=js::truth(js::get(request,"trace"));
   std::map<astelia::UnitId,V> history;
-  const auto dump=[&](){std::cout<<js::stringify(js::obj({{"step",double(tick)},{"state",state(w,history)}}))<<'\n';};
+  const bool debug=js::truth(js::get(request,"debug"));
+  const auto dump=[&](){std::cout<<js::stringify(js::obj({{"step",double(tick)},{"state",state(w,history,debug)}}))<<'\n';};
   if (trace) dump();
   while (!w.done()) {astelia::coreStep(w);++tick;if (trace) dump();}
   counts.outerSteps+=w.counters.outerSteps;counts.unitActions+=w.counters.unitActions;counts.projectileSteps+=w.counters.projectileSteps;
@@ -59,5 +65,5 @@ int main(int argc,char** argv) {
   }
   if (metrics) std::cerr<<"{\"executed_fights\":"<<fights<<",\"executed_steps\":"<<counts.outerSteps
     <<",\"branch_steps\":0,\"forks\":0,\"unit_actions\":"<<counts.unitActions<<",\"projectile_steps\":"<<counts.projectileSteps
-    <<",\"cache_hits\":0,\"scope\":\"native_combat_checkpoint\"}\n";
+    <<",\"cache_hits\":0,\"scope\":\"native_formation_checkpoint\"}\n";
 }

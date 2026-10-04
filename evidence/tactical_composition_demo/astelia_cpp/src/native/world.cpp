@@ -1,4 +1,5 @@
 #include "world.h"
+#include "formation.h"
 #include <utility>
 
 namespace astelia {
@@ -50,7 +51,7 @@ UnitRef World::add(uint8_t team,Role role,Vec2 pos,uint32_t kind) {
   uint32_t slot; uint32_t generation=1;
   if (free_.empty()) {
     if (units.size()>=invalidSlot) throw std::length_error("unit slot limit");
-    slot=uint32_t(units.size()); units.emplace_back(); state.emplace_back();
+    slot=uint32_t(units.size()); units.emplace_back(); state.emplace_back();tactical.emplace_back();
   } else { slot=free_.back(); free_.pop_back(); generation=units[slot].generation+1;
     if (!generation) throw std::overflow_error("unit generation exhausted"); }
   auto& u=units[slot]; u=UnitHot{}; u.generation=generation; u.id=nextId++; u.pos=pos;
@@ -58,6 +59,8 @@ UnitRef World::add(uint8_t team,Role role,Vec2 pos,uint32_t kind) {
   const auto& r=config->roles[size_t(role)];
   u.hp=u.maxhp=r.hp; u.speed=r.speed; u.radius=r.radius; u.range=r.range; u.damage=r.damage;
   auto& s=state[slot]; s=UnitState{}; s.slot=pos; s.cooldownMax=r.cooldown; s.baseSpeed=r.speed;
+  tactical[slot]=TacticalState{};
+  for(auto& p:packs){p.pending.resize(units.size());p.pending[slot]=0;}
   s.minRange=r.minRange; s.shotSpeed=r.shotSpeed; s.lobSpeed=r.flight; s.splash=r.splash;
   s.strafe=u.id%2?1:-1;
   if (config->rules==Rules::Game && role==Role::Player) {
@@ -87,6 +90,7 @@ UnitRef World::add(uint8_t team,Role role,Vec2 pos,uint32_t kind) {
   if(!(u.hp>0)||!std::isfinite(u.hp)||!std::isfinite(u.speed)||u.radius*2>std::min(config->width,config->height))
     throw std::invalid_argument("invalid unit stats");
   active.push_back(slot);
+  ++membershipVersion;
   teams[team].push_back(slot);
   if (liveGrid.ready()) liveGrid.insert(slot,u);
   return {slot,generation};
@@ -94,6 +98,19 @@ UnitRef World::add(uint8_t team,Role role,Vec2 pos,uint32_t kind) {
 void World::rebuildTeams() {
   teams[0].clear(); teams[1].clear();
   for (auto i:active) if (units[i].alive) teams[units[i].team].push_back(i);
+  foesVersion_={UINT64_MAX,UINT64_MAX};
+}
+const std::vector<uint32_t>& World::foes(uint8_t team) const {
+  if(foesVersion_[team]==membershipVersion&&foesTime_[team]==time)return foes_[team];
+  auto& out=foes_[team];out.clear();bool player=false;
+  for(auto i:teams[team])if(units[i].alive&&units[i].role==Role::Player){player=true;break;}
+  const bool perception=config->rules==Rules::Game&&config->perception&&!player;
+  for(auto i:teams[1-team])if(units[i].alive){
+    bool seen=!perception;
+    if(perception)for(auto j:teams[team])if(units[j].alive&&squared(units[j].pos-units[i].pos)<=768*768){seen=true;break;}
+    if(seen)out.push_back(i);
+  }
+  foesVersion_[team]=membershipVersion;foesTime_[team]=time;return out;
 }
 uint32_t World::survivors(uint8_t team) const {
   uint32_t n=0; for (auto i:active) if (units[i].alive && units[i].team==team) ++n; return n;
@@ -144,6 +161,11 @@ World World::create(std::shared_ptr<const Config> c) {
   if (c->swapSides) for (auto i:w.active) {
     auto& u=w.units[i]; u.pos.x=c->width-u.pos.x; w.state[i].slot=u.pos; w.state[i].strafe=-w.state[i].strafe;
   }
+  for(uint8_t team=0;team<2;++team) {
+    auto& p=w.packs[team];p.enabled=c->brains[team]!=Brain::Alone&&(team==0||c->scenario==Scenario::Mirror);
+    p.base=p.formation=c->formations[team];p.anchor={team==0?240:c->width-240,c->height/2};p.facing={team==0?1.0:-1.0,0};
+    if(c->swapSides){p.anchor.x=c->width-p.anchor.x;p.facing.x=-p.facing.x;}
+  }
   for (auto i:w.active) {
     validateBody(w.units[i]);
     if (w.units[i].radius*2>std::min(c->width,c->height)) throw std::invalid_argument("body larger than arena");
@@ -172,8 +194,8 @@ double World::damage(UnitRef source,UnitRef target,double amount) {
   auto* src=resolve(source); auto* dst=resolve(target);
   if (!src || !dst || !dst->alive) return 0;
   if (!std::isfinite(amount) || amount<0) throw std::logic_error("invalid damage");
-  if (config->rules==Rules::Game && !burnTick) {
-    const auto& s=state[target.slot];amount*=1-s.protection;
+  if (config->rules==Rules::Game) {
+    const auto& s=state[target.slot];amount*=1-(burnTick?0:s.protection);
     if(s.block&&s.guardUntil>time){const auto& k=config->kinds.at(s.kind);const double d=std::atan2(src->pos.y-dst->pos.y,src->pos.x-dst->pos.x)-s.guardDirection;
       if(std::abs(std::atan2(std::sin(d),std::cos(d)))<=k.blockHalfArc)amount*=k.blockMultiplier;}
     amount=std::floor(amount);
@@ -196,7 +218,7 @@ double World::damage(UnitRef source,UnitRef target,double amount) {
     size_t n=0;for(const auto& d:dots)if(d.target==target&&d.until>time)++n;
     if(n<5)dots.push_back({source,target,.2*dealt/4,time+4,0});
   }
-  if (dst->hp<=0) {dst->alive=false;liveGrid.remove(target.slot);if (dst->team==1) {
+  if (dst->hp<=0) {dst->alive=false;++membershipVersion;liveGrid.remove(target.slot);if (dst->team==1) {
     ++stats.hunterKills;if(config->scenario==Scenario::Hunters)spawnQueue.push_back({time+config->respawn,dst->role});
   }else ++stats.monsterDeaths;}
   return dealt;
@@ -207,12 +229,14 @@ void World::reclaim() {
   for (auto i:active) if (units[i].alive) {
     retained_[i]=1; retain(units[i].target); retain(state[i].meleeAttacker);
     const auto& s=state[i];
+    const auto& t=tactical[i];retain(t.assigned);retain(t.fireOrder);retain(t.squadFocus);
     if(s.ability!=invalidSlot){const auto& a=abilities[s.ability];retain(a.chargeTarget);retain(a.aimTarget);}
     if(s.player!=invalidSlot){const auto& p=players[s.player];retain(p.manualTarget);for(const auto& l:p.limbs)retain(l.target);}
   }
   for (const auto& s:shots) {retain(s.source);retain(s.target);for (auto h:s.hitSet) retain(h);}
   for (const auto& s:shells) retain(s.source);
   for (const auto& d:dots) {retain(d.source);retain(d.target);}
+  for(const auto& p:packs){retain(p.focus);retain(p.surroundTarget);for(const auto& wing:p.wings)retain(wing.unit);}
   for (auto i:active) if (!units[i].alive) liveGrid.remove(i);
   active.erase(std::remove_if(active.begin(),active.end(),[&](auto i){return !units[i].alive;}),active.end());
   for (uint32_t i=0;i<units.size();++i) if (units[i].occupied && !retained_[i]) {
@@ -220,14 +244,16 @@ void World::reclaim() {
     if(s.player!=invalidSlot){players[s.player]=PlayerState{};freePlayers.push_back(s.player);s.player=invalidSlot;}
     units[i].occupied=false;free_.push_back(i);
   }
+  rebuildTeams();
 }
 void World::copyFrom(const World& p) {
-  config=p.config; units=p.units; state=p.state; active=p.active; free_=p.free_;
+  config=p.config; units=p.units; state=p.state;tactical=p.tactical;packs=p.packs; active=p.active; free_=p.free_;
   shots=p.shots; shells=p.shells; fields=p.fields; dots=p.dots; hitLog=p.hitLog;
   abilities=p.abilities;players=p.players;freeAbilities=p.freeAbilities;freePlayers=p.freePlayers;spawnQueue=p.spawnQueue;
   spawnRandom=p.spawnRandom;skirmishLeft=p.skirmishLeft;timeReference=p.timeReference;lastHit=p.lastHit;nextShot=p.nextShot;burnTick=false;
   stats=p.stats; random=p.random; time=p.time; nextId=p.nextId; branch=true;
   counters=WorkCounters{}; meleeHits.clear(); order.clear(); pushes.clear();
+  membershipVersion=p.membershipVersion;foesVersion_={UINT64_MAX,UINT64_MAX};foesTime_={-1,-1};
   // Derived indexes are rebuilt from copied authority, never shared.
   rebuildTeams(); liveGrid.build(units,active,config->width,config->height,40);
 }

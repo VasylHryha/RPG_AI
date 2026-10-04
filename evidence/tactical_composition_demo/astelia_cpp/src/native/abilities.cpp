@@ -1,4 +1,5 @@
 #include "world.h"
+#include "formation.h"
 
 namespace astelia {
 namespace {
@@ -67,7 +68,7 @@ bool busyAct(World& w,uint32_t i,double dt) {
     const auto delta=t->pos-u.pos;const double d=length(delta),step=std::min(230*dt,d-u.radius-t->radius);
     if(d>0)u.pos=u.pos+delta*(step/d);w.liveGrid.moved(i,u.pos);return true;
   }
-  if(a.aimUntil>w.time)return true;
+  if(a.aimUntil>w.time){Vec2 goal;if(w.packs[u.team].enabled&&shellDodge(w,u.team)&&dodgeGoal(w,i,goal)){a.aimUntil=0;a.aimTarget={};return false;}return true;}
   if(a.aimTarget) {
     auto target=a.aimTarget;a.aimTarget={};const auto* t=w.resolve(target);
     if(!t||!t->alive||gap(u,*t)>u.range+20||!laneClear(w,i,target)) {

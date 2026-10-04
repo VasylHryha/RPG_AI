@@ -1,15 +1,12 @@
 #include "world.h"
+#include "formation.h"
 
 namespace astelia {
 UnitRef nearest(const World& w,uint32_t slot,bool outsideMinimum,bool meleeOnly,double maximum,double minimumHp) {
   const auto& u=w.units[slot];UnitRef best;double bd=INFINITY;
-  for(auto i:w.teams[1-u.team]) {
+  for(auto i:w.foes(u.team)) {
     const auto& e=w.units[i];if(!e.alive||(meleeOnly&&!melee(e.role))||e.hp<minimumHp)continue;
     const double d=distance(u.pos,e.pos);if(d>maximum||(outsideMinimum&&d<w.state[slot].minRange))continue;
-    if(w.config->perception && w.config->rules==Rules::Game && u.role!=Role::Player) {
-      bool seen=false;for(auto j:w.teams[u.team])if(w.units[j].alive&&distance(w.units[j].pos,e.pos)<=768){seen=true;break;}
-      if(!seen)continue;
-    }
     if(d<bd){bd=d;best=w.reference(i);}
   }
   return best;
@@ -47,8 +44,14 @@ void fireShot(World& w,uint32_t i,UnitRef target,double damage) {
   p.born=w.time;p.aimed=w.config->aimedShots;p.ordinal=w.nextShot++;
   p.speed=p.aimed?(w.config->rules==Rules::Game?(s.shotSpeed>0?s.shotSpeed:w.config->shotSpeed)*s.launch:w.config->shotSpeed):s.shotSpeed;
   if(!(p.speed>0)||!std::isfinite(p.speed))throw std::logic_error("invalid shot speed");
-  const Vec2 delta=(p.aimed?interceptPoint(w,u.pos,target,p.speed,u.team):t->pos)-u.pos;
-  const double d=length(delta);p.direction=delta*(1/(d>0?d:1));p.left=u.range*1.3;w.shots.push_back(std::move(p));
+  auto point=p.aimed?interceptPoint(w,u.pos,target,p.speed,u.team):t->pos;
+  const auto& tactical=w.tactical[i];
+  if(p.aimed&&tactical.aimOffset!=0&&tactical.fireOrder==target){const auto delta=point-u.pos;const double d=length(delta);
+    point=point+Vec2{-delta.y,delta.x}*(tactical.aimOffset/(d>0?d:1));}
+  p.dodgeable=canDodge(w,target,w.reference(i));
+  if(p.aimed&&w.packs[u.team].enabled&&(w.config->skills[u.team].fireControl||w.config->skills[u.team].leaderFire))p.pending=p.damage*hitProbability(w,u.team,target,w.reference(i));
+  const Vec2 delta=point-u.pos;
+  const double d=length(delta);p.direction=delta*(1/(d>0?d:1));p.left=u.range*1.3;addPending(w,p.source,target,p.pending);w.shots.push_back(std::move(p));
 }
 void fireShellAt(World& w,uint32_t i,Vec2 point) {
   const auto& u=w.units[i];const auto& s=w.state[i];Shell sh;

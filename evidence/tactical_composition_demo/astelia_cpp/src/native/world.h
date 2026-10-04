@@ -1,5 +1,6 @@
 #pragma once
 #include "rng.h"
+#include "config.h"
 #include "spatial.h"
 #include <memory>
 
@@ -16,11 +17,16 @@ struct WorkCounters {
 class World {
   std::vector<uint32_t> free_;
   std::vector<uint8_t> retained_;
+  mutable std::array<std::vector<uint32_t>,2> foes_;
+  mutable std::array<uint64_t,2> foesVersion_{UINT64_MAX,UINT64_MAX};
+  mutable std::array<double,2> foesTime_{-1,-1};
   void retain(UnitRef ref);
 public:
   std::shared_ptr<const Config> config;
   std::vector<UnitHot> units;
   std::vector<UnitState> state;
+  std::vector<TacticalState> tactical;
+  std::array<Pack,2> packs;
   std::vector<uint32_t> active, order;
   std::array<std::vector<uint32_t>,2> teams;
   std::vector<Shot> shots;
@@ -42,6 +48,7 @@ public:
   double time=0;
   UnitId nextId=1;
   uint64_t nextShot=1;
+  uint64_t membershipVersion=0;
   uint32_t skirmishLeft=0;
   double timeReference=0, lastHit=-99;
   bool branch=false, burnTick=false;
@@ -54,6 +61,7 @@ public:
   UnitRef spawnHunter(Role role);
   UnitRef spawnSkirmish();
   void rebuildTeams();
+  const std::vector<uint32_t>& foes(uint8_t team) const;
   void reclaim();
   void copyFrom(const World& parent);
   void move(uint32_t slot,Vec2 goal,double dt,double stop=0);
@@ -79,6 +87,7 @@ bool triggerAbility(World& w,uint32_t slot,Ability name,UnitRef target={},Vec2 p
 bool busyAct(World& w,uint32_t slot,double dt);
 bool defaultAbilities(World& w,uint32_t slot);
 void playerBrain(World& w,uint32_t slot,double dt);
+void decideUnit(World& w,uint32_t slot);
 
 // Stable allocations across nested leases; a child cannot overwrite its parent.
 class BranchPool {

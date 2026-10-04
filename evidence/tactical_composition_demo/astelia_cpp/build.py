@@ -9,11 +9,15 @@ import subprocess
 
 ROOT = pathlib.Path(__file__).resolve().parent
 COMBAT_SOURCES = ['src/native/world.cpp', 'src/native/combat.cpp', 'src/native/spatial.cpp',
-                  'src/native/combat_rules.cpp', 'src/native/abilities.cpp', 'src/native/player.cpp']
+                  'src/native/combat_rules.cpp', 'src/native/abilities.cpp', 'src/native/player.cpp',
+                  'src/native/formation.cpp', 'src/native/formation_tables.cpp', 'src/native/commander.cpp',
+                  'src/native/targeting.cpp', 'src/native/coord_abilities.cpp', 'src/native/dodge.cpp',
+                  'src/native/decisions.cpp']
 TARGETS = {
     'legacy': ('astelia', ['src/main.cpp', 'src/formation_sim.cpp', 'src/v8_ieee754.cpp']),
     'native': ('astelia_native', ['src/native/host.cpp', 'src/native/config_codec.cpp', *COMBAT_SOURCES]),
     'core-check': ('native_core_contract', ['native_core_contract.cpp', *COMBAT_SOURCES]),
+    'formation-check': ('native_formation_contract', ['native_formation_contract.cpp', *COMBAT_SOURCES]),
     'combat-check': ('native_combat_contract', ['native_combat_contract.cpp', *COMBAT_SOURCES]),
     'layout': ('native_layout_probe', ['native_layout_probe.cpp', *COMBAT_SOURCES]),
 }
@@ -52,6 +56,8 @@ def main():
     headers = sorted((ROOT / 'src').rglob('*.h'))
     inputs = sources + headers
     extra = [ROOT / 'build.py']
+    if args.engine != 'legacy':
+        extra += [ROOT / 'generate_native_tables.cjs', ROOT.parent / 'astelia_snapshot/formation_sim.js']
     if args.engine == 'legacy':
         extra += [ROOT / 'generate.cjs', ROOT.parent / 'astelia_snapshot/formation_sim.js']
     input_hashes = {str(p.relative_to(ROOT)) if p.is_relative_to(ROOT) else str(p): sha(p)
@@ -93,7 +99,7 @@ def main():
                   link=command, binary_sha256=sha(target), source_hashes=input_hashes,
                   object_hashes=object_hashes,
                   portable=args.portable, sanitized=args.sanitize,
-                  scope='native_combat_checkpoint' if args.engine != 'legacy' else 'legacy_mechanical_port')
+                  scope='native_formation_checkpoint' if args.engine != 'legacy' else 'legacy_mechanical_port')
     manifest = target.with_suffix('.build.json')
     manifest.write_text(json.dumps(record, indent=2) + '\n')
     if args.engine == 'legacy' and not args.sanitize:

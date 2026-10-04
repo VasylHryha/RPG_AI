@@ -118,26 +118,11 @@ struct CombatSkills {
   double kite=0, shotReact=.3;
   bool pursuitCut=false, dodgeShots=false, dodgeSoft=false, dodgeShells=false;
   bool lobLead=false, adaptiveLobLead=false;
+  double leaderBracket=12, fireDepth=0, jink=0, saveWounded=0, artyRobust=.5, artyHerd=0, artyEvery=.25;
+  uint32_t waves=0;
+  bool leaderFire=false,lockedDodge=false,reactAim=true,fireControl=false,killSpeed=false;
+  bool planShells=false,smartShells=false,artyPlan=false,artyBattery=false,artyOwn=false,artyExact=false;
+  bool meleeFocus=false,weaponsFree=false,castDodge=false,artyFollow=false,followShooters=false;
 };
-struct Config {
-  double seed=7, dt=1.0/30, duration=90, width=1200, height=700;
-  double shotSpeed=350;
-  std::array<uint32_t,3> army{10,30,10};
-  std::array<RoleStats,6> roles;
-  std::vector<Kind> kinds;
-  std::vector<ArmyEntry> customArmy;
-  std::vector<CarriedUnit> carried;
-  std::array<uint32_t,3> enemyArmy{};
-  std::array<CombatSkills,2> skills;
-  std::array<std::array<bool,6>,2> abilityOff{};
-  std::vector<uint32_t> skirmishKinds;
-  uint32_t hunterMelee=10, hunterArchers=4, skirmishCount=18, skirmishMaxAlive=8, attackerCap=0;
-  double respawn=3;
-  Rules rules=Rules::Sandbox;
-  Scenario scenario=Scenario::Mirror;
-  PlayerStyle playerStyle=PlayerStyle::Kite;
-  std::string mode="alone";
-  bool mirror=true, swapSides=false, aimedShots=true, windUp=false;
-  bool abilities=false, temporal=true, perception=false, hasEnemyArmy=false, hasCarried=false, hasCustomArmy=false;
-};
+
 } // namespace astelia

@@ -1,0 +1,5 @@
+# Typed formation checkpoint, development only
+
+The complete connected batch passed 89 focused tests in 54.20 seconds (54.39 seconds process elapsed). This covers all 16 authored formation presets under sandbox and game rules, fresh deterministic commander traces, the frozen JS single-tick slot/anchor oracle, independent shape/plan/target/dodge contracts, branch isolation, and prior core/combat/cache/admission regression checks. The formation contract also passed AddressSanitizer and UndefinedBehaviorSanitizer with no stderr diagnostics; the receipt binds executable and source identities.
+
+This checkpoint adds typed formation shapes, slots, melee/flank/surround orders, shooter focus and fire control, all non-search commanders, and coordinated abilities. It is not full-engine acceptance or a performance qualification. Combo director/external orders, neural/lookahead and artillery prediction/planning/rollouts remain pending. The layout decision remains provisional. No AI experiment or scientific panel was run.
