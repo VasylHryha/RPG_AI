@@ -1,10 +1,33 @@
 # Astelia formation simulation in C++
 
 Session S1b of `../PLAN_RESONATOR_AI.md`, exploratory work under decision 0028.
-Current qualification: **NOT_READY**. All 623 outcome comparisons and twenty
-unit traces match, but C++ is 4.99 times slower in the fifty-fight measurement.
-See [PORT_REPORT.md](PORT_REPORT.md) for counts, evidence and deviations.
-The simulation and its controllers execute in native C++17. The executable loads
+Current qualification: **NOT_READY**. The owner approved revision 2 of the
+[native architecture and performance plan](PERFORMANCE_REWORK_PLAN.md), and
+implementation is in progress. The first typed novice core passed
+[bounded checkpoint checks](native_checkpoint_r1/README.md): 28 focused checks,
+address/undefined-behavior instrumentation, independent geometry oracles and
+fork/lifetime checks. Eight full-army novice fights on that build measured **15.631x** faster
+than uncached JS, with identical summaries and audited work counts. This is a
+limited core diagnostic on a busy machine, **not full-engine qualification**.
+An [adversarial recheck](native_checkpoint_review_r1/RECHECK.md) then found numeric,
+spawn/index, timing-admission and cache defects plus gaps in the layout/isolation
+evidence. The repair batch passed 39 focused tests and sanitizer contracts; that
+historical timing cannot qualify the repaired source. Abilities, formations,
+other profiles, game rules and branching
+AI remain to port.
+The original [PORT_REPORT.md](PORT_REPORT.md) applies to commit `797ced26`:
+623 matching outcomes and twenty matching traces, but C++ was 4.99 times slower.
+The later r9 optimization measured 1.169x elapsed-time speed-up, still below the
+owner's 3x minimum. The complete legacy working changes after r9 have not had
+fresh full coverage; the new typed core has separate evidence. Those historical
+receipts do not qualify the current source. See [PERFORMANCE_RESEARCH.md](PERFORMANCE_RESEARCH.md)
+for the research and measured bottlenecks.
+The [adversarial self-review](PERFORMANCE_REWORK_REVIEW.md) found missing branch
+workloads, inherited grid defects and incomplete benchmark/cache gates. The
+The core repairs the radius/grid defects; build/cache admission and benchmark
+guards now reject stale binaries, malformed results and incomplete qualification.
+Full-engine correctness and work qualification remain pending.
+The legacy simulation and its controllers execute in native C++17. Its executable loads
 the existing network JSON and accepts one JSON fight per input line. It also
 accepts an array of fights on a line for batch operation. Results have the fields
 of the frozen JS `summary`; a failed fight returns `{"error":"..."}`.
@@ -14,6 +37,11 @@ Build from any directory:
 ```sh
 python3 /Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/build.py
 ```
+
+Build the typed development core separately with `build.py --engine native`.
+It produces `build/astelia_native`, accepts sandbox mirror fights with two
+explicit novice profiles, and returns an explicit error for unsupported features.
+It is not a replacement for the full legacy engine yet.
 
 Run from the repository root:
 
@@ -44,7 +72,8 @@ Compare a list of fights, with the first differing step/field reported:
 python3 evidence/tactical_composition_demo/astelia_cpp/compare.py fights.jsonl --trace
 ```
 
-The permanent behavior gate:
+The strict legacy behavior comparison (the proposed native rewrite will use it
+as a diagnostic rather than an exact-match acceptance gate):
 
 ```sh
 python3 evidence/tactical_composition_demo/astelia_cpp/check_reference.py
@@ -57,9 +86,22 @@ python3 evidence/tactical_composition_demo/astelia_cpp/check_batch.py --output /
 ```
 
 Its 80 frozen requests and JS results are in `reference_fights.jsonl`. Every later
-behavior-preserving C++ change must produce `identical`. An intentional behavior
-change requires the corresponding JS change, re-recorded references with a
-stated reason, and an update to `../astelia_snapshot/SOURCE.md`.
+change claiming exact behavior preservation must produce `identical`. The owner
+has subsequently allowed a native rewrite without bit-exact JS matching; its
+proposed replacement contract is in `PERFORMANCE_REWORK_PLAN.md`. Frozen JS and
+committed historical references remain unchanged. A changed native engine cannot
+inherit the JS ladder's qualification merely because it uses the same requests.
+
+Comparison commands now cache combat results by engine, network and request
+identity. Use `--no-cache` for fresh execution. A changed native executable
+invalidates its entries. Timing in `benchmark.py` bypasses the comparison cache
+and records real fight/step execution counts; cached speed is never an engine
+speed-up measurement. The owner approved bounded engineering execution in the
+revised plan. `benchmark.py --group all` now requires every fixed group to clear
+3x and a complete engine build; a core/subset run requires `--diagnostic` and
+cannot qualify the engine. `work_audit_host.cjs` separately counts lexical JS
+branch steps, forks, unit actions and projectile work without changing the frozen
+snapshot. Complete work-audit, matched-state and correctness gates remain pending.
 
 Pinned source identities:
 
@@ -72,8 +114,10 @@ Pinned source identities:
 order, with JS line references. Anonymous functions and object methods become
 native lambdas at their original expression sites. `generate.cjs` performs the
 mechanical translation using Node's bundled Acorn; generation is a development
-step. The checked-in C++ builds with clang++ or g++, with `-O2`, without external
-libraries. `build.py` records its commands and binary identity in
+step. The original committed build used `-O2`. The current development build
+uses `-O3`, LTO and host CPU tuning; `--portable` omits host-specific CPU tuning.
+It requires clang++ or g++ and no external libraries.
+`build.py` records its commands and binary identity in
 `build/build.json`. No fast-math flag is used.
 
 The compatibility layer supplies the dynamic values the JS state uses, including

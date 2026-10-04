@@ -1,0 +1,52 @@
+{
+  "scope": "stage_B_layout_diagnostic_not_engine_qualification",
+  "elapsed_seconds": 0.445036208,
+  "load": [
+    38.017578125,
+    37.41064453125,
+    55.84033203125
+  ],
+  "build": {
+    "manifest_sha256": "9ba1a59df203886c3a7e0c94eebad68d95abba48d40a232954363b4f2e1c6e2a",
+    "binary_sha256": "bc346892220ac3ac3d3c19839610f67a0038264fe6b61646a61fc6591995019b",
+    "sources": {
+      "native_layout_probe.cpp": "3cf3bb6711b591a067ed8e7a90e7b0a6b30aa4979a2f1cdff979af048f831b97",
+      "src/native/world.cpp": "e5152f6ed628f308c3554e3344635f1396637faed9b413ab81d3c9cb3d0094ad",
+      "src/native/combat.cpp": "06cf615d7a11cab8e056ceeee150cbad44232a474d4bf2e44e2e5d560764ed5a",
+      "src/native/spatial.cpp": "eaf9dc995534f3550a36dc72575f0ac8a76a7ef432038e4f0cdc68e4ad6d6143",
+      "src/builtins.h": "7fcd2fba1ec05aa2b671cb2acb9012a11c73ca827c932c159dc7db787624aed6",
+      "src/formation_sim.h": "364dfea1b77be5743b14ba31a8368c11ea264a6ce513dffe7d32727a56e789c2",
+      "src/js_value.h": "bb028815111ddbab5ffe8aa3de98f1076b2420d605104336c970e332f783c32c",
+      "src/native/geometry.h": "7ce862ed036dd7c9a3cd78269648db33072888a5434c9e0d6528649a2e825364",
+      "src/native/rng.h": "2fcc6197704f4de20bf4041136828b15fd30fe7bea9d83e8500254b95a625083",
+      "src/native/spatial.h": "caeabdbfd25efab094c34727f0ce9ff6f427120fd199aec8dc98eb5ddb80c2c9",
+      "src/native/types.h": "ed99d5fff93173f822841c5d6fa797b139840936a6584d976ad194a7ea712401",
+      "src/native/world.h": "3662da42f69a958b0bbe0ced2040e13e26f34ac4ed9059d55b74beb6af283c3b",
+      "src/v8_ieee754.h": "72a68fcc9d908180c9dff5eced89b1b12b4ad9df68b1886b0307ab82104b5855",
+      "build.py": "687262e16950a6312924452e3e4a44b6f4c664fbc1325a16542f5b67b3d03796"
+    },
+    "engine": "layout",
+    "scope": "native_core_slice",
+    "sanitized": false,
+    "portable": false
+  },
+  "measurement": {
+    "scope": "native_layout_checkpoint",
+    "unit_count": 100,
+    "iterations": 4000,
+    "unit_hot_bytes": 128,
+    "unit_state_bytes": 256,
+    "records_seconds": 0.025233458,
+    "columns_seconds": 0.028015958,
+    "copy_seconds": 0.00592825,
+    "records_sum": 20.96912949774705,
+    "columns_sum": 20.96912949774705,
+    "copy_sum": 960105.756316334
+  },
+  "records_to_columns_ratio": 0.9006816043913258,
+  "limitations": [
+    "one ordered diagnostic sample; no full-fight performance claim",
+    "geometry access kernel only; column layout excludes unused combat fields",
+    "copy timing includes rebuilding derived indexes"
+  ]
+}

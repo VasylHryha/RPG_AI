@@ -1,0 +1,204 @@
+{
+  "cache_policy": "bypassed; fresh paired processes",
+  "status": "DIAGNOSTIC_ONLY",
+  "identities": {
+    "js": {
+      "schema": 2,
+      "kind": "js",
+      "command": [
+        "node",
+        "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/benchmark_host.cjs"
+      ],
+      "files": {
+        "/Users/new/.local/node/bin/node": "ee6fb0e015284d83a91e8ec5213f43a157f8a392b58555301682892ba928c04a",
+        "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/benchmark_host.cjs": "52ea6f6af08118b5db675ccfac2e525bd33ea5e1b6c333e5ee12307bfa5d402c",
+        "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_snapshot/bc_net.json": "d11e9a2da43cb0eb5b8b9539be4ab5834e750b4148121d56e632c75d7fb2e3e5",
+        "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/result_cache.py": "e9c71877d1801c06458042daea32161a8ec7b91414faa26bc0d846402d56a915",
+        "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/result_schema.py": "77f45f4a7dccaa1080be0215dc7dff2dbdcefcca7ff641f7607ce5be21583f6f",
+        "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/build_admission.py": "75fe338c7f5c56cd586d9398a56b2fdc29e6a7d51aa59021ffd2c5b58398a5f5",
+        "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/js_host.cjs": "651b5dd9cdfcb76a8ca25c9da86b1fcef47327894672785efd0080fe94ddef9c",
+        "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_snapshot/formation_sim.js": "85b16e9b84b42b831dd2e64a7055474b6df902e4c1ffd635e6670fc6fb665733"
+      },
+      "node": {
+        "node": "24.18.0",
+        "acorn": "8.16.0",
+        "ada": "3.4.4",
+        "amaro": "1.1.9",
+        "ares": "1.34.6",
+        "brotli": "1.2.0",
+        "cldr": "48.0",
+        "icu": "78.3",
+        "llhttp": "9.4.2",
+        "merve": "1.2.2",
+        "modules": "137",
+        "napi": "10",
+        "nbytes": "0.1.4",
+        "ncrypto": "0.0.1",
+        "nghttp2": "1.69.0",
+        "nghttp3": "",
+        "ngtcp2": "",
+        "openssl": "3.5.7",
+        "simdjson": "4.6.4",
+        "simdutf": "6.4.0",
+        "sqlite": "3.53.1",
+        "tz": "2026b",
+        "undici": "7.28.0",
+        "unicode": "17.0",
+        "uv": "1.52.1",
+        "uvwasi": "0.0.23",
+        "v8": "13.6.233.17-node.50",
+        "zlib": "1.3.1-e00f703",
+        "zstd": "1.5.7"
+      }
+    },
+    "cpp": {
+      "schema": 2,
+      "kind": "cpp",
+      "command": [
+        "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/build/astelia_native",
+        "--metrics"
+      ],
+      "files": {
+        "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/build/astelia_native": "61b8d34f5949db14c419934dba4d4ff4b1fc128bfd111ebd1c81c886184ffea1",
+        "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_snapshot/bc_net.json": "d11e9a2da43cb0eb5b8b9539be4ab5834e750b4148121d56e632c75d7fb2e3e5",
+        "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/result_cache.py": "e9c71877d1801c06458042daea32161a8ec7b91414faa26bc0d846402d56a915",
+        "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/result_schema.py": "77f45f4a7dccaa1080be0215dc7dff2dbdcefcca7ff641f7607ce5be21583f6f",
+        "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/build_admission.py": "75fe338c7f5c56cd586d9398a56b2fdc29e6a7d51aa59021ffd2c5b58398a5f5"
+      },
+      "build": {
+        "manifest_sha256": "0928853bd74bc000f3215b42f2a58d04525eb0707d378b6499831f04da0cab52",
+        "binary_sha256": "61b8d34f5949db14c419934dba4d4ff4b1fc128bfd111ebd1c81c886184ffea1",
+        "sources": {
+          "src/native/host.cpp": "3e7f5bd572863cc80a56f7b4600d905991be8d6150702b1f42791b20a5abc5ca",
+          "src/native/world.cpp": "e5152f6ed628f308c3554e3344635f1396637faed9b413ab81d3c9cb3d0094ad",
+          "src/native/combat.cpp": "06cf615d7a11cab8e056ceeee150cbad44232a474d4bf2e44e2e5d560764ed5a",
+          "src/native/spatial.cpp": "eaf9dc995534f3550a36dc72575f0ac8a76a7ef432038e4f0cdc68e4ad6d6143",
+          "src/builtins.h": "7fcd2fba1ec05aa2b671cb2acb9012a11c73ca827c932c159dc7db787624aed6",
+          "src/formation_sim.h": "364dfea1b77be5743b14ba31a8368c11ea264a6ce513dffe7d32727a56e789c2",
+          "src/js_value.h": "bb028815111ddbab5ffe8aa3de98f1076b2420d605104336c970e332f783c32c",
+          "src/native/geometry.h": "7ce862ed036dd7c9a3cd78269648db33072888a5434c9e0d6528649a2e825364",
+          "src/native/rng.h": "2fcc6197704f4de20bf4041136828b15fd30fe7bea9d83e8500254b95a625083",
+          "src/native/spatial.h": "caeabdbfd25efab094c34727f0ce9ff6f427120fd199aec8dc98eb5ddb80c2c9",
+          "src/native/types.h": "ed99d5fff93173f822841c5d6fa797b139840936a6584d976ad194a7ea712401",
+          "src/native/world.h": "3662da42f69a958b0bbe0ced2040e13e26f34ac4ed9059d55b74beb6af283c3b",
+          "src/v8_ieee754.h": "72a68fcc9d908180c9dff5eced89b1b12b4ad9df68b1886b0307ab82104b5855",
+          "build.py": "687262e16950a6312924452e3e4a44b6f4c664fbc1325a16542f5b67b3d03796"
+        },
+        "engine": "native",
+        "scope": "native_core_slice",
+        "sanitized": false,
+        "portable": false
+      }
+    }
+  },
+  "workloads_sha256": "f432ad3cab0de2f7a0c8201b0d11494d4a9625af133c272426ea3084ca64a8ce",
+  "groups": {
+    "custom": {
+      "count": 8,
+      "inputs_sha256": "6e092394dff3c987ed3f0013383630352d620ad2a840a147661f56d3c9104d2c",
+      "samples": {
+        "js": [
+          {
+            "wall_seconds": 1.6383244170000002,
+            "seconds_per_fight": 0.20479055212500002,
+            "user_seconds": 1.982681,
+            "system_seconds": 0.066826,
+            "load_before": [
+              30.7099609375,
+              37.98876953125,
+              53.2138671875
+            ],
+            "load_after": [
+              28.73095703125,
+              37.45751953125,
+              52.93701171875
+            ],
+            "execution": {
+              "executed_fights": 8,
+              "executed_steps": 4800,
+              "cache_hits": 0
+            }
+          },
+          {
+            "wall_seconds": 2.2057733749999997,
+            "seconds_per_fight": 0.27572167187499996,
+            "user_seconds": 2.0296190000000003,
+            "system_seconds": 0.07340400000000001,
+            "load_before": [
+              28.73095703125,
+              37.45751953125,
+              52.93701171875
+            ],
+            "load_after": [
+              28.73095703125,
+              37.45751953125,
+              52.93701171875
+            ],
+            "execution": {
+              "executed_fights": 8,
+              "executed_steps": 4800,
+              "cache_hits": 0
+            }
+          }
+        ],
+        "cpp": [
+          {
+            "wall_seconds": 0.14523420899999984,
+            "seconds_per_fight": 0.01815427612499998,
+            "user_seconds": 0.08738599999999996,
+            "system_seconds": 0.0022679999999999922,
+            "load_before": [
+              28.73095703125,
+              37.45751953125,
+              52.93701171875
+            ],
+            "load_after": [
+              28.73095703125,
+              37.45751953125,
+              52.93701171875
+            ],
+            "execution": {
+              "executed_fights": 8,
+              "executed_steps": 4800,
+              "branch_steps": 0,
+              "forks": 0,
+              "unit_actions": 335946,
+              "projectile_steps": 49655,
+              "cache_hits": 0,
+              "scope": "native_core_slice"
+            }
+          },
+          {
+            "wall_seconds": 0.10069487499999985,
+            "seconds_per_fight": 0.012586859374999981,
+            "user_seconds": 0.08769399999999994,
+            "system_seconds": 0.002368000000000009,
+            "load_before": [
+              28.73095703125,
+              37.45751953125,
+              52.93701171875
+            ],
+            "load_after": [
+              28.73095703125,
+              37.45751953125,
+              52.93701171875
+            ],
+            "execution": {
+              "executed_fights": 8,
+              "executed_steps": 4800,
+              "branch_steps": 0,
+              "forks": 0,
+              "unit_actions": 335946,
+              "projectile_steps": 49655,
+              "cache_hits": 0,
+              "scope": "native_core_slice"
+            }
+          }
+        ]
+      },
+      "first_difference": null,
+      "same_outer_step_count": true,
+      "speed_up": 15.630919814266477
+    }
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "cache_policy": "bypassed; fresh processes execute all fights",
+  "count": 5,
+  "js_identity": {
+    "schema": 1,
+    "kind": "js",
+    "command": [
+      "node",
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/benchmark_host.cjs"
+    ],
+    "files": {
+      "/Users/new/.local/node/bin/node": "ee6fb0e015284d83a91e8ec5213f43a157f8a392b58555301682892ba928c04a",
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/benchmark_host.cjs": "52ea6f6af08118b5db675ccfac2e525bd33ea5e1b6c333e5ee12307bfa5d402c",
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_snapshot/bc_net.json": "d11e9a2da43cb0eb5b8b9539be4ab5834e750b4148121d56e632c75d7fb2e3e5",
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_snapshot/formation_sim.js": "85b16e9b84b42b831dd2e64a7055474b6df902e4c1ffd635e6670fc6fb665733"
+    },
+    "node": {
+      "node": "24.18.0",
+      "acorn": "8.16.0",
+      "ada": "3.4.4",
+      "amaro": "1.1.9",
+      "ares": "1.34.6",
+      "brotli": "1.2.0",
+      "cldr": "48.0",
+      "icu": "78.3",
+      "llhttp": "9.4.2",
+      "merve": "1.2.2",
+      "modules": "137",
+      "napi": "10",
+      "nbytes": "0.1.4",
+      "ncrypto": "0.0.1",
+      "nghttp2": "1.69.0",
+      "nghttp3": "",
+      "ngtcp2": "",
+      "openssl": "3.5.7",
+      "simdjson": "4.6.4",
+      "simdutf": "6.4.0",
+      "sqlite": "3.53.1",
+      "tz": "2026b",
+      "undici": "7.28.0",
+      "unicode": "17.0",
+      "uv": "1.52.1",
+      "uvwasi": "0.0.23",
+      "v8": "13.6.233.17-node.50",
+      "zlib": "1.3.1-e00f703",
+      "zstd": "1.5.7"
+    }
+  },
+  "js": {
+    "wall_seconds": 4.231039042000001,
+    "seconds_per_fight": 0.8462078084000002,
+    "user_seconds": 4.153599,
+    "system_seconds": 0.09612599999999999,
+    "load_before": [
+      67.75,
+      54.1298828125,
+      54.52294921875
+    ],
+    "load_after": [
+      68.49072265625,
+      54.50927734375,
+      54.654296875
+    ],
+    "execution": {
+      "executed_fights": 5,
+      "executed_steps": 3000,
+      "cache_hits": 0
+    }
+  },
+  "cpp_identity": {
+    "schema": 1,
+    "kind": "cpp",
+    "command": [
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/build/astelia",
+      "--metrics"
+    ],
+    "files": {
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/build/astelia": "d0444225f85c9d985795039b6f75c8cd00673e1a9f67c90e66f73c889e44635b",
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_snapshot/bc_net.json": "d11e9a2da43cb0eb5b8b9539be4ab5834e750b4148121d56e632c75d7fb2e3e5"
+    }
+  },
+  "cpp": {
+    "wall_seconds": 5.707234542000001,
+    "seconds_per_fight": 1.1414469084000003,
+    "user_seconds": 3.9198140000000006,
+    "system_seconds": 0.046562000000000006,
+    "load_before": [
+      68.49072265625,
+      54.50927734375,
+      54.654296875
+    ],
+    "load_after": [
+      70.373046875,
+      55.13134765625,
+      54.873046875
+    ],
+    "execution": {
+      "executed_fights": 5,
+      "executed_steps": 3000,
+      "cache_hits": 0
+    }
+  },
+  "first_difference": null,
+  "same_step_count": true,
+  "speed_up": 0.7413466208307091
+}

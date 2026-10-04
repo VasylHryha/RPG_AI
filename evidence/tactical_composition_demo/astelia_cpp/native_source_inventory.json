@@ -1,0 +1,7512 @@
+{
+  "schema": 1,
+  "source_sha256": "85b16e9b84b42b831dd2e64a7055474b6df902e4c1ffd635e6670fc6fb665733",
+  "policy": "Static occurrence counts are an access inventory, not a runtime profile.",
+  "functions": [
+    {
+      "name": "enemyOf",
+      "line": 88,
+      "end_line": 92,
+      "parameters": [
+        "name",
+        "extra"
+      ]
+    },
+    {
+      "name": "drawOpponents",
+      "line": 94,
+      "end_line": 104,
+      "parameters": [
+        "seed",
+        "rounds",
+        "mode"
+      ]
+    },
+    {
+      "name": "gamePackDecide",
+      "line": 205,
+      "end_line": 243,
+      "parameters": [
+        "w",
+        "pack"
+      ]
+    },
+    {
+      "name": "setNet",
+      "line": 316,
+      "end_line": 316,
+      "parameters": [
+        "net"
+      ]
+    },
+    {
+      "name": "resolveLookahead",
+      "line": 317,
+      "end_line": 325,
+      "parameters": [
+        "la"
+      ]
+    },
+    {
+      "name": "buildProfile",
+      "line": 329,
+      "end_line": 350,
+      "parameters": [
+        "mode",
+        "o",
+        "t"
+      ]
+    },
+    {
+      "name": "standoffOf",
+      "line": 463,
+      "end_line": 463,
+      "parameters": [
+        "g"
+      ]
+    },
+    {
+      "name": "applyRules",
+      "line": 469,
+      "end_line": 480,
+      "parameters": [
+        "name"
+      ]
+    },
+    {
+      "name": "isGame",
+      "line": 481,
+      "end_line": 481,
+      "parameters": [
+        "w"
+      ]
+    },
+    {
+      "name": "finishingCounts",
+      "line": 485,
+      "end_line": 485,
+      "parameters": [
+        "ours",
+        "theirs"
+      ]
+    },
+    {
+      "name": "finishing",
+      "line": 486,
+      "end_line": 486,
+      "parameters": [
+        "w",
+        "t"
+      ]
+    },
+    {
+      "name": "couldStart",
+      "line": 491,
+      "end_line": 491,
+      "parameters": [
+        "w",
+        "u"
+      ]
+    },
+    {
+      "name": "gamePrep",
+      "line": 492,
+      "end_line": 506,
+      "parameters": [
+        "w",
+        "u",
+        "dt"
+      ]
+    },
+    {
+      "name": "castPermit",
+      "line": 510,
+      "end_line": 521,
+      "parameters": [
+        "w",
+        "u"
+      ]
+    },
+    {
+      "name": "gameDash",
+      "line": 529,
+      "end_line": 551,
+      "parameters": [
+        "w",
+        "u"
+      ]
+    },
+    {
+      "name": "gameBlock",
+      "line": 555,
+      "end_line": 566,
+      "parameters": [
+        "w",
+        "u"
+      ]
+    },
+    {
+      "name": "gameUnit",
+      "line": 568,
+      "end_line": 583,
+      "parameters": [
+        "u"
+      ]
+    },
+    {
+      "name": "retime",
+      "line": 585,
+      "end_line": 589,
+      "parameters": [
+        "u"
+      ]
+    },
+    {
+      "name": "gamePlayer",
+      "line": 590,
+      "end_line": 595,
+      "parameters": [
+        "u"
+      ]
+    },
+    {
+      "name": "rng",
+      "line": 597,
+      "end_line": 602,
+      "parameters": [
+        "seed"
+      ]
+    },
+    {
+      "name": "cloneRng",
+      "line": 603,
+      "end_line": 603,
+      "parameters": [
+        "r"
+      ]
+    },
+    {
+      "name": "len",
+      "line": 604,
+      "end_line": 604,
+      "parameters": [
+        "x",
+        "y"
+      ]
+    },
+    {
+      "name": "clamp",
+      "line": 605,
+      "end_line": 605,
+      "parameters": [
+        "v",
+        "a",
+        "b"
+      ]
+    },
+    {
+      "name": "dist",
+      "line": 606,
+      "end_line": 606,
+      "parameters": [
+        "a",
+        "b"
+      ]
+    },
+    {
+      "name": "gap",
+      "line": 607,
+      "end_line": 607,
+      "parameters": [
+        "a",
+        "b"
+      ]
+    },
+    {
+      "name": "rowOf",
+      "line": 611,
+      "end_line": 611,
+      "parameters": [
+        "n",
+        "spacing",
+        "d",
+        "stagger"
+      ]
+    },
+    {
+      "name": "ranks",
+      "line": 612,
+      "end_line": 619,
+      "parameters": [
+        "n",
+        "perRank",
+        "spacing",
+        "d0",
+        "rankSpacing"
+      ]
+    },
+    {
+      "name": "maxD",
+      "line": 620,
+      "end_line": 620,
+      "parameters": [
+        "slots",
+        "fallback"
+      ]
+    },
+    {
+      "name": "makeUnit",
+      "line": 684,
+      "end_line": 689,
+      "parameters": [
+        "id",
+        "team",
+        "role",
+        "x",
+        "y"
+      ]
+    },
+    {
+      "name": "resolveF",
+      "line": 691,
+      "end_line": 696,
+      "parameters": [
+        "opt"
+      ]
+    },
+    {
+      "name": "newPack",
+      "line": 698,
+      "end_line": 705,
+      "parameters": [
+        "w",
+        "team",
+        "brain",
+        "f"
+      ]
+    },
+    {
+      "name": "create",
+      "line": 708,
+      "end_line": 778,
+      "parameters": [
+        "mode",
+        "options"
+      ]
+    },
+    {
+      "name": "skirmishSpawn",
+      "line": 781,
+      "end_line": 788,
+      "parameters": [
+        "w",
+        "add"
+      ]
+    },
+    {
+      "name": "spawnHunter",
+      "line": 789,
+      "end_line": 793,
+      "parameters": [
+        "w",
+        "role"
+      ]
+    },
+    {
+      "name": "team",
+      "line": 797,
+      "end_line": 804,
+      "parameters": [
+        "w",
+        "t"
+      ]
+    },
+    {
+      "name": "teamMelee",
+      "line": 806,
+      "end_line": 810,
+      "parameters": [
+        "w",
+        "t"
+      ]
+    },
+    {
+      "name": "foes",
+      "line": 816,
+      "end_line": 823,
+      "parameters": [
+        "w",
+        "t"
+      ]
+    },
+    {
+      "name": "monsters",
+      "line": 824,
+      "end_line": 824,
+      "parameters": [
+        "w"
+      ]
+    },
+    {
+      "name": "hunters",
+      "line": 825,
+      "end_line": 825,
+      "parameters": [
+        "w"
+      ]
+    },
+    {
+      "name": "nearest",
+      "line": 827,
+      "end_line": 835,
+      "parameters": [
+        "from",
+        "list",
+        "filter"
+      ]
+    },
+    {
+      "name": "moveToward",
+      "line": 837,
+      "end_line": 843,
+      "parameters": [
+        "u",
+        "x",
+        "y",
+        "dt",
+        "stopAt"
+      ]
+    },
+    {
+      "name": "lineBlocker",
+      "line": 850,
+      "end_line": 868,
+      "parameters": [
+        "w",
+        "ax",
+        "ay",
+        "b",
+        "shooter"
+      ]
+    },
+    {
+      "name": "lgKey",
+      "line": 871,
+      "end_line": 871,
+      "parameters": [
+        "x",
+        "y"
+      ]
+    },
+    {
+      "name": "lgBuild",
+      "line": 872,
+      "end_line": 872,
+      "parameters": [
+        "w"
+      ]
+    },
+    {
+      "name": "lgPut",
+      "line": 873,
+      "end_line": 873,
+      "parameters": [
+        "w",
+        "u"
+      ]
+    },
+    {
+      "name": "lgRemove",
+      "line": 874,
+      "end_line": 874,
+      "parameters": [
+        "w",
+        "u"
+      ]
+    },
+    {
+      "name": "lgMoved",
+      "line": 875,
+      "end_line": 880,
+      "parameters": [
+        "u"
+      ]
+    },
+    {
+      "name": "buildGrid",
+      "line": 884,
+      "end_line": 893,
+      "parameters": [
+        "w"
+      ]
+    },
+    {
+      "name": "lineBlockerGrid",
+      "line": 894,
+      "end_line": 913,
+      "parameters": [
+        "w",
+        "g",
+        "ax",
+        "ay",
+        "b",
+        "shooter"
+      ]
+    },
+    {
+      "name": "laneClear",
+      "line": 916,
+      "end_line": 922,
+      "parameters": [
+        "w",
+        "u",
+        "t"
+      ]
+    },
+    {
+      "name": "note",
+      "line": 924,
+      "end_line": 928,
+      "parameters": [
+        "w",
+        "text",
+        "teamId"
+      ]
+    },
+    {
+      "name": "damage",
+      "line": 930,
+      "end_line": 974,
+      "parameters": [
+        "w",
+        "src",
+        "dst",
+        "amount"
+      ]
+    },
+    {
+      "name": "addPending",
+      "line": 976,
+      "end_line": 979,
+      "parameters": [
+        "w",
+        "shooter",
+        "t",
+        "amount"
+      ]
+    },
+    {
+      "name": "sk",
+      "line": 982,
+      "end_line": 982,
+      "parameters": [
+        "w",
+        "team",
+        "k"
+      ]
+    },
+    {
+      "name": "vel",
+      "line": 983,
+      "end_line": 983,
+      "parameters": [
+        "w",
+        "h",
+        "team"
+      ]
+    },
+    {
+      "name": "interceptPoint",
+      "line": 985,
+      "end_line": 990,
+      "parameters": [
+        "w",
+        "x",
+        "y",
+        "h",
+        "speed",
+        "team"
+      ]
+    },
+    {
+      "name": "windUp",
+      "line": 996,
+      "end_line": 996,
+      "parameters": [
+        "w",
+        "u"
+      ]
+    },
+    {
+      "name": "prepared",
+      "line": 997,
+      "end_line": 997,
+      "parameters": [
+        "w",
+        "u"
+      ]
+    },
+    {
+      "name": "released",
+      "line": 1000,
+      "end_line": 1000,
+      "parameters": [
+        "w",
+        "u"
+      ]
+    },
+    {
+      "name": "canDodge",
+      "line": 1004,
+      "end_line": 1010,
+      "parameters": [
+        "w",
+        "h",
+        "u"
+      ]
+    },
+    {
+      "name": "pHit",
+      "line": 1014,
+      "end_line": 1014,
+      "parameters": [
+        "w",
+        "pack",
+        "h",
+        "u"
+      ]
+    },
+    {
+      "name": "pHitLine",
+      "line": 1016,
+      "end_line": 1028,
+      "parameters": [
+        "w",
+        "pack",
+        "h",
+        "u"
+      ]
+    },
+    {
+      "name": "fc",
+      "line": 1029,
+      "end_line": 1029,
+      "parameters": [
+        "w",
+        "u"
+      ]
+    },
+    {
+      "name": "fireShot",
+      "line": 1030,
+      "end_line": 1047,
+      "parameters": [
+        "w",
+        "u",
+        "target",
+        "dmg"
+      ]
+    },
+    {
+      "name": "aimClear",
+      "line": 1049,
+      "end_line": 1054,
+      "parameters": [
+        "w",
+        "u",
+        "t"
+      ]
+    },
+    {
+      "name": "fireShell",
+      "line": 1055,
+      "end_line": 1058,
+      "parameters": [
+        "w",
+        "u",
+        "h"
+      ]
+    },
+    {
+      "name": "minR",
+      "line": 1063,
+      "end_line": 1063,
+      "parameters": [
+        "u"
+      ]
+    },
+    {
+      "name": "reachOf",
+      "line": 1064,
+      "end_line": 1071,
+      "parameters": [
+        "w",
+        "t",
+        "role"
+      ]
+    },
+    {
+      "name": "paceOf",
+      "line": 1072,
+      "end_line": 1072,
+      "parameters": [
+        "w",
+        "t"
+      ]
+    },
+    {
+      "name": "lobV",
+      "line": 1074,
+      "end_line": 1074,
+      "parameters": [
+        "u"
+      ]
+    },
+    {
+      "name": "blastR",
+      "line": 1075,
+      "end_line": 1075,
+      "parameters": [
+        "u"
+      ]
+    },
+    {
+      "name": "fireShellAt",
+      "line": 1076,
+      "end_line": 1080,
+      "parameters": [
+        "w",
+        "u",
+        "x",
+        "y",
+        "pred",
+        "atk"
+      ]
+    },
+    {
+      "name": "shellEscape",
+      "line": 1094,
+      "end_line": 1103,
+      "parameters": [
+        "x",
+        "y",
+        "r",
+        "speed",
+        "team",
+        "shells",
+        "now"
+      ]
+    },
+    {
+      "name": "predictVolley",
+      "line": 1108,
+      "end_line": 1180,
+      "parameters": [
+        "w",
+        "me",
+        "planned",
+        "snapT",
+        "step"
+      ]
+    },
+    {
+      "name": "threatWorth",
+      "line": 1185,
+      "end_line": 1185,
+      "parameters": [
+        "h"
+      ]
+    },
+    {
+      "name": "smartVolley",
+      "line": 1187,
+      "end_line": 1201,
+      "parameters": [
+        "w",
+        "me",
+        "planned"
+      ]
+    },
+    {
+      "name": "fireGate",
+      "line": 1206,
+      "end_line": 1236,
+      "parameters": [
+        "w",
+        "u"
+      ]
+    },
+    {
+      "name": "artilleryVolley",
+      "line": 1237,
+      "end_line": 1379,
+      "parameters": [
+        "w",
+        "pack"
+      ]
+    },
+    {
+      "name": "inReachOf",
+      "line": 1380,
+      "end_line": 1380,
+      "parameters": [
+        "u",
+        "p"
+      ]
+    },
+    {
+      "name": "artyOutcome",
+      "line": 1383,
+      "end_line": 1405,
+      "parameters": [
+        "w",
+        "pack",
+        "cand",
+        "horizon"
+      ]
+    },
+    {
+      "name": "shellOf",
+      "line": 1408,
+      "end_line": 1411,
+      "parameters": [
+        "w",
+        "pack",
+        "q",
+        "fl"
+      ]
+    },
+    {
+      "name": "assignGuns",
+      "line": 1415,
+      "end_line": 1428,
+      "parameters": [
+        "ready",
+        "pts",
+        "inRange",
+        "coming",
+        "now"
+      ]
+    },
+    {
+      "name": "launch",
+      "line": 1430,
+      "end_line": 1440,
+      "parameters": [
+        "w",
+        "pack",
+        "shots",
+        "per",
+        "name"
+      ]
+    },
+    {
+      "name": "shotDodgeVector",
+      "line": 1444,
+      "end_line": 1456,
+      "parameters": [
+        "w",
+        "u"
+      ]
+    },
+    {
+      "name": "meleeAnswer",
+      "line": 1459,
+      "end_line": 1462,
+      "parameters": [
+        "w",
+        "u"
+      ]
+    },
+    {
+      "name": "goTo",
+      "line": 1474,
+      "end_line": 1474,
+      "parameters": [
+        "D",
+        "x",
+        "y",
+        "stop",
+        "mul"
+      ]
+    },
+    {
+      "name": "decMelee",
+      "line": 1476,
+      "end_line": 1521,
+      "parameters": [
+        "w",
+        "u",
+        "t",
+        "D"
+      ]
+    },
+    {
+      "name": "decDirect",
+      "line": 1523,
+      "end_line": 1554,
+      "parameters": [
+        "w",
+        "u",
+        "t",
+        "D",
+        "gx",
+        "gy",
+        "leash",
+        "enemies"
+      ]
+    },
+    {
+      "name": "decArtillery",
+      "line": 1556,
+      "end_line": 1568,
+      "parameters": [
+        "w",
+        "u",
+        "t",
+        "D",
+        "gx",
+        "gy",
+        "bound"
+      ]
+    },
+    {
+      "name": "playerShot",
+      "line": 1575,
+      "end_line": 1579,
+      "parameters": [
+        "w",
+        "u",
+        "t",
+        "spec",
+        "manual"
+      ]
+    },
+    {
+      "name": "playerBrain",
+      "line": 1580,
+      "end_line": 1646,
+      "parameters": [
+        "w",
+        "u",
+        "dt"
+      ]
+    },
+    {
+      "name": "decideAlone",
+      "line": 1648,
+      "end_line": 1670,
+      "parameters": [
+        "w",
+        "u",
+        "D"
+      ]
+    },
+    {
+      "name": "pinned",
+      "line": 1673,
+      "end_line": 1673,
+      "parameters": [
+        "h"
+      ]
+    },
+    {
+      "name": "threatRead",
+      "line": 1677,
+      "end_line": 1699,
+      "parameters": [
+        "w",
+        "pack",
+        "ours",
+        "es",
+        "em",
+        "A"
+      ]
+    },
+    {
+      "name": "readEnemy",
+      "line": 1702,
+      "end_line": 1730,
+      "parameters": [
+        "w",
+        "pack"
+      ]
+    },
+    {
+      "name": "tacticsOf",
+      "line": 1746,
+      "end_line": 1759,
+      "parameters": [
+        "plans"
+      ]
+    },
+    {
+      "name": "comboOf",
+      "line": 1761,
+      "end_line": 1761,
+      "parameters": [
+        "plan"
+      ]
+    },
+    {
+      "name": "comboName",
+      "line": 1763,
+      "end_line": 1763,
+      "parameters": [
+        "c"
+      ]
+    },
+    {
+      "name": "composeF",
+      "line": 1765,
+      "end_line": 1770,
+      "parameters": [
+        "base",
+        "plans",
+        "combo",
+        "extra"
+      ]
+    },
+    {
+      "name": "planFrom",
+      "line": 1776,
+      "end_line": 1787,
+      "parameters": [
+        "w",
+        "pack",
+        "r",
+        "rules"
+      ]
+    },
+    {
+      "name": "planDwell",
+      "line": 1788,
+      "end_line": 1788,
+      "parameters": [
+        "w",
+        "pack"
+      ]
+    },
+    {
+      "name": "planSwitchable",
+      "line": 1789,
+      "end_line": 1789,
+      "parameters": [
+        "w",
+        "pack",
+        "name"
+      ]
+    },
+    {
+      "name": "setPlan",
+      "line": 1790,
+      "end_line": 1794,
+      "parameters": [
+        "w",
+        "pack",
+        "plans",
+        "combo",
+        "why",
+        "extra",
+        "text"
+      ]
+    },
+    {
+      "name": "commander",
+      "line": 1795,
+      "end_line": 1806,
+      "parameters": [
+        "w",
+        "pack"
+      ]
+    },
+    {
+      "name": "formationPlan",
+      "line": 1811,
+      "end_line": 1832,
+      "parameters": [
+        "w",
+        "pack"
+      ]
+    },
+    {
+      "name": "cmdOf",
+      "line": 1843,
+      "end_line": 1848,
+      "parameters": [
+        "w",
+        "pack",
+        "k"
+      ]
+    },
+    {
+      "name": "observe",
+      "line": 1865,
+      "end_line": 1887,
+      "parameters": [
+        "w",
+        "pack"
+      ]
+    },
+    {
+      "name": "briefing",
+      "line": 1888,
+      "end_line": 1888,
+      "parameters": [
+        "o"
+      ]
+    },
+    {
+      "name": "directorStep",
+      "line": 1889,
+      "end_line": 1939,
+      "parameters": [
+        "w",
+        "pack"
+      ]
+    },
+    {
+      "name": "positionAnchor",
+      "line": 1940,
+      "end_line": 2031,
+      "parameters": [
+        "w",
+        "pack",
+        "c"
+      ]
+    },
+    {
+      "name": "assignSlots",
+      "line": 2034,
+      "end_line": 2068,
+      "parameters": [
+        "w",
+        "pack",
+        "c"
+      ]
+    },
+    {
+      "name": "meleeOrders",
+      "line": 2071,
+      "end_line": 2143,
+      "parameters": [
+        "w",
+        "pack",
+        "c"
+      ]
+    },
+    {
+      "name": "surroundOrders",
+      "line": 2148,
+      "end_line": 2195,
+      "parameters": [
+        "w",
+        "pack",
+        "c"
+      ]
+    },
+    {
+      "name": "shooterFocusOrders",
+      "line": 2197,
+      "end_line": 2222,
+      "parameters": [
+        "w",
+        "pack",
+        "c"
+      ]
+    },
+    {
+      "name": "leaderFire",
+      "line": 2229,
+      "end_line": 2256,
+      "parameters": [
+        "w",
+        "pack",
+        "c"
+      ]
+    },
+    {
+      "name": "shellDodge",
+      "line": 2259,
+      "end_line": 2259,
+      "parameters": [
+        "w",
+        "pack"
+      ]
+    },
+    {
+      "name": "dodgeVector",
+      "line": 2261,
+      "end_line": 2268,
+      "parameters": [
+        "w",
+        "u"
+      ]
+    },
+    {
+      "name": "castBlasts",
+      "line": 2274,
+      "end_line": 2286,
+      "parameters": [
+        "w",
+        "team"
+      ]
+    },
+    {
+      "name": "smartEscape",
+      "line": 2287,
+      "end_line": 2302,
+      "parameters": [
+        "w",
+        "u"
+      ]
+    },
+    {
+      "name": "decideReleased",
+      "line": 2305,
+      "end_line": 2321,
+      "parameters": [
+        "w",
+        "u",
+        "D",
+        "pack",
+        "es"
+      ]
+    },
+    {
+      "name": "kiterRetreat",
+      "line": 2326,
+      "end_line": 2336,
+      "parameters": [
+        "w",
+        "u",
+        "es",
+        "D"
+      ]
+    },
+    {
+      "name": "saveWounded",
+      "line": 2339,
+      "end_line": 2355,
+      "parameters": [
+        "w",
+        "u",
+        "es",
+        "D"
+      ]
+    },
+    {
+      "name": "decideOrder",
+      "line": 2364,
+      "end_line": 2402,
+      "parameters": [
+        "w",
+        "u",
+        "D"
+      ]
+    },
+    {
+      "name": "decideOwn",
+      "line": 2404,
+      "end_line": 2406,
+      "parameters": [
+        "w",
+        "u",
+        "D"
+      ]
+    },
+    {
+      "name": "decideFormation",
+      "line": 2407,
+      "end_line": 2444,
+      "parameters": [
+        "w",
+        "u",
+        "D"
+      ]
+    },
+    {
+      "name": "decide",
+      "line": 2447,
+      "end_line": 2468,
+      "parameters": [
+        "w",
+        "u"
+      ]
+    },
+    {
+      "name": "walk",
+      "line": 2472,
+      "end_line": 2472,
+      "parameters": [
+        "u",
+        "dt"
+      ]
+    },
+    {
+      "name": "act",
+      "line": 2473,
+      "end_line": 2530,
+      "parameters": [
+        "w",
+        "u",
+        "dt"
+      ]
+    },
+    {
+      "name": "shooterTarget",
+      "line": 2538,
+      "end_line": 2567,
+      "parameters": [
+        "w",
+        "pack",
+        "u",
+        "es",
+        "released"
+      ]
+    },
+    {
+      "name": "artilleryTarget",
+      "line": 2570,
+      "end_line": 2585,
+      "parameters": [
+        "w",
+        "u",
+        "es",
+        "f"
+      ]
+    },
+    {
+      "name": "ready",
+      "line": 2589,
+      "end_line": 2594,
+      "parameters": [
+        "w",
+        "u",
+        "name"
+      ]
+    },
+    {
+      "name": "abStat",
+      "line": 2595,
+      "end_line": 2599,
+      "parameters": [
+        "w",
+        "team",
+        "name",
+        "field",
+        "v"
+      ]
+    },
+    {
+      "name": "spend",
+      "line": 2600,
+      "end_line": 2605,
+      "parameters": [
+        "w",
+        "u",
+        "name"
+      ]
+    },
+    {
+      "name": "busy",
+      "line": 2606,
+      "end_line": 2606,
+      "parameters": [
+        "w",
+        "u"
+      ]
+    },
+    {
+      "name": "useCharge",
+      "line": 2607,
+      "end_line": 2614,
+      "parameters": [
+        "w",
+        "u",
+        "t"
+      ]
+    },
+    {
+      "name": "useShield",
+      "line": 2615,
+      "end_line": 2619,
+      "parameters": [
+        "w",
+        "u"
+      ]
+    },
+    {
+      "name": "useAimed",
+      "line": 2620,
+      "end_line": 2624,
+      "parameters": [
+        "w",
+        "u",
+        "t"
+      ]
+    },
+    {
+      "name": "useDisengage",
+      "line": 2625,
+      "end_line": 2633,
+      "parameters": [
+        "w",
+        "u",
+        "fromX",
+        "fromY"
+      ]
+    },
+    {
+      "name": "useBarrage",
+      "line": 2634,
+      "end_line": 2646,
+      "parameters": [
+        "w",
+        "u",
+        "h"
+      ]
+    },
+    {
+      "name": "useSlow",
+      "line": 2647,
+      "end_line": 2654,
+      "parameters": [
+        "w",
+        "u",
+        "x",
+        "y"
+      ]
+    },
+    {
+      "name": "busyAct",
+      "line": 2657,
+      "end_line": 2691,
+      "parameters": [
+        "w",
+        "u",
+        "dt"
+      ]
+    },
+    {
+      "name": "triggerAbility",
+      "line": 2696,
+      "end_line": 2699,
+      "parameters": [
+        "w",
+        "u",
+        "name",
+        "a"
+      ]
+    },
+    {
+      "name": "abilityReady",
+      "line": 2700,
+      "end_line": 2700,
+      "parameters": [
+        "w",
+        "u",
+        "name"
+      ]
+    },
+    {
+      "name": "triggerAbilityNow",
+      "line": 2701,
+      "end_line": 2711,
+      "parameters": [
+        "w",
+        "u",
+        "name",
+        "a"
+      ]
+    },
+    {
+      "name": "defaultAbilities",
+      "line": 2713,
+      "end_line": 2747,
+      "parameters": [
+        "w",
+        "u"
+      ]
+    },
+    {
+      "name": "coordOn",
+      "line": 2760,
+      "end_line": 2760,
+      "parameters": [
+        "w",
+        "p"
+      ]
+    },
+    {
+      "name": "coordAbilities",
+      "line": 2761,
+      "end_line": 2839,
+      "parameters": [
+        "w",
+        "pack"
+      ]
+    },
+    {
+      "name": "separate",
+      "line": 2845,
+      "end_line": 2866,
+      "parameters": [
+        "w"
+      ]
+    },
+    {
+      "name": "step",
+      "line": 2868,
+      "end_line": 3027,
+      "parameters": [
+        "w"
+      ]
+    },
+    {
+      "name": "fork",
+      "line": 3033,
+      "end_line": 3081,
+      "parameters": [
+        "w",
+        "extraOpts"
+      ]
+    },
+    {
+      "name": "bcFeatures",
+      "line": 3084,
+      "end_line": 3113,
+      "parameters": [
+        "w",
+        "pack",
+        "plans"
+      ]
+    },
+    {
+      "name": "bcTop",
+      "line": 3115,
+      "end_line": 3119,
+      "parameters": [
+        "net",
+        "x",
+        "k"
+      ]
+    },
+    {
+      "name": "bcPredict",
+      "line": 3121,
+      "end_line": 3126,
+      "parameters": [
+        "net",
+        "x"
+      ]
+    },
+    {
+      "name": "lookahead",
+      "line": 3131,
+      "end_line": 3257,
+      "parameters": [
+        "w",
+        "pack"
+      ]
+    },
+    {
+      "name": "reachRate",
+      "line": 3260,
+      "end_line": 3268,
+      "parameters": [
+        "w",
+        "t"
+      ]
+    },
+    {
+      "name": "distinctTactics",
+      "line": 3271,
+      "end_line": 3279,
+      "parameters": [
+        "T",
+        "role"
+      ]
+    },
+    {
+      "name": "done",
+      "line": 3281,
+      "end_line": 3284,
+      "parameters": [
+        "w"
+      ]
+    },
+    {
+      "name": "summary",
+      "line": 3286,
+      "end_line": 3291,
+      "parameters": [
+        "w"
+      ]
+    },
+    {
+      "name": "run",
+      "line": 3293,
+      "end_line": 3297,
+      "parameters": [
+        "mode",
+        "options"
+      ]
+    }
+  ],
+  "exports": [
+    "triggerAbility",
+    "ready",
+    "COMBOS",
+    "observe",
+    "GAME",
+    "SKILLS",
+    "LEVELS",
+    "setNet",
+    "buildProfile",
+    "AB_DEFAULT",
+    "AB_TUNED_RULES",
+    "ABIL",
+    "ROLE_ABIL",
+    "DEFAULTS",
+    "DEFAULT_F",
+    "LOOKAHEAD",
+    "PRESETS",
+    "POOL",
+    "enemyOf",
+    "drawOpponents",
+    "PLANS",
+    "RULES",
+    "BRAINS",
+    "SHAPES",
+    "ROLE",
+    "create",
+    "step",
+    "run",
+    "summary",
+    "monsters",
+    "hunters",
+    "done",
+    "fork",
+    "bcFeatures",
+    "bcPredict"
+  ],
+  "fields": {
+    "FormationSim": {
+      "static_occurrences": 1,
+      "functions": [
+        "table/combo callbacks"
+      ],
+      "first_line": 3375
+    },
+    "PI": {
+      "static_occurrences": 23,
+      "functions": [
+        "SHAPES",
+        "artilleryVolley",
+        "fireGate",
+        "predictVolley",
+        "smartEscape",
+        "smartVolley",
+        "surroundOrders",
+        "table/combo callbacks"
+      ],
+      "first_line": 427
+    },
+    "W1": {
+      "static_occurrences": 2,
+      "functions": [
+        "bcPredict",
+        "bcTop"
+      ],
+      "first_line": 3116
+    },
+    "W2": {
+      "static_occurrences": 2,
+      "functions": [
+        "bcPredict",
+        "bcTop"
+      ],
+      "first_line": 3117
+    },
+    "_atk": {
+      "static_occurrences": 3,
+      "functions": [
+        "damage",
+        "step"
+      ],
+      "first_line": 965
+    },
+    "_barrage": {
+      "static_occurrences": 3,
+      "functions": [
+        "damage",
+        "step"
+      ],
+      "first_line": 947
+    },
+    "_burnTick": {
+      "static_occurrences": 3,
+      "functions": [
+        "damage",
+        "step"
+      ],
+      "first_line": 959
+    },
+    "_byHand": {
+      "static_occurrences": 5,
+      "functions": [
+        "abilityReady",
+        "ready",
+        "triggerAbility"
+      ],
+      "first_line": 2590
+    },
+    "_cb": {
+      "static_occurrences": 5,
+      "functions": [
+        "castBlasts"
+      ],
+      "first_line": 2275
+    },
+    "_cbT": {
+      "static_occurrences": 3,
+      "functions": [
+        "castBlasts"
+      ],
+      "first_line": 2275
+    },
+    "_ck": {
+      "static_occurrences": 3,
+      "functions": [
+        "lgMoved",
+        "lgPut",
+        "lgRemove"
+      ],
+      "first_line": 873
+    },
+    "_foe": {
+      "static_occurrences": 5,
+      "functions": [
+        "foes"
+      ],
+      "first_line": 819
+    },
+    "_foeT": {
+      "static_occurrences": 3,
+      "functions": [
+        "foes"
+      ],
+      "first_line": 819
+    },
+    "_foeV": {
+      "static_occurrences": 3,
+      "functions": [
+        "foes"
+      ],
+      "first_line": 819
+    },
+    "_gate": {
+      "static_occurrences": 4,
+      "functions": [
+        "fireGate"
+      ],
+      "first_line": 1221
+    },
+    "_gateT": {
+      "static_occurrences": 2,
+      "functions": [
+        "fireGate"
+      ],
+      "first_line": 1220
+    },
+    "_holdSince": {
+      "static_occurrences": 3,
+      "functions": [
+        "leaderFire"
+      ],
+      "first_line": 2249
+    },
+    "_holdTeam": {
+      "static_occurrences": 2,
+      "functions": [
+        "leaderFire"
+      ],
+      "first_line": 2249
+    },
+    "_i": {
+      "static_occurrences": 5,
+      "functions": [
+        "buildGrid",
+        "lineBlockerGrid",
+        "step"
+      ],
+      "first_line": 888
+    },
+    "_inReach": {
+      "static_occurrences": 7,
+      "functions": [
+        "castPermit",
+        "couldStart",
+        "decArtillery",
+        "decDirect",
+        "decMelee",
+        "decide",
+        "fireGate"
+      ],
+      "first_line": 491
+    },
+    "_lane": {
+      "static_occurrences": 2,
+      "functions": [
+        "laneClear"
+      ],
+      "first_line": 917
+    },
+    "_lg": {
+      "static_occurrences": 10,
+      "functions": [
+        "lgBuild",
+        "lgMoved",
+        "lgPut",
+        "lgRemove",
+        "lineBlocker",
+        "skirmishSpawn",
+        "spawnHunter"
+      ],
+      "first_line": 783
+    },
+    "_reachC": {
+      "static_occurrences": 5,
+      "functions": [
+        "reachOf"
+      ],
+      "first_line": 1066
+    },
+    "_rolled": {
+      "static_occurrences": 7,
+      "functions": [
+        "fork",
+        "gameDash"
+      ],
+      "first_line": 538
+    },
+    "_shape": {
+      "static_occurrences": 2,
+      "functions": [
+        "formationPlan"
+      ],
+      "first_line": 1819
+    },
+    "_shellAge": {
+      "static_occurrences": 2,
+      "functions": [
+        "damage",
+        "step"
+      ],
+      "first_line": 965
+    },
+    "_si": {
+      "static_occurrences": 4,
+      "functions": [
+        "separate"
+      ],
+      "first_line": 2849
+    },
+    "_tc": {
+      "static_occurrences": 3,
+      "functions": [
+        "team"
+      ],
+      "first_line": 799
+    },
+    "_tm": {
+      "static_occurrences": 4,
+      "functions": [
+        "teamMelee"
+      ],
+      "first_line": 808
+    },
+    "_tmv": {
+      "static_occurrences": 2,
+      "functions": [
+        "teamMelee"
+      ],
+      "first_line": 808
+    },
+    "_tv": {
+      "static_occurrences": 4,
+      "functions": [
+        "team",
+        "teamMelee"
+      ],
+      "first_line": 798
+    },
+    "a": {
+      "static_occurrences": 1,
+      "functions": [
+        "formationPlan"
+      ],
+      "first_line": 1820
+    },
+    "ab": {
+      "static_occurrences": 5,
+      "functions": [
+        "buildProfile",
+        "coordAbilities"
+      ],
+      "first_line": 348
+    },
+    "abLock": {
+      "static_occurrences": 2,
+      "functions": [
+        "ready",
+        "spend"
+      ],
+      "first_line": 2593
+    },
+    "abManual": {
+      "static_occurrences": 1,
+      "functions": [
+        "ready"
+      ],
+      "first_line": 2590
+    },
+    "abUsed": {
+      "static_occurrences": 1,
+      "functions": [
+        "spend"
+      ],
+      "first_line": 2604
+    },
+    "abUsedT": {
+      "static_occurrences": 1,
+      "functions": [
+        "spend"
+      ],
+      "first_line": 2604
+    },
+    "abil": {
+      "static_occurrences": 2,
+      "functions": [
+        "abStat"
+      ],
+      "first_line": 2596
+    },
+    "abilOff": {
+      "static_occurrences": 2,
+      "functions": [
+        "ready"
+      ],
+      "first_line": 2591
+    },
+    "abilities": {
+      "static_occurrences": 5,
+      "functions": [
+        "commander",
+        "coordOn",
+        "step",
+        "triggerAbilityNow"
+      ],
+      "first_line": 1805
+    },
+    "abort": {
+      "static_occurrences": 2,
+      "functions": [
+        "directorStep"
+      ],
+      "first_line": 1909
+    },
+    "abs": {
+      "static_occurrences": 17,
+      "functions": [
+        "assignGuns",
+        "damage",
+        "gameBlock",
+        "gameDash",
+        "gamePackDecide",
+        "lineBlocker",
+        "lineBlockerGrid",
+        "pHitLine",
+        "playerBrain",
+        "positionAnchor",
+        "readEnemy",
+        "shotDodgeVector",
+        "surroundOrders",
+        "table/combo callbacks"
+      ],
+      "first_line": 219
+    },
+    "acc": {
+      "static_occurrences": 8,
+      "functions": [
+        "create",
+        "gameUnit",
+        "retime",
+        "step",
+        "table/combo callbacks"
+      ],
+      "first_line": 438
+    },
+    "active": {
+      "static_occurrences": 8,
+      "functions": [
+        "directorStep",
+        "fork"
+      ],
+      "first_line": 1900
+    },
+    "add": {
+      "static_occurrences": 6,
+      "functions": [
+        "artilleryVolley",
+        "gameDash",
+        "gamePackDecide",
+        "step"
+      ],
+      "first_line": 215
+    },
+    "ai": {
+      "static_occurrences": 15,
+      "functions": [
+        "buildProfile",
+        "coordAbilities",
+        "create",
+        "fork",
+        "lookahead",
+        "planDwell",
+        "planFrom",
+        "sk"
+      ],
+      "first_line": 330
+    },
+    "aim": {
+      "static_occurrences": 1,
+      "functions": [
+        "useAimed"
+      ],
+      "first_line": 2622
+    },
+    "aimOffset": {
+      "static_occurrences": 5,
+      "functions": [
+        "fireShot",
+        "leaderFire"
+      ],
+      "first_line": 1037
+    },
+    "aimT": {
+      "static_occurrences": 11,
+      "functions": [
+        "busyAct",
+        "coordAbilities",
+        "fork",
+        "useAimed"
+      ],
+      "first_line": 2622
+    },
+    "aimUntil": {
+      "static_occurrences": 6,
+      "functions": [
+        "busy",
+        "busyAct",
+        "coordAbilities",
+        "useAimed"
+      ],
+      "first_line": 2606
+    },
+    "aimed": {
+      "static_occurrences": 8,
+      "functions": [
+        "busyAct",
+        "fork",
+        "gameBlock",
+        "gameDash",
+        "gamePackDecide",
+        "shotDodgeVector",
+        "step",
+        "useAimed"
+      ],
+      "first_line": 217
+    },
+    "aimedSafe": {
+      "static_occurrences": 1,
+      "functions": [
+        "coordAbilities"
+      ],
+      "first_line": 2801
+    },
+    "aimedWorth": {
+      "static_occurrences": 1,
+      "functions": [
+        "coordAbilities"
+      ],
+      "first_line": 2801
+    },
+    "alive": {
+      "static_occurrences": 62,
+      "functions": [
+        "act",
+        "artilleryVolley",
+        "assignSlots",
+        "buildGrid",
+        "busyAct",
+        "canDodge",
+        "castBlasts",
+        "coordAbilities",
+        "couldStart",
+        "damage",
+        "decMelee",
+        "decide",
+        "decideAlone",
+        "decideFormation",
+        "decideOrder",
+        "decideReleased",
+        "defaultAbilities",
+        "directorStep",
+        "fireGate",
+        "lgBuild",
+        "lineBlocker",
+        "lineBlockerGrid",
+        "meleeAnswer",
+        "meleeOrders",
+        "pinned",
+        "playerBrain",
+        "predictVolley",
+        "separate",
+        "shooterTarget",
+        "smartVolley",
+        "step",
+        "surroundOrders",
+        "team",
+        "triggerAbilityNow"
+      ],
+      "first_line": 491
+    },
+    "aliveSeconds": {
+      "static_occurrences": 2,
+      "functions": [
+        "step",
+        "summary"
+      ],
+      "first_line": 3013
+    },
+    "amt": {
+      "static_occurrences": 3,
+      "functions": [
+        "lookahead",
+        "threatRead"
+      ],
+      "first_line": 1692
+    },
+    "anchor": {
+      "static_occurrences": 20,
+      "functions": [
+        "artilleryVolley",
+        "bcFeatures",
+        "create",
+        "fork",
+        "formationPlan",
+        "readEnemy",
+        "table/combo callbacks"
+      ],
+      "first_line": 774
+    },
+    "anchorMode": {
+      "static_occurrences": 2,
+      "functions": [
+        "positionAnchor"
+      ],
+      "first_line": 1971
+    },
+    "anchorSpeed": {
+      "static_occurrences": 2,
+      "functions": [
+        "positionAnchor"
+      ],
+      "first_line": 1976
+    },
+    "answering": {
+      "static_occurrences": 4,
+      "functions": [
+        "decideFormation",
+        "meleeOrders"
+      ],
+      "first_line": 2112
+    },
+    "approach": {
+      "static_occurrences": 2,
+      "functions": [
+        "RULES",
+        "table/combo callbacks"
+      ],
+      "first_line": 157
+    },
+    "archer": {
+      "static_occurrences": 1,
+      "functions": [
+        "positionAnchor"
+      ],
+      "first_line": 2008
+    },
+    "archers": {
+      "static_occurrences": 1,
+      "functions": [
+        "create"
+      ],
+      "first_line": 763
+    },
+    "area": {
+      "static_occurrences": 3,
+      "functions": [
+        "gamePackDecide"
+      ],
+      "first_line": 221
+    },
+    "army": {
+      "static_occurrences": 2,
+      "functions": [
+        "create"
+      ],
+      "first_line": 723
+    },
+    "artillery": {
+      "static_occurrences": 42,
+      "functions": [
+        "SHAPES",
+        "act",
+        "applyRules",
+        "artilleryVolley",
+        "assignSlots",
+        "blastR",
+        "coordAbilities",
+        "create",
+        "defaultAbilities",
+        "fireShell",
+        "fireShellAt",
+        "lobV",
+        "minR",
+        "paceOf",
+        "positionAnchor",
+        "shellOf",
+        "smartVolley",
+        "summary",
+        "table/combo callbacks",
+        "useBarrage",
+        "useSlow"
+      ],
+      "first_line": 431
+    },
+    "artilleryDoctrine": {
+      "static_occurrences": 1,
+      "functions": [
+        "artilleryTarget"
+      ],
+      "first_line": 2573
+    },
+    "arty": {
+      "static_occurrences": 1,
+      "functions": [
+        "launch"
+      ],
+      "first_line": 1437
+    },
+    "artyLast": {
+      "static_occurrences": 2,
+      "functions": [
+        "launch"
+      ],
+      "first_line": 1439
+    },
+    "artyNext": {
+      "static_occurrences": 2,
+      "functions": [
+        "artilleryVolley"
+      ],
+      "first_line": 1270
+    },
+    "artyQueue": {
+      "static_occurrences": 11,
+      "functions": [
+        "artilleryVolley",
+        "fork",
+        "launch"
+      ],
+      "first_line": 1242
+    },
+    "artyReady": {
+      "static_occurrences": 3,
+      "functions": [
+        "artilleryVolley"
+      ],
+      "first_line": 1270
+    },
+    "assign": {
+      "static_occurrences": 71,
+      "functions": [
+        "applyRules",
+        "artilleryVolley",
+        "artyOutcome",
+        "assignGuns",
+        "assignSlots",
+        "buildProfile",
+        "composeF",
+        "create",
+        "enemyOf",
+        "fork",
+        "gamePlayer",
+        "gameUnit",
+        "lookahead",
+        "newPack",
+        "playerBrain",
+        "resolveF",
+        "resolveLookahead",
+        "table/combo callbacks"
+      ],
+      "first_line": 91
+    },
+    "assigned": {
+      "static_occurrences": 19,
+      "functions": [
+        "decide",
+        "fork",
+        "formationPlan",
+        "meleeOrders",
+        "surroundOrders"
+      ],
+      "first_line": 1817
+    },
+    "at": {
+      "static_occurrences": 12,
+      "functions": [
+        "artilleryVolley",
+        "assignGuns",
+        "laneClear",
+        "launch",
+        "shellOf",
+        "step"
+      ],
+      "first_line": 918
+    },
+    "atan2": {
+      "static_occurrences": 11,
+      "functions": [
+        "artilleryVolley",
+        "damage",
+        "gameBlock",
+        "observe",
+        "surroundOrders"
+      ],
+      "first_line": 563
+    },
+    "atk": {
+      "static_occurrences": 12,
+      "functions": [
+        "artilleryVolley",
+        "launch",
+        "step"
+      ],
+      "first_line": 1244
+    },
+    "attackerCap": {
+      "static_occurrences": 2,
+      "functions": [
+        "gamePrep"
+      ],
+      "first_line": 497
+    },
+    "autoAttack": {
+      "static_occurrences": 2,
+      "functions": [
+        "meleeOrders"
+      ],
+      "first_line": 2081
+    },
+    "away": {
+      "static_occurrences": 6,
+      "functions": [
+        "positionAnchor",
+        "table/combo callbacks"
+      ],
+      "first_line": 2004
+    },
+    "ax": {
+      "static_occurrences": 20,
+      "functions": [
+        "assignSlots",
+        "create",
+        "meleeOrders",
+        "positionAnchor",
+        "readEnemy"
+      ],
+      "first_line": 774
+    },
+    "axis": {
+      "static_occurrences": 2,
+      "functions": [
+        "table/combo callbacks"
+      ],
+      "first_line": 3306
+    },
+    "ay": {
+      "static_occurrences": 17,
+      "functions": [
+        "assignSlots",
+        "meleeOrders",
+        "positionAnchor"
+      ],
+      "first_line": 1946
+    },
+    "b1": {
+      "static_occurrences": 2,
+      "functions": [
+        "bcPredict",
+        "bcTop"
+      ],
+      "first_line": 3116
+    },
+    "b2": {
+      "static_occurrences": 2,
+      "functions": [
+        "bcPredict",
+        "bcTop"
+      ],
+      "first_line": 3117
+    },
+    "barrage": {
+      "static_occurrences": 3,
+      "functions": [
+        "step",
+        "useBarrage"
+      ],
+      "first_line": 2640
+    },
+    "barrageHeld": {
+      "static_occurrences": 1,
+      "functions": [
+        "coordAbilities"
+      ],
+      "first_line": 2825
+    },
+    "barrageMin": {
+      "static_occurrences": 1,
+      "functions": [
+        "coordAbilities"
+      ],
+      "first_line": 2825
+    },
+    "base": {
+      "static_occurrences": 4,
+      "functions": [
+        "create",
+        "fork",
+        "readEnemy",
+        "setPlan"
+      ],
+      "first_line": 769
+    },
+    "baseSpeed": {
+      "static_occurrences": 2,
+      "functions": [
+        "retime",
+        "step"
+      ],
+      "first_line": 588
+    },
+    "bcData": {
+      "static_occurrences": 2,
+      "functions": [
+        "lookahead"
+      ],
+      "first_line": 3252
+    },
+    "bcRecord": {
+      "static_occurrences": 1,
+      "functions": [
+        "lookahead"
+      ],
+      "first_line": 3252
+    },
+    "blend": {
+      "static_occurrences": 2,
+      "functions": [
+        "lookahead"
+      ],
+      "first_line": 3246
+    },
+    "block": {
+      "static_occurrences": 8,
+      "functions": [
+        "damage",
+        "gameBlock",
+        "gameUnit",
+        "step"
+      ],
+      "first_line": 556
+    },
+    "blockReady": {
+      "static_occurrences": 2,
+      "functions": [
+        "gameBlock"
+      ],
+      "first_line": 557
+    },
+    "bolt": {
+      "static_occurrences": 5,
+      "functions": [
+        "artyOutcome",
+        "gamePlayer",
+        "playerBrain",
+        "threatWorth"
+      ],
+      "first_line": 593
+    },
+    "bonus": {
+      "static_occurrences": 2,
+      "functions": [
+        "act"
+      ],
+      "first_line": 2482
+    },
+    "born": {
+      "static_occurrences": 2,
+      "functions": [
+        "shotDodgeVector",
+        "step"
+      ],
+      "first_line": 1447
+    },
+    "bound": {
+      "static_occurrences": 1,
+      "functions": [
+        "decArtillery"
+      ],
+      "first_line": 1559
+    },
+    "brain": {
+      "static_occurrences": 11,
+      "functions": [
+        "buildProfile",
+        "commander",
+        "coordOn",
+        "create",
+        "formationPlan",
+        "lookahead"
+      ],
+      "first_line": 332
+    },
+    "broad": {
+      "static_occurrences": 1,
+      "functions": [
+        "gamePackDecide"
+      ],
+      "first_line": 227
+    },
+    "budget": {
+      "static_occurrences": 1,
+      "functions": [
+        "lookahead"
+      ],
+      "first_line": 3218
+    },
+    "burn": {
+      "static_occurrences": 1,
+      "functions": [
+        "damage"
+      ],
+      "first_line": 960
+    },
+    "bySource": {
+      "static_occurrences": 2,
+      "functions": [
+        "damage"
+      ],
+      "first_line": 951
+    },
+    "cap": {
+      "static_occurrences": 1,
+      "functions": [
+        "damage"
+      ],
+      "first_line": 961
+    },
+    "cast": {
+      "static_occurrences": 4,
+      "functions": [
+        "artyOutcome",
+        "playerBrain",
+        "threatWorth"
+      ],
+      "first_line": 1185
+    },
+    "castOk": {
+      "static_occurrences": 2,
+      "functions": [
+        "gamePrep",
+        "step"
+      ],
+      "first_line": 498
+    },
+    "castT": {
+      "static_occurrences": 3,
+      "functions": [
+        "fireGate",
+        "gamePrep"
+      ],
+      "first_line": 503
+    },
+    "caught": {
+      "static_occurrences": 2,
+      "functions": [
+        "positionAnchor",
+        "threatRead"
+      ],
+      "first_line": 1689
+    },
+    "cd": {
+      "static_occurrences": 25,
+      "functions": [
+        "act",
+        "applyRules",
+        "castPermit",
+        "couldStart",
+        "decideFormation",
+        "fireGate",
+        "gameBlock",
+        "gameDash",
+        "gamePrep",
+        "gameUnit",
+        "makeUnit",
+        "playerBrain",
+        "predictVolley",
+        "prepared",
+        "released",
+        "spend",
+        "step",
+        "useBarrage"
+      ],
+      "first_line": 474
+    },
+    "cdMax": {
+      "static_occurrences": 10,
+      "functions": [
+        "act",
+        "artilleryTarget",
+        "artyOutcome",
+        "gamePrep",
+        "leaderFire",
+        "reachRate",
+        "released",
+        "shooterTarget",
+        "threatWorth",
+        "useBarrage"
+      ],
+      "first_line": 501
+    },
+    "ceil": {
+      "static_occurrences": 6,
+      "functions": [
+        "SHAPES"
+      ],
+      "first_line": 623
+    },
+    "charge": {
+      "static_occurrences": 10,
+      "functions": [
+        "act",
+        "busyAct",
+        "coordAbilities",
+        "useCharge"
+      ],
+      "first_line": 2482
+    },
+    "chargeBonus": {
+      "static_occurrences": 5,
+      "functions": [
+        "act",
+        "busyAct"
+      ],
+      "first_line": 2482
+    },
+    "chargeEnd": {
+      "static_occurrences": 7,
+      "functions": [
+        "assignSlots",
+        "busy",
+        "busyAct",
+        "coordAbilities",
+        "useCharge"
+      ],
+      "first_line": 2064
+    },
+    "chargeSync": {
+      "static_occurrences": 1,
+      "functions": [
+        "coordAbilities"
+      ],
+      "first_line": 2777
+    },
+    "chargeT": {
+      "static_occurrences": 9,
+      "functions": [
+        "assignSlots",
+        "busyAct",
+        "coordAbilities",
+        "fork",
+        "useCharge"
+      ],
+      "first_line": 2064
+    },
+    "chaseShare": {
+      "static_occurrences": 2,
+      "functions": [
+        "briefing",
+        "table/combo callbacks"
+      ],
+      "first_line": 1888
+    },
+    "chip": {
+      "static_occurrences": 1,
+      "functions": [
+        "gameDash"
+      ],
+      "first_line": 534
+    },
+    "choices": {
+      "static_occurrences": 6,
+      "functions": [
+        "directorStep",
+        "table/combo callbacks"
+      ],
+      "first_line": 1897
+    },
+    "closingSpeed": {
+      "static_occurrences": 1,
+      "functions": [
+        "positionAnchor"
+      ],
+      "first_line": 2010
+    },
+    "cmd": {
+      "static_occurrences": 5,
+      "functions": [
+        "cmdOf",
+        "fork"
+      ],
+      "first_line": 1844
+    },
+    "column": {
+      "static_occurrences": 7,
+      "functions": [
+        "briefing",
+        "table/combo callbacks"
+      ],
+      "first_line": 1888
+    },
+    "combo": {
+      "static_occurrences": 21,
+      "functions": [
+        "directorStep",
+        "lookahead",
+        "setPlan"
+      ],
+      "first_line": 1791
+    },
+    "concat": {
+      "static_occurrences": 3,
+      "functions": [
+        "positionAnchor",
+        "predictVolley",
+        "smartEscape"
+      ],
+      "first_line": 1118
+    },
+    "confirm": {
+      "static_occurrences": 2,
+      "functions": [
+        "gamePackDecide"
+      ],
+      "first_line": 231
+    },
+    "contact": {
+      "static_occurrences": 2,
+      "functions": [
+        "lookahead"
+      ],
+      "first_line": 3148
+    },
+    "cool": {
+      "static_occurrences": 3,
+      "functions": [
+        "directorStep",
+        "fork"
+      ],
+      "first_line": 1901
+    },
+    "cooldown": {
+      "static_occurrences": 1,
+      "functions": [
+        "directorStep"
+      ],
+      "first_line": 1901
+    },
+    "coordAbilities": {
+      "static_occurrences": 2,
+      "functions": [
+        "buildProfile",
+        "coordOn"
+      ],
+      "first_line": 339
+    },
+    "cos": {
+      "static_occurrences": 16,
+      "functions": [
+        "SHAPES",
+        "artilleryVolley",
+        "damage",
+        "decMelee",
+        "fireGate",
+        "observe",
+        "predictVolley",
+        "smartEscape",
+        "smartVolley",
+        "surroundOrders"
+      ],
+      "first_line": 666
+    },
+    "cost": {
+      "static_occurrences": 7,
+      "functions": [
+        "couldStart",
+        "gameBlock",
+        "gamePrep",
+        "gameUnit"
+      ],
+      "first_line": 491
+    },
+    "count": {
+      "static_occurrences": 1,
+      "functions": [
+        "create"
+      ],
+      "first_line": 744
+    },
+    "coverFraction": {
+      "static_occurrences": 2,
+      "functions": [
+        "assignSlots"
+      ],
+      "first_line": 2055
+    },
+    "cutOff": {
+      "static_occurrences": 12,
+      "functions": [
+        "artilleryVolley",
+        "decide",
+        "fork",
+        "shooterTarget"
+      ],
+      "first_line": 1253
+    },
+    "d": {
+      "static_occurrences": 8,
+      "functions": [
+        "SHAPES",
+        "assignSlots",
+        "maxD"
+      ],
+      "first_line": 620
+    },
+    "dOur": {
+      "static_occurrences": 2,
+      "functions": [
+        "lookahead"
+      ],
+      "first_line": 3186
+    },
+    "dTheir": {
+      "static_occurrences": 2,
+      "functions": [
+        "lookahead"
+      ],
+      "first_line": 3186
+    },
+    "danger": {
+      "static_occurrences": 1,
+      "functions": [
+        "positionAnchor"
+      ],
+      "first_line": 1999
+    },
+    "dash": {
+      "static_occurrences": 9,
+      "functions": [
+        "artilleryVolley",
+        "fireGate",
+        "playerBrain",
+        "predictVolley"
+      ],
+      "first_line": 1117
+    },
+    "dashDir": {
+      "static_occurrences": 8,
+      "functions": [
+        "playerBrain",
+        "predictVolley"
+      ],
+      "first_line": 1116
+    },
+    "dashReady": {
+      "static_occurrences": 8,
+      "functions": [
+        "fireGate",
+        "gameDash",
+        "playerBrain",
+        "predictVolley"
+      ],
+      "first_line": 531
+    },
+    "dashUntil": {
+      "static_occurrences": 7,
+      "functions": [
+        "playerBrain",
+        "predictVolley"
+      ],
+      "first_line": 1116
+    },
+    "dashes": {
+      "static_occurrences": 2,
+      "functions": [
+        "gameDash"
+      ],
+      "first_line": 548
+    },
+    "dealt": {
+      "static_occurrences": 1,
+      "functions": [
+        "damage"
+      ],
+      "first_line": 957
+    },
+    "deaths": {
+      "static_occurrences": 1,
+      "functions": [
+        "damage"
+      ],
+      "first_line": 965
+    },
+    "dec": {
+      "static_occurrences": 8,
+      "functions": [
+        "act",
+        "decide",
+        "fork",
+        "walk"
+      ],
+      "first_line": 2448
+    },
+    "def": {
+      "static_occurrences": 1,
+      "functions": [
+        "SKILL_DEFAULTS"
+      ],
+      "first_line": 301
+    },
+    "delete": {
+      "static_occurrences": 4,
+      "functions": [
+        "directorStep",
+        "leaderFire",
+        "meleeOrders",
+        "step"
+      ],
+      "first_line": 1907
+    },
+    "dir": {
+      "static_occurrences": 13,
+      "functions": [
+        "cmdOf",
+        "directorStep",
+        "fork"
+      ],
+      "first_line": 1846
+    },
+    "disEnd": {
+      "static_occurrences": 4,
+      "functions": [
+        "busy",
+        "busyAct",
+        "useDisengage"
+      ],
+      "first_line": 2606
+    },
+    "disX": {
+      "static_occurrences": 2,
+      "functions": [
+        "busyAct",
+        "useDisengage"
+      ],
+      "first_line": 2629
+    },
+    "disY": {
+      "static_occurrences": 2,
+      "functions": [
+        "busyAct",
+        "useDisengage"
+      ],
+      "first_line": 2630
+    },
+    "disablePlans": {
+      "static_occurrences": 2,
+      "functions": [
+        "buildProfile",
+        "planFrom"
+      ],
+      "first_line": 335
+    },
+    "disengage": {
+      "static_occurrences": 5,
+      "functions": [
+        "busyAct",
+        "useDisengage"
+      ],
+      "first_line": 2629
+    },
+    "disengageNear": {
+      "static_occurrences": 1,
+      "functions": [
+        "coordAbilities"
+      ],
+      "first_line": 2798
+    },
+    "dist": {
+      "static_occurrences": 8,
+      "functions": [
+        "artilleryVolley",
+        "gameDash",
+        "playerBrain",
+        "predictVolley",
+        "useDisengage"
+      ],
+      "first_line": 547
+    },
+    "dive": {
+      "static_occurrences": 1,
+      "functions": [
+        "meleeOrders"
+      ],
+      "first_line": 2077
+    },
+    "diveMinTargets": {
+      "static_occurrences": 2,
+      "functions": [
+        "meleeOrders"
+      ],
+      "first_line": 2077
+    },
+    "diveRange": {
+      "static_occurrences": 4,
+      "functions": [
+        "meleeOrders"
+      ],
+      "first_line": 2075
+    },
+    "diving": {
+      "static_occurrences": 5,
+      "functions": [
+        "formationPlan",
+        "meleeOrders"
+      ],
+      "first_line": 1829
+    },
+    "dmg": {
+      "static_occurrences": 58,
+      "functions": [
+        "applyRules",
+        "artilleryTarget",
+        "artyOutcome",
+        "busyAct",
+        "coordAbilities",
+        "damage",
+        "decMelee",
+        "fireGate",
+        "fireShellAt",
+        "fireShot",
+        "gamePlayer",
+        "gameUnit",
+        "leaderFire",
+        "lookahead",
+        "makeUnit",
+        "playerBrain",
+        "playerShot",
+        "predictVolley",
+        "reachRate",
+        "shellOf",
+        "shooterTarget",
+        "smartVolley",
+        "step",
+        "threatWorth",
+        "useBarrage"
+      ],
+      "first_line": 474
+    },
+    "dmgMul": {
+      "static_occurrences": 1,
+      "functions": [
+        "useBarrage"
+      ],
+      "first_line": 2643
+    },
+    "do": {
+      "static_occurrences": 10,
+      "functions": [
+        "decide",
+        "decideOrder"
+      ],
+      "first_line": 2367
+    },
+    "dodge": {
+      "static_occurrences": 6,
+      "functions": [
+        "gameUnit",
+        "shellDodge",
+        "table/combo callbacks"
+      ],
+      "first_line": 433
+    },
+    "dodgeProf": {
+      "static_occurrences": 2,
+      "functions": [
+        "gameDash",
+        "step"
+      ],
+      "first_line": 530
+    },
+    "dodgeReach": {
+      "static_occurrences": 1,
+      "functions": [
+        "gameDash"
+      ],
+      "first_line": 537
+    },
+    "dodgeTtc": {
+      "static_occurrences": 2,
+      "functions": [
+        "gameBlock",
+        "gameDash"
+      ],
+      "first_line": 536
+    },
+    "dodgeable": {
+      "static_occurrences": 2,
+      "functions": [
+        "step"
+      ],
+      "first_line": 2931
+    },
+    "done": {
+      "static_occurrences": 12,
+      "functions": [
+        "artilleryVolley",
+        "directorStep",
+        "step"
+      ],
+      "first_line": 1244
+    },
+    "dots": {
+      "static_occurrences": 11,
+      "functions": [
+        "damage",
+        "fork",
+        "step"
+      ],
+      "first_line": 960
+    },
+    "dps": {
+      "static_occurrences": 1,
+      "functions": [
+        "step"
+      ],
+      "first_line": 3020
+    },
+    "dt": {
+      "static_occurrences": 8,
+      "functions": [
+        "artyOutcome",
+        "lookahead",
+        "positionAnchor",
+        "step"
+      ],
+      "first_line": 1384
+    },
+    "dur": {
+      "static_occurrences": 5,
+      "functions": [
+        "damage",
+        "gameBlock",
+        "step",
+        "useShield"
+      ],
+      "first_line": 562
+    },
+    "duration": {
+      "static_occurrences": 3,
+      "functions": [
+        "done",
+        "lookahead"
+      ],
+      "first_line": 3191
+    },
+    "dx": {
+      "static_occurrences": 19,
+      "functions": [
+        "gameBlock",
+        "gameDash",
+        "gamePackDecide",
+        "playerBrain",
+        "shotDodgeVector",
+        "step"
+      ],
+      "first_line": 218
+    },
+    "dy": {
+      "static_occurrences": 19,
+      "functions": [
+        "gameBlock",
+        "gameDash",
+        "gamePackDecide",
+        "playerBrain",
+        "shotDodgeVector",
+        "step"
+      ],
+      "first_line": 218
+    },
+    "ec": {
+      "static_occurrences": 11,
+      "functions": [
+        "table/combo callbacks"
+      ],
+      "first_line": 3306
+    },
+    "ember": {
+      "static_occurrences": 3,
+      "functions": [
+        "playerBrain"
+      ],
+      "first_line": 1642
+    },
+    "enemy": {
+      "static_occurrences": 1,
+      "functions": [
+        "buildProfile"
+      ],
+      "first_line": 332
+    },
+    "enemyArmy": {
+      "static_occurrences": 2,
+      "functions": [
+        "create"
+      ],
+      "first_line": 750
+    },
+    "enemyDamage": {
+      "static_occurrences": 2,
+      "functions": [
+        "damage",
+        "summary"
+      ],
+      "first_line": 957
+    },
+    "enemyF": {
+      "static_occurrences": 1,
+      "functions": [
+        "buildProfile"
+      ],
+      "first_line": 333
+    },
+    "engagedWeight": {
+      "static_occurrences": 1,
+      "functions": [
+        "artilleryTarget"
+      ],
+      "first_line": 2579
+    },
+    "enter": {
+      "static_occurrences": 1,
+      "functions": [
+        "directorStep"
+      ],
+      "first_line": 1928
+    },
+    "entries": {
+      "static_occurrences": 10,
+      "functions": [
+        "SKILL_DEFAULTS",
+        "composeF",
+        "directorStep",
+        "distinctTactics",
+        "fork",
+        "meleeOrders",
+        "tacticsOf"
+      ],
+      "first_line": 301
+    },
+    "ep": {
+      "static_occurrences": 32,
+      "functions": [
+        "couldStart",
+        "fireGate",
+        "gameBlock",
+        "gamePlayer",
+        "gamePrep",
+        "gameUnit",
+        "playerBrain",
+        "predictVolley",
+        "step"
+      ],
+      "first_line": 491
+    },
+    "epMax": {
+      "static_occurrences": 2,
+      "functions": [
+        "playerBrain",
+        "step"
+      ],
+      "first_line": 1629
+    },
+    "epRegen": {
+      "static_occurrences": 4,
+      "functions": [
+        "gamePlayer",
+        "gameUnit",
+        "step"
+      ],
+      "first_line": 576
+    },
+    "es": {
+      "static_occurrences": 1,
+      "functions": [
+        "leaderFire"
+      ],
+      "first_line": 2231
+    },
+    "esoft": {
+      "static_occurrences": 1,
+      "functions": [
+        "RULES"
+      ],
+      "first_line": 159
+    },
+    "events": {
+      "static_occurrences": 4,
+      "functions": [
+        "note"
+      ],
+      "first_line": 925
+    },
+    "every": {
+      "static_occurrences": 7,
+      "functions": [
+        "artilleryVolley",
+        "comboName",
+        "leaderFire",
+        "lookahead",
+        "meleeOrders",
+        "readEnemy"
+      ],
+      "first_line": 1354
+    },
+    "everyStable": {
+      "static_occurrences": 2,
+      "functions": [
+        "lookahead"
+      ],
+      "first_line": 3136
+    },
+    "exports": {
+      "static_occurrences": 2,
+      "functions": [
+        "table/combo callbacks"
+      ],
+      "first_line": 3374
+    },
+    "exposed": {
+      "static_occurrences": 3,
+      "functions": [
+        "RULES",
+        "bcFeatures"
+      ],
+      "first_line": 159
+    },
+    "extends": {
+      "static_occurrences": 2,
+      "functions": [
+        "resolveLookahead"
+      ],
+      "first_line": 324
+    },
+    "extra": {
+      "static_occurrences": 2,
+      "functions": [
+        "lookahead"
+      ],
+      "first_line": 3144
+    },
+    "f": {
+      "static_occurrences": 19,
+      "functions": [
+        "artilleryVolley",
+        "buildProfile",
+        "coordOn",
+        "decideFormation",
+        "decideReleased",
+        "fork",
+        "formationPlan",
+        "leaderFire",
+        "lookahead",
+        "setPlan",
+        "shellDodge",
+        "shooterTarget",
+        "surroundOrders"
+      ],
+      "first_line": 333
+    },
+    "face": {
+      "static_occurrences": 4,
+      "functions": [
+        "positionAnchor"
+      ],
+      "first_line": 1944
+    },
+    "fastSeen": {
+      "static_occurrences": 2,
+      "functions": [
+        "threatRead"
+      ],
+      "first_line": 1690
+    },
+    "fastShooters": {
+      "static_occurrences": 1,
+      "functions": [
+        "bcFeatures"
+      ],
+      "first_line": 3107
+    },
+    "fewPlan": {
+      "static_occurrences": 4,
+      "functions": [
+        "RULES",
+        "planFrom"
+      ],
+      "first_line": 153
+    },
+    "fields": {
+      "static_occurrences": 11,
+      "functions": [
+        "coordAbilities",
+        "dodgeVector",
+        "fork",
+        "step"
+      ],
+      "first_line": 2262
+    },
+    "filter": {
+      "static_occurrences": 113,
+      "functions": [
+        "artilleryVolley",
+        "assignSlots",
+        "bcFeatures",
+        "castPermit",
+        "coordAbilities",
+        "damage",
+        "decDirect",
+        "decideOrder",
+        "decideReleased",
+        "directorStep",
+        "fireGate",
+        "foes",
+        "fork",
+        "formationPlan",
+        "gamePackDecide",
+        "gamePrep",
+        "leaderFire",
+        "lookahead",
+        "meleeOrders",
+        "observe",
+        "playerBrain",
+        "positionAnchor",
+        "predictVolley",
+        "reachOf",
+        "readEnemy",
+        "saveWounded",
+        "separate",
+        "shooterFocusOrders",
+        "smartEscape",
+        "step",
+        "table/combo callbacks",
+        "teamMelee",
+        "threatRead"
+      ],
+      "first_line": 222
+    },
+    "fin": {
+      "static_occurrences": 1,
+      "functions": [
+        "launch"
+      ],
+      "first_line": 1433
+    },
+    "find": {
+      "static_occurrences": 5,
+      "functions": [
+        "artilleryVolley",
+        "coordAbilities",
+        "decideOrder",
+        "planFrom"
+      ],
+      "first_line": 1287
+    },
+    "findIndex": {
+      "static_occurrences": 1,
+      "functions": [
+        "create"
+      ],
+      "first_line": 736
+    },
+    "finishing": {
+      "static_occurrences": 2,
+      "functions": [
+        "table/combo callbacks"
+      ],
+      "first_line": 3310
+    },
+    "fireHold": {
+      "static_occurrences": 4,
+      "functions": [
+        "act",
+        "leaderFire"
+      ],
+      "first_line": 2232
+    },
+    "fireOrder": {
+      "static_occurrences": 8,
+      "functions": [
+        "fireShot",
+        "fork",
+        "leaderFire",
+        "shooterTarget"
+      ],
+      "first_line": 1037
+    },
+    "fixlob": {
+      "static_occurrences": 1,
+      "functions": [
+        "table/combo callbacks"
+      ],
+      "first_line": 3355
+    },
+    "flank": {
+      "static_occurrences": 27,
+      "functions": [
+        "decideFormation",
+        "fork",
+        "meleeOrders",
+        "threatRead"
+      ],
+      "first_line": 1695
+    },
+    "flankDepth": {
+      "static_occurrences": 2,
+      "functions": [
+        "meleeOrders"
+      ],
+      "first_line": 2104
+    },
+    "flankForce": {
+      "static_occurrences": 1,
+      "functions": [
+        "meleeOrders"
+      ],
+      "first_line": 2090
+    },
+    "flankGoal": {
+      "static_occurrences": 11,
+      "functions": [
+        "decideFormation",
+        "fork",
+        "meleeOrders"
+      ],
+      "first_line": 2113
+    },
+    "flankStarted": {
+      "static_occurrences": 2,
+      "functions": [
+        "meleeOrders",
+        "threatRead"
+      ],
+      "first_line": 1695
+    },
+    "flankTarget": {
+      "static_occurrences": 1,
+      "functions": [
+        "meleeOrders"
+      ],
+      "first_line": 2114
+    },
+    "flankWait": {
+      "static_occurrences": 2,
+      "functions": [
+        "meleeOrders"
+      ],
+      "first_line": 2107
+    },
+    "flankWidth": {
+      "static_occurrences": 4,
+      "functions": [
+        "meleeOrders"
+      ],
+      "first_line": 2103
+    },
+    "flight": {
+      "static_occurrences": 8,
+      "functions": [
+        "artilleryVolley",
+        "coordAbilities",
+        "fireShell",
+        "fireShellAt",
+        "shellOf",
+        "useBarrage",
+        "useSlow"
+      ],
+      "first_line": 1056
+    },
+    "floor": {
+      "static_occurrences": 33,
+      "functions": [
+        "SHAPES",
+        "buildGrid",
+        "damage",
+        "drawOpponents",
+        "lgKey",
+        "lineBlocker",
+        "lineBlockerGrid",
+        "meleeOrders",
+        "playerBrain",
+        "predictVolley",
+        "separate",
+        "skirmishSpawn",
+        "step",
+        "table/combo callbacks"
+      ],
+      "first_line": 99
+    },
+    "flyOur": {
+      "static_occurrences": 3,
+      "functions": [
+        "lookahead"
+      ],
+      "first_line": 3173
+    },
+    "flyTheir": {
+      "static_occurrences": 3,
+      "functions": [
+        "lookahead"
+      ],
+      "first_line": 3173
+    },
+    "forEach": {
+      "static_occurrences": 10,
+      "functions": [
+        "artilleryVolley",
+        "assignSlots",
+        "bcPredict",
+        "buildGrid",
+        "create",
+        "launch",
+        "leaderFire",
+        "meleeOrders"
+      ],
+      "first_line": 760
+    },
+    "forcePlan": {
+      "static_occurrences": 2,
+      "functions": [
+        "planFrom"
+      ],
+      "first_line": 1781
+    },
+    "forceTeam": {
+      "static_occurrences": 1,
+      "functions": [
+        "planFrom"
+      ],
+      "first_line": 1781
+    },
+    "forked": {
+      "static_occurrences": 5,
+      "functions": [
+        "artilleryVolley",
+        "artyOutcome",
+        "directorStep",
+        "lookahead"
+      ],
+      "first_line": 1268
+    },
+    "formation": {
+      "static_occurrences": 3,
+      "functions": [
+        "create"
+      ],
+      "first_line": 769
+    },
+    "formed": {
+      "static_occurrences": 3,
+      "functions": [
+        "assignSlots",
+        "positionAnchor"
+      ],
+      "first_line": 2009
+    },
+    "formedEnemy": {
+      "static_occurrences": 1,
+      "functions": [
+        "bcFeatures"
+      ],
+      "first_line": 3107
+    },
+    "from": {
+      "static_occurrences": 18,
+      "functions": [
+        "SHAPES",
+        "artilleryVolley",
+        "coordAbilities",
+        "dodgeVector",
+        "fireGate",
+        "lookahead",
+        "rowOf",
+        "step",
+        "threatRead"
+      ],
+      "first_line": 611
+    },
+    "fromEntries": {
+      "static_occurrences": 4,
+      "functions": [
+        "SKILL_DEFAULTS",
+        "comboOf",
+        "fork",
+        "tacticsOf"
+      ],
+      "first_line": 301
+    },
+    "frontSpacing": {
+      "static_occurrences": 15,
+      "functions": [
+        "SHAPES"
+      ],
+      "first_line": 625
+    },
+    "game": {
+      "static_occurrences": 2,
+      "functions": [
+        "RULES",
+        "planFrom"
+      ],
+      "first_line": 153
+    },
+    "gap": {
+      "static_occurrences": 1,
+      "functions": [
+        "useBarrage"
+      ],
+      "first_line": 2643
+    },
+    "gapNear": {
+      "static_occurrences": 3,
+      "functions": [
+        "briefing",
+        "table/combo callbacks"
+      ],
+      "first_line": 1888
+    },
+    "get": {
+      "static_occurrences": 29,
+      "functions": [
+        "addPending",
+        "artyOutcome",
+        "buildGrid",
+        "coordAbilities",
+        "distinctTactics",
+        "fork",
+        "leaderFire",
+        "lgPut",
+        "lgRemove",
+        "lineBlocker",
+        "lineBlockerGrid",
+        "lookahead",
+        "meleeOrders",
+        "separate",
+        "shooterFocusOrders",
+        "shooterTarget",
+        "step",
+        "tacticsOf"
+      ],
+      "first_line": 859
+    },
+    "goal": {
+      "static_occurrences": 5,
+      "functions": [
+        "predictVolley"
+      ],
+      "first_line": 1129
+    },
+    "goals": {
+      "static_occurrences": 8,
+      "functions": [
+        "cmdOf",
+        "directorStep",
+        "fork"
+      ],
+      "first_line": 1846
+    },
+    "guardDir": {
+      "static_occurrences": 2,
+      "functions": [
+        "damage",
+        "gameBlock"
+      ],
+      "first_line": 563
+    },
+    "guardUntil": {
+      "static_occurrences": 4,
+      "functions": [
+        "damage",
+        "decide",
+        "gameBlock"
+      ],
+      "first_line": 557
+    },
+    "h": {
+      "static_occurrences": 11,
+      "functions": [
+        "leaderFire"
+      ],
+      "first_line": 2244
+    },
+    "halfArc": {
+      "static_occurrences": 1,
+      "functions": [
+        "damage"
+      ],
+      "first_line": 936
+    },
+    "has": {
+      "static_occurrences": 26,
+      "functions": [
+        "artilleryVolley",
+        "decMelee",
+        "decideFormation",
+        "distinctTactics",
+        "fork",
+        "gameDash",
+        "leaderFire",
+        "lookahead",
+        "meleeOrders",
+        "positionAnchor",
+        "shooterTarget",
+        "step"
+      ],
+      "first_line": 539
+    },
+    "hasSlot": {
+      "static_occurrences": 1,
+      "functions": [
+        "assignSlots"
+      ],
+      "first_line": 2044
+    },
+    "height": {
+      "static_occurrences": 24,
+      "functions": [
+        "create",
+        "gameDash",
+        "newPack",
+        "observe",
+        "playerBrain",
+        "positionAnchor",
+        "separate",
+        "skirmishSpawn",
+        "smartEscape",
+        "spawnHunter",
+        "surroundOrders",
+        "table/combo callbacks",
+        "useDisengage"
+      ],
+      "first_line": 547
+    },
+    "hitLog": {
+      "static_occurrences": 7,
+      "functions": [
+        "damage",
+        "fork",
+        "lookahead",
+        "step",
+        "threatRead"
+      ],
+      "first_line": 954
+    },
+    "hitRate": {
+      "static_occurrences": 4,
+      "functions": [
+        "leaderFire",
+        "pHit",
+        "step"
+      ],
+      "first_line": 1014
+    },
+    "hitSet": {
+      "static_occurrences": 7,
+      "functions": [
+        "fork",
+        "step"
+      ],
+      "first_line": 2940
+    },
+    "hits": {
+      "static_occurrences": 2,
+      "functions": [
+        "step"
+      ],
+      "first_line": 2994
+    },
+    "hold": {
+      "static_occurrences": 1,
+      "functions": [
+        "gamePackDecide"
+      ],
+      "first_line": 239
+    },
+    "holdWhileClosing": {
+      "static_occurrences": 1,
+      "functions": [
+        "positionAnchor"
+      ],
+      "first_line": 2010
+    },
+    "horizon": {
+      "static_occurrences": 5,
+      "functions": [
+        "artilleryVolley",
+        "gamePackDecide",
+        "lookahead"
+      ],
+      "first_line": 215
+    },
+    "hp": {
+      "static_occurrences": 53,
+      "functions": [
+        "applyRules",
+        "artilleryTarget",
+        "artilleryVolley",
+        "artyOutcome",
+        "bcFeatures",
+        "busyAct",
+        "coordAbilities",
+        "create",
+        "damage",
+        "decMelee",
+        "gameDash",
+        "gamePlayer",
+        "gameUnit",
+        "leaderFire",
+        "lookahead",
+        "makeUnit",
+        "observe",
+        "playerBrain",
+        "predictVolley",
+        "saveWounded",
+        "shooterFocusOrders",
+        "shooterTarget",
+        "smartVolley",
+        "step"
+      ],
+      "first_line": 474
+    },
+    "hpOurs": {
+      "static_occurrences": 1,
+      "functions": [
+        "briefing"
+      ],
+      "first_line": 1888
+    },
+    "hpTheirs": {
+      "static_occurrences": 1,
+      "functions": [
+        "briefing"
+      ],
+      "first_line": 1888
+    },
+    "hunterKills": {
+      "static_occurrences": 2,
+      "functions": [
+        "damage",
+        "summary"
+      ],
+      "first_line": 969
+    },
+    "hunters": {
+      "static_occurrences": 3,
+      "functions": [
+        "create",
+        "damage"
+      ],
+      "first_line": 762
+    },
+    "hypot": {
+      "static_occurrences": 1,
+      "functions": [
+        "len"
+      ],
+      "first_line": 604
+    },
+    "i": {
+      "static_occurrences": 5,
+      "functions": [
+        "directorStep"
+      ],
+      "first_line": 1906
+    },
+    "id": {
+      "static_occurrences": 22,
+      "functions": [
+        "artyOutcome",
+        "damage",
+        "decDirect",
+        "decMelee",
+        "decide",
+        "decideFormation",
+        "decideOrder",
+        "directorStep",
+        "gameDash",
+        "gameUnit",
+        "launch",
+        "lineBlocker",
+        "positionAnchor",
+        "shooterTarget"
+      ],
+      "first_line": 541
+    },
+    "ids": {
+      "static_occurrences": 2,
+      "functions": [
+        "table/combo callbacks"
+      ],
+      "first_line": 3333
+    },
+    "inZone": {
+      "static_occurrences": 1,
+      "functions": [
+        "assignSlots"
+      ],
+      "first_line": 2061
+    },
+    "includes": {
+      "static_occurrences": 11,
+      "functions": [
+        "artilleryVolley",
+        "decideFormation",
+        "directorStep",
+        "leaderFire",
+        "lookahead",
+        "planFrom",
+        "ready",
+        "tacticsOf"
+      ],
+      "first_line": 1268
+    },
+    "indexOf": {
+      "static_occurrences": 5,
+      "functions": [
+        "artilleryVolley",
+        "assignGuns",
+        "lgRemove",
+        "lookahead"
+      ],
+      "first_line": 874
+    },
+    "inertia": {
+      "static_occurrences": 2,
+      "functions": [
+        "lookahead"
+      ],
+      "first_line": 3208
+    },
+    "interrupt": {
+      "static_occurrences": 1,
+      "functions": [
+        "playerBrain"
+      ],
+      "first_line": 1586
+    },
+    "isArray": {
+      "static_occurrences": 1,
+      "functions": [
+        "directorStep"
+      ],
+      "first_line": 1891
+    },
+    "isPlayer": {
+      "static_occurrences": 7,
+      "functions": [
+        "artilleryVolley",
+        "damage",
+        "fireGate",
+        "foes",
+        "gameBlock",
+        "gameDash",
+        "predictVolley"
+      ],
+      "first_line": 534
+    },
+    "jinkSide": {
+      "static_occurrences": 4,
+      "functions": [
+        "decDirect"
+      ],
+      "first_line": 1545
+    },
+    "jinkUntil": {
+      "static_occurrences": 2,
+      "functions": [
+        "decDirect"
+      ],
+      "first_line": 1545
+    },
+    "join": {
+      "static_occurrences": 4,
+      "functions": [
+        "briefing",
+        "comboName",
+        "directorStep"
+      ],
+      "first_line": 1763
+    },
+    "k": {
+      "static_occurrences": 8,
+      "functions": [
+        "leaderFire",
+        "lookahead"
+      ],
+      "first_line": 2241
+    },
+    "kMin": {
+      "static_occurrences": 2,
+      "functions": [
+        "lookahead"
+      ],
+      "first_line": 3192
+    },
+    "kOur": {
+      "static_occurrences": 1,
+      "functions": [
+        "lookahead"
+      ],
+      "first_line": 3186
+    },
+    "kTheir": {
+      "static_occurrences": 1,
+      "functions": [
+        "lookahead"
+      ],
+      "first_line": 3186
+    },
+    "keep": {
+      "static_occurrences": 4,
+      "functions": [
+        "decideFormation",
+        "decideOrder",
+        "goTo",
+        "kiterRetreat"
+      ],
+      "first_line": 1474
+    },
+    "keys": {
+      "static_occurrences": 5,
+      "functions": [
+        "POOL",
+        "applyRules",
+        "directorStep",
+        "gamePackDecide",
+        "lookahead"
+      ],
+      "first_line": 86
+    },
+    "kills": {
+      "static_occurrences": 1,
+      "functions": [
+        "step"
+      ],
+      "first_line": 2993
+    },
+    "kind": {
+      "static_occurrences": 12,
+      "functions": [
+        "create",
+        "gameUnit",
+        "playerBrain",
+        "retime",
+        "skirmishSpawn"
+      ],
+      "first_line": 570
+    },
+    "kinds": {
+      "static_occurrences": 12,
+      "functions": [
+        "create",
+        "fork",
+        "gameUnit",
+        "skirmishSpawn",
+        "table/combo callbacks"
+      ],
+      "first_line": 424
+    },
+    "kiteLeash": {
+      "static_occurrences": 1,
+      "functions": [
+        "decideFormation"
+      ],
+      "first_line": 2443
+    },
+    "kiteRadius": {
+      "static_occurrences": 1,
+      "functions": [
+        "buildProfile"
+      ],
+      "first_line": 338
+    },
+    "kiterBackpedal": {
+      "static_occurrences": 1,
+      "functions": [
+        "kiterRetreat"
+      ],
+      "first_line": 2333
+    },
+    "l": {
+      "static_occurrences": 7,
+      "functions": [
+        "SHAPES",
+        "assignSlots"
+      ],
+      "first_line": 659
+    },
+    "lance": {
+      "static_occurrences": 1,
+      "functions": [
+        "playerBrain"
+      ],
+      "first_line": 1618
+    },
+    "laneLeash": {
+      "static_occurrences": 1,
+      "functions": [
+        "decideFormation"
+      ],
+      "first_line": 2443
+    },
+    "last": {
+      "static_occurrences": 2,
+      "functions": [
+        "directorStep"
+      ],
+      "first_line": 1893
+    },
+    "lastHitT": {
+      "static_occurrences": 3,
+      "functions": [
+        "damage",
+        "fork",
+        "readEnemy"
+      ],
+      "first_line": 953
+    },
+    "lastLook": {
+      "static_occurrences": 2,
+      "functions": [
+        "lookahead"
+      ],
+      "first_line": 3136
+    },
+    "lastProgress": {
+      "static_occurrences": 2,
+      "functions": [
+        "lookahead"
+      ],
+      "first_line": 3197
+    },
+    "lastShotHitT": {
+      "static_occurrences": 2,
+      "functions": [
+        "damage",
+        "defaultAbilities"
+      ],
+      "first_line": 941
+    },
+    "lastThink": {
+      "static_occurrences": 4,
+      "functions": [
+        "commander",
+        "lookahead"
+      ],
+      "first_line": 1797
+    },
+    "launch": {
+      "static_occurrences": 5,
+      "functions": [
+        "fireShot",
+        "gameUnit",
+        "lobV",
+        "table/combo callbacks"
+      ],
+      "first_line": 439
+    },
+    "leaveWithdraw": {
+      "static_occurrences": 1,
+      "functions": [
+        "gamePackDecide"
+      ],
+      "first_line": 239
+    },
+    "left": {
+      "static_occurrences": 12,
+      "functions": [
+        "create",
+        "done",
+        "gameDash",
+        "leaderFire",
+        "shotDodgeVector",
+        "skirmishSpawn",
+        "step"
+      ],
+      "first_line": 536
+    },
+    "length": {
+      "static_occurrences": 199,
+      "functions": [
+        "SHAPES",
+        "artilleryVolley",
+        "artyOutcome",
+        "assignSlots",
+        "bcFeatures",
+        "castPermit",
+        "composeF",
+        "coordAbilities",
+        "create",
+        "damage",
+        "decide",
+        "decideOrder",
+        "decideReleased",
+        "defaultAbilities",
+        "directorStep",
+        "done",
+        "drawOpponents",
+        "finishing",
+        "fireGate",
+        "formationPlan",
+        "gamePackDecide",
+        "gamePrep",
+        "launch",
+        "leaderFire",
+        "lookahead",
+        "maxD",
+        "meleeOrders",
+        "note",
+        "observe",
+        "paceOf",
+        "planFrom",
+        "playerBrain",
+        "positionAnchor",
+        "predictVolley",
+        "ranks",
+        "reachOf",
+        "readEnemy",
+        "saveWounded",
+        "separate",
+        "shooterFocusOrders",
+        "shooterTarget",
+        "skirmishSpawn",
+        "smartVolley",
+        "step",
+        "summary",
+        "surroundOrders",
+        "table/combo callbacks",
+        "threatRead"
+      ],
+      "first_line": 98
+    },
+    "level": {
+      "static_occurrences": 2,
+      "functions": [
+        "buildProfile"
+      ],
+      "first_line": 330
+    },
+    "limbs": {
+      "static_occurrences": 5,
+      "functions": [
+        "fork",
+        "gamePlayer",
+        "playerBrain"
+      ],
+      "first_line": 594
+    },
+    "line": {
+      "static_occurrences": 3,
+      "functions": [
+        "formationPlan",
+        "gamePackDecide"
+      ],
+      "first_line": 219
+    },
+    "lob": {
+      "static_occurrences": 5,
+      "functions": [
+        "artyOutcome",
+        "gameUnit",
+        "lobV",
+        "step"
+      ],
+      "first_line": 580
+    },
+    "lock": {
+      "static_occurrences": 3,
+      "functions": [
+        "predictVolley",
+        "spend"
+      ],
+      "first_line": 1124
+    },
+    "log": {
+      "static_occurrences": 2,
+      "functions": [
+        "directorStep",
+        "fork"
+      ],
+      "first_line": 1896
+    },
+    "lookPlan": {
+      "static_occurrences": 16,
+      "functions": [
+        "bcFeatures",
+        "lookahead",
+        "planFrom"
+      ],
+      "first_line": 1783
+    },
+    "lookStable": {
+      "static_occurrences": 2,
+      "functions": [
+        "lookahead"
+      ],
+      "first_line": 3136
+    },
+    "lookahead": {
+      "static_occurrences": 9,
+      "functions": [
+        "buildProfile",
+        "lookahead",
+        "planDwell",
+        "planFrom"
+      ],
+      "first_line": 335
+    },
+    "lowHpSurvival": {
+      "static_occurrences": 2,
+      "functions": [
+        "gameDash",
+        "table/combo callbacks"
+      ],
+      "first_line": 440
+    },
+    "lsp": {
+      "static_occurrences": 5,
+      "functions": [
+        "act",
+        "step"
+      ],
+      "first_line": 2520
+    },
+    "lvx": {
+      "static_occurrences": 5,
+      "functions": [
+        "act",
+        "step"
+      ],
+      "first_line": 2520
+    },
+    "lvy": {
+      "static_occurrences": 5,
+      "functions": [
+        "act",
+        "step"
+      ],
+      "first_line": 2520
+    },
+    "m": {
+      "static_occurrences": 1,
+      "functions": [
+        "formationPlan"
+      ],
+      "first_line": 1820
+    },
+    "manual": {
+      "static_occurrences": 14,
+      "functions": [
+        "fork",
+        "gameBlock",
+        "gameDash",
+        "playerBrain"
+      ],
+      "first_line": 534
+    },
+    "map": {
+      "static_occurrences": 69,
+      "functions": [
+        "SHAPES",
+        "SKILL_DEFAULTS",
+        "artilleryVolley",
+        "artyOutcome",
+        "assignSlots",
+        "bcPredict",
+        "bcTop",
+        "comboName",
+        "comboOf",
+        "decideOrder",
+        "directorStep",
+        "fireGate",
+        "fork",
+        "gamePlayer",
+        "launch",
+        "lookahead",
+        "maxD",
+        "paceOf",
+        "predictVolley",
+        "reachOf",
+        "smartVolley",
+        "surroundOrders",
+        "table/combo callbacks",
+        "tacticsOf"
+      ],
+      "first_line": 301
+    },
+    "max": {
+      "static_occurrences": 61,
+      "functions": [
+        "SHAPES",
+        "artilleryTarget",
+        "artilleryVolley",
+        "artyOutcome",
+        "assignSlots",
+        "bcFeatures",
+        "bcPredict",
+        "bcTop",
+        "canDodge",
+        "castBlasts",
+        "clamp",
+        "coordAbilities",
+        "create",
+        "damage",
+        "decMelee",
+        "directorStep",
+        "fireGate",
+        "gamePackDecide",
+        "lineBlocker",
+        "lineBlockerGrid",
+        "lookahead",
+        "maxD",
+        "observe",
+        "playerBrain",
+        "predictVolley",
+        "readEnemy",
+        "shooterTarget",
+        "smartEscape",
+        "standoffOf",
+        "step",
+        "surroundOrders",
+        "table/combo callbacks",
+        "useCharge"
+      ],
+      "first_line": 210
+    },
+    "maxAlive": {
+      "static_occurrences": 3,
+      "functions": [
+        "create",
+        "step"
+      ],
+      "first_line": 744
+    },
+    "maxStrikersPerTarget": {
+      "static_occurrences": 1,
+      "functions": [
+        "meleeOrders"
+      ],
+      "first_line": 2133
+    },
+    "maxhp": {
+      "static_occurrences": 5,
+      "functions": [
+        "bcFeatures",
+        "gameDash",
+        "saveWounded",
+        "threatWorth"
+      ],
+      "first_line": 532
+    },
+    "melee": {
+      "static_occurrences": 21,
+      "functions": [
+        "SHAPES",
+        "assignSlots",
+        "create",
+        "summary",
+        "table/combo callbacks"
+      ],
+      "first_line": 425
+    },
+    "meleeAt": {
+      "static_occurrences": 2,
+      "functions": [
+        "damage",
+        "meleeAnswer"
+      ],
+      "first_line": 956
+    },
+    "meleeAttacker": {
+      "static_occurrences": 4,
+      "functions": [
+        "damage",
+        "fork",
+        "meleeAnswer"
+      ],
+      "first_line": 956
+    },
+    "meleeBand": {
+      "static_occurrences": 1,
+      "functions": [
+        "gamePackDecide"
+      ],
+      "first_line": 209
+    },
+    "meleeCharging": {
+      "static_occurrences": 1,
+      "functions": [
+        "bcFeatures"
+      ],
+      "first_line": 3107
+    },
+    "meleeDoctrine": {
+      "static_occurrences": 3,
+      "functions": [
+        "meleeOrders"
+      ],
+      "first_line": 2077
+    },
+    "meleeHits": {
+      "static_occurrences": 4,
+      "functions": [
+        "act",
+        "step"
+      ],
+      "first_line": 2482
+    },
+    "meleeKeepAway": {
+      "static_occurrences": 1,
+      "functions": [
+        "positionAnchor"
+      ],
+      "first_line": 1988
+    },
+    "min": {
+      "static_occurrences": 67,
+      "functions": [
+        "SHAPES",
+        "assignSlots",
+        "bcFeatures",
+        "busyAct",
+        "clamp",
+        "coordAbilities",
+        "create",
+        "damage",
+        "directorStep",
+        "fireGate",
+        "gameDash",
+        "interceptPoint",
+        "lineBlocker",
+        "lineBlockerGrid",
+        "lookahead",
+        "moveToward",
+        "observe",
+        "pHitLine",
+        "playerBrain",
+        "positionAnchor",
+        "predictVolley",
+        "ranks",
+        "retime",
+        "shotDodgeVector",
+        "smartVolley",
+        "standoffOf",
+        "step",
+        "table/combo callbacks",
+        "useCharge"
+      ],
+      "first_line": 439
+    },
+    "minRange": {
+      "static_occurrences": 10,
+      "functions": [
+        "act",
+        "coordAbilities",
+        "defaultAbilities",
+        "gameUnit",
+        "minR",
+        "useBarrage",
+        "useSlow"
+      ],
+      "first_line": 577
+    },
+    "mind": {
+      "static_occurrences": 3,
+      "functions": [
+        "lookahead"
+      ],
+      "first_line": 3145
+    },
+    "mindTurn": {
+      "static_occurrences": 2,
+      "functions": [
+        "lookahead"
+      ],
+      "first_line": 3230
+    },
+    "mode": {
+      "static_occurrences": 2,
+      "functions": [
+        "fork",
+        "summary"
+      ],
+      "first_line": 3036
+    },
+    "models": {
+      "static_occurrences": 1,
+      "functions": [
+        "lookahead"
+      ],
+      "first_line": 3181
+    },
+    "monsterDeaths": {
+      "static_occurrences": 2,
+      "functions": [
+        "damage",
+        "summary"
+      ],
+      "first_line": 971
+    },
+    "move": {
+      "static_occurrences": 4,
+      "functions": [
+        "fork",
+        "goTo",
+        "walk"
+      ],
+      "first_line": 1474
+    },
+    "mul": {
+      "static_occurrences": 2,
+      "functions": [
+        "step",
+        "walk"
+      ],
+      "first_line": 2472
+    },
+    "mult": {
+      "static_occurrences": 3,
+      "functions": [
+        "busyAct",
+        "damage",
+        "playerBrain"
+      ],
+      "first_line": 936
+    },
+    "n": {
+      "static_occurrences": 9,
+      "functions": [
+        "busyAct",
+        "gameDash",
+        "laneClear",
+        "moveToward",
+        "separate",
+        "table/combo callbacks"
+      ],
+      "first_line": 548
+    },
+    "name": {
+      "static_occurrences": 11,
+      "functions": [
+        "artilleryVolley",
+        "artyOutcome",
+        "directorStep"
+      ],
+      "first_line": 1361
+    },
+    "net": {
+      "static_occurrences": 2,
+      "functions": [
+        "lookahead"
+      ],
+      "first_line": 3142
+    },
+    "netPrune": {
+      "static_occurrences": 2,
+      "functions": [
+        "lookahead"
+      ],
+      "first_line": 3142
+    },
+    "nextId": {
+      "static_occurrences": 4,
+      "functions": [
+        "create",
+        "fork",
+        "skirmishSpawn",
+        "spawnHunter"
+      ],
+      "first_line": 721
+    },
+    "o": {
+      "static_occurrences": 78,
+      "functions": [
+        "aimClear",
+        "canDodge",
+        "commander",
+        "coordOn",
+        "damage",
+        "decDirect",
+        "done",
+        "fc",
+        "fireShot",
+        "foes",
+        "fork",
+        "gameDash",
+        "gamePrep",
+        "isGame",
+        "leaderFire",
+        "lookahead",
+        "newPack",
+        "observe",
+        "planFrom",
+        "playerBrain",
+        "positionAnchor",
+        "readEnemy",
+        "ready",
+        "saveWounded",
+        "separate",
+        "skirmishSpawn",
+        "smartEscape",
+        "spawnHunter",
+        "step",
+        "surroundOrders",
+        "table/combo callbacks",
+        "triggerAbilityNow",
+        "useDisengage",
+        "windUp"
+      ],
+      "first_line": 481
+    },
+    "objective": {
+      "static_occurrences": 5,
+      "functions": [
+        "buildProfile",
+        "lookahead"
+      ],
+      "first_line": 347
+    },
+    "oblique": {
+      "static_occurrences": 1,
+      "functions": [
+        "positionAnchor"
+      ],
+      "first_line": 1956
+    },
+    "obs": {
+      "static_occurrences": 20,
+      "functions": [
+        "directorStep",
+        "table/combo callbacks"
+      ],
+      "first_line": 1895
+    },
+    "oc": {
+      "static_occurrences": 5,
+      "functions": [
+        "table/combo callbacks"
+      ],
+      "first_line": 3311
+    },
+    "ok": {
+      "static_occurrences": 1,
+      "functions": [
+        "laneClear"
+      ],
+      "first_line": 918
+    },
+    "order": {
+      "static_occurrences": 11,
+      "functions": [
+        "decide",
+        "decideOrder",
+        "fork"
+      ],
+      "first_line": 2365
+    },
+    "orderEvents": {
+      "static_occurrences": 4,
+      "functions": [
+        "decide",
+        "decideOrder"
+      ],
+      "first_line": 2369
+    },
+    "ourArt": {
+      "static_occurrences": 2,
+      "functions": [
+        "RULES"
+      ],
+      "first_line": 158
+    },
+    "ourCount": {
+      "static_occurrences": 3,
+      "functions": [
+        "RULES",
+        "STORM_RULES"
+      ],
+      "first_line": 153
+    },
+    "ourMelee": {
+      "static_occurrences": 4,
+      "functions": [
+        "RULES",
+        "STORM_RULES",
+        "WOLF_RULES"
+      ],
+      "first_line": 155
+    },
+    "ourShoot": {
+      "static_occurrences": 1,
+      "functions": [
+        "RULES"
+      ],
+      "first_line": 159
+    },
+    "ours": {
+      "static_occurrences": 9,
+      "functions": [
+        "create",
+        "table/combo callbacks"
+      ],
+      "first_line": 733
+    },
+    "oursByRole": {
+      "static_occurrences": 2,
+      "functions": [
+        "briefing",
+        "table/combo callbacks"
+      ],
+      "first_line": 1888
+    },
+    "outranged": {
+      "static_occurrences": 1,
+      "functions": [
+        "STORM_RULES"
+      ],
+      "first_line": 166
+    },
+    "own": {
+      "static_occurrences": 3,
+      "functions": [
+        "artilleryVolley",
+        "step"
+      ],
+      "first_line": 1344
+    },
+    "p": {
+      "static_occurrences": 1,
+      "functions": [
+        "gameDash"
+      ],
+      "first_line": 542
+    },
+    "pack": {
+      "static_occurrences": 7,
+      "functions": [
+        "table/combo callbacks"
+      ],
+      "first_line": 3305
+    },
+    "packFocus": {
+      "static_occurrences": 7,
+      "functions": [
+        "fork",
+        "shooterFocusOrders",
+        "shooterTarget",
+        "surroundOrders"
+      ],
+      "first_line": 2153
+    },
+    "packs": {
+      "static_occurrences": 31,
+      "functions": [
+        "act",
+        "addPending",
+        "artyOutcome",
+        "busyAct",
+        "create",
+        "decDirect",
+        "decMelee",
+        "decide",
+        "decideFormation",
+        "decideOwn",
+        "fc",
+        "fireGate",
+        "fireShot",
+        "fork",
+        "lookahead",
+        "predictVolley",
+        "step"
+      ],
+      "first_line": 770
+    },
+    "parse": {
+      "static_occurrences": 1,
+      "functions": [
+        "SANDBOX_ROLE"
+      ],
+      "first_line": 467
+    },
+    "peelRadius": {
+      "static_occurrences": 1,
+      "functions": [
+        "assignSlots"
+      ],
+      "first_line": 2066
+    },
+    "pend": {
+      "static_occurrences": 1,
+      "functions": [
+        "step"
+      ],
+      "first_line": 2929
+    },
+    "pending": {
+      "static_occurrences": 9,
+      "functions": [
+        "addPending",
+        "coordAbilities",
+        "fork",
+        "leaderFire",
+        "shooterFocusOrders",
+        "shooterTarget",
+        "step"
+      ],
+      "first_line": 978
+    },
+    "per": {
+      "static_occurrences": 4,
+      "functions": [
+        "artilleryVolley",
+        "artyOutcome"
+      ],
+      "first_line": 1348
+    },
+    "perception": {
+      "static_occurrences": 3,
+      "functions": [
+        "decDirect",
+        "foes",
+        "positionAnchor"
+      ],
+      "first_line": 818
+    },
+    "phase": {
+      "static_occurrences": 22,
+      "functions": [
+        "directorStep",
+        "formationPlan",
+        "meleeOrders",
+        "positionAnchor",
+        "readEnemy"
+      ],
+      "first_line": 1727
+    },
+    "phases": {
+      "static_occurrences": 6,
+      "functions": [
+        "directorStep"
+      ],
+      "first_line": 1906
+    },
+    "pierce": {
+      "static_occurrences": 3,
+      "functions": [
+        "playerShot",
+        "step"
+      ],
+      "first_line": 1578
+    },
+    "pl": {
+      "static_occurrences": 1,
+      "functions": [
+        "predictVolley"
+      ],
+      "first_line": 1148
+    },
+    "plan": {
+      "static_occurrences": 6,
+      "functions": [
+        "gamePackDecide",
+        "lookahead",
+        "planSwitchable",
+        "readEnemy",
+        "setPlan"
+      ],
+      "first_line": 237
+    },
+    "planDmg": {
+      "static_occurrences": 2,
+      "functions": [
+        "step"
+      ],
+      "first_line": 2994
+    },
+    "planPred": {
+      "static_occurrences": 2,
+      "functions": [
+        "step"
+      ],
+      "first_line": 2989
+    },
+    "planShells": {
+      "static_occurrences": 2,
+      "functions": [
+        "step"
+      ],
+      "first_line": 2989
+    },
+    "planSince": {
+      "static_occurrences": 4,
+      "functions": [
+        "gamePackDecide",
+        "lookahead",
+        "planSwitchable",
+        "setPlan"
+      ],
+      "first_line": 237
+    },
+    "planWhy": {
+      "static_occurrences": 1,
+      "functions": [
+        "setPlan"
+      ],
+      "first_line": 1791
+    },
+    "plans": {
+      "static_occurrences": 7,
+      "functions": [
+        "commander",
+        "lookahead"
+      ],
+      "first_line": 1804
+    },
+    "player": {
+      "static_occurrences": 11,
+      "functions": [
+        "artilleryVolley",
+        "artyOutcome",
+        "create",
+        "damage",
+        "fireGate",
+        "gamePlayer",
+        "playerBrain",
+        "predictVolley",
+        "table/combo callbacks",
+        "threatWorth"
+      ],
+      "first_line": 447
+    },
+    "playerDashes": {
+      "static_occurrences": 2,
+      "functions": [
+        "playerBrain"
+      ],
+      "first_line": 1598
+    },
+    "playerInterrupts": {
+      "static_occurrences": 2,
+      "functions": [
+        "playerBrain"
+      ],
+      "first_line": 1586
+    },
+    "playerStyle": {
+      "static_occurrences": 1,
+      "functions": [
+        "playerBrain"
+      ],
+      "first_line": 1607
+    },
+    "posOur": {
+      "static_occurrences": 2,
+      "functions": [
+        "lookahead"
+      ],
+      "first_line": 3178
+    },
+    "posTheir": {
+      "static_occurrences": 2,
+      "functions": [
+        "lookahead"
+      ],
+      "first_line": 3178
+    },
+    "position": {
+      "static_occurrences": 3,
+      "functions": [
+        "bcFeatures",
+        "comboName"
+      ],
+      "first_line": 1763
+    },
+    "post": {
+      "static_occurrences": 7,
+      "functions": [
+        "act",
+        "decArtillery",
+        "decDirect",
+        "decideFormation"
+      ],
+      "first_line": 1525
+    },
+    "pred": {
+      "static_occurrences": 7,
+      "functions": [
+        "artilleryVolley",
+        "artyOutcome",
+        "lookahead",
+        "step"
+      ],
+      "first_line": 1244
+    },
+    "prep": {
+      "static_occurrences": 32,
+      "functions": [
+        "act",
+        "artilleryVolley",
+        "castBlasts",
+        "castPermit",
+        "couldStart",
+        "decMelee",
+        "fireGate",
+        "gamePrep",
+        "playerBrain",
+        "prepared",
+        "released",
+        "step",
+        "useDisengage"
+      ],
+      "first_line": 491
+    },
+    "preset": {
+      "static_occurrences": 4,
+      "functions": [
+        "create",
+        "resolveF"
+      ],
+      "first_line": 694
+    },
+    "priority": {
+      "static_occurrences": 2,
+      "functions": [
+        "directorStep"
+      ],
+      "first_line": 1929
+    },
+    "prot": {
+      "static_occurrences": 10,
+      "functions": [
+        "damage",
+        "decMelee",
+        "gamePlayer",
+        "gameUnit",
+        "predictVolley",
+        "step"
+      ],
+      "first_line": 577
+    },
+    "protection": {
+      "static_occurrences": 1,
+      "functions": [
+        "gameUnit"
+      ],
+      "first_line": 577
+    },
+    "pulse": {
+      "static_occurrences": 3,
+      "functions": [
+        "playerBrain"
+      ],
+      "first_line": 1641
+    },
+    "pursuit": {
+      "static_occurrences": 1,
+      "functions": [
+        "buildProfile"
+      ],
+      "first_line": 338
+    },
+    "push": {
+      "static_occurrences": 66,
+      "functions": [
+        "SHAPES",
+        "act",
+        "artilleryVolley",
+        "assignGuns",
+        "bcFeatures",
+        "buildGrid",
+        "castBlasts",
+        "composeF",
+        "create",
+        "damage",
+        "decide",
+        "decideOrder",
+        "directorStep",
+        "drawOpponents",
+        "fireShellAt",
+        "fireShot",
+        "fork",
+        "launch",
+        "leaderFire",
+        "lgPut",
+        "lineBlockerGrid",
+        "lookahead",
+        "note",
+        "playerShot",
+        "ranks",
+        "separate",
+        "shooterTarget",
+        "skirmishSpawn",
+        "spawnHunter",
+        "step",
+        "team",
+        "useBarrage",
+        "useSlow"
+      ],
+      "first_line": 100
+    },
+    "px0": {
+      "static_occurrences": 2,
+      "functions": [
+        "step"
+      ],
+      "first_line": 2876
+    },
+    "py0": {
+      "static_occurrences": 2,
+      "functions": [
+        "step"
+      ],
+      "first_line": 2876
+    },
+    "quiet": {
+      "static_occurrences": 3,
+      "functions": [
+        "RULES",
+        "bcFeatures"
+      ],
+      "first_line": 157
+    },
+    "r": {
+      "static_occurrences": 75,
+      "functions": [
+        "aimClear",
+        "applyRules",
+        "artyOutcome",
+        "busyAct",
+        "canDodge",
+        "coordAbilities",
+        "decDirect",
+        "decMelee",
+        "dodgeVector",
+        "formationPlan",
+        "gameBlock",
+        "gameDash",
+        "gamePackDecide",
+        "gamePlayer",
+        "gameUnit",
+        "gap",
+        "lineBlocker",
+        "lineBlockerGrid",
+        "makeUnit",
+        "pHitLine",
+        "playerBrain",
+        "predictVolley",
+        "separate",
+        "shotDodgeVector",
+        "smartEscape",
+        "smartVolley",
+        "step",
+        "surroundOrders",
+        "useDisengage"
+      ],
+      "first_line": 215
+    },
+    "radius": {
+      "static_occurrences": 8,
+      "functions": [
+        "applyRules",
+        "coordAbilities",
+        "decideOrder",
+        "gameUnit",
+        "playerBrain",
+        "step"
+      ],
+      "first_line": 476
+    },
+    "raidSpent": {
+      "static_occurrences": 5,
+      "functions": [
+        "WOLF_RULES",
+        "meleeOrders",
+        "threatRead"
+      ],
+      "first_line": 176
+    },
+    "raidTarget": {
+      "static_occurrences": 1,
+      "functions": [
+        "decideReleased"
+      ],
+      "first_line": 2312
+    },
+    "raiders": {
+      "static_occurrences": 3,
+      "functions": [
+        "RULES",
+        "bcFeatures"
+      ],
+      "first_line": 154
+    },
+    "rand": {
+      "static_occurrences": 3,
+      "functions": [
+        "fork",
+        "spawnHunter"
+      ],
+      "first_line": 790
+    },
+    "range": {
+      "static_occurrences": 78,
+      "functions": [
+        "act",
+        "artilleryTarget",
+        "artilleryVolley",
+        "bcFeatures",
+        "busyAct",
+        "canDodge",
+        "coordAbilities",
+        "decArtillery",
+        "decDirect",
+        "decMelee",
+        "decide",
+        "decideAlone",
+        "decideFormation",
+        "decideOrder",
+        "defaultAbilities",
+        "fireShot",
+        "gamePackDecide",
+        "gamePlayer",
+        "inReachOf",
+        "leaderFire",
+        "makeUnit",
+        "pHitLine",
+        "playerBrain",
+        "playerShot",
+        "positionAnchor",
+        "predictVolley",
+        "reachOf",
+        "reachRate",
+        "saveWounded",
+        "shooterFocusOrders",
+        "shooterTarget",
+        "smartVolley",
+        "surroundOrders",
+        "table/combo callbacks",
+        "threatRead",
+        "useAimed",
+        "useBarrage",
+        "useSlow"
+      ],
+      "first_line": 215
+    },
+    "ranged": {
+      "static_occurrences": 26,
+      "functions": [
+        "SHAPES",
+        "applyRules",
+        "assignSlots",
+        "create",
+        "formationPlan",
+        "leaderFire",
+        "summary",
+        "table/combo callbacks"
+      ],
+      "first_line": 430
+    },
+    "rangedRanks": {
+      "static_occurrences": 2,
+      "functions": [
+        "SHAPES"
+      ],
+      "first_line": 623
+    },
+    "rankSpacing": {
+      "static_occurrences": 23,
+      "functions": [
+        "SHAPES"
+      ],
+      "first_line": 624
+    },
+    "ratio": {
+      "static_occurrences": 4,
+      "functions": [
+        "briefing",
+        "table/combo callbacks"
+      ],
+      "first_line": 1888
+    },
+    "ratio0": {
+      "static_occurrences": 1,
+      "functions": [
+        "table/combo callbacks"
+      ],
+      "first_line": 3325
+    },
+    "reach": {
+      "static_occurrences": 7,
+      "functions": [
+        "applyRules",
+        "gameUnit",
+        "leaderFire",
+        "standoffOf"
+      ],
+      "first_line": 463
+    },
+    "reactAim": {
+      "static_occurrences": 1,
+      "functions": [
+        "buildProfile"
+      ],
+      "first_line": 338
+    },
+    "reactiveBase": {
+      "static_occurrences": 1,
+      "functions": [
+        "buildProfile"
+      ],
+      "first_line": 333
+    },
+    "reactiveDodge": {
+      "static_occurrences": 1,
+      "functions": [
+        "commander"
+      ],
+      "first_line": 1805
+    },
+    "read": {
+      "static_occurrences": 2,
+      "functions": [
+        "bcFeatures",
+        "commander"
+      ],
+      "first_line": 1801
+    },
+    "rearGap": {
+      "static_occurrences": 6,
+      "functions": [
+        "SHAPES"
+      ],
+      "first_line": 624
+    },
+    "rec": {
+      "static_occurrences": 6,
+      "functions": [
+        "damage",
+        "launch",
+        "note"
+      ],
+      "first_line": 925
+    },
+    "recentTaken": {
+      "static_occurrences": 1,
+      "functions": [
+        "STORM_RULES"
+      ],
+      "first_line": 166
+    },
+    "reduce": {
+      "static_occurrences": 19,
+      "functions": [
+        "artilleryVolley",
+        "artyOutcome",
+        "bcFeatures",
+        "bcPredict",
+        "bcTop",
+        "lookahead",
+        "observe",
+        "threatRead"
+      ],
+      "first_line": 1260
+    },
+    "rel": {
+      "static_occurrences": 6,
+      "functions": [
+        "act",
+        "decArtillery",
+        "decDirect",
+        "decMelee",
+        "decideAlone",
+        "decideFormation"
+      ],
+      "first_line": 1508
+    },
+    "release": {
+      "static_occurrences": 6,
+      "functions": [
+        "composeF",
+        "decideFormation",
+        "leaderFire",
+        "tacticsOf"
+      ],
+      "first_line": 1753
+    },
+    "reserve": {
+      "static_occurrences": 1,
+      "functions": [
+        "playerBrain"
+      ],
+      "first_line": 1629
+    },
+    "reservedUntil": {
+      "static_occurrences": 7,
+      "functions": [
+        "act",
+        "artilleryVolley",
+        "launch"
+      ],
+      "first_line": 1244
+    },
+    "respCount": {
+      "static_occurrences": 4,
+      "functions": [
+        "gamePackDecide"
+      ],
+      "first_line": 229
+    },
+    "respSeen": {
+      "static_occurrences": 2,
+      "functions": [
+        "gamePackDecide"
+      ],
+      "first_line": 229
+    },
+    "respawn": {
+      "static_occurrences": 1,
+      "functions": [
+        "damage"
+      ],
+      "first_line": 970
+    },
+    "response": {
+      "static_occurrences": 4,
+      "functions": [
+        "gamePackDecide"
+      ],
+      "first_line": 231
+    },
+    "retreatFrom": {
+      "static_occurrences": 6,
+      "functions": [
+        "positionAnchor"
+      ],
+      "first_line": 1997
+    },
+    "ringReach": {
+      "static_occurrences": 1,
+      "functions": [
+        "decMelee"
+      ],
+      "first_line": 1514
+    },
+    "roNext": {
+      "static_occurrences": 2,
+      "functions": [
+        "artilleryVolley"
+      ],
+      "first_line": 1353
+    },
+    "robustTop": {
+      "static_occurrences": 1,
+      "functions": [
+        "lookahead"
+      ],
+      "first_line": 3242
+    },
+    "role": {
+      "static_occurrences": 165,
+      "functions": [
+        "artilleryTarget",
+        "artilleryVolley",
+        "assignSlots",
+        "bcFeatures",
+        "canDodge",
+        "castBlasts",
+        "coordAbilities",
+        "create",
+        "damage",
+        "decDirect",
+        "decMelee",
+        "decide",
+        "decideAlone",
+        "decideFormation",
+        "decideOrder",
+        "decideReleased",
+        "defaultAbilities",
+        "fireGate",
+        "fireShot",
+        "formationPlan",
+        "gameDash",
+        "gamePackDecide",
+        "gamePrep",
+        "gameUnit",
+        "meleeOrders",
+        "observe",
+        "pinned",
+        "playerBrain",
+        "positionAnchor",
+        "predictVolley",
+        "reachOf",
+        "reachRate",
+        "readEnemy",
+        "ready",
+        "shooterTarget",
+        "skirmishSpawn",
+        "smartVolley",
+        "step",
+        "surroundOrders",
+        "table/combo callbacks",
+        "teamMelee",
+        "threatRead",
+        "windUp"
+      ],
+      "first_line": 209
+    },
+    "roleKind": {
+      "static_occurrences": 3,
+      "functions": [
+        "gameUnit",
+        "table/combo callbacks"
+      ],
+      "first_line": 441
+    },
+    "roles": {
+      "static_occurrences": 11,
+      "functions": [
+        "directorStep",
+        "fork",
+        "table/combo callbacks"
+      ],
+      "first_line": 1897
+    },
+    "room": {
+      "static_occurrences": 1,
+      "functions": [
+        "bcFeatures"
+      ],
+      "first_line": 3108
+    },
+    "round": {
+      "static_occurrences": 10,
+      "functions": [
+        "artilleryVolley",
+        "briefing",
+        "decDirect",
+        "gameDash",
+        "launch",
+        "step"
+      ],
+      "first_line": 541
+    },
+    "rt": {
+      "static_occurrences": 2,
+      "functions": [
+        "assignGuns"
+      ],
+      "first_line": 1420
+    },
+    "rules": {
+      "static_occurrences": 6,
+      "functions": [
+        "buildProfile",
+        "commander",
+        "create",
+        "isGame"
+      ],
+      "first_line": 343
+    },
+    "rush": {
+      "static_occurrences": 1,
+      "functions": [
+        "gamePackDecide"
+      ],
+      "first_line": 215
+    },
+    "s": {
+      "static_occurrences": 2,
+      "functions": [
+        "shotDodgeVector"
+      ],
+      "first_line": 1455
+    },
+    "sandboxAbilities": {
+      "static_occurrences": 1,
+      "functions": [
+        "create"
+      ],
+      "first_line": 712
+    },
+    "saturating": {
+      "static_occurrences": 2,
+      "functions": [
+        "gamePackDecide"
+      ],
+      "first_line": 226
+    },
+    "scenario": {
+      "static_occurrences": 8,
+      "functions": [
+        "buildProfile",
+        "create",
+        "damage",
+        "done"
+      ],
+      "first_line": 332
+    },
+    "score": {
+      "static_occurrences": 1,
+      "functions": [
+        "artyOutcome"
+      ],
+      "first_line": 1388
+    },
+    "screenGap": {
+      "static_occurrences": 14,
+      "functions": [
+        "SHAPES"
+      ],
+      "first_line": 624
+    },
+    "seed": {
+      "static_occurrences": 6,
+      "functions": [
+        "create",
+        "damage",
+        "gameDash",
+        "step"
+      ],
+      "first_line": 541
+    },
+    "selected": {
+      "static_occurrences": 2,
+      "functions": [
+        "directorStep"
+      ],
+      "first_line": 1921
+    },
+    "seq": {
+      "static_occurrences": 3,
+      "functions": [
+        "playerBrain"
+      ],
+      "first_line": 1618
+    },
+    "set": {
+      "static_occurrences": 20,
+      "functions": [
+        "addPending",
+        "buildGrid",
+        "decide",
+        "directorStep",
+        "distinctTactics",
+        "fork",
+        "lgPut",
+        "lookahead",
+        "meleeOrders",
+        "separate",
+        "shooterFocusOrders",
+        "shooterTarget",
+        "tacticsOf"
+      ],
+      "first_line": 873
+    },
+    "shape": {
+      "static_occurrences": 4,
+      "functions": [
+        "artilleryVolley",
+        "formationPlan"
+      ],
+      "first_line": 1361
+    },
+    "shellDodgeAll": {
+      "static_occurrences": 1,
+      "functions": [
+        "buildProfile"
+      ],
+      "first_line": 337
+    },
+    "shellOut": {
+      "static_occurrences": 4,
+      "functions": [
+        "fireShellAt",
+        "step"
+      ],
+      "first_line": 1079
+    },
+    "shells": {
+      "static_occurrences": 23,
+      "functions": [
+        "artyOutcome",
+        "coordAbilities",
+        "dodgeVector",
+        "fireShellAt",
+        "fork",
+        "gamePackDecide",
+        "lookahead",
+        "playerBrain",
+        "predictVolley",
+        "smartEscape",
+        "step",
+        "useBarrage",
+        "useSlow"
+      ],
+      "first_line": 221
+    },
+    "shield": {
+      "static_occurrences": 4,
+      "functions": [
+        "damage",
+        "step",
+        "useShield"
+      ],
+      "first_line": 942
+    },
+    "shieldAimedAt": {
+      "static_occurrences": 1,
+      "functions": [
+        "coordAbilities"
+      ],
+      "first_line": 2790
+    },
+    "shieldShellWindow": {
+      "static_occurrences": 1,
+      "functions": [
+        "coordAbilities"
+      ],
+      "first_line": 2789
+    },
+    "shieldUntil": {
+      "static_occurrences": 5,
+      "functions": [
+        "act",
+        "coordAbilities",
+        "damage",
+        "step",
+        "useShield"
+      ],
+      "first_line": 942
+    },
+    "shift": {
+      "static_occurrences": 1,
+      "functions": [
+        "note"
+      ],
+      "first_line": 927
+    },
+    "shootRush": {
+      "static_occurrences": 1,
+      "functions": [
+        "RULES"
+      ],
+      "first_line": 156
+    },
+    "shooterFocus": {
+      "static_occurrences": 3,
+      "functions": [
+        "shooterFocusOrders",
+        "shooterTarget"
+      ],
+      "first_line": 2212
+    },
+    "shot": {
+      "static_occurrences": 5,
+      "functions": [
+        "applyRules",
+        "create",
+        "fireShot",
+        "gameUnit"
+      ],
+      "first_line": 477
+    },
+    "shotDodge": {
+      "static_occurrences": 1,
+      "functions": [
+        "buildProfile"
+      ],
+      "first_line": 336
+    },
+    "shotOut": {
+      "static_occurrences": 2,
+      "functions": [
+        "step"
+      ],
+      "first_line": 2946
+    },
+    "shotReact": {
+      "static_occurrences": 1,
+      "functions": [
+        "buildProfile"
+      ],
+      "first_line": 336
+    },
+    "shotSpeed": {
+      "static_occurrences": 5,
+      "functions": [
+        "aimClear",
+        "canDodge",
+        "fireShot"
+      ],
+      "first_line": 1009
+    },
+    "shots": {
+      "static_occurrences": 24,
+      "functions": [
+        "artilleryVolley",
+        "artyOutcome",
+        "canDodge",
+        "decide",
+        "fc",
+        "fireShot",
+        "fork",
+        "gameBlock",
+        "gameDash",
+        "gamePackDecide",
+        "playerBrain",
+        "playerShot",
+        "shotDodgeVector",
+        "step"
+      ],
+      "first_line": 217
+    },
+    "side": {
+      "static_occurrences": 1,
+      "functions": [
+        "shotDodgeVector"
+      ],
+      "first_line": 1454
+    },
+    "siegeArtMargin": {
+      "static_occurrences": 1,
+      "functions": [
+        "positionAnchor"
+      ],
+      "first_line": 1987
+    },
+    "siegeMargin": {
+      "static_occurrences": 1,
+      "functions": [
+        "positionAnchor"
+      ],
+      "first_line": 1988
+    },
+    "siegeMinArt": {
+      "static_occurrences": 2,
+      "functions": [
+        "RULES",
+        "readEnemy"
+      ],
+      "first_line": 158
+    },
+    "siegeOwnArtMargin": {
+      "static_occurrences": 1,
+      "functions": [
+        "positionAnchor"
+      ],
+      "first_line": 1987
+    },
+    "sieging": {
+      "static_occurrences": 1,
+      "functions": [
+        "RULES"
+      ],
+      "first_line": 157
+    },
+    "sin": {
+      "static_occurrences": 15,
+      "functions": [
+        "SHAPES",
+        "artilleryVolley",
+        "damage",
+        "decMelee",
+        "fireGate",
+        "observe",
+        "predictVolley",
+        "smartEscape",
+        "smartVolley",
+        "surroundOrders"
+      ],
+      "first_line": 666
+    },
+    "since": {
+      "static_occurrences": 4,
+      "functions": [
+        "meleeOrders"
+      ],
+      "first_line": 2107
+    },
+    "size": {
+      "static_occurrences": 12,
+      "functions": [
+        "artilleryVolley",
+        "directorStep",
+        "gamePackDecide",
+        "meleeOrders",
+        "threatRead"
+      ],
+      "first_line": 222
+    },
+    "skills": {
+      "static_occurrences": 6,
+      "functions": [
+        "buildProfile",
+        "sk"
+      ],
+      "first_line": 343
+    },
+    "skirmish": {
+      "static_occurrences": 11,
+      "functions": [
+        "create",
+        "done",
+        "fork",
+        "skirmishSpawn",
+        "step"
+      ],
+      "first_line": 744
+    },
+    "skirmishSet": {
+      "static_occurrences": 1,
+      "functions": [
+        "create"
+      ],
+      "first_line": 743
+    },
+    "skittish": {
+      "static_occurrences": 1,
+      "functions": [
+        "table/combo callbacks"
+      ],
+      "first_line": 433
+    },
+    "slice": {
+      "static_occurrences": 23,
+      "functions": [
+        "artilleryVolley",
+        "assignGuns",
+        "assignSlots",
+        "bcTop",
+        "create",
+        "drawOpponents",
+        "fork",
+        "lookahead",
+        "meleeOrders",
+        "playerBrain",
+        "shooterFocusOrders",
+        "step",
+        "surroundOrders",
+        "table/combo callbacks"
+      ],
+      "first_line": 95
+    },
+    "slotX": {
+      "static_occurrences": 7,
+      "functions": [
+        "assignSlots",
+        "create",
+        "decideFormation"
+      ],
+      "first_line": 773
+    },
+    "slotY": {
+      "static_occurrences": 6,
+      "functions": [
+        "assignSlots",
+        "decideFormation"
+      ],
+      "first_line": 2044
+    },
+    "slow": {
+      "static_occurrences": 12,
+      "functions": [
+        "artyOutcome",
+        "coordAbilities",
+        "lookahead",
+        "predictVolley",
+        "smartEscape",
+        "step"
+      ],
+      "first_line": 1118
+    },
+    "slowMin": {
+      "static_occurrences": 1,
+      "functions": [
+        "coordAbilities"
+      ],
+      "first_line": 2837
+    },
+    "slowMoving": {
+      "static_occurrences": 1,
+      "functions": [
+        "coordAbilities"
+      ],
+      "first_line": 2833
+    },
+    "smoothLead": {
+      "static_occurrences": 1,
+      "functions": [
+        "buildProfile"
+      ],
+      "first_line": 337
+    },
+    "snap": {
+      "static_occurrences": 7,
+      "functions": [
+        "artilleryVolley"
+      ],
+      "first_line": 1292
+    },
+    "some": {
+      "static_occurrences": 27,
+      "functions": [
+        "artilleryVolley",
+        "assignSlots",
+        "bcFeatures",
+        "coordAbilities",
+        "decideOrder",
+        "defaultAbilities",
+        "foes",
+        "gamePackDecide",
+        "leaderFire",
+        "meleeOrders",
+        "table/combo callbacks",
+        "threatRead"
+      ],
+      "first_line": 209
+    },
+    "sort": {
+      "static_occurrences": 22,
+      "functions": [
+        "artilleryVolley",
+        "assignSlots",
+        "bcTop",
+        "coordAbilities",
+        "decideOrder",
+        "leaderFire",
+        "lineBlockerGrid",
+        "lookahead",
+        "meleeOrders",
+        "paceOf",
+        "playerBrain",
+        "predictVolley",
+        "reachOf",
+        "shooterFocusOrders",
+        "shooterTarget",
+        "surroundOrders",
+        "table/combo callbacks"
+      ],
+      "first_line": 901
+    },
+    "spawnQueue": {
+      "static_occurrences": 5,
+      "functions": [
+        "damage",
+        "fork",
+        "step"
+      ],
+      "first_line": 970
+    },
+    "spawnRand": {
+      "static_occurrences": 4,
+      "functions": [
+        "fork",
+        "skirmishSpawn"
+      ],
+      "first_line": 782
+    },
+    "speed": {
+      "static_occurrences": 42,
+      "functions": [
+        "applyRules",
+        "busyAct",
+        "canDodge",
+        "decMelee",
+        "dodgeVector",
+        "gameBlock",
+        "gameDash",
+        "gamePackDecide",
+        "gamePlayer",
+        "gameUnit",
+        "makeUnit",
+        "moveToward",
+        "paceOf",
+        "playerBrain",
+        "playerShot",
+        "predictVolley",
+        "retime",
+        "saveWounded",
+        "shotDodgeVector",
+        "smartEscape",
+        "smartVolley",
+        "step",
+        "useDisengage"
+      ],
+      "first_line": 215
+    },
+    "speedAlong": {
+      "static_occurrences": 1,
+      "functions": [
+        "briefing"
+      ],
+      "first_line": 1888
+    },
+    "speedMul": {
+      "static_occurrences": 1,
+      "functions": [
+        "step"
+      ],
+      "first_line": 2882
+    },
+    "splash": {
+      "static_occurrences": 22,
+      "functions": [
+        "artilleryVolley",
+        "artyOutcome",
+        "blastR",
+        "coordAbilities",
+        "defaultAbilities",
+        "gamePackDecide",
+        "playerBrain",
+        "predictVolley",
+        "shellEscape",
+        "shellOf",
+        "smartEscape",
+        "smartVolley",
+        "step",
+        "useBarrage"
+      ],
+      "first_line": 221
+    },
+    "splice": {
+      "static_occurrences": 6,
+      "functions": [
+        "assignGuns",
+        "create",
+        "drawOpponents",
+        "lgRemove",
+        "surroundOrders"
+      ],
+      "first_line": 101
+    },
+    "split": {
+      "static_occurrences": 2,
+      "functions": [
+        "artilleryVolley",
+        "launch"
+      ],
+      "first_line": 1361
+    },
+    "spread": {
+      "static_occurrences": 1,
+      "functions": [
+        "useBarrage"
+      ],
+      "first_line": 2642
+    },
+    "sqrt": {
+      "static_occurrences": 5,
+      "functions": [
+        "artyOutcome",
+        "create",
+        "observe"
+      ],
+      "first_line": 754
+    },
+    "squadFocus": {
+      "static_occurrences": 4,
+      "functions": [
+        "shooterFocusOrders",
+        "shooterTarget"
+      ],
+      "first_line": 2213
+    },
+    "squadSize": {
+      "static_occurrences": 2,
+      "functions": [
+        "shooterFocusOrders"
+      ],
+      "first_line": 2217
+    },
+    "src": {
+      "static_occurrences": 55,
+      "functions": [
+        "artyOutcome",
+        "coordAbilities",
+        "fork",
+        "gameBlock",
+        "gameDash",
+        "gamePackDecide",
+        "lookahead",
+        "playerBrain",
+        "predictVolley",
+        "shellEscape",
+        "shotDodgeVector",
+        "smartEscape",
+        "step"
+      ],
+      "first_line": 217
+    },
+    "stall": {
+      "static_occurrences": 2,
+      "functions": [
+        "lookahead"
+      ],
+      "first_line": 3196
+    },
+    "stalled": {
+      "static_occurrences": 1,
+      "functions": [
+        "lookahead"
+      ],
+      "first_line": 3207
+    },
+    "standoff": {
+      "static_occurrences": 4,
+      "functions": [
+        "kiterRetreat",
+        "positionAnchor"
+      ],
+      "first_line": 2007
+    },
+    "start": {
+      "static_occurrences": 2,
+      "functions": [
+        "meleeOrders"
+      ],
+      "first_line": 2088
+    },
+    "startCount": {
+      "static_occurrences": 3,
+      "functions": [
+        "gamePackDecide"
+      ],
+      "first_line": 207
+    },
+    "startMelee": {
+      "static_occurrences": 1,
+      "functions": [
+        "table/combo callbacks"
+      ],
+      "first_line": 3336
+    },
+    "startTheirs": {
+      "static_occurrences": 1,
+      "functions": [
+        "table/combo callbacks"
+      ],
+      "first_line": 3369
+    },
+    "starts": {
+      "static_occurrences": 1,
+      "functions": [
+        "directorStep"
+      ],
+      "first_line": 1935
+    },
+    "state": {
+      "static_occurrences": 33,
+      "functions": [
+        "busyAct",
+        "cloneRng",
+        "coordAbilities",
+        "damage",
+        "decArtillery",
+        "decDirect",
+        "decide",
+        "decideAlone",
+        "decideFormation",
+        "decideOrder",
+        "decideReleased",
+        "gameDash",
+        "kiterRetreat",
+        "meleeOrders",
+        "playerBrain",
+        "rng",
+        "saveWounded"
+      ],
+      "first_line": 548
+    },
+    "stats": {
+      "static_occurrences": 39,
+      "functions": [
+        "abStat",
+        "damage",
+        "directorStep",
+        "fireShellAt",
+        "fork",
+        "gameDash",
+        "launch",
+        "playerBrain",
+        "step",
+        "summary"
+      ],
+      "first_line": 548
+    },
+    "stepT": {
+      "static_occurrences": 2,
+      "functions": [
+        "step"
+      ],
+      "first_line": 2876
+    },
+    "stop": {
+      "static_occurrences": 1,
+      "functions": [
+        "walk"
+      ],
+      "first_line": 2472
+    },
+    "strafe": {
+      "static_occurrences": 8,
+      "functions": [
+        "create",
+        "decDirect"
+      ],
+      "first_line": 760
+    },
+    "stringify": {
+      "static_occurrences": 2,
+      "functions": [
+        "SANDBOX_ROLE",
+        "distinctTactics"
+      ],
+      "first_line": 467
+    },
+    "success": {
+      "static_occurrences": 4,
+      "functions": [
+        "directorStep"
+      ],
+      "first_line": 1912
+    },
+    "surround": {
+      "static_occurrences": 3,
+      "functions": [
+        "decideFormation",
+        "playerBrain",
+        "surroundOrders"
+      ],
+      "first_line": 1584
+    },
+    "surroundArc": {
+      "static_occurrences": 1,
+      "functions": [
+        "surroundOrders"
+      ],
+      "first_line": 2180
+    },
+    "surroundCorner": {
+      "static_occurrences": 1,
+      "functions": [
+        "surroundOrders"
+      ],
+      "first_line": 2157
+    },
+    "surroundDist": {
+      "static_occurrences": 1,
+      "functions": [
+        "surroundOrders"
+      ],
+      "first_line": 2193
+    },
+    "surroundGoal": {
+      "static_occurrences": 5,
+      "functions": [
+        "decideFormation",
+        "surroundOrders"
+      ],
+      "first_line": 2150
+    },
+    "surroundLanes": {
+      "static_occurrences": 1,
+      "functions": [
+        "surroundOrders"
+      ],
+      "first_line": 2182
+    },
+    "surroundMelee": {
+      "static_occurrences": 1,
+      "functions": [
+        "surroundOrders"
+      ],
+      "first_line": 2173
+    },
+    "surroundRing": {
+      "static_occurrences": 1,
+      "functions": [
+        "surroundOrders"
+      ],
+      "first_line": 2171
+    },
+    "surroundTarget": {
+      "static_occurrences": 2,
+      "functions": [
+        "fork",
+        "surroundOrders"
+      ],
+      "first_line": 2154
+    },
+    "svx": {
+      "static_occurrences": 6,
+      "functions": [
+        "predictVolley",
+        "step",
+        "surroundOrders",
+        "vel"
+      ],
+      "first_line": 983
+    },
+    "svy": {
+      "static_occurrences": 6,
+      "functions": [
+        "predictVolley",
+        "step",
+        "surroundOrders",
+        "vel"
+      ],
+      "first_line": 983
+    },
+    "swapSides": {
+      "static_occurrences": 1,
+      "functions": [
+        "create"
+      ],
+      "first_line": 772
+    },
+    "switches": {
+      "static_occurrences": 1,
+      "functions": [
+        "directorStep"
+      ],
+      "first_line": 1913
+    },
+    "sync": {
+      "static_occurrences": 2,
+      "functions": [
+        "fireGate"
+      ],
+      "first_line": 1217
+    },
+    "syncGate": {
+      "static_occurrences": 1,
+      "functions": [
+        "positionAnchor"
+      ],
+      "first_line": 2009
+    },
+    "syncRadius": {
+      "static_occurrences": 2,
+      "functions": [
+        "assignSlots"
+      ],
+      "first_line": 2049
+    },
+    "t": {
+      "static_occurrences": 221,
+      "functions": [
+        "act",
+        "artilleryVolley",
+        "artyOutcome",
+        "assignSlots",
+        "bcFeatures",
+        "busy",
+        "busyAct",
+        "castBlasts",
+        "castPermit",
+        "cmdOf",
+        "commander",
+        "coordAbilities",
+        "damage",
+        "decDirect",
+        "decide",
+        "decideOrder",
+        "defaultAbilities",
+        "directorStep",
+        "dodgeVector",
+        "done",
+        "fireGate",
+        "fireShellAt",
+        "fireShot",
+        "foes",
+        "fork",
+        "gameBlock",
+        "gameDash",
+        "gamePackDecide",
+        "gamePrep",
+        "laneClear",
+        "launch",
+        "leaderFire",
+        "lookahead",
+        "meleeAnswer",
+        "meleeOrders",
+        "note",
+        "observe",
+        "planSwitchable",
+        "playerBrain",
+        "playerShot",
+        "positionAnchor",
+        "predictVolley",
+        "reachOf",
+        "readEnemy",
+        "ready",
+        "setPlan",
+        "shellEscape",
+        "shotDodgeVector",
+        "smartEscape",
+        "smartVolley",
+        "spend",
+        "step",
+        "summary",
+        "table/combo callbacks",
+        "threatRead",
+        "useAimed",
+        "useBarrage",
+        "useCharge",
+        "useDisengage",
+        "useShield",
+        "useSlow"
+      ],
+      "first_line": 221
+    },
+    "t0": {
+      "static_occurrences": 2,
+      "functions": [
+        "directorStep"
+      ],
+      "first_line": 1897
+    },
+    "takenBy": {
+      "static_occurrences": 2,
+      "functions": [
+        "damage"
+      ],
+      "first_line": 948
+    },
+    "target": {
+      "static_occurrences": 123,
+      "functions": [
+        "act",
+        "artilleryVolley",
+        "assignSlots",
+        "canDodge",
+        "castBlasts",
+        "coordAbilities",
+        "couldStart",
+        "damage",
+        "decArtillery",
+        "decDirect",
+        "decMelee",
+        "decide",
+        "decideAlone",
+        "decideFormation",
+        "decideOrder",
+        "decideReleased",
+        "defaultAbilities",
+        "fireGate",
+        "fork",
+        "gameDash",
+        "gamePrep",
+        "meleeOrders",
+        "pinned",
+        "playerBrain",
+        "predictVolley",
+        "smartVolley",
+        "step",
+        "triggerAbilityNow",
+        "useCharge"
+      ],
+      "first_line": 491
+    },
+    "tchain": {
+      "static_occurrences": 1,
+      "functions": [
+        "table/combo callbacks"
+      ],
+      "first_line": 3307
+    },
+    "team": {
+      "static_occurrences": 212,
+      "functions": [
+        "act",
+        "addPending",
+        "aimClear",
+        "artilleryTarget",
+        "artilleryVolley",
+        "artyOutcome",
+        "assignSlots",
+        "bcFeatures",
+        "busyAct",
+        "canDodge",
+        "castBlasts",
+        "castPermit",
+        "commander",
+        "coordAbilities",
+        "coordOn",
+        "create",
+        "damage",
+        "decDirect",
+        "decMelee",
+        "decide",
+        "decideAlone",
+        "decideFormation",
+        "decideOrder",
+        "decideOwn",
+        "decideReleased",
+        "defaultAbilities",
+        "directorStep",
+        "dodgeVector",
+        "fc",
+        "fireGate",
+        "fireShell",
+        "fireShellAt",
+        "fireShot",
+        "formationPlan",
+        "gameDash",
+        "gamePackDecide",
+        "gamePrep",
+        "laneClear",
+        "launch",
+        "leaderFire",
+        "lookahead",
+        "meleeOrders",
+        "observe",
+        "pHitLine",
+        "planDwell",
+        "planFrom",
+        "playerBrain",
+        "positionAnchor",
+        "predictVolley",
+        "readEnemy",
+        "ready",
+        "saveWounded",
+        "setPlan",
+        "shellDodge",
+        "shellEscape",
+        "shellOf",
+        "shooterFocusOrders",
+        "shooterTarget",
+        "shotDodgeVector",
+        "smartEscape",
+        "spend",
+        "step",
+        "surroundOrders",
+        "team",
+        "threatRead",
+        "triggerAbilityNow",
+        "useBarrage"
+      ],
+      "first_line": 206
+    },
+    "temporal": {
+      "static_occurrences": 1,
+      "functions": [
+        "create"
+      ],
+      "first_line": 745
+    },
+    "terminal": {
+      "static_occurrences": 4,
+      "functions": [
+        "lookahead"
+      ],
+      "first_line": 3178
+    },
+    "tgt": {
+      "static_occurrences": 1,
+      "functions": [
+        "smartEscape"
+      ],
+      "first_line": 2289
+    },
+    "theirArt": {
+      "static_occurrences": 3,
+      "functions": [
+        "RULES"
+      ],
+      "first_line": 155
+    },
+    "theirCount": {
+      "static_occurrences": 4,
+      "functions": [
+        "RULES",
+        "STORM_RULES"
+      ],
+      "first_line": 153
+    },
+    "theirMelee": {
+      "static_occurrences": 1,
+      "functions": [
+        "STORM_RULES"
+      ],
+      "first_line": 168
+    },
+    "theirShoot": {
+      "static_occurrences": 3,
+      "functions": [
+        "RULES"
+      ],
+      "first_line": 155
+    },
+    "theirs": {
+      "static_occurrences": 9,
+      "functions": [
+        "table/combo callbacks"
+      ],
+      "first_line": 3305
+    },
+    "theirsByRole": {
+      "static_occurrences": 3,
+      "functions": [
+        "briefing",
+        "table/combo callbacks"
+      ],
+      "first_line": 1888
+    },
+    "thinkEvery": {
+      "static_occurrences": 1,
+      "functions": [
+        "commander"
+      ],
+      "first_line": 1797
+    },
+    "thinkTeams": {
+      "static_occurrences": 6,
+      "functions": [
+        "artilleryVolley",
+        "directorStep",
+        "lookahead"
+      ],
+      "first_line": 1268
+    },
+    "threatens": {
+      "static_occurrences": 10,
+      "functions": [
+        "assignSlots",
+        "coordAbilities",
+        "leaderFire",
+        "meleeOrders",
+        "shooterFocusOrders",
+        "shooterTarget"
+      ],
+      "first_line": 2064
+    },
+    "time": {
+      "static_occurrences": 5,
+      "functions": [
+        "playerBrain",
+        "predictVolley",
+        "useCharge"
+      ],
+      "first_line": 1117
+    },
+    "timeRef": {
+      "static_occurrences": 3,
+      "functions": [
+        "create",
+        "fork",
+        "retime"
+      ],
+      "first_line": 586
+    },
+    "to": {
+      "static_occurrences": 1,
+      "functions": [
+        "threatRead"
+      ],
+      "first_line": 1692
+    },
+    "toFixed": {
+      "static_occurrences": 8,
+      "functions": [
+        "RULES",
+        "briefing",
+        "damage",
+        "directorStep"
+      ],
+      "first_line": 157
+    },
+    "top": {
+      "static_occurrences": 1,
+      "functions": [
+        "artilleryVolley"
+      ],
+      "first_line": 1360
+    },
+    "tp": {
+      "static_occurrences": 6,
+      "functions": [
+        "directorStep",
+        "table/combo callbacks"
+      ],
+      "first_line": 1897
+    },
+    "tr": {
+      "static_occurrences": 11,
+      "functions": [
+        "artilleryVolley",
+        "castBlasts",
+        "gameBlock",
+        "gameDash",
+        "retime",
+        "step"
+      ],
+      "first_line": 543
+    },
+    "turnRate": {
+      "static_occurrences": 4,
+      "functions": [
+        "positionAnchor"
+      ],
+      "first_line": 1946
+    },
+    "tweakMargin": {
+      "static_occurrences": 1,
+      "functions": [
+        "lookahead"
+      ],
+      "first_line": 3238
+    },
+    "tx": {
+      "static_occurrences": 1,
+      "functions": [
+        "laneClear"
+      ],
+      "first_line": 918
+    },
+    "ty": {
+      "static_occurrences": 1,
+      "functions": [
+        "laneClear"
+      ],
+      "first_line": 918
+    },
+    "typicalR": {
+      "static_occurrences": 5,
+      "functions": [
+        "applyRules",
+        "decMelee",
+        "gameUnit",
+        "surroundOrders"
+      ],
+      "first_line": 475
+    },
+    "u": {
+      "static_occurrences": 34,
+      "functions": [
+        "artilleryVolley",
+        "artyOutcome",
+        "assignGuns",
+        "fork",
+        "launch",
+        "shellOf"
+      ],
+      "first_line": 1244
+    },
+    "unitSet": {
+      "static_occurrences": 5,
+      "functions": [
+        "create"
+      ],
+      "first_line": 720
+    },
+    "unitVer": {
+      "static_occurrences": 11,
+      "functions": [
+        "create",
+        "damage",
+        "foes",
+        "reachOf",
+        "skirmishSpawn",
+        "spawnHunter",
+        "team"
+      ],
+      "first_line": 721
+    },
+    "units": {
+      "static_occurrences": 41,
+      "functions": [
+        "artyOutcome",
+        "buildGrid",
+        "castBlasts",
+        "create",
+        "decideOrder",
+        "decideReleased",
+        "fork",
+        "lgBuild",
+        "separate",
+        "skirmishSpawn",
+        "spawnHunter",
+        "step",
+        "table/combo callbacks",
+        "team"
+      ],
+      "first_line": 721
+    },
+    "unshift": {
+      "static_occurrences": 1,
+      "functions": [
+        "artilleryVolley"
+      ],
+      "first_line": 1294
+    },
+    "until": {
+      "static_occurrences": 13,
+      "functions": [
+        "artilleryVolley",
+        "cmdOf",
+        "coordAbilities",
+        "damage",
+        "decide",
+        "dodgeVector",
+        "fireGate",
+        "fork",
+        "step"
+      ],
+      "first_line": 960
+    },
+    "urgency": {
+      "static_occurrences": 1,
+      "functions": [
+        "lookahead"
+      ],
+      "first_line": 3191
+    },
+    "used": {
+      "static_occurrences": 1,
+      "functions": [
+        "launch"
+      ],
+      "first_line": 1438
+    },
+    "ux": {
+      "static_occurrences": 1,
+      "functions": [
+        "laneClear"
+      ],
+      "first_line": 918
+    },
+    "uy": {
+      "static_occurrences": 1,
+      "functions": [
+        "laneClear"
+      ],
+      "first_line": 918
+    },
+    "v": {
+      "static_occurrences": 5,
+      "functions": [
+        "artilleryVolley",
+        "cmdOf",
+        "reachOf"
+      ],
+      "first_line": 1066
+    },
+    "val": {
+      "static_occurrences": 1,
+      "functions": [
+        "artilleryVolley"
+      ],
+      "first_line": 1344
+    },
+    "values": {
+      "static_occurrences": 3,
+      "functions": [
+        "directorStep",
+        "distinctTactics"
+      ],
+      "first_line": 1936
+    },
+    "ver": {
+      "static_occurrences": 1,
+      "functions": [
+        "laneClear"
+      ],
+      "first_line": 918
+    },
+    "vx": {
+      "static_occurrences": 19,
+      "functions": [
+        "bcFeatures",
+        "coordAbilities",
+        "gamePackDecide",
+        "observe",
+        "positionAnchor",
+        "predictVolley",
+        "readEnemy",
+        "step",
+        "threatRead",
+        "vel"
+      ],
+      "first_line": 215
+    },
+    "vy": {
+      "static_occurrences": 19,
+      "functions": [
+        "bcFeatures",
+        "coordAbilities",
+        "gamePackDecide",
+        "observe",
+        "positionAnchor",
+        "predictVolley",
+        "readEnemy",
+        "step",
+        "threatRead",
+        "vel"
+      ],
+      "first_line": 215
+    },
+    "w": {
+      "static_occurrences": 20,
+      "functions": [
+        "artilleryTarget",
+        "create",
+        "fork",
+        "gameUnit",
+        "lgMoved",
+        "retime",
+        "skirmishSpawn",
+        "spawnHunter",
+        "table/combo callbacks"
+      ],
+      "first_line": 570
+    },
+    "waitFrom": {
+      "static_occurrences": 4,
+      "functions": [
+        "castPermit"
+      ],
+      "first_line": 516
+    },
+    "waiting": {
+      "static_occurrences": 5,
+      "functions": [
+        "positionAnchor"
+      ],
+      "first_line": 1950
+    },
+    "wallDist": {
+      "static_occurrences": 1,
+      "functions": [
+        "table/combo callbacks"
+      ],
+      "first_line": 3324
+    },
+    "wantCount": {
+      "static_occurrences": 4,
+      "functions": [
+        "gamePackDecide"
+      ],
+      "first_line": 235
+    },
+    "wantMode": {
+      "static_occurrences": 2,
+      "functions": [
+        "gamePackDecide"
+      ],
+      "first_line": 235
+    },
+    "wasted": {
+      "static_occurrences": 6,
+      "functions": [
+        "step",
+        "summary"
+      ],
+      "first_line": 2958
+    },
+    "wave": {
+      "static_occurrences": 2,
+      "functions": [
+        "fireGate"
+      ],
+      "first_line": 1209
+    },
+    "width": {
+      "static_occurrences": 25,
+      "functions": [
+        "create",
+        "gameDash",
+        "newPack",
+        "observe",
+        "playerBrain",
+        "positionAnchor",
+        "readEnemy",
+        "saveWounded",
+        "separate",
+        "smartEscape",
+        "spawnHunter",
+        "surroundOrders",
+        "table/combo callbacks",
+        "useDisengage"
+      ],
+      "first_line": 547
+    },
+    "windUp": {
+      "static_occurrences": 3,
+      "functions": [
+        "leaderFire",
+        "step",
+        "windUp"
+      ],
+      "first_line": 996
+    },
+    "windup": {
+      "static_occurrences": 4,
+      "functions": [
+        "castPermit",
+        "gameUnit",
+        "playerBrain",
+        "windUp"
+      ],
+      "first_line": 515
+    },
+    "wing": {
+      "static_occurrences": 3,
+      "functions": [
+        "meleeOrders"
+      ],
+      "first_line": 2110
+    },
+    "wings": {
+      "static_occurrences": 8,
+      "functions": [
+        "decideFormation",
+        "fork",
+        "meleeOrders",
+        "threatRead"
+      ],
+      "first_line": 1695
+    },
+    "worth": {
+      "static_occurrences": 2,
+      "functions": [
+        "predictVolley"
+      ],
+      "first_line": 1174
+    },
+    "x": {
+      "static_occurrences": 389,
+      "functions": [
+        "act",
+        "aimClear",
+        "artilleryTarget",
+        "artilleryVolley",
+        "artyOutcome",
+        "assignSlots",
+        "bcFeatures",
+        "buildGrid",
+        "busyAct",
+        "castBlasts",
+        "coordAbilities",
+        "create",
+        "damage",
+        "decArtillery",
+        "decDirect",
+        "decMelee",
+        "decide",
+        "decideAlone",
+        "decideFormation",
+        "decideOrder",
+        "decideReleased",
+        "defaultAbilities",
+        "dist",
+        "dodgeVector",
+        "fireGate",
+        "fireShell",
+        "fireShellAt",
+        "fireShot",
+        "foes",
+        "gameBlock",
+        "gameDash",
+        "gamePackDecide",
+        "interceptPoint",
+        "kiterRetreat",
+        "laneClear",
+        "launch",
+        "lgMoved",
+        "lgPut",
+        "lineBlocker",
+        "lineBlockerGrid",
+        "meleeOrders",
+        "moveToward",
+        "observe",
+        "pHitLine",
+        "playerBrain",
+        "playerShot",
+        "positionAnchor",
+        "predictVolley",
+        "readEnemy",
+        "saveWounded",
+        "separate",
+        "shellEscape",
+        "shellOf",
+        "shotDodgeVector",
+        "smartEscape",
+        "smartVolley",
+        "step",
+        "surroundOrders",
+        "table/combo callbacks",
+        "threatRead",
+        "triggerAbilityNow",
+        "useBarrage",
+        "useDisengage",
+        "useSlow",
+        "walk"
+      ],
+      "first_line": 215
+    },
+    "y": {
+      "static_occurrences": 381,
+      "functions": [
+        "act",
+        "aimClear",
+        "artilleryTarget",
+        "artilleryVolley",
+        "artyOutcome",
+        "assignSlots",
+        "bcFeatures",
+        "buildGrid",
+        "busyAct",
+        "castBlasts",
+        "coordAbilities",
+        "damage",
+        "decArtillery",
+        "decDirect",
+        "decMelee",
+        "decide",
+        "decideAlone",
+        "decideFormation",
+        "decideOrder",
+        "decideReleased",
+        "defaultAbilities",
+        "dist",
+        "dodgeVector",
+        "fireGate",
+        "fireShell",
+        "fireShellAt",
+        "fireShot",
+        "foes",
+        "gameBlock",
+        "gameDash",
+        "gamePackDecide",
+        "interceptPoint",
+        "kiterRetreat",
+        "laneClear",
+        "launch",
+        "lgMoved",
+        "lgPut",
+        "lineBlocker",
+        "lineBlockerGrid",
+        "meleeOrders",
+        "moveToward",
+        "observe",
+        "pHitLine",
+        "playerBrain",
+        "playerShot",
+        "positionAnchor",
+        "predictVolley",
+        "readEnemy",
+        "saveWounded",
+        "separate",
+        "shellEscape",
+        "shellOf",
+        "shotDodgeVector",
+        "smartEscape",
+        "smartVolley",
+        "step",
+        "surroundOrders",
+        "table/combo callbacks",
+        "threatRead",
+        "triggerAbilityNow",
+        "useBarrage",
+        "useDisengage",
+        "useSlow",
+        "walk"
+      ],
+      "first_line": 215
+    },
+    "zone": {
+      "static_occurrences": 1,
+      "functions": [
+        "assignSlots"
+      ],
+      "first_line": 2055
+    },
+    "zoneBehind": {
+      "static_occurrences": 1,
+      "functions": [
+        "assignSlots"
+      ],
+      "first_line": 2052
+    },
+    "zoneDepth": {
+      "static_occurrences": 3,
+      "functions": [
+        "assignSlots",
+        "meleeOrders"
+      ],
+      "first_line": 2055
+    },
+    "zoneSideMargin": {
+      "static_occurrences": 2,
+      "functions": [
+        "assignSlots"
+      ],
+      "first_line": 2051
+    }
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "scope": "stage_B_layout_diagnostic_not_engine_qualification",
+  "elapsed_seconds": 5.849317125,
+  "load": [
+    35.73388671875,
+    39.3603515625,
+    54.04638671875
+  ],
+  "build": {
+    "manifest_sha256": "ce464b3ae66cc0085678e5e6c6bed161f0dcfc04b400e815bb840bbac33f396b",
+    "binary_sha256": "082ef33443aee90b41c9301e4b5bbf7f3728259625cc87e0fd92b5e37106b6b5",
+    "sources": {
+      "native_layout_probe.cpp": "5156319566fe46c7bd043ddb747e81c2b5f44b40fe4da5a2a0db1ec3d3051c9a",
+      "src/native/world.cpp": "e5152f6ed628f308c3554e3344635f1396637faed9b413ab81d3c9cb3d0094ad",
+      "src/native/combat.cpp": "06cf615d7a11cab8e056ceeee150cbad44232a474d4bf2e44e2e5d560764ed5a",
+      "src/native/spatial.cpp": "eaf9dc995534f3550a36dc72575f0ac8a76a7ef432038e4f0cdc68e4ad6d6143",
+      "src/builtins.h": "7fcd2fba1ec05aa2b671cb2acb9012a11c73ca827c932c159dc7db787624aed6",
+      "src/formation_sim.h": "364dfea1b77be5743b14ba31a8368c11ea264a6ce513dffe7d32727a56e789c2",
+      "src/js_value.h": "bb028815111ddbab5ffe8aa3de98f1076b2420d605104336c970e332f783c32c",
+      "src/native/geometry.h": "7ce862ed036dd7c9a3cd78269648db33072888a5434c9e0d6528649a2e825364",
+      "src/native/rng.h": "2fcc6197704f4de20bf4041136828b15fd30fe7bea9d83e8500254b95a625083",
+      "src/native/spatial.h": "caeabdbfd25efab094c34727f0ce9ff6f427120fd199aec8dc98eb5ddb80c2c9",
+      "src/native/types.h": "ed99d5fff93173f822841c5d6fa797b139840936a6584d976ad194a7ea712401",
+      "src/native/world.h": "3662da42f69a958b0bbe0ced2040e13e26f34ac4ed9059d55b74beb6af283c3b",
+      "src/v8_ieee754.h": "72a68fcc9d908180c9dff5eced89b1b12b4ad9df68b1886b0307ab82104b5855",
+      "build.py": "687262e16950a6312924452e3e4a44b6f4c664fbc1325a16542f5b67b3d03796"
+    },
+    "engine": "layout",
+    "scope": "native_core_slice",
+    "sanitized": false,
+    "portable": false
+  },
+  "measurement": {
+    "scope": "native_layout_checkpoint",
+    "unit_count": 100,
+    "iterations": 40000,
+    "unit_hot_bytes": 128,
+    "unit_state_bytes": 256,
+    "records_seconds": 2.634386584,
+    "columns_seconds": 2.535149541,
+    "copy_seconds": 0.060069417,
+    "records_sum": 209.69129494922987,
+    "columns_sum": 209.69129494922987,
+    "copy_sum": 9601057.563158635,
+    "order": "records,columns,columns,records",
+    "cycles": 4,
+    "samples": [
+      {
+        "kind": "records",
+        "seconds": 0.296671459,
+        "sum": 209.69129494922987
+      },
+      {
+        "kind": "columns",
+        "seconds": 0.282302208,
+        "sum": 209.69129494922987
+      },
+      {
+        "kind": "columns",
+        "seconds": 0.281662208,
+        "sum": 209.69129494922987
+      },
+      {
+        "kind": "records",
+        "seconds": 0.292991291,
+        "sum": 209.69129494922987
+      },
+      {
+        "kind": "records",
+        "seconds": 0.2944695,
+        "sum": 209.69129494922987
+      },
+      {
+        "kind": "columns",
+        "seconds": 0.282188292,
+        "sum": 209.69129494922987
+      },
+      {
+        "kind": "columns",
+        "seconds": 0.281251291,
+        "sum": 209.69129494922987
+      },
+      {
+        "kind": "records",
+        "seconds": 0.291859375,
+        "sum": 209.69129494922987
+      },
+      {
+        "kind": "records",
+        "seconds": 0.292583959,
+        "sum": 209.69129494922987
+      },
+      {
+        "kind": "columns",
+        "seconds": 0.281168084,
+        "sum": 209.69129494922987
+      },
+      {
+        "kind": "columns",
+        "seconds": 0.342195167,
+        "sum": 209.69129494922987
+      },
+      {
+        "kind": "records",
+        "seconds": 0.392709458,
+        "sum": 209.69129494922987
+      },
+      {
+        "kind": "records",
+        "seconds": 0.352037167,
+        "sum": 209.69129494922987
+      },
+      {
+        "kind": "columns",
+        "seconds": 0.413958833,
+        "sum": 209.69129494922987
+      },
+      {
+        "kind": "columns",
+        "seconds": 0.370423458,
+        "sum": 209.69129494922987
+      },
+      {
+        "kind": "records",
+        "seconds": 0.421064375,
+        "sum": 209.69129494922987
+      }
+    ]
+  },
+  "records_to_columns_ratio": 1.0391444533725043,
+  "limitations": [
+    "geometry access kernel only; column layout excludes unused combat fields",
+    "copy timing includes rebuilding derived indexes",
+    "one process on a contended host; no engine qualification"
+  ]
+}

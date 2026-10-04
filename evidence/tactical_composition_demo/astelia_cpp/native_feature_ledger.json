@@ -1,0 +1,1023 @@
+{
+  "schema": 1,
+  "source_sha256": "85b16e9b84b42b831dd2e64a7055474b6df902e4c1ffd635e6670fc6fb665733",
+  "functions": {
+    "enemyOf": {
+      "module": "config",
+      "source_line": 88,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "drawOpponents": {
+      "module": "config",
+      "source_line": 94,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "gamePackDecide": {
+      "module": "tactics/formations",
+      "source_line": 205,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "setNet": {
+      "module": "network",
+      "source_line": 316,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "resolveLookahead": {
+      "module": "config",
+      "source_line": 317,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "buildProfile": {
+      "module": "config",
+      "source_line": 329,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "standoffOf": {
+      "module": "tactics",
+      "source_line": 463,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "applyRules": {
+      "module": "config",
+      "source_line": 469,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "isGame": {
+      "module": "tactics",
+      "source_line": 481,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "finishingCounts": {
+      "module": "tactics",
+      "source_line": 485,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "finishing": {
+      "module": "tactics",
+      "source_line": 486,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "couldStart": {
+      "module": "tactics",
+      "source_line": 491,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "gamePrep": {
+      "module": "abilities",
+      "source_line": 492,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "castPermit": {
+      "module": "tactics",
+      "source_line": 510,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "gameDash": {
+      "module": "abilities",
+      "source_line": 529,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "gameBlock": {
+      "module": "abilities",
+      "source_line": 555,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "gameUnit": {
+      "module": "abilities",
+      "source_line": 568,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "retime": {
+      "module": "abilities",
+      "source_line": 585,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "gamePlayer": {
+      "module": "abilities",
+      "source_line": 590,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "rng": {
+      "module": "world",
+      "source_line": 597,
+      "status": "CORE_SLICE_ONLY",
+      "check": "test_native_core.py; native_core_contract.cpp; native_checkpoint_r1/core_slice_work_receipt.json",
+      "scope": "sandbox mirror with two novice profiles; full source feature coverage pending"
+    },
+    "cloneRng": {
+      "module": "world",
+      "source_line": 603,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "len": {
+      "module": "geometry/spatial",
+      "source_line": 604,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "clamp": {
+      "module": "geometry/spatial",
+      "source_line": 605,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "dist": {
+      "module": "geometry/spatial",
+      "source_line": 606,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "gap": {
+      "module": "geometry/spatial",
+      "source_line": 607,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "rowOf": {
+      "module": "tactics",
+      "source_line": 611,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "ranks": {
+      "module": "formations",
+      "source_line": 612,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "maxD": {
+      "module": "tactics",
+      "source_line": 620,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "makeUnit": {
+      "module": "world",
+      "source_line": 684,
+      "status": "CORE_SLICE_ONLY",
+      "check": "test_native_core.py; native_core_contract.cpp; native_checkpoint_r1/core_slice_work_receipt.json",
+      "scope": "sandbox mirror with two novice profiles; full source feature coverage pending"
+    },
+    "resolveF": {
+      "module": "config",
+      "source_line": 691,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "newPack": {
+      "module": "tactics",
+      "source_line": 698,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "create": {
+      "module": "world",
+      "source_line": 708,
+      "status": "CORE_SLICE_ONLY",
+      "check": "test_native_core.py; native_core_contract.cpp; native_checkpoint_r1/core_slice_work_receipt.json",
+      "scope": "sandbox mirror with two novice profiles; full source feature coverage pending"
+    },
+    "skirmishSpawn": {
+      "module": "world",
+      "source_line": 781,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "spawnHunter": {
+      "module": "world",
+      "source_line": 789,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "team": {
+      "module": "world",
+      "source_line": 797,
+      "status": "CORE_SLICE_ONLY",
+      "check": "test_native_core.py; native_core_contract.cpp; native_checkpoint_r1/core_slice_work_receipt.json",
+      "scope": "sandbox mirror with two novice profiles; full source feature coverage pending"
+    },
+    "teamMelee": {
+      "module": "tactics",
+      "source_line": 806,
+      "status": "CORE_SLICE_ONLY",
+      "check": "test_native_core.py; native_core_contract.cpp; native_checkpoint_r1/core_slice_work_receipt.json",
+      "scope": "sandbox mirror with two novice profiles; full source feature coverage pending"
+    },
+    "foes": {
+      "module": "world",
+      "source_line": 816,
+      "status": "CORE_SLICE_ONLY",
+      "check": "test_native_core.py; native_core_contract.cpp; native_checkpoint_r1/core_slice_work_receipt.json",
+      "scope": "sandbox mirror with two novice profiles; full source feature coverage pending"
+    },
+    "monsters": {
+      "module": "world",
+      "source_line": 824,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "hunters": {
+      "module": "world",
+      "source_line": 825,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "nearest": {
+      "module": "geometry/spatial",
+      "source_line": 827,
+      "status": "CORE_SLICE_ONLY",
+      "check": "test_native_core.py; native_core_contract.cpp; native_checkpoint_r1/core_slice_work_receipt.json",
+      "scope": "sandbox mirror with two novice profiles; full source feature coverage pending"
+    },
+    "moveToward": {
+      "module": "geometry/spatial",
+      "source_line": 837,
+      "status": "CORE_SLICE_ONLY",
+      "check": "test_native_core.py; native_core_contract.cpp; native_checkpoint_r1/core_slice_work_receipt.json",
+      "scope": "sandbox mirror with two novice profiles; full source feature coverage pending"
+    },
+    "lineBlocker": {
+      "module": "geometry/spatial",
+      "source_line": 850,
+      "status": "CORE_IMPLEMENTED_CHECKED",
+      "check": "native_core_contract.cpp geometry: independent scan and all-pair oracles; sanitizer checkpoint",
+      "scope": "typed novice core; complete-engine callers still pending"
+    },
+    "lgKey": {
+      "module": "geometry/spatial",
+      "source_line": 871,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "lgBuild": {
+      "module": "geometry/spatial",
+      "source_line": 872,
+      "status": "CORE_IMPLEMENTED_CHECKED",
+      "check": "native_core_contract.cpp geometry: independent scan and all-pair oracles; sanitizer checkpoint",
+      "scope": "typed novice core; complete-engine callers still pending"
+    },
+    "lgPut": {
+      "module": "geometry/spatial",
+      "source_line": 873,
+      "status": "CORE_IMPLEMENTED_CHECKED",
+      "check": "native_core_contract.cpp geometry: independent scan and all-pair oracles; sanitizer checkpoint",
+      "scope": "typed novice core; complete-engine callers still pending"
+    },
+    "lgRemove": {
+      "module": "geometry/spatial",
+      "source_line": 874,
+      "status": "CORE_IMPLEMENTED_CHECKED",
+      "check": "native_core_contract.cpp geometry: independent scan and all-pair oracles; sanitizer checkpoint",
+      "scope": "typed novice core; complete-engine callers still pending"
+    },
+    "lgMoved": {
+      "module": "geometry/spatial",
+      "source_line": 875,
+      "status": "CORE_IMPLEMENTED_CHECKED",
+      "check": "native_core_contract.cpp geometry: independent scan and all-pair oracles; sanitizer checkpoint",
+      "scope": "typed novice core; complete-engine callers still pending"
+    },
+    "buildGrid": {
+      "module": "geometry/spatial",
+      "source_line": 884,
+      "status": "CORE_IMPLEMENTED_CHECKED",
+      "check": "native_core_contract.cpp geometry: independent scan and all-pair oracles; sanitizer checkpoint",
+      "scope": "typed novice core; complete-engine callers still pending"
+    },
+    "lineBlockerGrid": {
+      "module": "geometry/spatial",
+      "source_line": 894,
+      "status": "CORE_IMPLEMENTED_CHECKED",
+      "check": "native_core_contract.cpp geometry: independent scan and all-pair oracles; sanitizer checkpoint",
+      "scope": "typed novice core; complete-engine callers still pending"
+    },
+    "laneClear": {
+      "module": "tactics",
+      "source_line": 916,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "note": {
+      "module": "tactics",
+      "source_line": 924,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "damage": {
+      "module": "combat",
+      "source_line": 930,
+      "status": "CORE_SLICE_ONLY",
+      "check": "test_native_core.py; native_core_contract.cpp; native_checkpoint_r1/core_slice_work_receipt.json",
+      "scope": "sandbox mirror with two novice profiles; full source feature coverage pending"
+    },
+    "addPending": {
+      "module": "combat",
+      "source_line": 976,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "sk": {
+      "module": "config",
+      "source_line": 982,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "vel": {
+      "module": "combat",
+      "source_line": 983,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "interceptPoint": {
+      "module": "combat",
+      "source_line": 985,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "windUp": {
+      "module": "combat",
+      "source_line": 996,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "prepared": {
+      "module": "combat",
+      "source_line": 997,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "released": {
+      "module": "combat",
+      "source_line": 1000,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "canDodge": {
+      "module": "combat",
+      "source_line": 1004,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "pHit": {
+      "module": "combat",
+      "source_line": 1014,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "pHitLine": {
+      "module": "combat",
+      "source_line": 1016,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "fc": {
+      "module": "combat",
+      "source_line": 1029,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "fireShot": {
+      "module": "combat",
+      "source_line": 1030,
+      "status": "CORE_SLICE_ONLY",
+      "check": "test_native_core.py; native_core_contract.cpp; native_checkpoint_r1/core_slice_work_receipt.json",
+      "scope": "sandbox mirror with two novice profiles; full source feature coverage pending"
+    },
+    "aimClear": {
+      "module": "combat",
+      "source_line": 1049,
+      "status": "CORE_SLICE_ONLY",
+      "check": "test_native_core.py; native_core_contract.cpp; native_checkpoint_r1/core_slice_work_receipt.json",
+      "scope": "sandbox mirror with two novice profiles; full source feature coverage pending"
+    },
+    "fireShell": {
+      "module": "combat",
+      "source_line": 1055,
+      "status": "CORE_SLICE_ONLY",
+      "check": "test_native_core.py; native_core_contract.cpp; native_checkpoint_r1/core_slice_work_receipt.json",
+      "scope": "sandbox mirror with two novice profiles; full source feature coverage pending"
+    },
+    "minR": {
+      "module": "combat",
+      "source_line": 1063,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "reachOf": {
+      "module": "combat",
+      "source_line": 1064,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "paceOf": {
+      "module": "combat",
+      "source_line": 1072,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "lobV": {
+      "module": "combat",
+      "source_line": 1074,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "blastR": {
+      "module": "combat",
+      "source_line": 1075,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "fireShellAt": {
+      "module": "combat",
+      "source_line": 1076,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "shellEscape": {
+      "module": "tactics",
+      "source_line": 1094,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "predictVolley": {
+      "module": "tactics",
+      "source_line": 1108,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "threatWorth": {
+      "module": "tactics",
+      "source_line": 1185,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "smartVolley": {
+      "module": "tactics",
+      "source_line": 1187,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "fireGate": {
+      "module": "tactics",
+      "source_line": 1206,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "artilleryVolley": {
+      "module": "tactics",
+      "source_line": 1237,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "inReachOf": {
+      "module": "tactics",
+      "source_line": 1380,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "artyOutcome": {
+      "module": "tactics",
+      "source_line": 1383,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "shellOf": {
+      "module": "tactics",
+      "source_line": 1408,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "assignGuns": {
+      "module": "tactics",
+      "source_line": 1415,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "launch": {
+      "module": "tactics",
+      "source_line": 1430,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "shotDodgeVector": {
+      "module": "tactics",
+      "source_line": 1444,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "meleeAnswer": {
+      "module": "tactics",
+      "source_line": 1459,
+      "status": "CORE_SLICE_ONLY",
+      "check": "test_native_core.py; native_core_contract.cpp; native_checkpoint_r1/core_slice_work_receipt.json",
+      "scope": "sandbox mirror with two novice profiles; full source feature coverage pending"
+    },
+    "goTo": {
+      "module": "tactics",
+      "source_line": 1474,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "decMelee": {
+      "module": "tactics",
+      "source_line": 1476,
+      "status": "CORE_SLICE_ONLY",
+      "check": "test_native_core.py; native_core_contract.cpp; native_checkpoint_r1/core_slice_work_receipt.json",
+      "scope": "sandbox mirror with two novice profiles; full source feature coverage pending"
+    },
+    "decDirect": {
+      "module": "tactics",
+      "source_line": 1523,
+      "status": "CORE_SLICE_ONLY",
+      "check": "test_native_core.py; native_core_contract.cpp; native_checkpoint_r1/core_slice_work_receipt.json",
+      "scope": "sandbox mirror with two novice profiles; full source feature coverage pending"
+    },
+    "decArtillery": {
+      "module": "tactics",
+      "source_line": 1556,
+      "status": "CORE_SLICE_ONLY",
+      "check": "test_native_core.py; native_core_contract.cpp; native_checkpoint_r1/core_slice_work_receipt.json",
+      "scope": "sandbox mirror with two novice profiles; full source feature coverage pending"
+    },
+    "playerShot": {
+      "module": "abilities",
+      "source_line": 1575,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "playerBrain": {
+      "module": "abilities",
+      "source_line": 1580,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "decideAlone": {
+      "module": "tactics",
+      "source_line": 1648,
+      "status": "CORE_SLICE_ONLY",
+      "check": "test_native_core.py; native_core_contract.cpp; native_checkpoint_r1/core_slice_work_receipt.json",
+      "scope": "sandbox mirror with two novice profiles; full source feature coverage pending"
+    },
+    "pinned": {
+      "module": "tactics",
+      "source_line": 1673,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "threatRead": {
+      "module": "tactics",
+      "source_line": 1677,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "readEnemy": {
+      "module": "tactics",
+      "source_line": 1702,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "tacticsOf": {
+      "module": "tactics",
+      "source_line": 1746,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "comboOf": {
+      "module": "tactics",
+      "source_line": 1761,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "comboName": {
+      "module": "tactics",
+      "source_line": 1763,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "composeF": {
+      "module": "tactics",
+      "source_line": 1765,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "planFrom": {
+      "module": "tactics",
+      "source_line": 1776,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "planDwell": {
+      "module": "tactics",
+      "source_line": 1788,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "planSwitchable": {
+      "module": "tactics",
+      "source_line": 1789,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "setPlan": {
+      "module": "tactics",
+      "source_line": 1790,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "commander": {
+      "module": "tactics",
+      "source_line": 1795,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "formationPlan": {
+      "module": "formations",
+      "source_line": 1811,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "cmdOf": {
+      "module": "tactics",
+      "source_line": 1843,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "observe": {
+      "module": "tactics",
+      "source_line": 1865,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "briefing": {
+      "module": "tactics",
+      "source_line": 1888,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "directorStep": {
+      "module": "tactics",
+      "source_line": 1889,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "positionAnchor": {
+      "module": "formations",
+      "source_line": 1940,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "assignSlots": {
+      "module": "formations",
+      "source_line": 2034,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "meleeOrders": {
+      "module": "tactics",
+      "source_line": 2071,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "surroundOrders": {
+      "module": "formations",
+      "source_line": 2148,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "shooterFocusOrders": {
+      "module": "tactics",
+      "source_line": 2197,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "leaderFire": {
+      "module": "tactics",
+      "source_line": 2229,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "shellDodge": {
+      "module": "tactics",
+      "source_line": 2259,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "dodgeVector": {
+      "module": "tactics",
+      "source_line": 2261,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "castBlasts": {
+      "module": "tactics",
+      "source_line": 2274,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "smartEscape": {
+      "module": "tactics",
+      "source_line": 2287,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "decideReleased": {
+      "module": "tactics",
+      "source_line": 2305,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "kiterRetreat": {
+      "module": "tactics",
+      "source_line": 2326,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "saveWounded": {
+      "module": "tactics",
+      "source_line": 2339,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "decideOrder": {
+      "module": "tactics",
+      "source_line": 2364,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "decideOwn": {
+      "module": "tactics",
+      "source_line": 2404,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "decideFormation": {
+      "module": "formations",
+      "source_line": 2407,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "decide": {
+      "module": "combat",
+      "source_line": 2447,
+      "status": "CORE_SLICE_ONLY",
+      "check": "test_native_core.py; native_core_contract.cpp; native_checkpoint_r1/core_slice_work_receipt.json",
+      "scope": "sandbox mirror with two novice profiles; full source feature coverage pending"
+    },
+    "walk": {
+      "module": "combat",
+      "source_line": 2472,
+      "status": "CORE_SLICE_ONLY",
+      "check": "test_native_core.py; native_core_contract.cpp; native_checkpoint_r1/core_slice_work_receipt.json",
+      "scope": "sandbox mirror with two novice profiles; full source feature coverage pending"
+    },
+    "act": {
+      "module": "combat",
+      "source_line": 2473,
+      "status": "CORE_SLICE_ONLY",
+      "check": "test_native_core.py; native_core_contract.cpp; native_checkpoint_r1/core_slice_work_receipt.json",
+      "scope": "sandbox mirror with two novice profiles; full source feature coverage pending"
+    },
+    "shooterTarget": {
+      "module": "tactics",
+      "source_line": 2538,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "artilleryTarget": {
+      "module": "tactics",
+      "source_line": 2570,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "ready": {
+      "module": "abilities",
+      "source_line": 2589,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "abStat": {
+      "module": "abilities",
+      "source_line": 2595,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "spend": {
+      "module": "abilities",
+      "source_line": 2600,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "busy": {
+      "module": "abilities",
+      "source_line": 2606,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "useCharge": {
+      "module": "abilities",
+      "source_line": 2607,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "useShield": {
+      "module": "abilities",
+      "source_line": 2615,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "useAimed": {
+      "module": "abilities",
+      "source_line": 2620,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "useDisengage": {
+      "module": "abilities",
+      "source_line": 2625,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "useBarrage": {
+      "module": "abilities",
+      "source_line": 2634,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "useSlow": {
+      "module": "abilities",
+      "source_line": 2647,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "busyAct": {
+      "module": "abilities",
+      "source_line": 2657,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "triggerAbility": {
+      "module": "tactics",
+      "source_line": 2696,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "abilityReady": {
+      "module": "abilities",
+      "source_line": 2700,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "triggerAbilityNow": {
+      "module": "tactics",
+      "source_line": 2701,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "defaultAbilities": {
+      "module": "abilities",
+      "source_line": 2713,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "coordOn": {
+      "module": "abilities",
+      "source_line": 2760,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "coordAbilities": {
+      "module": "abilities",
+      "source_line": 2761,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "separate": {
+      "module": "geometry/spatial",
+      "source_line": 2845,
+      "status": "CORE_IMPLEMENTED_CHECKED",
+      "check": "native_core_contract.cpp geometry: independent scan and all-pair oracles; sanitizer checkpoint",
+      "scope": "typed novice core; complete-engine callers still pending"
+    },
+    "step": {
+      "module": "combat",
+      "source_line": 2868,
+      "status": "CORE_SLICE_ONLY",
+      "check": "test_native_core.py; native_core_contract.cpp; native_checkpoint_r1/core_slice_work_receipt.json",
+      "scope": "sandbox mirror with two novice profiles; full source feature coverage pending"
+    },
+    "fork": {
+      "module": "world",
+      "source_line": 3033,
+      "status": "CORE_SLICE_ONLY",
+      "check": "test_native_core.py; native_core_contract.cpp; native_checkpoint_r1/core_slice_work_receipt.json",
+      "scope": "sandbox mirror with two novice profiles; full source feature coverage pending"
+    },
+    "bcFeatures": {
+      "module": "network",
+      "source_line": 3084,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "bcTop": {
+      "module": "network",
+      "source_line": 3115,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "bcPredict": {
+      "module": "network",
+      "source_line": 3121,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "lookahead": {
+      "module": "lookahead",
+      "source_line": 3131,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "reachRate": {
+      "module": "tactics",
+      "source_line": 3260,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "distinctTactics": {
+      "module": "tactics",
+      "source_line": 3271,
+      "status": "PENDING",
+      "check": "PENDING"
+    },
+    "done": {
+      "module": "world",
+      "source_line": 3281,
+      "status": "CORE_SLICE_ONLY",
+      "check": "test_native_core.py; native_core_contract.cpp; native_checkpoint_r1/core_slice_work_receipt.json",
+      "scope": "sandbox mirror with two novice profiles; full source feature coverage pending"
+    },
+    "summary": {
+      "module": "world",
+      "source_line": 3286,
+      "status": "CORE_SLICE_ONLY",
+      "check": "test_native_core.py; native_core_contract.cpp; native_checkpoint_r1/core_slice_work_receipt.json",
+      "scope": "sandbox mirror with two novice profiles; full source feature coverage pending"
+    },
+    "run": {
+      "module": "world",
+      "source_line": 3293,
+      "status": "CORE_SLICE_ONLY",
+      "check": "test_native_core.py; native_core_contract.cpp; native_checkpoint_r1/core_slice_work_receipt.json",
+      "scope": "sandbox mirror with two novice profiles; full source feature coverage pending"
+    }
+  },
+  "table_and_combo_callbacks": {
+    "status": "PENDING",
+    "check": "all exported tables/combos and registered callbacks"
+  },
+  "browser_exclusions": [
+    "DOM rendering/module global export assignment only; simulation API retained"
+  ],
+  "clone_ledger": {
+    "status": "CORE_SLICE_CHECKED_FULL_ENGINE_PENDING",
+    "required": [
+      "units/conditional fields",
+      "shots/shells/hit sets",
+      "fields/dots",
+      "packs/director/queues/commands",
+      "spawn state/RNGs",
+      "telemetry/reset policy",
+      "derived-cache reset",
+      "nested branch buffer leases"
+    ],
+    "core_evidence": "native_core_contract.cpp lifecycle/worlds; native_checkpoint_r1/sanitizer_receipt.json",
+    "core_policy": {
+      "shared": "immutable Config only",
+      "copied": "units/state/active/free slots/shots/shells/fields/dots/hit log/stats/RNG/time/next ID",
+      "rebuilt": "team indexes/live grid",
+      "cleared": "work counters/melee queue/order/pushes",
+      "lease": "nested leases own stable independent World allocations",
+      "pending": "full ability/player/pack/spawn/network/options state; aggregate branch telemetry"
+    }
+  },
+  "checkpoint": "native_checkpoint_r1/README.md"
+}

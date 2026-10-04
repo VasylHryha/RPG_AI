@@ -1,0 +1,164 @@
+{
+  "scope": "bounded_adversarial_engineering_counterexamples",
+  "native_build": {
+    "manifest_sha256": "937d020f4a62507376975efef39c56863ddad24360fb628bc86955d0fa1542f9",
+    "binary_sha256": "0aedee1ee106297afd51a688f27832be559bb425a12205ac54219c4a50bfd998",
+    "sources": {
+      "native_core_contract.cpp": "116bf10fe26756f903ee1ad3e62045b362bed4bae1384621cdeb7662372cd39a",
+      "src/native/world.cpp": "e5152f6ed628f308c3554e3344635f1396637faed9b413ab81d3c9cb3d0094ad",
+      "src/native/combat.cpp": "06cf615d7a11cab8e056ceeee150cbad44232a474d4bf2e44e2e5d560764ed5a",
+      "src/native/spatial.cpp": "eaf9dc995534f3550a36dc72575f0ac8a76a7ef432038e4f0cdc68e4ad6d6143",
+      "src/builtins.h": "7fcd2fba1ec05aa2b671cb2acb9012a11c73ca827c932c159dc7db787624aed6",
+      "src/formation_sim.h": "364dfea1b77be5743b14ba31a8368c11ea264a6ce513dffe7d32727a56e789c2",
+      "src/js_value.h": "bb028815111ddbab5ffe8aa3de98f1076b2420d605104336c970e332f783c32c",
+      "src/native/geometry.h": "7ce862ed036dd7c9a3cd78269648db33072888a5434c9e0d6528649a2e825364",
+      "src/native/rng.h": "2fcc6197704f4de20bf4041136828b15fd30fe7bea9d83e8500254b95a625083",
+      "src/native/spatial.h": "caeabdbfd25efab094c34727f0ce9ff6f427120fd199aec8dc98eb5ddb80c2c9",
+      "src/native/types.h": "ed99d5fff93173f822841c5d6fa797b139840936a6584d976ad194a7ea712401",
+      "src/native/world.h": "3662da42f69a958b0bbe0ced2040e13e26f34ac4ed9059d55b74beb6af283c3b",
+      "src/v8_ieee754.h": "72a68fcc9d908180c9dff5eced89b1b12b4ad9df68b1886b0307ab82104b5855",
+      "build.py": "687262e16950a6312924452e3e4a44b6f4c664fbc1325a16542f5b67b3d03796"
+    },
+    "engine": "core-check",
+    "scope": "native_core_slice",
+    "sanitized": false,
+    "portable": false
+  },
+  "probe_source_hashes": {
+    "/usr/bin/clang++": "b8763cf250e607a778bb4603cecb5b90338814d0a3dfcba0d57b1de242f610e9",
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/native_checkpoint_review_r1/edge_probe.cpp": "f6085c95c8dbcfbe722698a41dd6ca7de0fbd7b1446ea05b77309454296ee2c7",
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/native_checkpoint_review_r1/reproduce.py": "da96defd7cb120ceb40ac64a5dfcb8963cc5fa80999c54b868cf5055bb4b9db8",
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/build/native_core_contract_world.o": "aea01f16831942c6076b3ac80774dbc3ab58efd6584c32d4b67a81636bf09a70",
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/build/native_core_contract_combat.o": "ef270d0bbd5017be9f9d3be345b71ef963b12a62160ce3d64ec18f7b58c19f3f",
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/build/native_core_contract_spatial.o": "0cc887d991134c7c18ed82613501eff7607a30bafbd67885491358806b4c8d53"
+  },
+  "compile_command": [
+    "/usr/bin/clang++",
+    "-std=c++17",
+    "-O3",
+    "-fno-fast-math",
+    "-ffp-contract=off",
+    "-flto=thin",
+    "-I/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/src",
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/native_checkpoint_review_r1/edge_probe.cpp",
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/build/native_core_contract_world.o",
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/build/native_core_contract_combat.o",
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/build/native_core_contract_spatial.o",
+    "-o",
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/native_checkpoint_review_r1/edge_probe"
+  ],
+  "edge_probe": {
+    "tiny_dt_invalid_velocity_units": 4,
+    "spawned_blocker_found": false,
+    "move_after_spawn_throws": true,
+    "move_before_first_step_throws": true
+  },
+  "unfinished_fight_accepted": {
+    "request": {
+      "mode": "alone",
+      "options": {
+        "scenario": "mirror",
+        "duration": 20,
+        "seed": 2026100409,
+        "army": {
+          "melee": 1,
+          "ranged": 1,
+          "artillery": 0
+        },
+        "ai": [
+          {
+            "level": "novice"
+          },
+          {
+            "level": "novice"
+          }
+        ]
+      }
+    },
+    "returned": {
+      "mode": "alone",
+      "melee": 0,
+      "ranged": 0,
+      "artillery": 0,
+      "total": 0,
+      "wasted": 0,
+      "monsterDeaths": 0,
+      "hunterKills": 0,
+      "aliveSeconds": 0,
+      "enemyDamage": 0,
+      "survivors": 2,
+      "enemySurvivors": 2,
+      "t": 0
+    },
+    "execution": {
+      "executed_fights": true,
+      "executed_steps": true,
+      "cache_hits": 0
+    }
+  },
+  "identity_changed_result_cached": {
+    "entry_exists": true,
+    "close_error": "engine identity changed during comparison"
+  },
+  "different_js_host_primed": {
+    "imported": 643,
+    "counts": {
+      "cached": 1,
+      "executed": 0,
+      "rejected": 0
+    },
+    "cached_equals_actual_host": false,
+    "cached": {
+      "aliveSeconds": 956.1666666666711,
+      "artillery": 1271.7999999999997,
+      "enemyDamage": 2438.7999999999984,
+      "enemySurvivors": 43,
+      "hunterKills": 7,
+      "melee": 244,
+      "mode": "alone",
+      "monsterDeaths": 10,
+      "ranged": 978.2000000000011,
+      "survivors": 40,
+      "t": 20.000000000000153,
+      "total": 2494.000000000001,
+      "wasted": 749.9999999999998
+    },
+    "fresh": {
+      "mode": "alone",
+      "melee": 0,
+      "ranged": 0,
+      "artillery": 0,
+      "total": 0,
+      "wasted": 999,
+      "monsterDeaths": 0,
+      "hunterKills": 0,
+      "aliveSeconds": 0,
+      "enemyDamage": 0,
+      "survivors": 2,
+      "enemySurvivors": 2,
+      "t": 0
+    }
+  },
+  "huge_finite_dt_output": {
+    "mode": "alone",
+    "melee": 30,
+    "ranged": 0,
+    "artillery": 0,
+    "total": 30,
+    "wasted": 0,
+    "monsterDeaths": 0,
+    "hunterKills": 0,
+    "aliveSeconds": null,
+    "enemyDamage": 0,
+    "survivors": 2,
+    "enemySurvivors": 2,
+    "t": 1e+308
+  },
+  "probe_binary_sha256": "b1eea5899a9f9c7757a2214e805b177cbb98ecc6a56b75d784f44d18efdcbd30",
+  "harness_source_hashes": {
+    "benchmark.py": "1f04006b8c85240002513ea0530a8ec6855fa89383120ac0369f1388a1520699",
+    "result_cache.py": "e9c71877d1801c06458042daea32161a8ec7b91414faa26bc0d846402d56a915",
+    "result_schema.py": "77f45f4a7dccaa1080be0215dc7dff2dbdcefcca7ff641f7607ce5be21583f6f",
+    "build_admission.py": "75fe338c7f5c56cd586d9398a56b2fdc29e6a7d51aa59021ffd2c5b58398a5f5"
+  }
+}

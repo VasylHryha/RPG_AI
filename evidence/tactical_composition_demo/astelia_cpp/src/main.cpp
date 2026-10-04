@@ -7,13 +7,14 @@
 using namespace js;
 static size_t permanentCells;
 static V inputRoot, batchRoot;
+static uint64_t executedFights=0, executedSteps=0;
 static std::string bits(double d){uint64_t u;std::memcpy(&u,&d,8);std::ostringstream out;out<<std::hex<<std::setfill('0')<<std::setw(16)<<u;return out.str();}
 static V sanitize(V v){
   if(v.tag!=V::Heap)return v;if(v.p->kind==Object::Function)return V("[function]");
   if(truth(get(v,"units"))&&truth(get(v,"o")))return V("[world]");
   if(get(v,"id").tag!=V::Undefined&&get(v,"alive").tag!=V::Undefined)return obj({{"unit",get(v,"id")}});
   if(v.p->kind==Object::Array){Args out;for(V x:v.p->items)out.push_back(sanitize(x));return arr(out);}
-  if(v.p->kind==Object::Map||v.p->kind==Object::Set){Args out;for(auto& p:v.p->entries)out.push_back(v.p->kind==Object::Map?arr({sanitize(p.first),sanitize(p.second)}):sanitize(p.first));return obj({{v.p->kind==Object::Map?"map":"set",arr(out)}});}
+  if(v.p->kind==Object::Map||v.p->kind==Object::Set){Args out;for(auto& p:v.p->ordered->entries)out.push_back(v.p->kind==Object::Map?arr({sanitize(p.first),sanitize(p.second)}):sanitize(p.first));return obj({{v.p->kind==Object::Map?"map":"set",arr(out)}});}
   V out=obj();for(V k:keys(v))if(!eq(k,V("net")))set(out,k,sanitize(get(v,k)));return out;
 }
 static V state(V world,std::map<int,V>& known,bool debug){
@@ -38,11 +39,12 @@ static V fight(V req){
   V w;int tick=0;std::map<int,V> known;
   bool trace=truth(get(req,"trace"));
   try{
+    ++executedFights;
     w=simulation::create({mode,options});
     auto dump=[&](){std::cout<<stringify(obj({{"step",V(tick)},{"state",state(w,known,truth(get(req,"debug")))}}))<<'\n';};
     if(trace)dump();
     while(!truth(simulation::done({w}))){
-      simulation::step({w});++tick;if(trace)dump();
+      ++executedSteps;simulation::step({w});++tick;if(trace)dump();
       if(arena.size()>50000||cells.size()>100000){Args roots=simulation::roots();roots.push_back(w);roots.push_back(req);roots.push_back(inputRoot);roots.push_back(batchRoot);for(auto& p:known)roots.push_back(p.second);collect(std::move(roots),permanentCells);}
     }
     return simulation::summary({w});
@@ -51,7 +53,9 @@ static V fight(V req){
 int main(int argc,char** argv){
   try{
     simulation::initialize();permanentCells=cells.size();
-    std::string net=argc>1?argv[1]:(std::filesystem::absolute(argv[0]).parent_path().parent_path().parent_path()/"astelia_snapshot"/"bc_net.json").string();
+    bool metrics=false;std::string net;
+    for(int i=1;i<argc;++i)if(std::string(argv[i])=="--metrics")metrics=true;else if(net.empty())net=argv[i];else throw std::runtime_error("unexpected argument");
+    if(net.empty())net=(std::filesystem::absolute(argv[0]).parent_path().parent_path().parent_path()/"astelia_snapshot"/"bc_net.json").string();
     std::ifstream inputNet(net);if(!inputNet)throw std::runtime_error("cannot open bc_net.json: "+net);
     std::string contents((std::istreambuf_iterator<char>(inputNet)),{});simulation::setNet({parse(contents)});
     std::string line;while(std::getline(std::cin,line)){
@@ -61,6 +65,7 @@ int main(int argc,char** argv){
       }catch(const std::exception& e){std::cout<<stringify(obj({{"error",V(e.what())}}))<<std::endl;}
       inputRoot=V();batchRoot=V();collect(simulation::roots(),permanentCells);
     }
+    if(metrics)std::cerr<<"{\"executed_fights\":"<<executedFights<<",\"executed_steps\":"<<executedSteps<<",\"cache_hits\":0}\n";
     return 0;
   }catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}
 }
