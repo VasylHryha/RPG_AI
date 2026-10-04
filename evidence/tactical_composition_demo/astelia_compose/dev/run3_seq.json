@@ -1,0 +1,206 @@
+{
+ "started": "2026-10-04T11:24:03.812Z",
+ "tool": "compose_seq.js",
+ "settings": {
+  "ENEMY_LEVEL": "elite",
+  "ENEMY_DROP": [
+   "artyRollout"
+  ],
+  "SEL_SEEDS": [
+   101,
+   102
+  ],
+  "CONF_SEEDS": [
+   301,
+   302,
+   303
+  ],
+  "OPP_SEL": [
+   "wolfpack",
+   "storm",
+   "line",
+   "swarm",
+   "loose skirmish",
+   "box",
+   "crescent",
+   "alone"
+  ],
+  "STAGES": [
+   4,
+   8,
+   16,
+   32
+  ],
+  "CHUNK": 10,
+  "PAIRS": 60,
+  "TRIPLES": 40,
+  "MIN_GAIN": 1,
+  "SEARCH_SEED": 12345,
+  "rules": "game",
+  "lookahead": "excluded in this run"
+ },
+ "race_order": [
+  "storm|101|false",
+  "storm|101|true",
+  "swarm|101|false",
+  "swarm|101|true",
+  "wolfpack|101|false",
+  "wolfpack|101|true",
+  "alone|101|false",
+  "alone|101|true",
+  "box|101|false",
+  "box|101|true",
+  "crescent|101|false",
+  "crescent|101|true",
+  "loose skirmish|101|false",
+  "loose skirmish|101|true",
+  "line|101|false",
+  "line|101|true",
+  "loose skirmish|102|false",
+  "loose skirmish|102|true",
+  "crescent|102|false",
+  "crescent|102|true",
+  "wolfpack|102|false",
+  "wolfpack|102|true",
+  "alone|102|false",
+  "alone|102|true",
+  "swarm|102|false",
+  "swarm|102|true",
+  "storm|102|false",
+  "storm|102|true",
+  "line|102|false",
+  "line|102|true",
+  "box|102|false",
+  "box|102|true"
+ ],
+ "snapshot": "astelia_snapshot/SOURCE.md",
+ "rounds": [
+  {
+   "round": 1,
+   "from_pieces": 0,
+   "from_score": -19.41,
+   "singles_tried": 30,
+   "singles_total": 39,
+   "fights": 232,
+   "seconds": 37,
+   "accepted": "dodgeShells=true",
+   "how": "single",
+   "gain": 17.16,
+   "se": 1.48,
+   "pieces": [
+    "dodgeShells=true"
+   ],
+   "score": -2.25
+  },
+  {
+   "round": 2,
+   "from_pieces": 1,
+   "from_score": -2.25,
+   "singles_tried": 10,
+   "singles_total": 39,
+   "fights": 120,
+   "seconds": 58,
+   "accepted": "dodgeShots=true",
+   "how": "single",
+   "gain": 14.5,
+   "se": 2.6,
+   "pieces": [
+    "dodgeShots=true",
+    "dodgeShells=true"
+   ],
+   "score": 12.25
+  },
+  {
+   "round": 3,
+   "from_pieces": 2,
+   "from_score": 12.25,
+   "singles_tried": 39,
+   "singles_total": 39,
+   "nonharmful_singles": 29,
+   "combos_2_tried": 60,
+   "combos_2_available": 402,
+   "combos_3_tried": 40,
+   "combos_3_available": 3548,
+   "fights": 2480,
+   "seconds": 554,
+   "stopped": "no single change, pair or triple was accepted"
+  }
+ ],
+ "synergies": [],
+ "start_score": -19.40625,
+ "final": {
+  "path": [
+   "novice",
+   "dodgeShells=true",
+   "dodgeShots=true"
+  ],
+  "pieces": [
+   "dodgeShots=true",
+   "dodgeShells=true"
+  ],
+  "n_pieces": 2,
+  "profile": {
+   "brain": "alone",
+   "lookahead": null,
+   "skills": {
+    "dodgeShots": true,
+    "shotReact": 0.3,
+    "dodgeShells": true,
+    "lead": "none",
+    "pursuit": "chase",
+    "kite": 0,
+    "abilities": "off",
+    "reactAim": false
+   }
+  },
+  "score_selection": 12.25,
+  "search_fights": 2864,
+  "search_seconds": 553.844
+ },
+ "confirmation": {
+  "novice": {
+   "margin": -15.25,
+   "won": 0,
+   "n": 114
+  },
+  "found": {
+   "margin": 11.41,
+   "won": 0.912,
+   "n": 114
+  },
+  "veteran": {
+   "margin": -4.09,
+   "won": 0.298,
+   "n": 114
+  },
+  "regular": {
+   "margin": -2.89,
+   "won": 0.333,
+   "n": 114
+  },
+  "elite-fast": {
+   "margin": 29.32,
+   "won": 0.886,
+   "n": 114
+  },
+  "found_minus_novice": {
+   "mean": 26.67,
+   "se": 1.13
+  },
+  "found_minus_regular": {
+   "mean": 14.31,
+   "se": 1.04
+  },
+  "found_minus_veteran": {
+   "mean": 15.5,
+   "se": 1.04
+  },
+  "found_minus_elite-fast": {
+   "mean": -17.9,
+   "se": 1.14
+  }
+ },
+ "fights": 2864,
+ "finished": "2026-10-04T11:39:41.455Z",
+ "seconds": 937.643
+}
