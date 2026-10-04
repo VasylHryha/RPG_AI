@@ -1,0 +1,299 @@
+{
+ "started": "2026-10-04T13:52:12.541Z",
+ "tool": "compose_seq.js",
+ "settings": {
+  "ENEMY_LEVEL": "elite",
+  "ENEMY_DROP": [
+   "artyRollout"
+  ],
+  "SEL_SEEDS": [
+   101,
+   102
+  ],
+  "CONF_SEEDS": [
+   301,
+   302,
+   303
+  ],
+  "OPP_SEL": [
+   "wolfpack",
+   "storm",
+   "line",
+   "swarm",
+   "loose skirmish",
+   "box",
+   "crescent",
+   "alone"
+  ],
+  "STAGES": [
+   8,
+   16,
+   32
+  ],
+  "DROP_SE": 1,
+  "CHUNK": 10,
+  "FIRSTS": 1000000000,
+  "MIN_GAIN": 1,
+  "UNITS": [
+   "alone",
+   "formation",
+   "rules"
+  ],
+  "SEARCH_SEED": 12345,
+  "rules": "game",
+  "lookahead": "excluded in this run"
+ },
+ "race_order": [
+  "storm|101|false",
+  "storm|101|true",
+  "swarm|101|false",
+  "swarm|101|true",
+  "wolfpack|101|false",
+  "wolfpack|101|true",
+  "alone|101|false",
+  "alone|101|true",
+  "box|101|false",
+  "box|101|true",
+  "crescent|101|false",
+  "crescent|101|true",
+  "loose skirmish|101|false",
+  "loose skirmish|101|true",
+  "line|101|false",
+  "line|101|true",
+  "loose skirmish|102|false",
+  "loose skirmish|102|true",
+  "crescent|102|false",
+  "crescent|102|true",
+  "wolfpack|102|false",
+  "wolfpack|102|true",
+  "alone|102|false",
+  "alone|102|true",
+  "swarm|102|false",
+  "swarm|102|true",
+  "storm|102|false",
+  "storm|102|true",
+  "line|102|false",
+  "line|102|true",
+  "box|102|false",
+  "box|102|true"
+ ],
+ "snapshot": "astelia_snapshot/SOURCE.md",
+ "units": [
+  {
+   "name": "alone",
+   "start": [],
+   "rounds": [
+    {
+     "round": 1,
+     "from_pieces": 0,
+     "from_score": -19.41,
+     "singles_tried": 30,
+     "singles_total": 40,
+     "fights": 392,
+     "seconds": 92,
+     "accepted": "dodgeShells=true",
+     "how": "single",
+     "gain": 17.16,
+     "se": 1.48,
+     "pieces": [
+      "dodgeShells=true"
+     ],
+     "score": -2.25,
+     "sec_per_fight": 3.02
+    },
+    {
+     "round": 2,
+     "from_pieces": 1,
+     "from_score": -2.25,
+     "singles_tried": 10,
+     "singles_total": 40,
+     "fights": 184,
+     "seconds": 152,
+     "accepted": "dodgeShots=true",
+     "how": "single",
+     "gain": 14.5,
+     "se": 2.6,
+     "pieces": [
+      "dodgeShots=true",
+      "dodgeShells=true"
+     ],
+     "score": 12.25,
+     "sec_per_fight": 3.16
+    },
+    {
+     "round": 3,
+     "from_pieces": 2,
+     "from_score": 12.25,
+     "singles_tried": 40,
+     "singles_total": 40,
+     "firsts_tried": 1,
+     "firsts_total": 40,
+     "pairs_tried": 30,
+     "fights": 1360,
+     "seconds": 532,
+     "accepted": "shotReact=0.12 + dodgeShells=\"smart\"",
+     "how": "2 together",
+     "gain": 2.75,
+     "se": 1.19,
+     "pieces": [
+      "dodgeShots=true",
+      "shotReact=0.12",
+      "dodgeShells=\"smart\""
+     ],
+     "score": 15,
+     "sec_per_fight": 1.61
+    },
+    {
+     "round": 4,
+     "from_pieces": 3,
+     "from_score": 15,
+     "singles_tried": 20,
+     "singles_total": 40,
+     "fights": 192,
+     "seconds": 571,
+     "accepted": "castDodge=true",
+     "how": "single",
+     "gain": 5.94,
+     "se": 1.42,
+     "pieces": [
+      "dodgeShots=true",
+      "shotReact=0.12",
+      "dodgeShells=\"smart\"",
+      "castDodge=true"
+     ],
+     "score": 20.94,
+     "sec_per_fight": 2.15
+    },
+    {
+     "round": 5,
+     "from_pieces": 4,
+     "from_score": 20.94,
+     "singles_tried": 40,
+     "singles_total": 40,
+     "firsts_tried": 40,
+     "firsts_total": 40,
+     "pairs_tried": 1574,
+     "fights": 8472,
+     "seconds": 2632,
+     "stopped": "no single change or two-step pair was accepted"
+    }
+   ],
+   "start_score": -19.41,
+   "start_sec_per_fight": 2.4,
+   "path": [
+    "alone",
+    "dodgeShells=true",
+    "dodgeShots=true",
+    "shotReact=0.12 + dodgeShells=\"smart\"",
+    "castDodge=true"
+   ],
+   "pieces": [
+    "dodgeShots=true",
+    "shotReact=0.12",
+    "dodgeShells=\"smart\"",
+    "castDodge=true"
+   ],
+   "score": 20.94,
+   "sec_per_fight": 2.15,
+   "seconds": 2632
+  },
+  {
+   "name": "formation",
+   "start": [
+    "brain=formation",
+    "formation=line"
+   ],
+   "rounds": [
+    {
+     "round": 1,
+     "from_pieces": 2,
+     "from_score": -19.78,
+     "singles_tried": 10,
+     "singles_total": 55,
+     "fights": 176,
+     "seconds": 38,
+     "accepted": "dodgeShells=true",
+     "how": "single",
+     "gain": 13.41,
+     "se": 1.55,
+     "pieces": [
+      "dodgeShells=true",
+      "brain=formation",
+      "formation=line"
+     ],
+     "score": -6.38,
+     "sec_per_fight": 3.25
+    },
+    {
+     "round": 2,
+     "from_pieces": 3,
+     "from_score": -6.38,
+     "singles_tried": 20,
+     "singles_total": 55,
+     "fights": 408,
+     "seconds": 161,
+     "accepted": "formation=swarm",
+     "how": "single",
+     "gain": 10.91,
+     "se": 2.08,
+     "pieces": [
+      "dodgeShells=true",
+      "brain=formation",
+      "formation=swarm"
+     ],
+     "score": 4.53,
+     "sec_per_fight": 2.86
+    },
+    {
+     "round": 3,
+     "from_pieces": 3,
+     "from_score": 4.53,
+     "singles_tried": 30,
+     "singles_total": 55,
+     "fights": 304,
+     "seconds": 301,
+     "accepted": "dodgeShots=true",
+     "how": "single",
+     "gain": 11.19,
+     "se": 1.83,
+     "pieces": [
+      "dodgeShots=true",
+      "dodgeShells=true",
+      "brain=formation",
+      "formation=swarm"
+     ],
+     "score": 15.72,
+     "sec_per_fight": 5.03
+    }
+   ],
+   "start_score": -19.78,
+   "start_sec_per_fight": 3.03
+  }
+ ],
+ "synergies": [
+  {
+   "unit": "alone",
+   "round": 3,
+   "combination": "shotReact=0.12 + dodgeShells=\"smart\"",
+   "gain": 2.75,
+   "se": 1.19,
+   "parts_alone": [
+    {
+     "move": "shotReact=0.12",
+     "first_stage_gain": 1,
+     "dropped_after": 32,
+     "gain": 0.34,
+     "se": 1.42
+    },
+    {
+     "move": "dodgeShells=\"smart\"",
+     "first_stage_gain": -1.38,
+     "dropped_after": 32,
+     "gain": 2.41,
+     "se": 1.51
+    }
+   ]
+  }
+ ],
+ "merges": []
+}

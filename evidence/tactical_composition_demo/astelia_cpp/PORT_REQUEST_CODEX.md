@@ -45,6 +45,24 @@ full state (every unit's x, y, hp, cd, target, alive) is equal at every step on 
 7. **`undefined`/`null` and defaults:** `||` and `??` default chains, and `JSON.stringify` comparisons where the source uses them.
 8. **The known crash** (`SOURCE.md`): `artilleryVolley` reads `coming.length` with `coming` null under the default (non-`game`) rules. Reproduce it as an error result with the same message. Do not fix it in the port: the fix is a separate, recorded change to both versions.
 
+## How to do it fast (a few hours): the order of work
+
+The source is 3,376 lines in one file. Port it **in the file's own order, function by function, with the same names**: one C++ function per JS function,
+so a reviewer can read the two side by side. Do not restructure, optimise or "improve" anything in this pass. Speed comes from C++ itself; optimisations come later, behind the same checks.
+
+1. **Diff tool first (about 30 min).** Write a small Node script that runs the JS fight and dumps the full state after every step as JSON lines. Add the same dump to the C++ host.
+   A compare script then prints the **first step and the first field that differ**. Every bug is then found in minutes, not by guessing.
+2. **Core (1-2 h).** Data tables first (`GAME`, `SKILLS`, `LEVELS`, `PRESETS`, `PLANS`, `RULES`, `POOL`, `DEFAULTS`). Then `rng`, `create`, `step` with movement, damage,
+   shots and shells, `done` and `summary`, with the simplest profile on both sides (`{brain:'alone'}`, no abilities). Diff until identical.
+3. **Brains and skills (1-2 h).** `alone`, `formation`, `rules`, `storm`, `wolfpack`, `gamepack`; then each skill. After each one, diff the fights that use it.
+4. **Abilities, artillery, game rules (1 h).** Diff with `abilities:true`, `rules:'game'`.
+5. **fork, look-ahead, bc_net, artyRollout (1 h).** Diff with elite-fast and elite.
+6. **The full check set and the speed measurement (30 min).**
+
+Reference only, not to copy: Astelia's own C++ lab (`/Users/new/RiderProjects/astelia-hunte/experiments/tactics_lab/`) runs the AI layer on the real game engine. It is
+**not** a port of this simulation: it drops the JS world, cannot fork, and controls movement only. Its `tactics.h` `Policy` interface (world snapshot in, moves out) is the shape our
+AI plug will take later (session S2), so keep the port's unit state easy to expose that way. Read the lab for structure only; never write in that repository.
+
 ## Checks (all must pass; commit their outputs)
 
 1. **Exact equivalence:**
@@ -66,4 +84,4 @@ When done, write `evidence/tactical_composition_demo/astelia_cpp/PORT_REPORT.md`
 - the speed-up;
 - every deviation from this request, with its reason.
 
-Claude will then review the port (cross-family) before any experiment uses it. Estimated effort: about 6-10 hours, most of it in the equivalence checks.
+Claude will then review the port (cross-family) before any experiment uses it. Expected effort: **about 4-6 hours** with the diff tool from step 1. If a mismatch resists for more than an hour, write it into the report and ask, rather than working around it.
