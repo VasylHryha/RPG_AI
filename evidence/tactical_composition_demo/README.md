@@ -9,12 +9,10 @@ exploratory vocabulary, not milestone verdicts. The work is outside the GeoTacti
 and **MOVE** (where to step), wired together. The questions: do the wired pieces play as well as one big controller of the same size taught on the same
 examples; do they cope with a unit type nobody trained on; how cheap are they to build and to change.
 
-**Latest (0d Part A, `REPORT_0D.md`):** a structured network of the same graph trained jointly scores within 0.02 of the separately taught pieces and about 0.4 above every flat model, so the Stage 0 advantage is the structure, not the separate teaching (V3 SUPPORTED, V2 EQUIVALENT).
+**Latest (0d Part A, `REPORT_0D.md`, corrected 2026-10-04):** a structured network of the same graph trained jointly scores about 0.02 below the separately taught pieces (C ahead in 30 of 30 seeds, inside the registered margin) and 0.40 to 0.47 above small flat models at 3,000 states, so the advantage comes from the teacher's graph, not from teaching the pieces separately. **The flat baseline is weak** (it plays worse than the trivial rush rule); a probe shows larger flat models climbing with data, so the gap is a small-data statement (the wired unit at 3,000 states beats a flat model at 60,000).
 
-**What is established (one invented sandbox, scripted teachers, imitation, ordinary small networks):** the wired pieces match the scripted expert within about
-0.03 on seen mixes and beat an equal-size flat block widely; after a targeting-rule change, retraining only AIM reached the 0.80 level at the grid floor (100 rows) where the flat block first reached it at 1,000 rows
-(a ratio of registered first-success grid values, not a bound on the need). **Not established:** that the advantage comes from composition rather than from the structure copied from the teacher (no structured
-end-to-end baseline), anything about a second level (squad), learning from outcomes, geometry, oscillators or "vibration". Why this exists: `MOTIVATION.md`.
+**What is established (one invented sandbox, scripted teachers, imitation, ordinary small networks):** the wired pieces match the scripted expert within about 0.03 on seen mixes and beat small flat blocks widely; after a targeting-rule change, retraining only AIM reached the 0.80 level at the grid floor (100 rows) where the flat block first reached it at 1,000 rows (a ratio of registered first-success grid values, not a bound on the need); a jointly trained network of the same graph does about as well as the separately taught pieces.
+**Not established:** that this is composition rather than a hand-given graph (both C and S1 were given the teacher's decomposition and intermediate labels); which element of the graph matters; that flat networks cannot do it (the registered flat baseline is weak); anything about a second level (squad), learning from outcomes, geometry, oscillators or "vibration". Why this exists: `MOTIVATION.md`.
 
 ## Runs (each one-shot; the run directory is the latch)
 
@@ -26,8 +24,8 @@ end-to-end baseline), anything about a second level (squad), learning from outco
 | 0d Part A (structure versus composition) | `SPECIFICATION_0D.md`, `PROPOSAL_0D.md` | `zd_run.py`, `zd_models.py`, `tcd_common/` | `SPEC_0D.json` | `c747e76` | `run_0d/` (`smoke_run_0d/`; development in `dev_0d/`) | `REPORT_0D.md` |
 
 Names: Stage 0 = AIM + MOVE; 0b = the mage's burst piece (deferred); 0c = the change-cost test, r1 and r2 its revisions. Each `RUN_STARTED.json` carries the
-hashes of the files the run depends on. The current `tactics.py` differs from the Stage 0 and r1 versions (additive changes); `tcd_common/LEGACY_EQUIVALENCE.json`
-`tactics.py` is frozen and pinned by hash; `tcd_common/SEED_REPRODUCTION.json` records an exact re-run of seed 0 of Stage 0 and of change-cost r2 (one seed each). `MOTIVATION.md` has been edited since the change runs hashed it, so its hash in those records no longer
+hashes of the files the run depends on. The current `tactics.py` differs from the Stage 0 and r1 versions (additive changes, compared once at commit `6e92322` and found identical on the exercised primitives, see `tcd_common/CHANGES.md`);
+`tactics.py` is frozen and pinned by hash (`tcd_common/test_common.py`); `tcd_common/SEED_REPRODUCTION.json` records an exact re-run of seed 0 of Stage 0 and of change-cost r2 (one seed each; its HEAD, 13662a4, predates later harness edits that do not touch the seed computation). `MOTIVATION.md` has been edited since the change runs hashed it, so its hash in those records no longer
 matches HEAD; the `SPEC*`, specification and code hashes do.
 
 ## Superseded or history (kept, do not use as current)
@@ -41,7 +39,7 @@ matches HEAD; the `SPEC*`, specification and code hashes do.
 ## Current work
 
 - `tcd_common/`: repaired shared tooling (see `tcd_common/CHANGES.md`); new experiments use it, the recorded harnesses stay frozen.
-- 0d Part A is complete (`REPORT_0D.md`): in this sandbox the gain is the structure, not the separate teaching. `PROPOSAL_0D.md` Appendix A lists what a MOVE-only change test and an extrapolation test would need.
+- 0d Part A is complete and was rechecked on 2026-10-04 (`REPORT_0D.md`, "Post-run recheck"): the gain comes from the teacher's graph, not from separate teaching, against a weak flat baseline. After the run the registered files (`SPECIFICATION_0D.md`, `PROPOSAL_0D.md`, `SPEC_0D.json`, `zd_*.py`, `test_zd.py`, `tcd_common/`, `dev_0d/` records) were **not edited** (their hashes are in `run_0d/RUN_STARTED.json`); post-run additions are new files: `verify_run_0d.py` and `verify_run_0d_result.json` (saved weights reproduce every recorded score), `test_zd_audit.py`, `dev_0d/POSTRUN_NOTES.md` and `dev_0d/probe_flat_capacity*`. `PROPOSAL_0D.md` Appendix A lists what a MOVE-only change test and an extrapolation test would need.
 - Next, not yet proposed: the squad level (units into a squad) and learning the pieces from outcomes.
 
 ## Tests

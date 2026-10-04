@@ -1,7 +1,7 @@
 # 0028 — Owner-directed exploratory line: AI as composable shapes
 
 **Date:** 2026-10-03  
-**Status:** RECORD (written after the work, at the owner's "ok go ahead" to a recheck plan). Items marked **[R]** need the owner's own statement to be ratified; this record does not ratify them for the owner.  
+**Status:** RECORD (written after the work, in stages: first at the owner's "ok go ahead" to a recheck plan, then updated after experiment 0d and after the 2026-10-04 recheck). Items marked **[R]** need the owner's own statement to be ratified; this record does not ratify them for the owner. **Pending owner decisions are listed at the end.**
 **Scope:** exploratory, `evidence/` only. Not a milestone, not C6 evidence, no status or frozen-file change.
 
 ## Why this record exists
@@ -19,6 +19,7 @@ These are the author's transcriptions and readings, not primary records. Any ite
 5. "lets do it then just doimcen why we di it adn what the motvistion" (`MOTIVATION.md`).
 6. "ok go ahead" to the change-cost revision 2. Today: "Recheck what you did please, check if it is the best we can do … it's fine to break the things or fully rework", then "ok go ahead" to the recheck plan (steps 1 and 2: documents and a shared library; no experiment run).
 7. After the Codex review and my plain-language summary of revision 2 of the 0d plan ("what are we doig and why pxalin in simple terms"), and my request to approve or reject it: "continue then". My reading: approval to start the **development phase** of `PROPOSAL_0D.md` revision 2 (own entropy, scratch code, committed with raw results), not approval of a recorded run, which stays gated by the registration commit and the pre-run review in that plan. **[R]**
+8. After my proposal ("tell me 'do 1 then 2' to go ahead, or 'skip Part A, go to squad' if you'd rather") and my answer on running the 0d development phase: "og go ahead do we need new seiso nor do it in this one ?". My reading: approval to finish Part A (specification, registration, pre-run review, smoke, **one recorded run**) and then propose the squad level. The recorded run (`run_0d`, started 2026-10-03 23:28 from `c747e76`) started on this reading, and `PROPOSAL_0D.md` stop row 1 says an unapproved proposal builds and runs nothing: the run is therefore exposed to the objection that the approval was an interpretation. **[R]**
 
 ## What was done (all committed; every run was one-shot with its own entropy)
 
@@ -29,7 +30,7 @@ These are the author's transcriptions and readings, not primary records. Any ite
 | Tactical Stage 0 `evidence/tactical_composition_demo/` | `bc5ce29` spec+code, `ff6e00b` run + report | P1, P2, P4 SUPPORTED; P3, P5 INDETERMINATE |
 | Change-cost r1 | `d32485a`, `9dfb7b1`, amendment `b07eae3` | all INDETERMINATE (fine-tuning procedure was the defect; my first explanation was wrong) |
 | Change-cost r2 | `3381e03` spec+code, `e88354c` run + report | C1, C2, C3 SUPPORTED, C1 by a margin of 0.001 |
-| 0d Part A (after a Codex review of the proposal and a same-family pre-run review) | `c747e76` registration, run record and `REPORT_0D.md` in the following commit | V1, V3, V4 SUPPORTED, V2 EQUIVALENT, V5 REFUTED: the gain is the structure; V4 holds on fidelity only |
+| 0d Part A (after a Codex review of proposal revision 1 and a same-family pre-run review) | `c747e76` registration, `eae0b29` run record and `REPORT_0D.md`, corrected 2026-10-04 | V1, V3, V4 SUPPORTED, V2 EQUIVALENT, V5 REFUTED against a **weak** flat baseline; V4 holds on fidelity only; run approval is **[R]** (item 8) |
 
 ## Records that were missing
 
@@ -47,7 +48,7 @@ These are the author's transcriptions and readings, not primary records. Any ite
 
 - The verdict words SUPPORTED / REFUTED / INDETERMINATE in these folders are **exploratory vocabulary**, not milestone verdicts (SUPPORTED_WITHIN_SCOPE, NOT_SUPPORTED).
 - The tactical work is **outside the GT0–GT5 plan** of GeoTactics R3 (sections 1.1 and 13). It is an invented sandbox with scripted teachers. It supports no hierarchy claim unless an accepted C4–C8 mechanism is imported.
-- **No cross-family review of the recorded results exists, and none is claimed for them.** Earlier "independent reviews" were Claude subagents. A Codex (cross-family) review of the later material exists: `docs/reviews/tactical_composition_0d_review_codex.md` examined this record, `CORRECTIONS.md`, `tcd_common` and `PROPOSAL_0D.md` (verdict CHANGES_REQUIRED for the proposal; its spot-checks of `CORRECTIONS.md` matched the stored data; its errors-in-my-documents findings are applied). It did not review the historical experiments. 0027 reasons that an explicitly owner-requested development pilot does not need the other family; a qualifying claim, acceptance or milestone would.
+- **No cross-family review of the recorded results exists, and none is claimed for them.** Earlier "independent reviews" were Claude subagents. A Codex (cross-family) review of the later material exists (of proposal revision 1 only: revision 2, the registered 0d code and `REPORT_0D.md` were **not** reviewed by Codex, and the same-family pre-run review had no re-review after its fixes, the run starting about 90 seconds after the fix commit): `docs/reviews/tactical_composition_0d_review_codex.md` examined this record, `CORRECTIONS.md`, `tcd_common` and `PROPOSAL_0D.md` (verdict CHANGES_REQUIRED for the proposal; its spot-checks of `CORRECTIONS.md` matched the stored data; its errors-in-my-documents findings are applied). It did not review the historical experiments. 0027 reasons that an explicitly owner-requested development pilot does not need the other family; a qualifying claim, acceptance or milestone would.
 - What the results do and do not establish is in `evidence/tactical_composition_demo/CORRECTIONS.md` (section E) and `MOTIVATION.md`. Nothing tests geometry, oscillators or "vibration".
 
 ## Process notes
@@ -58,9 +59,20 @@ These are the author's transcriptions and readings, not primary records. Any ite
 ## Forward order
 
 1. `evidence/tactical_composition_demo/tcd_common/` (corrected shared tooling) and `CORRECTIONS.md` land with this record.
-2. `evidence/tactical_composition_demo/PROPOSAL_0D.md` revision 2 (after the Codex review, narrowed to Part A) was registered (`c747e76`) and run once: `REPORT_0D.md`. A MOVE-only or both-piece change and an extrapolated unit type stay deferred (its Appendix A).
+2. `evidence/tactical_composition_demo/PROPOSAL_0D.md` revision 2 (after the Codex review, narrowed to Part A) was registered (`c747e76`) and run once on the author's reading of the owner's message (**[R]**, item 8): `REPORT_0D.md`, rechecked 2026-10-04. A MOVE-only or both-piece change and an extrapolated unit type stay deferred (its Appendix A).
 3. Next, owner's choice (recommended order): the squad level, then learning the pieces from outcomes; later an outside benchmark, the real simulator, and the RRG-specific shape-to-signature claim. Each needs its own proposal.
 
 ## What the owner can do with this record
 
 Ratify, amend or reject each **[R]** item in one message; decline the 0d proposal; or close the line as an exploratory record.
+
+## The 2026-10-04 recheck (owner request: "check if it is the best we can do … fine to break the things or fully rework")
+
+Four same-family audits (numbers and verdicts; scientific validity; code and reproducibility; governance and documents) and two checks by the author. Result: all five 0d verdicts re-derive; the numbers match; **the flat baseline is too weak to carry a general claim** (the tuned flat model plays worse than the trivial rush rule in 30 of 30 seeds; a development probe shows larger flat models reaching 0.74 at 60,000 states against C's 0.96 at 3,000); several report sentences overclaimed and were corrected (`REPORT_0D.md`, `CORRECTIONS.md` F and G); the saved weights of all 150 recorded models reproduce the recorded scores exactly (`verify_run_0d.py`); new tests cover untested verdict branches (`test_zd_audit.py`). The registered files were not edited after the run. Not done by anyone: a Codex review of the registered code or the report.
+
+## Pending owner decisions
+
+1. Ratify, amend or reject each **[R]** item (items 1 to 4, 7 and 8 above), in particular item 8 (the approval of the recorded 0d run).
+2. Choose the next experiment. The recheck recommends strengthening the structure claim before the squad level: a registered flat-baseline experiment (0e: per-N tuning, larger and deeper flat networks, per-slot or mixture step heads, selection on play and a macro average over strata, a gate that the flat baseline beats rush, a data-efficiency statement), then the squad level with baselines that share its structure (and a coordination-necessity gate), then learning from outcomes.
+3. Whether a Codex review of the registered 0d code and report is wanted.
+4. `STATUS.json` c6 still says "independent review outstanding" although the review exists (a status edit, left to the owner).

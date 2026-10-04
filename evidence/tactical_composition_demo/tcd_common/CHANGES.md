@@ -23,3 +23,5 @@ The three-version comparison of `tactics.py` against the recorded runs was run o
 
 Not repaired (kept as history, see `../CORRECTIONS.md` section D): the three `dev_*.py` scripts that execute at import, `history_ability_attempt/`, the
 `USE_BURST` global, `change.py`'s superseded protocol (imported by `change2.py`).
+
+Note (2026-10-04): `SEED_REPRODUCTION.json` records HEAD `13662a4`; the harness was edited afterwards (`c747e76`: load record, evaluation bound) without touching the seed computation. The round trip of the recorded run 0d from its saved weights is `../verify_run_0d.py`.
