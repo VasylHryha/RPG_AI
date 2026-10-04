@@ -1,0 +1,148 @@
+{
+ "note": "0f development step 2: level-2 gate (seeds 10-14, 200 episodes per opponent) and the two-step lookahead on the step-1 selection tables",
+ "rows": [
+  {
+   "seed": 10,
+   "independent": 0.7462500000000001,
+   "focus_damage": 0.78375,
+   "focus_weakest": 0.5962500000000001
+  },
+  {
+   "seed": 11,
+   "independent": 0.745,
+   "focus_damage": 0.74,
+   "focus_weakest": 0.58375
+  },
+  {
+   "seed": 12,
+   "independent": 0.77125,
+   "focus_damage": 0.7662500000000001,
+   "focus_weakest": 0.58375
+  },
+  {
+   "seed": 13,
+   "independent": 0.7462500000000001,
+   "focus_damage": 0.75125,
+   "focus_weakest": 0.60875
+  },
+  {
+   "seed": 14,
+   "independent": 0.76625,
+   "focus_damage": 0.7875000000000001,
+   "focus_weakest": 0.6174999999999999
+  }
+ ],
+ "focus_gain_over_independent": {
+  "focus_damage": [
+   0.03749999999999987,
+   -0.0050000000000000044,
+   -0.004999999999999893,
+   0.004999999999999893,
+   0.021250000000000102
+  ],
+  "focus_weakest": [
+   -0.15000000000000002,
+   -0.16125,
+   -0.1875,
+   -0.13750000000000007,
+   -0.14875000000000005
+  ]
+ },
+ "two_step_paths": {
+  "0": {
+   "0.01": [
+    "NEAR>APPROACH<ATTACK",
+    "NEAR>MOVE<ATTACK",
+    "AIM>MOVE<ATTACK",
+    "AIM+self>MOVE<ATTACK"
+   ],
+   "0.02": [
+    "NEAR>APPROACH<ATTACK",
+    "NEAR>MOVE<ATTACK",
+    "AIM>MOVE<ATTACK",
+    "AIM+self>MOVE<ATTACK"
+   ],
+   "0.03": [
+    "NEAR>APPROACH<ATTACK",
+    "NEAR>MOVE<ATTACK",
+    "AIM>MOVE<ATTACK"
+   ]
+  },
+  "1": {
+   "0.01": [
+    "NEAR>APPROACH<ATTACK",
+    "HP>APPROACH<ATTACK",
+    "HP>MOVE<ATTACK",
+    "AIM+self>MOVE<ATTACK"
+   ],
+   "0.02": [
+    "NEAR>APPROACH<ATTACK",
+    "HP>APPROACH<ATTACK",
+    "HP>MOVE<ATTACK",
+    "AIM+self>MOVE<ATTACK"
+   ],
+   "0.03": [
+    "NEAR>APPROACH<ATTACK",
+    "HP>APPROACH<ATTACK",
+    "HP>MOVE<ATTACK"
+   ]
+  },
+  "2": {
+   "0.01": [
+    "NEAR>APPROACH<ATTACK",
+    "AIM>APPROACH<ATTACK",
+    "AIM>MOVE<ATTACK",
+    "AIM+self>MOVE<ATTACK"
+   ],
+   "0.02": [
+    "NEAR>APPROACH<ATTACK",
+    "AIM>APPROACH<ATTACK",
+    "AIM>MOVE<ATTACK",
+    "AIM+self>MOVE<ATTACK"
+   ],
+   "0.03": [
+    "NEAR>APPROACH<ATTACK",
+    "AIM>APPROACH<ATTACK",
+    "AIM>MOVE<ATTACK"
+   ]
+  },
+  "3": {
+   "0.01": [
+    "NEAR>APPROACH<ATTACK",
+    "AIM>APPROACH<ATTACK",
+    "AIM>MOVE<ATTACK",
+    "AIM+self>MOVE<ATTACK"
+   ],
+   "0.02": [
+    "NEAR>APPROACH<ATTACK",
+    "AIM>APPROACH<ATTACK",
+    "AIM>MOVE<ATTACK",
+    "AIM+self>MOVE<ATTACK"
+   ],
+   "0.03": [
+    "NEAR>APPROACH<ATTACK",
+    "AIM>APPROACH<ATTACK",
+    "AIM>MOVE<ATTACK"
+   ]
+  },
+  "4": {
+   "0.01": [
+    "NEAR>APPROACH<ATTACK",
+    "NEAR>MOVE<ATTACK",
+    "AIM>MOVE<ATTACK",
+    "AIM+self>MOVE<ATTACK"
+   ],
+   "0.02": [
+    "NEAR>APPROACH<ATTACK",
+    "NEAR>MOVE<ATTACK",
+    "AIM>MOVE<ATTACK",
+    "AIM+self>MOVE<ATTACK"
+   ],
+   "0.03": [
+    "NEAR>APPROACH<ATTACK",
+    "NEAR>MOVE<ATTACK",
+    "AIM>MOVE<ATTACK"
+   ]
+  }
+ }
+}
