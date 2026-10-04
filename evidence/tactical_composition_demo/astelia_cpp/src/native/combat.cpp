@@ -1,5 +1,6 @@
 #include "world.h"
 #include "formation.h"
+#include "search.h"
 
 namespace astelia {
 namespace {
@@ -77,8 +78,8 @@ void shots(World& w,double dt) {
 }
 } // namespace
 void coreStep(World& w) {
-  if (w.branch) ++w.counters.branchSteps;else ++w.counters.outerSteps;
-  const double dt=w.config->dt,nextTime=w.time+dt;
+  if (w.branch){++w.counters.branchSteps;if(w.work)++w.work->branchSteps;}else ++w.counters.outerSteps;
+  const double dt=w.dt,nextTime=w.time+dt;
   if (!std::isfinite(nextTime) || nextTime<=w.time) throw std::overflow_error("step cannot advance finite time");
   w.time=nextTime;
   for (auto i:w.active) {
@@ -100,9 +101,9 @@ void coreStep(World& w) {
   const uint32_t packTick=toUint32(std::floor(w.time/dt+.5));
   Rng packRandom(toUint32(w.config->seed*2654435761.0)^toUint32(double(packTick)*40503));packRandom();packRandom();
   const std::array<uint8_t,2> packOrder=packRandom()<.5?std::array<uint8_t,2>{0,1}:std::array<uint8_t,2>{1,0};
-  for(auto team:packOrder)if(w.packs[team].enabled){directorStep(w,team);commander(w,team);formationPlan(w,team);
+  for(auto team:packOrder)if(w.packs[team].enabled){lookahead(w,team);directorStep(w,team);commander(w,team);formationPlan(w,team);
     if(w.config->abilities&&w.config->skills[team].abilities==AbilityPolicy::Coordinated&&
-      (w.config->brains[team]!=Brain::Rules||w.packs[team].formation.coordAbilities))coordAbilities(w,team);}
+      (w.brains[team]!=Brain::Rules||w.packs[team].formation.coordAbilities))coordAbilities(w,team);}
   w.order=w.active;
   const uint32_t tick=toUint32(std::floor(w.time/dt+.5));
   Rng shuffle(toUint32(w.config->seed*73856093.0) ^ toUint32(double(tick)*19349663.0));
@@ -119,7 +120,7 @@ void coreStep(World& w) {
     ++w.counters.unitActions;
     if(w.config->abilities){if(busyAct(w,i,dt))continue;const auto team=w.units[i].team;
       const bool coordinated=w.packs[team].enabled&&w.config->skills[team].abilities==AbilityPolicy::Coordinated&&
-        (w.config->brains[team]!=Brain::Rules||w.packs[team].formation.coordAbilities);
+        (w.brains[team]!=Brain::Rules||w.packs[team].formation.coordAbilities);
       if(!coordinated&&defaultAbilities(w,i)){
       const auto& a=w.abilities[w.state[i].ability];if(a.chargeEnd>w.time||a.aimUntil>w.time||a.disengageEnd>w.time)continue;}}
     actNovice(w,i,dt);

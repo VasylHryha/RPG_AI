@@ -52,11 +52,23 @@ Plan gamePack(World& w,uint8_t team,const Read& r){
 }
 } // namespace
 void commander(World& w,uint8_t team){
-  auto& p=w.packs[team];const auto brain=w.config->brains[team];if(!p.enabled||brain==Brain::Formation||brain==Brain::Alone)return;
+  auto& p=w.packs[team];const auto brain=w.brains[team];if(!p.enabled||brain==Brain::Formation||brain==Brain::Alone)return;
   if(w.time-p.lastThink<(w.config->rules==Rules::Game?.2:.5))return;p.lastThink=w.time;
-  const auto r=read(w,team);Plan plan=Plan::Hold;
+  const auto r=read(w,team);if(brain==Brain::Gamepack){const auto plan=gamePack(w,team,r);if(plan!=p.plan){Tactics combo;combo.role.fill(plan);setPlan(w,team,combo);}return;}
+  auto& features=p.read;features.present=true;features.raiders=r.raiders;features.exposed=r.exposed;
+  Vec2 center,softCenter,velocity;uint32_t soft=0;const auto& es=w.foes(team);
+  for(auto i:es){const auto& e=w.units[i];center=center+e.pos;velocity=velocity+e.velocity;if(!melee(e.role)){softCenter=softCenter+e.pos;++soft;}}
+  const double n=std::max(size_t(1),es.size());center=center*(1/n);velocity=velocity*(1/n);softCenter=soft?softCenter*(1.0/soft):center;
+  double spread=0;features.meleeCharging=features.fastShooters=0;for(auto i:es){const auto& e=w.units[i];spread+=distance(e.pos,center);
+    const auto delta=p.anchor-e.pos;const double d=length(delta),closing=dot(e.velocity,delta)/(d>0?d:1);
+    const auto toward=p.anchor-softCenter;const double td=length(toward),ahead=dot(e.pos-softCenter,toward)/(td>0?td:1);
+    if(melee(e.role)&&!pinned(w,i)&&ahead>100&&d<450&&closing>20)++features.meleeCharging;
+    if((e.role==Role::Ranged||e.role==Role::Archer)&&d<450&&closing>50)++features.fastShooters;}
+  const auto delta=p.anchor-center;const double d=length(delta),approach=dot(velocity,delta)/(d>0?d:1);
+  features.formedEnemy=spread/n<170&&std::abs(approach)<35;features.quiet=w.time-std::max(0.0,w.lastHit);features.room=p.facing.x>=0?p.anchor.x-140:w.config->width-140-p.anchor.x;
+  Plan plan=Plan::Hold;
   if(p.caught)p.fastSeen=w.time;if(p.wings.empty()&&p.flankStarted)p.raidSpent=true;
-  if(brain==Brain::Gamepack){plan=gamePack(w,team,r);if(plan!=p.plan){Tactics combo;combo.role.fill(plan);setPlan(w,team,combo);}return;}
+
   const auto enabled=[&](Plan candidate){const auto& off=w.config->disabledPlans[team];return std::find(off.begin(),off.end(),candidate)==off.end();};
   if(brain==Brain::Storm){
     plan=((r.recentTaken>60&&!r.canReach)&&enabled(Plan::Rush))||
@@ -72,9 +84,9 @@ void commander(World& w,uint8_t team){
   else if(r.exposed&&r.ourMelee>=4&&enabled(Plan::Flank))plan=Plan::Flank;
   Tactics combo;combo.role.fill(plan);
   if(const auto* goal=planGoal(w,team))combo=goal->tactics;
-  else if(w.config->hasForcePlan&&team==w.config->forceTeam)combo=w.config->forcePlan;
-  else if(p.lookPlan!=Plan::None)combo.role.fill(p.lookPlan);
+  else if(w.hasForced&&team==w.forcedTeam)combo=w.forced;
+  else if(w.config->lookahead[team].enabled&&p.search.hasChoice)combo=p.search.choice;
   const bool differs=combo.role!=p.combo.role;
-  if(differs&&(combo.role[0]==Plan::Hold||w.time-p.planSince>=2))setPlan(w,team,combo);
+  if(differs&&(combo.role[0]==Plan::Hold||w.time-p.planSince>=(w.config->lookahead[team].enabled?0:2)))setPlan(w,team,combo);
 }
 } // namespace astelia

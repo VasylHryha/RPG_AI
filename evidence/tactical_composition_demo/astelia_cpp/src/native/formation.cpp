@@ -59,7 +59,7 @@ void positionAnchor(World& w,uint8_t team){
   const auto* place=placeGoal(w,team);if(place){auto near=nearestTo(w,p.anchor,es);const auto* enemy=w.resolve(near);const auto face=place->hasFace?place->face:enemy?enemy->pos:p.anchor;
     const auto delta=face-p.anchor;const double l=length(delta);p.facing=p.facing+(delta*(1/(l>0?l:1))-p.facing)*f.turnRate;
     const double fl=length(p.facing);p.facing=p.facing*(1/(fl>0?fl:1));const auto move=place->point-p.anchor;const double d=length(move);
-    if(d>1)p.anchor=p.anchor+move*(std::min(d,paceOf(w,team)*.9*w.config->dt)/d);p.phase=PackPhase::Ordered;p.waiting=false;return;}
+    if(d>1)p.anchor=p.anchor+move*(std::min(d,paceOf(w,team)*.9*w.dt)/d);p.phase=PackPhase::Ordered;p.waiting=false;return;}
   const auto* engage=engageGoal(w,team);const auto center=centroid(w,ms);auto near=engage?nearestTo(w,center,es,[&](uint32_t i){return containsId(engage,w.units[i].id);}):UnitRef{};
   if(!near)near=nearestTo(w,center,es);const auto& shape=p.shape;
   const double rear=maxDepth(shape.role[1],0);p.waiting=false;
@@ -71,7 +71,7 @@ void positionAnchor(World& w,uint8_t team){
     if(f.anchorMode==AnchorMode::Siege){Vec2 fire;uint32_t count=0;for(auto i:es)if(!melee(w.units[i].role)){fire=fire+w.units[i].pos;++count;}if(count)aim=fire*(1.0/count);}
     const auto delta=aim-p.anchor;const double l=length(delta);p.facing=p.facing+(delta*(1/(l>0?l:1))-p.facing)*f.turnRate;
     const double fac=length(p.facing);p.facing=p.facing*(1/(fac>0?fac:1));
-    const double front=dot(nearest.pos-p.anchor,p.facing),maximum=(f.anchorSpeed>0?f.anchorSpeed:paceOf(w,team)*.9)*w.config->dt;
+    const double front=dot(nearest.pos-p.anchor,p.facing),maximum=(f.anchorSpeed>0?f.anchorSpeed:paceOf(w,team)*.9)*w.dt;
     double step=0;
     if(f.anchorMode==AnchorMode::Siege){const bool unscreened=p.members[0].size()<3;double danger=-INFINITY;Vec2 away;
       for(auto i:es){const auto& e=w.units[i];if(melee(e.role)&&!unscreened)continue;for(auto j:ms){const auto& m=w.units[j];if(!m.alive)continue;
@@ -93,7 +93,7 @@ void positionAnchor(World& w,uint8_t team){
         const double side=dot(Vec2{w.config->width/2,w.config->height/2}-p.anchor,tangent)>=0?1:-1;motion=tangent*(side*std::abs(step));}}
     p.anchor=p.anchor+motion;
   }else if(w.config->rules==Rules::Game&&w.config->perception&&w.survivors(1-team)){
-    p.anchor=p.anchor+p.facing*((f.anchorSpeed>0?f.anchorSpeed:paceOf(w,team)*.9)*w.config->dt);p.phase=PackPhase::Searching;}
+    p.anchor=p.anchor+p.facing*((f.anchorSpeed>0?f.anchorSpeed:paceOf(w,team)*.9)*w.dt);p.phase=PackPhase::Searching;}
   p.anchor={clamp(p.anchor.x,60,w.config->width-60),clamp(p.anchor.y,60,w.config->height-60)};
 }
 void assignSlots(World& w,uint8_t team){
@@ -206,7 +206,7 @@ bool threatens(const World& w,uint8_t team,uint32_t i){const auto& p=w.packs[tea
   if(melee(h.role))for(auto j:w.teams[team])if(w.units[j].alive&&!melee(w.units[j].role)&&distance(w.units[j].pos,h.pos)<p.formation.peelRadius)return true;return false;
 }
 void setPlan(World& w,uint8_t team,const Tactics& combo){auto& p=w.packs[team];p.combo=combo;p.plan=combo.role[0];p.planSince=w.time;
-  p.formation=composeFormation(p.base,w.config->brains[team],combo);if(w.config->brains[team]==Brain::Rules){p.formation.dodge=w.config->reactiveDodge;p.formation.coordAbilities=w.config->abilities&&w.config->skills[team].abilities==AbilityPolicy::Coordinated;}++p.version;}
+  p.formation=composeFormation(p.base,w.brains[team],combo);if(w.brains[team]==Brain::Rules){p.formation.dodge=w.config->reactiveDodge;p.formation.coordAbilities=w.config->abilities&&w.config->skills[team].abilities==AbilityPolicy::Coordinated;}++p.version;}
 void formationPlan(World& w,uint8_t team){auto& p=w.packs[team];if(!p.enabled||!w.survivors(team))return;
   for(auto& m:p.members)m.clear();for(auto i:w.teams[team])if(w.units[i].alive){if(size_t(w.units[i].role)<3)p.members[size_t(w.units[i].role)].push_back(i);w.tactical[i].assignedSet=false;}
   std::array<uint32_t,3> counts;for(size_t r=0;r<3;++r)counts[r]=uint32_t(p.members[r].size());

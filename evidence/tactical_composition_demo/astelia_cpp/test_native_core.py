@@ -42,7 +42,7 @@ def test_fresh_core_trace_and_batch(native_core,shots):
     bad=request();bad['options']['ai'][0]={'level':'elite'}
     batch=json.loads(subprocess.check_output([str(native_core)],input=json.dumps([bad,good])+'\n',text=True))
     assert 'error' in batch[0] and validate_rows(good,[batch[1]])=='completed'
-    assert admit(native_core)['scope']=='native_formation_checkpoint'
+    assert admit(native_core)['scope']=='native_search_checkpoint'
 
 
 def test_unimplemented_feature_is_explicit_error(native_core):

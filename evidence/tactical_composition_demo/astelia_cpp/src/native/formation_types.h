@@ -48,7 +48,10 @@ struct DirectorEvent {double time;ComboKind combo;uint8_t phase,what;};
 struct Director {PackGoals goals;Observation observation;std::vector<ComboRole> roles;std::vector<DirectorEvent> log;
   std::array<double,2> cool{};Vec2 away;double ratio0=0,last=-99,selected=-99,start=0,phaseStart=0;
   uint32_t startEnemies=0,starts=0,aborts=0,successes=0,switches=0;ComboKind combo=ComboKind::Tchain;uint8_t phase=0;bool active=false;};
+struct TacticalRead {uint32_t meleeCharging=0,raiders=0,fastShooters=0;double quiet=0,room=0;bool exposed=false,formedEnemy=false,present=false;};
+struct SearchState {Tactics choice;double last=-99,progress=0,score=0;uint8_t turn=0;bool hasChoice=false,stable=false;};
 struct Pack {
+  TacticalRead read;SearchState search;
   PackGoals commands;Director director;
   Formation base, formation;
   Vec2 anchor, facing{1,0}, away;

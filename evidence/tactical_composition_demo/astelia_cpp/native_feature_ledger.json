@@ -659,14 +659,16 @@
     "cmdOf": {
       "module": "tactics",
       "source_line": 1843,
-      "status": "PENDING",
-      "check": "PENDING"
+      "status": "DEVELOPMENT_CHECKED_FULL_ENGINE_PENDING",
+      "check": "native_formation_contract.cpp; test_native_formation.py; native_director_checkpoint_r1/README.md",
+      "scope": "both authored combos and orders; final API and full coverage pending"
     },
     "observe": {
       "module": "tactics",
       "source_line": 1865,
-      "status": "PENDING",
-      "check": "PENDING"
+      "status": "DEVELOPMENT_CHECKED_FULL_ENGINE_PENDING",
+      "check": "native_formation_contract.cpp; test_native_formation.py; native_director_checkpoint_r1/README.md",
+      "scope": "both authored combos and orders; final API and full coverage pending"
     },
     "briefing": {
       "module": "tactics",
@@ -677,8 +679,9 @@
     "directorStep": {
       "module": "tactics",
       "source_line": 1889,
-      "status": "PENDING",
-      "check": "PENDING"
+      "status": "DEVELOPMENT_CHECKED_FULL_ENGINE_PENDING",
+      "check": "native_formation_contract.cpp; test_native_formation.py; native_director_checkpoint_r1/README.md",
+      "scope": "both authored combos and orders; final API and full coverage pending"
     },
     "positionAnchor": {
       "module": "formations",
@@ -761,8 +764,9 @@
     "decideOrder": {
       "module": "tactics",
       "source_line": 2364,
-      "status": "PENDING",
-      "check": "PENDING"
+      "status": "DEVELOPMENT_CHECKED_FULL_ENGINE_PENDING",
+      "check": "native_formation_contract.cpp; test_native_formation.py; native_director_checkpoint_r1/README.md",
+      "scope": "both authored combos and orders; final API and full coverage pending"
     },
     "decideOwn": {
       "module": "tactics",
@@ -928,45 +932,51 @@
     "fork": {
       "module": "world",
       "source_line": 3033,
-      "status": "CORE_SLICE_ONLY",
-      "check": "test_native_core.py; native_core_contract.cpp; native_checkpoint_r1/core_slice_work_receipt.json",
-      "scope": "sandbox mirror with two novice profiles; full source feature coverage pending"
+      "status": "DEVELOPMENT_CHECKED_FULL_ENGINE_PENDING",
+      "check": "test_native_search.py; native_search_contract.cpp; native_search_checkpoint_r1/README.md",
+      "scope": "typed neural/search and branch contracts; artillery planner and full coverage pending"
     },
     "bcFeatures": {
       "module": "network",
       "source_line": 3084,
-      "status": "PENDING",
-      "check": "PENDING"
+      "status": "DEVELOPMENT_CHECKED_FULL_ENGINE_PENDING",
+      "check": "test_native_search.py; native_search_contract.cpp; native_search_checkpoint_r1/README.md",
+      "scope": "typed neural/search and branch contracts; artillery planner and full coverage pending"
     },
     "bcTop": {
       "module": "network",
       "source_line": 3115,
-      "status": "PENDING",
-      "check": "PENDING"
+      "status": "DEVELOPMENT_CHECKED_FULL_ENGINE_PENDING",
+      "check": "test_native_search.py; native_search_contract.cpp; native_search_checkpoint_r1/README.md",
+      "scope": "typed neural/search and branch contracts; artillery planner and full coverage pending"
     },
     "bcPredict": {
       "module": "network",
       "source_line": 3121,
-      "status": "PENDING",
-      "check": "PENDING"
+      "status": "DEVELOPMENT_CHECKED_FULL_ENGINE_PENDING",
+      "check": "test_native_search.py; native_search_contract.cpp; native_search_checkpoint_r1/README.md",
+      "scope": "typed neural/search and branch contracts; artillery planner and full coverage pending"
     },
     "lookahead": {
       "module": "lookahead",
       "source_line": 3131,
-      "status": "PENDING",
-      "check": "PENDING"
+      "status": "DEVELOPMENT_CHECKED_FULL_ENGINE_PENDING",
+      "check": "test_native_search.py; native_search_contract.cpp; native_search_checkpoint_r1/README.md",
+      "scope": "typed neural/search and branch contracts; artillery planner and full coverage pending"
     },
     "reachRate": {
       "module": "tactics",
       "source_line": 3260,
-      "status": "PENDING",
-      "check": "PENDING"
+      "status": "DEVELOPMENT_CHECKED_FULL_ENGINE_PENDING",
+      "check": "test_native_search.py; native_search_contract.cpp; native_search_checkpoint_r1/README.md",
+      "scope": "typed neural/search and branch contracts; artillery planner and full coverage pending"
     },
     "distinctTactics": {
       "module": "tactics",
       "source_line": 3271,
-      "status": "PENDING",
-      "check": "PENDING"
+      "status": "DEVELOPMENT_CHECKED_FULL_ENGINE_PENDING",
+      "check": "test_native_search.py; native_search_contract.cpp; native_search_checkpoint_r1/README.md",
+      "scope": "typed neural/search and branch contracts; artillery planner and full coverage pending"
     },
     "done": {
       "module": "world",
@@ -998,7 +1008,7 @@
     "DOM rendering/module global export assignment only; simulation API retained"
   ],
   "clone_ledger": {
-    "status": "CORE_SLICE_CHECKED_FULL_ENGINE_PENDING",
+    "status": "COMBAT_FORMATION_DIRECTOR_SEARCH_CHECKED_ARTILLERY_PENDING",
     "required": [
       "units/conditional fields",
       "shots/shells/hit sets",
@@ -1017,7 +1027,15 @@
       "cleared": "work counters/melee queue/order/pushes",
       "lease": "nested leases own stable independent World allocations",
       "pending": "full ability/player/pack/spawn/network/options state; aggregate branch telemetry"
+    },
+    "check": "native_core_contract.cpp; native_combat_contract.cpp; native_formation_contract.cpp; native_search_contract.cpp",
+    "policy": {
+      "shared": "immutable Config/network and aggregate work counters only; work counters never affect decisions",
+      "copied": "typed units/cold state/abilities/player/tactical/pack/director/commands/spawn/effects/RNGs/runtime options",
+      "reset": "telemetry, derived geometry/rate/visibility caches, recursive thinkTeams",
+      "lease": "stable independent allocations; mutable branch storage never aliases parent",
+      "pending": "artillery queues/cutoff/prediction fields and complete clone/matched-cost gates"
     }
   },
-  "checkpoint": "native_checkpoint_r1/README.md"
+  "checkpoint": "native_search_checkpoint_r1/README.md"
 }

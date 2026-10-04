@@ -113,8 +113,10 @@ def test_compiler_bytes_and_object_bytes_invalidate_build_cache(tmp_path,monkeyp
     object_count=len(builder.TARGETS['native'][1])
     (tmp_path/'build.py').write_bytes((ROOT/'build.py').read_bytes())
     (tmp_path/'generate_native_tables.cjs').write_text('fixture recipe\n')
+    (tmp_path/'generate_native_network.py').write_text('fixture network recipe\n')
     (tmp_path.parent/'astelia_snapshot').mkdir(exist_ok=True)
     (tmp_path.parent/'astelia_snapshot/formation_sim.js').write_text('fixture frozen source\n')
+    (tmp_path.parent/'astelia_snapshot/bc_net.json').write_text('fixture frozen network\n')
     compiler=tmp_path/'compiler';log=tmp_path/'compiles.log'
     def write_compiler(variant):
         compiler.write_text('#!'+sys.executable+'\nimport sys,pathlib\n'

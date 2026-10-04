@@ -3,6 +3,12 @@
 #include <utility>
 
 namespace astelia {
+World::World(std::shared_ptr<const Config> c):config(std::move(c)),random(toUint32(config->seed)),dt(config->dt),duration(config->duration),brains(config->brains),forced(config->forcePlan),forcedTeam(config->forceTeam),hasForced(config->hasForcePlan) {}
+World::~World()=default;
+World::World(World&&) noexcept=default;
+World& World::operator=(World&&) noexcept=default;
+BranchPool& World::branches(){if(!branches_){ownedBranches_=std::make_unique<BranchPool>();branches_=ownedBranches_.get();}return *branches_;}
+
 Config sandboxConfig() {
   Config c; c.width=1400; c.height=800;
   c.roles={RoleStats{300,70,8,18,30,.8}, RoleStats{90,62,6,190,14,1,0,420},
@@ -116,8 +122,8 @@ uint32_t World::survivors(uint8_t team) const {
   uint32_t n=0; for (auto i:active) if (units[i].alive && units[i].team==team) ++n; return n;
 }
 bool World::done() const {
-  if(skirmishActive)return time>=config->duration||!survivors(1)||(!survivors(0)&&skirmishLeft==0);
-  return time>=config->duration||!survivors(0)||(config->mirror&&!survivors(1));
+  if(skirmishActive)return time>=duration||!survivors(1)||(!survivors(0)&&skirmishLeft==0);
+  return time>=duration||!survivors(0)||(config->mirror&&!survivors(1));
 }
 World World::create(std::shared_ptr<const Config> c) {
   if (!(c->dt>0) || !std::isfinite(c->dt) || !(c->duration>=0) || !std::isfinite(c->duration) ||
@@ -250,12 +256,13 @@ void World::reclaim() {
   rebuildTeams();
 }
 void World::copyFrom(const World& p) {
-  config=p.config; units=p.units; state=p.state;tactical=p.tactical;packs=p.packs; active=p.active; free_=p.free_;
+  config=p.config;dt=p.dt;duration=p.duration;brains=p.brains;forced=p.forced;forcedTeam=p.forcedTeam;hasForced=p.hasForced;thinkTeams=0;work=p.work;branches_=p.branches_;
+  units=p.units; state=p.state;tactical=p.tactical;packs=p.packs; active=p.active; free_=p.free_;
   shots=p.shots; shells=p.shells; fields=p.fields; dots=p.dots; hitLog=p.hitLog;
   abilities=p.abilities;players=p.players;freeAbilities=p.freeAbilities;freePlayers=p.freePlayers;spawnQueue=p.spawnQueue;
   spawnRandom=p.spawnRandom;skirmishLeft=p.skirmishLeft;timeReference=p.timeReference;lastHit=p.lastHit;nextShot=p.nextShot;burnTick=false;
   skirmishActive=p.skirmishActive;orderEvents=p.orderEvents;ratesTime={-1,-1};ratesVersion={UINT64_MAX,UINT64_MAX};
-  stats=p.stats; random=p.random; time=p.time; nextId=p.nextId; branch=true;
+  stats=Stats{}; random=p.random; time=p.time; nextId=p.nextId; branch=true;
   counters=WorkCounters{}; meleeHits.clear(); order.clear(); pushes.clear();
   membershipVersion=p.membershipVersion;foesVersion_={UINT64_MAX,UINT64_MAX};foesTime_={-1,-1};
   // Derived indexes are rebuilt from copied authority, never shared.
@@ -265,6 +272,6 @@ BranchPool::Lease BranchPool::fork(const World& parent) {
   size_t i=0; while (i<leased_.size() && leased_[i]) ++i;
   if (i==leased_.size()) {worlds_.push_back(std::make_unique<World>(parent.config));leased_.push_back(false);}
   // Do not mark a failed copy leased. unique_ptr pointees survive pool growth.
-  worlds_[i]->copyFrom(parent); leased_[i]=true; return Lease(this,i);
+  worlds_[i]->copyFrom(parent);if(parent.work)++parent.work->forks; leased_[i]=true; return Lease(this,i);
 }
 } // namespace astelia

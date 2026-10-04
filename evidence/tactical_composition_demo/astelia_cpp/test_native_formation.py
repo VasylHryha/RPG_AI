@@ -63,7 +63,7 @@ def test_authored_slots_match_frozen_js(native_formation):
 
 
 def test_unmigrated_search_and_artillery_planner_reject_without_fallback(native_formation):
-    for profile in ({'level':'elite'},{'level':'veteran'},{'brain':'rules','lookahead':'mind'}):
+    for profile in ({'level':'elite'},{'level':'veteran'}):
         req={'mode':'reactive','options':{'scenario':'mirror','ai':[profile,{'level':'novice'}]}}
         row=json.loads(subprocess.check_output([str(native_formation)],input=json.dumps(req)+'\n',text=True))
         assert 'error' in row and 'pending' in row['error']

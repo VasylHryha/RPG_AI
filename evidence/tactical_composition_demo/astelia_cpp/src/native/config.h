@@ -1,6 +1,6 @@
 #pragma once
 #include "types.h"
-#include "formation_types.h"
+#include "search_types.h"
 
 namespace astelia {
 struct Config {
@@ -16,6 +16,7 @@ struct Config {
   std::array<Brain,2> brains{Brain::Alone,Brain::Alone};
   std::array<Formation,2> formations;
   std::array<AbilityThresholds,2> abilityThresholds;
+  std::array<Lookahead,2> lookahead;
   std::array<std::vector<Plan>,2> disabledPlans;
   std::array<Plan,2> fewPlan{Plan::Surround,Plan::Surround};
   Tactics forcePlan;

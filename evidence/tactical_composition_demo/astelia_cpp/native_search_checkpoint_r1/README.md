@@ -1,0 +1,9 @@
+# Typed network and lookahead checkpoint, development only
+
+This batch passed 119 focused checks: 92 on attempt 1, then 27 remaining checks after adding the new pinned network inputs to a mocked build-admission fixture. The passing checks were not repeated; raw attempts are preserved. The search contract also passed AddressSanitizer/UndefinedBehaviorSanitizer with no stderr diagnostics.
+
+Added contiguous frozen network coefficients, typed full/fast/mind settings, all four enemy models, role-tactic deduplication and mixed combinations, model/budget/horizon execution, contact/cadence/stability/inertia/urgency/stall/objective/terminal scoring, world-local runtime options, reusable nested branch leases, and actual shared fork/search/inference/branch-step counters. 130 fixed feature vectors produced exactly the same fresh network scores as JS; initial battle features agree within the stated 1e-14 tolerance. All four enemy models run fresh deterministic traces in all three search modes. No benchmark cache was used.
+
+Forks copy mutable authority, retain dead-source in-flight attacks, share immutable configuration/network only, reset telemetry and derived caches, and clear recursive thinking by default (matching the source fork's explicit thinkTeams opt-in). Retaining dead-source attacks differs from the source fork's dropping those attacks when the dead source has left its unit list; this avoids erasing already launched combat work. The terminal rate uses a finite one-second fallback for a zero cooldown instead of propagating infinity (player/custom kinds); this remains a declared behavior difference for final coverage review.
+
+Artillery prediction/planning/rollouts, full API catalog/coverage, production layout selection, matched-state cost evidence and four uncached elapsed timing groups remain pending. This checkpoint is not full-engine acceptance or a speed qualification. No scientific panel or AI experiment was run.

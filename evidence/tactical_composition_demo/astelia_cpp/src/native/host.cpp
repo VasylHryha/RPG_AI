@@ -2,6 +2,7 @@
 #include "world.h"
 #include "config_codec.h"
 #include "formation.h"
+#include "search.h"
 #include "../js_value.h"
 #include <set>
 #include <map>
@@ -29,7 +30,9 @@ V state(const astelia::World& w,std::map<astelia::UnitId,V>& history,bool debug)
   js::Args units;for (const auto& entry:history) units.push_back(entry.second);
   auto out=js::obj({{"t",w.time},{"units",js::arr(std::move(units))}});
   if(debug){V packs=js::obj({});for(uint8_t team=0;team<2;++team){const auto& p=w.packs[team];if(!p.enabled)continue;
-    js::set(packs,std::to_string(team),js::obj({{"plan",astelia::planName(p.plan)},{"anchor",js::obj({{"x",p.anchor.x},{"y",p.anchor.y},{"ax",p.facing.x},{"ay",p.facing.y}})},{"formed",p.formed}}));}
+    V entry=js::obj({{"plan",astelia::planName(p.plan)},{"anchor",js::obj({{"x",p.anchor.x},{"y",p.anchor.y},{"ax",p.facing.x},{"ay",p.facing.y}})},{"formed",p.formed}});
+    const auto features=astelia::bcFeatures(w,team,w.config->lookahead[team].plans);js::Args encoded;for(auto x:features)encoded.emplace_back(x);js::set(entry,"features",js::arr(std::move(encoded)));
+    js::set(entry,"search",js::obj({{"hasChoice",p.search.hasChoice},{"score",p.search.score},{"last",p.search.last}}));js::set(packs,std::to_string(team),entry);}
     js::set(out,"debug",js::obj({{"packs",packs}}));}return out;
 }
 V fight(V request,astelia::WorkCounters& counts,uint64_t& fights) {
@@ -42,6 +45,7 @@ V fight(V request,astelia::WorkCounters& counts,uint64_t& fights) {
   const auto dump=[&](){std::cout<<js::stringify(js::obj({{"step",double(tick)},{"state",state(w,history,debug)}}))<<'\n';};
   if (trace) dump();
   while (!w.done()) {astelia::coreStep(w);++tick;if (trace) dump();}
+  counts.branchSteps+=w.work->branchSteps;counts.forks+=w.work->forks;counts.searchCalls+=w.work->searchCalls;counts.inferenceCalls+=w.work->inferenceCalls;counts.candidateModels+=w.work->candidateModels;counts.artilleryRollouts+=w.work->artilleryRollouts;
   counts.outerSteps+=w.counters.outerSteps;counts.unitActions+=w.counters.unitActions;counts.projectileSteps+=w.counters.projectileSteps;
   return summary(w);
   } catch (const std::exception& e) { return js::obj({{"error",e.what()}}); }
@@ -64,6 +68,6 @@ int main(int argc,char** argv) {
     js::collect({},0);
   }
   if (metrics) std::cerr<<"{\"executed_fights\":"<<fights<<",\"executed_steps\":"<<counts.outerSteps
-    <<",\"branch_steps\":0,\"forks\":0,\"unit_actions\":"<<counts.unitActions<<",\"projectile_steps\":"<<counts.projectileSteps
-    <<",\"cache_hits\":0,\"scope\":\"native_formation_checkpoint\"}\n";
+    <<",\"branch_steps\":"<<counts.branchSteps<<",\"forks\":"<<counts.forks<<",\"search_calls\":"<<counts.searchCalls<<",\"inference_calls\":"<<counts.inferenceCalls<<",\"candidate_models\":"<<counts.candidateModels<<",\"artillery_rollouts\":"<<counts.artilleryRollouts<<",\"unit_actions\":"<<counts.unitActions<<",\"projectile_steps\":"<<counts.projectileSteps
+    <<",\"cache_hits\":0,\"scope\":\"native_search_checkpoint\"}\n";
 }

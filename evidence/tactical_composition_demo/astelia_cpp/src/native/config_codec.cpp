@@ -107,6 +107,31 @@ void formation(Formation& f,V v){
 }
 Tactics tactics(V v){Tactics out;if(v.tag==V::String){out.role.fill(planByName(js::str(v)));return out;}only(v,{"position","melee","ranged","artillery"});size_t i=0;
   for(const auto key:{"position","melee","ranged","artillery"})out.role[i++]=planByName(string(v,key,""));return out;}
+std::shared_ptr<const Network> network(V value){only(value,{"W1","b1","W2","b2"});auto net=std::make_shared<Network>();
+  const auto vector=[&](V v,std::vector<double>& target){for(auto x:array(v)){if(x.tag!=V::Number||!std::isfinite(x.n))throw std::invalid_argument("invalid network coefficient");target.push_back(x.n);}};
+  const auto& w1=array(js::get(value,"W1"));const auto& w2=array(js::get(value,"W2"));if(w1.empty()||w2.empty()||w1.size()>4096||w2.size()>4096)throw std::invalid_argument("invalid network layers");
+  net->hidden=uint32_t(w1.size());net->outputs=uint32_t(w2.size());net->inputs=uint32_t(array(w1[0]).size());if(net->inputs>4096)throw std::invalid_argument("too many network inputs");
+  for(auto row:w1){if(array(row).size()!=net->inputs)throw std::invalid_argument("ragged network W1");vector(row,net->w1);}for(auto row:w2){if(array(row).size()!=net->hidden)throw std::invalid_argument("ragged network W2");vector(row,net->w2);}
+  vector(js::get(value,"b1"),net->b1);vector(js::get(value,"b2"),net->b2);net->validate();return net;
+}
+Lookahead look(V v){Lookahead la;if(!js::truth(v))return la;la.enabled=true;
+  const auto named=[&](const std::string& name){if(name!="full"&&name!="fast"&&name!="mind")throw std::invalid_argument("unknown lookahead: "+name);
+    if(name!="full"){la.network=frozenNetwork();la.netPrune=3;}if(name=="mind"){la.mind=true;la.models={EnemyModel::Continue,EnemyModel::Rush};la.blend=.7;}};
+  if(v.tag==V::String){named(js::str(v));return la;}if(v.tag==V::Boolean)return la;
+  only(v,{"extends","every","horizon","dt","k","inertia","models","contact","plans","net","netPrune","mind","budget","robustTop","blend","terminal","stall","objective","urgency","everyStable","extra","tweakMargin"});
+  if(present(v,"extends"))named(string(v,"extends","full"));
+  #define N(key) la.key=number(v,#key,la.key)
+  N(every);N(horizon);N(dt);N(k);N(inertia);N(contact);N(blend);N(terminal);N(stall);N(everyStable);N(tweakMargin);
+  #undef N
+  la.mind=boolean(v,"mind",la.mind);la.netPrune=count(v,"netPrune",la.netPrune);la.budget=count(v,"budget",la.budget);la.robustTop=count(v,"robustTop",la.robustTop);
+  const auto plans=[&](const char* key,std::vector<Plan>& dest){if(present(v,key)){dest.clear();for(auto name:array(js::get(v,key)))dest.push_back(planByName(js::str(name)));}};plans("plans",la.plans);plans("extra",la.extra);
+  if(present(v,"net"))la.network=js::truth(js::get(v,"net"))?network(js::get(v,"net")):nullptr;
+  if(present(v,"models")){la.models.clear();for(auto entry:array(js::get(v,"models"))){const auto name=js::str(entry);if(name=="oracle")la.models.push_back(EnemyModel::Oracle);else if(name=="continue")la.models.push_back(EnemyModel::Continue);else if(name=="rush")la.models.push_back(EnemyModel::Rush);else if(name=="rules")la.models.push_back(EnemyModel::Rules);else throw std::invalid_argument("unknown enemy model: "+name);}}
+  if(present(v,"objective")){const auto name=string(v,"objective","");if(name!="hp"&&name!="deaths")throw std::invalid_argument("unknown lookahead objective");la.hasObjective=true;la.deaths=name=="deaths";}
+  if(present(v,"urgency")&&js::truth(js::get(v,"urgency"))){auto u=js::get(v,"urgency");only(u,{"from","kMin"});la.urgency=true;la.urgencyFrom=number(u,"from",0);la.urgencyMin=number(u,"kMin",0);if(la.urgencyFrom<0||la.urgencyFrom>=1||la.urgencyMin<0||la.urgencyMin>1)throw std::invalid_argument("invalid urgency settings");}
+  if(la.every<0||la.horizon<=0||la.dt<0||la.k<0||la.contact<0||la.terminal<0||la.stall<0||la.everyStable<0||la.budget==0||la.robustTop==0||la.blend<0||la.blend>1||la.plans.empty()||la.models.empty()||la.budget>100000||la.plans.size()>100000)throw std::invalid_argument("invalid lookahead budget/horizon");
+  if(la.network&&(la.network->inputs!=33+la.plans.size()||la.network->outputs!=la.plans.size()))throw std::invalid_argument("network plans/features mismatch");return la;
+}
 void thresholds(AbilityThresholds& a,V v){only(v,{"chargeSync","shieldAimedAt","shieldShellWindow","aimedSafe","aimedWorth","disengageNear","barrageMin","barrageHeld","slowMin","slowMoving"});
   #define N(key) a.key=number(v,#key,a.key)
   N(chargeSync);N(shieldAimedAt);N(shieldShellWindow);N(aimedSafe);N(aimedWorth);N(disengageNear);N(barrageMin);N(barrageHeld);N(slowMin);N(slowMoving);
@@ -209,8 +234,8 @@ Config configuration(const js::V& request) {
     if(c.brains[t]==Brain::Wolfpack){c.formations[t]=presetFormation("loose");c.formations[t].dodge=true;}
     if(c.brains[t]==Brain::Gamepack)c.formations[t]=presetFormation("line");
     if(present(p,"skills"))skills(s,js::get(p,"skills"));
-    const V la=present(p,"lookahead")?js::get(p,"lookahead"):t==0&&present(o,"lookahead")?js::get(o,"lookahead"):V(nullptr);
-    if(js::truth(la)||((level=="elite"||level=="elite-fast")&&!present(p,"lookahead")))throw std::invalid_argument("lookahead pending native migration");
+    const V la=present(p,"lookahead")?js::get(p,"lookahead"):(level=="elite"||level=="elite-fast")?js::obj({{"extends","fast"},{"terminal",6},{"stall",10}}):!level.empty()?V(nullptr):t==0&&present(o,"lookahead")?js::get(o,"lookahead"):V(nullptr);
+    c.lookahead[t]=look(la);if(c.lookahead[t].enabled&&present(p,"objective")){const auto objective=string(p,"objective","");if(objective!="hp"&&objective!="deaths")throw std::invalid_argument("unknown profile objective");c.lookahead[t].hasObjective=true;c.lookahead[t].deaths=objective=="deaths";}
     if(s.artyPlan)throw std::invalid_argument("artillery planner pending native migration");
     if(present(o,"ab"))thresholds(c.abilityThresholds[t],js::get(o,"ab"));if(present(p,"ab"))thresholds(c.abilityThresholds[t],js::get(p,"ab"));
     if(present(p,"disablePlans")||(t==0&&present(o,"disablePlans"))){const auto value=present(p,"disablePlans")?js::get(p,"disablePlans"):js::get(o,"disablePlans");

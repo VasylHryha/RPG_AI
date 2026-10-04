@@ -42,7 +42,7 @@ Observation observe(const World& w,uint8_t team){Observation o;const auto& ours=
   o.chaseShare=meleeCount?double(chasing)/meleeCount:0;o.wallDist=std::min({o.oursCenter.x,w.config->width-o.oursCenter.x,o.oursCenter.y,w.config->height-o.oursCenter.y});
   o.finishing=o.theirs>0&&(o.theirs<=2||o.ours>=4*o.theirs);return o;
 }
-void directorStep(World& w,uint8_t team){if(!w.config->skills[team].combosEnabled||w.branch)return;auto& p=w.packs[team];auto& d=p.director;
+void directorStep(World& w,uint8_t team){if(!w.config->skills[team].combosEnabled||(w.branch&&!(w.thinkTeams&(1<<team))))return;auto& p=w.packs[team];auto& d=p.director;
   if(w.time-d.last<.5-1e-9)return;d.last=w.time;d.observation=observe(w,team);const auto& o=d.observation;
   const auto stop=[&](bool success){d.cool[size_t(d.combo)]=w.time+(d.combo==ComboKind::Tchain?8:6);d.active=false;d.goals={};if(success)++d.successes;else ++d.aborts;d.log.push_back({w.time,d.combo,d.phase,uint8_t(success?2:3)});};
   if(d.active){d.roles.erase(std::remove_if(d.roles.begin(),d.roles.end(),[&](const ComboRole& r){const auto* u=w.resolve(r.unit);return !u||!u->alive;}),d.roles.end());

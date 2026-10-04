@@ -252,6 +252,31 @@ case 2:f.shooterFocus=ShooterFocus::Protect;break;
 case 3:break;
 }break;
 default:break;}}
+static std::vector<Plan> distinctRules(uint8_t role){switch(role){
+case 0:return {Plan::Hold,Plan::Siege,Plan::Counter,Plan::Advance,Plan::Spread,Plan::Widehold,Plan::Bait,Plan::Hunt,Plan::Push,Plan::Surround,Plan::Oblique,Plan::Engage};
+case 1:return {Plan::Hold,Plan::Counter,Plan::Meleehunt,Plan::Intercept,Plan::Hunt,Plan::Push,Plan::Flank,Plan::Surround,Plan::Raidart,Plan::Engage};
+case 2:return {Plan::Hold,Plan::Counter,Plan::Skirmish,Plan::Intercept,Plan::Push,Plan::Surround,Plan::Engage,Plan::Focus};
+case 3:return {Plan::Hold,Plan::Siege,Plan::Intercept,Plan::Engage};
+default:throw std::invalid_argument("invalid tactic role");}}
+static std::vector<Plan> distinctStorm(uint8_t role){switch(role){
+case 0:return {Plan::Advance,Plan::Rush};
+case 1:return {Plan::Advance,Plan::Rush};
+case 2:return {Plan::Advance,Plan::Rush};
+case 3:return {Plan::Advance,Plan::Rush};
+default:throw std::invalid_argument("invalid tactic role");}}
+static std::vector<Plan> distinctWolfpack(uint8_t role){switch(role){
+case 0:return {Plan::Raid};
+case 1:return {Plan::Raid,Plan::Skirmish};
+case 2:return {Plan::Raid,Plan::Skirmish};
+case 3:return {Plan::Raid};
+default:throw std::invalid_argument("invalid tactic role");}}
+static std::vector<Plan> distinctGamepack(uint8_t role){switch(role){
+case 0:return {Plan::Pressure,Plan::Loose,Plan::Dispersed,Plan::Defend,Plan::Withdraw};
+case 1:return {Plan::Pressure,Plan::Defend};
+case 2:return {Plan::Pressure,Plan::Defend};
+case 3:return {Plan::Pressure,Plan::Defend};
+default:throw std::invalid_argument("invalid tactic role");}}
+std::vector<Plan> distinctTactics(Brain brain,uint8_t role){switch(brain){case Brain::Storm:return distinctStorm(role);case Brain::Wolfpack:return distinctWolfpack(role);case Brain::Gamepack:return distinctGamepack(role);default:return distinctRules(role);}}
 Formation composeFormation(const Formation& base,Brain brain,const Tactics& combo){Formation f=base;f.release=0;for(size_t r=0;r<4;++r){
 switch(brain){case Brain::Storm:applyStorm(f,combo.role[r],r);break;case Brain::Wolfpack:applyWolfpack(f,combo.role[r],r);break;case Brain::Gamepack:applyGamepack(f,combo.role[r],r);break;default:applyMain(f,combo.role[r],r);break;}}return f;}
 }

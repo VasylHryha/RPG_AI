@@ -10,10 +10,11 @@ Config gameConfig();
 const char* roleName(Role role);
 struct WorkCounters {
   uint64_t outerSteps=0, branchSteps=0, forks=0, unitActions=0, projectileSteps=0;
-  uint64_t searchCalls=0, inferenceCalls=0, candidateModels=0;
+  uint64_t searchCalls=0, inferenceCalls=0, candidateModels=0,artilleryRollouts=0;
 };
 // Typed authority. Configuration is immutable; all mutable state belongs to
 // the world and is copied when a branch is leased.
+class BranchPool;
 class World {
   std::vector<uint32_t> free_;
   std::vector<uint8_t> retained_;
@@ -21,6 +22,8 @@ class World {
   mutable std::array<uint64_t,2> foesVersion_{UINT64_MAX,UINT64_MAX};
   mutable std::array<double,2> foesTime_{-1,-1};
   void retain(UnitRef ref);
+  std::unique_ptr<BranchPool> ownedBranches_;
+  BranchPool* branches_=nullptr;
 public:
   std::shared_ptr<const Config> config;
   std::vector<UnitHot> units;
@@ -46,6 +49,10 @@ public:
   Rng spawnRandom{1};
   Stats stats;
   WorkCounters counters;
+  std::shared_ptr<WorkCounters> work=std::make_shared<WorkCounters>();
+  double dt=0,duration=0;
+  std::array<Brain,2> brains;
+  Tactics forced;uint8_t forcedTeam=0,thinkTeams=0;bool hasForced=false;
   double time=0;
   UnitId nextId=1;
   uint64_t nextShot=1;
@@ -57,7 +64,13 @@ public:
   mutable std::array<uint64_t,2> ratesVersion{UINT64_MAX,UINT64_MAX};
   mutable std::array<std::array<double,4>,2> rates{};
 
-  explicit World(std::shared_ptr<const Config> c):config(std::move(c)),random(toUint32(config->seed)){}
+  explicit World(std::shared_ptr<const Config> c);
+  ~World();
+  World(World&&) noexcept;
+  World& operator=(World&&) noexcept;
+  World(const World&)=delete;
+  World& operator=(const World&)=delete;
+  BranchPool& branches();
   UnitHot* resolve(UnitRef r);
   const UnitHot* resolve(UnitRef r) const;
   UnitRef reference(uint32_t slot) const { return {slot,units.at(slot).generation}; }

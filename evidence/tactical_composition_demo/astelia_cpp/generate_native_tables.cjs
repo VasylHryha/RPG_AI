@@ -46,6 +46,22 @@ for(const [table,v] of Object.entries({Main:sim.PLANS,Storm:sim.BRAINS.storm.pla
  }
  out+='default:break;}}\n';
 }
+for(const [brain,table] of Object.entries({Rules:sim.PLANS,Storm:sim.BRAINS.storm.plans,Wolfpack:sim.BRAINS.wolfpack.plans,Gamepack:sim.BRAINS.gamepack.plans})){
+ out+=`static std::vector<Plan> distinct${brain}(uint8_t role){switch(role){\n`;
+ for(let r=0;r<4;r++){
+  const seen=new Set(),distinct=[];
+  for(const [name,data] of Object.entries(table)){
+   const patch={};for(const [key,value] of Object.entries(data)){
+    if(key==='release'){if(value&&value.includes(roleNames[r]))patch.release=[roleNames[r]];}
+    else if((knobRole[key]||0)===r)patch[key]=value;
+   }
+   const identity=JSON.stringify(patch);if(!seen.has(identity)){seen.add(identity);distinct.push(`Plan::${cap(name)}`);}
+  }
+  out+=`case ${r}:return {${distinct.join(',')}};\n`;
+ }
+ out+='default:throw std::invalid_argument("invalid tactic role");}}\n';
+}
+out+='std::vector<Plan> distinctTactics(Brain brain,uint8_t role){switch(brain){case Brain::Storm:return distinctStorm(role);case Brain::Wolfpack:return distinctWolfpack(role);case Brain::Gamepack:return distinctGamepack(role);default:return distinctRules(role);}}\n';
 out+='Formation composeFormation(const Formation& base,Brain brain,const Tactics& combo){Formation f=base;f.release=0;for(size_t r=0;r<4;++r){\n';
 out+='switch(brain){case Brain::Storm:applyStorm(f,combo.role[r],r);break;case Brain::Wolfpack:applyWolfpack(f,combo.role[r],r);break;case Brain::Gamepack:applyGamepack(f,combo.role[r],r);break;default:applyMain(f,combo.role[r],r);break;}}return f;}\n}\n';
 fs.writeFileSync(path.join(__dirname,'src/native/formation_tables.cpp'),out);
