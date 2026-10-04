@@ -38,10 +38,14 @@ def nearest_living(A):
 # ------------------------------------------------------------------ AIM pieces: choose(A) -> one living enemy slot per state
 
 class AimOracle:
+    """The teacher's targeting; `scorer` is a batch scoring function (default: the original sandbox's teacher)."""
     name, kind = 'O', 'scripted'
 
+    def __init__(self, scorer=None):
+        self.scorer = scorer or teacher_scores_batch
+
     def choose(self, A):
-        return np.argmax(teacher_scores_batch(A), axis=1)
+        return np.argmax(self.scorer(A), axis=1)
 
 
 class AimNearest:
@@ -205,9 +209,9 @@ class Assembly:
 
 # ------------------------------------------------------------------ closed-loop play on a paired episode roster
 
-def play_episode(policy_a, mix_a, opponent, mix_b, rng):
-    """`tactics.play`, also returning the outcome: win, loss, draw (both sides lost their last unit together) or timeout."""
-    world = T.World(mix_a, mix_b, rng)
+def play_episode(policy_a, mix_a, opponent, mix_b, rng, world_fn=None):
+    """`tactics.play`, also returning the outcome: win, loss, draw (both sides lost their last unit together) or timeout. `world_fn` builds the world (task revision)."""
+    world = (world_fn or T.World)(mix_a, mix_b, rng)
     while not world.done:
         actions = [[None]*N, [None]*N]
         for team, policy in ((0, policy_a), (1, opponent)):
@@ -219,16 +223,17 @@ def play_episode(policy_a, mix_a, opponent, mix_b, rng):
     return world.score(0), outcome
 
 
-def play_cell(make_policy, opponent, entropy, seed, episodes):
+def play_cell(make_policy, opponent, entropy, seed, episodes, world_fn=None, mixes=None):
     """The registered roster: episode i of (seed, opponent) draws both mixes and the world from stream(entropy, 7, seed, opp, i); the policy's own randomness (wire
     faults) comes from stream(entropy, 8, seed, opp, i). Every policy therefore meets exactly the same starts."""
     scores, outcomes = [], {'win': 0, 'loss': 0, 'draw': 0, 'timeout': 0}
     code = OPP_CODE[opponent]
     for i in range(episodes):
         rng = stream(entropy, 7, seed, code, i)
-        mix_a = tuple(rng.permutation(T.SEEN_MIXES[int(rng.integers(len(T.SEEN_MIXES)))]))
-        mix_b = tuple(rng.permutation(T.SEEN_MIXES[int(rng.integers(len(T.SEEN_MIXES)))]))
-        score, outcome = play_episode(make_policy(stream(entropy, 8, seed, code, i)), mix_a, T.OPPONENTS[opponent], mix_b, rng)
+        pool = mixes or T.SEEN_MIXES
+        mix_a = tuple(rng.permutation(pool[int(rng.integers(len(pool)))]))
+        mix_b = tuple(rng.permutation(pool[int(rng.integers(len(pool)))]))
+        score, outcome = play_episode(make_policy(stream(entropy, 8, seed, code, i)), mix_a, T.OPPONENTS[opponent], mix_b, rng, world_fn)
         scores.append(score)
         outcomes[outcome] += 1
     return {'score': float(np.mean(scores)), 'episodes': episodes, **outcomes}

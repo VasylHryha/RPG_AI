@@ -20,17 +20,24 @@ CFG = SPEC['config']
 CACHE = Path(os.environ.get('ZE_CACHE', '/tmp/ze_cache'))
 
 
-def make_data(seed):
-    """Training and independent validation pools (episode-level split) with the teacher's labels; cached outside the repository."""
-    path = CACHE/('dev0e_seed%d_%d_%d.npz' % (seed, CFG['train_episodes'], CFG['val_episodes']))
+def make_data(seed, task='orig'):
+    """Training and independent validation pools (episode-level split) with the teacher's labels; cached outside the repository. task: 'orig' (the frozen sandbox)
+    or a tactics_e2 variant name (for example 'V3')."""
+    path = CACHE/('dev0e_%s_seed%d_%d_%d.npz' % (task, seed, CFG['train_episodes'], CFG['val_episodes'])) if task != 'orig' else \
+        CACHE/('dev0e_seed%d_%d_%d.npz' % (seed, CFG['train_episodes'], CFG['val_episodes']))
     if path.exists():
         z = np.load(path)
         return [({'own': z[p+'own'], 'enemies': z[p+'enemies']}, {k: z[p+k] for k in ('scores', 'target', 'move', 'fire')}) for p in ('tr_', 'va_')]
     CACHE.mkdir(parents=True, exist_ok=True)
     out, save = [], {}
     for p, key, eps in (('tr_', 1, CFG['train_episodes']), ('va_', 2, CFG['val_episodes'])):
-        pool = T.collect(stream(ENTROPY, key, seed), eps, T.SEEN_MIXES)
-        lab = T.labels(pool)
+        if task == 'orig':
+            pool = T.collect(stream(ENTROPY, key, seed), eps, T.SEEN_MIXES)
+            lab = T.labels(pool)
+        else:
+            import tactics_e2 as T2
+            pool = T2.collect(task, stream(ENTROPY, key, seed, 2), eps)
+            lab = T2.labels(task, pool)
         out.append((pool, lab))
         save[p+'own'], save[p+'enemies'] = pool['own'], pool['enemies']
         save.update({p+k: v for k, v in lab.items()})
@@ -38,8 +45,8 @@ def make_data(seed):
     return out
 
 
-def arrays(seed):
-    (tr, trl), (va, val) = make_data(seed)
+def arrays(seed, task='orig'):
+    (tr, trl), (va, val) = make_data(seed, task)
     return Z.Arrays(tr, trl), Z.Arrays(va, val)
 
 

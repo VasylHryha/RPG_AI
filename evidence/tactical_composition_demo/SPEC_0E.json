@@ -1,0 +1,137 @@
+{
+ "config": {
+  "Fflat_recipe": {
+   "depth": 2,
+   "head": "mse",
+   "hidden": 128,
+   "lr": 0.003,
+   "steps": 32000,
+   "wd": 0.0001
+  },
+  "Fp_recipe": {
+   "depth": 2,
+   "head": "perslot",
+   "hidden": 32,
+   "lr": 0.003,
+   "steps": 32000,
+   "wd": 0.0001
+  },
+  "J_recipe": {
+   "hidden": 64,
+   "lr": 0.003,
+   "steps": 16000,
+   "wd": 0.001
+  },
+  "L_recipe": {
+   "hidden": 16,
+   "lr": 0.001,
+   "steps": 32000,
+   "wd": 0.0001
+  },
+  "alpha": 0.0125,
+  "bars": {
+   "aim_admissible": 0.85,
+   "baseline_gate": 0.03,
+   "cut_norm": 0.05,
+   "cut_raw": 0.02,
+   "directed": 0.1,
+   "fault_abs": 0.03,
+   "fault_rel": 0.03,
+   "function": 0.03,
+   "headroom": 0.15,
+   "headroom_per_opponent": 0.1,
+   "iqr": 0.05,
+   "move_stratum": 0.85,
+   "move_success": 0.9,
+   "necessity": 0.03,
+   "repeat_gain": 0.1,
+   "repeat_share": 0.8,
+   "replace_J": -0.03,
+   "replace_oracle": -0.05,
+   "stronger": 0.03
+  },
+  "cuts": [
+   "default",
+   "wrong",
+   "zero"
+  ],
+  "dose_faults": [
+   [
+    "noise",
+    0.05
+   ],
+   [
+    "noise",
+    0.1
+   ],
+   [
+    "wrongfrac",
+    0.05
+   ],
+   [
+    "wrongfrac",
+    0.1
+   ],
+   [
+    "scale",
+    0.5
+   ],
+   [
+    "scale",
+    2.0
+   ]
+  ],
+  "episodes": 300,
+  "eval_cap": 600.0,
+  "hard_cap": 7500.0,
+  "max_load_1min": 20.0,
+  "min_stratum": 30,
+  "min_unique_best": 100,
+  "n_states": 3000,
+  "ref_distance": 4.9727357103471475,
+  "require_counts": true,
+  "resamples_note": "no bootstrap in verdicts: exact order-statistic and Clopper-Pearson intervals only",
+  "seeds": 30,
+  "small_faults_abs": [
+   [
+    "noise",
+    0.02
+   ],
+   [
+    "wrongfrac",
+    0.01
+   ]
+  ],
+  "small_faults_rel": [
+   [
+    "scale",
+    0.9
+   ],
+   [
+    "scale",
+    1.1
+   ]
+  ],
+  "soft_cap": 7200.0,
+  "task": "V3",
+  "test_episodes": 100,
+  "train_episodes": 600,
+  "workers": 8
+ },
+ "entropy": 47360331616890479587813507412,
+ "note": "Generated once by --write-spec; settings from dev_0e (README).",
+ "smoke_entropy": 60154308184825320586451760323,
+ "smoke_overrides": {
+  "episodes": 3,
+  "eval_cap": 120.0,
+  "hard_cap": 1400.0,
+  "n_states": 500,
+  "require_counts": false,
+  "seeds": 3,
+  "soft_cap": 1200.0,
+  "steps_cap": 200,
+  "test_episodes": 10,
+  "train_episodes": 30,
+  "workers": 3
+ }
+}
