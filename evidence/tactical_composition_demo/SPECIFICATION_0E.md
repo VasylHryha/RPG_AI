@@ -54,7 +54,7 @@ Measured cost about 600 s per seed (fits about 110 s, closed loop about 480 s); 
 
 | Weakness | Acknowledgement |
 |---|---|
-| The task was revised in development to make the connection matter, and the variant was chosen by a rule fixed before measuring it | The selection rule and all three variants are recorded (`tactics_e2.py`, step 4); V3 is the only variant that passed; the claims are statements about V3. |
+| The task was revised in development to make the connection matter, and the variant was chosen by a fixed rule (written before measuring by the author's account; git cannot verify the timing) | The selection rule and all three variants are recorded (`tactics_e2.py`, step 4); V3 is the only variant that passed; the claims are statements about V3. |
 | The interface is hand-specified; nothing here tests discovery of a connection | Stated; discovery is the next proposal. |
 | One sandbox, scripted teacher, imitation; 30 seeds replicate one environment | Intervals describe seed noise only; no RRG, geometry or oscillator claim. |
 | J was not re-tuned for V3 (0d's S1 recipe), L uses 0d's C recipe | Both pass prequalification on V3 (step 5); the replacement bars are noninferiority against O and against J. |
@@ -68,4 +68,7 @@ Measured cost about 600 s per seed (fits about 110 s, closed loop about 480 s); 
 | Stability under scale faults is relative to the teacher | A large absolute loss passes if the teacher loses as much; any report must name this qualification. |
 | `Fp` computes per-slot labels for every slot (9,000 at 3,000 states) but is supervised only on living slots | Both counts are recorded (`oracle_queries`, `Fp_labels_computed`); no query-efficiency claim follows. |
 | A1's prequalification covers L only; J's development back-off fidelity was 0.838 in one seed (seed 23) | J's competence enters only through A2's host gate (closed-loop play over rush). |
+| Roster mixes are sampled uniformly from the V3 mixes, not balanced by explicit strata; scalar-label and optimizer-work accounting are not emitted | Deferred reporting items, not claims. |
+| Statistical resolution at 30 seeds and error 0.01: the IQR component's negative interval is degenerate (lower bound 0), so it can support small spread but can never refute it; the seed-share component needs all 30 seeds above the gain bar (29 of 30 gives a Clopper-Pearson lower bound of 0.777, below 0.80) | A B2 failure to be supported is INDETERMINATE unless another component gives a negative witness; abstention is not evidence of low or high variability; no bar is retuned. |
+| In `run_seed` prequalification the chosen identity is gathered before `joint3` validates it | An invalid identity is still rejected (the seed errors), so no invalid result can be recorded; the before-gather guarantee holds for assemblies. |
 | Development step 5's fixed-state fault draws used Python's salted `hash` for stream keys | Raw development observations are kept; their exact regeneration is not established; the registered code uses stable enumerated keys. |
