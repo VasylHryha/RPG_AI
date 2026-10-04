@@ -75,6 +75,11 @@ AI plug will take later (session S2), so keep the port's unit state easy to expo
 3. **Speed:** single-thread time per fight, JS against C++, on the same 50 fights, measured on the same machine. Report the machine load during the measurement.
 4. **A determinism test:** two runs of the C++ host give identical output.
 5. A `README.md` stating the source hashes, what was skipped, the check results, and how to run.
+6. **The permanent reference gate** (owner, 2026-10-04: "we keep JS as legacy which we compare against"):
+   - The JS snapshot stays frozen as the reference.
+   - Commit `reference_fights.jsonl`: about 80 fixed fights from the check set, with their JS `summary()` lines. Commit `check_reference.py`: it runs those fights in the C++ host and prints `identical`, or the first differing fight.
+   - Every later C++ change that is meant to keep behaviour must print `identical`.
+   - A change that is meant to change behaviour (for example the artillery-crash fix) is made in **both** the JS copy and the C++, re-records the reference with a stated reason, and is noted in `astelia_snapshot/SOURCE.md`.
 
 ## Report
 
