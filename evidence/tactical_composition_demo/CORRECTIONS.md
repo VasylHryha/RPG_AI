@@ -84,3 +84,12 @@ probe shows larger flat models climbing with data to 0.74 at 60,000 states). It 
 | `dev_0d/README.md` | Does not mention the post-run probe: see `dev_0d/POSTRUN_NOTES.md`. Its step table omits the probe and the round-trip check. |
 
 (2026-10-04, after the GPT plan review, `docs/reviews/tactical_0e_plan_review_gpt.md`, R9): the "connect without loss" sentence became "the connection gap is near zero (a diagnostic, not proof of lossless wiring)" (the gap is within ±0.0004 per seed, not literally zero, and compares different target distributions); the structure-versus-separate-teaching reading is stated as consistent-with, not categorical; "at least 20 times" was replaced by the observed 3,000-versus-60,000 comparison.
+
+## H. Notes on the registered 0e files (hashed into `run_0e`; not edited after the run; 2026-10-04 recheck)
+
+| File | Note |
+|---|---|
+| `SPECIFICATION_0E.md` | Line 5 says the correction is "the commit that follows it": the corrections are `bb5ff7f` and `1e58a6e`. "Mixed teams only" (section 1) is wrong: one of the five V3 mixes (mage, archer, archer) is all ranged. B3 was not attainable (the teacher is +0.030 [0.0125, 0.0375] above Fp), and the B2 IQR component's upper bound is the span of the 2nd to 29th seed and equals episode-sampling noise at 300 episodes; neither was checked before registration. |
+| `PROPOSAL_0E.md` | The header and section 4 keep the first draft's four claims at 0.0125; the specification's five claims at 0.01 govern (its section 13 says so). It calls GPT "a third model family"; GPT and Codex are both OpenAI models. |
+| `dev_0e/README.md` | "The relabel and sham controls equal intact exactly" describes self-checks that cannot fail by construction, not controls. The step-5 note that `Fflat` was not in the pilot is correct. |
+| `ze_core.py`, `ze_run.py`, `test_ze*.py` | No defect changes the record (round trip exact). The registered tests did not cover the V3 code path; `test_ze_audit.py` adds those checks. Fidelity and MOVE prequalification cover multi-enemy states only. The B1 "default" cut keeps the attack on AIM's choice and moves toward the nearest enemy, so it measures the message together with a coherence penalty; the coherent comparison (learned unit against the nearest-enemy unit) is +0.124 [0.106, 0.132]. |
