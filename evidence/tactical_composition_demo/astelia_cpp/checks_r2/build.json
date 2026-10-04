@@ -1,0 +1,53 @@
+{
+  "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)\nTarget: arm64-apple-darwin25.6.0\nThread model: posix\nInstalledDir: /Library/Developer/CommandLineTools/usr/bin\n",
+  "commands": [
+    [
+      "/usr/bin/clang++",
+      "-std=c++17",
+      "-O2",
+      "-fno-fast-math",
+      "-fwrapv",
+      "-I/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/src",
+      "-ffp-contract=off",
+      "-c",
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/src/formation_sim.cpp",
+      "-o",
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/build/formation_sim.o"
+    ],
+    [
+      "/usr/bin/clang++",
+      "-std=c++17",
+      "-O2",
+      "-fno-fast-math",
+      "-fwrapv",
+      "-I/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/src",
+      "-ffp-contract=off",
+      "-c",
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/src/main.cpp",
+      "-o",
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/build/main.o"
+    ],
+    [
+      "/usr/bin/clang++",
+      "-std=c++17",
+      "-O2",
+      "-fno-fast-math",
+      "-fwrapv",
+      "-I/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/src",
+      "-ffp-contract=on",
+      "-c",
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/src/v8_ieee754.cpp",
+      "-o",
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/build/v8_ieee754.o"
+    ]
+  ],
+  "link": [
+    "/usr/bin/clang++",
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/build/formation_sim.o",
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/build/main.o",
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/build/v8_ieee754.o",
+    "-o",
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/build/astelia"
+  ],
+  "binary_sha256": "714ddc2d92623846a81c9a85f4bb0d5c915fd4c54f671bca5cc8628084a65d83"
+}
