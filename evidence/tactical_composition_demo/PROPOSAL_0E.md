@@ -110,9 +110,11 @@ A three-piece ladder needs a third behavior that is necessary in the teacher. Th
 
 Not geometry, not oscillators, not "vibration", not an RRG hypothesis (no learned geometry-to-mode loop, no background transformation); not discovery of a connection (the interface is hand-specified and tested); not a statement about all normal AI or all flat networks; not a hierarchy result. A pass shows bounded replacement, a used and useful connection and a bounded-stability envelope for one two-piece unit in one sandbox against a qualified baseline.
 
-## 12. Decisions requested from the owner
+## 12. Decisions (made by the drafter under the owner's delegation, 2026-10-04; decision 0028 item 9, **[R]**)
 
-1. Approve the scope of sections 1 to 8 (two-piece replacement and connection study, development first), or amend it.
-2. Confirm that adapter calibration, connection discovery, the three-piece ladder and the squad level are separate later proposals.
-3. Confirm that a cross-family review of the registered files (with re-review of fixes) is required before the recorded run, and which reviewer.
-4. Ratify or reject the open **[R]** items in decision 0028 (in particular item 8, the 0d run approval).
+The owner answered the questions of the first draft with "this are the questio for oyu not fro me, oyu egt the goal". The drafter decides:
+
+1. **Scope.** Sections 1 to 8 as written, two pieces (AIM, MOVE), development first. One change to the GPT-recommended design: the episode budget per cell is set from a measured development run within about two hours of wall time (minimum 200 per opponent), not fixed at 500; the exact order-statistic and Clopper-Pearson intervals stay (they are cheap to compute).
+2. **Later studies and their order**, each its own proposal: (a) a small **connection-discovery pilot** (a bag of frozen pieces with distractors and declared port signatures; a rule assembles units by declared compatibility without supplied pairings; compared with random and exhaustive wiring) because it is the part of the owner's idea that ordinary modular AI does not already contain; (b) the three-piece ladder if the burst ability qualifies; (c) the squad level with a coordination-necessity gate; (d) learning from outcomes. Adapter calibration only if discovery needs it.
+3. **Review.** Codex (the cross-family reviewer named in `AGENTS.md`) reviews the registered files before the recorded run; every fix is re-reviewed; GPT optional.
+4. **Not delegable:** the ratification of decision 0028's **[R]** items, and the approval of the registered 0e specification before its recorded run. Both need an explicit owner message.
