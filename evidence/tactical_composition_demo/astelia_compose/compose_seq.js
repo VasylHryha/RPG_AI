@@ -5,11 +5,13 @@
 //     max(MIN_GAIN, 2 standard errors) (the compose.js acceptance rule). Most changes do nothing or harm and stop after 4 fights.
 //   * First improvement: candidates are raced in chunks of CHUNK (to keep every core busy), promising ones first (positive first-stage gain in an earlier
 //     round); the first chunk with an accepted candidate gives the next assembly (its best one). No full sweep of every change per round.
-//   * When no single change is accepted: pairs, then triples, of the non-harmful single changes (first-stage gain >= 0), most promising first, raced the same way
-//     (caps PAIRS, TRIPLES). An accepted combination is logged as a synergy (each of its parts was rejected alone this round).
+//   * When no single change is accepted: a two-step check. Every single change is tried as a first step, INCLUDING ones that hurt alone (run 3 showed the
+//     parts of a useful group can each hurt alone), most promising first; on top of each, every second change is raced against the current assembly.
+//     The first pair that passes is taken and logged as a synergy (neither part was accepted alone this round). Cap: FIRSTS first steps (default all).
+//   * The brain may move to any value in one step (run 3: alone -> formation -> rules crossed a -7.8 valley).
 //   * Opponents: ENEMY_LEVEL's skills without the skills in ENEMY_DROP (default: artyRollout, which simulates futures and makes a fight about 20x slower).
 //
-//   node compose_seq.js <out.json> [rounds_cap]      env: ENEMY_LEVEL, ENEMY_DROP, SEL_SEEDS, CONF_SEEDS, OPP_SEL, STAGES, CHUNK, PAIRS, TRIPLES, MIN_GAIN, SEARCH_SEED, CONF_ELITE, NO_CONFIRM
+//   node compose_seq.js <out.json> [rounds_cap]      env: ENEMY_LEVEL, ENEMY_DROP, SEL_SEEDS, CONF_SEEDS, OPP_SEL, STAGES, CHUNK, FIRSTS, MIN_GAIN, SEARCH_SEED, CONF_ELITE, NO_CONFIRM
 'use strict';
 const os = require('os'), fs = require('fs'), path = require('path');
 const { fork } = require('child_process');
@@ -25,7 +27,7 @@ const ENEMY_LEVEL = env('ENEMY_LEVEL', 'elite');
 const ENEMY_DROP = env('ENEMY_DROP', 'artyRollout').split(',').filter(Boolean);
 const ENEMY = ENEMY_LEVEL ? { skills: Object.fromEntries(Object.entries(S.LEVELS[ENEMY_LEVEL].skills).filter(([k]) => !ENEMY_DROP.includes(k))) } : {};
 const STAGES = env('STAGES', '4,8,16,32').split(',').map(Number);
-const CHUNK = +env('CHUNK', os.cpus().length), PAIRS = +env('PAIRS', 60), TRIPLES = +env('TRIPLES', 40), MIN_GAIN = +env('MIN_GAIN', 1.0);
+const CHUNK = +env('CHUNK', os.cpus().length), FIRSTS = +env('FIRSTS', 1e9), MIN_GAIN = +env('MIN_GAIN', 1.0);
 
 // ---------------------------------------------------------------- one fight (as compose.js)
 function fight({ profile, opp, seed, swap }) {
@@ -57,8 +59,7 @@ function pieces(p) {
 function moves(p) {
 	const out = [];
 	for (const k of Object.keys(S.SKILLS)) for (const v of VALUES[k]) if (JSON.stringify(v) !== JSON.stringify(skillOf(p, k))) out.push({ slot: k, label: `${k}=${JSON.stringify(v)}`, apply: (q) => { q.skills[k] = v; } });
-	const bi = BRAINS.indexOf(p.brain);
-	for (const b of BRAINS) if (b !== p.brain && Math.abs(BRAINS.indexOf(b) - bi) === 1) out.push({ slot: 'brain', label: `brain=${b}`, apply: (q) => { q.brain = b; if (b === 'alone') q.formation = null; else if (!q.formation) q.formation = 'line'; } });
+	for (const b of BRAINS) if (b !== p.brain) out.push({ slot: 'brain', label: `brain=${b}`, apply: (q) => { q.brain = b; if (b === 'alone') q.formation = null; else if (!q.formation) q.formation = 'line'; } });
 	if (p.brain !== 'alone') for (const f of PRESETS) if (f !== p.formation) out.push({ slot: 'formation', label: `formation=${f}`, apply: (q) => { q.formation = f; } });
 	return out;
 }
@@ -128,7 +129,7 @@ const fmt = (c) => ({ move: c.label, first_stage_gain: +c.first.toFixed(2), drop
 
 async function main() {
 	const OUT = process.argv[2], CAP = +(process.argv[3] || 40), t0 = Date.now();
-	const log = { started: new Date().toISOString(), tool: 'compose_seq.js', settings: { ENEMY_LEVEL: ENEMY_LEVEL || 'pool defaults', ENEMY_DROP, SEL_SEEDS, CONF_SEEDS, OPP_SEL, STAGES, CHUNK, PAIRS, TRIPLES, MIN_GAIN,
+	const log = { started: new Date().toISOString(), tool: 'compose_seq.js', settings: { ENEMY_LEVEL: ENEMY_LEVEL || 'pool defaults', ENEMY_DROP, SEL_SEEDS, CONF_SEEDS, OPP_SEL, STAGES, CHUNK, FIRSTS, MIN_GAIN,
 		SEARCH_SEED: +env('SEARCH_SEED', 12345), rules: 'game', lookahead: 'excluded in this run' }, race_order: LONG.map(bkey), snapshot: 'astelia_snapshot/SOURCE.md', rounds: [], synergies: [] };
 	const save = () => fs.writeFileSync(OUT, JSON.stringify(log, null, 1));
 	let cur = NOVICE; const pathTaken = ['novice'], promise = new Map();   // label -> first-stage gain last time it was raced
@@ -141,29 +142,26 @@ async function main() {
 		let { winner, tried } = await firstImprovement(cur, singles);
 		for (const c of tried) promise.set(c.label, c.first);
 		rec.singles_tried = tried.length; rec.singles_total = singles.length;
-		if (!winner) {   // stuck: pairs, then triples of the non-harmful singles, most promising first
-			const pool_ = singles.filter((c) => c.first !== undefined && c.first >= 0).sort((a, b) => b.first - a.first);
-			rec.nonharmful_singles = pool_.length;
-			for (const [k, cap] of [[2, PAIRS], [3, TRIPLES]]) {
-				const combos = [];
-				const pick = (start, chosen) => {
-					if (chosen.length === k) { combos.push(chosen); return; }
-					for (let i = start; i < pool_.length; i++) if (!chosen.some((c) => c.ms[0].slot === pool_[i].ms[0].slot)) pick(i + 1, chosen.concat(pool_[i]));
-				};
-				pick(0, []);
-				const cands = combos.map((cs) => ({ ms: cs.map((c) => c.ms[0]), parts: cs, label: cs.map((c) => c.label).join(' + '), p: applyAll(cur, cs.map((c) => c.ms[0])), score: cs.reduce((a, c) => a + c.first, 0) }))
-					.sort((a, b) => b.score - a.score).slice(0, cap);
-				const r = await firstImprovement(cur, cands);
-				rec[`combos_${k}_tried`] = r.tried.length; rec[`combos_${k}_available`] = combos.length;
+		if (!winner) {   // stuck: two-step check, every first step (harmful ones too), most promising first
+			const firsts = singles.slice().sort((a, b) => b.first - a.first).slice(0, FIRSTS);
+			let pairsTried = 0, firstsTried = 0;
+			for (const m1 of firsts) {
+				firstsTried++;
+				const p1 = m1.p, seconds = shuffle(moves(p1).filter((m) => m.slot !== m1.ms[0].slot))
+					.map((m) => ({ ms: [m1.ms[0], m], parts: [m1, singles.find((c) => c.label === m.label)].filter(Boolean), label: `${m1.label} + ${m.label}`, p: applyAll(p1, [m]) }))
+					.sort((a, b) => (promise.get(b.ms[1].label) ?? 0) - (promise.get(a.ms[1].label) ?? 0));
+				const r = await firstImprovement(cur, seconds);
+				pairsTried += r.tried.length;
 				if (r.winner) {
-					winner = r.winner; winner.how = `${k} together`;
+					winner = r.winner; winner.how = '2 together';
 					log.synergies.push({ round, combination: winner.label, gain: +winner.g.gain.toFixed(2), se: +winner.g.se.toFixed(2), parts_alone: winner.parts.map(fmt) });
 					break;
 				}
 			}
+			Object.assign(rec, { firsts_tried: firstsTried, firsts_total: firsts.length, pairs_tried: pairsTried });
 		}
 		rec.fights = fights - f0; rec.seconds = +((Date.now() - t0) / 1000).toFixed(0);
-		if (!winner) { rec.stopped = 'no single change, pair or triple was accepted'; log.rounds.push(rec); save(); console.log(`round ${round}: stopped | fights ${fights}`); break; }
+		if (!winner) { rec.stopped = 'no single change or two-step pair was accepted'; log.rounds.push(rec); save(); console.log(`round ${round}: stopped | fights ${fights}`); break; }
 		cur = winner.p; pathTaken.push(winner.label);
 		Object.assign(rec, { accepted: winner.label, how: winner.how || 'single', gain: +winner.g.gain.toFixed(2), se: +winner.g.se.toFixed(2), pieces: pieces(cur), score: +mean(margins(cur, LONG)).toFixed(2) });
 		log.rounds.push(rec); save();
