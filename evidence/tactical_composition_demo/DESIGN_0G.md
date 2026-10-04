@@ -18,9 +18,11 @@ For side 0 with brain `external`, the pack-level planning is off (`lookahead`, `
 | | Fields |
 |---|---|
 | world | t, dt, width, height |
-| own unit | id, role (melee / ranged / artillery), x, y, vx, vy, hp, maxhp, r (radius), speed, range, dmg, cd, cdMax, current target id |
+| own unit | id, role (melee / ranged / artillery), x, y, vx, vy, hp, maxhp, r (radius), speed, range, dmg, cd, cdMax, current target id, **recent damage dealt, recent damage taken** |
 | every living ally | the same fields |
-| every living enemy | id, role, x, y, vx, vy, hp, maxhp, r, range, **weapon readiness** cd/cdMax (visible: the game shows wind-ups) |
+| every living enemy | id, role, x, y, vx, vy, hp, maxhp, r, range, **recent damage dealt (to our side), recent damage taken (from our side)** |
+
+Recent damage is an exponential average of the hit points lost and dealt, with time constant T_d (a knob). The game already records every hit, so the plug only passes it through.
 
 All units are visible (as in Astelia's lab: "policies read true positions"). A sight limit is a later fidelity step.
 
@@ -39,15 +41,25 @@ All units are visible (as in Astelia's lab: "policies read true positions"). A s
 - a phase θ_i;
 - a rate ω_role(i).
 
-**Enemy units are observed elements.** Their phase is **observed**, never set: φ_j = 2π·cd_j/cdMax_j, their weapon cycle. A unit in an enemy's rhythm moves in on it while its weapon recovers; that is a real tactic (stepping in on the cooldown), and nothing tells the units to do it.
+**Enemy units are observed elements.** Their phase is **read from what happens**, never set (the owner, 2026-10-04: "we need damage we do and damage we get").
 
-**Phase law** (C4 `rhs`, `geomind/c4_model.py:82-102`, plus two observed terms):
+**Damage drives the beats.** This is the input coupling, the same form as the C6 R4 drive (a pull of the phase toward a reference phase):
 
     dθ_i/dt = ω_role(i) + K · mean_{j in allies N_i} exp(-r_ij²) sin(θ_j − θ_i) + K_t · sin(ψ_target(i) − θ_i)
+              + κ_out · out_i · sin(0 − θ_i) + κ_in · in_i · sin(π − θ_i)
 
+- out_i and in_i: the unit's recent damage dealt and taken, divided by its max hp.
+- **Dealing damage pulls its beat toward 0, "attack"; taking damage pulls it toward π, "pull back".**
+- The K term shares beats with neighbours, so a wounded unit's pull-back spreads and the group falls back together, while a winning group presses on together. The group decides as one through
+  synchronization; no rule says "retreat when hurt".
 - N_i: up to 8 nearest allies within radius 3 (C4 values).
 - ψ_j, an enemy's **group phase**: arg Σ_{i targeting j} e^{iθ_i}, or φ_j when nobody targets it.
 - Integration: one RK4 step (C4: dt 0.02 model units) per game tick, with model time scaled by a knob τ.
+
+**An enemy's beat** φ_j follows the same law from its own exchange with us, computed by our controller from observations:
+- damage it deals to us pulls φ_j toward 0 (it is winning);
+- damage it takes from us pulls φ_j toward π (it is losing);
+- it relaxes at ω_enemy.
 
 **Position law → move goal.**
 
@@ -56,19 +68,21 @@ All units are visible (as in Astelia's lab: "policies read true positions"). A s
 
 - E_i: up to 8 nearest enemies.
 - d_role: melee about its reach, ranged and artillery about their range (knobs as fractions of range).
-- With J_e > 1 an anti-phase unit **backs off**: phase decides commit or withdraw.
+- The enemy term uses the unit's own commit level cos θ_i and the enemy's state: A_e,role (1 + J_e cos θ_i) (1 + J_f (−cos φ_e)) (1 − d_role / r_ie). A unit near "attack" moves in, and a unit near "pull back" (J_e > 1) **backs off**.
+  Every unit is drawn more to enemies that are losing (φ_e near π) than to enemies that are winning.
 - Goal = x_i + v_i · L · h (h a knob), at full speed. The goal is clipped to the field.
 
-**Target.** Among enemies in reach, i targets the one with the highest cos(θ_i − ψ_j). It switches only when the gain beats a hysteresis knob.
+**Target.** Among enemies in reach, i targets the one with the highest cos(θ_i − ψ_j) − J_f cos φ_j (in phase with its group, and losing). It switches only when the gain beats a hysteresis knob.
 Units in phase with each other target the same enemy, so **focus fire comes from synchronization**. No rule says "focus".
 
 **Groups (diagnostic and P4).** Each second, the C4 detector (`geomind/c4_detect.py` criteria 1-5, ported) runs on our units' scaled positions and phases and publishes groups. A
 group's members share its phase through the K term. When a group breaks, its units keep running the same law alone.
 
-**Knobs (about 16, all tuned by the bench):**
+**Knobs (about 20, all tuned by the bench):**
 - L, τ, h;
 - K, K_t, J, A, B (allies);
-- A_e and J_e (per role, 3 + 1);
+- A_e and J_e (per role, 3 + 1), J_f;
+- κ_out, κ_in, T_d, ω_enemy;
 - d per role (3);
 - ω per role (3);
 - the hysteresis.
@@ -83,6 +97,7 @@ The initial phases come from the seed.
 | J=0 | phase does not change motion (J = J_e = 0) | does mode→geometry matter? |
 | K=0 | no phase coupling between units or to targets (K = K_t = 0; phases free-run at ω) | does synchronization matter? |
 | no groups | ψ_j = φ_j always (no group phase), so units do not share a target through phase | do the groups matter? |
+| no damage input | κ_out = κ_in = 0, φ_j relaxes at ω_enemy only | does the damage drive matter? |
 | potential field | forces only (J = J_e = 0, no phases), target = nearest in reach: physicomimetics-style, the closest known method | does any of this beat known swarm control? |
 | nearest | walk to the nearest enemy, attack it | the floor |
 
@@ -92,8 +107,8 @@ The JS (later C++) phase and position laws must equal `geomind/c4_model.py` `rhs
 `rhs` outputs are computed once with the accepted Python code and committed as `c4_reference_states.json` before the controller exists. Doing this runs the accepted C4 model on 5 states: a
 computation, not an experiment, and it waits for the owner's go-ahead on this design.
 
-## 5. Open choices (recommendation first)
+## 5. Owner decisions (2026-10-04)
 
-1. **Abilities:** v0 leaves them to the game's `auto` reflex, the same for all arms (recommended). The alternative is our side without abilities, which handicaps every arm against the ladder.
-2. **The enemy phase:** the weapon cycle (recommended: real, observable, tactically meaningful). The alternative is HP-based. Whichever is used, it is declared before tuning.
-3. **Sight:** all units visible (as Astelia's lab) in v0. Limited sight later.
+1. **Abilities:** v0 leaves them to the game's `auto` reflex, the same for every arm. Approved ("1 ok").
+2. **What drives the beats:** damage dealt and damage taken (the owner: "we need damage we do and damage we get"). This replaces the weapon-cycle proposal. Section 2 above.
+3. **Sight:** all units visible in v0, as in Astelia's lab. Approved ("3 ok").
