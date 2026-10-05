@@ -304,4 +304,6 @@ def verify():
 
 
 if __name__ == "__main__":
-    raise SystemExit(verify())
+    # Keep the original receipts and report prefix as historical evidence.
+    from verify_remember_static import verify as verify_additive
+    raise SystemExit(verify_additive())

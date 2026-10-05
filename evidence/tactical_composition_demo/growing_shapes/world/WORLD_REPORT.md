@@ -224,3 +224,49 @@ between World/Policy handles, and use their context managers. gs_observe
 returns a fresh snapshot; gs_step validates and advances a single decision.
 No imports start episodes or build artifacts. No other repository folder
 is read by the engine or modified by this verifier.
+
+## Additive remember_static (Claude review note 3)
+
+Task id 7 is appended; original task ids 0..6 and ABI layouts are unchanged.
+One enemy; stationary agent; initial radius [3,6], HP [10,100],
+and the same placement procedure/distributions as remember, with vx=vy=0.
+The new task id supplies its own deterministic world and policy streams.
+Visible decisions 0..39, hidden 40..159; every hidden value slot is zero.
+The target stays at its last visible position. The reference stores that
+position and points at it while hidden, without extrapolation. Random uses
+the remember policy rule: independent uniform angle [-pi,pi] and magnitude
+[0,1] each decision; magnitude is validated but ignored, choice=-1.
+Score: mean absolute circular angular error (radians) on 120 hidden decisions.
+This implements WORLD_REVIEW.md note 3 only, under decision 0028 item 17.
+
+Engine comparison: dev and validation 0..255, 256 episodes per policy.
+
+| Namespace | Task | Metric | Reference | Random |
+|---|---|---|---:|---:|
+| dev | remember_static | angular_error | 0 | 1.57837 |
+| validation | remember_static | angular_error | 0 | 1.57235 |
+
+Compatibility: PASS for all seven original tasks, both namespaces and policies.
+The rerun comparison table is byte-identical (30 rows); all full-precision
+batch score fields also match WORLD_CHECKS.json exactly. Side-by-side builds
+from aeb75a7 and current source match every observation (including terminal),
+action field, seed tag and final score over 7,168 original episodes.
+ORIGINAL_COMPARISON_TABLE.md and REMEMBER_STATIC_CHECKS.json retain this proof.
+The original report prefix, WORLD_CHECKS.json and WORLD_TEST_LOG.txt keep their bytes.
+Original test cases are retained; their invalid task sentinel now follows TASKS
+length, receipt identity uses the additive current receipt, and shared memory
+contracts cover the new task. No old benchmark was repeated.
+
+Additive verification status: PASS.
+pytest (one invocation): ........................................................................ [ 91%]
+.......                                                                  [100%]
+79 passed in 0.47s.
+Elapsed verification seconds: 23.172.
+The report above remains the original historical verification; for this revision use:
+
+```sh
+.venv/bin/python evidence/tactical_composition_demo/growing_shapes/world/verify_remember_static.py
+```
+
+No growth, learning or judging run occurred. Implementation is REVIEW_READY
+for Claude; this check accepts no atom, proposal, experiment or milestone.

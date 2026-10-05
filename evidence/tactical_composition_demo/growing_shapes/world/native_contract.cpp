@@ -59,7 +59,7 @@ int main() {
             assert(gs_observe(w,&o)==GS_OK && o.step==step);
             assert(gs_policy_action(p,&o,&a)==GS_OK);
             assert(gs_step(w,&a)==GS_OK);
-            if (task==GS_REMEMBER && step>=40) {
+            if ((task==GS_REMEMBER || task==GS_REMEMBER_STATIC) && step>=40) {
                 const auto &e=o.enemies[0];
                 assert(!e.visible && e.dx==0 && e.dy==0 && e.angle==0 && e.distance==0);
                 assert(e.vx==0 && e.vy==0 && e.hp==0);
@@ -68,7 +68,7 @@ int main() {
         assert(gs_observe(w,&after)==GS_OK && after.done && after.step==160);
         assert(gs_score(w,&score)==GS_OK && score.done && score.steps==160);
         GSAction a{0,0,-1}; assert(gs_step(w,&a)==GS_EPISODE_DONE);
-        if (task==GS_REMEMBER) assert(score.hidden_steps==120 && score.angular_error<1e-10);
+        if (task==GS_REMEMBER || task==GS_REMEMBER_STATIC) assert(score.hidden_steps==120 && score.angular_error<1e-10);
         if (task==GS_CHOOSE) assert(score.correct_choice_rate==1);
         gs_destroy(w); gs_policy_destroy(p);
     }
@@ -89,5 +89,5 @@ int main() {
     // Duplicate step calls fail explicitly instead of advancing memory twice.
     assert(gs_policy_action(p,&o,&a)==GS_BAD_ARGUMENT);
     gs_policy_destroy(p);
-    std::cout << "native world contract: PASS (7 tasks; no judging access)\n";
+    std::cout << "native world contract: PASS (8 tasks; no judging access)\n";
 }

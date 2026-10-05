@@ -18,7 +18,8 @@ from pathlib import Path
 import sys
 
 ROOT = Path(__file__).resolve().parent
-TASKS = ("perceive", "move", "remember", "choose", "chase", "pursuit", "focus_fire")
+TASKS = ("perceive", "move", "remember", "choose", "chase", "pursuit", "focus_fire",
+         "remember_static")
 NAMESPACES = ("dev", "validation", "judging")
 
 

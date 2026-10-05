@@ -10,7 +10,7 @@ extern "C" {
 #endif
 enum { GS_ABI_VERSION = 1, GS_MAX_ENEMIES = 8, GS_ALLOW_JUDGING = 1 };
 enum GSTask { GS_PERCEIVE, GS_MOVE, GS_REMEMBER, GS_CHOOSE,
-              GS_CHASE, GS_PURSUIT, GS_FOCUS_FIRE, GS_TASK_COUNT };
+              GS_CHASE, GS_PURSUIT, GS_FOCUS_FIRE, GS_REMEMBER_STATIC, GS_TASK_COUNT };
 enum GSNamespace { GS_DEV, GS_VALIDATION, GS_JUDGING };
 enum GSPolicyKind { GS_REFERENCE, GS_RANDOM };
 enum GSStatus { GS_OK, GS_BAD_ARGUMENT, GS_JUDGING_DENIED,
@@ -36,7 +36,7 @@ typedef struct {
 typedef struct {
     double angle;
     /* PERCEIVE: estimated distance [0, sqrt(800)]; all others: speed [0,1].
-     * REMEMBER/CHOOSE ignore speed; PERCEIVE/REMEMBER/CHOOSE never move. */
+     * REMEMBER/REMEMBER_STATIC/CHOOSE ignore speed and never move; PERCEIVE never moves. */
     double magnitude;
     /* CHOOSE/FOCUS_FIRE require an existing live id; every other task requires -1. */
     int32_t choice;
