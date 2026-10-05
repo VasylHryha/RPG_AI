@@ -5,6 +5,7 @@ import json
 import math
 from pathlib import Path
 import re
+import struct
 
 TOLERANCE = 1e-10
 HASH_KEYS = {'identity','initial_identity','initial_ids','qualified_ids','before_ids','after_ids',
@@ -45,6 +46,8 @@ def compare(left,right,tolerance=TOLERANCE,allow_digest_changes=True):
             result['numeric_values_compared']+=1
             if not math.isfinite(a) or not math.isfinite(b):fail(path,'nonfinite value');return
             error=abs(a-b);result['maximum_error']=max(result['maximum_error'],error)
+            if tolerance==0. and (type(a)!=type(b) or isinstance(a,float) and struct.pack('>d',a)!=struct.pack('>d',b)):
+                fail(path,'numeric bits or type differ on unchanged arithmetic')
             if error>(0. if exact or isinstance(a,int) and isinstance(b,int) else tolerance):fail(path,'numerical difference '+str(error))
         elif type(a)!=type(b) or a!=b:fail(path,'discrete value differs')
     walk(left,right)

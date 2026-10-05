@@ -1,0 +1,43 @@
+........................................................................ [ 18%]
+.....................................
+C6 equivalence measurements: {"check1": {"index_mismatches": 0, "mask_mismatches": 0, "states": 1000}, "check2": {"scaled_max": 0.0, "theta_max": 0.0, "theta_where": ["clump", 0, 0], "x_max": 0.0, "x_where": ["clump", 0, 0, 0]}, "check3": {"scaled_max": 0.0, "theta_max": 0.0, "theta_where": ["mixed/final", 0, 0], "x_max": 0.0, "x_where": ["mixed/final", 0, 0, 0]}, "realistic_size": {"scaled_max": 0.0, "theta_max": 0.0, "theta_where": ["250/300/free", 0, 0], "x_max": 0.0, "x_where": ["250/300/free", 0, 0, 0]}, "test_seconds": 28.136160916999998}
+........................................................................ [ 47%]
+........................................................................ [ 66%]
+........................................................................ [ 85%]
+.....................................................F
+=================================== FAILURES ===================================
+_______ test_grid_recovery_causal_and_checks_are_bit_identical[forward] ________
+
+order = 'forward'
+
+    @pytest.mark.parametrize('order',['forward','reverse'])
+    def test_grid_recovery_causal_and_checks_are_bit_identical(order):
+>       a=experiment(False,order);b=experiment(True,order)
+
+tests/test_c6_option_b_parallel.py:49: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+tests/test_c6_option_b_parallel.py:42: in experiment
+    else:result=run()
+tests/test_c6_option_b_parallel.py:30: in run
+    flow=grid.run(.1,'fixture')
+geomind/c6_r4_field_assay.py:19: in run
+    F.exact_steps(sample_dt,dt);F.exact_steps(duration,sample_dt)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+time = 0.1, dt = 1.0
+
+    def exact_steps(time, dt):
+        if not math.isfinite(time) or not math.isfinite(dt) or dt <= 0 or time < 0:
+            raise ValueError('nonintegral time grid')
+        ratio=time/dt
+        if not math.isfinite(ratio):raise ValueError('nonintegral time grid')
+        value = round(ratio)
+>       if abs(value*dt-time)>1e-9: raise ValueError('nonintegral time grid')
+E       ValueError: nonintegral time grid
+
+geomind/c6_r4_field.py:31: ValueError
+- generated xml file: /Users/new/RiderProjects/ai_RPG_test/evidence/c6_option_b/parallel/contracts.xml -
+=========================== short test summary info ============================
+FAILED tests/test_c6_option_b_parallel.py::test_grid_recovery_causal_and_checks_are_bit_identical[forward]
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 378 passed in 175.32s (0:02:55)

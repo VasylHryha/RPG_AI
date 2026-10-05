@@ -1,0 +1,110 @@
+{
+  "kind": "OPTION_B_ENGINEERING_ONLY",
+  "backend": "native",
+  "audit": {
+    "calls": 159,
+    "float64_values_compared": 17372682,
+    "bit_identical_calls": 159,
+    "maximum_error": 0.0,
+    "component_calls": 0,
+    "absolute_tolerance": 0.0,
+    "exact_arithmetic_required": true
+  },
+  "parallel": true,
+  "schedule": "forward",
+  "thread_budget": {
+    "world_workers": 2,
+    "threads_per_world": 5,
+    "blas_threads": 1
+  },
+  "entropy": 46036002,
+  "world": 0,
+  "fixture": true,
+  "start_machine": {
+    "utc": "2026-10-05T19:35:22Z",
+    "load_average": [
+      65.1650390625,
+      48.8828125,
+      44.08203125
+    ],
+    "cpu_count": 10,
+    "platform": "macOS-26.6.2-arm64-arm-64bit"
+  },
+  "source_pin": {
+    "status": "PASS",
+    "source_files_verified": 25,
+    "owner_identities_verified": 12,
+    "manifest_entries_verified": 23,
+    "checksum_entries_verified": 24,
+    "handoff_sha256": "719781cbd5a302f58f0f57c064b32ca0a49e49546a1f88160582ba6235ca575e",
+    "expected_record_sha256": "37e8249338a95e32de72f4e30091e104697606faebd53b22bda8b90124e3bceb",
+    "import_record_sha256": "3f34717f795415f5ed4b11df060cdfc3c36f0bd8b1d491853141778bbc2d3da2"
+  },
+  "compute_seconds": 4.2616489170000005,
+  "compute_cpu_seconds": 4.961806,
+  "world_seconds": null,
+  "serialization_write_seconds": 0.7400119580000002,
+  "serialization_cpu_seconds": 0.7172179999999999,
+  "total_seconds": 5.001660875000001,
+  "raw_bytes": 5903530,
+  "compressed_bytes": 2510109,
+  "world_sha256": "c22182ac7134c00a9422c326fba1c6ff5c15b51babed7447cb8b2c677fba8dd1",
+  "end_machine": {
+    "utc": "2026-10-05T19:35:27Z",
+    "load_average": [
+      60.5068359375,
+      48.18701171875,
+      43.86474609375
+    ],
+    "cpu_count": 10,
+    "platform": "macOS-26.6.2-arm64-arm-64bit"
+  },
+  "native_cache": {
+    "threads_per_world": 5,
+    "world_workers": 2,
+    "total_thread_budget": 10,
+    "submission_order": "forward",
+    "worker_threads_used": 3,
+    "native_cache_worker_snapshots": [
+      {
+        "retired_hits": 0,
+        "control_hits": 0,
+        "eligible_misses": 2,
+        "avoided_material_rk_steps": 0,
+        "retired_bytes": 3919864,
+        "control_bytes": 0,
+        "probation_bytes": 0
+      },
+      {
+        "retired_hits": 0,
+        "control_hits": 0,
+        "eligible_misses": 2,
+        "avoided_material_rk_steps": 0,
+        "retired_bytes": 3919864,
+        "control_bytes": 0,
+        "probation_bytes": 0
+      },
+      {
+        "retired_hits": 0,
+        "control_hits": 0,
+        "eligible_misses": 2,
+        "avoided_material_rk_steps": 0,
+        "retired_bytes": 3919864,
+        "control_bytes": 0,
+        "probation_bytes": 0
+      }
+    ],
+    "native_cache_worker_totals": {
+      "retired_hits": 0,
+      "control_hits": 0,
+      "eligible_misses": 6,
+      "avoided_material_rk_steps": 0,
+      "retired_bytes": 11759592,
+      "control_bytes": 0,
+      "probation_bytes": 0
+    }
+  },
+  "invalid": null,
+  "chain_complete": null,
+  "post_serialization_peak_rss_bytes": 252755968
+}

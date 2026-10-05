@@ -1,0 +1,25 @@
+...F
+=================================== FAILURES ===================================
+____________ test_restores_after_worker_exception_and_drains_tasks _____________
+
+    def test_restores_after_worker_exception_and_drains_tasks():
+        originals=A.GridSet,A.recovery,A.causal
+        finished=threading.Event()
+        with pytest.raises(RuntimeError,match='worker failure'):
+            with O.backend('native'):
+                with Q.parallel() as scheduler:
+                    def task(i):
+                        if i==0:raise RuntimeError('worker failure')
+                        time.sleep(.02);finished.set()
+                    scheduler.map(task,[(0,),(1,)])
+>       assert finished.is_set()
+E       assert False
+E        +  where False = is_set()
+E        +    where is_set = <threading.Event object at 0x1091bb940>.is_set
+
+tests/test_c6_option_b_parallel.py:77: AssertionError
+- generated xml file: /Users/new/RiderProjects/ai_RPG_test/evidence/c6_option_b/parallel/contracts_parallel.xml -
+=========================== short test summary info ============================
+FAILED tests/test_c6_option_b_parallel.py::test_restores_after_worker_exception_and_drains_tasks
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 3 passed in 1.25s

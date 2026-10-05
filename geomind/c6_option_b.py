@@ -7,6 +7,7 @@ Builds are explicit; missing/mismatched identities stop before native loading.
 from contextlib import contextmanager
 import ctypes as ct
 import json
+import threading
 import numpy as np
 from geomind import c4_detect as D, c6_r4_field as F
 from geomind.c6_r4_integrity import sha256
@@ -58,6 +59,7 @@ class Audit:
         self.exact_calls = 0
         self.maximum_error = 0.
         self.records = []
+        self.lock = threading.Lock()
     def invoke(self, name, args):
         ns,n,nc = args[:3]
         width = 2*ns+nc*(3*n+2*ns)
@@ -67,7 +69,8 @@ class Audit:
         code = getattr(self.lib,name)(*args)
         if rc != code:
             raise RuntimeError('Option B native error decision differs')
-        self.calls += 1
+        with self.lock:
+            self.calls += 1
         if code:
             return code
         actual = np.ctypeslib.as_array(args[-1], shape=(count,))
@@ -75,10 +78,11 @@ class Audit:
         if not np.isfinite(delta).all():
             raise RuntimeError('Option B nonfinite equivalence difference')
         error = float(delta.max()) if count else 0.
-        self.maximum_error = max(self.maximum_error,error)
-        self.elements += count
         exact = np.array_equal(actual.view("u8"), expected.view("u8"))
-        self.exact_calls += int(exact)
+        with self.lock:
+            self.maximum_error = max(self.maximum_error,error)
+            self.elements += count
+            self.exact_calls += int(exact)
         # All evaluator/RK arithmetic is unchanged and requires exact equality.
         if not exact:
             raise RuntimeError('Option B full-flow equivalence failed: '+str(error))
@@ -125,7 +129,8 @@ def backend(name='reference', audit=False):
         if checker:
             if not np.array_equal(result,previous_components(X,link_factor,locked)):
                 raise RuntimeError('Option B detection decision flip')
-            checker.component_calls += 1
+            with checker.lock:
+                checker.component_calls += 1
         return result
     F.native = lambda:(checker if checker else lib,record)
     D.components = detected
