@@ -1,4 +1,4 @@
-# Design 0h, revision 5: the bootstrap of atoms and the library (DRAFT for a Codex re-review; no growth experiment run)
+# Design 0h, revision 5.1: the bootstrap of atoms and the library (Codex review r5: APPROVE_WITH_NOTES; its four low notes applied; no growth experiment run)
 
 Revision 5 answers the fourth review (`docs/reviews/tactical_0h_design_review_codex_r4.md`, CHANGES_REQUIRED, R4-1 … R4-9). Revision 4 answered the third (`…_r3.md`, R3-1 … R3-10), revision 3 the second (`…_r2.md`, R2-1 … R2-10) and revision 2 the first (`…codex.md`, 14 findings). The self-audits are in section 14. Earlier revisions are in git history (`85c656b`, `fc55cd2`, `b323803`, `69cc18c`).
 
@@ -56,21 +56,21 @@ No arm is called "theory alone". The **task-blind arm** never uses a task score 
 | Task | Items → sites | Direction α | Strength k |
 |---|---|---|---|
 | perceive | each visible enemy → its slot's site | enemy angle | 2 · exp(−distance / 10) |
-| move | the single target record → site 0 | target_angle if target_distance ≥ desired_range, else target_angle + π (retreat) | 2 · min(1, abs(target_distance − desired_range) / 2) |
-| remember_static | the enemy → site 0 while visible; k = 0 while hidden | enemy angle | 2 · exp(−distance / 10) while visible |
+| move | the single target record → logical slot 0 → physical site π_e(0) | target_angle if target_distance ≥ desired_range, else target_angle + π (retreat) | 2 · min(1, abs(target_distance − desired_range) / 2) |
+| remember_static | the enemy → logical slot 0 → physical site π_e(0) while visible; k = 0 while hidden | enemy angle | 2 · exp(−distance / 10) while visible |
 | choose | each enemy → its slot's site | enemy angle | 2 · exp(−d / 10) × (1 + (1 − HP/100)) × (1 if d ≤ 2.5 else 0.5) |
 
 - The move binding is a declared engineering transform of observed fields (desired range enters only through the retreat sign and the strength), and the controller may legitimately fail keep-mode episodes.
 - The action's `choice` is −1 for every non-choice task.
 - `remember_static` is the world's additive stationary-target task (id 7).
 
-**Drive on element i:**
+**Drive on element i** (reach convention, R5-3: the drive kernel acts for r **strictly less than** 3 m.u. and the readout for r strictly less than 2 m.u., matching the engine's strict reach; partner eligibility and coverage use the same strict boundaries):
 
     dθ_i/dt += g_i · Σ_s k_s(t) · K(|x_i − q_s|) · sin(ψ_s(t) − θ_i),    K(r) = exp(−r²/2) for r ≤ 3, else 0 (σ_d = 1 m.u.)
 
 with ψ_s(t) = φ(t) + α_s(t), where α_s is the item's world angle relative to the agent, from the observation.
 
-**Strength:**
+**Strength (the enemy-task formulas; the move row of the binding table governs move, R5-2):**
 - k_s = 2 · exp(−d_s / 10) rad/s, with d in arena units.
 - For choose, also × (1 + (1 − HP_s/100)) × (1 if d_s ≤ 2.5 else 0.5). These are disclosed priors.
 - k_s = 0 for an invisible item (remember after disappearance) and for unused slots.
@@ -101,7 +101,7 @@ Observations are held over the 5 substeps.
 - ids 0-23, from a monotone id counter.
 
 **Sampling contract** (R3-2):
-- **Indexed contract** (R4-1): at world step k, after integration, sample k = (t_k, θ_i(t_k), and per site ψ_s(t_k), k_s(t_k)) is **appended first**. Every statistic of step k then uses samples **k − 99 … k** (the last 100, the current one included), pairing θ_i(t_j) with ψ_s(t_j) at the same t_j; the rate estimate also uses the endpoint k − 100. Adaptation, then timers and coverage, then (at their times) growth and qualification, all use this same window.
+- **Indexed contract** (R4-1): at world step k, after integration, sample k = (t_k, θ_i(t_k), and per site ψ_s(t_k), k_s(t_k)) is **appended first**. Every statistic of step k then uses samples **k − 99 … k** (the last 100, the current one included), pairing θ_i(t_j) with ψ_s(t_j) at the same t_j; the rate estimate also uses the endpoint k − 100. Adaptation, lock, coverage and timer statistics use this same local window (R5-1). Qualification uses its own separate 601-frame window (section 6) ending at the same current endpoint. The t = 0 initial state is retained as a frame for the first qualification window, and newborn histories start empty.
 - **Rate estimate:** ω̂_i = (θ_i(t_k) − θ_i(t_{k−100})) / 10 s, unwrapped. It needs both endpoints (101 samples).
 - **Gain signal:** P_i is defined only if i has samples k − 100 … k and s* (the site with the largest k_s · K at step k; ties by lowest site id) was active in ≥ 80 of samples k − 99 … k; then P_i = PLV(θ_i, ψ_s*) over those active samples. **Otherwise, including when no active site reaches i, P_i is undefined and g_i is unchanged this step** (the only no-drive rule).
 - **Coverage** additionally requires the candidate element to have ≥ 101 samples.
@@ -197,6 +197,10 @@ Observations are held over the 5 substeps.
 - **Pass** if all three Jaccards are ≥ 0.9 and the recovered pair-pattern error is ≤ 0.1 rad.
 - τ_θ and τ_x are measured from the same futures.
 
+**Snapshot and evaluation budget (R5-4, fixed before any run):**
+- At each qualification check, at most the **3 largest** qualifying candidates are snapshotted (ties by smallest minimum member id).
+- **Competence** (G1c) and **G5** are evaluated on at most **20 snapshots per seed**: the first 20 admitted in time order. All admitted snapshots are counted and hashed.
+- **Before section 10's full run**, the implementer runs one development seed for 200 episodes, measures the throughput (training, qualification, recovery and evaluation separately) and projects the full development cost. A projection above 24 hours of machine time is reported to the owner before starting.
 **A diagnostic, not required:** the same recovery with the drive off (autonomous persistence).
 
 **A qualified group becomes a snapshot (section 7). The live group is not frozen:** the library is a snapshot and does not alter the run. A live group that qualifies again later is snapshotted again only if its template hash differs from all its earlier snapshots.
@@ -339,6 +343,12 @@ Whether, in a continuously driven C4 medium with novelty birth, unlocked death a
 | R3-8 | G5 aggregation and copy identity | A per-snapshot scalar, thresholds, a no-formation rule, fixed offsets, per-episode copies, canonical order | Underspecified |
 | R3-9 | Driven recovery can be entrainment | Atoms are driven snapshots; closure and autonomy not claimed | Missed the drive's restoring force |
 | R3-10 | A false rate bound | Removed; aliasing diagnostics and a flag; the counter-example kept | Wrong reasoning |
+
+**Review r5 (APPROVE_WITH_NOTES) notes, applied in 5.1:**
+- R5-1: local windows separated from the qualification window; t = 0 is retained.
+- R5-2: logical slot and physical site wording in the table; strength-formula precedence.
+- R5-3: strict reach for drive and readout; exact boundary tests in the medium follow-up.
+- R5-4: snapshot and evaluation caps; a measured cost projection before the full run.
 
 **Revision-4 findings:**
 
