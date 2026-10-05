@@ -39,7 +39,7 @@ The test of "real" is that the AI wins against Astelia's scripted AI in a game r
 
 | # | Decision | Options | Drafter's recommendation |
 |---|---|---|---|
-| W1 | C6 next step | **A** a small pilot: does a changed background suppress the next unit? **B** the C++ port of the unchanged model; **C** pause | **A** first: it decides whether chaining can work at all; then B |
+| W1 | C6 next step | **DECIDED 2026-10-05: B** (decision 0029): the engineering and runtime port of the unchanged R4 model | (the drafter had recommended A first) |
 | W2 | Approve 0h as the direction | **read as approved 2026-10-05 [R]** (decision 0028 item 17): its engine parts are being built | confirm the [R] reading |
 | W3 | Confirm the reading of "go ahead" (improve before registering) | confirm, correct | marked [R] in decision 0028 item 16 |
 | W4 | Later: approve δ, n and the run of a new 0g specification | after v1 development | registered only after review |
@@ -113,9 +113,9 @@ The test of "real" is that the AI wins against Astelia's scripted AI in a game r
 
 | Option | Status | Note | Link |
 |---|---|---|---|
-| A: a pilot, quiet against changed background | WAITING (W1) | the recommended first step | synthesis section 5 |
-| B: C++ port of the unchanged R4 model | WAITING (W1) | even 2-3× would meet the time limit | this document |
-| C: pause | WAITING (W1) | | |
+| A: a pilot, quiet against changed background | NOT CHOSEN (W1) | the apparatus concern stays open | synthesis section 5 |
+| B: C++ port of the unchanged R4 model | **ADOPTED / RUNNING** (decision 0029) | profile, port the hot paths, check equivalence, measure world runtime against 360 s | `docs/decisions/0029-c6-option-b-engineering-port.md` |
+| C: pause | NOT CHOSEN | | |
 
 ## 5. Roadmap (in order)
 
@@ -123,8 +123,8 @@ The test of "real" is that the AI wins against Astelia's scripted AI in a game r
 |---|---|---|---|
 | 1 | Finish 0g v1 development, review it, update the replays | Codex run | RUNNING |
 | 2 | A new 0g specification on a fresh root; the approved S6 runner adapted and re-reviewed; Codex review; owner approval; one recorded run | step 1, W4 | next |
-| 3 | C6 pilot (option A) | W1 | waiting |
-| 4 | C6 C++ port and R007, if the pilot is favourable | step 3 | waiting |
+| 3 | C6 option B: profile and port (Codex), Claude's review | decision 0029 | RUNNING |
+| 4 | C6 R007 registration (the owner approves), then one run | step 3 | waiting |
 | 5 | 0h design (thresholds fixed) and the tiny 2D task world, Codex review | W2 (**not** C6: the atoms need only a fast C4 medium) | waiting |
 | 6 | 0h bootstrap: atoms grow and are locked into the library | step 5 (parallel with steps 3-4) | |
 | 7 | 0h combinations: seeded media grow level-2 shapes | steps 6 and 3 (the C6 pilot's answer on background suppression) | |
