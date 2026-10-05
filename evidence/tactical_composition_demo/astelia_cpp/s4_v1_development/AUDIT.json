@@ -1,0 +1,78 @@
+{
+  "status": "DEVELOPMENT_EVIDENCE_RECONSTRUCTED",
+  "raw_fights": 60996,
+  "fresh_fights": 60996,
+  "cache_hits": 0,
+  "replay_capture_fights": 8,
+  "total_executed_fights": 61004,
+  "tuning_fights": 58596,
+  "validation_fights": 2400,
+  "candidates": 1536,
+  "budgets_by_stage": {
+    "A": {
+      "resonator": 9766,
+      "morale": 9766,
+      "pushpull": 9766
+    },
+    "B": {
+      "resonator": 9766,
+      "morale": 9766,
+      "pushpull": 9766
+    }
+  },
+  "controller_failures": 0,
+  "planning_counters": {
+    "forks": 0,
+    "search_calls": 0,
+    "artillery_rollouts": 0
+  },
+  "both_orientations_verified": true,
+  "all_100_cluster_endpoints_reconstructed": true,
+  "CMA_ask_tell_reconstructed": true,
+  "candidate_parameters_verified": true,
+  "spec_0g_unchanged": true,
+  "replay_equality": [
+    {
+      "file": "A_resonator.html",
+      "matches_original": true,
+      "raw_sha256": "f27221bc344aee8b445e389828640b8564cb16939350ab111473ced50ef6b5f6"
+    },
+    {
+      "file": "A_morale.html",
+      "matches_original": true,
+      "raw_sha256": "015eab076425ce6778b3913c4991557f83d8bf07b4f05e9b09f55102acb55f80"
+    },
+    {
+      "file": "A_pushpull.html",
+      "matches_original": true,
+      "raw_sha256": "396bb19210c4bb1a0c660640e02d895d03657026dd84a72ef63a8df997bb095d"
+    },
+    {
+      "file": "A_nearest.html",
+      "matches_original": true,
+      "raw_sha256": "39dbc45d3afaf62d1bfa9cfc0f0e8bf43e7aae69ec6f0522e1c405b7c021e73a"
+    },
+    {
+      "file": "B_resonator.html",
+      "matches_original": true,
+      "raw_sha256": "ebd303fb7253801eb8c19ff6a7af2447e55a0325f329eb40b625fe9d2fc6599a"
+    },
+    {
+      "file": "B_morale.html",
+      "matches_original": true,
+      "raw_sha256": "9d1c3d38202fa091f0a074d662cb081569c0166e098d086eec87eeeb4b3f03cc"
+    },
+    {
+      "file": "B_pushpull.html",
+      "matches_original": true,
+      "raw_sha256": "06c8fe358d0cbab4ba567989551f3dea4c0c65ccda47d2b4e51606196c6fa553"
+    },
+    {
+      "file": "B_nearest.html",
+      "matches_original": true,
+      "raw_sha256": "2ebf5baf5deabcdc7f38517ec637e23fe6b0581ee52a06d3e74e2deac03d211c"
+    }
+  ],
+  "judging_seeds_used": false,
+  "seed_declaration_sha256": "c55cb8f163b1c910e8236f95c2043b8176385cbde47dd2e885a6e6cf3febd3d6"
+}
