@@ -1,0 +1,681 @@
+{
+  "status": "PASS",
+  "scope": "engine verification only; no judging, growth or learning",
+  "host": {
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "machine": "arm64",
+    "processor": "arm",
+    "python": "3.9.6"
+  },
+  "source_sha256": {
+    "world.h": "58a090bd629c01faa591449aa96da729f9579e6d26fbabbdc9f45e91192bf99d",
+    "world.cpp": "0a2d69c69b525af2ffc26bf6a72354d6f3bfb05760d608dfa9087be1d3a6d38f",
+    "world.py": "e6c8fd035093b8500c3b0ff60247f909b18d2f6364fdacd5adf80b3195021903",
+    "build.py": "a8924810d02f4427d4e6c2108e848e0783664b57a82876e1fc5d71a6b997f5d6",
+    "native_contract.cpp": "c8d09321cf7f9035671844064f9c25619a20242a24d3b24b27e1856c8c7319a3",
+    "test_world.py": "0c350939c2cd0d1e3a9d986cffc93e81eeb7117770caaddb18d39e61da06a84c",
+    "verify_world.py": "d005156285abed407dbad367139509c92e7b9b1cbc2b83834f177ac33662e254",
+    ".gitignore": "7856e06136649c448bb1374c9005a55d4820042e320d8cbbdf133a5eddeabd22"
+  },
+  "build": {
+    "commands": [
+      [
+        "c++",
+        "-std=c++17",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-pedantic",
+        "-fPIC",
+        "-dynamiclib",
+        "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/world/world.cpp",
+        "-o",
+        "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/world/_build/libgs_world.dylib"
+      ],
+      [
+        "c++",
+        "-std=c++17",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-pedantic",
+        "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/world/world.cpp",
+        "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/world/native_contract.cpp",
+        "-o",
+        "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/world/_build/native_contract"
+      ]
+    ],
+    "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+    "sanitized": false,
+    "source_sha256": {
+      "world.h": "58a090bd629c01faa591449aa96da729f9579e6d26fbabbdc9f45e91192bf99d",
+      "world.cpp": "0a2d69c69b525af2ffc26bf6a72354d6f3bfb05760d608dfa9087be1d3a6d38f",
+      "native_contract.cpp": "c8d09321cf7f9035671844064f9c25619a20242a24d3b24b27e1856c8c7319a3",
+      "build.py": "a8924810d02f4427d4e6c2108e848e0783664b57a82876e1fc5d71a6b997f5d6"
+    },
+    "binary_sha256": {
+      "libgs_world.dylib": "7fe620160211814353d5a28eed2f4c1f02b0a0116cc80c4ca66ddec26bc0cf08",
+      "native_contract": "0fa1b6dc996362ac3d9561407d8484d485415953a9ad1d91d9bc57c5a2bd92f6"
+    }
+  },
+  "build_seconds": 1.1597905830000002,
+  "contract": {
+    "returncode": 0,
+    "seconds": 0.3793313329999999,
+    "output": "native world contract: PASS (7 tasks; no judging access)\n"
+  },
+  "scores": {
+    "dev": {
+      "perceive": {
+        "reference": {
+          "episodes": 256,
+          "mean": {
+            "steps": 160,
+            "hidden_steps": 0,
+            "invalid_actions": 0,
+            "done": 1,
+            "angular_error": 0.0,
+            "distance_error": 0.0,
+            "goal_error": 0.0,
+            "settle_seconds": 16.0,
+            "correct_choice_rate": 0.0,
+            "damage_per_second": 0.0,
+            "in_range_rate": 0.0
+          }
+        },
+        "random": {
+          "episodes": 256,
+          "mean": {
+            "steps": 160,
+            "hidden_steps": 0,
+            "invalid_actions": 0,
+            "done": 1,
+            "angular_error": 1.5608540323859081,
+            "distance_error": 11.721471845646747,
+            "goal_error": 0.0,
+            "settle_seconds": 16.0,
+            "correct_choice_rate": 0.0,
+            "damage_per_second": 0.0,
+            "in_range_rate": 0.0
+          }
+        }
+      },
+      "move": {
+        "reference": {
+          "episodes": 256,
+          "mean": {
+            "steps": 160,
+            "hidden_steps": 0,
+            "invalid_actions": 0,
+            "done": 1,
+            "angular_error": 0.0,
+            "distance_error": 0.0,
+            "goal_error": 0.2159328636789488,
+            "settle_seconds": 1.3925781249999996,
+            "correct_choice_rate": 0.0,
+            "damage_per_second": 0.0,
+            "in_range_rate": 0.919213867187499
+          }
+        },
+        "random": {
+          "episodes": 256,
+          "mean": {
+            "steps": 160,
+            "hidden_steps": 0,
+            "invalid_actions": 0,
+            "done": 1,
+            "angular_error": 0.0,
+            "distance_error": 0.0,
+            "goal_error": 4.25341209754795,
+            "settle_seconds": 15.372265624999999,
+            "correct_choice_rate": 0.0,
+            "damage_per_second": 0.0,
+            "in_range_rate": 0.020507812500000003
+          }
+        }
+      },
+      "remember": {
+        "reference": {
+          "episodes": 256,
+          "mean": {
+            "steps": 160,
+            "hidden_steps": 120,
+            "invalid_actions": 0,
+            "done": 1,
+            "angular_error": 1.1873614328056196e-17,
+            "distance_error": 0.0,
+            "goal_error": 0.0,
+            "settle_seconds": 16.0,
+            "correct_choice_rate": 0.0,
+            "damage_per_second": 0.0,
+            "in_range_rate": 0.0
+          }
+        },
+        "random": {
+          "episodes": 256,
+          "mean": {
+            "steps": 160,
+            "hidden_steps": 120,
+            "invalid_actions": 0,
+            "done": 1,
+            "angular_error": 1.5742972997421494,
+            "distance_error": 0.0,
+            "goal_error": 0.0,
+            "settle_seconds": 16.0,
+            "correct_choice_rate": 0.0,
+            "damage_per_second": 0.0,
+            "in_range_rate": 0.0
+          }
+        }
+      },
+      "choose": {
+        "reference": {
+          "episodes": 256,
+          "mean": {
+            "steps": 160,
+            "hidden_steps": 0,
+            "invalid_actions": 0,
+            "done": 1,
+            "angular_error": 0.0,
+            "distance_error": 0.0,
+            "goal_error": 0.0,
+            "settle_seconds": 16.0,
+            "correct_choice_rate": 1.0,
+            "damage_per_second": 0.0,
+            "in_range_rate": 0.0
+          }
+        },
+        "random": {
+          "episodes": 256,
+          "mean": {
+            "steps": 160,
+            "hidden_steps": 0,
+            "invalid_actions": 0,
+            "done": 1,
+            "angular_error": 0.0,
+            "distance_error": 0.0,
+            "goal_error": 0.0,
+            "settle_seconds": 16.0,
+            "correct_choice_rate": 0.20395507812500002,
+            "damage_per_second": 0.0,
+            "in_range_rate": 0.0
+          }
+        }
+      },
+      "chase": {
+        "reference": {
+          "episodes": 256,
+          "mean": {
+            "steps": 160,
+            "hidden_steps": 0,
+            "invalid_actions": 0,
+            "done": 1,
+            "angular_error": 0.0,
+            "distance_error": 0.0,
+            "goal_error": 0.014362325933007892,
+            "settle_seconds": 0.2820312500000002,
+            "correct_choice_rate": 0.0,
+            "damage_per_second": 0.0,
+            "in_range_rate": 0.9868408203125
+          }
+        },
+        "random": {
+          "episodes": 256,
+          "mean": {
+            "steps": 160,
+            "hidden_steps": 0,
+            "invalid_actions": 0,
+            "done": 1,
+            "angular_error": 0.0,
+            "distance_error": 0.0,
+            "goal_error": 1.3232397177864392,
+            "settle_seconds": 10.819921874999997,
+            "correct_choice_rate": 0.0,
+            "damage_per_second": 0.0,
+            "in_range_rate": 0.1390380859375
+          }
+        }
+      },
+      "pursuit": {
+        "reference": {
+          "episodes": 256,
+          "mean": {
+            "steps": 160,
+            "hidden_steps": 73,
+            "invalid_actions": 0,
+            "done": 1,
+            "angular_error": 0.0,
+            "distance_error": 0.0,
+            "goal_error": 0.03298198275642119,
+            "settle_seconds": 0.6546874999999998,
+            "correct_choice_rate": 0.0,
+            "damage_per_second": 0.0,
+            "in_range_rate": 0.9653320312500007
+          }
+        },
+        "random": {
+          "episodes": 256,
+          "mean": {
+            "steps": 160,
+            "hidden_steps": 115,
+            "invalid_actions": 0,
+            "done": 1,
+            "angular_error": 0.0,
+            "distance_error": 0.0,
+            "goal_error": 7.1486707122136,
+            "settle_seconds": 16.0,
+            "correct_choice_rate": 0.0,
+            "damage_per_second": 0.0,
+            "in_range_rate": 0.0
+          }
+        }
+      },
+      "focus_fire": {
+        "reference": {
+          "episodes": 256,
+          "mean": {
+            "steps": 160,
+            "hidden_steps": 0,
+            "invalid_actions": 0,
+            "done": 1,
+            "angular_error": 0.0,
+            "distance_error": 0.0,
+            "goal_error": 0.0,
+            "settle_seconds": 16.0,
+            "correct_choice_rate": 0.0,
+            "damage_per_second": 0.9760742187499993,
+            "in_range_rate": 0.9760742187500007
+          }
+        },
+        "random": {
+          "episodes": 256,
+          "mean": {
+            "steps": 160,
+            "hidden_steps": 0,
+            "invalid_actions": 0,
+            "done": 1,
+            "angular_error": 0.0,
+            "distance_error": 0.0,
+            "goal_error": 0.0,
+            "settle_seconds": 16.0,
+            "correct_choice_rate": 0.0,
+            "damage_per_second": 0.036425781250000004,
+            "in_range_rate": 0.03642578125
+          }
+        }
+      }
+    },
+    "validation": {
+      "perceive": {
+        "reference": {
+          "episodes": 256,
+          "mean": {
+            "steps": 160,
+            "hidden_steps": 0,
+            "invalid_actions": 0,
+            "done": 1,
+            "angular_error": 0.0,
+            "distance_error": 0.0,
+            "goal_error": 0.0,
+            "settle_seconds": 16.0,
+            "correct_choice_rate": 0.0,
+            "damage_per_second": 0.0,
+            "in_range_rate": 0.0
+          }
+        },
+        "random": {
+          "episodes": 256,
+          "mean": {
+            "steps": 160,
+            "hidden_steps": 0,
+            "invalid_actions": 0,
+            "done": 1,
+            "angular_error": 1.5656735285197503,
+            "distance_error": 11.634478211871697,
+            "goal_error": 0.0,
+            "settle_seconds": 16.0,
+            "correct_choice_rate": 0.0,
+            "damage_per_second": 0.0,
+            "in_range_rate": 0.0
+          }
+        }
+      },
+      "move": {
+        "reference": {
+          "episodes": 256,
+          "mean": {
+            "steps": 160,
+            "hidden_steps": 0,
+            "invalid_actions": 0,
+            "done": 1,
+            "angular_error": 0.0,
+            "distance_error": 0.0,
+            "goal_error": 0.25012933158101386,
+            "settle_seconds": 1.5046875000000008,
+            "correct_choice_rate": 0.0,
+            "damage_per_second": 0.0,
+            "in_range_rate": 0.9122070312499995
+          }
+        },
+        "random": {
+          "episodes": 256,
+          "mean": {
+            "steps": 160,
+            "hidden_steps": 0,
+            "invalid_actions": 0,
+            "done": 1,
+            "angular_error": 0.0,
+            "distance_error": 0.0,
+            "goal_error": 4.576567143743375,
+            "settle_seconds": 15.479296875000001,
+            "correct_choice_rate": 0.0,
+            "damage_per_second": 0.0,
+            "in_range_rate": 0.021801757812499992
+          }
+        }
+      },
+      "remember": {
+        "reference": {
+          "episodes": 256,
+          "mean": {
+            "steps": 160,
+            "hidden_steps": 120,
+            "invalid_actions": 0,
+            "done": 1,
+            "angular_error": 1.3162348487524001e-17,
+            "distance_error": 0.0,
+            "goal_error": 0.0,
+            "settle_seconds": 16.0,
+            "correct_choice_rate": 0.0,
+            "damage_per_second": 0.0,
+            "in_range_rate": 0.0
+          }
+        },
+        "random": {
+          "episodes": 256,
+          "mean": {
+            "steps": 160,
+            "hidden_steps": 120,
+            "invalid_actions": 0,
+            "done": 1,
+            "angular_error": 1.5631512833338408,
+            "distance_error": 0.0,
+            "goal_error": 0.0,
+            "settle_seconds": 16.0,
+            "correct_choice_rate": 0.0,
+            "damage_per_second": 0.0,
+            "in_range_rate": 0.0
+          }
+        }
+      },
+      "choose": {
+        "reference": {
+          "episodes": 256,
+          "mean": {
+            "steps": 160,
+            "hidden_steps": 0,
+            "invalid_actions": 0,
+            "done": 1,
+            "angular_error": 0.0,
+            "distance_error": 0.0,
+            "goal_error": 0.0,
+            "settle_seconds": 16.0,
+            "correct_choice_rate": 1.0,
+            "damage_per_second": 0.0,
+            "in_range_rate": 0.0
+          }
+        },
+        "random": {
+          "episodes": 256,
+          "mean": {
+            "steps": 160,
+            "hidden_steps": 0,
+            "invalid_actions": 0,
+            "done": 1,
+            "angular_error": 0.0,
+            "distance_error": 0.0,
+            "goal_error": 0.0,
+            "settle_seconds": 16.0,
+            "correct_choice_rate": 0.19548339843749998,
+            "damage_per_second": 0.0,
+            "in_range_rate": 0.0
+          }
+        }
+      },
+      "chase": {
+        "reference": {
+          "episodes": 256,
+          "mean": {
+            "steps": 160,
+            "hidden_steps": 0,
+            "invalid_actions": 0,
+            "done": 1,
+            "angular_error": 0.0,
+            "distance_error": 0.0,
+            "goal_error": 0.018909120322434178,
+            "settle_seconds": 0.3078125,
+            "correct_choice_rate": 0.0,
+            "damage_per_second": 0.0,
+            "in_range_rate": 0.9834960937500001
+          }
+        },
+        "random": {
+          "episodes": 256,
+          "mean": {
+            "steps": 160,
+            "hidden_steps": 0,
+            "invalid_actions": 0,
+            "done": 1,
+            "angular_error": 0.0,
+            "distance_error": 0.0,
+            "goal_error": 1.4268585380507601,
+            "settle_seconds": 11.890624999999995,
+            "correct_choice_rate": 0.0,
+            "damage_per_second": 0.0,
+            "in_range_rate": 0.12978515625
+          }
+        }
+      },
+      "pursuit": {
+        "reference": {
+          "episodes": 256,
+          "mean": {
+            "steps": 160,
+            "hidden_steps": 72,
+            "invalid_actions": 0,
+            "done": 1,
+            "angular_error": 0.0,
+            "distance_error": 0.0,
+            "goal_error": 0.03505727918973931,
+            "settle_seconds": 0.6773437499999995,
+            "correct_choice_rate": 0.0,
+            "damage_per_second": 0.0,
+            "in_range_rate": 0.9639160156250003
+          }
+        },
+        "random": {
+          "episodes": 256,
+          "mean": {
+            "steps": 160,
+            "hidden_steps": 115,
+            "invalid_actions": 0,
+            "done": 1,
+            "angular_error": 0.0,
+            "distance_error": 0.0,
+            "goal_error": 7.222212392184991,
+            "settle_seconds": 16.0,
+            "correct_choice_rate": 0.0,
+            "damage_per_second": 0.0,
+            "in_range_rate": 0.0
+          }
+        }
+      },
+      "focus_fire": {
+        "reference": {
+          "episodes": 256,
+          "mean": {
+            "steps": 160,
+            "hidden_steps": 0,
+            "invalid_actions": 0,
+            "done": 1,
+            "angular_error": 0.0,
+            "distance_error": 0.0,
+            "goal_error": 0.0,
+            "settle_seconds": 16.0,
+            "correct_choice_rate": 0.0,
+            "damage_per_second": 0.9749999999999992,
+            "in_range_rate": 0.9750000000000006
+          }
+        },
+        "random": {
+          "episodes": 256,
+          "mean": {
+            "steps": 160,
+            "hidden_steps": 0,
+            "invalid_actions": 0,
+            "done": 1,
+            "angular_error": 0.0,
+            "distance_error": 0.0,
+            "goal_error": 0.0,
+            "settle_seconds": 16.0,
+            "correct_choice_rate": 0.0,
+            "damage_per_second": 0.03227539062499999,
+            "in_range_rate": 0.032275390624999976
+          }
+        }
+      }
+    }
+  },
+  "benchmark": {
+    "optimized": true,
+    "native": {
+      "perceive": {
+        "namespace": "dev",
+        "first_seed": 10000,
+        "episodes": 4096,
+        "seconds": 0.13635179100000006,
+        "episodes_per_second": 30039.94278300311,
+        "steps_per_second": 4806390.845280497
+      },
+      "move": {
+        "namespace": "dev",
+        "first_seed": 10000,
+        "episodes": 4096,
+        "seconds": 0.042301000000000144,
+        "episodes_per_second": 96829.86217819876,
+        "steps_per_second": 15492777.948511804
+      },
+      "remember": {
+        "namespace": "dev",
+        "first_seed": 10000,
+        "episodes": 4096,
+        "seconds": 0.02636108299999984,
+        "episodes_per_second": 155380.5661171062,
+        "steps_per_second": 24860890.578736994
+      },
+      "choose": {
+        "namespace": "dev",
+        "first_seed": 10000,
+        "episodes": 4096,
+        "seconds": 0.07869479100000021,
+        "episodes_per_second": 52049.18836368711,
+        "steps_per_second": 8327870.138189938
+      },
+      "chase": {
+        "namespace": "dev",
+        "first_seed": 10000,
+        "episodes": 4096,
+        "seconds": 0.16957283400000023,
+        "episodes_per_second": 24154.8124388839,
+        "steps_per_second": 3864769.9902214236
+      },
+      "pursuit": {
+        "namespace": "dev",
+        "first_seed": 10000,
+        "episodes": 4096,
+        "seconds": 0.06078437499999989,
+        "episodes_per_second": 67385.73852244113,
+        "steps_per_second": 10781718.16359058
+      },
+      "focus_fire": {
+        "namespace": "dev",
+        "first_seed": 10000,
+        "episodes": 4096,
+        "seconds": 0.0856137910000001,
+        "episodes_per_second": 47842.75935170299,
+        "steps_per_second": 7654841.496272477
+      }
+    },
+    "python_per_step": {
+      "perceive": {
+        "namespace": "dev",
+        "first_seed": 20000,
+        "episodes": 64,
+        "seconds": 0.032259832999999905,
+        "episodes_per_second": 1983.8912371307126
+      },
+      "move": {
+        "namespace": "dev",
+        "first_seed": 20000,
+        "episodes": 64,
+        "seconds": 0.03061395900000008,
+        "episodes_per_second": 2090.5496084318866
+      },
+      "remember": {
+        "namespace": "dev",
+        "first_seed": 20000,
+        "episodes": 64,
+        "seconds": 0.030462916999999923,
+        "episodes_per_second": 2100.915023994589
+      },
+      "choose": {
+        "namespace": "dev",
+        "first_seed": 20000,
+        "episodes": 64,
+        "seconds": 0.0313207499999999,
+        "episodes_per_second": 2043.3738017129288
+      },
+      "chase": {
+        "namespace": "dev",
+        "first_seed": 20000,
+        "episodes": 64,
+        "seconds": 0.03335366700000009,
+        "episodes_per_second": 1918.82949481986
+      },
+      "pursuit": {
+        "namespace": "dev",
+        "first_seed": 20000,
+        "episodes": 64,
+        "seconds": 0.031329958999999796,
+        "episodes_per_second": 2042.7731807756409
+      },
+      "focus_fire": {
+        "namespace": "dev",
+        "first_seed": 20000,
+        "episodes": 64,
+        "seconds": 0.031295167000000124,
+        "episodes_per_second": 2045.0442076247666
+      }
+    }
+  },
+  "pytest": {
+    "command": [
+      "/Users/new/RiderProjects/ai_RPG_test/.venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "--confcutdir",
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/world",
+      "-o",
+      "cache_dir=/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/world/.pytest_cache",
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/world/test_world.py"
+    ],
+    "returncode": 0,
+    "seconds": 0.5071699169999997,
+    "output": "...................................................................      [100%]\n67 passed in 0.31s\n"
+  },
+  "elapsed_seconds": 3.3128622080000003
+}

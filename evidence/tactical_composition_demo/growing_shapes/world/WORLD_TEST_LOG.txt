@@ -1,0 +1,47 @@
+{
+  "commands": [
+    [
+      "c++",
+      "-std=c++17",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "-fPIC",
+      "-dynamiclib",
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/world/world.cpp",
+      "-o",
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/world/_build/libgs_world.dylib"
+    ],
+    [
+      "c++",
+      "-std=c++17",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pedantic",
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/world/world.cpp",
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/world/native_contract.cpp",
+      "-o",
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/world/_build/native_contract"
+    ]
+  ],
+  "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+  "sanitized": false,
+  "source_sha256": {
+    "world.h": "58a090bd629c01faa591449aa96da729f9579e6d26fbabbdc9f45e91192bf99d",
+    "world.cpp": "0a2d69c69b525af2ffc26bf6a72354d6f3bfb05760d608dfa9087be1d3a6d38f",
+    "native_contract.cpp": "c8d09321cf7f9035671844064f9c25619a20242a24d3b24b27e1856c8c7319a3",
+    "build.py": "a8924810d02f4427d4e6c2108e848e0783664b57a82876e1fc5d71a6b997f5d6"
+  },
+  "binary_sha256": {
+    "libgs_world.dylib": "7fe620160211814353d5a28eed2f4c1f02b0a0116cc80c4ca66ddec26bc0cf08",
+    "native_contract": "0fa1b6dc996362ac3d9561407d8484d485415953a9ad1d91d9bc57c5a2bd92f6"
+  }
+}
+native world contract: PASS (7 tasks; no judging access)
+
+...................................................................      [100%]
+67 passed in 0.31s
