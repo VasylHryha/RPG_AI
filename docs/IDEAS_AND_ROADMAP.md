@@ -124,7 +124,7 @@ The test of "real" is that the AI wins against Astelia's scripted AI in a game r
 |---|---|---|---|
 | 1 | Finish 0g v1 development, review it, update the replays | Codex run | RUNNING |
 | 2 | A new 0g specification on a fresh root; the approved S6 runner adapted and re-reviewed; Codex review; owner approval; one recorded run | step 1, W4 | next |
-| 3 | C6 option B: profile and port (Codex), Claude's review | decision 0029 | RUNNING |
+| 3 | C6 option B: profile and port (Codex), Claude's review | decision 0029 | DONE: equivalence exact; runtime FAIL (worst world 953 s wall, 662 s CPU); 70% of the time was already-native compute. Next: parallel grids and forks inside a world (RUNNING), then a quiet-machine measurement |
 | 4 | C6 R007 registration (the owner approves), then one run | step 3 | waiting |
 | 5 | 0h design (thresholds fixed) and the tiny 2D task world, Codex review | W2 (**not** C6: the atoms need only a fast C4 medium) | waiting |
 | 6 | 0h bootstrap: atoms grow and are locked into the library | step 5 (parallel with steps 3-4) | |
