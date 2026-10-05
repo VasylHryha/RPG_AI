@@ -116,6 +116,20 @@ Checks:
 | **G5 no forgetting** | the atoms still pass their tasks after level 2 forms | |
 | **G6 the theory alone** | the stability arm meets G0, G0', G1, G2 and G5 without reward | if only the reward arm works, the result says usefulness had to be added |
 
+## 7b. Roadmap: bootstrap a library of atoms, then grow combinations (the owner's step-by-step request, 2026-10-05)
+
+| Step | What | In theory terms | Done when |
+|---|---|---|---|
+| 0. The background | C6 medium in typed C++ (revision R007) | B0 | equivalent to the Python model; much faster |
+| 1. Bootstrap atoms | A fresh medium is fed one simple task's input rhythms (perceive, move, remember, choose). Elements are born and die by section 3. The stable groups that do the task are the atoms | frequency → resonance → resonator (R0) | each atom passes its task score and the recovery test, and stays below a size cap |
+| 2. Lock and define | Each atom's inside is locked. Its **identity card** is recorded: input band, output band, collective rhythm, size, stability, task score. It goes into the **library** | a resonator publishes its interface (C5) | a copied atom passes the same checks in a fresh medium (reusable) |
+| 3. Seed a new background | Library atoms are copied into a new medium that has free space for growth | R0 transforms B0 into B1 | the atoms still pass after placement |
+| 4. Grow combinations | A harder task is fed. Atoms bond through the medium (band match plus stability, plus usefulness in the reward arm), and elements are born only where coverage is missing | B1 grows R1: self-recreation, new options, new geometry | the combined task is passed in fewer episodes than learning from scratch |
+| 5. Lock and repeat | Stable combinations are locked as level-2 shapes and added to the library. They seed the next medium for full game tasks | R1 → B2 → R2 (recursion) | each level is bigger and slower (the ledger, section 5) |
+| 6. Into the game | Level-2 or level-3 shapes control units on the Astelia bench (S2 plug) | the AI | it plays against the frozen scripted ladder |
+
+Only the tasks are chosen by the drafter. Atoms, bonds and growth are produced by the rules of section 3 and the bond conditions. Steps 1-2 are the bootstrap: after them, the library is relied on as given (reused, never retrained), and every later level is built on it.
+
 ## 8. Dependencies and order
 
 1. **C6 first:** its medium must exist and run fast (the C++ port, revision R007). 0h builds on that medium.
