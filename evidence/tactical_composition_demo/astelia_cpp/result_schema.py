@@ -20,8 +20,14 @@ def validate_summary(row, allow_error=True):
         if allow_error:
             return 'error'
         raise ValueError('fight did not complete: ' + row['error'])
-    if not isinstance(row, dict) or set(row) not in (SUMMARY_FIELDS, SUMMARY_FIELDS | S3_FIELDS) or not isinstance(row['mode'], str):
+    if not isinstance(row, dict) or set(row) not in (SUMMARY_FIELDS, SUMMARY_FIELDS | S3_FIELDS, SUMMARY_FIELDS | {'artilleryAlive'}, SUMMARY_FIELDS | S3_FIELDS | {'artilleryAlive'}) or not isinstance(row['mode'], str):
         raise ValueError('invalid combat summary schema')
+    if 'artilleryAlive' in row:
+        guns = row['artilleryAlive']
+        if not isinstance(guns, list) or len(guns) != 2 or any(not finite(x) or x < 0 or x != int(x) for x in guns):
+            raise ValueError('invalid artillery survivor counts')
+        if guns[0] > row['survivors'] or guns[1] > row['enemySurvivors']:
+            raise ValueError('artillery survivor counts exceed survivors')
     for key in SUMMARY_FIELDS - {'mode'}:
         if not finite(row[key]) or row[key] < 0:
             raise ValueError('invalid summary quantity: ' + key)

@@ -1,0 +1,15 @@
+REVIEW_READY
+
+Part 1, DESIGN_0G section 12 at 90d6f29. Implementer: Codex (GPT-6).
+
+`options.ai[side].skeleton` selects `v0` or `v1`; omitted defaults to v1. It is a discrete variant flag, outside the numeric parameter map. All knob names, bounds and dimensions remain 10/10/2. Both own answered/unanswered incoming channels use the original recurrence and Td=2 seconds. Counter differences consume the prior snapshot's legal-target nonemptiness, then the current snapshot status is retained. First observation baselines counters; departing ids lose memory; clones copy split channels and legal status.
+
+Own pressure for resonator/morale is kappa*(zInAnswered-beta*zOut-zInUnanswered). Their enemy target term is gamma*tanh(kappa*(zIn+zOut)). Other equations, enemy inferred pressure, push-pull and nearest remain unchanged. v0 takes the original arithmetic branch and output schema. Optional endCounts requests add artilleryAlive=[side0,side1] to summaries without changing ordinary summaries, decisions or world state; schema/cache validation admits these counts and rejects invalid values.
+
+Verification: 88 affected tests passed in 106.48 seconds (107.10 seconds including process startup). PART1_PARITY.json records byte identity for 152 S3 summaries (38 per arm) and all 12 amended replay summaries, normalized to each historical fixture's original serialization. The 76 v1 stateful engineering fights had zero controller failures; captured-snapshot refinement maxima were 0.0003582792002855273 (resonator) and 0.00006408423534642882 (morale), below 0.02. Contract tests cover changing reach between producing/consuming ticks, step and decay, first baseline, clone isolation, artillery minimum reach, outranged commitment increase and the enemy damage target preference, with v0 negative controls.
+
+The fresh development declaration is S4_V1_SEEDS.json, independent bases 510000000/511000000/512000000. It is disjoint from S3, original S4, amended S4 and visualization allocations; no judging-root contents were read or used. Harness/read-only reporting code was completed before verification. The source pin checks passed. Part 2 has not started; it is eligible only after this Part 1 commit. The prior STOP report stays unchanged until the final development report replaces it, as directed by the owner.
+
+No independent review or scientific acceptance is claimed. No SPEC_0G.json, frozen GeoMind file, old evidence receipt or milestone status was changed. Pre-existing untracked viz_0g/replays_0g.json is excluded.
+
+Delivery: the workspace sandbox denies .git writes (git add could not create index.lock). Both requested commits and development execution therefore use the isolated writable checkout /private/tmp/ai_RPG_test_s4_v1_20261005, branch codex/s4-v1-development, forked at 90d6f29. The repository hooks remain enabled. Evidence/report will be mirrored to the requested workspace paths; a Git bundle will deliver both commits without writing this checkout's read-only Git metadata. Part 2 starts only after the isolated Part 1 commit.

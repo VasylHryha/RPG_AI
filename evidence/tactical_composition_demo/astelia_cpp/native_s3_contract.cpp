@@ -44,6 +44,45 @@ void contracts(){
  auto o=fixture();Probe damage(7,0,Arm::Morale);damage.prepare(o);double z=0,q=std::exp(-o.dt/2);
  for(int tick=1;tick<=5;++tick){o.t+=o.dt;o.units[0].takenFromEnemy+=3;damage.prepare(o);z=q*z+(1-q)*3/o.dt/100;close(damage.memory().at(1).zIn,z);}
  for(int tick=0;tick<5;++tick){o.t+=o.dt;damage.prepare(o);z*=q;close(damage.memory().at(1).zIn,z);}
+ // v1 scripted attribution deliberately changes reach BETWEEN the producing and consuming snapshots.
+ for(auto arm:{Arm::Resonator,Arm::Morale}){
+  auto seq=fixture();seq.units={seq.units[0],seq.units[2]};seq.units[1].x=1100;
+  seq.units[0].takenFromEnemy=17; // first prepare baselines counters, no fabricated damage
+  Probe split(7,0,arm);split.prepare(seq);close(split.memory().at(1).zInAnswered,0);close(split.memory().at(1).zInUnanswered,0);
+  double answered=0,unanswered=0,outgoing=0;
+  for(int tick=1;tick<=6;++tick){bool priorLegal=split.memory().at(1).hadLegalTarget;
+   seq.units[1].x=tick%2?seq.units[0].x+100:1100;
+   double increment=tick<=4?3:0;seq.units[0].takenFromEnemy+=increment;seq.units[0].dealtToEnemy+=1;
+   split.prepare(seq);double input=(1-q)*increment/seq.dt/100;
+   answered=q*answered+(priorLegal?input:0);unanswered=q*unanswered+(priorLegal?0:input);outgoing=q*outgoing+(1-q)/seq.dt/100;
+   const auto& m=split.memory().at(1);close(m.zInAnswered,answered);close(m.zInUnanswered,unanswered);close(m.zIn,answered+unanswered);
+   close(split.model()[0].pressure,25*(answered-1.5*outgoing-unanswered));require(m.hadLegalTarget==bool(tick%2),"legality not retained at frozen snapshot");
+  }
+  auto branch=split.clone();auto* copy=dynamic_cast<S3Controller*>(branch.get());require(copy->memory().at(1).hadLegalTarget==split.memory().at(1).hadLegalTarget,"clone lost legality");
+  close(copy->memory().at(1).zInAnswered,answered);close(copy->memory().at(1).zInUnanswered,unanswered);
+  seq.units[0].takenFromEnemy+=7;seq.units[1].x=seq.units[0].x+100;branch->prepare(seq);
+  close(copy->memory().at(1).zInUnanswered,q*unanswered+(1-q)*7/seq.dt/100);close(split.memory().at(1).zInUnanswered,unanswered);
+  seq.units.erase(seq.units.begin());split.prepare(seq);require(!split.memory().count(1),"split memory not dropped at departure");
+  // Outranged under-fire commitment rises in v1; v0 remains the retreat negative control.
+  auto fire=fixture();fire.units={fire.units[0],fire.units[2]};fire.units[1].x=1100;
+  ControllerParams noCoupling{{"K",0},{"K_t",0}};
+  if(arm==Arm::Morale){noCoupling["lambda_melee"]=0;noCoupling["lambda_ranged"]=0;}
+  Probe v1(7,0,arm,noCoupling,"v1"),v0(7,0,arm,noCoupling,"v0");v1.prepare(fire);v0.prepare(fire);
+  double initial=arm==Arm::Resonator?1:0;v1.inject(1,initial);v0.inject(1,initial);
+  fire.units[0].takenFromEnemy=10;v1.prepare(fire);v0.prepare(fire);
+  double before=arm==Arm::Resonator?std::cos(initial):initial;
+  require(v1.diagnostic()[0].commitment>before&&v0.diagnostic()[0].commitment<before,"unanswered fire must raise commitment only in v1");
+  require(v1.decide(fire,1).target==0,"outranged synthetic unit acquired target");
+  // A legal enemy's outgoing damage raises its v1 target score; v0 penalizes it.
+  auto hit=fixture();hit.units={hit.units[0],hit.units[2],hit.units[3]};
+  Probe engage(7,0,arm,{{"K",0},{"K_t",0}},"v1"),old(7,0,arm,{{"K",0},{"K_t",0}},"v0");engage.prepare(hit);old.prepare(hit);
+  require(engage.decide(hit,1).target==3,"stable initial target tie");hit.units[2].dealtToEnemy=10;hit.units[0].takenFromEnemy=10;
+  engage.prepare(hit);old.prepare(hit);require(engage.decide(hit,1).target==4&&old.decide(hit,1).target==3,"enemy damage target preference and v0 negative control");
+ }
+ // Artillery legality uses centre-distance min/max range, retained for attribution.
+ auto gun=fixture();gun.units={gun.units[0],gun.units[2]};gun.units[0].role=ObservedRole::Artillery;gun.units[0].minRange=80;gun.units[1].x=gun.units[0].x+40;
+ Probe splitGun(7,0,Arm::Morale);splitGun.prepare(gun);require(!splitGun.memory().at(1).hadLegalTarget,"inside artillery min range must be unanswered");
+ gun.units[1].x=gun.units[0].x+120;gun.units[0].takenFromEnemy=3;splitGun.prepare(gun);close(splitGun.memory().at(1).zInUnanswered,(1-q)*3/gun.dt/100);
  // One enemy radial sign for all commitments, no ally term.
  for(double c:{-1.0,0.0,1.0})for(double ratio:{.5,1.0,2.0}){auto one=fixture();one.units={one.units[0],one.units[2]};double d=.75*one.units[0].range*(1+1.5*(1-c)/2);one.units[1].x=one.units[0].x+20+d*ratio;Probe p(7,0,Arm::Morale,{{"K",0},{"K_t",0},{"lambda_melee",0},{"lambda_ranged",0},{"kappa",0}});p.prepare(one);p.inject(1,c);p.prepare(one);auto action=p.decide(one,1);if(ratio==1)require(action.multiplier<1e-9,"rest point");else require((action.x-one.units[0].x)*(ratio-1)>0,"enemy sign");}
  // Empty group alignment is zero; target pressure selects the beaten enemy, not fallback phase 0.
