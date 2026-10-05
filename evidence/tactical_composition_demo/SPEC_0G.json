@@ -1,153 +1,325 @@
 {
  "experiment": "0g",
- "status": "DRAFT pending owner approval of delta and n, and a Codex review; no judging fight may run before both",
+ "revision": 2,
+ "status": "DRAFT. Not executable until: (1) a Codex review of THIS revision returns APPROVE or APPROVE_WITH_NOTES; (2) the owner approves delta and n; (3) the owner authorizes S6 naming this file's sha256. The runner checks all three records (gates.authorization_file).",
+ "authority_chain": [
+  "DESIGN_0G.md revision 3 (sections 1-4, 6, 7, 10, 11)",
+  "astelia_cpp/S4_AMENDED_PROTOCOL.md (CMA-ES optimizer supersedes design section 5's racing rule)",
+  "astelia_cpp/s4_checks/AMENDED_GATE_OWNER_DECISION.json (A/B novice gates supersede design section 10's full-budget gate)",
+  "docs/reviews/tactical_0g_spec_review_codex.md (revision-1 findings, fixed here; self-audit in SPECIFICATION_0G.md)"
+ ],
  "design": {
   "file": "DESIGN_0G.md",
-  "revision": 3,
   "sha256": "fc6494b2bf3e2e8127a7f60a1e2a5b607dd910eeb52a65ccb4ca26c9ff6c262b"
  },
  "engine": {
+  "binary": "astelia_cpp/build/astelia_native",
   "binary_sha256": "a1a2d5288481a66f75ec2d151c58ba3b5378121b23bc59396a268815b552c74a",
   "build_manifest_sha256": "d3c4d8f9bc35a6e3c6eeab180ba0f5a81b09f4d12f693b6991ee48bbdaecb1fd",
-  "rule": "the runner refuses any other binary; a rebuild with a different hash needs a new specification"
+  "rule": "the runner refuses any other binary; requests are built from request_template below, not from s3_runner.py"
  },
- "fixed_world": "DESIGN_0G.md section 1 and astelia_cpp/s3_runner.py fixed fields (rules game, mirror, 150 s, dt 1/30, 10/30/10 army, perception false, sandboxAbilities false, controlled skills game defaults + Auto)",
- "knobs": {
-  "P1": {
-   "source": "S4 amended B_best (tuned on full-army head-to-head novice+regular)",
-   "resonator": {
-    "K": 0.4671114257592718,
-    "K_t": 2.1611439512911677,
-    "kappa": 47.83444686183811,
-    "beta": 0.09147746828762744,
-    "G": 4.9858180929832425,
-    "w": 1.398866114311581,
-    "f": 0.6237532179788647,
-    "gamma": 1.4553664802457205,
-    "omega_melee": 0.756051718410367,
-    "omega_ranged": 1.889427416086531
+ "request_template": {
+  "comment": "one native request per fight, JSON line to the binary; <...> are filled per fight; controlled side is always 0 (ai[0]); every other field is literal",
+  "trace": false,
+  "debug": false,
+  "mode": "alone",
+  "s3": true,
+  "diagnostics": "<diagnostics: false except the declared diagnostic subset>",
+  "opponent": "<'alone' for head-to-head levels; the doctrine name for pool fights>",
+  "options": {
+   "rules": "game",
+   "scenario": "mirror",
+   "sandboxAbilities": false,
+   "perception": false,
+   "duration": 150,
+   "dt": 0.03333333333333333,
+   "army": {
+    "melee": 10,
+    "ranged": 30,
+    "artillery": 10
    },
-   "morale": {
-    "K": 0.04174535687314922,
-    "K_t": 4.28162143527474,
-    "kappa": 49.790737768672095,
-    "beta": 1.9079685384928762,
-    "G": 4.995787850221623,
-    "w": 0.5454547841658395,
-    "f": 1.0415146458891198,
-    "gamma": 1.6372437230401136,
-    "lambda_melee": 1.3251181549560693,
-    "lambda_ranged": 0.002128858403241805
+   "seed": "<seed>",
+   "swapSides": "<orientation: false|true>",
+   "ai": [
+    "<controller arm: {controller, params}>",
+    "<opponent profile>"
+   ]
+  }
+ },
+ "opponents": {
+  "head": {
+   "novice": {
+    "level": "novice"
    },
-   "pushpull": {
-    "G": 4.945638395457931,
-    "f": 1.12999851675065
+   "regular": {
+    "level": "regular"
    }
   },
-  "P2_P3": {
-   "source": "S4 amended C_best (tuned on the 19-doctrine pool)",
+  "pool": {
+   "doctrines_in_order": [
+    "line",
+    "wide line",
+    "wedge",
+    "box",
+    "column",
+    "loose",
+    "screen",
+    "crescent",
+    "ring",
+    "wedge hold",
+    "line anvil",
+    "wedge flank",
+    "loose free",
+    "swarm",
+    "loose skirmish",
+    "loose berserk",
+    "storm",
+    "wolfpack",
+    "alone"
+   ],
+   "profile_for_every_doctrine": {
+    "skills": {
+     "artyFire": "plan",
+     "lockedDodge": true,
+     "dodgeShells": "smart",
+     "castDodge": true,
+     "weaponsFree": true,
+     "saveWounded": 0.3,
+     "artyBattery": true,
+     "artyRollout": null
+    },
+    "lookahead": null
+   },
+   "weights": "equal (1/19 each)"
+  }
+ },
+ "arms": {
+  "head_panel_knobs_from": "S4 amended B_best.json sha256 02ada71ef5f16c5de6ecd390464ecf75589d405b552f16b4ff5a37d202f2a3ea",
+  "pool_panel_knobs_from": "S4 amended C_best.json sha256 cef27aa02f57dc3d8e2d6f9176b44e02e14a40a5fcf755a3cd74fab40f6e0325",
+  "head": {
    "resonator": {
-    "K": 0.1146005424260256,
-    "K_t": 2.8613217928671775,
-    "kappa": 49.79913917026518,
-    "beta": 2.115631402449082,
-    "G": 3.0419934314391694,
-    "w": 1.7458214382679222,
-    "f": 1.1408653514265181,
-    "gamma": 1.9840186643919593,
-    "omega_melee": -1.9266519071026342,
-    "omega_ranged": 1.36788853807457
+    "controller": "resonator",
+    "params": {
+     "K": 0.4671114257592718,
+     "K_t": 2.1611439512911677,
+     "kappa": 47.83444686183811,
+     "beta": 0.09147746828762744,
+     "G": 4.9858180929832425,
+     "w": 1.398866114311581,
+     "f": 0.6237532179788647,
+     "gamma": 1.4553664802457205,
+     "omega_melee": 0.756051718410367,
+     "omega_ranged": 1.889427416086531
+    }
    },
    "morale": {
-    "K": 0.2671314155627666,
-    "K_t": 1.6874615414840446,
-    "kappa": 37.158869433946016,
-    "beta": 0.3993925506787569,
-    "G": 4.238874014446685,
-    "w": 2.523930908198116,
-    "f": 1.1397357952504337,
-    "gamma": 1.7368346833501231,
-    "lambda_melee": 0.2540878122622323,
-    "lambda_ranged": 0.04515816274507218
+    "controller": "morale",
+    "params": {
+     "K": 0.04174535687314922,
+     "K_t": 4.28162143527474,
+     "kappa": 49.790737768672095,
+     "beta": 1.9079685384928762,
+     "G": 4.995787850221623,
+     "w": 0.5454547841658395,
+     "f": 1.0415146458891198,
+     "gamma": 1.6372437230401136,
+     "lambda_melee": 1.3251181549560693,
+     "lambda_ranged": 0.002128858403241805
+    }
    },
    "pushpull": {
-    "G": 4.993916367097466,
-    "f": 1.1381410268510632
+    "controller": "pushpull",
+    "params": {
+     "G": 4.945638395457931,
+     "f": 1.12999851675065
+    }
+   },
+   "nearest": {
+    "controller": "nearest",
+    "params": {}
+   }
+  },
+  "pool": {
+   "resonator": {
+    "controller": "resonator",
+    "params": {
+     "K": 0.1146005424260256,
+     "K_t": 2.8613217928671775,
+     "kappa": 49.79913917026518,
+     "beta": 2.115631402449082,
+     "G": 3.0419934314391694,
+     "w": 1.7458214382679222,
+     "f": 1.1408653514265181,
+     "gamma": 1.9840186643919593,
+     "omega_melee": -1.9266519071026342,
+     "omega_ranged": 1.36788853807457
+    }
+   },
+   "morale": {
+    "controller": "morale",
+    "params": {
+     "K": 0.2671314155627666,
+     "K_t": 1.6874615414840446,
+     "kappa": 37.158869433946016,
+     "beta": 0.3993925506787569,
+     "G": 4.238874014446685,
+     "w": 2.523930908198116,
+     "f": 1.1397357952504337,
+     "gamma": 1.7368346833501231,
+     "lambda_melee": 0.2540878122622323,
+     "lambda_ranged": 0.04515816274507218
+    }
+   },
+   "pushpull": {
+    "controller": "pushpull",
+    "params": {
+     "G": 4.993916367097466,
+     "f": 1.1381410268510632
+    }
+   },
+   "nearest": {
+    "controller": "nearest",
+    "params": {}
    }
   }
  },
- "entropy": {
-  "judging_root_hex": "d567c1fd75c26c5e66a882516e3aae95",
-  "derivation": "seed(endpoint, index) = int.from_bytes(sha256(root || endpoint || index as 8-byte big-endian)[:4], 'big'); orientation pairs share the seed; P2/P3 block b uses one seed for all 19 doctrines and all arms",
-  "note": "drawn at drafting; never used for any fight before the recorded run"
+ "score": {
+  "S": "summary.survivors - summary.enemySurvivors (side 0 = our controlled side), for every completed fight including ordinary game-duration timeouts",
+  "timeout": "a completed fight with summary.t >= 150 - dt/2 and both survivor counts > 0; reported descriptively, scored by S like any fight",
+  "D": "summary.crossTeamDealt[0] - summary.crossTeamTaken[0] (fight-long totals, dead units included); friendly fire reported separately from summary.friendlyDealt[0], friendlyTaken[0]; descriptive only, never a tie-breaker"
+ },
+ "seeds": {
+  "judging_root_hex": "b3a74c9dfe4c6fd9e8d53863b590dc37",
+  "derivation": "seed(ns, i) = int.from_bytes(sha256(bytes.fromhex(root) + ns.encode('ascii') + i.to_bytes(8,'big')).digest()[:4], 'big'); i is zero-based",
+  "namespaces": {
+   "P1_novice": "i = 0..99 (100 clusters)",
+   "P1_regular": "i = 0..99 (100 clusters)",
+   "POOL": "i = 0..31 (32 seed blocks), one panel shared by P2 and P3 and by every arm and doctrine"
+  },
+  "preflight": "before any fight: derive all 232 seeds; if any duplicate within or across namespaces, or any overlap with a development seed (astelia_cpp/S4_SEED_LEDGER.json, astelia_cpp/s4_amended_development/s4_seeds.json, 2026100500-2026100529, 2026100700-2026100729, 101, 102, 301-303, 701-704, 811-813), stop without fighting; the drafter draws a new root and the specification is re-reviewed",
+  "provenance": "revision 1's root was retired unused; this root was drawn with revision 2, after the knob sources were fixed by Claude's S4 amended review (commit e12f259)",
+  "fresh_root_rule": "if this specification changes after any judging fight has started, the changed specification needs a new root; a started panel is never retried in another directory"
+ },
+ "panels": {
+  "HEAD": {
+   "levels": [
+    "novice",
+    "regular"
+   ],
+   "namespace_per_level": {
+    "novice": "P1_novice",
+    "regular": "P1_regular"
+   },
+   "orientations": [
+    false,
+    true
+   ],
+   "arms": [
+    "resonator",
+    "morale",
+    "pushpull",
+    "nearest"
+   ],
+   "cluster": "(level, i): the mean S of its two orientations; arms joined by (level, i, orientation)"
+  },
+  "POOL": {
+   "namespace": "POOL",
+   "doctrines": "opponents.pool.doctrines_in_order",
+   "orientations": [
+    false,
+    true
+   ],
+   "arms": [
+    "resonator",
+    "morale",
+    "pushpull",
+    "nearest"
+   ],
+   "block": "i: one seed for all 19 doctrines x 2 orientations; arms joined by (doctrine, i, orientation); block value = mean over its 38 paired differences"
+  }
+ },
+ "statistics": {
+  "bound": "one-sided t: lower = mean - t_inv(1 - a, n - 1) * sd / sqrt(n); upper = mean + t_inv(1 - a, n - 1) * sd / sqrt(n); sd is the sample SD with denominator n - 1",
+  "zero_variance": "if sd = 0 the bounds equal the mean",
+  "comparisons": "strict (>, <)",
+  "assumption": "independent clusters/blocks; t calibration is approximate for discrete survivor scores, declared as a limit, not changed after results"
+ },
+ "alpha": {
+  "familywise": "1/100",
+  "support_per_test": "1/400",
+  "refutation_per_endpoint": "1/1200",
+  "refutation_per_P1_level": "1/2400",
+  "logic": "P1 support is an intersection-union of two level tests, each at 1/400; P1 refutation is a union of two level tests at 1/2400 each; P2 and P3 each 1/400 support + 1/1200 refutation; total 3/400 + 3/1200 = 1/100"
  },
  "endpoints": {
   "P1": {
-   "claim": "the resonator (P1 knobs) beats the scripted level head-to-head, for BOTH novice and regular",
-   "panel": {
-    "setting": "s4_full_head",
-    "levels": [
-     "novice",
-     "regular"
-    ],
-    "clusters_per_level": 100,
-    "cluster": "one seed, both orientations (swapSides false/true), controlledSide 0, mean S of the two"
-   },
-   "statistic": "mean cluster S per level; one-sided t bounds with df n-1",
+   "claim": "the resonator (head knobs) beats the scripted level head-to-head for BOTH novice and regular",
+   "panel": "HEAD",
+   "arm": "resonator",
+   "value": "cluster S",
    "verdict": {
-    "SUPPORTED": "lower bound at 1-0.0025 > 0 for BOTH levels (intersection-union, no further split)",
-    "REFUTED": "for EITHER level, upper bound at 1-0.000417 < 0 (two refutation subtests share 0.000833)",
+    "SUPPORTED": "for both levels: lower bound at a = 1/400 > 0",
+    "REFUTED": "for either level: upper bound at a = 1/2400 < 0",
     "INDETERMINATE": "otherwise"
    },
-   "subtests_reported": "novice and regular reported separately as diagnostics; never relabelled as the endpoint"
+   "requires": "all 400 resonator HEAD fights completed without controller or technical failure"
   },
   "P2": {
-   "claim": "the resonator beats plain morale by more than delta on the doctrine pool",
-   "panel": {
-    "setting": "s4_p23 (19 doctrines; elite skills with artyRollout null and lookahead null)",
-    "seed_blocks": 32,
-    "block": "one seed for all 19 doctrines x 2 orientations; arms paired by (doctrine, seed, orientation)"
-   },
-   "statistic": "per block the mean of S_resonator - S_morale over its 38 fights; one-sided t bounds over the 32 blocks, df 31",
+   "claim": "the resonator beats plain morale by more than delta on the pool",
+   "panel": "POOL",
+   "value": "block mean of S_resonator - S_morale",
    "verdict": {
-    "SUPPORTED": "lower bound at 1-0.0025 > delta",
-    "REFUTED": "upper bound at 1-0.000833 < 0",
+    "SUPPORTED": "lower bound at a = 1/400 > delta",
+    "REFUTED": "upper bound at a = 1/1200 < 0",
     "INDETERMINATE": "otherwise"
-   }
+   },
+   "requires": "all 1,216 resonator and 1,216 morale POOL fights completed"
   },
   "P3": {
-   "claim": "the resonator beats the specified push-pull baseline by more than delta on the doctrine pool",
-   "panel": "as P2",
-   "statistic": "as P2 with S_resonator - S_pushpull",
+   "claim": "the resonator beats the specified push-pull baseline by more than delta on the pool",
+   "panel": "POOL",
+   "value": "block mean of S_resonator - S_pushpull",
    "verdict": {
-    "SUPPORTED": "lower bound at 1-0.0025 > delta",
-    "REFUTED": "upper bound at 1-0.000833 < 0",
+    "SUPPORTED": "lower bound at a = 1/400 > delta",
+    "REFUTED": "upper bound at a = 1/1200 < 0",
     "INDETERMINATE": "otherwise"
-   }
+   },
+   "requires": "all 1,216 resonator and 1,216 pushpull POOL fights completed"
   }
- },
- "alpha": {
-  "familywise": 0.01,
-  "per_endpoint": "0.01/3 = 0.003333, split 0.0025 support + 0.000833 refutation"
  },
  "delta_survivors": {
   "value": 4.0,
-  "source": "S4 amended rule max(1, 0.25 x max pooled validation paired SD), rounded up to 0.5",
+  "source": "S4 amended rule max(1, 0.25 x max pooled validation paired SD), rounded up to 0.5 (POWER_PLANNING.json)",
   "owner_approved": false
  },
- "n_rationale": "power-rule floors from S4 (P1 49 per level, P2/P3 16 per doctrine) raised to 100 per level and 32 blocks before any judging fight, because C++ fights are cheap; owner to approve",
- "failures": "a controller failure in any fight of an endpoint makes that endpoint INDETERMINATE with reason controller_failure; no fight is dropped or replaced",
- "descriptive_only": [
-  "morale, push-pull and nearest on the P1 panel",
-  "nearest on the P2/P3 panel",
-  "damage difference D for every fight",
-  "group diagnostics for the resonator on 3 fixed P2/P3 blocks",
-  "timeouts per arm"
- ],
+ "n": {
+  "P1": "100 clusters per level, fixed conservative choice; B-knob planning (B validation, bootstrap 95th-percentile SD 4.73 novice / 0.77 regular, one-sided 1/400, power 0.90, effect 4.0) gives 24 and 1, below the declared floor 32",
+  "P2_P3": "32 seed blocks, above the S4 floor 16",
+  "owner_approved": false
+ },
+ "failures": {
+  "controller_failure": "summary.controllerStatus == 'controller_failure' or summary.controllerFailures[0] > 0",
+  "technical_failure": "native error line, nonzero exit, timeout of the host, malformed or non-finite summary, duplicate or missing scheduled key",
+  "rule": "every attempted fight is recorded; nothing is dropped, replaced, zero-filled or averaged over a partial block; an endpoint whose required fights are not all completed is INDETERMINATE with the reason; failures of arms not required by an endpoint never affect it (descriptive arms veto nothing); every endpoint is evaluated independently, so a P1 failure never stops the POOL panel"
+ },
+ "execution": {
+  "order": "preflight (identities, authorization, seeds), then create the output directory atomically (os.mkdir; refuse if it exists) and write identity.json (spec sha256, root, binary and manifest sha256, authorization record) before the first fight; then HEAD then POOL; every fight line appended as it completes",
+  "output_dir": "astelia_cpp/s6_run",
+  "latch": "the directory is never deleted or reused; an interrupted run is reported as such with partial evidence, never resumed under another directory",
+  "outputs": "results.json with endpoint_coverage for P1, P2, P3 (evaluated with value, bounds and verdict, or not_run with reason), per-level P1 subtests, descriptive tables; fights.jsonl with every request and summary"
+ },
+ "descriptive_only": {
+  "arms": "morale, pushpull, nearest on HEAD; nearest on POOL (all scheduled above; 6,464 fights in total)",
+  "diagnostics": "resonator, POOL blocks i = 0, 1, 2, all 19 doctrines, orientation false only: the same scheduled fights requested with diagnostics true (design section 7 formulas); 57 fights, no extra fights",
+  "never_used_for": "endpoint verdicts, tie-breaking, stopping, or selection"
+ },
  "development_expectation_disclosed": {
   "P1": "resonator B knobs: novice +5.92, regular -8.69 in S4 validation, so P1 is expected to fail on regular",
   "P2": "resonator - morale -1.09 [-1.69, -0.50]: not expected to be supported",
   "P3": "resonator - push-pull +7.32 [6.91, 7.73]: expected near or above delta"
  },
- "outputs": "astelia_cpp/s6_run/: results.json with endpoint_coverage (every endpoint evaluated or not_run with reason), raw fights, verdicts computed by code; the output directory must not exist (one-shot latch)"
+ "gates": {
+  "codex_review": "docs/reviews/tactical_0g_spec_review_codex_r2.md, first line APPROVE or APPROVE_WITH_NOTES, naming this file's sha256",
+  "authorization_file": "astelia_cpp/S6_AUTHORIZATION.json: {spec_sha256, delta_approved, n_approved, s6_authorized, owner_words, date}, written only from the owner's explicit words"
+ }
 }
