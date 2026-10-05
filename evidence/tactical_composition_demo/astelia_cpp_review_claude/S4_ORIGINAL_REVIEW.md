@@ -38,8 +38,10 @@ Date: 2026-10-05. The amended CMA-ES run (`S4_AMENDED_PROTOCOL.md`) is reviewed 
 **Readings** (development only):
 1. **The damage-driven, neighbour-shared state works against the doctrine pool.** Both the resonator and morale beat plain push-pull forces by a wide margin (+7.5) and the floor by about 21.
 2. **The circular beat adds nothing measurable over a plain number** in this run (P2 about 0).
-3. **Against the scripted levels head-to-head with full armies, every arm loses.** In melee only, every arm wins slightly. This fits the declared projectile asymmetry (built-in brains see and
-   dodge shots and shells, while our controllers cannot), but this run does not establish it as the cause.
+3. **Against the scripted levels head-to-head with full armies, every arm loses.** In melee only, every arm wins slightly.
+   **Correction (same day):** I first attributed this to the projectile asymmetry. But the novice level has `dodgeShots: false` and `dodgeShells: false` (`formation_sim.js` `LEVELS.novice`), so it does not
+   dodge projectiles by decision, and the asymmetry cannot explain losses to novice. Regular dodges shells (`dodgeShells: true`) and leads shots (`lead: raw`). The cause of the full-army losses is
+   open. Candidates: artillery and ranged positioning, and target choice.
 4. **Knobs do not transfer between panels.** Morale tuned on the pool (stage C) falls to −16.8 against novice, against −5.3 with its stage B knobs.
 
 ## Notes
