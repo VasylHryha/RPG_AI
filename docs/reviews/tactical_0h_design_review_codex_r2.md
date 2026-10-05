@@ -1,0 +1,121 @@
+CHANGES_REQUIRED
+Reviewer family: Codex
+Reviewed DESIGN_0H.md SHA256: d3bbfe5e4c66c5a80e4e3333752c76cc0956bbb4473e1924d4fe0a3c87d2ee05
+
+Reviewed document: `evidence/tactical_composition_demo/DESIGN_0H.md`, revision 2, committed in `fc55cd2e8b47d140ff517fb6297bf27a70439b1d`.
+Checkout at review start: `40c0cb5aae30af1be2052132c2fe170ce675effd`. The working document matched the reviewed commit byte-for-byte at the start.
+Concurrent-change note: by final inspection, HEAD was `d0264cb5e516590d13536d88130e17fac72722d0`; another agent had amended the design's sensor-slot count and primary task-score definitions. The working design then had SHA256 `ffd4a93ff90a63351969ec88e44b17c69aa8109faf81a0022ef000a9d0ebedeb`. This report remains pinned to the requested `fc55cd2` bytes and their original line numbers; it does not adjudicate the later amendments or newly delivered engine reports.
+Date: 2026-10-05. Scope: bounded design/source re-review, within the requested approximately 20-minute cap.
+
+Revision 2 makes substantial repairs: bootstrap-only scope, structural admission in the task-blind arm, offset-sensitive choice, a single carrier, explicit drive and adaptation equations, fixed constants instead of search, and evolving positions/phases instead of rigid locking. Bonds, combinations, duplicates, library trends and source-background claims are explicitly deferred. Those deferrals are valid. The remaining problem is that several active bootstrap procedures still require scientific or algorithmic choices by the implementer; the self-audit overstates their completeness.
+
+## Disposition of all 14 revision-1 findings
+
+“Resolved” below means resolved in the document's stated scope, not verified in an implementation or experiment. “Partial” means a material part of the original issue remains in the active bootstrap.
+
+| Prior finding | Disposition | Revision-2 evidence and remaining issue |
+|---|---|---|
+| 1. Task selection in stability arm | Resolved at the stated policy boundary | §§1/6/9 prohibit score-based selection in the task-blind library and remove configuration search. Reward admission is honestly labelled supervised. Preserve this boundary in the exact lifecycle; do not infer that the arms differ only in online reward (R2-1). |
+| 2. PLV used as content | Partial | §3 choice now uses angular error, fixing the static-direction PLV tie. §5 adds an offset cut, but its window statistic is undefined (R2-4). |
+| 3. Incomplete forward map/amplitude | Partial | One band, explicit drive, held observations, abstention and coherence labels are repaired. Episode/reset semantics, task action bindings and copied sensor/readout placement remain incomplete (R2-2, R2-6). |
+| 4. Mixed clocks/units/timescales | Partial | Period and world/medium conversion are corrected; separation is measured rather than promised. Reward range, detector frequency scaling and geometric relaxation measurement still need exact definitions (R2-3, R2-5). |
+| 5. Discretionary learning/arm differences | Partial | Initializers, Euler adaptation, clipping and reward baseline are given. Frozen-element exemptions, carry/reset rules and the extra admission difference are unresolved (R2-1, R2-2). |
+| 6. Non-executable birth/death | Partial | B2/B3/D2 are validly deferred; B1/D1/D3 now have an ordered table and post-birth budget checks. History, timer, inactive-site and placement cases remain (R2-4). |
+| 7. Rigid law/weaker detector | Partial | Rigidity is removed and all five criteria are named. The driven, variable-population adapter and recovery continuations are not specified; carrier-period sampling introduces an aliasing defect (R2-3). |
+| 8. Non-reproducible atom identity | Partial | Template/interface/evaluator separation and hash identity replace fuzzy merging. Copy/reset frame, phase reference, serialization and extraction schedule remain unspecified (R2-6). |
+| 9. Correlational bonds/confounded controls | Deferred with narrowed claim | The opening scope and §§11/13 exclude bonds and combinations; self-audit requires causal transfer controls in the later design. No bond/transfer claim is made here. |
+| 10. Overfittable configuration search | Resolved as a choice of procedure | §9 fixes constants, removes search, and requires a new revision/fresh development seeds for changed constants. Attainability is the honest claim. Completing the remaining protocol is still necessary before execution. |
+| 11. Circular read-outs/missing failure rules | Partial | G0 has a functional control and G0′/G1 have numerical cuts. Budget settling, control feasibility, G5 competence and empty/seed aggregation remain defective (R2-7, R2-8). G2-G4/G6/G7/G8 are validly deferred. |
+| 12. Undefined size/budget matching | Partial | §10 declares coefficient versus state counts and a retrospective final-size match; gradient-medium training is validly deferred. Neural architecture/training, library storage and feedback/exposure accounting remain unspecified (R2-9). |
+| 13. Excess claims/stage boundary | Resolved for bootstrap scope | The opening scope and §1 separate accepted ingredients, additions and hypotheses, disclaim “theory alone,” retain the C6 dependency for combinations, and mark H-BG/H-PS/H-RBG NOT_TESTED. Historical C4 acceptance does not qualify the new adapter (R2-3). |
+| 14. Outcome-informed restarts/stops | Partial | §9 preserves old evidence and uses fresh seeds after constant changes; missing/NOT_READY reports stop execution. Nonconstant protocol changes, empty task sets and invalid measurements lack dispositions; the last stop row is not yes/no (R2-10). |
+
+## Numbered findings and fixes
+
+1. **R2-1 — High: the arm comparison and freezing lifecycle contradict the update contract.**
+
+   Evidence: design lines 83-98, 125 and 138-143. Line 94 says the reward arm adds only the episodic gain update and “everything else is identical.” Line 143 additionally selects library admission by task competence. That is a second intervention even though it is now disclosed as supervised outer selection. A difference in admitted competence cannot isolate the online reward term when one arm filters failures and the other retains them.
+
+   Both continuous adaptation and episodic reward updates are written for all elements, while line 125 freezes atom coefficients. There is no transition specifying when freezing occurs relative to recovery, extraction, competence assessment and admission, or what happens after reward admission fails. Freezing the source group versus merely freezing its stored template also leads to different subsequent training trajectories. Repeated qualification of the same live group is not scheduled or bounded.
+
+   **Fix:** choose one comparison. Either use identical structural admission in both arms and measure the reward-update effect, or retain supervised admission and describe the result as a joint intervention with separate pre-admission structural/competence counts. Specify qualification → snapshot → freeze/admit transitions, failed-admission behavior, repeat-candidate handling, and explicit exemptions from both adaptation updates for frozen live elements. Keep the task-blind transition independent of every evaluator score. If the library is only a snapshot and does not alter training dynamics, say so explicitly.
+
+2. **R2-2 — Blocking: episode boundaries leave the learned dynamical process undefined.**
+
+   Evidence: lines 28, 48, 77-98, 112 and 166-178. The carrier resets and sensor assignments change each episode, but the document does not say what happens to positions, phases, learned coefficients, frozen flags, PLV/velocity histories, growth timers and the growth clock. Only the reward baseline has an explicit across-episode rule.
+
+   Resetting all histories prevents a 60-second detector window in episodes shorter than 60 seconds. Carrying histories through a reset instead mixes discontinuous carrier references and different items assigned to a sensor. Carrying phases while resetting only the clock changes the decoded direction by the previous episode's carrier phase. These are different algorithms, not implementation details. Episode duration and the pending world report must be reconciled with the 10/20/40/60-second windows before an attainability run; this review makes no assumption about the concurrently built world's eventual duration.
+
+   **Fix:** give a reset/carry table for every state field and history, distinguish run time from episode carrier time, and specify phase rebasing if used. State whether structural windows may cross task/episode boundaries, how sensor histories track item reassignment, and when newborn/changed-population histories become eligible. Pin the episode duration and action timing to the READY world contract, or define a separate qualification continuation that can actually supply the required uninterrupted window. Do not leave these choices to the engine implementer.
+
+3. **R2-3 — Blocking: the driven C4 detector adapter is incomplete and samples at an aliasing interval.**
+
+   Evidence: lines 13, 31 and 127-134; `geomind/c4_detect.py:100-112,143-188`; `experiments/c4_manifest.json:46-60`; `geomind/c5_detect.py:22-31`.
+
+   The accepted detector consumes rectangular, fixed-population histories indexed by the same members at every frame. Its recovery calls the undriven fixed-rate simulator. It cannot directly implement birth/death histories, gain adaptation or world-driven recovery. “Drive on as in the episode” does not choose between identical recorded legal input replay and separate closed-loop worlds whose observations diverge after the kick. Plasticity, births/deaths, episode transitions and coefficient freezing during these futures are unspecified. The three Jaccards and pattern-error cut are repaired, but their inputs are not yet computable.
+
+   There is also a new temporal counterexample. With `P_D = 2`, sampling at `t = 2n` gives identical wrapped pair differences for rates `0.5ω_D` and `1.5ω_D`: their difference is `π rad/s`, hence `Δθ(2n) = 2πn`. Sampled circular standard deviation and half-window pattern change are zero although the pair drifts through a full relative cycle between frames. These rates are within the declared clipping interval. This demonstrates a false lock statistic, not a claim that the entire five-criterion detector necessarily passes this example.
+
+   Finally, “times scaled by P_D” does not state the frequency-tolerance conversion. The accepted C5 scaling multiplies time quantities by T and divides `freq_tol` by T. A geometric e-folding deviation/horizon is also not supplied by merely referring to the C4/C5 procedure.
+
+   **Fix:** specify an adapter using immutable element ids and a fixed eligible cohort/window, with explicit treatment of entrants, exits and missing frames. Define recovery duration, kicks, drive replay or closed-loop ownership, and the status of plasticity/growth in every paired future. Preserve live positions/phases. Use substep histories or a fixed finer sampling rule adequate for the declared relative phase dynamics, with the stroboscopic counterexample as a negative contract. Give the exact scaled threshold table, relaxation deviation estimators, horizons and censoring. Call this reuse of frozen criterion functions with a new driven adapter; its driven qualification is not already accepted C4 evidence. Autonomous persistence remains a separate diagnostic, as the revision correctly states.
+
+4. **R2-4 — High: B1/D1/D3 still lack exact history and event semantics.**
+
+   Evidence: lines 98 and 104-121. “Wrapped offset … both over W” could mean the circular mean offset, the maximum error, or an average absolute error. Those differ for an intermittent/opposite input. The PLV partner set changes with neighbours and sensor visibility, but missing partner history and minimum active-history exposure are not defined. Inactive sensors still occur in L(i)'s partner set: setting `k_s = 0` does not remove `ψ_s` from the lock formula. A phase-locked element can therefore avoid D1 by referencing a silent site's stale or placeholder direction unless that behavior is explicitly excluded or intended.
+
+   “Continuously” requires timer updates between the 20-second checks, whereas the only stated state table is checked every 20 seconds. Newborns have empty histories but no defined timer warm-up; B1's site timer does not have an explicit post-birth reset/re-evaluation. D3's pair count also needs to identify whether an undirected pair is the union or intersection of the directed k-nearest lists, and whether removals recompute those lists. The nudge rule lacks direction, bounded attempts and an exhausted-placement disposition. Immutable birth ids are promised later but not allocated here.
+
+   **Fix:** define sampled PLV and offset estimators, active-partner eligibility, missing-history disposition and per-substep timer update/reset rules. Specify the event-time order including post-birth coverage handling and newborn eligibility, stable id allocation, actual neighbour-pair counting with recomputation, and a deterministic bounded placement rule that rejects/logs an unsuccessful placement. Retain the useful simplification to B1/D1/D3; no strain or utility mechanism is needed to fix these cases.
+
+5. **R2-5 — High: normalized task score is not a bounded reward, and task screening is incomplete.**
+
+   Evidence: lines 40, 87-92 and 159-162. `n = (score − random)/(reference − random)` is not confined to [0,1]. Scores below random give negative n; scores above reference give n > 1. Thus the reward equation and reward ledger disagree. Neither clipping nor a distinct bounded reward is specified.
+
+   “Three standard errors” leaves the estimator and paired versus unpaired validation comparison open. Zero standard error with equal reference/random scores can satisfy a non-strict margin-of-zero interpretation while giving a zero normalization denominator. The score orientation, finite positive denominator and independent calibration panel require explicit predicates. Task exclusions must be fixed from world/reference/random validation before medium training, then shared by all arms and yardsticks; otherwise the task schedule itself can change between comparisons. This is a protocol completion, not evidence that the new task-blind learning equation secretly uses reward.
+
+   **Fix:** define a bounded reward r separately, for example an explicitly clipped normalized score, while preserving unclipped n for competence reporting. Specify score orientation, a strictly positive finite reference-minus-random denominator, validation seeds/counts, the standard-error estimator and the unusable/invalid distinction. Freeze the usable-task list and reference/random estimates before medium training. Keep reward-arm admission episodes in the selection ledger and assess any resulting library on separate untouched evaluator episodes.
+
+6. **R2-6 — High: hash identity does not yet define a reproducible copy or isolate atom competence.**
+
+   Evidence: lines 63-73, 138-155 and 200. A “fresh medium” could contain just the extracted atom or a new 24-element background; these test different things. The template lists sensor/readout bindings without a schema defining their coordinate frame or transformation. Relative element positions lose their relationship to the fixed ring/readout centre unless that relationship is stored. Arbitrary placement/orientation can change input access and readout membership. A group near a ring sensor can be structurally qualified yet lie entirely outside the central readout.
+
+   The phase alignment also needs a definite mean/reference. A circular mean can be undefined for a legitimate zero-resultant anti-phase group; an arithmetic unwrapped mean requires a fixed branch convention. Content hashing needs a deterministic serialization and an explicit decision about which bindings/configuration values are part of the content. The forward map still needs a per-task legal-action binding, including which candidate is reported for perceive and what remember returns after disappearance; the pending world report supplies task definitions, but does not choose controller bindings automatically.
+
+   **Fix:** define one bootstrap evaluator construction, preferably an isolated extracted group with explicitly bound input/readout geometry for an individual-atom claim. If a background is included, fix it and include a no-atom control. Specify copy/reset state, origin/orientation, transformed bindings, a phase-reference rule including zero-resultant groups, exact content fields/serialization and snapshot timing. Add a task-to-action table reconciled with the READY world API. Require score attribution to the copied group under this construction; report unusable readouts as failures/abstentions rather than dropping the group.
+
+7. **R2-7 — High: G0′ can certify settling forced by the cost budget.**
+
+   Evidence: lines 117-120, 197 and 211. G0′ excludes `N_max` saturation, but its explicit conditions are `N < N_max` and no birth rejected “for the cap.” B1 separately rejects for `C_max`. A population with `N = 60` and 40 counted neighbour pairs costs 64: it is below `N_max = 64`, has zero count slope, and cannot accept even an isolated birth. Unless “cap” explicitly includes the cost budget, G0′ can PASS while active uncovered demand is perpetually rejected. The row also drops the original task-attainment/need condition, so it can only establish count settling, not that demand has been satisfied.
+
+   **Fix:** explicitly disqualify settling caused by either population or cost limits, including protected-only over-budget states and every budget rejection reason. Define how slope is measured and at which checkpoints N/cost are sampled; report birth/death turnover and persistent uncovered-site time. Keep the claim as count settling if task solution is not required. If calling it demand settling, add a predeclared need/competence condition without allowing evaluator scores to change task-blind growth.
+
+8. **R2-8 — High: G0 and G5 do not yet have executable matched-control and success rules.**
+
+   Evidence: lines 192-200. For G0, randomized positions have no spatial support or placement/phase/initial-gain rules. Replaying intact birth counts/times does not guarantee the control can accept those births under its own neighbour costs, protections and population trajectory. A dropped or delayed control birth breaks the stated match. “Improve coverage and competence” lacks the per-seed estimands, evaluation time/tasks and empty-library treatment.
+
+   G5 has only a relative margin. Two copies with n = 0 can retain competence within 0.1 and count as successes despite neither being competent. Also, §6 already defines atom competence on a fresh copy, so G5 needs a distinct original-versus-second-copy comparison to avoid merely repeating that definition. G5 pools “80% of atoms” despite naming seed as the unit; seeds yielding many atoms can dominate. No atom, no usable task, or non-finite score has no disposition. G1c is a descriptive statistic, not an executable PASS/FAIL row, which should be labelled explicitly.
+
+   **Fix:** freeze the randomized control's spatial/temporal support, initialization, paired entropy, budget treatment and infeasible-match disposition; retain all failures and report actual resources. Define per-seed coverage and fixed held-out competence estimands before applying the 6/8 rule. For G5, require continued absolute `n ≥ 0.5` as well as the paired 0.1 non-inferiority cut, declare source/copy evaluation states and panels, aggregate within seed before across seeds, and define empty/missing/invalid cases. Alternatively narrow G5 to behavioral reproducibility and defer competence retention. Final inferential statistics may wait for registration; the development booleans cannot.
+
+9. **R2-9 — High: comparator training and accounting remain discretionary.**
+
+   Evidence: lines 174-188. Two learned coefficients per element is a clear declared count, but it is not a complete memory or cost count: templates retain positions, phases and bindings, and frozen historical templates may contain additional coefficient snapshots. Those state/storage scalars must be reported separately rather than treated as costless. It is unclear whether peak capacity includes stored templates and how live/template aliasing avoids double counting.
+
+   “Smallest hidden size” does not define a GRU/MLP parameter count without input/output dimensions, layers, biases and readout architecture. Adam alone does not fix loss, learning rate, unroll/state reset, update count or training feedback. Equal episode count cannot equate gradient labels, online reward, reward-arm admission evaluation and structural recovery work. Qualification frames contain task-derived driven observations even though they contain no task score; paired futures consume additional simulation/observation work that the exposure ledger does not enumerate. The retrospective final-size match is now honestly labelled, but “growth off” still needs to say whether death remains active.
+
+   **Fix:** give explicit coefficient, retained state, unique-template storage and instantiated-state counts plus recovery/selection/evaluation compute and exposure categories. Specify peak matching and the comparator architectures/training/feedback schedule; pin shared exogenous episode/task seeds while allowing closed-loop observations to differ. Define fixed-size population behavior. If these baselines are unnecessary for the active bootstrap read-outs, explicitly defer them and narrow the accounting claim rather than executing an improvised comparison. No total-efficiency claim is supported by the present table.
+
+10. **R2-10 — Medium: stops and revision rules cover constants but not the whole protocol.**
+
+    Evidence: lines 172 and 204-213. Changing task duration, reset semantics, extraction schedule, control placement, reward normalization or comparator loss after observing results can change the experiment without changing a listed constant. The current new-revision rule is limited to constants. Excluding every task leaves G1's “for each usable task” vacuous and section 9 without a task schedule. Invalid/non-finite normalization or an incomplete run is not a scientific FAIL. “After a stop, what next?” is not a yes/no row.
+
+    **Fix:** apply outcome-informed revision/fresh-development-seed rules to every protocol change, with reused evidence explicitly identified. Add yes/no dispositions for zero usable tasks, invalid measurements and incomplete execution; preserve their raw evidence rather than turning them into passes or ordinary biological/model failures. Replace the final row with a yes/no owner decision condition. Keep final/judging entropy separate and do not change milestone status from this design review.
+
+## Evidence and review boundary
+
+Read AGENTS.md, the revision-1 review, revision-2 design/proposal, decision 0028 item 17, the roadmap, R5, CURRENT.md, relevant alignment/source passages, and frozen C4/C5 detector/model/interface sources. The consulted `c4_detect.py`, `c4_model.py`, `c5_detect.py` and `c5_units.py` match the hashes in `evidence/c5_r003/results.json:259-266`; source 04 matches its CURRENT.md pin. This is not a new acceptance of the driven adapter or a full source audit.
+
+No project code, tests, development scripts, pilots or experiments were executed. Commands were limited to repository/file inspection, hashes, and review-file writing/whitespace inspection. Concurrent `growing_shapes/world` and `growing_shapes/medium` implementation was neither edited nor qualified; the referenced READY reports were not available when inspected. Unrelated concurrent work was preserved. Only `docs/reviews/tactical_0h_design_review_codex_r2.md` was written by this reviewer. No commit.
+
+The drafter should complete one bootstrap-only repair batch addressing these contracts and update the self-audit. The scope deferrals and fixed-value attainability choice can stand. The design remains CHANGES_REQUIRED; engine readiness and this re-review do not authorize development or a recorded run. The owner's separate go-ahead remains required after the design is review-ready.
