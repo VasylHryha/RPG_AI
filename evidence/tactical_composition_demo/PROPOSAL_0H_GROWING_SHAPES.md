@@ -60,7 +60,7 @@ Revision 1 (`6c6cbe0`) is replaced. The changes and their causes are in section 
 
 Within one check, deaths come first, then births. A newborn element is protected from death for T_protect.
 
-All thresholds are fixed in the design before development: L_on > L_off (a hysteresis gap, so that an element is not born and killed at the same level), S_split, T_nov, T_split, T_death, T_need, E_need, ε_U, K, c_e, c_c, C_max, T_protect, and a hard cap N_max. Development may only report them as attainable, not tune them per task.
+**How the thresholds are chosen (recheck 2026-10-05):** once, on the atom tasks' development data, by one declared procedure. They are then **frozen for every later level** (the same rule at every level, decision 0007), and never retuned per task or per level. The roughly 15 thresholds are a tuning risk: G0 and G1 must hold at the frozen values, or the report says so. All thresholds are fixed in the design before development: L_on > L_off (a hysteresis gap, so that an element is not born and killed at the same level), S_split, T_nov, T_split, T_death, T_need, E_need, ε_U, K, c_e, c_c, C_max, T_protect, and a hard cap N_max. Development may only report them as attainable, not tune them per task.
 
 ## 4. Two arms that test the theory against the addition
 
