@@ -264,3 +264,39 @@ The general host rejects passthrough unless started explicitly with `--test-cont
 | Does a further unresolved design conflict appear? | Report it without silently changing the contract | implementer |
 | Does an engineering check fail? | Complete the repair batch, then rerun only affected failed/invalidated checks | implementer |
 | Is S3 engineering ready? | Hand off committed code and evidence for Claude review | implementer |
+
+## 12. Revision 4 (v1): two changes after the development replays (2026-10-05)
+
+**What the replays showed** (`viz_0g/`, development seeds 2026100700-2026100702, stage-B knobs):
+- Against the scripted **regular** level, all ten enemy guns survive every fight.
+- Our units hover 320-440 px from the nearest gun (gun range 320 px; our shooters' reach about 278 px centre to centre), with commitment between −0.8 and −0.95. No unit ever targets a gun.
+- Damage from guns our units cannot reach keeps pushing them toward pull back, which never takes them out of the guns' splash. This is the **retreat trap**.
+- Novice charges into us, so the same law beats it.
+
+**Two changes, with no new knobs** (knob table section 5 unchanged; push-pull and nearest unchanged):
+
+1. **Unanswered damage drives commitment, not retreat.**
+   - The damage taken by an own unit is split by whether it had a legal target at that tick:
+     - z_in,ans: damage taken while it had something in reach;
+     - z_in,unans: damage taken while it had nothing in reach.
+   - Both use the section 2 recurrence.
+   - Own pressure: **P(i) = κ · (z_in,ans(i) − β · z_out(i) − z_in,unans(i))**.
+   - Damage the unit can answer still pulls it back when it is losing the exchange. Damage it cannot answer pushes it to close in. Through the K coupling, a group commits together.
+   - Enemy pressure P(j) is unchanged.
+2. **Target preference toward the most engaged enemies.**
+   - The score term γ · tanh(P(j)) preferred enemies being beaten **and not hurting us** (P(j) falls with the damage j deals).
+   - It becomes **γ · tanh(κ · (z_in(j) + z_out(j)))**: prefer the enemies most involved in the exchange, being hit by us or hitting us.
+
+**What stays:**
+- the equations of sections 2-4 otherwise;
+- the bounds;
+- the protocol (the amended S4 CMA-ES protocol, rerun on **fresh** development seeds for all three tuned arms, since the shared skeleton changed);
+- the claim boundary;
+- P1-P3 as designed.
+
+**Checks to add in S3 terms:**
+- the split of damage by legal-target status on a scripted sequence;
+- an outranged unit under fire raises its commitment;
+- the target term increases with the enemy's damage dealt to us.
+
+The previous checks still pass with these terms switched off.
