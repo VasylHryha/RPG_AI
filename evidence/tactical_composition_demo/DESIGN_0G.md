@@ -280,6 +280,12 @@ The general host rejects passthrough unless started explicitly with `--test-cont
      - z_in,ans: damage taken while it had something in reach;
      - z_in,unans: damage taken while it had nothing in reach.
    - Both use the section 2 recurrence.
+   - **Attribution timing** (answering the implementer's stop, `astelia_cpp/S4_V1_DEVELOPMENT_REPORT.md` at `efc3f3a`): at each `prepare` of tick k, the controller records for every own
+     unit whether its legal set (section 3) at that frozen snapshot is non-empty. The damage increment ΔC_in consumed at the next `prepare` (tick k+1, from the counters' difference) is the
+     damage taken during tick k. It is labelled with the status recorded at tick k: **answered** if the set was non-empty, **unanswered** if it was empty.
+   - This is what the unit knew when it chose that tick's action. It uses only the controller's own memory and needs no engine change.
+   - On a unit's first `prepare` there is no previous status, so its first increment is answered by convention; the counter baseline is set at that `prepare`, so the increment is 0 anyway.
+   - Clones copy the recorded status with the rest of the memory.
    - Own pressure: **P(i) = κ · (z_in,ans(i) − β · z_out(i) − z_in,unans(i))**.
    - Damage the unit can answer still pulls it back when it is losing the exchange. Damage it cannot answer pushes it to close in. Through the K coupling, a group commits together.
    - Enemy pressure P(j) is unchanged.
