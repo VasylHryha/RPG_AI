@@ -1,0 +1,202 @@
+{
+  "build": {
+    "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "commands": [
+      [
+        "/usr/bin/clang++",
+        "-std=c++17",
+        "-O3",
+        "-Wall",
+        "-Wextra",
+        "-Wpedantic",
+        "-fno-fast-math",
+        "-ffp-contract=off",
+        "-fPIC",
+        "-dynamiclib",
+        "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/medium/medium.cpp",
+        "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/medium/medium_c.cpp",
+        "-o",
+        "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/medium/_build/medium.dylib"
+      ],
+      [
+        "/usr/bin/clang++",
+        "-std=c++17",
+        "-O3",
+        "-Wall",
+        "-Wextra",
+        "-Wpedantic",
+        "-fno-fast-math",
+        "-ffp-contract=off",
+        "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/medium/medium.cpp",
+        "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/medium/medium_c.cpp",
+        "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/medium/contract.cpp",
+        "-o",
+        "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/medium/_build/medium_contract"
+      ]
+    ]
+  },
+  "build_seconds": 5.911963542,
+  "test_command": [
+    "/Users/new/RiderProjects/ai_RPG_test/.venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "-o",
+    "cache_dir=/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/medium/_build/pytest-cache",
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/medium/test_medium.py"
+  ],
+  "test_seconds": 1.4650464579999998,
+  "test_exit_code": 0,
+  "test_output": "......................................................................   [100%]\n70 passed in 0.90s\n",
+  "source_sha256": "4fafc161b65914a44dccaca6caefb59a5154079f17f564b4cdc4d44f58c59d33",
+  "reference_sha256": "f84c4fa69b8fbe95a4b0870af10317867b4cbe77a8cf735683015d1856c45cee",
+  "scope": "synthetic engine validation; no task growth experiments/learning/panels",
+  "failed_attempts": [
+    {
+      "build_seconds": 5.522469084,
+      "test_command": [
+        "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9",
+        "-m",
+        "pytest",
+        "-q",
+        "-x",
+        "-o",
+        "cache_dir=/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/medium/_build/pytest-cache",
+        "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/medium/test_medium.py"
+      ],
+      "test_seconds": 0.028634375000000212,
+      "test_exit_code": 1,
+      "test_output": "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9: No module named pytest\n"
+    }
+  ],
+  "benchmark": [
+    {
+      "N": 50,
+      "steps": 300,
+      "dt": 0.01,
+      "seconds": 0.04357499999999999,
+      "steps_per_second": 6884.681583476766,
+      "active_couplings": 400,
+      "includes": [
+        "grid rebuild",
+        "RK4",
+        "window recording",
+        "strain fit",
+        "ctypes call"
+      ],
+      "growth_rules": false
+    },
+    {
+      "N": 200,
+      "steps": 300,
+      "dt": 0.01,
+      "seconds": 0.226464542,
+      "steps_per_second": 1324.7106913540576,
+      "active_couplings": 1598,
+      "includes": [
+        "grid rebuild",
+        "RK4",
+        "window recording",
+        "strain fit",
+        "ctypes call"
+      ],
+      "growth_rules": false
+    },
+    {
+      "N": 500,
+      "steps": 300,
+      "dt": 0.01,
+      "seconds": 0.672917166,
+      "steps_per_second": 445.82010261869294,
+      "active_couplings": 4000,
+      "includes": [
+        "grid rebuild",
+        "RK4",
+        "window recording",
+        "strain fit",
+        "ctypes call"
+      ],
+      "growth_rules": false
+    }
+  ],
+  "benchmark_total_seconds": 0.9671325409999999,
+  "earlier_completed_batch": {
+    "test_command": [
+      "/Users/new/RiderProjects/ai_RPG_test/.venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-o",
+      "cache_dir=/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/medium/_build/pytest-cache",
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/medium/test_medium.py"
+    ],
+    "test_seconds": 1.4605271249999996,
+    "test_exit_code": 0,
+    "test_output": "...................................................................      [100%]\n67 passed in 0.84s\n",
+    "benchmark": [
+      {
+        "N": 50,
+        "steps": 300,
+        "dt": 0.01,
+        "seconds": 0.042435333,
+        "steps_per_second": 7069.580436661119,
+        "active_couplings": 400,
+        "includes": [
+          "grid rebuild",
+          "RK4",
+          "window recording",
+          "strain fit",
+          "ctypes call"
+        ],
+        "growth_rules": false
+      },
+      {
+        "N": 200,
+        "steps": 300,
+        "dt": 0.01,
+        "seconds": 0.22116225,
+        "steps_per_second": 1356.4701932630908,
+        "active_couplings": 1598,
+        "includes": [
+          "grid rebuild",
+          "RK4",
+          "window recording",
+          "strain fit",
+          "ctypes call"
+        ],
+        "growth_rules": false
+      },
+      {
+        "N": 500,
+        "steps": 300,
+        "dt": 0.01,
+        "seconds": 0.653775417,
+        "steps_per_second": 458.8731729568841,
+        "active_couplings": 4000,
+        "includes": [
+          "grid rebuild",
+          "RK4",
+          "window recording",
+          "strain fit",
+          "ctypes call"
+        ],
+        "growth_rules": false
+      }
+    ]
+  },
+  "final_batch_reason": "Final inspection: B1 trigger measurement log, strain extreme weight safeguard, isolated strain threshold and interrupted novelty contracts.",
+  "validated_file_hashes": {
+    "benchmark.py": "1441a546f5a8920139361920693ea481b45702aa4c92c8777fa064cbde6bc7c7",
+    "build.py": "126f6769fe03771aa702e61fb9576dc92d1ef635602314732d283a57edf31c6d",
+    "contract.cpp": "d0ce6d6cd1dcf72a17d2c03292c6d76360af3791ca23ae9998f757d78e3d1ddf",
+    "medium.cpp": "3dc20ab1858ac3c82d184e3ddbc7c2082a68fa305d944f1e4bc859b9fd80a534",
+    "medium.hpp": "4abf011b2cf2cdc4b1c13268ad66fe00afaf442eb7f90f80f10fca0efe5aafdc",
+    "medium.py": "720b14270378c3bca168e985c2e11c1073e16db069cdfbcf4b216499dc960cf8",
+    "medium_c.cpp": "56ce5708f787172e2717faf0319c10ae58862741b8747ea90cc9fd3114e19676",
+    "medium_c.h": "802eb6bb6900ece3684842eef65e6b84af8e20f4f9e918c1567e9c8aba40fe47",
+    "test_medium.py": "2832e6ebb37fcdae8be7e0a9e4d42c6c107b61dc71c3556a9cf37ddf1e3db80f"
+  }
+}
