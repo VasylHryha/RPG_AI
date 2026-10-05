@@ -306,3 +306,30 @@ The general host rejects passthrough unless started explicitly with `--test-cont
 - the target term increases with the enemy's damage dealt to us.
 
 The previous checks still pass with these terms switched off.
+
+## 13. Revision 5 (v2): range-aware distance and threats (2026-10-05, after the v1 STOP)
+
+**Logged as an outcome-informed change** (section 10): the v1 review (`astelia_cpp_review_claude/S4_V1_REVIEW.md`) found that the preferred distance could exceed the unit's own reach (tuned f = 1.11), that the "unanswered" label counted any reachable enemy as an answer, and that guns behind a line never attracted committed units. v2 restarts every arm's budget on fresh seeds.
+
+All of the following use only observed fields (positions, radii, range, minRange, damage counters).
+
+1. **Threats to unit i:** enemies e with e's recent damage dealt z_out(e) > 0 whose reach covers i: centre distance ≤ range_e + both radii for melee and direct, and minRange_e ≤ centre distance ≤ range_e for artillery.
+2. **Unanswered damage (replaces section 12 item 1's label):**
+   - the damage i took during tick k is **unanswered** if, at tick k's snapshot, i was inside the reach of at least one threat that was **not** in i's own legal set;
+   - otherwise it is answered;
+   - the timing is as section 12 (the status recorded at the producing tick).
+3. **Range-aware preferred reach distance to each enemy e** (in reach units: the gap for melee and direct, the centre distance for artillery). Let R_i be i's own reach and R_e the enemy's reach.
+   - **We out-range e** (R_e < R_i): the kite band. The committed distance is R_e + m_k · (R_i − R_e), with m_k ∈ [0.2, 1] (a knob), kept ≤ R_i. Pull-back adds w · (R_i − R_e) · (1 − c)/2.
+   - **e out-ranges us or matches us** (R_e ≥ R_i): the committed distance is f_c · R_i, with f_c ∈ [0.3, 1.0] (a knob, **≤ 1 by bound**: commit means within one's own reach). The **escape** distance is R_e + w · R_i. The preferred distance interpolates: d = f_c R_i + (escape − f_c R_i) · (1 − c)/2.
+   - **The restoring force** G(1 − d/max(ρ, ε)) is unchanged, with the sign checks of section 3 repeated for both cases.
+4. **The enemy set in movement:** E_i = the 8 nearest living enemies **∪** i's threats (cap 16 in total). Each enemy term is weighted 1 + λ_th · tanh(z_out(e) · 1 s), with λ_th a knob in [0, 3], and the mean is taken with these weights.
+5. **Knobs:** f is replaced by f_c ∈ [0.3, 1.0] and m_k ∈ [0.2, 1.0]; λ_th ∈ [0, 3] is added; and **γ (the target preference) is fixed at 1** to keep the cap of 10 for the resonator and morale. Push-pull uses f_c and m_k with its G (3 knobs; c = 1 always). Bounds are otherwise as section 5.
+6. **Section 12 item 2** (the target term toward engaged enemies) is kept.
+
+**S3-style checks to add:**
+- the threat set on constructed cases (melee, direct, artillery dead zone);
+- the unanswered label true only when a threat is out of i's reach;
+- the preferred distance never exceeds R_i when c = 1 in either case;
+- the sign of the restoring force on both sides of d in both cases;
+- the weighted mean reduces to the plain mean at λ_th = 0;
+- v0 and v1 fixtures unchanged with the skeleton flag.
