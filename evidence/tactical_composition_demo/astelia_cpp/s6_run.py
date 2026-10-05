@@ -1,4 +1,4 @@
-"""One-shot 0g revision-3 runner. Importing this module derives no seeds.
+"""One-shot 0g revision-4 runner. Importing this module derives no seeds.
 
 Only the registered output path is supported; there is no resume/output override.
 Native workers consume JSON lines, one outstanding request per process, and
@@ -109,10 +109,10 @@ def preflight(spec_path, repo_root):
     try:
         spec_bytes = spec_path.read_bytes()
         spec = json.loads(spec_bytes)
-        if spec["experiment"] != "0g" or spec["revision"] != 3:
-            raise Refusal("Only SPEC_0G.json revision 3 is implemented")
+        if spec["experiment"] != "0g" or spec["revision"] != 4:
+            raise Refusal("Only SPEC_0G.json revision 4 is implemented")
         spec_hash = hashlib.sha256(spec_bytes).hexdigest()
-        review_path = repo_root / spec["gates"]["codex_review"].split(",", 1)[0]
+        review_path = repo_root / spec["gates"]["codex_review"].split(":", 1)[0]
         review_bytes = review_path.read_bytes()
         review = review_bytes.decode()
         if (review.splitlines()[0].strip() not in ("APPROVE", "APPROVE_WITH_NOTES")

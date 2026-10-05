@@ -136,11 +136,9 @@ def fake(tmp_path, spec):
     binary.write_text("#!" + sys.executable + "\n" + STUB)
     binary.chmod(0o755)
     binary.with_suffix(".mode").write_text("normal")
-    manifest = binary.with_suffix(".build.json")
+    manifest = base / spec["engine"]["build_manifest"]
     s6.dump(manifest, {"binary_sha256": s6.sha256(binary)})
-    # Synthetic registration has a literal existing path. The real revision-3
-    # field embeds prose; its resulting refusal is covered separately below.
-    spec["engine"]["build_manifest"] = "astelia_cpp/build/astelia_native.build.json"
+    # Keep revision 4's registered paths; replace only artifact identities.
     spec["engine"]["binary_sha256"] = s6.sha256(binary)
     spec["engine"]["build_manifest_sha256"] = s6.sha256(manifest)
     # Tiny synthetic panel for subprocess integration, not real judging entropy.
@@ -154,7 +152,7 @@ def fake(tmp_path, spec):
     s6.dump(amended, {"uses": [{"seed": 2000}, {"seed": 2001}]})
     value = dict(repo=repo, base=base, cpp=cpp, binary=binary, manifest=manifest, spec=spec,
                  spec_path=base / "SPEC_0G.json", output=cpp / "s6_run",
-                 review=repo / spec["gates"]["codex_review"].split(",", 1)[0],
+                 review=repo / spec["gates"]["codex_review"].split(":", 1)[0],
                  auth=cpp / "S6_AUTHORIZATION.json", amended=amended)
     rebind(value)
     return value
@@ -306,6 +304,25 @@ def test_unregistered_approving_review_cannot_replace_named_rejection(fake, monk
     assert not fake["output"].exists()
 
 
+def test_review_path_is_registered_not_inferred(fake, monkeypatch):
+    original = fake["review"]
+    review = original.with_name("declared_review.md")
+    fake["spec"]["gates"]["codex_review"] = (
+        "docs/reviews/declared_review.md: first line APPROVE or APPROVE_WITH_NOTES, "
+        "and it names this file's sha256")
+    fake["review"] = review
+    rebind(fake)
+    original.write_text("CHANGES_REQUIRED\n" + s6.sha256(fake["spec_path"]))
+    _, _, _, identity = s6.preflight(fake["spec_path"], fake["repo"])
+    assert identity["review_sha256"] == s6.sha256(review)
+    review.unlink()
+    original.write_text("APPROVE\n" + s6.sha256(fake["spec_path"]))
+    monkeypatch.setattr(s6, "derive_seed", lambda *a: pytest.fail("Review refusal must precede seeds"))
+    with pytest.raises(s6.Refusal, match="Preflight record invalid"):
+        s6.run(fake["spec_path"], fake["repo"], workers=1)
+    assert not fake["output"].exists()
+
+
 @pytest.mark.parametrize("field", ["owner_words", "date"])
 def test_authorization_provenance_required(fake, field):
     auth = s6.read_json(fake["auth"])
@@ -333,7 +350,7 @@ def test_manifest_binary_binding(fake):
         s6.preflight(fake["spec_path"], fake["repo"])
 
 
-def test_manifest_path_is_registered_not_inferred(fake):
+def test_manifest_path_is_registered_not_inferred(fake, monkeypatch):
     manifest = fake["base"] / "declared_manifest.json"
     fake["manifest"].rename(manifest)
     fake["spec"]["engine"]["build_manifest"] = "declared_manifest.json"
@@ -341,15 +358,18 @@ def test_manifest_path_is_registered_not_inferred(fake):
     _, _, _, identity = s6.preflight(fake["spec_path"], fake["repo"])
     assert identity["manifest_sha256"] == s6.sha256(manifest)
     manifest.unlink()
+    # A valid sibling manifest cannot substitute for the registered missing file.
+    s6.dump(fake["manifest"], {"binary_sha256": s6.sha256(fake["binary"])})
+    monkeypatch.setattr(s6, "derive_seed", lambda *a: pytest.fail("Path refusal must precede seeds"))
     with pytest.raises(s6.Refusal):
-        s6.preflight(fake["spec_path"], fake["repo"])
+        s6.run(fake["spec_path"], fake["repo"], workers=1)
+    assert not fake["output"].exists()
 
 
-def test_revision3_manifest_explanation_is_literal_and_refuses(fake, monkeypatch):
-    # Use the actual path string only, with fake root, engine and gate records.
-    registered = json.loads((HERE.parent / "SPEC_0G.json").read_text())["engine"]["build_manifest"]
-    assert registered.endswith(" (its binary_sha256 field must equal engine.binary_sha256)")
-    fake["spec"]["engine"]["build_manifest"] = registered
+def test_manifest_path_explanation_is_literal_and_refuses(fake, monkeypatch):
+    # Regression for revision 3's defective path: never strip prose or infer a file.
+    fake["spec"]["engine"]["build_manifest"] += (
+        " (its binary_sha256 field must equal engine.binary_sha256)")
     rebind(fake)
     monkeypatch.setattr(s6, "derive_seed", lambda *a: pytest.fail("Path refusal must precede seeds"))
     with pytest.raises(s6.Refusal, match="Preflight record invalid"):
@@ -357,11 +377,36 @@ def test_revision3_manifest_explanation_is_literal_and_refuses(fake, monkeypatch
     assert not fake["output"].exists()
 
 
-@pytest.mark.parametrize("revision", [1, 2, 4])
+def test_revision4_registered_paths_and_identities(fake):
+    spec = fake["spec"]
+    assert spec["revision"] == 4
+    assert spec["gates"]["codex_review"].split(":", 1)[0] == (
+        "docs/reviews/tactical_0g_spec_review_codex_r4.md")
+    assert spec["engine"]["build_manifest"] == "astelia_cpp/build/astelia_native.build.json"
+    admitted, binary, _, identity = s6.preflight(fake["spec_path"], fake["repo"])
+    assert admitted == spec and binary == fake["binary"]
+    assert identity["revision"] == 4
+    assert identity["spec_sha256"] == s6.sha256(fake["spec_path"])
+    assert identity["binary_sha256"] == spec["engine"]["binary_sha256"]
+    assert identity["manifest_sha256"] == spec["engine"]["build_manifest_sha256"]
+    assert identity["review_sha256"] == s6.sha256(fake["review"])
+
+
+@pytest.mark.parametrize("record,field", [("gates", "codex_review"), ("engine", "build_manifest")])
+def test_missing_registered_path_refuses_before_seeds(fake, monkeypatch, record, field):
+    del fake["spec"][record][field]
+    rebind(fake)
+    monkeypatch.setattr(s6, "derive_seed", lambda *a: pytest.fail("Path refusal must precede seeds"))
+    with pytest.raises(s6.Refusal, match=field):
+        s6.run(fake["spec_path"], fake["repo"], workers=1)
+    assert not fake["output"].exists()
+
+
+@pytest.mark.parametrize("revision", [1, 2, 3, 5])
 def test_other_revisions_refused(fake, revision):
     fake["spec"]["revision"] = revision
     rebind(fake)
-    with pytest.raises(s6.Refusal, match="revision 3"):
+    with pytest.raises(s6.Refusal, match="revision 4"):
         s6.preflight(fake["spec_path"], fake["repo"])
 
 
