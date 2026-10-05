@@ -1,12 +1,13 @@
 {
  "experiment": "0g",
- "revision": 2,
+ "revision": 3,
  "status": "DRAFT. Not executable until: (1) a Codex review of THIS revision returns APPROVE or APPROVE_WITH_NOTES; (2) the owner approves delta and n; (3) the owner authorizes S6 naming this file's sha256. The runner checks all three records (gates.authorization_file).",
  "authority_chain": [
   "DESIGN_0G.md revision 3 (sections 1-4, 6, 7, 10, 11)",
   "astelia_cpp/S4_AMENDED_PROTOCOL.md (CMA-ES optimizer supersedes design section 5's racing rule)",
   "astelia_cpp/s4_checks/AMENDED_GATE_OWNER_DECISION.json (A/B novice gates supersede design section 10's full-budget gate)",
-  "docs/reviews/tactical_0g_spec_review_codex.md (revision-1 findings, fixed here; self-audit in SPECIFICATION_0G.md)"
+  "docs/reviews/tactical_0g_spec_review_codex.md (revision-1 findings, fixed here; self-audit in SPECIFICATION_0G.md)",
+  "docs/reviews/tactical_0g_spec_review_codex_r2.md and astelia_cpp/S6_RUNNER_REPORT.md (revision-2 findings and runner questions, fixed here)"
  ],
  "design": {
   "file": "DESIGN_0G.md",
@@ -16,10 +17,10 @@
   "binary": "astelia_cpp/build/astelia_native",
   "binary_sha256": "a1a2d5288481a66f75ec2d151c58ba3b5378121b23bc59396a268815b552c74a",
   "build_manifest_sha256": "d3c4d8f9bc35a6e3c6eeab180ba0f5a81b09f4d12f693b6991ee48bbdaecb1fd",
-  "rule": "the runner refuses any other binary; requests are built from request_template below, not from s3_runner.py"
+  "rule": "the runner refuses any other binary; requests are built from request_template below, not from s3_runner.py",
+  "build_manifest": "astelia_cpp/build/astelia_native.build.json (its binary_sha256 field must equal engine.binary_sha256)"
  },
  "request_template": {
-  "comment": "one native request per fight, JSON line to the binary; <...> are filled per fight; controlled side is always 0 (ai[0]); every other field is literal",
   "trace": false,
   "debug": false,
   "mode": "alone",
@@ -262,7 +263,7 @@
     "REFUTED": "for either level: upper bound at a = 1/2400 < 0",
     "INDETERMINATE": "otherwise"
    },
-   "requires": "all 400 resonator HEAD fights completed without controller or technical failure"
+   "requires": "all 400 HEAD resonator fights VALID (failures.rule)"
   },
   "P2": {
    "claim": "the resonator beats plain morale by more than delta on the pool",
@@ -273,7 +274,7 @@
     "REFUTED": "upper bound at a = 1/1200 < 0",
     "INDETERMINATE": "otherwise"
    },
-   "requires": "all 1,216 resonator and 1,216 morale POOL fights completed"
+   "requires": "all 1,216 resonator and 1,216 morale POOL fights VALID (failures.rule)"
   },
   "P3": {
    "claim": "the resonator beats the specified push-pull baseline by more than delta on the pool",
@@ -284,7 +285,7 @@
     "REFUTED": "upper bound at a = 1/1200 < 0",
     "INDETERMINATE": "otherwise"
    },
-   "requires": "all 1,216 resonator and 1,216 pushpull POOL fights completed"
+   "requires": "all 1,216 resonator and 1,216 pushpull POOL fights VALID (failures.rule)"
   }
  },
  "delta_survivors": {
@@ -293,17 +294,23 @@
   "owner_approved": false
  },
  "n": {
-  "P1": "100 clusters per level, fixed conservative choice; B-knob planning (B validation, bootstrap 95th-percentile SD 4.73 novice / 0.77 regular, one-sided 1/400, power 0.90, effect 4.0) gives 24 and 1, below the declared floor 32",
+  "P1": "100 clusters per level, fixed conservative choice; B-knob planning (B validation, bootstrap 95th-percentile SD 4.73 novice / 0.77 regular, one-sided 1/400, power 0.90, effect 4.0) gives 24 and 1, below the declared floor 32; bootstrap convention for the displayed SDs: Python random.Random(811005), 2,000 resamples of the 100 cluster values with replacement, statistics.stdev, sorted, element int(0.95*2000)-1",
   "P2_P3": "32 seed blocks, above the S4 floor 16",
   "owner_approved": false
  },
  "failures": {
   "controller_failure": "summary.controllerStatus == 'controller_failure' or summary.controllerFailures[0] > 0",
   "technical_failure": "native error line, nonzero exit, timeout of the host, malformed or non-finite summary, duplicate or missing scheduled key",
-  "rule": "every attempted fight is recorded; nothing is dropped, replaced, zero-filled or averaged over a partial block; an endpoint whose required fights are not all completed is INDETERMINATE with the reason; failures of arms not required by an endpoint never affect it (descriptive arms veto nothing); every endpoint is evaluated independently, so a P1 failure never stops the POOL panel"
+  "rule": "A required fight is VALID only if it completes with a finite summary and with neither the controller_failure predicate nor a technical_failure. Every attempted fight is recorded, valid or not; nothing is dropped, replaced, zero-filled or averaged over a partial cluster or block. If any required fight of an endpoint is invalid or missing, that endpoint is INDETERMINATE with the reason and no bounds are computed for it. Dependencies: P1 requires the 400 HEAD resonator fights; P2 requires the 1,216 POOL resonator and 1,216 POOL morale fights; P3 requires the 1,216 POOL resonator and 1,216 POOL pushpull fights. So a POOL morale failure affects only P2, a POOL pushpull failure only P3, a POOL resonator failure both, and nearest or HEAD descriptive-arm failures affect no endpoint. Every endpoint is evaluated independently; a P1 outcome never stops the POOL panel.",
+  "host": {
+   "per_fight_timeout_seconds": 120,
+   "worker_shutdown_timeout_seconds": 30,
+   "batches": "one worker batch = one arm and one cluster (HEAD: 2 fights) or one block (POOL: 38 fights); batches never mix arms or panels",
+   "attribution": "a host timeout, nonzero exit or malformed line invalidates every fight of that batch that has not yet returned a valid summary AND every fight of that batch already returned (conservative: it can only produce INDETERMINATE, never a false pass)"
+  }
  },
  "execution": {
-  "order": "preflight (identities, authorization, seeds), then create the output directory atomically (os.mkdir; refuse if it exists) and write identity.json (spec sha256, root, binary and manifest sha256, authorization record) before the first fight; then HEAD then POOL; every fight line appended as it completes",
+  "order": "preflight (identities, gates, seeds), then create the output directory atomically (os.mkdir; refuse if it exists), then write identity.json (spec sha256, root, binary and manifest sha256, authorization record, host timeouts) and schedule.json (every scheduled key and its full native request) before the first dispatch; each request is appended to attempts.jsonl before it is sent, and its summary or failure record to fights.jsonl when it returns; an attempt without a returned record is invalid; HEAD then POOL",
   "output_dir": "astelia_cpp/s6_run",
   "latch": "the directory is never deleted or reused; an interrupted run is reported as such with partial evidence, never resumed under another directory",
   "outputs": "results.json with endpoint_coverage for P1, P2, P3 (evaluated with value, bounds and verdict, or not_run with reason), per-level P1 subtests, descriptive tables; fights.jsonl with every request and summary"
@@ -321,5 +328,6 @@
  "gates": {
   "codex_review": "docs/reviews/tactical_0g_spec_review_codex_r2.md, first line APPROVE or APPROVE_WITH_NOTES, naming this file's sha256",
   "authorization_file": "astelia_cpp/S6_AUTHORIZATION.json: {spec_sha256, delta_approved, n_approved, s6_authorized, owner_words, date}, written only from the owner's explicit words"
- }
+ },
+ "request_template_note": "one native request per fight, JSON line to the binary; <...> are filled per fight; controlled side is always 0 (ai[0]); every other field is literal. This note is not part of any request: request_template holds only native fields."
 }

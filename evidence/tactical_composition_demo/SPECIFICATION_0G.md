@@ -1,6 +1,6 @@
-# Specification 0g, revision 2 (S5 registration DRAFT): the resonator AI against Astelia's scripted AI
+# Specification 0g, revision 3 (S5 registration DRAFT): the resonator AI against Astelia's scripted AI
 
-**Status: DRAFT.** Revision 2 answers the Codex review of revision 1 (`docs/reviews/tactical_0g_spec_review_codex.md`, CHANGES_REQUIRED; the self-audit is below).
+**Status: DRAFT.** Revision 2 answered the Codex review of revision 1 (`docs/reviews/tactical_0g_spec_review_codex.md`). Revision 3 answers the review of revision 2 (`docs/reviews/tactical_0g_spec_review_codex_r2.md`) and the runner's questions (`astelia_cpp/S6_RUNNER_REPORT.md`). The self-audit is below.
 `SPEC_0G.json` governs, and the runner reads only that file. Execution needs three recorded gates (JSON `gates`):
 1. a Codex review of **this** revision returning APPROVE or APPROVE_WITH_NOTES;
 2. the owner's approval of δ and n;
@@ -94,6 +94,20 @@ Every endpoint is registered as designed, with nothing narrowed after seeing dev
 | 6 | The descriptive subset not fixed | Diagnostics fixed to blocks 0-2, orientation false, resonator; D and timeout defined; all descriptive arms listed | Left to the implementer |
 | 7 | Rounded alpha constants | Exact fractions | Rounded decimals |
 | 8 | t calibration | Independence and the approximation declared | Not stated |
+
+## Self-audit: the revision-2 review findings and runner questions
+
+| # | Item | Fix in revision 3 | Cause |
+|---|---|---|---|
+| r2-1 | A `comment` key inside the literal request template is rejected by the engine | Moved outside, to `request_template_note` | I put an explanation inside a literal object |
+| r2-2 | Controller-failure fights could still count as "completed" for P2/P3 | One validity rule in `failures.rule`, used by every endpoint, with dependencies listed | The P2/P3 wording was not aligned with P1 |
+| r2-3 | In-flight requests not persisted | `schedule.json` before the first dispatch; `attempts.jsonl` before each send | Records were written only on completion |
+| runner-3 | Host timeout unspecified | 120 s per fight, 30 s for shutdown | Not specified |
+| runner-4 | A crashed worker's attribution | The whole batch is invalid (conservative); one batch = one arm × one cluster or block | Not specified |
+| runner-5 | Manifest path implicit | Named in `engine.build_manifest` | Not specified |
+| r2 note | Bootstrap convention for the displayed SDs | Stated in `n.P1` | Not stated |
+
+The judging root is unchanged: no judging fight has run, so the fresh-root rule does not apply.
 
 ## What is not claimed
 
