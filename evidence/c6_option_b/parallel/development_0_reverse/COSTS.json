@@ -1,0 +1,111 @@
+{
+  "kind": "OPTION_B_ENGINEERING_ONLY",
+  "backend": "native",
+  "audit": null,
+  "parallel": true,
+  "schedule": "reverse",
+  "thread_budget": {
+    "world_workers": 2,
+    "threads_per_world": 5,
+    "blas_threads": 1
+  },
+  "entropy": 46036001,
+  "world": 0,
+  "fixture": false,
+  "start_machine": {
+    "utc": "2026-10-05T19:57:02Z",
+    "load_average": [
+      34.9677734375,
+      44.2099609375,
+      48.09521484375
+    ],
+    "cpu_count": 10,
+    "platform": "macOS-26.6.2-arm64-arm-64bit"
+  },
+  "source_pin": {
+    "status": "PASS",
+    "source_files_verified": 25,
+    "owner_identities_verified": 12,
+    "manifest_entries_verified": 23,
+    "checksum_entries_verified": 24,
+    "handoff_sha256": "719781cbd5a302f58f0f57c064b32ca0a49e49546a1f88160582ba6235ca575e",
+    "expected_record_sha256": "37e8249338a95e32de72f4e30091e104697606faebd53b22bda8b90124e3bceb",
+    "import_record_sha256": "3f34717f795415f5ed4b11df060cdfc3c36f0bd8b1d491853141778bbc2d3da2"
+  },
+  "compute_seconds": 437.250520542,
+  "compute_cpu_seconds": 409.924076,
+  "world_seconds": 437.20509654200004,
+  "serialization_write_seconds": 16.137001416999965,
+  "serialization_cpu_seconds": 7.231971999999985,
+  "total_seconds": 453.38752195899997,
+  "raw_bytes": 57462159,
+  "compressed_bytes": 23343950,
+  "world_sha256": "284c56119ac3291574df4b2541bc8974037127ccbe66c6066ae92c86cfb09c84",
+  "end_machine": {
+    "utc": "2026-10-05T20:04:36Z",
+    "load_average": [
+      66.77197265625,
+      64.3798828125,
+      56.650390625
+    ],
+    "cpu_count": 10,
+    "platform": "macOS-26.6.2-arm64-arm-64bit"
+  },
+  "native_cache": {
+    "threads_per_world": 5,
+    "world_workers": 2,
+    "total_thread_budget": 10,
+    "submission_order": "reverse",
+    "worker_threads_used": 4,
+    "native_cache_worker_snapshots": [
+      {
+        "retired_hits": 88,
+        "control_hits": 2,
+        "eligible_misses": 455,
+        "avoided_material_rk_steps": 400000,
+        "retired_bytes": 223487772,
+        "control_bytes": 30382912,
+        "probation_bytes": 890368
+      },
+      {
+        "retired_hits": 77,
+        "control_hits": 2,
+        "eligible_misses": 426,
+        "avoided_material_rk_steps": 377000,
+        "retired_bytes": 210736316,
+        "control_bytes": 18623320,
+        "probation_bytes": 890368
+      },
+      {
+        "retired_hits": 94,
+        "control_hits": 8,
+        "eligible_misses": 463,
+        "avoided_material_rk_steps": 400000,
+        "retired_bytes": 231311636,
+        "control_bytes": 32342844,
+        "probation_bytes": 890368
+      },
+      {
+        "retired_hits": 81,
+        "control_hits": 3,
+        "eligible_misses": 414,
+        "avoided_material_rk_steps": 470000,
+        "retired_bytes": 230343568,
+        "control_bytes": 20583252,
+        "probation_bytes": 890368
+      }
+    ],
+    "native_cache_worker_totals": {
+      "retired_hits": 340,
+      "control_hits": 15,
+      "eligible_misses": 1758,
+      "avoided_material_rk_steps": 1647000,
+      "retired_bytes": 895879292,
+      "control_bytes": 101932328,
+      "probation_bytes": 3561472
+    }
+  },
+  "invalid": null,
+  "chain_complete": false,
+  "post_serialization_peak_rss_bytes": 1817804800
+}

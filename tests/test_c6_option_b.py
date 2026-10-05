@@ -167,3 +167,8 @@ def test_exact_audit_rejects_a_difference_below_old_tolerance(difference):
     audit=O.Audit(Fake(difference),Fake(0.))
     with pytest.raises(RuntimeError,match='full-flow equivalence failed'):
         audit.invoke('field_rhs',(1,3,1,out.ctypes.data_as(O.PTR)))
+
+
+def test_exact_comparator_rejects_signed_zero():
+    assert not C.compare({'x':0.},{'x':-0.},0.,False)['passed']
+    assert C.compare({'x':-0.},{'x':-0.},0.,False)['passed']
