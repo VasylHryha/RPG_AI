@@ -43,12 +43,14 @@ struct Decision {
   Release release=Release::None;
   bool move=false, keep=false, post=false, bound=false;
 };
+struct DecisionTrace { UnitId id=0,target=0; uint8_t team=0; Decision decision; bool inReach=false; };
 struct UnitState {
   Vec2 previous, slot, longVelocity;
   double cooldownMax=0, prep=0, windup=0, baseSpeed=0;
   double energy=0, energyMax=0, energyRegen=0, cost=0, protection=0;
   double minRange=0, shotSpeed=0, lobSpeed=0, splash=0, launch=1, timeRate=1;
   double longSpeed=0, stepTime=0, dealt=0, meleeAt=-1;
+  double damageDealt=0, damageTaken=0; // actual HP, all teams; resets on slot reuse
   UnitRef meleeAttacker;
   int8_t strafe=1;
   uint32_t kind=invalidSlot, ability=invalidSlot, player=invalidSlot;

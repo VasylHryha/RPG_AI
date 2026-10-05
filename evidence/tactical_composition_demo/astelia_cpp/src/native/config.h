@@ -1,6 +1,7 @@
 #pragma once
 #include "types.h"
 #include "search_types.h"
+#include "controller.h"
 
 namespace astelia {
 struct Config {
@@ -14,6 +15,7 @@ struct Config {
   std::array<uint32_t,3> enemyArmy{};
   std::array<CombatSkills,2> skills;
   std::array<Brain,2> brains{Brain::Alone,Brain::Alone};
+  std::array<ControllerProfile,2> controllers;
   std::array<Formation,2> formations;
   std::array<AbilityThresholds,2> abilityThresholds;
   std::array<Lookahead,2> lookahead;
@@ -33,5 +35,6 @@ struct Config {
   bool mirror=true, swapSides=false, aimedShots=true, windUp=false;
   bool abilities=false, temporal=true, perception=false, hasEnemyArmy=false, hasCarried=false, hasCustomArmy=false;
   bool bcRecord=false;
+  bool decisionTrace=false; // opt-in engineering trace, captured before acting
 };
 } // namespace astelia

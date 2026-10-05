@@ -58,6 +58,9 @@ public:
   std::shared_ptr<WorkCounters> work=std::make_shared<WorkCounters>();
   double dt=0,duration=0;
   std::array<Brain,2> brains;
+  std::array<std::unique_ptr<Controller>,2> controllers;
+  std::array<control::Observation,2> observations;
+  std::vector<DecisionTrace> decisionTrace;
   Tactics forced;uint8_t forcedTeam=0,thinkTeams=0;bool hasForced=false;
   double time=0;
   UnitId nextId=1;

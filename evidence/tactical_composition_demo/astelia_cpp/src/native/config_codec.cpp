@@ -144,7 +144,7 @@ void thresholds(AbilityThresholds& a,V v){only(v,{"chargeSync","shieldAimedAt","
 }
 }
 Config configuration(const js::V& request) {
-  only(request,{"mode","options","trace","opponent","debug"});
+  only(request,{"mode","options","trace","opponent","debug","decisionTrace"});
   const auto mode=string(request,"mode","alone");brain(mode);
   V o=js::get(request,"options");if(o.tag==V::Undefined)o=js::obj({});
   only(o,{"seed","dt","duration","width","height","army","scenario","swapSides","rules","abilities","sandboxAbilities","ai","shots","shotSpeed","windUp",
@@ -153,6 +153,8 @@ Config configuration(const js::V& request) {
     "forcePlan","forceTeam","disablePlans","lookahead","ab","coordAbilities","reactAim","reactiveDodge","bcRecord"});
   const auto rules=string(o,"rules","sandbox");if(rules!="sandbox"&&rules!="game")throw std::invalid_argument("unknown rules");
   auto c=rules=="game"?gameConfig():sandboxConfig();c.mode=mode;
+  c.decisionTrace=boolean(request,"decisionTrace",false);
+  if(c.decisionTrace&&!boolean(request,"trace",false))throw std::invalid_argument("decisionTrace requires trace");
   c.seed=number(o,"seed",c.seed);c.dt=number(o,"dt",c.dt);c.duration=number(o,"duration",c.duration);
   c.width=number(o,"width",c.width);c.height=number(o,"height",c.height);
   c.shotSpeed=rules=="game"?240:number(o,"shotSpeed",c.shotSpeed);
@@ -214,7 +216,14 @@ Config configuration(const js::V& request) {
     for(size_t t=0;t<list.size();++t)if(list[t].tag!=V::Null)profiles[t]=list[t];}
   c.reactiveDodge=boolean(o,"reactiveDodge",true);
   c.bcRecord=boolean(o,"bcRecord",false);
-  for(size_t t=0;t<2;++t){const auto p=profiles[t];only(p,{"level","brain","skills","lookahead","formation","ab","disablePlans","fewPlan","objective"});
+  for(size_t t=0;t<2;++t){const auto p=profiles[t];only(p,{"level","brain","skills","lookahead","formation","ab","disablePlans","fewPlan","objective","controller","params"});
+    if(present(p,"controller")){
+      c.controllers[t].name=string(p,"controller","");
+      if(c.controllers[t].name.empty())throw std::invalid_argument("empty controller name");
+      if(present(p,"params"))only(js::get(p,"params"),{});
+      // Closed S2 registry; invalid names fail before fight construction.
+      makeController(c.controllers[t],c.seed,uint8_t(t));
+    }else if(present(p,"params"))throw std::invalid_argument("params requires controller");
     const auto level=string(p,"level","");if(!level.empty()&&level!="novice"&&level!="regular"&&level!="veteran"&&level!="elite"&&level!="elite-fast")throw std::invalid_argument("unknown level");
     const auto oldBrain=t==0?mode:c.scenario==Scenario::Mirror?enemy:"alone";
     const auto defaultBrain=level=="novice"?"alone":level=="regular"?"formation":level.empty()?oldBrain:"rules";

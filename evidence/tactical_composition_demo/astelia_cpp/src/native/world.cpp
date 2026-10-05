@@ -126,11 +126,17 @@ bool World::done() const {
   return time>=duration||!survivors(0)||(config->mirror&&!survivors(1));
 }
 World World::create(std::shared_ptr<const Config> c) {
+  if(!c->controllers[0].name.empty()||!c->controllers[1].name.empty()){
+    auto adjusted=std::make_shared<Config>(*c);
+    for(uint8_t side=0;side<2;++side)if(!c->controllers[side].name.empty()&&c->controllers[side].name!="passthrough")adjusted->skills[side].abilities=AbilityPolicy::Auto;
+    c=std::move(adjusted);
+  }
   if (!(c->dt>0) || !std::isfinite(c->dt) || !(c->duration>=0) || !std::isfinite(c->duration) ||
       !(c->width>0) || !(c->height>0) || !std::isfinite(c->width) || !std::isfinite(c->height) || !std::isfinite(c->seed) ||
       c->width>1e9 || c->height>1e9 || c->duration/c->dt>1e7)
     throw std::invalid_argument("invalid world configuration");
   World w(c);
+  for(uint8_t side=0;side<2;++side)if(!c->controllers[side].name.empty())w.controllers[side]=makeController(c->controllers[side],c->seed,side);
   w.spawnRandom=Rng(toUint32(c->seed*7919));
   constexpr std::array<Vec2,3> zones{Vec2{240,60},Vec2{150,90},Vec2{80,60}};
   constexpr std::array<double,3> band{120,150,120};
@@ -172,6 +178,7 @@ World World::create(std::shared_ptr<const Config> c) {
   }
   for(uint8_t team=0;team<2;++team) {
     auto& p=w.packs[team];p.enabled=c->brains[team]!=Brain::Alone&&(team==0||c->scenario==Scenario::Mirror);
+    if(w.controllers[team]&&c->controllers[team].name!="passthrough")p.enabled=false;
     p.base=p.formation=c->formations[team];p.anchor={team==0?240:c->width-240,c->height/2};p.facing={team==0?1.0:-1.0,0};
     if(c->swapSides){p.anchor.x=c->width-p.anchor.x;p.facing.x=-p.facing.x;}
   }
@@ -214,6 +221,7 @@ double World::damage(UnitRef source,UnitRef target,double amount,bool barrage) {
     if(a!=invalidSlot&&abilities[a].shieldUntil>time){stats.abilities[dst->team][size_t(Ability::Shield)].blocked+=amount*.8;amount*=.2;}
   }
   const double dealt=std::min(amount,dst->hp); dst->hp-=amount;
+  state[source.slot].damageDealt+=dealt;state[target.slot].damageTaken+=dealt;
   const size_t kind=melee(src->role)?(amount>src->damage*1.2?1:0):src->role==Role::Artillery?(barrage?3:2):(amount>src->damage*1.2?5:4);
   stats.bySource[kind]+=dealt;if(dst->team==0&&src->team==1)stats.takenBy[kind]+=dealt;
   if(kind==1||kind==3||kind==5)stats.abilities[src->team][size_t(kind==1?Ability::Charge:kind==3?Ability::Barrage:Ability::Aimed)].damage+=dealt;
@@ -260,6 +268,8 @@ void World::reclaim() {
   rebuildTeams();
 }
 void World::copyAuthorityFrom(const World& p) {
+  decisionTrace.clear();
+  for(uint8_t side=0;side<2;++side){controllers[side]=p.controllers[side]?p.controllers[side]->clone():nullptr;observations[side]={};}
   config=p.config;dt=p.dt;duration=p.duration;brains=p.brains;forced=p.forced;forcedTeam=p.forcedTeam;hasForced=p.hasForced;thinkTeams=0;work=p.work;branches_=p.branches_;
   state=p.state;tactical=p.tactical;packs=p.packs; active=p.active; free_=p.free_;
   shots=p.shots; shells=p.shells; fields=p.fields; dots=p.dots; hitLog=p.hitLog;

@@ -32,6 +32,11 @@ V state(const astelia::World& w,std::map<astelia::UnitId,V>& history,bool debug)
   }
   js::Args units;for (const auto& entry:history) units.push_back(entry.second);
   auto out=js::obj({{"t",w.time},{"units",js::arr(std::move(units))}});
+  if(w.config->decisionTrace){js::Args decisions;for(const auto& row:w.decisionTrace){const auto& d=row.decision;
+    decisions.push_back(js::obj({{"id",double(row.id)},{"team",double(row.team)},{"target",row.target?V(double(row.target)):V(nullptr)},
+      {"x",d.goal.x},{"y",d.goal.y},{"multiplier",d.multiplier},{"stop",d.stop},{"release",double(d.release)},
+      {"move",d.move},{"keep",d.keep},{"post",d.post},{"bound",d.bound},{"inReach",row.inReach}}));}
+    js::set(out,"decisions",js::arr(std::move(decisions)));}
   if(debug){V packs=js::obj({});for(uint8_t team=0;team<2;++team){const auto& p=w.packs[team];if(!p.enabled)continue;
     V entry=js::obj({{"plan",astelia::planName(p.plan)},{"anchor",js::obj({{"x",p.anchor.x},{"y",p.anchor.y},{"ax",p.facing.x},{"ay",p.facing.y}})},{"formed",p.formed}});
     const auto features=astelia::bcFeatures(w,team,w.config->lookahead[team].plans);js::Args encoded;for(auto x:features)encoded.emplace_back(x);js::set(entry,"features",js::arr(std::move(encoded)));

@@ -2,6 +2,7 @@
 #include "formation.h"
 #include "search.h"
 #include "artillery.h"
+#include "controller_bridge.h"
 
 namespace astelia {
 namespace {
@@ -111,7 +112,10 @@ void coreStep(World& w) {
   shuffle();shuffle();
   for (size_t i=w.order.size();i>1;--i) {const size_t j=size_t(std::floor(shuffle()*double(i)));std::swap(w.order[i-1],w.order[j]);}
   if(w.config->rules==Rules::Game)for(auto i:w.order)gameReflexes(w,i);
-  for (auto i:w.order) decideUnit(w,i);
+  prepareControllers(w);
+  for (auto i:w.order) {if(w.controllers[w.units[i].team])controllerDecision(w,i);else decideUnit(w,i);}
+  if(w.config->decisionTrace&&!w.branch){w.decisionTrace.clear();for(auto i:w.order){const auto& u=w.units[i];const auto* t=w.resolve(u.target);
+    w.decisionTrace.push_back({u.id,t?t->id:0,u.team,w.state[i].decision,w.state[i].inReach});}}
   if(w.config->rules==Rules::Game){for(auto i:w.order){auto& s=w.state[i];s.castOk=true;const auto& sk=w.config->skills[w.units[i].team];
       const auto* t=w.resolve(w.units[i].target);if(!(s.prep>0)&&w.units[i].cooldown<=0&&s.inReach&&t&&t->alive&&s.energy>=s.cost&&windup(w,i)>0&&(sk.holdWave>0||sk.holdSync>0)&&!fireGate(w,i)){s.castOk=false;continue;}
       if(sk.waves>0&&!(s.prep>0)&&w.units[i].cooldown<=0&&s.inReach&&t&&t->alive&&s.energy>=s.cost&&windup(w,i)>0){

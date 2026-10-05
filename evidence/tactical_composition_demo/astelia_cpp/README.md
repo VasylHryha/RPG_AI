@@ -1,5 +1,7 @@
 # Astelia typed C++ tactical simulator
 
+S2 adds the outside-controller plug: typed copied observations, validated move/target decisions, and the closed `passthrough` (test-only), `nearest`, and `hold` registry on either side. Its engineering checks are **READY for Claude review**: see [S2_PLUG_REPORT.md](S2_PLUG_REPORT.md). The qualification below describes the archived pre-S2 build; the new build's identities and regression evidence are in [s2_plug_r2/S2_RECEIPT.json](s2_plug_r2/S2_RECEIPT.json).
+
 The full migration is **ENGINEERING_READY**. All 159 source-function responsibilities are implemented in typed modules. Fresh uncached elapsed speed-ups are **14.23x basic50**, **12.92x elite**, **9.50x elite-fast**, and **15.26x artillery rollout**, exceeding the owner's 3x minimum and 5x target in every fixed group. See [PORT_REPORT.md](PORT_REPORT.md) for behavior changes, work differences and measurements, and [qualification.json](native_qualification_r1/qualification.json) for the bound engineering evidence. Future AI experiments retain the original cross-family review prerequisite; this work changes no scientific status.
 
 Build and run the complete typed target from the repository root:
