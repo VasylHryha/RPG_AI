@@ -1,0 +1,79 @@
+{
+  "identity": {
+    "schema": 2,
+    "kind": "cpp",
+    "command": [
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/build/astelia_native"
+    ],
+    "files": {
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/build/astelia_native": "679a06557424b6e5b85177ae0bb7a50de8e81fa71077db494b27e957a8a597e1",
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_snapshot/bc_net.json": "d11e9a2da43cb0eb5b8b9539be4ab5834e750b4148121d56e632c75d7fb2e3e5",
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/result_cache.py": "3603b2606a17d03ba0ce58aa60a6427a6fb3be020d93af95a4a53b19bfd8f5b1",
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/result_schema.py": "cfcf4c6864a2e2a72e9cc2eae21240fa5c0977c6119b15badcb9f3a3b5e9a6a7",
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/build_admission.py": "75fe338c7f5c56cd586d9398a56b2fdc29e6a7d51aa59021ffd2c5b58398a5f5"
+    },
+    "build": {
+      "manifest_sha256": "11090ef84cece059579bf1802cd673e99d5edf0d49106f21383ab3b40df5e463",
+      "binary_sha256": "679a06557424b6e5b85177ae0bb7a50de8e81fa71077db494b27e957a8a597e1",
+      "sources": {
+        "src/native/host.cpp": "d211f0c519ff9b42ce20737d01ec21152276e69f08234f9515ffd1fa8d9dfa94",
+        "src/native/config_codec.cpp": "bd8df4d17e5bd78832e6166b3bb367bb8e1fd2f0d60f7d47c222d0dbcf5cc735",
+        "src/native/world.cpp": "87ec49d9f2205cae4984b0b06c9f756884c2881582c1a010c3ac4441e6b218e4",
+        "src/native/combat.cpp": "6aafd44c04139359c65d84a3931ddb324b0eb122297891965e0e0fece168ea74",
+        "src/native/spatial.cpp": "36232999e40db2bd261c0e757a85b97ecdda7b1186bbe670d50f9e08c8ce0741",
+        "src/native/combat_rules.cpp": "fdbd5a90723a9a238902025229604e0c573a3c5d4caa38e164305140496117f5",
+        "src/native/abilities.cpp": "4f3953fb384104ed31a6e5be552407eaf25c0f77c230205983722a7557aa17bd",
+        "src/native/player.cpp": "06916e242a984af10ac3e09ef2df06ad701847ffa4d74ade8ae17595b0333e21",
+        "src/native/formation.cpp": "64dbbc07256450e19189bba59fe8013a30942a4d0230e5f8b52f5a751bcfe7bf",
+        "src/native/formation_tables.cpp": "89ca27a08042c51a37c9381bcda328887d10c2e63147504b87f033bae7a65762",
+        "src/native/commander.cpp": "0db5a3cfefcbb97c201be018e55b1051dfa183b108ad56ffa3720b479c63e2c0",
+        "src/native/targeting.cpp": "3e7fffa60b6666af347584b61ec1880b9b9d5ca52fcaafdecfff5bff6d536007",
+        "src/native/coord_abilities.cpp": "12646a05ec0a550173dc7daa897c2bc5d19063e81fa2961601670e8042d1bb94",
+        "src/native/dodge.cpp": "444f2d6f6e926bca805f4d177f40f38fea30bc7915d526627f7f19bf4b1d67b2",
+        "src/native/decisions.cpp": "6605405b679ae7ab445c47f2c2042e78234a43325ece442c784fc70ea9d8008d",
+        "src/native/director.cpp": "78096462fab3672b812c42049e44303ac688aced67db39b935bc8e9723dcbb4c",
+        "src/native/network.cpp": "49beea40bed8ccec2115f710a4c663bd73c55177f0b210ed4031b0ed042c8cfb",
+        "src/native/network_tables.cpp": "56aa467c828967ae50bdf2cfac2afa9090c0942037812559aa92088d6da61eba",
+        "src/native/search.cpp": "0654f951cc474a82371288362c94236f21774d1d4f035b4f1be909c2e0dc7d45",
+        "src/native/artillery_prediction.cpp": "978ad06ba53a125dc876ea80c121fb03f25feb09abe44436f3c42f6f653e1e48",
+        "src/native/artillery.cpp": "78258a7904923317042daefe9c2224bbdf8efb87f8ee80a1c8f56aba28cacc1d",
+        "src/native/api.cpp": "f3c6e6b65cd35a1dbd98c63638775b19cf57465c24011e3017896ec5a89587a2",
+        "src/builtins.h": "7fcd2fba1ec05aa2b671cb2acb9012a11c73ca827c932c159dc7db787624aed6",
+        "src/formation_sim.h": "364dfea1b77be5743b14ba31a8368c11ea264a6ce513dffe7d32727a56e789c2",
+        "src/js_value.h": "bb028815111ddbab5ffe8aa3de98f1076b2420d605104336c970e332f783c32c",
+        "src/native/api.h": "cc7ce4b0607e5dc6b134e8169c3ea1dbeb0d7de0b5841736c92decae623cf61a",
+        "src/native/artillery.h": "ca419ce466ef179db05b91bc55ffbd692e3c88395c984d5788ba1d48f91bd673",
+        "src/native/catalog_data.h": "11b3bfc9fae461509df0c04480f2d46fc7ab6a92653bdfe685f9590937d05e60",
+        "src/native/config.h": "a07433f837adbf2f2f819dd59f1fa390ed0b018cfddaf9239d55359d0b729357",
+        "src/native/config_codec.h": "9fa1fd74ae4e1c3fa9d7727796727043bc8c755cb8af01201cd78fda089ac4e2",
+        "src/native/formation.h": "ed44d737410f829bdb35a579fac22292baf700fed14588f4cdffe8c6bb8b8471",
+        "src/native/formation_types.h": "c8c93366a082de03b0667c34ba5c0a50a4181f9f6de18d17ee7272f21a59fbf9",
+        "src/native/geometry.h": "7ce862ed036dd7c9a3cd78269648db33072888a5434c9e0d6528649a2e825364",
+        "src/native/nearest_kernel.h": "6db41f9ccf4960dd1b9448e34f02f0f39224fc27854a390f0042214ef059d26d",
+        "src/native/rng.h": "2fcc6197704f4de20bf4041136828b15fd30fe7bea9d83e8500254b95a625083",
+        "src/native/search.h": "10f29ee0a1e4fb25f7cf84a9b497d572a2efdcf4eee9a54d5aa0b94afaa31dea",
+        "src/native/search_types.h": "d3eb146f977efc9bfd8ed19aa65e9333696a71a4cd8d3e0a7466fe974cdbb058",
+        "src/native/spatial.h": "b5e7368e713a6696d48fb5843c88d0dbbb8b6981752ee8655a3cf6957c2181a1",
+        "src/native/types.h": "a2b81af066a0e391899a9f434ebc84a90ea4f23feadba3a3755aca2b4e4dee3b",
+        "src/native/world.h": "004ca7be9b74cc968b3f1c569e2917883aeae721b0afd4d471f36fe94f4309b8",
+        "src/v8_ieee754.h": "72a68fcc9d908180c9dff5eced89b1b12b4ad9df68b1886b0307ab82104b5855",
+        "build.py": "187b76f157ae1706785f6e927bbbbf4aee1cd205162fb909b3673413864bf583",
+        "generate_native_tables.cjs": "fb46f981d64c1294f26c7aae6e7e2d5f0f73edb039c4f10c460abe1242eab4b6",
+        "generate_native_network.py": "6fce283d1d63d4d57754140dec5d523346fdc5d2da05b890a1027da6df63704c",
+        "generate_native_catalog.cjs": "661c78a46ca967e6f020a55771811e3fc3e148a983d66a71b0ba557c4bc033b5",
+        "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_snapshot/bc_net.json": "d11e9a2da43cb0eb5b8b9539be4ab5834e750b4148121d56e632c75d7fb2e3e5",
+        "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_snapshot/formation_sim.js": "85b16e9b84b42b831dd2e64a7055474b6df902e4c1ffd635e6670fc6fb665733"
+      },
+      "engine": "native",
+      "scope": "native_complete_engine",
+      "sanitized": false,
+      "portable": false
+    }
+  },
+  "execution": {
+    "cached": 0,
+    "executed": 1,
+    "rejected": 0
+  },
+  "elapsed_seconds": 0.017165542000000034
+}

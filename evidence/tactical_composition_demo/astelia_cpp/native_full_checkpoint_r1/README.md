@@ -1,0 +1,1 @@
+Historical development checkpoint; its retained tests and sanitizer receipts apply to the source at that run, before the final record-layout correction. Final current checks are ../native_full_checkpoint_r3. These older sources were not fully archived and this receipt alone does not qualify the current engine.

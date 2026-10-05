@@ -79,7 +79,11 @@ The [subsequent self-review](PERFORMANCE_REWORK_REVIEW.md) found that those 50
 requests contain no elite, elite-fast or artillery rollout. The revised
 [qualification plan](PERFORMANCE_REWORK_PLAN.md) retains that gate and adds
 separate branching workloads, internal-work audits, independent geometry
-checks and build/cache admission. Current timing wrappers count outer steps
-only and do not enforce the minimum speed ratio. Neither these sources nor
+checks and build/cache admission. The pre-rework timing wrappers counted outer steps
+only and did not enforce the minimum speed ratio. Neither these sources nor
 the old sample prove that one particular typed layout is optimal; the plan
 now checks that choice at an early native-core checkpoint.
+
+## Measured typed rewrite outcome
+
+The completed native engine uses contiguous typed hot records and conditional pools, independent reusable branches, immutable compiled tables/network and indexed spatial buckets. The final corrected production-kernel/complete-copy probe selects records over columns for this fixture. Dispatch specialization confounded earlier probes; their column-adoption inference is withdrawn. All four unchanged workload groups exceed the 5x elapsed target, with 9.498x–15.261x observed ratios and positive real branch/inference/rollout work. See [PORT_REPORT.md](PORT_REPORT.md) for exact samples, CPU/load, work differences, fixed-state costs and behavior changes. These measurements support this source/build and machine; the cited general C++ guidance alone never established these ratios.

@@ -257,19 +257,7 @@ cannot be claimed by suppressing an error or skipping a mechanic.
 
 ## 6. Implementation stages after approval
 
-2026-10-05 implementation checkpoint: the typed core, game combat, abilities,
-player/spawn lifecycle, formations/non-search commanders and combo/order controls
-are implemented and have focused checks. See
-[native_combat_checkpoint_r1](native_combat_checkpoint_r1/README.md),
-[native_formation_checkpoint_r1](native_formation_checkpoint_r1/README.md), and
-[native_director_checkpoint_r1](native_director_checkpoint_r1/README.md).
-These are development checkpoints; full coverage and timing remain pending.
-The historical novice-only 15.6309x diagnostic does not qualify the latest source
-or full engine. The first layout probe was weak and B remains unaccepted.
-The owner explicitly directed continued full migration and rework; C–E are
-implementation prototypes while the final layout remains revisable. Production
-kernel and equivalent complete-copy probes must support the layout selection
-before F qualification. No independent engineering acceptance is claimed.
+2026-10-05 final engineering checkpoint: A–E are implemented and F's engineering gates pass. All 159 function responsibilities, table/combo callbacks and native API paths have module/check ownership. Production records pass the corrected equal-caller/runtime-filter geometry and complete-authority copy gates in [native_costs_r4](native_costs_r4/README.md). The earlier probes were dispatch-biased; their selection claim is withdrawn, and raw failed diagnostics remain unchanged. The final source passes 158 checks, combined address/undefined-behavior contracts, all 623 requests, twenty complete invariant-checked traces and 27 fresh deterministic repeats. The separate work audit verifies configured branch horizons/budgets and actual search/rollout execution. The four elapsed speed-ups are 14.228x basic50, 12.918x elite, 9.498x elite-fast and 15.261x artillery rollout. The authoritative engineering receipt is [qualification.json](native_qualification_r1/qualification.json). Whole-fight parity remains relaxed; natural work and policy differences are recorded. No independent acceptance or scientific promotion is claimed, and the cross-family review remains a future experiment prerequisite, not a pause in the authorized migration.
 
 | Stage | Deliverable | Completion gate | Work estimate |
 |---|---|---|---|
@@ -439,3 +427,5 @@ the status text was not refreshed alongside staged implementation and the
 owner continuation instruction. Corrected above without accepting B or relaxing
 its production-kernel/complete-copy gate. This documentation correction required
 no simulation run.
+
+2026-10-05 final self-audit: the record/column probe initially mixed constant-specialized direct kernels with a generic production wrapper and repeated candidate acquisition. Cause: the probe matched outputs/counts but failed to hold caller dispatch/filter specialization constant. Corrected with identical runtime query parameters and caller work; production selects records after the corrected geometry and complete-copy gates. The unnecessary mirrored geometry cache was removed. Failed diagnostics remain retained without qualification claims. Current status prose and run instructions now point to the typed target and bound final evidence rather than the historical novice-only checkpoint.

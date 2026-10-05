@@ -1,0 +1,31 @@
+{
+  "mode": "alone",
+  "opponent": "gamepack",
+  "options": {
+    "seed": 7,
+    "scenario": "mirror",
+    "duration": 0.03333333333333333,
+    "swapSides": true,
+    "abilities": true,
+    "sandboxAbilities": true,
+    "ai": [
+      {
+        "brain": "rules",
+        "lookahead": {
+          "extends": "mind",
+          "budget": 4
+        }
+      },
+      {}
+    ],
+    "rules": "game",
+    "army": {
+      "melee": 2,
+      "ranged": 4,
+      "artillery": 2
+    },
+    "width": 650
+  },
+  "trace": true,
+  "debug": true
+}
