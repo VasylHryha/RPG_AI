@@ -1,0 +1,90 @@
+{
+  "status": "PARTIAL_DEVELOPMENT_EVIDENCE_RECONSTRUCTED_NOT_READY",
+  "complete_stages": [
+    "A",
+    "B"
+  ],
+  "partial_stage": "C",
+  "partial_arm": "resonator",
+  "partial_generations": 9,
+  "raw_fights": 66506,
+  "fresh_fights": 66506,
+  "cache_hits": 0,
+  "replay_capture_fights": 8,
+  "total_executed_fights": 66514,
+  "candidates": 1680,
+  "budgets_by_stage": {
+    "A": {
+      "resonator": 9766,
+      "morale": 9766,
+      "pushpull": 9766
+    },
+    "B": {
+      "resonator": 9766,
+      "morale": 9766,
+      "pushpull": 9766
+    },
+    "C": {
+      "resonator": 5510,
+      "morale": 0,
+      "pushpull": 0
+    }
+  },
+  "controller_failures": 0,
+  "planning_counters": {
+    "forks": 0,
+    "search_calls": 0,
+    "artillery_rollouts": 0
+  },
+  "both_orientations_verified": true,
+  "CMA_ask_tell_reconstructed": true,
+  "complete_validation_endpoints": 12,
+  "novice_A_B_gates_passed": true,
+  "replay_equality": [
+    {
+      "file": "A_resonator.html",
+      "summary_matches": true,
+      "raw_sha256": "b96dcd1e1deb38437417537aebf0936570eec71ae88025863230f940194e3b0e"
+    },
+    {
+      "file": "A_morale.html",
+      "summary_matches": true,
+      "raw_sha256": "9445c3eeab6d4335ce84a65c6de873f9c496d3bc81afa9ec5ce8b966b1aace9c"
+    },
+    {
+      "file": "A_pushpull.html",
+      "summary_matches": true,
+      "raw_sha256": "1e2f4e928e9841fbc10fc413fd42103fa5acc78e1f5dfbf3f1a2ac31413731a6"
+    },
+    {
+      "file": "A_nearest.html",
+      "summary_matches": true,
+      "raw_sha256": "3d8f2fdb1d5781d2025b9970acc91bfa81b960226aae0c0272d0ff62a1cf6b89"
+    },
+    {
+      "file": "B_resonator.html",
+      "summary_matches": true,
+      "raw_sha256": "7fda6f56d6e1c0310067c126f1a19d577b8a20e28300d95083850e8da61f8c82"
+    },
+    {
+      "file": "B_morale.html",
+      "summary_matches": true,
+      "raw_sha256": "98398f40d59c7a5da6763d1efebf3bef12a2133bcf86d018f474834a15c4ed17"
+    },
+    {
+      "file": "B_pushpull.html",
+      "summary_matches": true,
+      "raw_sha256": "804c6c02ca1f5b65e3deebda4e6845afdc58f6058a3de82684620de4cd67da4c"
+    },
+    {
+      "file": "B_nearest.html",
+      "summary_matches": true,
+      "raw_sha256": "492fd5d2fc0c9c60300136dfa30962073de93c56350cfbfff8ce91e2c72e3060"
+    }
+  ],
+  "current_run_inputs_unchanged": true,
+  "judging_seeds_used": false,
+  "C_validation_and_planning": "not_run: conservative runtime cap",
+  "auditor_sha256": "769829eb78f2a1fec10f5edbada70ba83b73c99994a426568f04318fa139f743",
+  "analysis_added_after_run": true
+}
