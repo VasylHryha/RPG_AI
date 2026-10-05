@@ -36,6 +36,8 @@ These are the author's transcriptions and readings, not primary records. Any ite
 
    The drafter writes the exact 0h design (`DESIGN_0H.md`) for a Codex review. No growth experiment, development run on judging entropy or recorded run is authorized by this. C6 still waits for the owner's choice (W1).
 
+18. 2026-10-05, on the drafter listing (1) the 0h section-10 development run and (2) the 0g v2 replay against regular plus a stage-C rerun as open owner decisions: "so why it open ... isn't those our plan?". The author reads this as the owner's go-ahead for both. **(1)** The 0h section-10 development run (DESIGN_0H 5.1), starting with its 200-episode cost projection; it starts after the C++ performance recheck, so code does not change during the run, and the 24-hour report line stays. **(2)** The 0g v2 diagnostic replay and a stage-C rerun with a larger runtime allowance. Neither is a registered or recorded run.
+
 ## What was done (all committed; every run was one-shot with its own entropy)
 
 | Work | Commits | Result (verdict words are exploratory, not milestone verdicts) |
