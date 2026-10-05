@@ -1,6 +1,8 @@
 READY
 
-S2 engineering implementation, 2026-10-05, under decision 0028 and the approval recorded in [S2_PLUG_REQUEST_CODEX.md](S2_PLUG_REQUEST_CODEX.md). Ready for Claude's independent review; this is not acceptance of an AI controller, an experiment, or a milestone. Only `passthrough`, `nearest`, and `hold` are registered. No tuning or AI experiment was performed.
+S2 engineering implementation, 2026-10-05, under decision 0028 and the approval recorded in [S2_PLUG_REQUEST_CODEX.md](S2_PLUG_REQUEST_CODEX.md). Only `passthrough`, `nearest`, and `hold` are registered. No tuning or AI experiment was performed. Independent Claude review is still required; this is not acceptance of an AI controller, an experiment, or a milestone.
+
+The results below bind the initial implementation at `65c7dab4d9196a4d58cbee084122879b95598493`. The owner-requested adversarial recheck repaired four gaps and added stronger evidence checks. See [S2_RECHECK_REPORT.md](S2_RECHECK_REPORT.md) for the current build, fresh validation, and explicit special-player-body limitation. The original receipts and archives remain unchanged.
 
 ## Acceptance results
 
@@ -36,7 +38,7 @@ For real external controllers the engine disables the side's pack, which gates l
 
 Invalid numeric decisions fail closed to hold/no target; finite goals are clipped to `[0,width] × [0,height]`, multiplier to `[0,1]`, and stop distance to at least zero. Target IDs resolve to current generation-checked handles only if the unit is living and an enemy. Public IDs are monotonically allocated and never reused. The engine computes release relation and in-range state from the role and body. A current block guard holds movement and release, as in the built-in decision path.
 
-Cumulative `damageDealt` and `damageTaken` count actual HP removed, after protection/block/shield and capped by remaining HP, for both teams. They include friendly damage when the game's rules produce it. These new counters do not replace the historical side-0 `dealt` telemetry. They reset with a new unit, survive branch copies, and contain no averaging or time constant. Controllers compute recent averages themselves. Native hunter roles map to melee, archer/player roles to ranged, preserving the specified three-role view.
+Cumulative `damageDealt` and `damageTaken` count actual HP removed, after protection/block/shield and capped by remaining HP, for both teams. They include friendly damage when the game's rules produce it. These new counters do not replace the historical side-0 `dealt` telemetry. They reset with a new unit, survive branch copies, and contain no averaging or time constant. Controllers compute recent averages themselves. Native hunter roles map to melee and archer/player roles to ranged in the observation. In the repaired build, observing an enemy special player remains supported, but assigning nearest or hold to a side containing that body is rejected: its separate movement/weapon brain cannot preserve the narrow external-decision contract. Privileged passthrough still supports it.
 
 Worlds own the controllers. A branch clones controller state and RNG and clears its observation scratch storage; it cannot mutate its parent. An instrumented hold spy exists only inside the contract executable to test callback ordering and clone isolation; it is not a registered controller or combat arm.
 

@@ -37,6 +37,7 @@ void prepareControllers(World& w){
   }
 }
 void applyControllerDecision(World& w,uint32_t i,UnitDecision decision){
+  if(w.units[i].role==Role::Player)throw std::invalid_argument("S2 external controllers do not support the special player body");
   auto& u=w.units[i];auto& s=w.state[i];s.decision={};s.inReach=false;
   // Invalid numeric decisions fail closed to hold/no target; no NaNs reach physics.
   if(!std::isfinite(decision.x)||!std::isfinite(decision.y)||!std::isfinite(decision.multiplier)||!std::isfinite(decision.stop))decision={u.pos.x,u.pos.y,0,0,0};

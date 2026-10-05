@@ -8,8 +8,8 @@ struct Summary {
   uint32_t monsterDeaths,hunterKills,survivors,enemySurvivors;
 };
 struct Opponent { Brain brain; Formation formation; };
-struct Profile {Brain brain;Formation formation;CombatSkills skills;Lookahead lookahead;AbilityThresholds abilities;std::vector<Plan> disabledPlans;Plan fewPlan;};
-inline Profile buildProfile(const Config& c,uint8_t team){if(team>1)throw std::invalid_argument("invalid profile team");return {c.brains[team],c.formations[team],c.skills[team],c.lookahead[team],c.abilityThresholds[team],c.disabledPlans[team],c.fewPlan[team]};}
+struct Profile {Brain brain;Formation formation;CombatSkills skills;Lookahead lookahead;AbilityThresholds abilities;std::vector<Plan> disabledPlans;Plan fewPlan;ControllerProfile controller;};
+inline Profile buildProfile(const Config& c,uint8_t team){if(team>1)throw std::invalid_argument("invalid profile team");return {c.brains[team],c.formations[team],c.skills[team],c.lookahead[team],c.abilityThresholds[team],c.disabledPlans[team],c.fewPlan[team],c.controllers[team]};}
 const std::vector<std::string>& opponentPool();
 Opponent enemyOf(const std::string& name,const Formation* overrideFormation=nullptr);
 std::vector<std::string> drawOpponents(double seed,uint32_t rounds,bool withoutReplacement=false);

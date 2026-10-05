@@ -54,6 +54,8 @@ const UnitHot* World::resolve(UnitRef r) const {
 }
 UnitRef World::add(uint8_t team,Role role,Vec2 pos,uint32_t kind) {
   if (team>1 || size_t(role)>=config->roles.size() || nextId==0) throw std::invalid_argument("invalid unit identity or role");
+  if(role==Role::Player&&controllers[team]&&config->controllers[team].name!="passthrough")
+    throw std::invalid_argument("S2 external controllers do not support the special player body");
   uint32_t slot; uint32_t generation=1;
   if (free_.empty()) {
     if (units.size()>=invalidSlot) throw std::length_error("unit slot limit");
@@ -269,7 +271,9 @@ void World::reclaim() {
 }
 void World::copyAuthorityFrom(const World& p) {
   decisionTrace.clear();
-  for(uint8_t side=0;side<2;++side){controllers[side]=p.controllers[side]?p.controllers[side]->clone():nullptr;observations[side]={};}
+  for(uint8_t side=0;side<2;++side){auto cloned=p.controllers[side]?p.controllers[side]->clone():nullptr;
+    if(p.controllers[side]&&!cloned)throw std::logic_error("controller clone returned null");
+    controllers[side]=std::move(cloned);observations[side]={};}
   config=p.config;dt=p.dt;duration=p.duration;brains=p.brains;forced=p.forced;forcedTeam=p.forcedTeam;hasForced=p.hasForced;thinkTeams=0;work=p.work;branches_=p.branches_;
   state=p.state;tactical=p.tactical;packs=p.packs; active=p.active; free_=p.free_;
   shots=p.shots; shells=p.shells; fields=p.fields; dots=p.dots; hitLog=p.hitLog;

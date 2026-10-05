@@ -73,3 +73,23 @@ def test_invalid_controller_profiles_fail_closed(controller_build, profile):
     row = json.loads(subprocess.check_output([str(controller_build)],
         input=json.dumps(req)+'\n', text=True))
     assert 'error' in row
+
+
+@pytest.mark.parametrize('name', ['nearest', 'hold'])
+def test_special_player_body_rejected_on_controlled_side(controller_build, name):
+    req = {'mode': 'alone', 'options': {'scenario': 'skirmish', 'rules': 'game',
+        'duration': .1, 'ai': [{}, {'controller': name}]}}
+    row = json.loads(subprocess.check_output([str(controller_build)],
+        input=json.dumps(req)+'\n', text=True))
+    assert 'special player body' in row['error']
+
+
+@pytest.mark.parametrize('side,name', [(0, 'nearest'), (1, 'passthrough')])
+def test_supported_skirmish_control_remains_available(controller_build, side, name):
+    ai = [{}, {}]
+    ai[side] = {'controller': name}
+    req = {'mode': 'alone', 'options': {'scenario': 'skirmish', 'rules': 'game',
+        'duration': .1, 'ai': ai}}
+    row = json.loads(subprocess.check_output([str(controller_build)],
+        input=json.dumps(req)+'\n', text=True))
+    assert 'error' not in row

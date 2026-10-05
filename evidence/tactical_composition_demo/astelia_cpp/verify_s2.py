@@ -15,10 +15,13 @@ import subprocess
 import sys
 import tempfile
 import time
+import threading
+import lzma
 
 from benchmark import measure
 from build_admission import admit
 from result_schema import validate_rows
+from pack_s2 import check_archives, atomic_write
 
 ROOT = pathlib.Path(__file__).resolve().parent
 POOL = ['line', 'wide line', 'wedge', 'box', 'column', 'loose', 'screen',
@@ -72,6 +75,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--output', type=pathlib.Path, required=True)
     ap.add_argument('--workers', type=int, default=4)
+    ap.add_argument('--recheck-of', type=pathlib.Path,
+                    help='fresh executions; reuse only byte-identical verified archives')
     args = ap.parse_args()
     if args.workers < 1:
         ap.error('workers must be positive')
@@ -82,18 +87,55 @@ def main():
     tests = sorted(ROOT.glob('test_*.py'))
     receipt = {'status': 'RUNNING', 'scope': 'S2 exploratory engineering only',
                'checks': {}, 'outputs': {}}
+    previous, archives = None, {}
+    lock = threading.Lock()
 
     def save():
         dump(output/'S2_RECEIPT.json', receipt)
 
     def store(name, raw):
-        path = output/(name+'.gz')
-        compress(path, raw)
-        receipt['outputs'][path.name] = {'sha256': sha(path.read_bytes()),
-                                      'raw_sha256': sha(raw), 'raw_bytes': len(raw)}
+        logical = name+'.gz'
+        if previous is None:
+            path = output/logical
+            path.parent.mkdir(exist_ok=True)
+            compress(path, raw)
+            row = {'sha256': sha(path.read_bytes()), 'raw_sha256': sha(raw), 'raw_bytes': len(raw)}
+        else:
+            digest = sha(raw)
+            # Timed metrics vary. All deterministic fight/request captures must
+            # reproduce the original bytes as well as matching their paired arm.
+            if not name.startswith('cost_') and digest != previous['outputs'][logical]['raw_sha256']:
+                raise RuntimeError('historical stdout regression: '+logical)
+            if digest in archives:
+                row = dict(archives[digest], archive_receipt=receipt['recheck_of'])
+            else:
+                location = 'stdout/'+digest+'.xz'
+                data = lzma.compress(raw, preset=6)
+                with lock:
+                    (output/'stdout').mkdir(exist_ok=True)
+                    if not (output/location).exists():
+                        atomic_write(output/location, data)
+                row = {'path': location, 'sha256': sha(data), 'raw_sha256': digest,
+                       'raw_bytes': len(raw)}
+            row['fresh_execution_or_request_capture'] = True
+        with lock:
+            receipt['outputs'][logical] = row
 
     save()
     try:
+        if args.recheck_of:
+            previous_path = args.recheck_of.resolve()/'S2_RECEIPT.json'
+            original = previous_path.read_bytes()
+            previous = json.loads(original)
+            print('archive: verify every original logical binding before reuse', flush=True)
+            verified = check_archives(args.recheck_of, previous)
+            for row in previous['outputs'].values():
+                archives[row['raw_sha256']] = row
+            receipt['recheck_of'] = {'receipt': str(previous_path.relative_to(ROOT)), 'sha256': sha(original)}
+            receipt['checks']['original_archives'] = {'unique': len(verified),
+                'logical': len(previous['outputs']), 'all_verified': True}
+        source_files = [*tests, ROOT/'verify_s2.py', ROOT/'pack_s2.py', ROOT/'native_controller_contract.cpp']
+        receipt['source_hashes'] = {str(p.relative_to(ROOT)): sha(p.read_bytes()) for p in source_files}
         print('tests: original 158 checks plus S2 contracts', flush=True)
         command = [str(ROOT.parents[2]/'.venv/bin/python'), '-m', 'pytest', '-q', '-x',
                    *map(str, tests)]
@@ -108,8 +150,6 @@ def main():
             raise RuntimeError('test batch failed')
         binary = ROOT/'build/astelia_native'
         receipt['identity'] = admit(binary)
-        receipt['source_hashes'] = {str(p.relative_to(ROOT)): sha(p.read_bytes())
-            for p in [*tests, ROOT/'verify_s2.py', ROOT/'native_controller_contract.cpp']}
         contract = ROOT/'build/native_controller_contract'
         receipt['contract_identity'] = admit(contract)
         receipt['checks']['fence_and_validation'] = json.loads((output/'controller_contract.stdout.txt').read_text().splitlines()[0])
@@ -141,7 +181,7 @@ def main():
             for label, host in [('admitted', baseline), ('s2', binary)]:
                 run = subprocess.run([str(host)], input=payload, capture_output=True, check=True)
                 rows = [json.loads(s) for s in run.stdout.splitlines()]
-                if len(rows) != 80 or any(validate_rows(r['fight'], [row]) != 'completed'
+                if run.stderr or len(rows) != 80 or any(validate_rows(r['fight'], [row]) != 'completed'
                     for r, row in zip(references, rows)):
                     raise RuntimeError('reference run incomplete')
                 reference_outputs.append(run.stdout)
@@ -181,10 +221,8 @@ def main():
             index, (side, swapped, level, opponent, request, plugged) = item
             before, after = execute(binary, request), execute(binary, plugged)
             # Both complete raw streams retained, with per-run byte hashes.
-            folder = output/'plumbing'
-            folder.mkdir(exist_ok=True)
-            compress(folder/f'{index:03d}_builtin.jsonl.gz', before)
-            compress(folder/f'{index:03d}_passthrough.jsonl.gz', after)
+            store(f'plumbing/{index:03d}_builtin.jsonl', before)
+            store(f'plumbing/{index:03d}_passthrough.jsonl', after)
             return {'index': index, 'side': side, 'swapSides': swapped, 'level': level,
                     'opponent': opponent, 'builtin_sha256': sha(before),
                     'passthrough_sha256': sha(after), 'byte_identical': before == after,
@@ -220,6 +258,11 @@ def main():
                 store(f'first_tick_{index:02d}_{int(swapped)}_nearest.jsonl', after)
                 decisions = [[u for u in json.loads(raw.splitlines()[1])['state']['decisions']
                               if u['team'] == 1] for raw in (before, after)]
+                expected_ids = {u['id'] for u in json.loads(before.splitlines()[0])['state']['units']
+                                if u['team'] == 1 and u['alive']}
+                if not expected_ids or any(len(arm) != len(expected_ids) or
+                        {u['id'] for u in arm} != expected_ids for arm in decisions):
+                    raise RuntimeError('incomplete/duplicate other-side first-tick decisions')
                 other_results.append({'opponent': opponent, 'swapSides': swapped,
                     'request': request, 'controller_request': plugged, 'equal': decisions[0] == decisions[1]})
                 for seed_index in range(3):
@@ -275,6 +318,14 @@ def main():
             raise RuntimeError('nearest cost exceeds requested cap')
         if admit(binary) != receipt['identity']:
             raise RuntimeError('build changed during verification')
+        if previous is not None:
+            if sha((args.recheck_of/'S2_RECEIPT.json').read_bytes()) != receipt['recheck_of']['sha256']:
+                raise RuntimeError('original receipt changed during recheck')
+            if receipt['outputs'].keys() != previous['outputs'].keys():
+                raise RuntimeError('fresh output coverage differs from original batch')
+            receipt['checks']['historical_stdout'] = {'count': sum(not name.startswith('cost_')
+                for name in receipt['outputs']), 'byte_identical': True,
+                'timed_capture_exception': 'cost summaries retained; timing is freshly measured'}
         for name, expected in receipt['source_hashes'].items():
             if sha((ROOT/name).read_bytes()) != expected:
                 raise RuntimeError('harness/test changed during verification')

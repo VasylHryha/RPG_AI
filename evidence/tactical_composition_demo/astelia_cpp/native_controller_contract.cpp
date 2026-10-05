@@ -23,12 +23,12 @@ void fieldContract(const ControllerObservation& o){
 }
 class Recording final:public Controller {
 public:
-  int prepares=0;std::vector<UnitId> calls;double firstX=0;
+  int prepares=0;std::vector<UnitId> calls;double firstX=0;bool nullClone=false;
   using Controller::Controller;
   void prepare(const ControllerObservation& o)override{++prepares;firstX=o.units.front().x;}
   UnitDecision decide(const ControllerObservation& o,UnitId id)override{calls.push_back(id);require(o.units.front().x==firstX,"snapshot mutated during decisions");
     for(const auto& u:o.units)if(u.id==id)return {u.x,u.y,0,0,0};throw std::runtime_error("missing observed self");}
-  std::unique_ptr<Controller> clone()const override{return std::make_unique<Recording>(*this);}
+  std::unique_ptr<Controller> clone()const override{return nullClone?nullptr:std::make_unique<Recording>(*this);}
   double draw(){return random_();}
 };
 Config empty(){auto c=sandboxConfig();c.army={0,0,0};c.controllers[0].name="hold";return c;}
@@ -61,16 +61,24 @@ int main(){try{
   require(observed&&observed->prepares==1&&observed->calls==expected,"prepare/order contract");
   auto branch=fork(w);auto* copied=dynamic_cast<Recording*>(branch.world().controllers[0].get());require(copied&&copied!=observed&&copied->calls==observed->calls,"controller state not cloned");
   require(copied->draw()==observed->draw(),"branch RNG not copied");coreStep(branch.world());require(observed->prepares==1&&copied->prepares==2,"branch state aliases parent");
+  observed->nullClone=true;bool failedClone=false;try{auto failed=fork(w);}catch(const std::logic_error& e){failedClone=std::string(e.what())=="controller clone returned null";}
+  require(failedClone&&observed->prepares==1,"null clone silently fell back to built-in brain");observed->nullClone=false;
+  {auto recovered=fork(w);require(recovered.world().controllers[0]!=nullptr,"failed clone leaked branch lease");}
   const auto external=makeController({"nearest",{}},123,0);const auto hold=makeController({"hold",{}},123,1);
   ControllerObservation test{0,.1,650,700,{{1,0,ObservedRole::Melee,100,100,0,0,10,10,5,10,20},{2,1,ObservedRole::Ranged,200,100,0,0,10,10,6},{3,1,ObservedRole::Artillery,150,100}}};
   const auto nearestDecision=external->decide(test,1);require(nearestDecision.target==3&&nearestDecision.x==150&&nearestDecision.multiplier==1&&nearestDecision.stop==23,"nearest floor decision");
   const auto holdDecision=hold->decide(test,2);require(holdDecision.x==200&&holdDecision.multiplier==0&&!holdDecision.target,"hold decision");
   auto cc=gameConfig();cc.army={2,4,2};cc.brains[0]=Brain::Rules;cc.controllers[0].name="nearest";cc.skills[0].abilities=AbilityPolicy::Coordinated;cc.lookahead[0].enabled=true;
   auto controlled=create(cc);require(!controlled.packs[0].enabled&&controlled.config->skills[0].abilities==AbilityPolicy::Auto,"external planning/abilities policy");
+  const auto profile=buildProfile(*controlled.config,0);require(profile.controller.name=="nearest"&&profile.controller.params.empty()&&buildProfile(*controlled.config,1).controller.name.empty(),"native profile dropped controller");
   coreStep(controlled);require(controlled.work->searchCalls==0&&controlled.work->artilleryRollouts==0,"external side ran pack planners");
   auto nearestClone=external->clone();require(nearestClone->decide(test,1).target==3,"nearest clone");
   for(auto role:{Role::Melee,Role::Ranged,Role::Artillery}){w.units[a.slot].role=role;applyControllerDecision(w,a.slot,{100,100,0,0,w.units[replacement.slot].id});
     require(w.state[a.slot].decision.release==(role==Role::Melee?Release::Melee:role==Role::Ranged?Release::Direct:Release::Artillery),"role release relation");}
   w.state[a.slot].guardUntil=w.time+1;applyControllerDecision(w,a.slot,{200,200,1,0,w.units[replacement.slot].id});require(!w.state[a.slot].decision.move&&w.state[a.slot].decision.release==Release::None,"guard body reflex changed");
+  const auto sizeBefore=w.units.size();bool rejectedPlayer=false;try{w.add(0,Role::Player,{300,300});}catch(const std::invalid_argument&){rejectedPlayer=true;}
+  require(rejectedPlayer&&w.units.size()==sizeBefore,"unsupported player body mutated external world");
+  w.units[a.slot].role=Role::Player;rejectedPlayer=false;try{applyControllerDecision(w,a.slot,{100,100,0,0,0});}catch(const std::invalid_argument&){rejectedPlayer=true;}
+  require(rejectedPlayer,"direct bridge accepted special player weapon path");
   std::cout<<"native controller contracts passed\n";return 0;
 }catch(const std::exception& e){std::cerr<<e.what()<<'\n';return 1;}}
