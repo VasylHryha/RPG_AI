@@ -1,6 +1,6 @@
-# Design 0h, revision 4: the bootstrap of atoms and the library (DRAFT for a Codex re-review; no growth experiment run)
+# Design 0h, revision 5: the bootstrap of atoms and the library (DRAFT for a Codex re-review; no growth experiment run)
 
-Revision 4 answers the third review (`docs/reviews/tactical_0h_design_review_codex_r3.md`, CHANGES_REQUIRED, 10 findings R3-1 … R3-10). Revision 3 answered the second (`docs/reviews/tactical_0h_design_review_codex_r2.md`, R2-1 … R2-10), and revision 2 the first (`docs/reviews/tactical_0h_design_review_codex.md`, 14 findings). The self-audits are in section 14. Earlier revisions are in git history (`85c656b`, `fc55cd2`, `b323803`).
+Revision 5 answers the fourth review (`docs/reviews/tactical_0h_design_review_codex_r4.md`, CHANGES_REQUIRED, R4-1 … R4-9). Revision 4 answered the third (`…_r3.md`, R3-1 … R3-10), revision 3 the second (`…_r2.md`, R2-1 … R2-10) and revision 2 the first (`…codex.md`, 14 findings). The self-audits are in section 14. Earlier revisions are in git history (`85c656b`, `fc55cd2`, `b323803`, `69cc18c`).
 
 **Scope:** the **bootstrap** only: atoms grow in one continuously running medium, are qualified structurally, and are copied into a snapshot library.
 - Combinations, bonds, duplicates, library trends, yardstick efficiency claims and background claims are **deferred**.
@@ -9,8 +9,8 @@ Revision 4 answers the third review (`docs/reviews/tactical_0h_design_review_cod
 **Authorization:** decision 0028 item 17 covers engine parts and drafting. The development run of section 10 needs the owner's go-ahead after a passing Codex review.
 
 **Dependencies:**
-- the world `growing_shapes/world` (READY, reviewed APPROVE_WITH_NOTES), plus its additive `remember_static` task (being added);
-- the medium `growing_shapes/medium` (being built).
+- the world `growing_shapes/world` with the additive `remember_static` (task id 7): READY, reviewed APPROVE_WITH_NOTES, merged at `9a797db`;
+- the medium `growing_shapes/medium`: READY, reviewed APPROVE_WITH_NOTES (`growing_shapes_review_claude/MEDIUM_REVIEW.md`). **Its design-specific follow-up batch must be closed before section 10** (R4-2): a per-element gain inside the full driven RK4 RHS; world-step sampling with carried active-site histories (a strength change does not invalidate samples); undirected internal-pair cost; offset-aware coverage and partner eligibility; spiral placement. Engine readiness is not 0h implementation readiness.
 
 The world's constants used here: dt_w = 0.1 s, 160 decisions = 16 s per episode, arena [−10, 10]², K ∈ {3, …, 8}.
 
@@ -48,7 +48,7 @@ No arm is called "theory alone". The **task-blind arm** never uses a task score 
 
 **Sensors:**
 - 8 sensor sites, evenly on a ring of radius 4 m.u. around the medium origin.
-- At each **episode start**, the episode's items are assigned to sites by a permutation drawn from the episode seed. The assignment holds for the episode, and unused sites get k = 0.
+- **Logical slots and physical sites** (R4-3): each task's items occupy **logical slots** 0 … (number of items − 1), in the order the table below gives (perceive and choose: enemies in world id order; move: the target record = slot 0; remember_static: the enemy = slot 0). At each **episode start**, a permutation π_e of the 8 physical sites, drawn from the episode seed, maps logical slot j to physical site π_e(j). **This applies to every task**, single-item tasks included. The assignment holds for the episode, unused sites get k = 0, and the realized assignment is recorded for replay. **The per-task strength formulas in the table govern** every task.
 - A site whose item changes between episodes jumps in ψ. Windows that cross that jump record lower PLV. This is accepted and declared.
 
 **Per-task input binding** (legal observation fields only; R3-4):
@@ -89,7 +89,7 @@ Observations are held over the 5 substeps.
 | perceive | angle β; magnitude = clip(10 · ln(1/C), 0, √800) (a fixed monotone distance decode) | angle 0, magnitude 0 (scored as error) |
 | move | angle β; magnitude min(1, C/0.8) (coherence-controlled speed) | angle 0, magnitude 0 |
 | remember_static | angle β; magnitude 0 | angle 0, magnitude 0 |
-| choose | choice = the live item with the smallest |wrap(β − α_s)|, ties by lowest id; angle 0; magnitude 0 | the lowest live id (declared default) |
+| choose | choice = the live item with the smallest abs(wrap(β − α_s)), ties by lowest id; angle 0; magnitude 0 | the lowest live id (declared default) |
 
 ## 4. Initial state, update order and arms
 
@@ -101,26 +101,26 @@ Observations are held over the 5 substeps.
 - ids 0-23, from a monotone id counter.
 
 **Sampling contract** (R3-2):
-- Sample k is recorded at the end of world step k (t_k = 0.1 k, after integration), holding θ_i, and per site ψ_s and k_s.
+- **Indexed contract** (R4-1): at world step k, after integration, sample k = (t_k, θ_i(t_k), and per site ψ_s(t_k), k_s(t_k)) is **appended first**. Every statistic of step k then uses samples **k − 99 … k** (the last 100, the current one included), pairing θ_i(t_j) with ψ_s(t_j) at the same t_j; the rate estimate also uses the endpoint k − 100. Adaptation, then timers and coverage, then (at their times) growth and qualification, all use this same window.
 - **Rate estimate:** ω̂_i = (θ_i(t_k) − θ_i(t_{k−100})) / 10 s, unwrapped. It needs both endpoints (101 samples).
-- **Gain signal:** P_i is defined only if i has ≥ 101 samples and s* was active in ≥ 80 of the last 100; then it is the PLV over s*'s active samples. Otherwise P_i is undefined and **g_i is unchanged** that step (also when no drive reaches i).
+- **Gain signal:** P_i is defined only if i has samples k − 100 … k and s* (the site with the largest k_s · K at step k; ties by lowest site id) was active in ≥ 80 of samples k − 99 … k; then P_i = PLV(θ_i, ψ_s*) over those active samples. **Otherwise, including when no active site reaches i, P_i is undefined and g_i is unchanged this step** (the only no-drive rule).
 - **Coverage** additionally requires the candidate element to have ≥ 101 samples.
 - **Reward eligibility:** e_i is the mean of the defined P_i values in the episode, and 0 if none is defined.
 - g is clipped to [0, 2] after every update, including reward updates.
 
 **Per world step:**
-1. read the observation;
-2. 5 × (drive + one C4 RK4 step, with neighbours held per step);
-3. adaptation (section 4, below);
-4. append samples to the histories;
+1. read the observation and set the drives;
+2. 5 × (one RK4 step of the full driven C4 RHS, with neighbours held per step);
+3. append sample k (indexed contract);
+4. adaptation (below), using samples up to and including k;
 5. update the timers (section 5);
 6. every τ_l = 20 s (200 world steps), run the growth check (section 5);
 7. every 60 s, run the qualification check (section 6);
 8. decode and act (section 3).
 
 **Adaptation (both arms, identical):**
-- dω_i/dt = η_ω (ω̂_i − ω_i), with ω̂_i = (unwrapped θ_i(t) − θ_i(t − W)) / W − (drive-free bias: none). It is applied only once i has a full window W = 10 s. ω is clipped to π · [0.5, 1.5].
-- dg_i/dt = η_g (P_i − g_i), with P_i = PLV(θ_i, ψ_s*) over W, where s* is the site with the largest k_s · K at the step (ties by lowest site id). P_i = 0 when no active site reaches i. g is clipped to [0, 2].
+- dω_i/dt = η_ω (ω̂_i − ω_i), with ω̂_i from the sampling contract, applied only when it is defined. ω is clipped to π · [0.5, 1.5].
+- dg_i/dt = η_g (P_i − g_i) when P_i is defined (sampling contract); otherwise no change. g is clipped to [0, 2].
 - η_ω = η_g = 0.05 /s; forward Euler per world step.
 
 **The two arms (R2-1):** both have the **same structural qualification, snapshots and library** (sections 6-7).
@@ -167,7 +167,7 @@ Observations are held over the 5 substeps.
 **Every 60 s, a qualification check:**
 - **Cohort:** the elements alive for the whole last 60 s (immutable ids). Entrants and leavers in the window are excluded from that check; missing frames are impossible within the cohort.
 - **Frames** (R3-1): **601 endpoint-inclusive frames** at t_check − 60 + 0.1 j, j = 0 … 600, giving two exact 30-second halves for the frozen window function. The id mapping is fixed. A cohort with fewer than 3 elements yields no candidate (logged).
-- **Aliasing** (R3-10): the revision-2 counter-example (rates 0.5ω_D and 1.5ω_D) remains a negative contract. No general rate bound is claimed: coupling and drive add to the intrinsic spread. Each check reports the maximum wrapped per-frame relative-phase increment among candidate pairs; a check with any increment > π/2 is flagged **possibly aliased**, and its candidates are not snapshotted.
+- **Aliasing** (R3-10): the revision-2 counter-example (rates 0.5ω_D and 1.5ω_D) remains a negative contract. No general rate bound is claimed: coupling and drive add to the intrinsic spread. Each check reports the maximum wrapped per-frame relative-phase increment among candidate pairs; a check with any increment > π/2 is flagged **possibly aliased**, and its candidates are not snapshotted. The flag is a **warning screen only**: a wrapped increment cannot see whole turns of 2π between frames, so it does not certify the absence of aliasing (R4-9).
 - **Criteria 1-4:** the accepted criterion functions on these frames, with C4 thresholds and C5-style scaling by **T = 2** (s per C4 time unit):
 
 | Threshold | C4 value | Here |
@@ -207,9 +207,9 @@ Observations are held over the 5 substeps.
 
 - **Template:**
   - per member: position relative to the medium origin, phase minus φ(t_snap), ω, g;
-  - the task bindings (task id, slot-to-site map rule);
+  - the task bindings as a **rule**, not a realized list: {"binding_rule": "episode_seed_permutation_v1", "physical_sites": 8, "slot_order": "per-task table, section 3"} (R4-3). Evaluation copies apply the same rule with each evaluation episode's seed.
   - the constants version.
-- **Content hash** (R3-8): sha256 of the canonical JSON: members in **ascending persistent id**, each [rel x, rel y, phase offset, ω, g]; bindings as {"task_id": int, "slot_sites": [8 site indices in slot order]} per task; the constants version; sorted keys; floats by repr.
+- **Content hash** (R3-8, R4-3): sha256 of the canonical JSON: members in **ascending persistent id**, each [rel x, rel y, phase offset, ω, g]; the binding rule object above; the constants version; sorted keys; floats by repr.
 - **Copy for evaluation** (an isolated extracted group): an **empty** medium (no other elements) with the same sensor ring and readout geometry. The members are placed at their stored positions (identity pose). Phases are θ = stored offset + φ(t_copy), a uniform shift, so zero-resultant groups are handled.
 - **Plasticity and growth are off** during evaluation. The drive is on, from the evaluation episodes. **A fresh copy is made for each evaluation episode** (R3-8), with its run clock starting at the copy time.
 - A copy whose readout region contains no member **abstains**. That is scored, not dropped.
@@ -218,7 +218,7 @@ Observations are held over the 5 substeps.
 ## 8. Competence (evaluator only)
 
 - **Panel:** validation episodes 0-127 of each usable atom task, fixed.
-- **Each snapshot is copied once and run on each usable task's panel** in its own isolated copy.
+- **Per-episode fresh copies** (R4-6): for every evaluation episode, a new isolated copy is instantiated from the saved template (section 7) at carrier offset 0, so its first frame has φ(t_copy) ≡ 0 mod 2π, with the episode's seeded binding. Positions and phases are never carried between episodes. The same procedure applies to the final whole-medium competence of G0, with the whole live state as the template. An empty-readout abstention is a scored episode.
 - **Competence** is the unclipped normalized score n (section 9) per task. The reports give n per task and the best task per atom.
 - In **both arms** the library holds every qualified snapshot. Competence never changes the library or the run.
 
@@ -242,7 +242,7 @@ Observations are held over the 5 substeps.
 - mean > 3 × SE, with SE = the sample SD of the differences / √256;
 - a finite, positive denominator.
 
-The usable list is **frozen before training** and shared by both arms. The world report already shows wide separation for all four tasks (remember_static is pending).
+The usable list is **frozen before training** and shared by both arms. The world report shows wide separation for all four tasks, including `remember_static` (reference 0 against random 1.58 rad); the frozen list is computed by the rule above from the world's validation episodes 0-255.
 
 **The reward** (reward arm only) is r = clip(n, 0, 1) on the episode's task.
 
@@ -250,7 +250,7 @@ The usable list is **frozen before training** and shared by both arms. The world
 
 - **All constants above are fixed.**
 - **Per arm:** 8 independent medium seeds, 2,000 episodes per seed. At 16 s per episode that is **32,000 s** of run time (R3-5).
-- **Fixed rotation:** perceive, move, remember_static, choose, in blocks of 20 episodes, cyclic. The run clock is t = 16 · episode + 0.1 · step.
+- **Fixed rotation** (R4-5): the order perceive, move, remember_static, choose, **filtered through the frozen usable-task list**, in blocks of 20 episodes, cyclic. The same schedule applies to both arms and their controls. The run clock is t = 16 · episode + 0.1 · step.
 - **Qualification checks** start at t = 60 m, m = 1 … 532. The last start is 31,920 s, whose replay ends at 31,980 s. No check is scheduled whose replay would exceed the run, and the reported horizon is 32,000 s.
 - **Exposure ledger, reported:**
   - training world steps and episodes;
@@ -265,11 +265,30 @@ The usable list is **frozen before training** and shared by both arms. The world
 
 | ID | Estimand per seed | PASS | FAIL | INCONCLUSIVE |
 |---|---|---|---|---|
-| **G0** (narrowed, R3-6: **two budget-constrained growth policies compared**, conditional against random placement-and-phase; not a matched-placement effect) | **coverage** = the mean, over samples in the last 20% with ≥ 1 active site, of the fraction of active sites covered (eligible exposure reported; a seed with no eligible sample is INVALID). **Medium competence** = the mean n over usable tasks of the whole live medium, copied at the end (section 7), on the evaluator panel. **Control:** at each growth check, as many births as the intact run made at that check, uniform in a disk of radius 5 m.u., phase from a paired entropy stream, ω = π, g = 1, same protection and budget. An infeasible control birth is retried once at the next check, then dropped; a seed with any dropped control birth is flagged and counts as non-PASS | conditional > control on both, in ≥ 6 of 8 unflagged seeds | conditional ≤ control on both, in ≥ 6 of 8 | otherwise |
+| **G0** (narrowed, R3-6: **two budget-constrained growth policies compared**, conditional against random placement-and-phase; not a matched-placement effect) | **Coverage** = the mean, over samples in the last 20% with ≥ 1 active site, of the fraction of active sites covered (eligible exposure reported; a seed with no eligible sample is INVALID). **Medium competence** = the mean n over usable tasks of the whole live medium at the end, by the per-episode copy procedure (section 8), on the evaluator panel. **Control:** see the control-queue rule below the table | conditional > control on both, in ≥ 6 of 8 unflagged seeds | conditional ≤ control on both, in ≥ 6 of 8 | otherwise |
 | **G0'** (narrowed, R3-7: **count stability under the declared budget**; budget regulation is reported, not excluded) | the OLS slope of N over the growth checks in the last 20%; no birth rejected for cap, cost or placement and no protected-over-budget state in the last 20%; D3 removals and turnover reported | slope within ±0.5 per 100 episodes and no rejection, in ≥ 6 of 8 seeds | outside the band or any rejection, in ≥ 3 of 8 | otherwise |
 | **G1** | ≥ 1 qualified snapshot in the run | in ≥ 6 of 8 seeds | in ≤ 2 of 8 | otherwise |
 | **G1c** | competence of the snapshots, descriptive (per task and best task) | (descriptive) | | |
-| **G5** (behavioural reproducibility, R3-8) | per snapshot, D = the maximum over usable tasks of abs(n₁ − n₂) between two isolated copies at carrier offsets 0 and π, fresh per episode, on the same panel; per seed, the fraction of its snapshots with D ≤ 0.1. A seed with no snapshot is **no formation**, excluded from G5 | the fraction is ≥ 0.8 in ≥ 6 of the seeds with snapshots, and there are ≥ 6 such seeds | the fraction is < 0.5 in ≥ 3 such seeds | otherwise, or fewer than 6 seeds with snapshots |
+| **G5** (**copy-covariance numerical check**, R4-9; not a test of usefulness or persistence: two copies differing only by a uniform carrier-phase shift are mathematically equivalent, so D should be 0 up to numerics) | per snapshot, D = the maximum over usable tasks of abs(n₁ − n₂) between two per-episode copies at carrier offsets 0 and π on the same panel and bindings; per seed, the fraction of its snapshots with D ≤ 0.1 | by the ordered rule below the table | | |
+
+**G0 control-queue rule** (R4-4):
+- The control run has **B1 off**. D1 and D3 are as in the intact run.
+- At each growth check, the control **enqueues** one request for every birth the intact run made at that check, in a first-in first-out queue.
+- Then it attempts up to **2 placements per check** from the head of the queue, retries included.
+- **A placement draw:** a position uniform in the disk of radius 5 m.u. and a phase uniform in [0, 2π). Draws come from the control's own entropy domain ("g0_control", paired by medium seed) and are redrawn on every attempt.
+- **Feasible** if N + 1 ≤ 64, the cost with the newborn ≤ 64, and the position is ≥ 0.05 m.u. from every element. A feasible newborn has ω = π, g = 1 and the same protection as an intact newborn.
+- **A request is attempted at most twice** (once, plus one retry at a later check), then dropped and logged. Requests still pending after the last check (t = 32,000 s) are dropped and logged.
+- **A seed with any dropped request is flagged, and a flagged seed counts as non-PASS.**
+- **Reported:** actual control additions, deaths, retries and drops against the intact run.
+
+**G5 ordered rule** (R4-7):
+1. INVALID if an execution or measurement failure applies;
+2. else INCONCLUSIVE if fewer than 6 seeds have ≥ 1 snapshot (the no-formation count is reported);
+3. else PASS if the fraction is ≥ 0.8 in ≥ 6 snapshot-bearing seeds;
+4. else FAIL if the fraction is < 0.5 in ≥ 3 snapshot-bearing seeds;
+5. else INCONCLUSIVE.
+
+The same order applies to every row: INVALID first, then the row's own cuts.
 
 **INVALID**, not FAIL: a non-finite measurement, zero usable tasks, or an incomplete or interrupted run. The raw evidence is kept, and the reason is reported.
 
@@ -277,7 +296,7 @@ The usable list is **frozen before training** and shared by both arms. The world
 
 | Question | Yes → action | Role |
 |---|---|---|
-| Is the world, `remember_static` or the medium missing or NOT_READY? | Do not start section 10 | implementer |
+| Is the world, `remember_static` or the medium missing or NOT_READY, **or is the medium's design-specific follow-up batch (R4-2) not closed and reviewed**? | Do not start section 10 | implementer |
 | Is the usable-task list empty? | Report INVALID; do not start section 10 | implementer |
 | Is a read-out INVALID? | Report it with the raw evidence; do not reinterpret it as FAIL or PASS | implementer |
 | Does G1 FAIL in the task-blind arm? | Write the failure report; stop development | drafter |
@@ -320,5 +339,19 @@ Whether, in a continuously driven C4 medium with novelty birth, unlocked death a
 | R3-8 | G5 aggregation and copy identity | A per-snapshot scalar, thresholds, a no-formation rule, fixed offsets, per-episode copies, canonical order | Underspecified |
 | R3-9 | Driven recovery can be entrainment | Atoms are driven snapshots; closure and autonomy not claimed | Missed the drive's restoring force |
 | R3-10 | A false rate bound | Removed; aliasing diagnostics and a flag; the counter-example kept | Wrong reasoning |
+
+**Revision-4 findings:**
+
+| # | Finding | Fix | Cause |
+|---|---|---|---|
+| R4-1 | Two no-drive gain rules; endpoint ambiguity | One rule (undefined, so unchanged); an indexed contract: append first, then every statistic over samples k − 99 … k | A clause left from revision 3 |
+| R4-2 | Engine readiness is not design readiness | The dependency and stop row require the medium follow-up batch | Not referenced |
+| R4-3 | Site assignment and template bindings differed | Logical slots and physical sites; one permutation rule for all tasks; the binding rule hashed, not a list | Mixed concepts |
+| R4-4 | G0 control retry queue and terminal case undefined | A FIFO queue, 2 attempts per check, 2 per request, a redraw domain, a terminal drop rule, flags | Underspecified |
+| R4-5 | Rotation ignored the usable list | Filtered through the frozen list | An oversight |
+| R4-6 | Section 8 kept the old copy lifecycle | Per-episode fresh copies everywhere, carrier offset 0 | Partial edit |
+| R4-7 | Two G5 verdicts possible | An ordered rule | No precedence |
+| R4-8 | Stale dependency prose; table pipes | Refreshed; abs() | Cleanup |
+| R4-9 | Alias flag and G5 overread | The flag labelled a warning screen; G5 labelled a copy-covariance numerical check | Overclaim |
 
 **Revision-1 findings** (14, fixed in revision 2 except as refined later): see revision 2 in git history (`fc55cd2`, section 13).
