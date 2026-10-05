@@ -26,3 +26,10 @@ Date: 2026-10-05
 - **Parallelize inside a world:** the three grids of a world run sequentially, and recovery futures and causal forks are independent of each other. Running them concurrently changes no arithmetic, so exact equivalence remains checkable. It could cut world wall time roughly in proportion to the cores used. The worker budget must be declared (2 world workers × k threads ≤ 10 cores).
 - **Measure on a quiet machine**, with no concurrent heavy jobs, recording the load, because the readiness rule is wall-clock.
 - If the CPU time per world (662 s) remains above 360 s with full parallelism, the remaining option is a **registered resource-rule change** (a larger budget, or fewer worlds). That is an owner decision under AGENTS.md, not an engineering one.
+
+## Addendum: the parallel-inside-world step (merged from Codex `57b34ee` / `5782c58`; `evidence/c6_option_b/PARALLEL_REPORT.md`, NOT_READY pending measurement)
+
+- **Thread budget:** 2 world workers × 5 threads = 10 logical CPUs.
+- **Exact equivalence in both schedules** (forward and reverse): zero maximum error and zero changed digests on the stored fixture, both smoke worlds and the development world. 378 existing checks and 4 new tests pass.
+- **Under load 34-87, world wall times were 267-643 s.** The report's quiet-machine planning estimate for the worst world is about 304 s (band 190-434 s), uncalibrated and correctly labelled as an estimate.
+- **Next:** the official quiet-machine measurement, scheduled after the 0g v3 and 0h development runs. If it exceeds 360 s, the remaining option is the owner's resource-rule decision.
