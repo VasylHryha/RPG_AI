@@ -1,178 +1,186 @@
-STOP
+READY_FOR_S5
 
-# S4 development report
+# S4 amended development report
 
-Implementer family: Codex (GPT-6). Date: 2026-10-05. Owner-authorized development under decision 0028; design revision 3, **original S4 request at ebb8d5a**. Claude review remains pending. No registration, judging seeds, recorded S5 run, milestone status change or frozen-file modification.
+Implementer family: Codex (GPT-6). Date: 2026-10-05. **Claude development review: APPROVE_WITH_NOTES.** This is development readiness under the amended A/B-only gates, as explicitly directed by the owner. This S4 run performed no S5 registration, judging-seed use, recorded S5 run, milestone status change or frozen GeoMind modification.
 
-The tuned resonator’s final novice mean S is -6.92188 after its full 7,680-fight budget. This triggers the declared STOP. Its regular mean is -10.20312. No tactical superiority or equivalence verdict is assigned. The sampling and power proposals below do not override this stop.
+**Resonator novice validation: A +2.765; B +5.920; final C −6.565.** Final C regular is −8.945. Stage C panel tuning lost the earlier positive novice result. The owner explicitly chose the amended A/B-only gates after seeing the final negative novice result; see [the preserved decision](s4_checks/AMENDED_GATE_OWNER_DECISION.json). This report does not claim P1 support, tactical superiority, equivalence, RRG recursion or C4/C5 group qualification.
 
-## Request changed during execution
+The original racing-protocol run reached STOP and remains preserved at commit d456a4f: [original report](s4_development/S4_DEVELOPMENT_REPORT_ORIGINAL.md), [original data](s4_development/summary.json). The owner then authorized a separate amended run. Request ee21545 changed during the original run; the amended CMA-ES protocol, resources and harness were committed at 8c89561 before amended tuning. Historical S4_REPORT_RECEIPT.json is unchanged and resolves historical root-file hashes at d456a4f; the new run has its own S4_AMENDED_REPORT_RECEIPT.json.
 
-**This completes the original protocol only; it does not satisfy the amended S4 request.** The [exact original request](s4_development/S4_REQUEST_ORIGINAL.md) was read before implementation. Commit ee21545, at 12:25:26 local time while fights were running, replaced the race/2-SE rule with a standard continuous optimizer (CMA-ES recommended), required result_cache.py plus a per-use s4_seeds.json ledger, raised validation to at least 100 clusters per comparison, and moved the stop gate to A or B. This change was discovered on the final pre-commit HEAD check. The original run was not silently relabelled as CMA-ES and no judging seeds were drawn.
-
-The original Stage B validation is already negative for all four arms; under the revised A/B gate it would also stop, but its optimizer and validation size do not qualify it as the revised run. Stage A resonator mean +0.9531 versus Stage B novice −10.9844 is stated separately. A removes the projectile observation asymmetry; B/C include opponents that can read shots/shells while these controllers cannot. Army composition also changes, so these observations do not isolate projectile visibility as the cause or refute the law itself. Stage C metrics have zero forks, search calls and artillery rollouts.
-
-The revised request and DESIGN_0G.md section 5 disagree on the optimizer acceptance rule; current owner steering can supersede the older design, but the completed run must remain under its original declared protocol. The owner explicitly chose to execute the amended protocol separately after preserving this STOP evidence. The amended run will use new files and development seeds; this evidence remains unchanged. The remaining work for the amended request is CMA-ES/standard-optimizer implementation, the specified persistent cache/per-use ledger, and ≥100-cluster validation with the earlier stop gate. This is not self-acceptance or revised-protocol completion.
+Claude reviewed the original run at a837561 (correction at e12f259): [APPROVE_WITH_NOTES; original STOP stands](../astelia_cpp_review_claude/S4_ORIGINAL_REVIEW.md). Claude separately reviewed the amended run and retained report during finalization: [APPROVE_WITH_NOTES](../astelia_cpp_review_claude/S4_AMENDED_REVIEW.md), committed at e12f259 and updated at 5460380. Subsequent final-report edits add provenance, formatting and the review links; the measurements are unchanged.
 
 ## Anomaly finding
 
-Morale’s inversion reproduces on eight matched clusters: novice −16.6875, regular −4.3125. Novice skills with line formation score +1.1250; regular skills with alone brain score −30.1875. Line improves the matchup under both bundles; regular skills strengthen the enemy within either brain. This is an intended configuration/matchup effect, not a defect. Four fights were inspected before tuning. See [the finding and configuration table](s4_anomaly/ANOMALY_FINDING.md). No equations were changed.
+The original diagnostic compared eight matched clusters and both orientations: morale novice/alone −16.6875; regular/line −4.3125; novice skills/line +1.1250; regular skills/alone −30.1875. Line formation improves the matchup under both skill bundles; regular skills strengthen the opponent within either brain. This explains the inversion as a configuration/matchup effect. Four fights were inspected; no genuine controller defect was found and no equations were changed. [Finding and watched fights](s4_anomaly/ANOMALY_FINDING.md).
 
-## Declared optimizer, budget and seeds
+## Declared optimizer, budgets and seed use
 
-[S4_PROTOCOL.md](S4_PROTOCOL.md) and [the seed ledger](S4_SEED_LEDGER.json) were committed before tuning (9690d67; compressed replay/anomaly follow-up 0a9e002). Eight rounds per stage; eight candidates sampled uniformly within bound-clipped incumbent neighbourhoods. Half are joint moves, half single-knob moves; radius = 0.5×0.8^round. Race 8→16→32 clusters, retaining 4 then 2 by score. Accept only paired gain > max(1 survivor, 2 SE). Rank elimination is a search heuristic. The same algorithm, seeds and budget apply to all tuned arms. Nearest is untuned. Each next stage starts at preceding tuning best; validation never selects knobs.
+[Amended protocol](S4_AMENDED_PROTOCOL.md): pycma 4.5.0 CMAEvolutionStrategy ask/tell, bounds-normalized knobs in [0,1], population 16, initial sigma 0.25, sixteen generations, default active covariance adaptation, no restart and no two-SE acceptance. Every candidate uses nineteen fixed common tuning clusters per stage. All objective values enter CMA; the highest mean evaluated configuration, including the initial configuration, is retained with earlier ties. Validation never chooses knobs. A starts at midpoints; B/C start at preceding tuning best. Dimensions are 10/10/2 for resonator/morale/push-pull; nearest is untuned.
 
-Accounting: 576 candidates logged, 7,680 evaluations per tuned arm, 23,040 tuning fights; 3,712 validation fights; 64 anomaly diagnostic fights; 16 additional trace-capture fights. Total 26,832; zero cache hits and zero controller failures. All 16 captured replay summaries equal their original fight summaries. All forks, search calls and artillery rollouts are zero. See [AUDIT.json](s4_development/AUDIT.json).
+Each tuned arm receives **9,766 evaluations per stage**, including cache hits: 38 initial fights plus 16×16×38 candidate fights. Across three stages that is **29,298 per arm**, 87,894 tuning fights and 2,304 candidates. A uses nineteen novice melee clusters; B uses ten novice and nine regular full-army clusters; C uses one cluster per doctrine. The slight B tuning imbalance is explicit; validation has 100 per level.
 
-Actual main tuning/validation/replay duration: 34.48 minutes. Anomaly duration: 33.51 seconds. Initial estimate 10–20 minutes was low; at 17.2 minutes the remaining estimate was revised to 10–15 minutes in the execution log. No code edits occurred during the long run.
+The final audit reconstructs **107,094 raw tuning/validation fights**, **0 cache hits**, and twelve additional replay captures: **107,106 executed fights**. Zero controller failures, zero equation changes and zero forks/search calls/artillery rollouts in every retained fight metric and replay metric. All twelve capture summaries equal their original played-fight summaries. [Audit](s4_amended_development/AUDIT.json).
+
+[Per-use seed ledger](s4_amended_development/s4_seeds.json) records every stage, split, arm, candidate, seed, opponent, orientation and hit status, including capture reuse. Tuning ranges are 410000000/411000000/412000000 + [0,18]; validation uses each stage base +100000+[0,99], shared across arms/configurations. Final C head checks use +101000+[0,99]. No judging generator or judging seeds were used. result_cache.py supplies the admitted binary/source/schema/helper namespace; archived pycma sources and dependency metadata are in s4_amended_resources/.
+
+Ten native workers. Actual amended tuning/validation/capture duration: **128.85 minutes**; original main run 34.48 minutes, combined **163.33 minutes**, below the 180-minute native-run cap. The initial 90–120-minute amended estimate and later completion estimates were too short, particularly for full validation; updates and revisions were reported during execution. No run code or test edits occurred while the amended run was active.
 
 ## Stage results and best knobs
 
-S = survivors minus enemy survivors. Means, sample cluster SD and SE below are descriptive development measurements; both orientations are averaged before statistics. The 95% mean intervals are in each validation JSON. C has 16 shared seed blocks across 19 doctrines; panel mean uncertainty uses those blocks, retaining cross-doctrine covariance. A has 32 novice clusters; B and final C have 32 per head level.
+S is survivors minus enemy survivors. Both orientations are averaged into one cluster before statistics. Each head comparison has 100 validation clusters. C has 100 clusters per doctrine (1,900 configuration clusters), sharing 100 seeds across all nineteen doctrines; panel mean SE uses the 100 seed-block means. SDs, SEs and normal 95% intervals are descriptive development measurements, not registered verdicts.
+
+A has no projectile asymmetry. B/C scripted brains can see shots and shells while our controllers cannot. However, native config_codec.cpp lines 244–245 explicitly disable shot/shell dodging for novice; regular enables shell dodging and raw shot leading. Projectile dodging therefore cannot explain losses against novice. Army composition changes from A to B, and tuning objective/knobs change from B to C; these comparisons do not isolate the cause of full-army losses.
 
 ### Stage A
 
-[Exact best knobs](s4_development/A_best.json) · [validation and keyed scores](s4_development/A_validation.json)
+[Exact knobs](s4_amended_development/A_best.json) · [validation and keyed scores](s4_amended_development/A_validation.json)
 
 | Knob | Resonator | Morale | Push-pull |
 |---|---:|---:|---:|
-| K | 4.59063 | 1.9516 | — |
-| K_t | 4.02636 | 2.18133 | — |
-| kappa | 38.4145 | 38.3776 | — |
-| beta | 1.31643 | 0.0802308 | — |
-| G | 3.31174 | 3.61799 | 3.03632 |
-| w | 2.45627 | 2.16612 | — |
-| f | 0.809378 | 0.895942 | 0.318394 |
-| gamma | 0.795909 | 1.44517 | — |
-| omega_melee | -0.300448 | — | — |
-| omega_ranged | -1.51762 | — | — |
-| lambda_melee | — | 1.11231 | — |
-| lambda_ranged | — | 0.833425 | — |
+| K | 3.06216 | 1.00575 | — |
+| K_t | 2.50571 | 4.81765 | — |
+| kappa | 10.3238 | 41.6793 | — |
+| beta | 0.335063 | 0.458999 | — |
+| G | 2.12239 | 3.29393 | 4.99956 |
+| w | 2.75309 | 1.32453 | — |
+| f | 1.05569 | 0.941449 | 0.303754 |
+| gamma | 0.64583 | 1.86026 | — |
+| omega_melee | -0.0420122 | — | — |
+| omega_ranged | -0.19272 | — | — |
+| lambda_melee | — | 0.3331 | — |
+| lambda_ranged | — | 0.0697923 | — |
 
-| Arm | Validation setting | Mean S | Cluster SD | SE |
-|---|---|---:|---:|---:|
-| resonator | s4_melee10|novice | 0.9531 | 2.0998 | 0.3712 |
-| morale | s4_melee10|novice | 4.3281 | 1.1682 | 0.2065 |
-| pushpull | s4_melee10|novice | 0.7656 | 2.3314 | 0.4121 |
-| nearest | s4_melee10|novice | 1.2969 | 2.1808 | 0.3855 |
+| Arm | Validation comparison | Mean S | Cluster SD | SE | 95% mean interval |
+|---|---|---:|---:|---:|---|
+| resonator | s4_melee10 / novice | 2.7650 | 1.9943 | 0.1994 | [2.3741, 3.1559] |
+| morale | s4_melee10 / novice | 4.5250 | 0.8569 | 0.0857 | [4.3571, 4.6929] |
+| pushpull | s4_melee10 / novice | 1.4050 | 2.4697 | 0.2470 | [0.9209, 1.8891] |
+| nearest | s4_melee10 / novice | 1.3550 | 2.4332 | 0.2433 | [0.8781, 1.8319] |
 
-| Tuned arm | Final-round development mean S | SD | Accepted rounds in stage |
+| Arm | Selected tuning mean S | Tuning cluster SD | Evaluations in stage |
 |---|---:|---:|---:|
-| resonator | 1.3281 | 2.0265 | 2 / 8 |
-| morale | 4.1562 | 1.3225 | 3 / 8 |
-| pushpull | 2.0938 | 2.3121 | 2 / 8 |
+| resonator | 3.0263 | 2.5738 | 9,766 |
+| morale | 4.6316 | 0.7040 | 9,766 |
+| pushpull | 2.8684 | 2.0605 | 9,766 |
 
 ### Stage B
 
-[Exact best knobs](s4_development/B_best.json) · [validation and keyed scores](s4_development/B_validation.json)
+[Exact knobs](s4_amended_development/B_best.json) · [validation and keyed scores](s4_amended_development/B_validation.json)
 
 | Knob | Resonator | Morale | Push-pull |
 |---|---:|---:|---:|
-| K | 2.27586 | 3.44859 | — |
-| K_t | 1.53589 | 1.99375 | — |
-| kappa | 48.2144 | 25.1241 | — |
-| beta | 2.29839 | 0.226645 | — |
-| G | 3.29717 | 3.59876 | 3.98911 |
-| w | 0.973772 | 0.763635 | — |
-| f | 1.01051 | 0.820855 | 1.14367 |
-| gamma | 0.931835 | 1.07896 | — |
-| omega_melee | 1.49108 | — | — |
-| omega_ranged | -0.569584 | — | — |
-| lambda_melee | — | 1.69706 | — |
-| lambda_ranged | — | 0.86572 | — |
+| K | 0.467111 | 0.0417454 | — |
+| K_t | 2.16114 | 4.28162 | — |
+| kappa | 47.8344 | 49.7907 | — |
+| beta | 0.0914775 | 1.90797 | — |
+| G | 4.98582 | 4.99579 | 4.94564 |
+| w | 1.39887 | 0.545455 | — |
+| f | 0.623753 | 1.04151 | 1.13 |
+| gamma | 1.45537 | 1.63724 | — |
+| omega_melee | 0.756052 | — | — |
+| omega_ranged | 1.88943 | — | — |
+| lambda_melee | — | 1.32512 | — |
+| lambda_ranged | — | 0.00212886 | — |
 
-| Arm | Validation setting | Mean S | Cluster SD | SE |
-|---|---|---:|---:|---:|
-| resonator | s4_full_head|novice | -10.9844 | 2.1608 | 0.3820 |
-| resonator | s4_full_head|regular | -10.0156 | 2.9986 | 0.5301 |
-| morale | s4_full_head|novice | -5.2812 | 2.9701 | 0.5250 |
-| morale | s4_full_head|regular | -0.9688 | 1.3316 | 0.2354 |
-| pushpull | s4_full_head|novice | -4.2031 | 3.1670 | 0.5599 |
-| pushpull | s4_full_head|regular | -0.8594 | 1.3751 | 0.2431 |
-| nearest | s4_full_head|novice | -18.1406 | 3.7871 | 0.6695 |
-| nearest | s4_full_head|regular | -21.2031 | 6.1642 | 1.0897 |
+| Arm | Validation comparison | Mean S | Cluster SD | SE | 95% mean interval |
+|---|---|---:|---:|---:|---|
+| resonator | s4_full_head / novice | 5.9200 | 4.3343 | 0.4334 | [5.0705, 6.7695] |
+| resonator | s4_full_head / regular | -8.6850 | 0.7023 | 0.0702 | [-8.8226, -8.5474] |
+| morale | s4_full_head / novice | -7.6150 | 6.5981 | 0.6598 | [-8.9082, -6.3218] |
+| morale | s4_full_head / regular | 3.1000 | 6.2817 | 0.6282 | [1.8688, 4.3312] |
+| pushpull | s4_full_head / novice | -2.4050 | 2.7668 | 0.2767 | [-2.9473, -1.8627] |
+| pushpull | s4_full_head / regular | -0.9800 | 1.6095 | 0.1610 | [-1.2955, -0.6645] |
+| nearest | s4_full_head / novice | -16.6150 | 3.9131 | 0.3913 | [-17.3820, -15.8480] |
+| nearest | s4_full_head / regular | -23.8050 | 6.2595 | 0.6259 | [-25.0319, -22.5781] |
 
-| Tuned arm | Final-round development mean S | SD | Accepted rounds in stage |
+| Arm | Selected tuning mean S | Tuning cluster SD | Evaluations in stage |
 |---|---:|---:|---:|
-| resonator | -9.7812 | 2.3893 | 1 / 8 |
-| morale | -2.5156 | 2.5128 | 3 / 8 |
-| pushpull | -2.6719 | 2.9501 | 5 / 8 |
+| resonator | 0.8158 | 9.0940 | 9,766 |
+| morale | 0.0000 | 7.8863 | 9,766 |
+| pushpull | -1.6842 | 3.1101 | 9,766 |
 
 ### Stage C
 
-[Exact best knobs](s4_development/C_best.json) · [validation and keyed scores](s4_development/C_validation.json)
+[Exact knobs](s4_amended_development/C_best.json) · [validation and keyed scores](s4_amended_development/C_validation.json)
 
 | Knob | Resonator | Morale | Push-pull |
 |---|---:|---:|---:|
-| K | 0.354077 | 2.81509 | — |
-| K_t | 0.150436 | 1.4001 | — |
-| kappa | 41.8355 | 33.6991 | — |
-| beta | 1.45693 | 0.715708 | — |
-| G | 2.6095 | 4.07228 | 4.03018 |
-| w | 1.89056 | 2.2321 | — |
-| f | 1.12593 | 0.874848 | 1.14367 |
-| gamma | 1.58909 | 0.593565 | — |
-| omega_melee | 0.892952 | — | — |
-| omega_ranged | -1.33997 | — | — |
-| lambda_melee | — | 1.61371 | — |
-| lambda_ranged | — | 0.741756 | — |
+| K | 0.114601 | 0.267131 | — |
+| K_t | 2.86132 | 1.68746 | — |
+| kappa | 49.7991 | 37.1589 | — |
+| beta | 2.11563 | 0.399393 | — |
+| G | 3.04199 | 4.23887 | 4.99392 |
+| w | 1.74582 | 2.52393 | — |
+| f | 1.14087 | 1.13974 | 1.13814 |
+| gamma | 1.98402 | 1.73683 | — |
+| omega_melee | -1.92665 | — | — |
+| omega_ranged | 1.36789 | — | — |
+| lambda_melee | — | 0.254088 | — |
+| lambda_ranged | — | 0.0451582 | — |
 
-| Arm | Validation setting | Mean S | Cluster SD | SE |
-|---|---|---:|---:|---:|
-| resonator | s4_full_head|novice | -6.9219 | 6.1881 | 1.0939 |
-| resonator | s4_full_head|regular | -10.2031 | 7.4453 | 1.3162 |
-| resonator | P2/P3 pool, 304 config clusters / 16 seed blocks | 1.7270 | 13.7570 | 0.6295 (block) |
-| morale | s4_full_head|novice | -16.7656 | 5.1775 | 0.9153 |
-| morale | s4_full_head|regular | -17.4219 | 9.8980 | 1.7497 |
-| morale | P2/P3 pool, 304 config clusters / 16 seed blocks | 1.4260 | 14.5881 | 0.4548 (block) |
-| pushpull | s4_full_head|novice | -4.9375 | 2.5864 | 0.4572 |
-| pushpull | s4_full_head|regular | -0.6719 | 1.7162 | 0.3034 |
-| pushpull | P2/P3 pool, 304 config clusters / 16 seed blocks | -5.7780 | 5.6824 | 0.1193 (block) |
-| nearest | s4_full_head|novice | -17.5469 | 3.8129 | 0.6740 |
-| nearest | s4_full_head|regular | -22.1719 | 7.3623 | 1.3015 |
-| nearest | P2/P3 pool, 304 config clusters / 16 seed blocks | -20.0658 | 8.6390 | 0.2298 (block) |
+| Arm | Validation comparison | Mean S | Cluster SD | SE | 95% mean interval |
+|---|---|---:|---:|---:|---|
+| resonator | s4_full_head / novice | -6.5650 | 5.3981 | 0.5398 | [-7.6230, -5.5070] |
+| resonator | s4_full_head / regular | -8.9450 | 5.9679 | 0.5968 | [-10.1147, -7.7753] |
+| resonator | nineteen-doctrine pool | 2.2392 | 13.2123 | 0.1898 (block) | [1.8672, 2.6112] (block) |
+| morale | s4_full_head / novice | -11.0700 | 10.5385 | 1.0539 | [-13.1356, -9.0044] |
+| morale | s4_full_head / regular | -10.0550 | 10.1097 | 1.0110 | [-12.0365, -8.0735] |
+| morale | nineteen-doctrine pool | 3.3324 | 14.3193 | 0.2442 (block) | [2.8538, 3.8109] (block) |
+| pushpull | s4_full_head / novice | -4.7550 | 3.1136 | 0.3114 | [-5.3653, -4.1447] |
+| pushpull | s4_full_head / regular | -0.4150 | 1.0542 | 0.1054 | [-0.6216, -0.2084] |
+| pushpull | nineteen-doctrine pool | -5.0761 | 5.4899 | 0.0624 (block) | [-5.1984, -4.9537] (block) |
+| nearest | s4_full_head / novice | -17.2600 | 3.9832 | 0.3983 | [-18.0407, -16.4793] |
+| nearest | s4_full_head / regular | -23.9300 | 6.4944 | 0.6494 | [-25.2029, -22.6571] |
+| nearest | nineteen-doctrine pool | -19.9282 | 8.6055 | 0.0745 (block) | [-20.0743, -19.7821] (block) |
 
-| Tuned arm | Final-round development mean S | SD | Accepted rounds in stage |
+| Arm | Selected tuning mean S | Tuning cluster SD | Evaluations in stage |
 |---|---:|---:|---:|
-| resonator | -0.0156 | 13.4149 | 2 / 8 |
-| morale | 0.8125 | 16.3977 | 1 / 8 |
-| pushpull | -4.9375 | 5.6551 | 1 / 8 |
+| resonator | 7.5789 | 12.8336 | 9,766 |
+| morale | 10.0526 | 13.8031 | 9,766 |
+| pushpull | -4.1579 | 5.6913 | 9,766 |
 
-## Paired spreads, δ and bounded power proposal
+## Paired spreads, margin and bounded power proposal
 
-Proposed **δ = 3.5 survivors**, from the predeclared max(1, 0.25×maximum validation pooled paired SD), rounded upward to 0.5. It has not been approved by the owner and was never reduced to obtain a pass.
+Proposed **δ = 4.0 survivors**: max(1, quarter the maximum pooled validation SD of the two paired differences), rounded upward to 0.5. This applies the predeclared rule to amended validation; it is an owner decision and was not reduced to get a pass.
 
-| Endpoint | Paired mean | Config-cluster SD | Shared-seed-block SD | Block SE | Block mean 95% interval | SD upper (pooled / block) |
+| Endpoint | Paired mean | Config-cluster SD | Shared-seed-block SD | Block SE | Block 95% interval | Upper SD, pooled / block / tuning |
 |---|---:|---:|---:|---:|---|---|
-| P2: resonator_minus_morale | 0.3010 | 12.8691 | 3.1594 | 0.7898 | [-1.2471, 1.8491] | 13.8437 / 3.7426 |
-| P3: resonator_minus_pushpull | 7.5049 | 13.3691 | 2.6333 | 0.6583 | [6.2146, 8.7953] | 14.0528 / 3.1754 |
+| P2: resonator_minus_morale | -1.0932 | 14.1523 | 3.0226 | 0.3023 | [-1.6856, -0.5007] | 14.5426 / 3.3571 / 11.5602 |
+| P3: resonator_minus_pushpull | 7.3153 | 12.9566 | 2.0907 | 0.2091 | [6.9055, 7.7250] | 13.2506 / 2.3110 / 12.8498 |
 
-SD uncertainty is the bootstrap 95th-percentile upper value, 2,000 resamples with seed 811005; intervals are descriptive normal approximations. Power is a normal planning approximation at one-sided alpha .0025 and power .90. P1 plans a positive δ effect above zero; P2/P3 plan true mean 2δ against margin δ. Required n = ceil((z_(.9975)+z_(.90))²×variance/δ²), with floors 32 per head and 16 per doctrine. Use the larger development/validation noise allowance, retain seed-block covariance, and count all configurations against the 2,000-cluster endpoint bound.
+Noise uncertainty uses 2,000 bootstrap resamples, seed 811005, 95th-percentile upper SD. C seed blocks retain cross-doctrine covariance. Normal planning uses one-sided support alpha .0025 and power .90: n = ceil((z(.9975)+z(.90))²×variance/δ²), with floors 32 per head level and 16 per doctrine. P1 plans a hypothetical true mean δ above zero; P2/P3 plan true mean 2δ above margin δ. These are beneficial-effect planning assumptions, not fitted effect claims.
+
+P2/P3 use the maximum of validation block upper variance, selected tuning pooled upper variance/19, and the independent-stratum upper variance floor. P1 uses the larger B tuning/C validation upper SD and a common n for both levels. B tuning uses earlier knobs and only ten/nine clusters; it is an exploratory noise allowance, not validation of final C knobs. All calculations and both-split summaries are in [POWER_PLANNING.json](s4_amended_development/POWER_PLANNING.json).
 
 | Endpoint | Proposed n | Total configuration clusters | Within 2,000? |
 |---|---|---:|---|
-| P1 | 105 per head level | 210 | yes |
-| P2 | 22 per doctrine / shared seed blocks | 418 | yes |
+| P1 | 49 per head level | 98 | yes |
+| P2 | 16 per doctrine / shared seed blocks | 304 | yes |
 | P3 | 16 per doctrine / shared seed blocks | 304 | yes |
 
-These n values assume the stated hypothetical beneficial effect; a larger sample cannot turn the observed negative novice mean into a supported result. S4 is STOP. [POWER_PLANNING_CORRECTION.json](s4_development/POWER_PLANNING_CORRECTION.json) supplies both-split spreads, covariance-aware uncertainty and all calculations. The initial power.json is retained unchanged as superseded output.
+A larger n cannot reverse the observed negative final head means. No support/refutation/equivalence verdict is assigned to unregistered development data. The owner must approve δ and a future S5 specification separately; any endpoint over the 2,000-cluster bound requires an owner tradeoff.
+
+S5 must explicitly pin its P1 knob source: this report supplies both B-tuned and final C-tuned head results; the current P1 planning calculation uses final C validation. Choosing B instead changes that planning input and requires a new declared calculation from the retained B data. S5 must also register its inference unit: these P2/P3 n values count independent shared-seed blocks (nineteen configurations each), while δ uses pooled configuration-cluster spread. The original Claude review also recommends controller-cost work before further large runs; no new native optimization or cost benchmark was performed here.
 
 ## Watching fights
 
-Open any linked HTML locally in a browser. Each file includes its compressed replay and has no external dependencies. Play/pause, 1×/4×/10×, timeline scrub and targets are available. Blue/orange outlines are teams; fill is resonator phase or morale commitment; HP bars show health. Grey units have no controller state. The standalone [viewer](s4_replay.html) also loads a `.replay.json.gz`. Raw 30 Hz traces are retained; display payloads sample 10 Hz with the terminal frame included.
+Open a linked HTML locally in a browser. Each file embeds its compressed replay and needs no external dependencies. Play/pause, 1×/4×/10×, timeline scrub and target lines are available. Team outlines are blue/orange; fill shows resonator phase or morale commitment (the bounded transform of its state); grey units have no controller state; HP bars show health. Raw traces retain 30 Hz; display payloads retain 10 Hz plus the terminal frame. [Standalone loader](s4_replay.html) also opens .replay.json.gz files.
 
 | Stage | Resonator | Morale | Push-pull | Nearest |
 |---|---|---|---|---|
-| A | [resonator](s4_development/replays/A_resonator.html) | [morale](s4_development/replays/A_morale.html) | [pushpull](s4_development/replays/A_pushpull.html) | [nearest](s4_development/replays/A_nearest.html) |
-| B | [resonator](s4_development/replays/B_resonator.html) | [morale](s4_development/replays/B_morale.html) | [pushpull](s4_development/replays/B_pushpull.html) | [nearest](s4_development/replays/B_nearest.html) |
-| C | [resonator](s4_development/replays/C_resonator.html) | [morale](s4_development/replays/C_morale.html) | [pushpull](s4_development/replays/C_pushpull.html) | [nearest](s4_development/replays/C_nearest.html) |
+| A | [resonator](s4_amended_development/replays/A_resonator.html) | [morale](s4_amended_development/replays/A_morale.html) | [pushpull](s4_amended_development/replays/A_pushpull.html) | [nearest](s4_amended_development/replays/A_nearest.html) |
+| B | [resonator](s4_amended_development/replays/B_resonator.html) | [morale](s4_amended_development/replays/B_morale.html) | [pushpull](s4_amended_development/replays/B_pushpull.html) | [nearest](s4_amended_development/replays/B_nearest.html) |
+| C | [resonator](s4_amended_development/replays/C_resonator.html) | [morale](s4_amended_development/replays/C_morale.html) | [pushpull](s4_amended_development/replays/C_pushpull.html) | [nearest](s4_amended_development/replays/C_nearest.html) |
 
-The Stage A resonator example has nonzero role rates and five of ten unit trajectories span more than 2π in unwrapped phase (maximum span 7.82 rad). This exercises the review note, without claiming rotating phases are necessary or that candidate groups meet C4/C5 qualification.
+All twelve HTML viewers loaded with no browser runtime errors; play/pause, scrub and target controls were exercised. [Browser receipt](s4_checks/AMENDED_BROWSER_RECEIPT.json). Phase state is prepared at the tick boundary while commitment is newly computed; this display timing does not change played fights.
+
+The selected amended Stage A resonator has nonzero role rates, but its ten captured tracks span less than 2π (maximum 3.96 rad). The separately retained original Stage A replay has five tracks spanning more than 2π, demonstrating available rotating trajectories without forcing the amended optimizer toward them. No locking/rotation necessity or qualifying candidate-group claim follows from these examples.
 
 ## Checks, deviations and remaining gate
 
-The current native/controller suite passed 220 tests in 32.89 seconds before fights; replay packaging then passed its eight affected checks. The final affected planning checks passed 10 tests in 0.49 seconds. Browser checks passed all 12 new replays with no JavaScript errors. Independent raw-summary reconstruction matched 17,984 cluster entries, replayed the declared sampler and recomputed all paired gains; no new fights. Receipts are retained in s4_checks. RRG source pin, native binary/source admission, exact budget totals, paired orientations, candidate acceptance, code identity and replay equality were reconstructed from retained evidence.
+The original current native/controller batch passed 220 tests in 32.89 seconds. The final amended optimizer/cache/schema batch passed 31 checks before this run. End-of-session report checks are retained in s4_checks. The audit reconstructs all candidate and validation scores from raw summaries, replays CMA ask/tell and best retention, confirms all budgets and both orientations, verifies all 100-cluster endpoints, checks every C fight metric (both orientations), rechecks admitted source/binary/optimizer identity, and compares every captured summary to its original fight.
 
-Deviations: (1) initial test collection included archived duplicate test names and stopped before running tests; corrected to current top-level test files. (2) Large replay payloads were compressed after the anomaly diagnostic, without rerunning fights or changing raw traces. (3) Temporary implementation helpers/logs initially used /private/tmp; after owner correction they were moved/copied into s4_checks and subsequent work stayed in the project. (4) The initial runtime estimate was too low and was revised during execution. (5) Initial power output used only validation and independent-stratum variance; the final supplemental calculation uses both splits, shared-seed blocks and a common P1 n, leaving initial output unchanged. (6) The request changed during execution; the original protocol is preserved and does not fulfill amended requirements. No equation changes, budget restarts, controller failures, new knobs, new arms or judging seeds.
+Deviations: (1) the request changed during the original run; its completed STOP evidence was preserved and the owner authorized a separate amended run. (2) The amended request supersedes the old racing/2-SE optimizer and, by explicit owner clarification, the full-budget novice gate with A/B-only gates. (3) B tuning allocates ten novice and nine regular clusters. (4) The existing shared closed result schema was extended for S3 summaries; cache helper and native controller equations were unchanged. (5) pycma was installed only under project build/, with dependency metadata and source archive retained; frozen environment files were untouched. (6) Runtime/completion estimates were revised as full validation ran more slowly; the native-run cap was respected. (7) Earlier temporary helpers/logs were moved/copied into the project after owner correction; amended scripts, cache, logs, evidence and test temp roots stayed in the project. No controller failures, outcome-informed equations, budget restarts, new knobs/arms, judging seeds or recorded S5 execution.
 
-Remaining gate for this original run: independent Claude review of these original-protocol development artifacts. The owner must decide what follows the STOP and separately approve any δ or future S5 specification. This report does not self-accept S4, authorize S5, or alter milestone status.
+**Remaining gate: owner approval of δ and the future S5 specification.** Claude approved this development record with notes, including pinning the knob source per endpoint, preserving both P1 levels and fixing the inference unit before judging. READY_FOR_S5 is the owner-directed development label, not permission to execute S5. A concurrent S5 draft was created separately; it is outside this S4 implementation commit.
