@@ -1,0 +1,49 @@
+{
+  "status": "development_only",
+  "judging_seeds": null,
+  "prior_excluded_ranges": [
+    "S3 2026100500-2026100518",
+    "Claude review 2026100700-2026100729"
+  ],
+  "ranges": {
+    "A": {
+      "tuning": [
+        310000000,
+        310000255
+      ],
+      "validation": [
+        310100000,
+        310100031
+      ]
+    },
+    "B": {
+      "tuning": [
+        311000000,
+        311000255
+      ],
+      "validation": [
+        311100000,
+        311100031
+      ]
+    },
+    "C": {
+      "tuning": [
+        312000000,
+        312000255
+      ],
+      "validation": [
+        312100000,
+        312100031
+      ]
+    }
+  },
+  "final_C_head_validation": [
+    312101000,
+    312101031
+  ],
+  "anomaly": [
+    313200000,
+    313200007
+  ],
+  "policy": "Same world seeds in both orientations and across arms; development and validation disjoint. C validation seeds are crossed with all 19 doctrines. No judging seed generator."
+}

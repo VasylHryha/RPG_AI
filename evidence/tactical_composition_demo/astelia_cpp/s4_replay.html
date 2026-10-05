@@ -1,0 +1,25 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><title>S4 fight replay</title>
+<style>body{font:16px system-ui;background:#111820;color:#ecf3fa;margin:20px}canvas{background:#192531;width:min(100%,1200px);border:1px solid #526273}button,input,select{font:inherit;margin:6px}#seek{width:55%}#info{white-space:pre-wrap}small{color:#aec1d2}</style>
+<h1>S4 development fight replay</h1><input type="file" id="load" accept=".json"><button id="play">Play</button>
+<select id="speed"><option value="1">1×</option><option value="4" selected>4×</option><option value="10">10×</option></select>
+<label><input type="checkbox" id="targets" checked>Targets</label><input id="seek" type="range" min="0" value="0"><span id="clock"></span>
+<p><small>Team outlines: blue and orange. Fill: phase hue for resonator; red–green commitment for morale. Grey: no controller state. HP bar above each living unit. Select a .replay.json file, or use a fight’s HTML with its trace included.</small></p>
+<canvas id="arena" width="1200" height="700"></canvas><p id="info"></p>
+<script>
+let data=/*REPLAY_DATA*/null, index=0, playing=false, last=0, elapsed=0;
+const $=id=>document.getElementById(id),ctx=$('arena').getContext('2d');
+function install(d){if(!d.frames?.length)throw Error('No replay frames');data=d;index=0;playing=false;$('play').textContent='Play';$('seek').max=d.frames.length-1;draw()}
+function draw(){if(!data)return;const f=data.frames[index].state, units=f.units, byId=new Map(units.map(u=>[u.id,u]));ctx.clearRect(0,0,1200,700);
+if($('targets').checked){ctx.lineWidth=.7;for(const u of units){const t=byId.get(u.target);if(u.alive&&t?.alive){ctx.strokeStyle=u.team===0?'#4995d966':'#ef9d4166';ctx.beginPath();ctx.moveTo(u.x,u.y);ctx.lineTo(t.x,t.y);ctx.stroke()}}}
+for(const u of units){if(!u.alive)continue;const r=u.debug?.r||7;ctx.strokeStyle=u.team===0?'#54b5ff':'#ffaa4a';ctx.lineWidth=3;
+ctx.fillStyle=u.controllerState==null?'#87939d':data.spec.arm==='resonator'?`hsl(${((u.controllerState*180/Math.PI)%360+360)%360},80%,55%)`:`hsl(${60*(1+(u.commitment??0))},75%,48%)`;
+ctx.beginPath();if(u.role==='artillery'){ctx.rect(u.x-r,u.y-r,2*r,2*r)}else{ctx.arc(u.x,u.y,r,0,2*Math.PI)}ctx.fill();ctx.stroke();
+ctx.fillStyle='#342b2b';ctx.fillRect(u.x-10,u.y-r-7,20,3);ctx.fillStyle='#82e8a8';ctx.fillRect(u.x-10,u.y-r-7,20*Math.max(0,Math.min(1,u.hp/(u.debug?.maxhp||u.hp))),3);}
+$('seek').value=index;$('clock').textContent=f.t.toFixed(2)+' s';const alive=[0,1].map(t=>units.filter(u=>u.team===t&&u.alive).length);
+$('info').textContent=`${data.spec.arm} vs ${data.spec.opponent} · ${data.spec.setting} · seed ${data.spec.seed} · swap ${data.spec.swapSides??false}\nLiving: blue ${alive[0]}, orange ${alive[1]} · Final S: ${data.summary.survivors-data.summary.enemySurvivors}`;}
+$('play').onclick=()=>{if(!data)return;if(index===data.frames.length-1)index=0;playing=!playing;elapsed=data.frames[index].state.t;$('play').textContent=playing?'Pause':'Play'};
+$('seek').oninput=()=>{index=+$('seek').value;elapsed=data.frames[index].state.t;draw()};$('targets').onchange=draw;
+$('load').onchange=async()=>{try{install(JSON.parse(await $('load').files[0].text()))}catch(e){$('info').textContent=e.message}};
+function tick(now){if(playing&&data){elapsed+=(now-last)/1000*+$('speed').value;while(index+1<data.frames.length&&data.frames[index+1].state.t<=elapsed)index++;draw();if(index+1===data.frames.length){playing=false;$('play').textContent='Play'}}last=now;requestAnimationFrame(tick)}
+if(data)install(data);requestAnimationFrame(tick);
+</script></html>
