@@ -1,0 +1,28 @@
+PASS perceive control=False: reference 29.692s, old batch 2.689s -> new 2.732s
+PASS move control=False: reference 12.140s, old batch 1.211s -> new 1.237s
+PASS remember_static control=False: reference 11.732s, old batch 1.150s -> new 1.329s
+PASS choose control=False: reference 28.728s, old batch 2.657s -> new 2.675s
+PASS perceive control=True: reference 17.185s, old batch 1.374s -> new 1.315s
+PASS choose control=True: reference 18.919s, old batch 1.746s -> new 1.595s
+PASS recovery N=4: 0.087s -> 0.411s
+PASS recovery N=24: 0.189s -> 0.234s
+PASS recovery N=64: 0.396s -> 0.727s
+PASS evaluator individual dev episodes N=3, all tasks, both offsets
+PASS evaluator individual dev episodes N=24, all tasks, both offsets
+PASS evaluator individual dev episodes N=64, all tasks, both offsets
+Traceback (most recent call last):
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/runpy.py", line 197, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+  File "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/runner/perf_recheck.py", line 261, in <module>
+    if __name__=='__main__': main()
+  File "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/runner/perf_recheck.py", line 248, in main
+    stage,stage_comp=stages(lib,meter)
+  File "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/runner/perf_recheck.py", line 193, in stages
+    m.step_index=600;m.native.start_clock(60.)
+  File "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/medium/medium.py", line 135, in start_clock
+    self._call('clock', time)
+  File "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/medium/medium.py", line 111, in _call
+    raise ValueError(self._lib.gm_error(self._handle).decode())
+ValueError: clock requires pristine medium

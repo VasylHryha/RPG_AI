@@ -105,3 +105,10 @@ This report's READY means the engineering equivalence/performance checks pass.
 It grants no development execution, acceptance, source-recursion claim or owner
 go-ahead. The later development driver remains dormant; its default selects
 the Python reference and native selection is available through `Run`.
+
+Historical clarification (0h adversarial recheck): the measurements and claims
+above describe bc00869. Claude's PERF_REVIEW.md subsequently approved that
+revision. PERF_RECHECK_REPORT.md now covers the revised native recovery/evaluator,
+cohort boundary, identity/ownership and audit-storage paths, with full stage-cost
+estimates. Its readiness is engineering only; the small smoke rate is not a
+full section-10 cost guarantee. Original numeric receipts/declaration stay intact.

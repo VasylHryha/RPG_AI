@@ -1,0 +1,17 @@
+{
+  "command": [
+    ".venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "-p",
+    "no:cacheprovider",
+    "evidence/tactical_composition_demo/growing_shapes/runner/test_runner.py::test_interrupted_development_keeps_partial_raw_evidence_and_invalid",
+    "evidence/tactical_composition_demo/growing_shapes/runner/test_perf_recheck.py::test_dormant_development_requires_audit_storage_before_run_creation"
+  ],
+  "exit_code": 0,
+  "seconds": 0.52272525,
+  "reason": "require disk audit storage in dormant full-run entry point; synthetic mock only, no development execution",
+  "log": "PERF_RECHECK_STORAGE_TEST_LOG.txt"
+}

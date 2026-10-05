@@ -1,0 +1,16 @@
+{
+  "command": [
+    ".venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "-p",
+    "no:cacheprovider",
+    "evidence/tactical_composition_demo/growing_shapes/runner/test_perf_recheck.py::test_cost_estimator_candidate_caps_match_live_population"
+  ],
+  "exit_code": 0,
+  "seconds": 0.45541795799999996,
+  "reason": "algebra only: max disjoint minimum-size-three candidates is floor(N/3), not 21 at N=24",
+  "log": "PERF_RECHECK_ESTIMATE_TEST_LOG.txt"
+}

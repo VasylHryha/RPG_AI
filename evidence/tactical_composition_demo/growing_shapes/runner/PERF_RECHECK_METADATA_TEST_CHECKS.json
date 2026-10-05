@@ -1,0 +1,19 @@
+{
+  "command": [
+    ".venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "-p",
+    "no:cacheprovider",
+    "evidence/tactical_composition_demo/growing_shapes/runner/test_perf_recheck.py::test_comparator_rejects_sub_tolerance_native_metadata_change",
+    "evidence/tactical_composition_demo/growing_shapes/runner/test_perf_recheck.py::test_binary_future_every_endpoint_and_internal_snapshot_exact",
+    "evidence/tactical_composition_demo/growing_shapes/runner/test_perf_recheck.py::test_recovery_every_endpoint_and_full_stats",
+    "evidence/tactical_composition_demo/growing_shapes/runner/test_perf_recheck.py::test_qualification_birth_on_left_endpoint_is_cohort_only_if_sampled"
+  ],
+  "exit_code": 0,
+  "seconds": 1.811102,
+  "reason": "strengthen opaque metadata comparison only; no simulation/estimator change",
+  "log": "PERF_RECHECK_METADATA_TEST_LOG.txt"
+}
