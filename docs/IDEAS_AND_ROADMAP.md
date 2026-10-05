@@ -33,7 +33,7 @@ The test of "real" is that the AI wins against Astelia's scripted AI in a game r
 | Replay viewer | DONE | the **retreat trap** found: enemy guns out-range our units, damage keeps them pulled back | `viz_0g/` (claude.ai/artifact/4AhiRJomJTM8QcVRLEWWWL, private until the owner shares it) |
 | 0g v1 (two fixes) | DONE: STOP at B | melee: the resonator is ahead of morale for the first time (+5.05 against +4.82); full armies: novice −0.11, regular −9.56, 8 of 10 guns survive. Root cause: the preferred distance exceeded the unit's own reach (f = 1.11), and the unanswered label was too coarse | `astelia_cpp/S4_V1_DEVELOPMENT_REPORT.md`, `astelia_cpp_review_claude/S4_V1_REVIEW.md` |
 | 0g v2 (range-aware distance, threats) | DONE (NOT_READY: stage C hit the runtime cap) | **full armies vs novice: resonator +16.4** (morale +9.7); vs regular: resonator −4.1 (improved from −9.6), morale +2.9; most guns still survive. Stage C (P2/P3 pool) still to run | `astelia_cpp/S4_V2_DEVELOPMENT_REPORT.md`, `astelia_cpp_review_claude/S4_V2_REVIEW.md` |
-| 0g v3 (no hovering in the kill zone) | RUNNING (Codex: implement, then A/B/C with a 360-minute allowance) | the v2 replay: the line was won by 62 s with 34 units alive, then the guns killed all 34 while they hovered at 294-416 px; v3 makes out-ranged commit/escape binary with hysteresis | `DESIGN_0G.md` section 14 |
+| 0g v3 (no hovering in the kill zone) | DONE: READY_FOR_S5 (review `astelia_cpp_review_claude/S4_V3_REVIEW.md`; recheck RUNNING) | **morale v3 beats novice (+24.7) and regular (+8.6) head-to-head**; the resonator beats novice (+17.4) but not regular (−7.6); on the pool resonator − morale = +0.46 [0.10, 0.82] (below δ 3.5), resonator − push-pull = +26.1 | `astelia_cpp/S4_V3_DEVELOPMENT_REPORT.md` |
 | 0h growing shapes | ADOPTED as the direction [R]; engine RUNNING (Codex: 2D task world, C4 medium); `DESIGN_0H.md` **revision 5.1, approved with notes (Codex review r5)** after reviews of 14, 10, 10 and 9 findings; implementation DONE and reviewed (175 tests; a native speed pass, then the owner-requested C++ recheck: four high findings fixed); **the section-10 development run is approved as designed (decision 0028 item 19: "C then A") and starts automatically when 0g v3 finishes**; estimated 21-55 h serial compute, about 4-10 h wall in parallel | **scope narrowed to the bootstrap** (atoms and the library); combinations, bonds and duplicates deferred until C6; a task-blind arm with structural qualification only | `evidence/tactical_composition_demo/PROPOSAL_0H_GROWING_SHAPES.md` |
 
 ## 3. Waiting for the owner
@@ -43,7 +43,7 @@ The test of "real" is that the AI wins against Astelia's scripted AI in a game r
 | W1 | C6 next step | **DECIDED 2026-10-05: B** (decision 0029): the engineering and runtime port of the unchanged R4 model | (the drafter had recommended A first) |
 | W2 | Approve 0h as the direction | **read as approved 2026-10-05 [R]** (decision 0028 item 17): its engine parts are being built | confirm the [R] reading |
 | W3 | Confirm the reading of "go ahead" (improve before registering) | confirm, correct | marked [R] in decision 0028 item 16 |
-| W4 | Later: approve δ, n and the run of a new 0g specification | after v1 development | registered only after review |
+| W4 | What to register for 0g after v3 (S5): (a) the design as written (P1-P3 on the resonator; P1 expected to fail on regular, P2 indeterminate), or (b) add a separately labelled, outcome-informed endpoint for the morale controller's head-to-head result | after the v3 recheck | (a) plus (b), declared as such, judged on fresh seeds |
 
 ## 3b. Recheck rule (owner, 2026-10-05: "don't forget to run recheck script for each serious chunk of work")
 
@@ -53,7 +53,7 @@ Every serious chunk gets the owner's adversarial recheck prompt (verbatim, throu
 |---|---|
 | 0h C++ speed pass | DONE (four high findings fixed; Claude review `growing_shapes_review_claude/PERF_RECHECK_REVIEW.md`) |
 | C6 option B port and parallel step | DONE (four high and five medium findings fixed; 72 tests pass); full-world zero-tolerance reruns and the official quiet timing **queued automatically after the 0h run** |
-| 0g v3 development | after it finishes |
+| 0g v3 development | RUNNING (limited to 2 workers during the 0h run) |
 | 0h development run | after it finishes |
 
 ## 4. Catalogue of ideas and options
