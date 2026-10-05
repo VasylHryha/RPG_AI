@@ -1,4 +1,4 @@
-# Specification 0g, revision 3 (S5 registration DRAFT): the resonator AI against Astelia's scripted AI
+# Specification 0g, revision 4 (S5 registration DRAFT): the resonator AI against Astelia's scripted AI
 
 **Status: DRAFT.** Revision 2 answered the Codex review of revision 1 (`docs/reviews/tactical_0g_spec_review_codex.md`). Revision 3 answers the review of revision 2 (`docs/reviews/tactical_0g_spec_review_codex_r2.md`) and the runner's questions (`astelia_cpp/S6_RUNNER_REPORT.md`). The self-audit is below.
 `SPEC_0G.json` governs, and the runner reads only that file. Execution needs three recorded gates (JSON `gates`):
@@ -106,6 +106,9 @@ Every endpoint is registered as designed, with nothing narrowed after seeing dev
 | runner-4 | A crashed worker's attribution | The whole batch is invalid (conservative); one batch = one arm × one cluster or block | Not specified |
 | runner-5 | Manifest path implicit | Named in `engine.build_manifest` | Not specified |
 | r2 note | Bootstrap convention for the displayed SDs | Stated in `n.P1` | Not stated |
+
+| r3-1 | The review gate named the revision-2 report (CHANGES_REQUIRED, an older hash) | The gate now names `tactical_0g_spec_review_codex_r4.md`, the review of this revision | I copied the gate path forward without updating it |
+| r3-2 | The manifest path field held an explanation | A clean path, with the rule moved to `engine.manifest_rule` | Prose inside a path field |
 
 The judging root is unchanged: no judging fight has run, so the fresh-root rule does not apply.
 

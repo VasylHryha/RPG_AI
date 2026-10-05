@@ -1,13 +1,14 @@
 {
  "experiment": "0g",
- "revision": 3,
+ "revision": 4,
  "status": "DRAFT. Not executable until: (1) a Codex review of THIS revision returns APPROVE or APPROVE_WITH_NOTES; (2) the owner approves delta and n; (3) the owner authorizes S6 naming this file's sha256. The runner checks all three records (gates.authorization_file).",
  "authority_chain": [
   "DESIGN_0G.md revision 3 (sections 1-4, 6, 7, 10, 11)",
   "astelia_cpp/S4_AMENDED_PROTOCOL.md (CMA-ES optimizer supersedes design section 5's racing rule)",
   "astelia_cpp/s4_checks/AMENDED_GATE_OWNER_DECISION.json (A/B novice gates supersede design section 10's full-budget gate)",
   "docs/reviews/tactical_0g_spec_review_codex.md (revision-1 findings, fixed here; self-audit in SPECIFICATION_0G.md)",
-  "docs/reviews/tactical_0g_spec_review_codex_r2.md and astelia_cpp/S6_RUNNER_REPORT.md (revision-2 findings and runner questions, fixed here)"
+  "docs/reviews/tactical_0g_spec_review_codex_r2.md and astelia_cpp/S6_RUNNER_REPORT.md (revision-2 findings and runner questions, fixed here)",
+  "docs/reviews/tactical_0g_spec_review_codex_r3.md (revision-3 findings 1-2, fixed here)"
  ],
  "design": {
   "file": "DESIGN_0G.md",
@@ -18,7 +19,8 @@
   "binary_sha256": "a1a2d5288481a66f75ec2d151c58ba3b5378121b23bc59396a268815b552c74a",
   "build_manifest_sha256": "d3c4d8f9bc35a6e3c6eeab180ba0f5a81b09f4d12f693b6991ee48bbdaecb1fd",
   "rule": "the runner refuses any other binary; requests are built from request_template below, not from s3_runner.py",
-  "build_manifest": "astelia_cpp/build/astelia_native.build.json (its binary_sha256 field must equal engine.binary_sha256)"
+  "build_manifest": "astelia_cpp/build/astelia_native.build.json",
+  "manifest_rule": "the file at engine.build_manifest must have sha256 engine.build_manifest_sha256 and its binary_sha256 field must equal engine.binary_sha256"
  },
  "request_template": {
   "trace": false,
@@ -326,7 +328,7 @@
   "P3": "resonator - push-pull +7.32 [6.91, 7.73]: expected near or above delta"
  },
  "gates": {
-  "codex_review": "docs/reviews/tactical_0g_spec_review_codex_r2.md, first line APPROVE or APPROVE_WITH_NOTES, naming this file's sha256",
+  "codex_review": "docs/reviews/tactical_0g_spec_review_codex_r4.md: first line APPROVE or APPROVE_WITH_NOTES, and it names this file's sha256 (a later revision must name its own review file here)",
   "authorization_file": "astelia_cpp/S6_AUTHORIZATION.json: {spec_sha256, delta_approved, n_approved, s6_authorized, owner_words, date}, written only from the owner's explicit words"
  },
  "request_template_note": "one native request per fight, JSON line to the binary; <...> are filled per fight; controlled side is always 0 (ai[0]); every other field is literal. This note is not part of any request: request_template holds only native fields."
