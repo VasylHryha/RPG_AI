@@ -1,0 +1,253 @@
+{
+  "purpose": "post-development diagnostic only; recorded knobs and seed, no tuning",
+  "workers": 2,
+  "fights": 2,
+  "build": {
+    "manifest_sha256": "5e593088b34d84f92c254bf76a9a71ba79151e809e819a9a065a60429edd1a75",
+    "binary_sha256": "509168aef6953ea6edbf0a17aa728d4c35fd997690515b5fa41b188714f447b0",
+    "sources": {
+      "src/native/host.cpp": "0e4d058c49a616f5b5775de15e7a6f33b029ca5a1d9e223672a873a1feabec75",
+      "src/native/config_codec.cpp": "efcdeae3443f5c330b656fb94bb24c62ae24fd380849547f409a11c7a019127c",
+      "src/native/world.cpp": "f121972faa8d48378c47e222c28af182da5645c29fd2236b532d7ff8c4236c24",
+      "src/native/combat.cpp": "aaff544aff2e793fdad8bac130d99fbe9e8c6d7c3ea9d6d6e2a9f17ef604bab8",
+      "src/native/spatial.cpp": "36232999e40db2bd261c0e757a85b97ecdda7b1186bbe670d50f9e08c8ce0741",
+      "src/native/combat_rules.cpp": "fdbd5a90723a9a238902025229604e0c573a3c5d4caa38e164305140496117f5",
+      "src/native/abilities.cpp": "4f3953fb384104ed31a6e5be552407eaf25c0f77c230205983722a7557aa17bd",
+      "src/native/player.cpp": "06916e242a984af10ac3e09ef2df06ad701847ffa4d74ade8ae17595b0333e21",
+      "src/native/formation.cpp": "64dbbc07256450e19189bba59fe8013a30942a4d0230e5f8b52f5a751bcfe7bf",
+      "src/native/formation_tables.cpp": "89ca27a08042c51a37c9381bcda328887d10c2e63147504b87f033bae7a65762",
+      "src/native/commander.cpp": "0db5a3cfefcbb97c201be018e55b1051dfa183b108ad56ffa3720b479c63e2c0",
+      "src/native/targeting.cpp": "3e7fffa60b6666af347584b61ec1880b9b9d5ca52fcaafdecfff5bff6d536007",
+      "src/native/coord_abilities.cpp": "12646a05ec0a550173dc7daa897c2bc5d19063e81fa2961601670e8042d1bb94",
+      "src/native/dodge.cpp": "444f2d6f6e926bca805f4d177f40f38fea30bc7915d526627f7f19bf4b1d67b2",
+      "src/native/decisions.cpp": "6605405b679ae7ab445c47f2c2042e78234a43325ece442c784fc70ea9d8008d",
+      "src/native/director.cpp": "78096462fab3672b812c42049e44303ac688aced67db39b935bc8e9723dcbb4c",
+      "src/native/network.cpp": "49beea40bed8ccec2115f710a4c663bd73c55177f0b210ed4031b0ed042c8cfb",
+      "src/native/network_tables.cpp": "56aa467c828967ae50bdf2cfac2afa9090c0942037812559aa92088d6da61eba",
+      "src/native/search.cpp": "0654f951cc474a82371288362c94236f21774d1d4f035b4f1be909c2e0dc7d45",
+      "src/native/artillery_prediction.cpp": "978ad06ba53a125dc876ea80c121fb03f25feb09abe44436f3c42f6f653e1e48",
+      "src/native/artillery.cpp": "78258a7904923317042daefe9c2224bbdf8efb87f8ee80a1c8f56aba28cacc1d",
+      "src/native/api.cpp": "f3c6e6b65cd35a1dbd98c63638775b19cf57465c24011e3017896ec5a89587a2",
+      "src/native/controller.cpp": "787aa9a0020619a25d6d8690c4a48f21e683019d8c72ed6ad9f8f36f69582674",
+      "src/native/controller_bridge.cpp": "552441223f9198b59c18a1e2b5d416747ad4d842eb691ba6a1cbd383a84864f3",
+      "src/native/s3_controller.cpp": "523bb91d84cf850c14d644c39c4e64ffe2cd110e274ad5821b3be19636939239",
+      "src/native/s3_diagnostics.cpp": "64fd88e20358e2fd37c53e2e259570a858070ce655c52ea33bf9be3f77a628e0",
+      "src/builtins.h": "7fcd2fba1ec05aa2b671cb2acb9012a11c73ca827c932c159dc7db787624aed6",
+      "src/formation_sim.h": "364dfea1b77be5743b14ba31a8368c11ea264a6ce513dffe7d32727a56e789c2",
+      "src/js_value.h": "bb028815111ddbab5ffe8aa3de98f1076b2420d605104336c970e332f783c32c",
+      "src/native/api.h": "522d167e438ba35816997481222928a86d8cba549f0ce7384a6ec55cddd405d7",
+      "src/native/artillery.h": "ca419ce466ef179db05b91bc55ffbd692e3c88395c984d5788ba1d48f91bd673",
+      "src/native/catalog_data.h": "11b3bfc9fae461509df0c04480f2d46fc7ab6a92653bdfe685f9590937d05e60",
+      "src/native/config.h": "46885b50acbea548245fce3f521da1ae089e3bd6c2b68588ce28662f989af6d1",
+      "src/native/config_codec.h": "9fa1fd74ae4e1c3fa9d7727796727043bc8c755cb8af01201cd78fda089ac4e2",
+      "src/native/controller.h": "4cf40354b137641a81d7d283a9c4cb3c0d2474de29dc8e8482dc149be82784df",
+      "src/native/controller_bridge.h": "b343c0391b8fa40768a1993d7ed4195cfeb3fda8f9ed431af275c71f35a81269",
+      "src/native/formation.h": "ed44d737410f829bdb35a579fac22292baf700fed14588f4cdffe8c6bb8b8471",
+      "src/native/formation_types.h": "c8c93366a082de03b0667c34ba5c0a50a4181f9f6de18d17ee7272f21a59fbf9",
+      "src/native/geometry.h": "7ce862ed036dd7c9a3cd78269648db33072888a5434c9e0d6528649a2e825364",
+      "src/native/nearest_kernel.h": "6db41f9ccf4960dd1b9448e34f02f0f39224fc27854a390f0042214ef059d26d",
+      "src/native/rng.h": "2fcc6197704f4de20bf4041136828b15fd30fe7bea9d83e8500254b95a625083",
+      "src/native/s3_controller.h": "fa21e4d30c0a4045189ff3e47225f98e669ad168dcfc685d7c2474f7acc4ab98",
+      "src/native/s3_diagnostics.h": "f0576d0fd884e6747055f4064a54e430a72c0278d8a3c9923b72068c66fe4246",
+      "src/native/search.h": "10f29ee0a1e4fb25f7cf84a9b497d572a2efdcf4eee9a54d5aa0b94afaa31dea",
+      "src/native/search_types.h": "d3eb146f977efc9bfd8ed19aa65e9333696a71a4cd8d3e0a7466fe974cdbb058",
+      "src/native/spatial.h": "b5e7368e713a6696d48fb5843c88d0dbbb8b6981752ee8655a3cf6957c2181a1",
+      "src/native/types.h": "18bfeedc17d5c765c57a4b00c5de55633b0a95684beb6f770c3d5a1e53eb0648",
+      "src/native/world.h": "94728d6e44facb17e5016ec80e8dcd13d31066c9be33006ee21390303e4acd41",
+      "src/v8_ieee754.h": "72a68fcc9d908180c9dff5eced89b1b12b4ad9df68b1886b0307ab82104b5855",
+      "build.py": "56fad28b0d42c3e8ef462af4911c8ae895a935976aa6795389cacd46f82c4838",
+      "generate_native_tables.cjs": "fb46f981d64c1294f26c7aae6e7e2d5f0f73edb039c4f10c460abe1242eab4b6",
+      "generate_native_network.py": "6fce283d1d63d4d57754140dec5d523346fdc5d2da05b890a1027da6df63704c",
+      "generate_native_catalog.cjs": "661c78a46ca967e6f020a55771811e3fc3e148a983d66a71b0ba557c4bc033b5",
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_snapshot/bc_net.json": "d11e9a2da43cb0eb5b8b9539be4ab5834e750b4148121d56e632c75d7fb2e3e5",
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_snapshot/formation_sim.js": "85b16e9b84b42b831dd2e64a7055474b6df902e4c1ffd635e6670fc6fb665733"
+    },
+    "engine": "native",
+    "scope": "native_complete_engine",
+    "sanitized": false,
+    "portable": false
+  },
+  "elapsed_seconds": 11.697592291,
+  "replays": [
+    {
+      "file": "C_regular_resonator.html",
+      "raw": "C_regular_resonator.jsonl.gz",
+      "spec": {
+        "arm": "resonator",
+        "params": {
+          "K": 0.007579838576236864,
+          "K_t": 0.09722099550415253,
+          "kappa": 17.957201591452858,
+          "beta": 0.16399767054018874,
+          "G": 3.31098679688191,
+          "w": 1.027739684187858,
+          "f_c": 0.9703847162218258,
+          "m_k": 0.7692612052809518,
+          "lambda_th": 2.586111107312314,
+          "omega_melee": 0.13318434384013944,
+          "omega_ranged": -1.8890366958032518
+        },
+        "opponent": "regular",
+        "setting": "s4_full_head",
+        "seed": 712101000,
+        "swapSides": false,
+        "skeleton": "v3",
+        "endCounts": true,
+        "trace": true
+      },
+      "summary": {
+        "mode": "alone",
+        "melee": 165,
+        "ranged": 1271,
+        "artillery": 4007,
+        "total": 5443,
+        "wasted": 908.7999999999995,
+        "monsterDeaths": 50,
+        "hunterKills": 44,
+        "aliveSeconds": 3589.833333333298,
+        "enemyDamage": 8351,
+        "survivors": 0,
+        "enemySurvivors": 6,
+        "t": 114.09999999999609,
+        "controllerFailures": [
+          0,
+          0
+        ],
+        "controllerStatus": "completed",
+        "crossTeamDealt": [
+          5443,
+          7150
+        ],
+        "crossTeamTaken": [
+          7150,
+          5443
+        ],
+        "friendlyDealt": [
+          0,
+          1201
+        ],
+        "friendlyTaken": [
+          0,
+          1201
+        ],
+        "artilleryAlive": [
+          0,
+          6
+        ]
+      },
+      "metrics": {
+        "executed_fights": 1,
+        "executed_steps": 3423,
+        "branch_steps": 0,
+        "forks": 0,
+        "search_calls": 0,
+        "inference_calls": 0,
+        "candidate_models": 0,
+        "artillery_rollouts": 0,
+        "artillery_predictions": 0,
+        "artillery_candidates": 0,
+        "prediction_steps": 0,
+        "prediction_unit_steps": 0,
+        "branch_unit_actions": 0,
+        "branch_projectile_steps": 0,
+        "unit_actions": 192077,
+        "projectile_steps": 6512,
+        "cache_hits": 0,
+        "scope": "native_complete_engine",
+        "fork_settings": []
+      },
+      "frames": 1142,
+      "sha256": "4f4523517acbf5679568ef8e762bb60acea7ac7628e32e7dad027dfc2d86958f"
+    },
+    {
+      "file": "C_regular_morale.html",
+      "raw": "C_regular_morale.jsonl.gz",
+      "spec": {
+        "arm": "morale",
+        "params": {
+          "K": 2.5081453524615336,
+          "K_t": 0.06682856272983571,
+          "kappa": 43.96367978548303,
+          "beta": 0.07484388980069513,
+          "G": 2.8108703674050757,
+          "w": 1.6893960166606048,
+          "f_c": 0.9433954214426707,
+          "m_k": 0.20221033773401295,
+          "lambda_th": 1.653284625962035,
+          "lambda_melee": 1.5733134079357922,
+          "lambda_ranged": 1.965877531070954
+        },
+        "opponent": "regular",
+        "setting": "s4_full_head",
+        "seed": 712101000,
+        "swapSides": false,
+        "skeleton": "v3",
+        "endCounts": true,
+        "trace": true
+      },
+      "summary": {
+        "mode": "alone",
+        "melee": 210,
+        "ranged": 1146,
+        "artillery": 3191,
+        "total": 4547,
+        "wasted": 690.4,
+        "monsterDeaths": 44,
+        "hunterKills": 41,
+        "aliveSeconds": 2639.8333333328105,
+        "enemyDamage": 8215,
+        "survivors": 6,
+        "enemySurvivors": 9,
+        "t": 150.0333333333274,
+        "controllerFailures": [
+          0,
+          0
+        ],
+        "controllerStatus": "completed",
+        "crossTeamDealt": [
+          4515,
+          7028
+        ],
+        "crossTeamTaken": [
+          7028,
+          4515
+        ],
+        "friendlyDealt": [
+          32,
+          1187
+        ],
+        "friendlyTaken": [
+          32,
+          1187
+        ],
+        "artilleryAlive": [
+          0,
+          9
+        ]
+      },
+      "metrics": {
+        "executed_fights": 1,
+        "executed_steps": 4501,
+        "branch_steps": 0,
+        "forks": 0,
+        "search_calls": 0,
+        "inference_calls": 0,
+        "candidate_models": 0,
+        "artillery_rollouts": 0,
+        "artillery_predictions": 0,
+        "artillery_candidates": 0,
+        "prediction_steps": 0,
+        "prediction_unit_steps": 0,
+        "branch_unit_actions": 0,
+        "branch_projectile_steps": 0,
+        "unit_actions": 168627,
+        "projectile_steps": 8025,
+        "cache_hits": 0,
+        "scope": "native_complete_engine",
+        "fork_settings": []
+      },
+      "frames": 1502,
+      "sha256": "254ee78a564b871d8f4cd7c581c7affca462c53cd2f4e705808a5a8328c43ff7"
+    }
+  ]
+}

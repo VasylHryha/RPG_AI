@@ -1,0 +1,850 @@
+{
+  "status": "PASS",
+  "preserved_hashes": {
+    "s4_v3_development/AUDIT.json": "5a5892d1e849ab9923566127b36b3077ade5a7cd206b206a4493f73f1e2d5810",
+    "s4_v3_development/A_best.json": "aea8869d4e71372480418d8cdb8a5957355b5606ec7eb2a4e425f0da6abf9c44",
+    "s4_v3_development/A_morale_partial.json": "f0e94bbd73c509afbf55f062e1811a69800a84ee659baa6d0b12141f6e8cdb5c",
+    "s4_v3_development/A_morale_tuning.json": "7886de276ada5d9236b1e0d04cc3e6275a29d519aaca52f9259b527c7e4ae3ea",
+    "s4_v3_development/A_pushpull_partial.json": "f5e237d8a5243b889553ad9892686bf7dcaf6aa2e712a8f14f96364ff79af3ae",
+    "s4_v3_development/A_pushpull_tuning.json": "9b664c022076c5c33f760edc50f01cbeaa516052a6b0d811c4c9c3116c9c6bd3",
+    "s4_v3_development/A_resonator_partial.json": "c227879bd0db5cd5333897735d8fc203b3bda7a9da73e8bc0547a63e042e91e0",
+    "s4_v3_development/A_resonator_tuning.json": "4acf6a9cd5b16fcf3a08567fcaa1cf48e39af8b8b3210a3b055561e94a3e2308",
+    "s4_v3_development/A_validation.json": "5a90fbe4b6e69d6184f24c54669f809c7e3c06fa0e074696741ea302dfd0fa79",
+    "s4_v3_development/B_best.json": "e80bc2404fa8d90fd46eaf9e7b38042d399d3fb40a06df245b6087890cd83730",
+    "s4_v3_development/B_morale_partial.json": "dd926fbf8cc0c8d0c0e46f8a816e99e40742a008bf24dfdf9eb532921df2bda3",
+    "s4_v3_development/B_morale_tuning.json": "2694da43e7af5e18a3c3845490f16e110ce3ffdad665e14102fc5ab03b987023",
+    "s4_v3_development/B_pushpull_partial.json": "3737f981da19ce855506e5ea9bf2f4ca21695da9d7683df6afbd0fe5a8984328",
+    "s4_v3_development/B_pushpull_tuning.json": "ef904c5758c69e1f9722905f4d90aac30005e330ae6af277c91f60027dcfed4a",
+    "s4_v3_development/B_resonator_partial.json": "bc1646774935a3f9981b884fd0bea863039247838d6e773e15826d7c6840827a",
+    "s4_v3_development/B_resonator_tuning.json": "59be484e018046da7a411090fb9a2f712e654fcd18c3b75b4b0764d38a162332",
+    "s4_v3_development/B_validation.json": "86838343464c6b0bde414ae6167bc818420d80738e9014e2664295de73853977",
+    "s4_v3_development/C_best.json": "a009611a93f83580ca050dc2250a9b5b0938f93e7dfd65e5c49c606bbbfa07a9",
+    "s4_v3_development/C_morale_partial.json": "f5c91ceed9cadc8c7c5db34a89b09e49484346664575830ac32b9b1f15e4e1c5",
+    "s4_v3_development/C_morale_tuning.json": "f57f5c7284965d7a0c903fb41a6b31db5f0891e040c0323cd261c27b736acd6a",
+    "s4_v3_development/C_pushpull_partial.json": "043272c61aadeb551ed41cd71db703bc0dc3f7cf4194ade844009cb731b5ae7a",
+    "s4_v3_development/C_pushpull_tuning.json": "a6d93a8776fbb4063d01624a6a61625b944b3a0c2c0d05ccc801ff022312bf3b",
+    "s4_v3_development/C_resonator_partial.json": "c0599a0947e8771483495ab2159741d867820777c546030a2741091fc658fcbd",
+    "s4_v3_development/C_resonator_tuning.json": "dcc0e355d37ee9eb44b0c4d7f2f828af51a944e18eb3d8bf125e4725df82c3cf",
+    "s4_v3_development/C_validation.json": "a915fe0df7282dfc119f8db38766f6b72131c9f47460159a89cc2b41523f6e0f",
+    "s4_v3_development/END_STATES_BY_SPLIT.json": "e0eb383f57289a749f0ee6473250b3ccd51ad760c218559514c7662c2c0b766b",
+    "s4_v3_development/POWER_PLANNING.json": "4be2e94d8753fc2d8abbb0b0eb7b621755f89832c849844f4c87104e0b0c8e9e",
+    "s4_v3_development/VALIDATION_END_STATES.json": "b55375daabcdc37f3e3d525919121b7d102c15e50e94f869547c025e3d8574a0",
+    "s4_v3_development/fights.jsonl.gz": "2ffb5f14be57801ce06e70e01d9010b8135f75e07789a8c5ff2c91907ee081f6",
+    "s4_v3_development/replays/A_morale.html": "859423cc6c06eb1d746a02fd7b31ede4b097b9cada91da90c8a38e6158f750f2",
+    "s4_v3_development/replays/A_morale.jsonl.gz": "47a2d4bfcc1975d8c1afc581815dfb513a64cc49415670413ab97e607570a869",
+    "s4_v3_development/replays/A_morale.replay.json.gz": "4ba302227133f9c384f60d86ceb0e8226d7f183c7b3a83aa887e4e7e68934da5",
+    "s4_v3_development/replays/A_nearest.html": "bd41261979a8edb91042471262c6b67026646317f63920fe38607921c22e2dd4",
+    "s4_v3_development/replays/A_nearest.jsonl.gz": "f9ca180148b1e8d0a25c5ff457ce3d4fdba05c1402be8f3a17c98f6d83900494",
+    "s4_v3_development/replays/A_nearest.replay.json.gz": "07680fb41fd46fdaac47107cd507106d8f419e0a4ee6162168729973ec6c7bb8",
+    "s4_v3_development/replays/A_pushpull.html": "da8365c69783148d35b001656c93823170906fdb978ad2136cbabd671b0b7681",
+    "s4_v3_development/replays/A_pushpull.jsonl.gz": "bfcd9a590478862a4b2d34529c93d0b30383aac23549b98e6d77150af7428075",
+    "s4_v3_development/replays/A_pushpull.replay.json.gz": "7494c08ad9970f450e0ec6ff90af9659af061af2c83522aa330ded89f21af940",
+    "s4_v3_development/replays/A_resonator.html": "774406a5d4584d5528a4dcb0d802532be781a6224ce53dddff9979a54d2d2c91",
+    "s4_v3_development/replays/A_resonator.jsonl.gz": "a72a65444d2b9ae78ffdffb58a4237695e8dcc09dd92b3379104d34d91081b04",
+    "s4_v3_development/replays/A_resonator.replay.json.gz": "10cfa9b815b11d29d0d8250de6da49e5acd8cde38791bc7e5947519108a10b45",
+    "s4_v3_development/replays/B_morale.html": "593ee8bcdb015ee9138e51b73a44f87879fd1ef1f1a0350c99945e7e1e6f1209",
+    "s4_v3_development/replays/B_morale.jsonl.gz": "e75986166f4d93a9f23044b23950da8a530fc777af86a1d36ff9d9958570aa3f",
+    "s4_v3_development/replays/B_morale.replay.json.gz": "b85a486410f4fe31017f54eba9f83ff0e62fe12f157b01e66729258e7c13f520",
+    "s4_v3_development/replays/B_nearest.html": "fe14523c88b5e998564ae440fbb9c0b00bf7b38bf5fadc0adb82b52694565c1e",
+    "s4_v3_development/replays/B_nearest.jsonl.gz": "eeadbe2095d5637dcd0a2034fd6b70942638ab8ec0b51529e936be8c80030b6d",
+    "s4_v3_development/replays/B_nearest.replay.json.gz": "fc285aba3bd2dd50560942bcda6b25a4975c32e0527da69b3ae5b8ae57dd3044",
+    "s4_v3_development/replays/B_pushpull.html": "cb416efc3eaec2ac4e49e5fca850023ed7f178821685debee32385c6bb980265",
+    "s4_v3_development/replays/B_pushpull.jsonl.gz": "214412d9c7eaf381c6a4b9741eac54c1a4ccb00e7e03fd915f1765c52396a61d",
+    "s4_v3_development/replays/B_pushpull.replay.json.gz": "3d31e1bc5d759c20feb86bccd19abca9ab899869e779e03abba4a532e75e7bef",
+    "s4_v3_development/replays/B_resonator.html": "f3eea55a326b800f9b8a81da11b2be3f2f07ec566e6eae5569d1c1f8b2afb3da",
+    "s4_v3_development/replays/B_resonator.jsonl.gz": "2ce609514863d357b1081f5044fffece17e4cce794ad50b14c165594974c2c6a",
+    "s4_v3_development/replays/B_resonator.replay.json.gz": "ef6443b8fc36624f8e0ed09a88f3612f89e91932884667a339cbfa7d51b31594",
+    "s4_v3_development/replays/C_morale.html": "c96f5fcb1c8b28f203b6227453ad3bc9c8276c46c78f194477f1109cc8cf65e6",
+    "s4_v3_development/replays/C_morale.jsonl.gz": "50c08c2d35393b5720ad7377bfbefc7f0251a39ebcf88679ce896b1649bad285",
+    "s4_v3_development/replays/C_morale.replay.json.gz": "73b1ea78cb316fc23f9b3d744f95d64322e11382331d310bed348f54ff69243d",
+    "s4_v3_development/replays/C_nearest.html": "b13492be603399c7c7642fb2b6748a420d1555b637a76c5253fd5ed6e2230fb2",
+    "s4_v3_development/replays/C_nearest.jsonl.gz": "a417b154ffd0a8aa6b7eda2803973a7311b36ba6a64f9d318aa308d61f4682e7",
+    "s4_v3_development/replays/C_nearest.replay.json.gz": "18f951b685b7b7cfa1c460fdaf69be0df0fc1618ba934b3248fb2b6d85eee196",
+    "s4_v3_development/replays/C_pushpull.html": "ddba480c3bbbeda7d5990231149713481d0e8c4cf86e7df6256610a6350b3729",
+    "s4_v3_development/replays/C_pushpull.jsonl.gz": "1dd27404510903ace2b5326453c17dd2dec1d1539b07d507185ac51955718f88",
+    "s4_v3_development/replays/C_pushpull.replay.json.gz": "4e7df114c5658466110ef68c95674731deacbb719d5a5487b03e92f687dd539d",
+    "s4_v3_development/replays/C_resonator.html": "1d74e431133a695e48fb9649250f25ff70a6ba2fc54f9b714e4b48e3f6bd078d",
+    "s4_v3_development/replays/C_resonator.jsonl.gz": "12960f3db3a8150e3be1f5d1ce95ff694a44aeb09ff2c20b913a5f6e5fd5c9b2",
+    "s4_v3_development/replays/C_resonator.replay.json.gz": "b2db52a27267c4c64514cd6baf64713f87c20ee00cfe7da3bbf8019fc6a1b15d",
+    "s4_v3_development/run_identity.json": "ea1d42cf248e26e4c0ceadd39888c39af6a7e11b571c6775d7e7df9ffefbbc72",
+    "s4_v3_development/s4_seeds.json": "0160a81a5e4de4038b6e1f331a3aa5a2693ff8fa6f4f0bb788d4d01e4b625692",
+    "s4_v3_development/summary.json": "bb230456cee0210c5279df3536b5c24fc97cab4a0bbed50e40c9dce03c341df6",
+    "s4_v3_checks/DELIVERY_CONTENTS.json": "de7fec06d284b061409d372487e421e60c6706b989e989954491f821f09359d6",
+    "s4_v3_checks/BUNDLE_VERIFIED.json": "e21afa5b3f5a09c7e350d81fd7f1464d204eced8ff91eaafe05ec463f0462492",
+    "s4_v3_checks/report.console.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "s4_v3_checks/PART1_PARITY.json": "ca437b59f5320d0e36cc4ce1fbeba58a08b3f36b3897c6ab2c1b4041a0ec56eb",
+    "s4_v3_checks/TEST_TIMING.json": "8922d6f7007dc9616631d6c3ec915e9ea1e7a8f14c241727a3a86091c29f8dba",
+    "s4_v3_checks/tests.stdout.txt": "e2e96766a8bbfc790c4767e2b7334070972d2e3f0aa4afda12b3a0cf0b5cbf31",
+    "s4_v3_checks/build.stdout.txt": "71d9d8c854d98693716c69a9fcc036acceecf050df471b4a0aa3da1ab87a7a3b",
+    "s4_v3_checks/run_checks.py": "de52632ac44dd7129d16e32514d843c27f6fb14be9460279ad549fcb6a8da4fe",
+    "s4_v3_checks/PART1_IMPLEMENTATION.md": "b0afde29cce14eb104ed105244989c2d420bc4a0e2ff284d10476e7407fe1464",
+    "s4_v3_checks/PART1_BUNDLE_IMPORT_VERIFIED.json": "aaba47913bd2589cbe649896f7356fc4c9f7688d61c554d77ae5346c1a321f47",
+    "s4_v3_checks/REPORT_SUPPLEMENT.json": "a311d46406dfc2e5d817ecd0ecb15a3d163956bac3b0b36fcff63436a78dc561",
+    "s4_v3_checks/PART1_DELIVERY.json": "f1c28151544b8bc308edab380140d402c6b389eb788bfe243bc34ef15f179829",
+    "s4_v3_checks/REPORT_TIMING.json": "ad199acb88ebe3e57a6aeeafecef1f9ac2257fe67631494d4d7318a8cca4d291",
+    "s4_v3_checks/EXECUTION.json": "bfa0d329b0ce21bd4f1c5e8e22d417d1b92df043dc29a9077bb423edc73d22d5",
+    "s4_v3_checks/development.console.txt": "dab26573f3032dbe59f9292d155ea30e7176c08177ee633ff47bbea8d3e42a1a",
+    "s4_v3_checks/DELIVERY_NOTE.md": "adbdfcb009ba550bd0c30f668ff5897a80d1ee478322c6dd30096703126099b3"
+  },
+  "original_reconstruction": {
+    "status": "DEVELOPMENT_EVIDENCE_RECONSTRUCTED",
+    "raw_fights": 107094,
+    "fresh_fights": 107094,
+    "cache_hits": 0,
+    "replay_capture_fights": 12,
+    "total_executed_fights": 107106,
+    "tuning_fights": 87894,
+    "validation_fights": 19200,
+    "candidates": 2304,
+    "budgets_by_stage": {
+      "A": {
+        "resonator": 9766,
+        "morale": 9766,
+        "pushpull": 9766
+      },
+      "B": {
+        "resonator": 9766,
+        "morale": 9766,
+        "pushpull": 9766
+      },
+      "C": {
+        "resonator": 9766,
+        "morale": 9766,
+        "pushpull": 9766
+      }
+    },
+    "controller_failures": 0,
+    "planning_counters": {
+      "forks": 0,
+      "search_calls": 0,
+      "artillery_rollouts": 0
+    },
+    "both_orientations_verified": true,
+    "all_100_cluster_endpoints_reconstructed": true,
+    "CMA_ask_tell_reconstructed": true,
+    "candidate_parameters_verified": true,
+    "spec_0g_unchanged": true,
+    "replay_equality": [
+      {
+        "file": "A_resonator.html",
+        "matches_original": true,
+        "raw_sha256": "a72a65444d2b9ae78ffdffb58a4237695e8dcc09dd92b3379104d34d91081b04"
+      },
+      {
+        "file": "A_morale.html",
+        "matches_original": true,
+        "raw_sha256": "47a2d4bfcc1975d8c1afc581815dfb513a64cc49415670413ab97e607570a869"
+      },
+      {
+        "file": "A_pushpull.html",
+        "matches_original": true,
+        "raw_sha256": "bfcd9a590478862a4b2d34529c93d0b30383aac23549b98e6d77150af7428075"
+      },
+      {
+        "file": "A_nearest.html",
+        "matches_original": true,
+        "raw_sha256": "f9ca180148b1e8d0a25c5ff457ce3d4fdba05c1402be8f3a17c98f6d83900494"
+      },
+      {
+        "file": "B_resonator.html",
+        "matches_original": true,
+        "raw_sha256": "2ce609514863d357b1081f5044fffece17e4cce794ad50b14c165594974c2c6a"
+      },
+      {
+        "file": "B_morale.html",
+        "matches_original": true,
+        "raw_sha256": "e75986166f4d93a9f23044b23950da8a530fc777af86a1d36ff9d9958570aa3f"
+      },
+      {
+        "file": "B_pushpull.html",
+        "matches_original": true,
+        "raw_sha256": "214412d9c7eaf381c6a4b9741eac54c1a4ccb00e7e03fd915f1765c52396a61d"
+      },
+      {
+        "file": "B_nearest.html",
+        "matches_original": true,
+        "raw_sha256": "eeadbe2095d5637dcd0a2034fd6b70942638ab8ec0b51529e936be8c80030b6d"
+      },
+      {
+        "file": "C_resonator.html",
+        "matches_original": true,
+        "raw_sha256": "12960f3db3a8150e3be1f5d1ce95ff694a44aeb09ff2c20b913a5f6e5fd5c9b2"
+      },
+      {
+        "file": "C_morale.html",
+        "matches_original": true,
+        "raw_sha256": "50c08c2d35393b5720ad7377bfbefc7f0251a39ebcf88679ce896b1649bad285"
+      },
+      {
+        "file": "C_pushpull.html",
+        "matches_original": true,
+        "raw_sha256": "1dd27404510903ace2b5326453c17dd2dec1d1539b07d507185ac51955718f88"
+      },
+      {
+        "file": "C_nearest.html",
+        "matches_original": true,
+        "raw_sha256": "a417b154ffd0a8aa6b7eda2803973a7311b36ba6a64f9d318aa308d61f4682e7"
+      }
+    ],
+    "judging_seeds_used": false,
+    "seed_declaration_sha256": "9345e0b1e89a3616d4f1043a05f206e62994e6c872f32a0cf7e5ed019b2eaf6b"
+  },
+  "independent": {
+    "raw_fights": 107094,
+    "tuning_seed_count": 57,
+    "validation_seed_count": 400,
+    "cross_arm_world_signatures": 4914,
+    "budgets": {
+      "A|tuning|resonator": 9766,
+      "A|tuning|morale": 9766,
+      "A|tuning|pushpull": 9766,
+      "A|validation|resonator": 200,
+      "A|validation|morale": 200,
+      "A|validation|pushpull": 200,
+      "A|validation|nearest": 200,
+      "B|tuning|resonator": 9766,
+      "B|tuning|morale": 9766,
+      "B|tuning|pushpull": 9766,
+      "B|validation|resonator": 400,
+      "B|validation|morale": 400,
+      "B|validation|pushpull": 400,
+      "B|validation|nearest": 400,
+      "C|tuning|resonator": 9766,
+      "C|tuning|morale": 9766,
+      "C|tuning|pushpull": 9766,
+      "C|validation|resonator": 4200,
+      "C|validation|morale": 4200,
+      "C|validation|pushpull": 4200,
+      "C|validation|nearest": 4200
+    },
+    "diagnostics": {
+      "resonator": {
+        "mode": "alone",
+        "melee": 165,
+        "ranged": 1271,
+        "artillery": 4007,
+        "total": 5443,
+        "wasted": 908.7999999999995,
+        "monsterDeaths": 50,
+        "hunterKills": 44,
+        "aliveSeconds": 3589.833333333298,
+        "enemyDamage": 8351,
+        "survivors": 0,
+        "enemySurvivors": 6,
+        "t": 114.09999999999609,
+        "controllerFailures": [
+          0,
+          0
+        ],
+        "controllerStatus": "completed",
+        "crossTeamDealt": [
+          5443,
+          7150
+        ],
+        "crossTeamTaken": [
+          7150,
+          5443
+        ],
+        "friendlyDealt": [
+          0,
+          1201
+        ],
+        "friendlyTaken": [
+          0,
+          1201
+        ],
+        "artilleryAlive": [
+          0,
+          6
+        ]
+      },
+      "morale": {
+        "mode": "alone",
+        "melee": 210,
+        "ranged": 1146,
+        "artillery": 3191,
+        "total": 4547,
+        "wasted": 690.4,
+        "monsterDeaths": 44,
+        "hunterKills": 41,
+        "aliveSeconds": 2639.8333333328105,
+        "enemyDamage": 8215,
+        "survivors": 6,
+        "enemySurvivors": 9,
+        "t": 150.0333333333274,
+        "controllerFailures": [
+          0,
+          0
+        ],
+        "controllerStatus": "completed",
+        "crossTeamDealt": [
+          4515,
+          7028
+        ],
+        "crossTeamTaken": [
+          7028,
+          4515
+        ],
+        "friendlyDealt": [
+          32,
+          1187
+        ],
+        "friendlyTaken": [
+          32,
+          1187
+        ],
+        "artilleryAlive": [
+          0,
+          9
+        ]
+      }
+    }
+  },
+  "planning": {
+    "delta": 3.5,
+    "n": {
+      "P2": 16,
+      "P3": 16,
+      "P1": 99
+    },
+    "zsum_squared": 16.716530032487412,
+    "bootstrap_repeated": false,
+    "limitation": "Checks recorded bootstrap-derived spreads and normal arithmetic; does not certify bootstrap coverage or finite-sample power."
+  },
+  "diagnostic_equality": {
+    "resonator": true,
+    "morale": true
+  },
+  "replay_analysis": {
+    "resonator": {
+      "summary": {
+        "mode": "alone",
+        "melee": 165,
+        "ranged": 1271,
+        "artillery": 4007,
+        "total": 5443,
+        "wasted": 908.7999999999995,
+        "monsterDeaths": 50,
+        "hunterKills": 44,
+        "aliveSeconds": 3589.833333333298,
+        "enemyDamage": 8351,
+        "survivors": 0,
+        "enemySurvivors": 6,
+        "t": 114.09999999999609,
+        "controllerFailures": [
+          0,
+          0
+        ],
+        "controllerStatus": "completed",
+        "crossTeamDealt": [
+          5443,
+          7150
+        ],
+        "crossTeamTaken": [
+          7150,
+          5443
+        ],
+        "friendlyDealt": [
+          0,
+          1201
+        ],
+        "friendlyTaken": [
+          0,
+          1201
+        ],
+        "artilleryAlive": [
+          0,
+          6
+        ]
+      },
+      "first_enemy_artillery_only": {
+        "t": 60.86666666666577,
+        "own_alive": 40,
+        "enemy_guns": 10
+      },
+      "snapshots": [
+        {
+          "t": 0,
+          "counts": {
+            "0|melee": 10,
+            "0|ranged": 30,
+            "0|artillery": 10,
+            "1|melee": 10,
+            "1|ranged": 30,
+            "1|artillery": 10
+          }
+        },
+        {
+          "t": 9.999999999999975,
+          "counts": {
+            "0|melee": 10,
+            "0|ranged": 30,
+            "0|artillery": 10,
+            "1|melee": 10,
+            "1|ranged": 30,
+            "1|artillery": 10
+          }
+        },
+        {
+          "t": 20.000000000000153,
+          "counts": {
+            "0|melee": 3,
+            "0|ranged": 30,
+            "0|artillery": 10,
+            "1|melee": 9,
+            "1|ranged": 30,
+            "1|artillery": 10
+          }
+        },
+        {
+          "t": 30.00000000000065,
+          "counts": {
+            "0|melee": 0,
+            "0|ranged": 30,
+            "0|artillery": 10,
+            "1|melee": 4,
+            "1|ranged": 30,
+            "1|artillery": 10
+          }
+        },
+        {
+          "t": 40.00000000000029,
+          "counts": {
+            "0|melee": 0,
+            "0|ranged": 30,
+            "0|artillery": 10,
+            "1|melee": 0,
+            "1|ranged": 28,
+            "1|artillery": 10
+          }
+        },
+        {
+          "t": 49.99999999999972,
+          "counts": {
+            "0|melee": 0,
+            "0|ranged": 30,
+            "0|artillery": 10,
+            "1|melee": 0,
+            "1|ranged": 14,
+            "1|artillery": 10
+          }
+        },
+        {
+          "t": 59.999999999999154,
+          "counts": {
+            "0|melee": 0,
+            "0|ranged": 30,
+            "0|artillery": 10,
+            "1|melee": 0,
+            "1|ranged": 1,
+            "1|artillery": 10
+          }
+        },
+        {
+          "t": 69.9999999999986,
+          "counts": {
+            "0|melee": 0,
+            "0|ranged": 25,
+            "0|artillery": 10,
+            "1|melee": 0,
+            "1|ranged": 0,
+            "1|artillery": 10
+          }
+        },
+        {
+          "t": 79.99999999999802,
+          "counts": {
+            "0|melee": 0,
+            "0|ranged": 9,
+            "0|artillery": 10,
+            "1|melee": 0,
+            "1|ranged": 0,
+            "1|artillery": 9
+          }
+        },
+        {
+          "t": 89.99999999999746,
+          "counts": {
+            "0|melee": 0,
+            "0|ranged": 3,
+            "0|artillery": 10,
+            "1|melee": 0,
+            "1|ranged": 0,
+            "1|artillery": 9
+          }
+        },
+        {
+          "t": 99.99999999999689,
+          "counts": {
+            "0|melee": 0,
+            "0|ranged": 1,
+            "0|artillery": 8,
+            "1|melee": 0,
+            "1|ranged": 0,
+            "1|artillery": 8
+          }
+        },
+        {
+          "t": 109.99999999999632,
+          "counts": {
+            "0|melee": 0,
+            "0|ranged": 0,
+            "0|artillery": 2,
+            "1|melee": 0,
+            "1|ranged": 0,
+            "1|artillery": 7
+          }
+        }
+      ],
+      "threshold_switches_by_unit": {
+        "20": 46,
+        "43": 68,
+        "24": 47,
+        "46": 67,
+        "44": 66,
+        "19": 46,
+        "26": 38,
+        "31": 55,
+        "16": 44,
+        "27": 43,
+        "28": 46,
+        "13": 43,
+        "33": 36,
+        "40": 53,
+        "34": 44,
+        "21": 36,
+        "50": 57,
+        "25": 38,
+        "36": 52,
+        "49": 57,
+        "29": 46,
+        "35": 45,
+        "41": 65,
+        "23": 43,
+        "37": 44,
+        "32": 53,
+        "11": 44,
+        "22": 40,
+        "15": 49,
+        "42": 62,
+        "47": 60,
+        "48": 62,
+        "14": 51,
+        "18": 46,
+        "12": 44,
+        "38": 55,
+        "17": 49,
+        "45": 64,
+        "39": 61,
+        "30": 41,
+        "7": 2,
+        "8": 2,
+        "6": 1,
+        "1": 1,
+        "10": 1,
+        "4": 1,
+        "5": 1
+      },
+      "role_means": {
+        "0to60|melee|commit": 0.4587986137851367,
+        "0to60|melee|c": -0.021529920883368303,
+        "0to60|melee|pressure": -0.42688978720918175,
+        "0to60|melee|free_drive": 0.20205753512714877,
+        "0to60|ranged|commit": 0.49770497871552843,
+        "0to60|ranged|c": -0.002494784406830228,
+        "0to60|ranged|pressure": 0.014496359279576885,
+        "0to60|ranged|free_drive": 1.875416434426955,
+        "0to60|artillery|commit": 0.5011660188784008,
+        "0to60|artillery|c": -0.000999564027155706,
+        "0to60|artillery|pressure": -0.07025915867856959,
+        "0to60|artillery|free_drive": 1.884531123515081,
+        "60plus|ranged|commit": 0.5059732110534573,
+        "60plus|ranged|c": 0.010796690388394056,
+        "60plus|ranged|pressure": -0.08189731080366493,
+        "60plus|ranged|free_drive": 1.74918527536866,
+        "60plus|artillery|commit": 0.4826720241084882,
+        "60plus|artillery|c": -0.012440321860683327,
+        "60plus|artillery|pressure": 0.27420673038009774,
+        "60plus|artillery|free_drive": 1.819180752117364
+      },
+      "alignment": "capture uses previous trace (pre-step); captures state before integration and commitment after integration",
+      "limitation": "Threshold reconstruction is not an exported pair-mode trace. No force attribution or counterfactual performance is measured."
+    },
+    "morale": {
+      "summary": {
+        "mode": "alone",
+        "melee": 210,
+        "ranged": 1146,
+        "artillery": 3191,
+        "total": 4547,
+        "wasted": 690.4,
+        "monsterDeaths": 44,
+        "hunterKills": 41,
+        "aliveSeconds": 2639.8333333328105,
+        "enemyDamage": 8215,
+        "survivors": 6,
+        "enemySurvivors": 9,
+        "t": 150.0333333333274,
+        "controllerFailures": [
+          0,
+          0
+        ],
+        "controllerStatus": "completed",
+        "crossTeamDealt": [
+          4515,
+          7028
+        ],
+        "crossTeamTaken": [
+          7028,
+          4515
+        ],
+        "friendlyDealt": [
+          32,
+          1187
+        ],
+        "friendlyTaken": [
+          32,
+          1187
+        ],
+        "artilleryAlive": [
+          0,
+          9
+        ]
+      },
+      "first_enemy_artillery_only": {
+        "t": 64.66666666666556,
+        "own_alive": 24,
+        "enemy_guns": 10
+      },
+      "snapshots": [
+        {
+          "t": 0,
+          "counts": {
+            "0|melee": 10,
+            "0|ranged": 30,
+            "0|artillery": 10,
+            "1|melee": 10,
+            "1|ranged": 30,
+            "1|artillery": 10
+          }
+        },
+        {
+          "t": 9.999999999999975,
+          "counts": {
+            "0|melee": 10,
+            "0|ranged": 30,
+            "0|artillery": 10,
+            "1|melee": 10,
+            "1|ranged": 30,
+            "1|artillery": 10
+          }
+        },
+        {
+          "t": 20.000000000000153,
+          "counts": {
+            "0|melee": 0,
+            "0|ranged": 25,
+            "0|artillery": 10,
+            "1|melee": 7,
+            "1|ranged": 30,
+            "1|artillery": 10
+          }
+        },
+        {
+          "t": 30.00000000000065,
+          "counts": {
+            "0|melee": 0,
+            "0|ranged": 15,
+            "0|artillery": 10,
+            "1|melee": 0,
+            "1|ranged": 30,
+            "1|artillery": 10
+          }
+        },
+        {
+          "t": 40.00000000000029,
+          "counts": {
+            "0|melee": 0,
+            "0|ranged": 15,
+            "0|artillery": 10,
+            "1|melee": 0,
+            "1|ranged": 19,
+            "1|artillery": 10
+          }
+        },
+        {
+          "t": 49.99999999999972,
+          "counts": {
+            "0|melee": 0,
+            "0|ranged": 15,
+            "0|artillery": 10,
+            "1|melee": 0,
+            "1|ranged": 7,
+            "1|artillery": 10
+          }
+        },
+        {
+          "t": 59.999999999999154,
+          "counts": {
+            "0|melee": 0,
+            "0|ranged": 15,
+            "0|artillery": 10,
+            "1|melee": 0,
+            "1|ranged": 2,
+            "1|artillery": 10
+          }
+        },
+        {
+          "t": 69.9999999999986,
+          "counts": {
+            "0|melee": 0,
+            "0|ranged": 6,
+            "0|artillery": 0,
+            "1|melee": 0,
+            "1|ranged": 0,
+            "1|artillery": 9
+          }
+        },
+        {
+          "t": 79.99999999999802,
+          "counts": {
+            "0|melee": 0,
+            "0|ranged": 6,
+            "0|artillery": 0,
+            "1|melee": 0,
+            "1|ranged": 0,
+            "1|artillery": 9
+          }
+        },
+        {
+          "t": 89.99999999999746,
+          "counts": {
+            "0|melee": 0,
+            "0|ranged": 6,
+            "0|artillery": 0,
+            "1|melee": 0,
+            "1|ranged": 0,
+            "1|artillery": 9
+          }
+        },
+        {
+          "t": 99.99999999999689,
+          "counts": {
+            "0|melee": 0,
+            "0|ranged": 6,
+            "0|artillery": 0,
+            "1|melee": 0,
+            "1|ranged": 0,
+            "1|artillery": 9
+          }
+        },
+        {
+          "t": 109.99999999999632,
+          "counts": {
+            "0|melee": 0,
+            "0|ranged": 6,
+            "0|artillery": 0,
+            "1|melee": 0,
+            "1|ranged": 0,
+            "1|artillery": 9
+          }
+        },
+        {
+          "t": 119.99999999999575,
+          "counts": {
+            "0|melee": 0,
+            "0|ranged": 6,
+            "0|artillery": 0,
+            "1|melee": 0,
+            "1|ranged": 0,
+            "1|artillery": 9
+          }
+        },
+        {
+          "t": 129.9999999999952,
+          "counts": {
+            "0|melee": 0,
+            "0|ranged": 6,
+            "0|artillery": 0,
+            "1|melee": 0,
+            "1|ranged": 0,
+            "1|artillery": 9
+          }
+        },
+        {
+          "t": 139.99999999999463,
+          "counts": {
+            "0|melee": 0,
+            "0|ranged": 6,
+            "0|artillery": 0,
+            "1|melee": 0,
+            "1|ranged": 0,
+            "1|artillery": 9
+          }
+        },
+        {
+          "t": 149.99999999999406,
+          "counts": {
+            "0|melee": 0,
+            "0|ranged": 6,
+            "0|artillery": 0,
+            "1|melee": 0,
+            "1|ranged": 0,
+            "1|artillery": 9
+          }
+        }
+      ],
+      "threshold_switches_by_unit": {
+        "33": 2,
+        "29": 1,
+        "18": 1,
+        "23": 1,
+        "28": 2,
+        "35": 1,
+        "16": 1,
+        "27": 1,
+        "22": 1,
+        "13": 1,
+        "32": 2,
+        "24": 1,
+        "36": 1,
+        "12": 1,
+        "34": 1,
+        "40": 1,
+        "45": 1,
+        "44": 1,
+        "42": 1,
+        "46": 1,
+        "41": 1,
+        "49": 1,
+        "48": 1,
+        "47": 1,
+        "50": 1,
+        "43": 1
+      },
+      "role_means": {
+        "0to60|melee|commit": 1,
+        "0to60|melee|c": 0.19833424896812035,
+        "0to60|melee|pressure": -1.1978381827584952,
+        "0to60|ranged|commit": 0.5032751091703057,
+        "0to60|ranged|c": -0.02808550877111692,
+        "0to60|ranged|pressure": 0.001280526215381545,
+        "0to60|artillery|commit": 0.6568573014991671,
+        "0to60|artillery|c": -0.02112299454436889,
+        "0to60|artillery|pressure": 0.0814103161004645,
+        "60plus|ranged|commit": 0.01160552536231884,
+        "60plus|ranged|c": -0.08421881247898264,
+        "60plus|ranged|pressure": 0.3190535285419121,
+        "60plus|artillery|commit": 0,
+        "60plus|artillery|c": -0.4317110486407064,
+        "60plus|artillery|pressure": 3.174494101901068
+      },
+      "alignment": "capture uses previous trace (pre-step); captures state before integration and commitment after integration",
+      "limitation": "Threshold reconstruction is not an exported pair-mode trace. No force attribution or counterfactual performance is measured."
+    }
+  },
+  "elapsed_seconds": 20.662649125,
+  "workers": 1,
+  "tuning_runs": 0,
+  "new_fights": 0
+}

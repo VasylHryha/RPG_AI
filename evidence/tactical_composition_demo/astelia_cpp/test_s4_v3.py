@@ -51,7 +51,7 @@ def test_v3_knob_rejections(s3_build,arm,params):
     assert 'error' in row
 
 
-def test_v0_v1_v2_fixture_bytes_and_v3_engineering(s3_build):
+def test_v0_v1_v2_fixture_bytes_and_v3_engineering(s3_build,tmp_path):
     root=V.ROOT;specs=json.loads((root/'s3_controllers_r3/default.requests.json').read_text())
     stored_v1=json.loads((root/'s4_v1_checks/PART1_PARITY.json').read_text())['v1_engineering']
     v1_results={(x['spec']['arm'],x['spec']['seed'],x['spec']['swapSides']):x['summary'] for x in stored_v1}
@@ -79,7 +79,7 @@ def test_v0_v1_v2_fixture_bytes_and_v3_engineering(s3_build):
         actual=(json.dumps(json.loads(raw),indent=2)+'\n').encode() if kind.startswith('s3') else raw.encode()
         assert actual==expected,(kind,spec)
         return dict(kind=kind,fixture=label,byte_identical=True,summary_sha256=hashlib.sha256(actual).hexdigest())
-    with concurrent.futures.ThreadPoolExecutor(max_workers=10) as pool:parity=list(pool.map(replay,jobs))
+    with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool:parity=list(pool.map(replay,jobs))
     def engineering(spec):
         req=request(dict(spec,skeleton='v3',diagnostics=False))
         run=subprocess.run([str(V.BINARY),'--capture-s3','--metrics'],input=json.dumps(req)+'\n',text=True,capture_output=True,check=True)
@@ -89,8 +89,9 @@ def test_v0_v1_v2_fixture_bytes_and_v3_engineering(s3_build):
         refinement=json.loads(subprocess.check_output([str(s3_build),'--refinement'],input=capture,text=True))
         assert refinement['samples']>0 and refinement['maximum']<.02
         return dict(spec=dict(spec,skeleton='v3'),summary=result,refinement=refinement,metrics=json.loads(run.stderr))
-    with concurrent.futures.ThreadPoolExecutor(max_workers=10) as pool:fresh=list(pool.map(engineering,[s for s in specs if s['arm'] in ('resonator','morale')]))
-    V.write(root/'s4_v3_checks/PART1_PARITY.json',dict(parity=parity,fixture_count=len(parity),v3_engineering=fresh,native_build=admit(V.BINARY),contract_build=admit(s3_build)))
+    with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool:fresh=list(pool.map(engineering,[s for s in specs if s['arm'] in ('resonator','morale')]))
+    # Reverification must never replace the committed Part 1 receipt.
+    V.write(tmp_path/'PART1_PARITY.json',dict(parity=parity,fixture_count=len(parity),v3_engineering=fresh,native_build=admit(V.BINARY),contract_build=admit(s3_build)))
 
 
 def test_v3_optimizer_full_dimensions_and_fixed_equal_budget():
