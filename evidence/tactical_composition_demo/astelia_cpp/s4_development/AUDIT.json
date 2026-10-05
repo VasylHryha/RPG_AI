@@ -1,0 +1,105 @@
+{
+  "status": "DEVELOPMENT_EVIDENCE_RECONSTRUCTED",
+  "budget": {
+    "resonator": 7680,
+    "morale": 7680,
+    "pushpull": 7680
+  },
+  "raw_fights": {
+    "s4_development": 26752,
+    "s4_anomaly": 64
+  },
+  "replay_capture_fights": 16,
+  "total_executed_fights": 26832,
+  "candidates": 576,
+  "accepted": {
+    "A": {
+      "resonator": 2,
+      "morale": 3,
+      "pushpull": 2
+    },
+    "B": {
+      "resonator": 1,
+      "morale": 3,
+      "pushpull": 5
+    },
+    "C": {
+      "resonator": 2,
+      "morale": 1,
+      "pushpull": 1
+    }
+  },
+  "controller_failures": 0,
+  "planning_counters": {
+    "forks": 0,
+    "search_calls": 0,
+    "artillery_rollouts": 0
+  },
+  "replay_equality": [
+    {
+      "path": "s4_development/replays/A_morale.replay.json.gz",
+      "matches_original": true
+    },
+    {
+      "path": "s4_development/replays/A_nearest.replay.json.gz",
+      "matches_original": true
+    },
+    {
+      "path": "s4_development/replays/A_pushpull.replay.json.gz",
+      "matches_original": true
+    },
+    {
+      "path": "s4_development/replays/A_resonator.replay.json.gz",
+      "matches_original": true
+    },
+    {
+      "path": "s4_development/replays/B_morale.replay.json.gz",
+      "matches_original": true
+    },
+    {
+      "path": "s4_development/replays/B_nearest.replay.json.gz",
+      "matches_original": true
+    },
+    {
+      "path": "s4_development/replays/B_pushpull.replay.json.gz",
+      "matches_original": true
+    },
+    {
+      "path": "s4_development/replays/B_resonator.replay.json.gz",
+      "matches_original": true
+    },
+    {
+      "path": "s4_development/replays/C_morale.replay.json.gz",
+      "matches_original": true
+    },
+    {
+      "path": "s4_development/replays/C_nearest.replay.json.gz",
+      "matches_original": true
+    },
+    {
+      "path": "s4_development/replays/C_pushpull.replay.json.gz",
+      "matches_original": true
+    },
+    {
+      "path": "s4_development/replays/C_resonator.replay.json.gz",
+      "matches_original": true
+    },
+    {
+      "path": "s4_anomaly/replays/anomaly_s4_anomaly_novice_line_novice.replay.json.gz",
+      "matches_original": true
+    },
+    {
+      "path": "s4_anomaly/replays/anomaly_s4_anomaly_regular_alone_regular.replay.json.gz",
+      "matches_original": true
+    },
+    {
+      "path": "s4_anomaly/replays/anomaly_s4_full_head_novice.replay.json.gz",
+      "matches_original": true
+    },
+    {
+      "path": "s4_anomaly/replays/anomaly_s4_full_head_regular.replay.json.gz",
+      "matches_original": true
+    }
+  ],
+  "judging_seeds_used": false
+}

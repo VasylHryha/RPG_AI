@@ -1,0 +1,972 @@
+{
+  "status": "STOP",
+  "best": {
+    "resonator": {
+      "K": 0.35407718840133917,
+      "K_t": 0.15043643921912986,
+      "kappa": 41.83552825112401,
+      "beta": 1.4569320698201231,
+      "G": 2.609502950564905,
+      "w": 1.890564636682527,
+      "f": 1.1259299716196807,
+      "gamma": 1.589093703506473,
+      "omega_melee": 0.8929515270379953,
+      "omega_ranged": -1.339967437832357
+    },
+    "morale": {
+      "K": 2.8150897654923868,
+      "K_t": 1.4000977082013921,
+      "kappa": 33.69912174526753,
+      "beta": 0.7157079150941282,
+      "G": 4.072279380605538,
+      "w": 2.2321020935606457,
+      "f": 0.8748480612683532,
+      "gamma": 0.5935647006185412,
+      "lambda_melee": 1.6137102719808425,
+      "lambda_ranged": 0.7417561589390353
+    },
+    "pushpull": {
+      "G": 4.0301773968331585,
+      "f": 1.1436679004116888
+    }
+  },
+  "budget": {
+    "resonator": 7680,
+    "morale": 7680,
+    "pushpull": 7680
+  },
+  "executed_fights": 26752,
+  "cache_hits": 0,
+  "replays": [
+    {
+      "file": "A_resonator.html",
+      "raw": "A_resonator.jsonl.gz",
+      "spec": {
+        "arm": "resonator",
+        "params": {
+          "K": 4.590630792462508,
+          "K_t": 4.026362322821407,
+          "kappa": 38.414469765213894,
+          "beta": 1.3164313072980904,
+          "G": 3.311738746367917,
+          "w": 2.4562689085966953,
+          "f": 0.8093775091325822,
+          "gamma": 0.7959090924892961,
+          "omega_melee": -0.30044752017464393,
+          "omega_ranged": -1.5176168358295556
+        },
+        "opponent": "novice",
+        "setting": "s4_melee10",
+        "seed": 310100000,
+        "trace": true
+      },
+      "summary": {
+        "mode": "alone",
+        "melee": 2580,
+        "ranged": 0,
+        "artillery": 0,
+        "total": 2580,
+        "wasted": 0,
+        "monsterDeaths": 7,
+        "hunterKills": 10,
+        "aliveSeconds": 646.533333333372,
+        "enemyDamage": 2286,
+        "survivors": 3,
+        "enemySurvivors": 0,
+        "t": 105.49999999999658,
+        "controllerFailures": [
+          0,
+          0
+        ],
+        "controllerStatus": "completed",
+        "crossTeamDealt": [
+          2580,
+          2286
+        ],
+        "crossTeamTaken": [
+          2286,
+          2580
+        ],
+        "friendlyDealt": [
+          0,
+          0
+        ],
+        "friendlyTaken": [
+          0,
+          0
+        ]
+      },
+      "metrics": {
+        "executed_fights": 1,
+        "executed_steps": 3165,
+        "branch_steps": 0,
+        "forks": 0,
+        "search_calls": 0,
+        "inference_calls": 0,
+        "candidate_models": 0,
+        "artillery_rollouts": 0,
+        "artillery_predictions": 0,
+        "artillery_candidates": 0,
+        "prediction_steps": 0,
+        "prediction_unit_steps": 0,
+        "branch_unit_actions": 0,
+        "branch_projectile_steps": 0,
+        "unit_actions": 37744,
+        "projectile_steps": 0,
+        "cache_hits": 0,
+        "scope": "native_complete_engine",
+        "fork_settings": []
+      },
+      "frames": 1056,
+      "sha256": "c52fe765b25bdf321c11fdda026f460b3bca60fbdc203f63b6c06c3b6ed63236"
+    },
+    {
+      "file": "A_morale.html",
+      "raw": "A_morale.jsonl.gz",
+      "spec": {
+        "arm": "morale",
+        "params": {
+          "K": 1.9516049087979044,
+          "K_t": 2.1813298102903795,
+          "kappa": 38.37758033254546,
+          "beta": 0.08023076164532354,
+          "G": 3.617991453837589,
+          "w": 2.1661186586127785,
+          "f": 0.8959416908594345,
+          "gamma": 1.4451659407896726,
+          "lambda_melee": 1.112309601489455,
+          "lambda_ranged": 0.8334252316972254
+        },
+        "opponent": "novice",
+        "setting": "s4_melee10",
+        "seed": 310100000,
+        "trace": true
+      },
+      "summary": {
+        "mode": "alone",
+        "melee": 2580,
+        "ranged": 0,
+        "artillery": 0,
+        "total": 2580,
+        "wasted": 0,
+        "monsterDeaths": 8,
+        "hunterKills": 10,
+        "aliveSeconds": 769.2333333333754,
+        "enemyDamage": 2169,
+        "survivors": 2,
+        "enemySurvivors": 0,
+        "t": 128.33333333332862,
+        "controllerFailures": [
+          0,
+          0
+        ],
+        "controllerStatus": "completed",
+        "crossTeamDealt": [
+          2580,
+          2169
+        ],
+        "crossTeamTaken": [
+          2169,
+          2580
+        ],
+        "friendlyDealt": [
+          0,
+          0
+        ],
+        "friendlyTaken": [
+          0,
+          0
+        ]
+      },
+      "metrics": {
+        "executed_fights": 1,
+        "executed_steps": 3850,
+        "branch_steps": 0,
+        "forks": 0,
+        "search_calls": 0,
+        "inference_calls": 0,
+        "candidate_models": 0,
+        "artillery_rollouts": 0,
+        "artillery_predictions": 0,
+        "artillery_candidates": 0,
+        "prediction_steps": 0,
+        "prediction_unit_steps": 0,
+        "branch_unit_actions": 0,
+        "branch_projectile_steps": 0,
+        "unit_actions": 45227,
+        "projectile_steps": 0,
+        "cache_hits": 0,
+        "scope": "native_complete_engine",
+        "fork_settings": []
+      },
+      "frames": 1285,
+      "sha256": "7ed2e5ce5abfd4b953cc33a68dbedcbdeeece60c68aba12c292d2865faad73c6"
+    },
+    {
+      "file": "A_pushpull.html",
+      "raw": "A_pushpull.jsonl.gz",
+      "spec": {
+        "arm": "pushpull",
+        "params": {
+          "G": 3.036319826448323,
+          "f": 0.3183941667754925
+        },
+        "opponent": "novice",
+        "setting": "s4_melee10",
+        "seed": 310100000,
+        "trace": true
+      },
+      "summary": {
+        "mode": "alone",
+        "melee": 2451,
+        "ranged": 0,
+        "artillery": 0,
+        "total": 2451,
+        "wasted": 0,
+        "monsterDeaths": 10,
+        "hunterKills": 7,
+        "aliveSeconds": 407.70000000000726,
+        "enemyDamage": 2580,
+        "survivors": 0,
+        "enemySurvivors": 3,
+        "t": 64.86666666666555,
+        "controllerFailures": [
+          0,
+          0
+        ],
+        "controllerStatus": "completed",
+        "crossTeamDealt": [
+          2451,
+          2580
+        ],
+        "crossTeamTaken": [
+          2580,
+          2451
+        ],
+        "friendlyDealt": [
+          0,
+          0
+        ],
+        "friendlyTaken": [
+          0,
+          0
+        ]
+      },
+      "metrics": {
+        "executed_fights": 1,
+        "executed_steps": 1946,
+        "branch_steps": 0,
+        "forks": 0,
+        "search_calls": 0,
+        "inference_calls": 0,
+        "candidate_models": 0,
+        "artillery_rollouts": 0,
+        "artillery_predictions": 0,
+        "artillery_candidates": 0,
+        "prediction_steps": 0,
+        "prediction_unit_steps": 0,
+        "branch_unit_actions": 0,
+        "branch_projectile_steps": 0,
+        "unit_actions": 24603,
+        "projectile_steps": 0,
+        "cache_hits": 0,
+        "scope": "native_complete_engine",
+        "fork_settings": []
+      },
+      "frames": 650,
+      "sha256": "87c9c298f2f0dc6d1aaa3b6f371611c25c4666171a88301957ba021700862a24"
+    },
+    {
+      "file": "A_nearest.html",
+      "raw": "A_nearest.jsonl.gz",
+      "spec": {
+        "arm": "nearest",
+        "params": {},
+        "opponent": "novice",
+        "setting": "s4_melee10",
+        "seed": 310100000,
+        "trace": true
+      },
+      "summary": {
+        "mode": "alone",
+        "melee": 2379,
+        "ranged": 0,
+        "artillery": 0,
+        "total": 2379,
+        "wasted": 0,
+        "monsterDeaths": 10,
+        "hunterKills": 8,
+        "aliveSeconds": 396.83333333334417,
+        "enemyDamage": 2580,
+        "survivors": 0,
+        "enemySurvivors": 2,
+        "t": 67.13333333333209,
+        "controllerFailures": [
+          0,
+          0
+        ],
+        "controllerStatus": "completed",
+        "crossTeamDealt": [
+          2379,
+          2580
+        ],
+        "crossTeamTaken": [
+          2580,
+          2379
+        ],
+        "friendlyDealt": [
+          0,
+          0
+        ],
+        "friendlyTaken": [
+          0,
+          0
+        ]
+      },
+      "metrics": {
+        "executed_fights": 1,
+        "executed_steps": 2014,
+        "branch_steps": 0,
+        "forks": 0,
+        "search_calls": 0,
+        "inference_calls": 0,
+        "candidate_models": 0,
+        "artillery_rollouts": 0,
+        "artillery_predictions": 0,
+        "artillery_candidates": 0,
+        "prediction_steps": 0,
+        "prediction_unit_steps": 0,
+        "branch_unit_actions": 0,
+        "branch_projectile_steps": 0,
+        "unit_actions": 24552,
+        "projectile_steps": 0,
+        "cache_hits": 0,
+        "scope": "native_complete_engine",
+        "fork_settings": []
+      },
+      "frames": 673,
+      "sha256": "7336afea10da29da159d0cd0d2c3bd96fc33059e5d4b1e5c9b710e1e973fd494"
+    },
+    {
+      "file": "B_resonator.html",
+      "raw": "B_resonator.jsonl.gz",
+      "spec": {
+        "arm": "resonator",
+        "params": {
+          "K": 2.2758586618033094,
+          "K_t": 1.5358918719685783,
+          "kappa": 48.214444108394105,
+          "beta": 2.298388492593799,
+          "G": 3.2971699442273303,
+          "w": 0.9737716935748731,
+          "f": 1.0105115677427414,
+          "gamma": 0.9318353300441603,
+          "omega_melee": 1.4910793037379282,
+          "omega_ranged": -0.5695837780411876
+        },
+        "opponent": "novice",
+        "setting": "s4_full_head",
+        "seed": 311100000,
+        "trace": true
+      },
+      "summary": {
+        "mode": "alone",
+        "melee": 165,
+        "ranged": 802,
+        "artillery": 3971,
+        "total": 4938,
+        "wasted": 530.7999999999997,
+        "monsterDeaths": 50,
+        "hunterKills": 40,
+        "aliveSeconds": 1390.3333333333326,
+        "enemyDamage": 8108,
+        "survivors": 0,
+        "enemySurvivors": 10,
+        "t": 44.60000000000003,
+        "controllerFailures": [
+          0,
+          0
+        ],
+        "controllerStatus": "completed",
+        "crossTeamDealt": [
+          4928,
+          7140
+        ],
+        "crossTeamTaken": [
+          7140,
+          4928
+        ],
+        "friendlyDealt": [
+          10,
+          968
+        ],
+        "friendlyTaken": [
+          10,
+          968
+        ]
+      },
+      "metrics": {
+        "executed_fights": 1,
+        "executed_steps": 1338,
+        "branch_steps": 0,
+        "forks": 0,
+        "search_calls": 0,
+        "inference_calls": 0,
+        "candidate_models": 0,
+        "artillery_rollouts": 0,
+        "artillery_predictions": 0,
+        "artillery_candidates": 0,
+        "prediction_steps": 0,
+        "prediction_unit_steps": 0,
+        "branch_unit_actions": 0,
+        "branch_projectile_steps": 0,
+        "unit_actions": 87613,
+        "projectile_steps": 9906,
+        "cache_hits": 0,
+        "scope": "native_complete_engine",
+        "fork_settings": []
+      },
+      "frames": 447,
+      "sha256": "bdaa080b7b76514512b71c4c54fe962bc2713a7a93a885984641d31f3fb12e60"
+    },
+    {
+      "file": "B_morale.html",
+      "raw": "B_morale.jsonl.gz",
+      "spec": {
+        "arm": "morale",
+        "params": {
+          "K": 3.4485921160919606,
+          "K_t": 1.9937518321161423,
+          "kappa": 25.12409186435398,
+          "beta": 0.22664491661243194,
+          "G": 3.5987597388020505,
+          "w": 0.7636353207983566,
+          "f": 0.820854658229749,
+          "gamma": 1.0789603545782707,
+          "lambda_melee": 1.6970591627478762,
+          "lambda_ranged": 0.8657203109950568
+        },
+        "opponent": "novice",
+        "setting": "s4_full_head",
+        "seed": 311100000,
+        "trace": true
+      },
+      "summary": {
+        "mode": "alone",
+        "melee": 135,
+        "ranged": 747,
+        "artillery": 5763,
+        "total": 6645,
+        "wasted": 538.3999999999999,
+        "monsterDeaths": 50,
+        "hunterKills": 49,
+        "aliveSeconds": 1243.6666666666576,
+        "enemyDamage": 7609,
+        "survivors": 0,
+        "enemySurvivors": 1,
+        "t": 45.36666666666665,
+        "controllerFailures": [
+          0,
+          0
+        ],
+        "controllerStatus": "completed",
+        "crossTeamDealt": [
+          6573,
+          7078
+        ],
+        "crossTeamTaken": [
+          7078,
+          6573
+        ],
+        "friendlyDealt": [
+          72,
+          531
+        ],
+        "friendlyTaken": [
+          72,
+          531
+        ]
+      },
+      "metrics": {
+        "executed_fights": 1,
+        "executed_steps": 1361,
+        "branch_steps": 0,
+        "forks": 0,
+        "search_calls": 0,
+        "inference_calls": 0,
+        "candidate_models": 0,
+        "artillery_rollouts": 0,
+        "artillery_predictions": 0,
+        "artillery_candidates": 0,
+        "prediction_steps": 0,
+        "prediction_unit_steps": 0,
+        "branch_unit_actions": 0,
+        "branch_projectile_steps": 0,
+        "unit_actions": 79457,
+        "projectile_steps": 11365,
+        "cache_hits": 0,
+        "scope": "native_complete_engine",
+        "fork_settings": []
+      },
+      "frames": 455,
+      "sha256": "a0b7f75cc58b70393e9a7475c854d32fdc72218ac2da0518021038aa856ffead"
+    },
+    {
+      "file": "B_pushpull.html",
+      "raw": "B_pushpull.jsonl.gz",
+      "spec": {
+        "arm": "pushpull",
+        "params": {
+          "G": 3.989112275819311,
+          "f": 1.1436679004116888
+        },
+        "opponent": "novice",
+        "setting": "s4_full_head",
+        "seed": 311100000,
+        "trace": true
+      },
+      "summary": {
+        "mode": "alone",
+        "melee": 134,
+        "ranged": 965,
+        "artillery": 5226,
+        "total": 6325,
+        "wasted": 563.9999999999999,
+        "monsterDeaths": 50,
+        "hunterKills": 48,
+        "aliveSeconds": 1127.1999999999894,
+        "enemyDamage": 7898,
+        "survivors": 0,
+        "enemySurvivors": 2,
+        "t": 43.20000000000011,
+        "controllerFailures": [
+          0,
+          0
+        ],
+        "controllerStatus": "completed",
+        "crossTeamDealt": [
+          6225,
+          7050
+        ],
+        "crossTeamTaken": [
+          7050,
+          6225
+        ],
+        "friendlyDealt": [
+          100,
+          848
+        ],
+        "friendlyTaken": [
+          100,
+          848
+        ]
+      },
+      "metrics": {
+        "executed_fights": 1,
+        "executed_steps": 1296,
+        "branch_steps": 0,
+        "forks": 0,
+        "search_calls": 0,
+        "inference_calls": 0,
+        "candidate_models": 0,
+        "artillery_rollouts": 0,
+        "artillery_predictions": 0,
+        "artillery_candidates": 0,
+        "prediction_steps": 0,
+        "prediction_unit_steps": 0,
+        "branch_unit_actions": 0,
+        "branch_projectile_steps": 0,
+        "unit_actions": 75372,
+        "projectile_steps": 11863,
+        "cache_hits": 0,
+        "scope": "native_complete_engine",
+        "fork_settings": []
+      },
+      "frames": 433,
+      "sha256": "2cc7b9af5593728ca2e8dadcfd248e31e5efe0b48d43c0c6dec16fbf08cbf5fb"
+    },
+    {
+      "file": "B_nearest.html",
+      "raw": "B_nearest.jsonl.gz",
+      "spec": {
+        "arm": "nearest",
+        "params": {},
+        "opponent": "novice",
+        "setting": "s4_full_head",
+        "seed": 311100000,
+        "trace": true
+      },
+      "summary": {
+        "mode": "alone",
+        "melee": 165,
+        "ranged": 305,
+        "artillery": 5115,
+        "total": 5585,
+        "wasted": 374.7999999999998,
+        "monsterDeaths": 50,
+        "hunterKills": 28,
+        "aliveSeconds": 794.733333333337,
+        "enemyDamage": 7190,
+        "survivors": 0,
+        "enemySurvivors": 22,
+        "t": 23.400000000000322,
+        "controllerFailures": [
+          0,
+          0
+        ],
+        "controllerStatus": "completed",
+        "crossTeamDealt": [
+          5422,
+          6987
+        ],
+        "crossTeamTaken": [
+          6987,
+          5422
+        ],
+        "friendlyDealt": [
+          163,
+          203
+        ],
+        "friendlyTaken": [
+          163,
+          203
+        ]
+      },
+      "metrics": {
+        "executed_fights": 1,
+        "executed_steps": 702,
+        "branch_steps": 0,
+        "forks": 0,
+        "search_calls": 0,
+        "inference_calls": 0,
+        "candidate_models": 0,
+        "artillery_rollouts": 0,
+        "artillery_predictions": 0,
+        "artillery_candidates": 0,
+        "prediction_steps": 0,
+        "prediction_unit_steps": 0,
+        "branch_unit_actions": 0,
+        "branch_projectile_steps": 0,
+        "unit_actions": 52203,
+        "projectile_steps": 6009,
+        "cache_hits": 0,
+        "scope": "native_complete_engine",
+        "fork_settings": []
+      },
+      "frames": 235,
+      "sha256": "395063f2843fb159b3a7dda102c69df030b66b90bd451a4db0bc08bb4aaea86e"
+    },
+    {
+      "file": "C_resonator.html",
+      "raw": "C_resonator.jsonl.gz",
+      "spec": {
+        "arm": "resonator",
+        "params": {
+          "K": 0.35407718840133917,
+          "K_t": 0.15043643921912986,
+          "kappa": 41.83552825112401,
+          "beta": 1.4569320698201231,
+          "G": 2.609502950564905,
+          "w": 1.890564636682527,
+          "f": 1.1259299716196807,
+          "gamma": 1.589093703506473,
+          "omega_melee": 0.8929515270379953,
+          "omega_ranged": -1.339967437832357
+        },
+        "opponent": "line",
+        "setting": "s4_p23",
+        "seed": 312100000,
+        "trace": true
+      },
+      "summary": {
+        "mode": "alone",
+        "melee": 15,
+        "ranged": 752,
+        "artillery": 4278,
+        "total": 5045,
+        "wasted": 649.1999999999996,
+        "monsterDeaths": 36,
+        "hunterKills": 31,
+        "aliveSeconds": 3816.899999999657,
+        "enemyDamage": 5838,
+        "survivors": 14,
+        "enemySurvivors": 19,
+        "t": 150.0333333333274,
+        "controllerFailures": [
+          0,
+          0
+        ],
+        "controllerStatus": "completed",
+        "crossTeamDealt": [
+          5045,
+          5600
+        ],
+        "crossTeamTaken": [
+          5600,
+          5045
+        ],
+        "friendlyDealt": [
+          0,
+          238
+        ],
+        "friendlyTaken": [
+          0,
+          238
+        ]
+      },
+      "metrics": {
+        "executed_fights": 1,
+        "executed_steps": 4501,
+        "branch_steps": 0,
+        "forks": 0,
+        "search_calls": 0,
+        "inference_calls": 0,
+        "candidate_models": 0,
+        "artillery_rollouts": 0,
+        "artillery_predictions": 3958,
+        "artillery_candidates": 2390,
+        "prediction_steps": 27093,
+        "prediction_unit_steps": 1019378,
+        "branch_unit_actions": 0,
+        "branch_projectile_steps": 0,
+        "unit_actions": 277270,
+        "projectile_steps": 6093,
+        "cache_hits": 0,
+        "scope": "native_complete_engine",
+        "fork_settings": []
+      },
+      "frames": 1502,
+      "sha256": "123323ab3471b0ceb2eaddc2bf2a07215a5ed8e8fbd90484aa6a85dbcc05e9e3"
+    },
+    {
+      "file": "C_morale.html",
+      "raw": "C_morale.jsonl.gz",
+      "spec": {
+        "arm": "morale",
+        "params": {
+          "K": 2.8150897654923868,
+          "K_t": 1.4000977082013921,
+          "kappa": 33.69912174526753,
+          "beta": 0.7157079150941282,
+          "G": 4.072279380605538,
+          "w": 2.2321020935606457,
+          "f": 0.8748480612683532,
+          "gamma": 0.5935647006185412,
+          "lambda_melee": 1.6137102719808425,
+          "lambda_ranged": 0.7417561589390353
+        },
+        "opponent": "line",
+        "setting": "s4_p23",
+        "seed": 312100000,
+        "trace": true
+      },
+      "summary": {
+        "mode": "alone",
+        "melee": 45,
+        "ranged": 872,
+        "artillery": 4014,
+        "total": 4931,
+        "wasted": 856.7999999999996,
+        "monsterDeaths": 21,
+        "hunterKills": 26,
+        "aliveSeconds": 4874.066666666375,
+        "enemyDamage": 4824,
+        "survivors": 29,
+        "enemySurvivors": 24,
+        "t": 150.0333333333274,
+        "controllerFailures": [
+          0,
+          0
+        ],
+        "controllerStatus": "completed",
+        "crossTeamDealt": [
+          4899,
+          4582
+        ],
+        "crossTeamTaken": [
+          4582,
+          4899
+        ],
+        "friendlyDealt": [
+          32,
+          242
+        ],
+        "friendlyTaken": [
+          32,
+          242
+        ]
+      },
+      "metrics": {
+        "executed_fights": 1,
+        "executed_steps": 4501,
+        "branch_steps": 0,
+        "forks": 0,
+        "search_calls": 0,
+        "inference_calls": 0,
+        "candidate_models": 0,
+        "artillery_rollouts": 0,
+        "artillery_predictions": 3274,
+        "artillery_candidates": 1914,
+        "prediction_steps": 21956,
+        "prediction_unit_steps": 967601,
+        "branch_unit_actions": 0,
+        "branch_projectile_steps": 0,
+        "unit_actions": 294367,
+        "projectile_steps": 6924,
+        "cache_hits": 0,
+        "scope": "native_complete_engine",
+        "fork_settings": []
+      },
+      "frames": 1502,
+      "sha256": "ec8fc87d7db6cf0469b5f669467b67f0963fc972d786a0548e3d08bd4f5fa8b0"
+    },
+    {
+      "file": "C_pushpull.html",
+      "raw": "C_pushpull.jsonl.gz",
+      "spec": {
+        "arm": "pushpull",
+        "params": {
+          "G": 4.0301773968331585,
+          "f": 1.1436679004116888
+        },
+        "opponent": "line",
+        "setting": "s4_p23",
+        "seed": 312100000,
+        "trace": true
+      },
+      "summary": {
+        "mode": "alone",
+        "melee": 180,
+        "ranged": 1182,
+        "artillery": 932,
+        "total": 2294,
+        "wasted": 392.79999999999984,
+        "monsterDeaths": 10,
+        "hunterKills": 9,
+        "aliveSeconds": 6143.899999999715,
+        "enemyDamage": 2940,
+        "survivors": 40,
+        "enemySurvivors": 41,
+        "t": 150.0333333333274,
+        "controllerFailures": [
+          0,
+          0
+        ],
+        "controllerStatus": "completed",
+        "crossTeamDealt": [
+          2294,
+          2580
+        ],
+        "crossTeamTaken": [
+          2580,
+          2294
+        ],
+        "friendlyDealt": [
+          0,
+          360
+        ],
+        "friendlyTaken": [
+          0,
+          360
+        ]
+      },
+      "metrics": {
+        "executed_fights": 1,
+        "executed_steps": 4501,
+        "branch_steps": 0,
+        "forks": 0,
+        "search_calls": 0,
+        "inference_calls": 0,
+        "candidate_models": 0,
+        "artillery_rollouts": 0,
+        "artillery_predictions": 1542,
+        "artillery_candidates": 934,
+        "prediction_steps": 11525,
+        "prediction_unit_steps": 562167,
+        "branch_unit_actions": 0,
+        "branch_projectile_steps": 0,
+        "unit_actions": 374708,
+        "projectile_steps": 4482,
+        "cache_hits": 0,
+        "scope": "native_complete_engine",
+        "fork_settings": []
+      },
+      "frames": 1502,
+      "sha256": "bd4b9b26cb419154ea5ba86c6d570915dd3b3c81c3b019b44c3389278b5ffe07"
+    },
+    {
+      "file": "C_nearest.html",
+      "raw": "C_nearest.jsonl.gz",
+      "spec": {
+        "arm": "nearest",
+        "params": {},
+        "opponent": "line",
+        "setting": "s4_p23",
+        "seed": 312100000,
+        "trace": true
+      },
+      "summary": {
+        "mode": "alone",
+        "melee": 170,
+        "ranged": 994,
+        "artillery": 4296,
+        "total": 5460,
+        "wasted": 646,
+        "monsterDeaths": 50,
+        "hunterKills": 32,
+        "aliveSeconds": 1143.1999999999832,
+        "enemyDamage": 6922,
+        "survivors": 0,
+        "enemySurvivors": 18,
+        "t": 39.66666666666698,
+        "controllerFailures": [
+          0,
+          0
+        ],
+        "controllerStatus": "completed",
+        "crossTeamDealt": [
+          5056,
+          6746
+        ],
+        "crossTeamTaken": [
+          6746,
+          5056
+        ],
+        "friendlyDealt": [
+          404,
+          176
+        ],
+        "friendlyTaken": [
+          404,
+          176
+        ]
+      },
+      "metrics": {
+        "executed_fights": 1,
+        "executed_steps": 1190,
+        "branch_steps": 0,
+        "forks": 0,
+        "search_calls": 0,
+        "inference_calls": 0,
+        "candidate_models": 0,
+        "artillery_rollouts": 0,
+        "artillery_predictions": 4255,
+        "artillery_candidates": 2543,
+        "prediction_steps": 29496,
+        "prediction_unit_steps": 817338,
+        "branch_unit_actions": 0,
+        "branch_projectile_steps": 0,
+        "unit_actions": 78981,
+        "projectile_steps": 7390,
+        "cache_hits": 0,
+        "scope": "native_complete_engine",
+        "fork_settings": []
+      },
+      "frames": 398,
+      "sha256": "720fe5b0caa2988aa47ed15432060c2e21a220f751c06c9448901991fadf04aa"
+    }
+  ],
+  "elapsed_seconds": 2069.0985459169997,
+  "equation_changes": [],
+  "failures": []
+}

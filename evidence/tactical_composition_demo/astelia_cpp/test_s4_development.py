@@ -90,3 +90,22 @@ def test_replay_packaging_keeps_fields_and_is_self_contained(tmp_path):
     html=(tmp_path/'fight.html').read_text()
     assert '/*REPLAY_DATA*/null' not in html and '<script src=' not in html
     assert base64.b64encode((tmp_path/'fight.replay.json.gz').read_bytes()).decode() in html
+
+
+def test_power_blocks_retain_shared_seed_covariance():
+    from s4_report import seed_blocks, plan_n
+    values={json.dumps([opp,seed,'s4_p23']):score for seed,score in [(10,-4),(11,4)] for opp in POOL}
+    b=seed_blocks(values)
+    assert b=={'10':-4,'11':4}
+    assert S.stats(b)['sd']==pytest.approx(8/(2**.5))
+    assert S.stats(b)['sd']>S.stats(values)['sd']
+    assert plan_n(S.stats(b)['sd']**2,1,16)>plan_n(S.stats(values)['sd']**2/19,1,16)
+    values.pop(next(iter(values)))
+    with pytest.raises(ValueError):seed_blocks(values)
+    assert plan_n(0,3.5,32)==32
+
+
+def test_replay_identity_normalizes_default_orientation():
+    from s4_report import key
+    assert key(dict(arm='morale',trace=True))==key(dict(arm='morale',swapSides=False))
+    assert key(dict(arm='morale',swapSides=True))!=key(dict(arm='morale'))
