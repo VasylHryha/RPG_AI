@@ -53,7 +53,7 @@ Every serious chunk gets the owner's adversarial recheck prompt (verbatim, throu
 |---|---|
 | 0h C++ speed pass | DONE (four high findings fixed; Claude review `growing_shapes_review_claude/PERF_RECHECK_REVIEW.md`) |
 | C6 option B port and parallel step | DONE (four high and five medium findings fixed; 72 tests pass); full-world zero-tolerance reruns and the official quiet timing **queued automatically after the 0h run** |
-| 0g v3 development | RUNNING (limited to 2 workers during the 0h run) |
+| 0g v3 development | DONE (READY; the resonator dithers: its rotation flips commitment every half cycle, about 3.4 s, too fast to reach either safe distance against guns) |
 | 0h development run | after it finishes |
 
 ## 4. Catalogue of ideas and options
