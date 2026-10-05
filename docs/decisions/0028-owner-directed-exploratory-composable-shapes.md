@@ -30,6 +30,12 @@ These are the author's transcriptions and readings, not primary records. Any ite
 15. 2026-10-05, after S4 and the S5 draft, the owner (away for 90 minutes) wrote: "so we are done with codex it just prepare the evidence which we can ignore ... your goal is to continue work and spawn codex subtask where need use default model configured it 6.1 high, if you have any question issue let resolve them". The author resolved the S5 review rounds and the runner without the owner. The recorded run stays gated on the owner's explicit approval (AGENTS.md).
 16. 2026-10-05, on the development result (the resonator beats novice but not regular): "if we can make visual representation how it beat will be cool, next i dont get what the issue? so we get beaten - it was our first try - so we clearly need to improve some things etc.. no? go ahead then". **[R]** The author read this as authorization to improve the controllers before registering. The unrun S5 specification (`SPEC_0G.json` revision 4, sha256 `158031e9…f8c8335`) is therefore **withdrawn without any judging fight**: its seeds were never used, and its evidence (four Codex reviews, the runner and its review) is kept unchanged. The improvement is `DESIGN_0G.md` section 12 (revision 4), and a new specification follows on a fresh root.
 
+17. 2026-10-05, after proposal 0h revision 2 (`PROPOSAL_0H_GROWING_SHAPES.md`) and the recheck: "so what can we do now? or step by step what are we doing - you can run parallel code to start implementing parts and you will review all it". **[R]** The author read this as approval of 0h as the direction (tracker item W2) and as authorization to implement its engine parts in parallel through Codex, with Claude reviewing:
+   - the tiny 2D task world;
+   - the fast C4 medium.
+
+   The drafter writes the exact 0h design (`DESIGN_0H.md`) for a Codex review. No growth experiment, development run on judging entropy or recorded run is authorized by this. C6 still waits for the owner's choice (W1).
+
 ## What was done (all committed; every run was one-shot with its own entropy)
 
 | Work | Commits | Result (verdict words are exploratory, not milestone verdicts) |

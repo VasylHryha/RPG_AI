@@ -32,14 +32,14 @@ The test of "real" is that the AI wins against Astelia's scripted AI in a game r
 | 0g final test spec (S5) | WITHDRAWN unrun (marked inside `SPEC_0G.json`; its hash changed, so it can never pass the review gate) | four Codex review rounds, APPROVE_WITH_NOTES; the runner was approved; withdrawn to improve first; seeds never used | `SPEC_0G.json`, `docs/decisions/0028` items 15-16 |
 | Replay viewer | DONE | the **retreat trap** found: enemy guns out-range our units, damage keeps them pulled back | `viz_0g/` (claude.ai/artifact/4AhiRJomJTM8QcVRLEWWWL, private until the owner shares it) |
 | 0g v1 (two fixes) | RUNNING (Codex) | unanswered damage drives attack; targets prefer engaged enemies. **The review must check that the evidence binds to committed code**: at the recheck the C++ changes were uncommitted while the run used them | `DESIGN_0G.md` section 12 |
-| 0h growing shapes | PROPOSED (draft) | growth and death, a shared medium, a library, bonds | `evidence/tactical_composition_demo/PROPOSAL_0H_GROWING_SHAPES.md` |
+| 0h growing shapes | ADOPTED as the direction [R]; engine RUNNING (Codex: 2D task world, C4 medium); design being written | growth and death, a shared medium, a library, bonds | `evidence/tactical_composition_demo/PROPOSAL_0H_GROWING_SHAPES.md` |
 
 ## 3. Waiting for the owner
 
 | # | Decision | Options | Drafter's recommendation |
 |---|---|---|---|
 | W1 | C6 next step | **A** a small pilot: does a changed background suppress the next unit? **B** the C++ port of the unchanged model; **C** pause | **A** first: it decides whether chaining can work at all; then B |
-| W2 | Approve 0h as the direction | approve, change, reject | approve; its atom bootstrap does not depend on C6, only its later seeded-background steps do |
+| W2 | Approve 0h as the direction | **read as approved 2026-10-05 [R]** (decision 0028 item 17): its engine parts are being built | confirm the [R] reading |
 | W3 | Confirm the reading of "go ahead" (improve before registering) | confirm, correct | marked [R] in decision 0028 item 16 |
 | W4 | Later: approve δ, n and the run of a new 0g specification | after v1 development | registered only after review |
 
