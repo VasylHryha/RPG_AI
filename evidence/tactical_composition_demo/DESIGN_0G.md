@@ -26,6 +26,11 @@ Recent damage is an exponential average of the hit points lost and dealt, with t
 
 All units are visible (as in Astelia's lab: "policies read true positions"). A sight limit is a later fidelity step.
 
+Declared after the S2 review (`astelia_cpp_review_claude/S2_REVIEW.md`, notes 1 and 2):
+- **Every unit's current target is visible, the enemy's included.** Who attacks whom is visible on screen.
+- **Timing:** a controlled side sees one snapshot taken at the start of each tick, while a built-in side decides unit by unit within the tick. This is the same for every controller arm.
+- **`passthrough` is test-only** and is never an arm.
+
 **What it returns per unit:** a move goal (x, y, speed multiplier 0-1, stop distance) and a target id (a living enemy, or none). The attack type comes from the role, as the game's own
 `decide` sets it (melee / direct / art). Abilities: v0 leaves them to the game's `auto` reflex, the same for every arm (declared as part of the world). Controlling them is a later version.
 
