@@ -45,6 +45,17 @@ The test of "real" is that the AI wins against Astelia's scripted AI in a game r
 | W3 | Confirm the reading of "go ahead" (improve before registering) | confirm, correct | marked [R] in decision 0028 item 16 |
 | W4 | Later: approve δ, n and the run of a new 0g specification | after v1 development | registered only after review |
 
+## 3b. Recheck rule (owner, 2026-10-05: "don't forget to run recheck script for each serious chunk of work")
+
+Every serious chunk gets the owner's adversarial recheck prompt (verbatim, through Codex), with fixes and equivalence, before the next step builds on it.
+
+| Chunk | Recheck |
+|---|---|
+| 0h C++ speed pass | DONE (four high findings fixed; Claude review `growing_shapes_review_claude/PERF_RECHECK_REVIEW.md`) |
+| C6 option B port and parallel step | RUNNING (no full worlds during the timed 0g run; full-world reruns queued for the quiet window) |
+| 0g v3 development | after it finishes |
+| 0h development run | after it finishes |
+
 ## 4. Catalogue of ideas and options
 
 ### 4.1 Search and composition (how parts are combined)
