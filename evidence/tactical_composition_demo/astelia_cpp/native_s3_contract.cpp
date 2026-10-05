@@ -130,6 +130,53 @@ void contracts(){
   auto inactive=fixture();inactive.units={inactive.units[0],inactive.units[2]};inactive.units[1].x=1100;Probe quiet(7,0,arm,{},"v2");quiet.prepare(inactive);inactive.units[0].takenFromEnemy=3;quiet.prepare(inactive);close(quiet.memory().at(1).zInUnanswered,0);close(quiet.memory().at(1).zInAnswered,(1-q)*3/inactive.dt/100);
  }
  }
+ // Section 14 v3: effective-distance exclusion, exact hysteresis boundaries and unchanged kite band.
+ {auto scene=fixture();auto self=scene.units[0],enemy=scene.units[2];
+ for(auto ownRole:{ObservedRole::Melee,ObservedRole::Ranged,ObservedRole::Artillery})for(auto enemyRole:{ObservedRole::Melee,ObservedRole::Ranged,ObservedRole::Artillery})for(double er:{100.0,250.0,400.0})for(double fc:{.3,1.0})for(double width:{0.0,3.0})for(double minRange:{80.0,300.0}){
+  self.role=ownRole;self.range=250;self.minRange=minRange;enemy.role=enemyRole;enemy.range=er;
+  Knobs k;k.fc=fc;k.w=width;PairModes modes;
+  const double Ri=(self.range+(ownRole==ObservedRole::Artillery?0:self.radius+enemy.radius))/100;
+  const double Re=(enemy.range+(enemyRole==ObservedRole::Artillery?0:self.radius+enemy.radius))/100;
+  const double dc=ownRole==ObservedRole::Artillery?std::max(fc*Ri,1.05*minRange/100):fc*Ri;
+  for(double c:{0.0,.2,-.2,.200001,0.0,-.2,-.200001,0.0,.2}){
+   double d=v3Preferred(self,enemy,k,c,modes);
+   if(Re<Ri){close(d,v2Preferred(self,enemy,k,c));require(modes.empty(),"kite creates binary mode");}
+   else{require(d==dc||d==Re+width*Ri,"v3 distance not binary");require(dc>=Re||!(dc<d&&d<Re),"v3 preferred distance in effective kill zone");}
+  }
+ }
+ self=scene.units[0];enemy=scene.units[2];self.range=100;enemy.range=400;Knobs k;PairModes modes;
+ const double dc=k.fc*1.2,de=4.2+k.w*1.2;
+ close(v3Preferred(self,enemy,k,0,modes),dc); // c=0 initializes commit
+ for(double c:{-.2,-.199,0.,.199,.2})close(v3Preferred(self,enemy,k,c,modes),dc);
+ close(v3Preferred(self,enemy,k,-.200001,modes),de);
+ for(double c:{.2,.199,0.,-.199,-.2})close(v3Preferred(self,enemy,k,c,modes),de);
+ close(v3Preferred(self,enemy,k,.200001,modes),dc);
+ auto second=enemy;second.id=90;close(v3Preferred(self,second,k,-.1,modes),de);
+ close(v3Preferred(self,enemy,k,-.1,modes),dc);require(modes.size()==2,"pair modes merged");
+ // Motion uses the binary distance with the unchanged weights and restoring sign.
+ std::map<UnitId,Memory> memories;memories[enemy.id].zOut=.5;
+ for(double c:{1.,-1.})for(double ratio:{.5,1.,2.}){double d=c>0?dc:de;enemy.x=self.x+100*d*ratio;enemy.y=self.y;
+  auto force=v3EnemyMotion(self,{&enemy},memories,k,c,modes);close(force[0],k.G*(1-1/ratio));close(force[1],0);}
+ }
+ // Production memory is updated outside the movement cap, cloned independently, and removed on either death.
+ for(auto arm:{Arm::Resonator,Arm::Morale,Arm::PushPull}){
+  auto seq=fixture();seq.units[0].range=20;seq.units[1].range=20;seq.units[2].range=seq.units[3].range=400;
+  ControllerParams params;if(arm!=Arm::PushPull){params={{"K",0},{"K_t",0},{"kappa",0}};
+   if(arm==Arm::Resonator)params.insert({{"omega_melee",0},{"omega_ranged",0}});else params.insert({{"lambda_melee",0},{"lambda_ranged",0}});}
+  Probe original(7,0,arm,params,"v3");original.prepare(seq);if(arm!=Arm::PushPull){original.inject(1,0);original.inject(2,0);}original.prepare(seq);
+  const auto parentModes=original.pairModes();auto branch=original.clone();auto* copy=dynamic_cast<Probe*>(branch.get());
+  require(copy&&copy->pairModes()==parentModes,"v3 clone lost modes");
+  if(arm!=Arm::PushPull){copy->inject(1,arm==Arm::Resonator?3.141592653589793:-1);copy->prepare(seq);
+   require(!copy->pairModes().at({1,3})&&original.pairModes()==parentModes,"v3 clone modes leaked");
+   copy->inject(1,arm==Arm::Resonator?std::acos(.1):.1);copy->prepare(seq);require(!copy->pairModes().at({1,3}),"v3 production hysteresis lost escape");}
+  seq.units[2].hp=0;original.prepare(seq);for(auto entry:original.pairModes())require(entry.first.second!=3,"dead enemy mode retained");
+  seq.units[0].hp=0;original.prepare(seq);for(auto entry:original.pairModes())require(entry.first.first!=1,"dead own mode retained");
+  seq.units[0].hp=seq.units[2].hp=100;original.prepare(seq);if(arm!=Arm::PushPull)original.inject(1,0);original.prepare(seq);
+  require(original.pairModes().at({1,3}),"revived pair inherited dead mode");
+  auto expanded=fixture();expanded.units.resize(1);expanded.units[0].range=20;
+  for(unsigned n=0;n<20;++n){auto enemy=seq.units[2];enemy.id=20+n;enemy.x=400+10*n;expanded.units.push_back(enemy);}
+  Probe capped(7,0,arm,params,"v3");capped.prepare(expanded);require(capped.pairModes().size()==20,"v3 modes truncated with movement cap");
+ }
  // Artillery legality uses centre-distance min/max range, retained for attribution.
  auto gun=fixture();gun.units={gun.units[0],gun.units[2]};gun.units[0].role=ObservedRole::Artillery;gun.units[0].minRange=80;gun.units[1].x=gun.units[0].x+40;
  Probe splitGun(7,0,Arm::Morale);splitGun.prepare(gun);require(!splitGun.memory().at(1).hadLegalTarget,"inside artillery min range must be unanswered");

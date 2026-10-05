@@ -40,7 +40,7 @@ const std::map<std::string,Factory>& registry(){static const std::map<std::strin
 }
 const std::vector<std::string>& controllerNames(){static const std::vector<std::string> names=[](){std::vector<std::string> out;for(const auto& f:registry())out.push_back(f.first);for(auto name:{"resonator","morale","pushpull"})out.push_back(name);std::sort(out.begin(),out.end());return out;}();return names;}
 std::unique_ptr<Controller> makeController(const ControllerProfile& p,double seed,uint8_t side){
-  if(p.skeleton!="v0"&&p.skeleton!="v1"&&p.skeleton!="v2")throw std::invalid_argument("invalid skeleton");
+  if(p.skeleton!="v0"&&p.skeleton!="v1"&&p.skeleton!="v2"&&p.skeleton!="v3")throw std::invalid_argument("invalid skeleton");
   if(side>1)throw std::invalid_argument("invalid controller side");
   if(p.name=="resonator"||p.name=="morale"||p.name=="pushpull")return std::make_unique<S3Controller>(seed,side,p.name=="resonator"?Arm::Resonator:p.name=="morale"?Arm::Morale:Arm::PushPull,p.params,p.skeleton);
   const auto f=registry().find(p.name);if(f==registry().end())throw std::invalid_argument("unknown controller: "+p.name);
