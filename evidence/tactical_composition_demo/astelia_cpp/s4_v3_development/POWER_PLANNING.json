@@ -1,0 +1,159 @@
+{
+  "status": "PLANNING_ONLY_OWNER_MARGIN_AND_S5_APPROVAL_REQUIRED",
+  "delta_proposed": 3.5,
+  "owner_approval_required": true,
+  "bootstrap_resamples": 2000,
+  "bootstrap_seed": 811005,
+  "SD_upper_percentile": 95,
+  "alpha_support": 0.0025,
+  "power": 0.9,
+  "method": "Normal planning n=ceil((z(.9975)+z(.90))^2*variance/delta^2); floors 32 per head and 16 per doctrine. P1 uses max tuning/validation upper SD and a common n for both levels. P2/P3 use max shared-seed-block upper variance, tuning pooled upper variance/19, and independent-stratum upper variance. C validation has 100 independent shared seed blocks, averaging all 19 doctrines; covariance is retained.",
+  "limitation": "Selected development spreads are exploratory. B development measures earlier knobs on 10 novice/9 regular clusters; final C validation measures final knobs on 100 per level. The max-noise allowance is conservative planning, not confirmation. Proposed hypothetical beneficial effects are not fitted observed head effects. No sample size can reverse an observed mean.",
+  "endpoints": {
+    "P2": {
+      "comparison": "resonator_minus_morale",
+      "configuration_cluster": {
+        "n": 1900,
+        "mean": 0.46,
+        "sd": 12.716279739195603,
+        "se": 0.2917314648470915,
+        "descriptive_normal_95": [
+          -0.11179367110029931,
+          1.0317936711002993
+        ]
+      },
+      "seed_block": {
+        "n": 100,
+        "mean": 0.45999999999999996,
+        "sd": 1.839907095855659,
+        "se": 0.1839907095855659,
+        "descriptive_normal_95": [
+          0.09937820921229085,
+          0.8206217907877091
+        ]
+      },
+      "development": {
+        "n": 19,
+        "mean": -3.263157894736842,
+        "sd": 10.592670973959924,
+        "se": 2.430125385140414,
+        "descriptive_normal_95": [
+          -8.026203649612054,
+          1.4998878601383692
+        ]
+      },
+      "pooled_sd_upper": 13.106746245235593,
+      "seed_block_sd_upper": 2.0067020948606493,
+      "development_sd_upper": 13.15283528458377,
+      "stratum_variance_floor": 4.164502923976609,
+      "variance_used": 9.105109264389043,
+      "n_per_doctrine": 16,
+      "total_configuration_clusters": 304,
+      "within_2000_bound": true,
+      "margin": 3.5,
+      "planning_true_mean": 7.0
+    },
+    "P3": {
+      "comparison": "resonator_minus_pushpull",
+      "configuration_cluster": {
+        "n": 1900,
+        "mean": 26.08657894736842,
+        "sd": 8.920691101764511,
+        "se": 0.20465468957438954,
+        "descriptive_normal_95": [
+          25.685455755802614,
+          26.487702138934225
+        ]
+      },
+      "seed_block": {
+        "n": 100,
+        "mean": 26.08657894736842,
+        "sd": 1.0854293369275312,
+        "se": 0.10854293369275311,
+        "descriptive_normal_95": [
+          25.873834797330623,
+          26.299323097406216
+        ]
+      },
+      "development": {
+        "n": 19,
+        "mean": 24.763157894736842,
+        "sd": 8.290503973845672,
+        "se": 1.9019720533166131,
+        "descriptive_normal_95": [
+          21.03529267023628,
+          28.491023119237404
+        ]
+      },
+      "pooled_sd_upper": 9.282352312437013,
+      "seed_block_sd_upper": 1.2020686384080073,
+      "development_sd_upper": 11.457013480603784,
+      "stratum_variance_floor": 1.0331397772741262,
+      "variance_used": 6.908587257617729,
+      "n_per_doctrine": 16,
+      "total_configuration_clusters": 304,
+      "within_2000_bound": true,
+      "margin": 3.5,
+      "planning_true_mean": 7.0
+    },
+    "P1": {
+      "subtests": {
+        "novice": {
+          "validation": {
+            "n": 100,
+            "mean": 8.07,
+            "sd": 3.1285747230935366,
+            "se": 0.3128574723093537,
+            "descriptive_normal_95": [
+              7.4567993542736675,
+              8.683200645726334
+            ]
+          },
+          "development": {
+            "n": 10,
+            "mean": 19.65,
+            "sd": 7.071264227687846,
+            "se": 2.236130089636508,
+            "descriptive_normal_95": [
+              15.267185024312443,
+              24.032814975687554
+            ]
+          },
+          "validation_sd_upper": 3.476018127139446,
+          "development_sd_upper": 8.503104008406446,
+          "required_n": 99
+        },
+        "regular": {
+          "validation": {
+            "n": 100,
+            "mean": -1.655,
+            "sd": 4.201788339805475,
+            "se": 0.4201788339805475,
+            "descriptive_normal_95": [
+              -2.4785505146018734,
+              -0.8314494853981269
+            ]
+          },
+          "development": {
+            "n": 9,
+            "mean": -6.333333333333333,
+            "sd": 1.920286436967152,
+            "se": 0.6400954789890506,
+            "descriptive_normal_95": [
+              -7.587920472151872,
+              -5.078746194514794
+            ]
+          },
+          "validation_sd_upper": 4.584228562708399,
+          "development_sd_upper": 2.5385910352879693,
+          "required_n": 32
+        }
+      },
+      "n_per_head": 99,
+      "total_configuration_clusters": 198,
+      "within_2000_bound": true,
+      "margin": 0,
+      "planning_true_mean": 3.5
+    }
+  }
+}
