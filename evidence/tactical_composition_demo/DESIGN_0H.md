@@ -44,7 +44,7 @@ Revision 2 answers the Codex review of revision 1 (`docs/reviews/tactical_0h_des
 ## 3. The forward map: world observation → drive → dynamics → action (finding 3)
 
 **Encoding (one carrier band):**
-- Each atom task has a fixed number of item slots: perceive 4, move 1, remember 1, choose 4.
+- Each atom task has a fixed number of item slots: perceive 8, move 1, remember 1, choose 8. The world's K is in {3, …, 8} (world review note 1); unused slots have k = 0.
 - At episode start, items are assigned to sensor sites by a permutation drawn from the episode seed. **The assignment holds for the whole episode** (stable item bookkeeping); item order carries no meaning.
 - Sensor sites sit at fixed medium coordinates, evenly on a ring of radius 4 m.u. Readout sites are in the ring's centre region (section 3, decoding).
 - **The drive on element i**, added to its phase rate:
@@ -157,7 +157,12 @@ Degenerate groups (singletons, zero spacing, a degenerate hull) fail.
 ## 8. Tasks and scores
 
 - **Tasks:** the world's four atomic tasks (`growing_shapes/world/WORLD_REPORT.md` once READY), with their exact definitions and scripted reference and random baseline scores.
-- **Normalized score:** n = (score − random) / (reference − random), oriented so that higher is better.
+- **Primary score per task** (world review note 2; the other metrics are descriptive):
+  - perceive: angular error;
+  - move: goal error;
+  - remember: angular error on hidden decisions, **on a static-target variant** (enemy speed 0; world review note 3). The world gets this as an additive generator option before development.
+  - choose: correct-choice rate.
+- **Normalized score:** n = (score − random) / (reference − random), oriented so that higher is better (errors are negated).
 - **Separation check:** a task is **usable** only if its reference beats random by a margin of at least 3 standard errors on validation episodes. An unusable task is reported and excluded, not silently kept.
 - **Competence threshold:** n ≥ 0.5 on the held-out evaluator panel.
 
