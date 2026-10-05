@@ -26,7 +26,7 @@ Knobs controllerKnobs(Arm arm,const ControllerParams& params,const std::string& 
   if(arm!=Arm::PushPull){bounds.insert({{"K",{&k.K,0,5}},{"K_t",{&k.Kt,0,5}},{"kappa",{&k.kappa,0,50}},{"beta",{&k.beta,0,3}},{"w",{&k.w,0,3}},{"gamma",{&k.gamma,0,2}}});
     if(arm==Arm::Resonator){bounds["omega_melee"]={&k.rateM,-2,2};bounds["omega_ranged"]={&k.rateR,-2,2};}
     else{bounds["lambda_melee"]={&k.rateM,0,2};bounds["lambda_ranged"]={&k.rateR,0,2};}}
-  if(skeleton=="v2"){
+  if(skeleton=="v2"||skeleton=="v3"){
     bounds.erase("f");bounds.erase("gamma");
     bounds["f_c"]={&k.fc,.3,1};bounds["m_k"]={&k.mk,.2,1};
     if(arm!=Arm::PushPull)bounds["lambda_th"]={&k.lambdaTh,0,3};else k.lambdaTh=0;
@@ -47,6 +47,15 @@ double v2Preferred(const ObservedUnit& self,const ObservedUnit& enemy,const Knob
   if(self.role==ObservedRole::Artillery)committed=std::max(k.fc*own,1.05*self.minRange/100);
   return opposing<own?committed+k.w*(own-opposing)*(1-c)/2:committed+(opposing+k.w*own-committed)*(1-c)/2;
 }
+double v3Preferred(const ObservedUnit& self,const ObservedUnit& enemy,const Knobs& k,double c,PairModes& modes){
+  const double own=(self.range+(self.role==ObservedRole::Artillery?0:self.radius+enemy.radius))/100;
+  const double opposing=(enemy.range+(enemy.role==ObservedRole::Artillery?0:self.radius+enemy.radius))/100;
+  if(opposing<own)return v2Preferred(self,enemy,k,c); // unchanged kite band
+  auto entry=modes.emplace(std::make_pair(self.id,enemy.id),c>=0).first;
+  if(c>.2)entry->second=true;else if(c<-.2)entry->second=false;
+  const double committed=self.role==ObservedRole::Artillery?std::max(k.fc*own,1.05*self.minRange/100):k.fc*own;
+  return entry->second?committed:opposing+k.w*own;
+}
 std::vector<const ObservedUnit*> v2EnemySet(const ObservedUnit& self,const std::vector<const ObservedUnit*>& nearest,const std::map<UnitId,Memory>& memory){
   auto selected=nearest;if(selected.size()>8)selected.resize(8);
   std::vector<const ObservedUnit*> extra;
@@ -65,6 +74,15 @@ std::array<double,2> v2EnemyMotion(const ObservedUnit& self,const std::vector<co
   for(auto u:enemies){const double dx=(u->x-self.x)/100,dy=(u->y-self.y)/100,r=std::hypot(dx,dy);if(r==0)continue;
     const double weight=1+k.lambdaTh*std::tanh(memory.at(u->id).zOut*1.0);
     const double term=k.G*(1-v2Preferred(self,*u,k,c)/std::max(r,.01))*weight/total;
+    motion[0]+=dx/r*term;motion[1]+=dy/r*term;
+  }return motion;
+}
+std::array<double,2> v3EnemyMotion(const ObservedUnit& self,const std::vector<const ObservedUnit*>& enemies,const std::map<UnitId,Memory>& memory,const Knobs& k,double c,PairModes& modes){
+  std::array<double,2> motion{};double total=0;
+  for(auto u:enemies)total+=1+k.lambdaTh*std::tanh(memory.at(u->id).zOut*1.0);
+  for(auto u:enemies){const double dx=(u->x-self.x)/100,dy=(u->y-self.y)/100,r=std::hypot(dx,dy);if(r==0)continue;
+    const double weight=1+k.lambdaTh*std::tanh(memory.at(u->id).zOut*1.0);
+    const double term=k.G*(1-v3Preferred(self,*u,k,c,modes)/std::max(r,.01))*weight/total;
     motion[0]+=dx/r*term;motion[1]+=dy/r*term;
   }return motion;
 }
@@ -106,12 +124,13 @@ std::vector<ModelUnit> frozenStep(std::vector<ModelUnit> a,Arm arm,const Knobs& 
   return a;
 }
 
-S3Controller::S3Controller(double seed,uint8_t side,Arm arm,const ControllerParams& params,const std::string& skeleton):Controller(seed,side),arm_(arm),knobs_(controllerKnobs(arm,params,skeleton)),v1_(skeleton!="v0"),v2_(skeleton=="v2"){if(skeleton!="v0"&&skeleton!="v1"&&skeleton!="v2")throw std::invalid_argument("invalid skeleton");}
+S3Controller::S3Controller(double seed,uint8_t side,Arm arm,const ControllerParams& params,const std::string& skeleton):Controller(seed,side),arm_(arm),knobs_(controllerKnobs(arm,params,skeleton)),v1_(skeleton!="v0"),v2_(skeleton=="v2"||skeleton=="v3"),v3_(skeleton=="v3"){if(skeleton!="v0"&&skeleton!="v1"&&skeleton!="v2"&&skeleton!="v3")throw std::invalid_argument("invalid skeleton");}
 void S3Controller::prepare(const Observation& o){
   prepared_.clear();diagnostic_.clear();std::vector<const ObservedUnit*> units;std::set<UnitId> live;
   for(const auto& u:o.units)if(u.hp>0){units.push_back(&u);live.insert(u.id);}
   std::sort(units.begin(),units.end(),[](auto a,auto b){return a->id<b->id;});
   for(auto it=memory_.begin();it!=memory_.end();)if(!live.count(it->first))it=memory_.erase(it);else ++it;
+  for(auto it=pairModes_.begin();it!=pairModes_.end();)if(!live.count(it->first.first)||!live.count(it->first.second))it=pairModes_.erase(it);else ++it;
   const double q=std::exp(-o.dt/2);std::set<UnitId> bad;
   std::vector<ModelUnit> own;
   for(auto p:units){const auto& u=*p;auto found=memory_.find(u.id);if(found==memory_.end()){Memory m;m.lastOut=u.dealtToEnemy;m.lastIn=u.takenFromEnemy;if(u.team==side_&&arm_==Arm::Resonator)m.state=2*pi*random_();found=memory_.emplace(u.id,m).first;}
@@ -135,7 +154,10 @@ void S3Controller::prepare(const Observation& o){
     vx=motion[i].x;vy=motion[i].y;
     std::vector<const ObservedUnit*> enemies;for(auto u:units)if(u->team!=side_)enemies.push_back(u);
     std::sort(enemies.begin(),enemies.end(),[&](auto a,auto b){double ra=std::hypot(a->x-self.x,a->y-self.y),rb=std::hypot(b->x-self.x,b->y-self.y);return ra<rb||(ra==rb&&a->id<b->id);});
-    if(v2_){auto selected=v2EnemySet(self,enemies,memory_);const auto enemyMotion=v2EnemyMotion(self,selected,memory_,knobs_,c);vx+=enemyMotion[0];vy+=enemyMotion[1];}
+    if(v2_){auto selected=v2EnemySet(self,enemies,memory_);
+      // Update all living pairs, even while excluded from the movement cap, so a threshold crossing is retained.
+      if(v3_)for(auto enemy:enemies)v3Preferred(self,*enemy,knobs_,c,pairModes_);
+      const auto enemyMotion=v3_?v3EnemyMotion(self,selected,memory_,knobs_,c,pairModes_):v2EnemyMotion(self,selected,memory_,knobs_,c);vx+=enemyMotion[0];vy+=enemyMotion[1];}
     else{const double preferred=knobs_.f*self.range/100*(1+(arm_==Arm::PushPull?0:knobs_.w)*(1-c)/2);
     for(size_t e=0;e<std::min(size_t(8),enemies.size());++e){auto u=enemies[e];double dx=(u->x-self.x)/100,dy=(u->y-self.y)/100,r=std::hypot(dx,dy);if(r==0)continue;
       double rho=r-(self.role==ObservedRole::Artillery?0:(self.radius+u->radius)/100);double term=knobs_.G*(1-preferred/std::max(rho,.01))/std::min(size_t(8),enemies.size());vx+=dx/r*term;vy+=dy/r*term;}}

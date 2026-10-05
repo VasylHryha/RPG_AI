@@ -15,6 +15,9 @@ bool v2Threat(const ObservedUnit& self,const ObservedUnit& enemy,double zOut);
 double v2Preferred(const ObservedUnit& self,const ObservedUnit& enemy,const Knobs&,double commitment);
 std::vector<const ObservedUnit*> v2EnemySet(const ObservedUnit& self,const std::vector<const ObservedUnit*>& nearest,const std::map<UnitId,Memory>&);
 std::array<double,2> v2EnemyMotion(const ObservedUnit& self,const std::vector<const ObservedUnit*>& selected,const std::map<UnitId,Memory>&,const Knobs&,double commitment);
+using PairModes = std::map<std::pair<UnitId,UnitId>,bool>; // true: commit, false: escape
+double v3Preferred(const ObservedUnit& self,const ObservedUnit& enemy,const Knobs&,double commitment,PairModes&);
+std::array<double,2> v3EnemyMotion(const ObservedUnit& self,const std::vector<const ObservedUnit*>& selected,const std::map<UnitId,Memory>&,const Knobs&,double commitment,PairModes&);
 struct ModelUnit {double x=0,y=0,state=0,rate=0,pressure=0;UnitId id=0,target=0;};
 struct Derivative {double x=0,y=0,state=0;};
 // Production and reference algebra share the same protected ally kernel.
@@ -25,7 +28,8 @@ std::vector<ModelUnit> frozenStep(std::vector<ModelUnit>,Arm,const Knobs&,double
 struct DiagnosticUnit {UnitId id=0,target=0;double x=0,y=0,state=0,commitment=1,zOut=0,zIn=0;};
 class S3Controller : public Controller {
 protected:
-  Arm arm_;Knobs knobs_;bool v1_,v2_;
+  Arm arm_;Knobs knobs_;bool v1_,v2_,v3_;
+  PairModes pairModes_;
   std::map<UnitId,Memory> memory_;
   std::map<UnitId,UnitDecision> prepared_;
   std::vector<DiagnosticUnit> diagnostic_;
@@ -37,6 +41,7 @@ public:
   UnitDecision decide(const Observation&,UnitId) override;
   std::unique_ptr<Controller> clone() const override {return std::make_unique<S3Controller>(*this);}
   const std::map<UnitId,Memory>& memory() const {return memory_;}
+  const PairModes& pairModes() const {return pairModes_;}
   const std::vector<DiagnosticUnit>& diagnostic() const {return diagnostic_;}
   const std::vector<ModelUnit>& model() const {return model_;}
   const Knobs& knobs() const {return knobs_;}

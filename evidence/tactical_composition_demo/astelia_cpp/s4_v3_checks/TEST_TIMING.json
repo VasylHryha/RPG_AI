@@ -1,0 +1,23 @@
+{
+  "build_seconds": 111.285014708,
+  "test_seconds": 83.857884958,
+  "exit_code": 0,
+  "command": [
+    "/Users/new/RiderProjects/ai_RPG_test/.venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/test_s3_controllers.py",
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/test_native_controller.py",
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/test_s4_v1.py",
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/test_s4_v2.py",
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/test_s4_v3.py",
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/test_s4_v3_report.py",
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/test_s4_amended.py",
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/test_s4_amended_report.py",
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/test_result_cache.py",
+    "-k",
+    "not test_v0_fixture_summary_bytes_and_v1_engineering_fights and not test_v0_v1_fixture_bytes_and_v2_engineering"
+  ]
+}
