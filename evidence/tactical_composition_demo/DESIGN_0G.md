@@ -326,6 +326,18 @@ All of the following use only observed fields (positions, radii, range, minRange
 5. **Knobs:** f is replaced by f_c ∈ [0.3, 1.0] and m_k ∈ [0.2, 1.0]; λ_th ∈ [0, 3] is added; and **γ (the target preference) is fixed at 1** to keep the cap of 10 for the resonator and morale. Push-pull uses f_c and m_k with its G (3 knobs; c = 1 always). Bounds are otherwise as section 5.
 6. **Section 12 item 2** (the target term toward engaged enemies) is kept.
 
+**Clarifications (answering Codex's contract stop, `astelia_cpp/S4_V2_DEVELOPMENT_REPORT.md`):**
+
+- **(Q1) The knob cap is raised to 11, logged.** The resonator and morale each have 11 knobs: K, K_t, κ, β, two role rates (ω or λ), G, w, f_c, m_k and λ_th. Push-pull has 3: G, f_c, m_k. The two stateful arms stay equal. The increase is a disclosed change from section 5's "at most 10", made before any v2 fight.
+- **(Q2) The enemy set, exactly:** E_i = the 8 nearest living enemies (by centre distance, ties by lowest id), always kept. Then i's threats not already in it, in order of descending z_out(e), then ascending centre distance, then lowest id, until |E_i| = 16 or no threats remain.
+- **(Q3) All v2 distance comparisons use centre distance, in model units.**
+  - For a melee or direct unit u reaching target v: its centre reach is Rc(u → v) = range_u + r_u + r_v. For artillery: Rc(u → v) = range_u, with the minimum Rmin(u) = minRange_u.
+  - **Own reach** of i toward e: R_i = Rc(i → e). **Enemy reach** of e onto i: R_e = Rc(e → i), and e threatens i only if Rmin(e) ≤ centre distance ≤ R_e.
+  - The kite band, the commit, escape and interpolation formulas of item 3 apply to these centre distances.
+  - The restoring force uses ρ_c = centre distance: G(1 − d / max(ρ_c, ε)).
+  - **For an artillery unit i**, the committed distance is max(f_c · R_i, 1.05 · Rmin(i)): a committed gun never moves inside its own minimum range. Diving under an enemy gun's minimum range is not used in v2.
+  - Sections 3-12 and the v0/v1 skeletons keep their own definitions (the gap for melee and direct), unchanged.
+
 **S3-style checks to add:**
 - the threat set on constructed cases (melee, direct, artillery dead zone);
 - the unanswered label true only when a threat is out of i's reach;
