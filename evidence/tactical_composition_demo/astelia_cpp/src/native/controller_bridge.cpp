@@ -32,7 +32,7 @@ void prepareControllers(World& w){
     auto& o=w.observations[side];o.t=w.time;o.dt=w.dt;o.width=w.config->width;o.height=w.config->height;o.units.clear();
     for(auto i:w.active){const auto& u=w.units[i];if(!u.alive)continue;const auto& s=w.state[i];const auto* t=w.resolve(u.target);
       const auto role=melee(u.role)?ObservedRole::Melee:u.role==Role::Artillery?ObservedRole::Artillery:ObservedRole::Ranged;
-      o.units.push_back({u.id,u.team,role,u.pos.x,u.pos.y,u.velocity.x,u.velocity.y,u.hp,u.maxhp,u.radius,u.speed,u.range,u.damage,u.cooldown,s.cooldownMax,t&&t->alive?t->id:0,s.damageDealt,s.damageTaken});}
+      o.units.push_back({u.id,u.team,role,u.pos.x,u.pos.y,u.velocity.x,u.velocity.y,u.hp,u.maxhp,u.radius,u.speed,u.range,u.damage,u.cooldown,s.cooldownMax,t&&t->alive?t->id:0,s.damageDealt,s.damageTaken,s.minRange,s.dealtToEnemy,s.takenFromEnemy,s.friendlyDealt,s.friendlyTaken});}
     w.controllers[side]->prepare(o);
   }
 }
@@ -40,7 +40,7 @@ void applyControllerDecision(World& w,uint32_t i,UnitDecision decision){
   if(w.units[i].role==Role::Player)throw std::invalid_argument("S2 external controllers do not support the special player body");
   auto& u=w.units[i];auto& s=w.state[i];s.decision={};s.inReach=false;
   // Invalid numeric decisions fail closed to hold/no target; no NaNs reach physics.
-  if(!std::isfinite(decision.x)||!std::isfinite(decision.y)||!std::isfinite(decision.multiplier)||!std::isfinite(decision.stop))decision={u.pos.x,u.pos.y,0,0,0};
+  if(decision.controllerFailure||!std::isfinite(decision.x)||!std::isfinite(decision.y)||!std::isfinite(decision.multiplier)||!std::isfinite(decision.stop)){++w.stats.controllerFailures[u.team];decision={u.pos.x,u.pos.y,0,0,0};}
   decision.x=clamp(decision.x,0,w.config->width);decision.y=clamp(decision.y,0,w.config->height);
   decision.multiplier=clamp(decision.multiplier,0,1);decision.stop=std::max(0.0,decision.stop);
   u.target=livingTarget(w,decision.target,u.team);

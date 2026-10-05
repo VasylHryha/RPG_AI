@@ -144,8 +144,9 @@ void thresholds(AbilityThresholds& a,V v){only(v,{"chargeSync","shieldAimedAt","
 }
 }
 Config configuration(const js::V& request) {
-  only(request,{"mode","options","trace","opponent","debug","decisionTrace"});
+  only(request,{"mode","options","trace","opponent","debug","decisionTrace","diagnostics","s3"});
   const auto mode=string(request,"mode","alone");brain(mode);
+  boolean(request,"s3",false);boolean(request,"diagnostics",false);
   V o=js::get(request,"options");if(o.tag==V::Undefined)o=js::obj({});
   only(o,{"seed","dt","duration","width","height","army","scenario","swapSides","rules","abilities","sandboxAbilities","ai","shots","shotSpeed","windUp",
     "hunters","enemyArmy","ours","unitSet","skirmishSet","temporal","playerStyle","perception","attackerCap","abilOff",
@@ -220,7 +221,7 @@ Config configuration(const js::V& request) {
     if(present(p,"controller")){
       c.controllers[t].name=string(p,"controller","");
       if(c.controllers[t].name.empty())throw std::invalid_argument("empty controller name");
-      if(present(p,"params"))only(js::get(p,"params"),{});
+      if(present(p,"params")){const auto params=js::get(p,"params");if(params.tag!=V::Heap||params.p->kind!=js::Object::Plain)throw std::invalid_argument("expected controller params object");for(auto key:js::keys(params)){const auto name=js::str(key);c.controllers[t].params[name]=number(params,name.c_str(),0);}}
       // Closed S2 registry; invalid names fail before fight construction.
       makeController(c.controllers[t],c.seed,uint8_t(t));
     }else if(present(p,"params"))throw std::invalid_argument("params requires controller");

@@ -5,6 +5,7 @@
 #include "search.h"
 #include "api.h"
 #include "catalog_data.h"
+#include "s3_diagnostics.h"
 #include "../js_value.h"
 #include <set>
 #include <map>
@@ -12,12 +13,17 @@
 
 namespace {
 using js::V;
-V encodeSummary(const astelia::World& w) {
+V encodeSummary(const astelia::World& w,bool extended) {
   const auto s=astelia::summary(w);
-  return js::obj({{"mode",w.config->mode},{"melee",s.melee},{"ranged",s.ranged},{"artillery",s.artillery},
+  auto out=js::obj({{"mode",w.config->mode},{"melee",s.melee},{"ranged",s.ranged},{"artillery",s.artillery},
     {"total",s.total},{"wasted",s.wasted},{"monsterDeaths",double(s.monsterDeaths)},
     {"hunterKills",double(s.hunterKills)},{"aliveSeconds",s.aliveSeconds},{"enemyDamage",s.enemyDamage},
     {"survivors",double(s.survivors)},{"enemySurvivors",double(s.enemySurvivors)},{"t",s.t}});
+  if(extended){const auto& stats=w.stats;js::set(out,"controllerFailures",js::arr({double(stats.controllerFailures[0]),double(stats.controllerFailures[1])}));
+    js::set(out,"controllerStatus",stats.controllerFailures[0]||stats.controllerFailures[1]?"controller_failure":"completed");
+    js::set(out,"crossTeamDealt",js::arr({stats.dealtToEnemy[0],stats.dealtToEnemy[1]}));js::set(out,"crossTeamTaken",js::arr({stats.takenFromEnemy[0],stats.takenFromEnemy[1]}));
+    js::set(out,"friendlyDealt",js::arr({stats.friendlyDealt[0],stats.friendlyDealt[1]}));js::set(out,"friendlyTaken",js::arr({stats.friendlyTaken[0],stats.friendlyTaken[1]}));}
+  return out;
 }
 V state(const astelia::World& w,std::map<astelia::UnitId,V>& history,bool debug) {
   for (const auto& u:w.units) if (u.id && (u.occupied || !history.count(u.id) || js::truth(js::get(history.at(u.id),"alive")))) {
@@ -44,30 +50,44 @@ V state(const astelia::World& w,std::map<astelia::UnitId,V>& history,bool debug)
     js::Args records;for(const auto& record:w.bcData){js::Args features;for(auto x:record.features)features.emplace_back(x);records.push_back(js::arr({js::arr(std::move(features)),double(record.choice)}));}
     js::set(out,"debug",js::obj({{"packs",packs},{"bcData",js::arr(std::move(records))},{"eventCount",double(w.events.size())}}));}return out;
 }
-V fight(V request,astelia::WorkCounters& counts,uint64_t& fights) {
+V fight(V request,astelia::WorkCounters& counts,uint64_t& fights,bool testControllers,bool capture) {
   try {
   const auto operation=js::str(js::get(request,"operation"));
   if(operation=="rng"){const auto seed=js::get(request,"seed"),rounds=js::get(request,"rounds");if(seed.tag!=V::Number||!std::isfinite(seed.n)||rounds.tag!=V::Number||!std::isfinite(rounds.n)||rounds.n<0||rounds.n>1000000||rounds.n!=std::floor(rounds.n))throw std::invalid_argument("invalid opponent draw");js::Args names;for(auto& name:astelia::drawOpponents(seed.n,uint32_t(rounds.n),js::str(js::get(request,"drawMode"))=="pool"))names.emplace_back(name);return js::arr(std::move(names));}
   if(operation=="catalog")return js::parse(astelia::catalogJSON);
   auto config=std::make_shared<const astelia::Config>(astelia::configuration(request));
+  for(const auto& p:config->controllers)if(p.name=="passthrough"&&!testControllers)throw std::invalid_argument("passthrough is test-only");
+  bool extended=js::truth(js::get(request,"s3"));for(const auto& p:config->controllers)if(p.name=="resonator"||p.name=="morale"||p.name=="pushpull")extended=true;
   auto w=astelia::World::create(config); ++fights;
   uint64_t tick=0; const bool trace=js::truth(js::get(request,"trace"));
   std::map<astelia::UnitId,V> history;
   const bool debug=js::truth(js::get(request,"debug"));
   const auto dump=[&](){std::cout<<js::stringify(js::obj({{"step",double(tick)},{"state",state(w,history,debug)}}))<<'\n';};
   if (trace) dump();
-  while (!w.done()) {astelia::coreStep(w);++tick;if (trace) dump();}
+  const bool diagnostics=js::truth(js::get(request,"diagnostics"));std::array<astelia::control::DiagnosticHistory,2> histories;uint64_t second=1;
+  const auto numeric=[](double n){return std::isfinite(n)?V(n):V(nullptr);};
+  while (!w.done()) {astelia::coreStep(w);++tick;if (trace) dump();
+    if(capture)for(uint8_t side=0;side<2;++side)if(auto* c=dynamic_cast<astelia::control::S3Controller*>(w.controllers[side].get()))if(c->arm()!=astelia::control::Arm::PushPull){js::Args rows;size_t i=0;for(const auto& u:c->model()){rows.push_back(js::obj({{"id",double(u.id)},{"target",double(u.target)},{"x",u.x},{"y",u.y},{"state",u.state},{"rate",u.rate},{"pressure",u.pressure},{"commitment",numeric(c->diagnostic()[i++].commitment)}}));}std::cout<<js::stringify(js::obj({{"capture",true},{"arm",c->arm()==astelia::control::Arm::Resonator?"resonator":"morale"},{"side",double(side)},{"dt",w.dt},{"K",c->knobs().K},{"K_t",c->knobs().Kt},{"units",js::arr(std::move(rows))}}))<<'\n';}
+    if(diagnostics){js::Args sides;
+      for(uint8_t side=0;side<2;++side)if(w.controllers[side]){auto* controller=dynamic_cast<astelia::control::S3Controller*>(w.controllers[side].get());std::vector<astelia::control::DiagnosticUnit> units;
+        if(controller)units=controller->diagnostic();else for(const auto& u:w.observations[side].units)if(u.team==side){astelia::UnitId target=0;for(const auto& actual:w.units)if(actual.id==u.id){const auto* t=w.resolve(actual.target);target=t?t->id:0;break;}units.push_back({u.id,target,u.x,u.y,0,1,0,0});}
+        auto& history=histories[side];history.append(w.time,units);if(w.time+1e-9<second)continue;const bool phases=controller&&controller->arm()==astelia::control::Arm::Resonator;auto d=history.summarize(phases);
+        js::Args members,candidates;for(const auto& c:d.candidates){js::Args ids;for(auto id:c)ids.push_back(double(id));candidates.push_back(js::arr(std::move(ids)));}
+        for(const auto& u:units)members.push_back(js::obj({{"id",double(u.id)},{"target",double(u.target)},{"x",u.x},{"y",u.y},{"state",controller?numeric(u.state):V(nullptr)},{"commitment",numeric(u.commitment)},{"zOut",numeric(u.zOut)},{"zIn",numeric(u.zIn)}}));
+        sides.push_back(js::obj({{"side",double(side)},{"phaseCoherence",d.coherenceValid?numeric(d.coherence):V(nullptr)},{"distinctTargetPhases",phases?V(double(d.distinct)):V(nullptr)},{"targetConcentration",d.concentration},{"windowReady",d.windowReady},{"candidates",js::arr(std::move(candidates))},{"units",js::arr(std::move(members))}}));}
+      if(w.time+1e-9>=second){std::cout<<js::stringify(js::obj({{"diagnostics",true},{"t",w.time},{"second",double(second)},{"sides",js::arr(std::move(sides))}}))<<'\n';++second;}}
+  }
   counts.branchUnitActions+=w.work->branchUnitActions;counts.branchProjectileSteps+=w.work->branchProjectileSteps;counts.branchSteps+=w.work->branchSteps;counts.forks+=w.work->forks;counts.searchCalls+=w.work->searchCalls;counts.inferenceCalls+=w.work->inferenceCalls;counts.candidateModels+=w.work->candidateModels;counts.artilleryRollouts+=w.work->artilleryRollouts;counts.artilleryPredictions+=w.work->artilleryPredictions;counts.artilleryCandidates+=w.work->artilleryCandidates;counts.predictionSteps+=w.work->predictionSteps;counts.predictionUnitSteps+=w.work->predictionUnitSteps;
   for(auto setting:w.work->branchSettings)counts.branchSettings[setting.first]+=setting.second;
   counts.outerSteps+=w.counters.outerSteps;counts.unitActions+=w.counters.unitActions;counts.projectileSteps+=w.counters.projectileSteps;
-  return encodeSummary(w);
+  return encodeSummary(w,extended);
   } catch (const std::exception& e) { return js::obj({{"error",e.what()}}); }
 }
 } // namespace
 int main(int argc,char** argv) {
-  bool metrics=false;for (int i=1;i<argc;++i) {
+  bool metrics=false,testControllers=false,capture=false;for (int i=1;i<argc;++i) {
     if (std::string(argv[i])=="--catalog") {std::cout<<astelia::catalogJSON<<'\n';return 0;}
-    if (std::string(argv[i])=="--metrics") metrics=true;else {std::cerr<<"unknown argument\n";return 1;}
+    if (std::string(argv[i])=="--capture-s3")capture=true;else if (std::string(argv[i])=="--test-controllers")testControllers=true;else if (std::string(argv[i])=="--metrics") metrics=true;else {std::cerr<<"unknown argument\n";return 1;}
   }
   astelia::WorkCounters counts;uint64_t fights=0;
   std::string line;while (std::getline(std::cin,line)) {
@@ -75,8 +95,8 @@ int main(int argc,char** argv) {
     try {
       V request=js::parse(line), result;
       if (request.tag==V::Heap && request.p->kind==js::Object::Array) {
-        js::Args rows;for (auto r:request.p->items) rows.push_back(fight(r,counts,fights));result=js::arr(std::move(rows));
-      } else result=fight(request,counts,fights);
+        js::Args rows;for (auto r:request.p->items) rows.push_back(fight(r,counts,fights,testControllers,capture));result=js::arr(std::move(rows));
+      } else result=fight(request,counts,fights,testControllers,capture);
       std::cout<<js::stringify(result)<<std::endl;
     } catch (const std::exception& e) {std::cout<<js::stringify(js::obj({{"error",e.what()}}))<<std::endl;}
     js::collect({},0);

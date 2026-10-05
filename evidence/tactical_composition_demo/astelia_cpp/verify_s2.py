@@ -43,7 +43,7 @@ def compress(path, data):
 
 
 def execute(binary, request):
-    run = subprocess.run([str(binary)], input=json.dumps(request).encode()+b'\n',
+    run = subprocess.run([str(binary), "--test-controllers"], input=json.dumps(request).encode()+b'\n',
                          capture_output=True, check=True)
     rows = [json.loads(line) for line in run.stdout.splitlines()]
     if run.stderr or validate_rows(request, rows) != 'completed':

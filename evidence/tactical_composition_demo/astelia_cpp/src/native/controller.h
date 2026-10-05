@@ -16,6 +16,7 @@ struct ObservedUnit {
   double x=0,y=0,vx=0,vy=0,hp=0,maxhp=0,radius=0,speed=0,range=0,dmg=0,cd=0,cdMax=0;
   UnitId target=0;
   double damageDealt=0,damageTaken=0;
+  double minRange=0,dealtToEnemy=0,takenFromEnemy=0,friendlyDealt=0,friendlyTaken=0;
 };
 struct Observation {
   double t=0,dt=0,width=0,height=0;
@@ -24,6 +25,7 @@ struct Observation {
 struct UnitDecision {
   double x=0,y=0,multiplier=1,stop=0;
   UnitId target=0;
+  bool controllerFailure=false;
 };
 using ControllerParams = std::map<std::string,double>;
 struct ControllerProfile { std::string name; ControllerParams params; };

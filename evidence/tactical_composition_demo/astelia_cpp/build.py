@@ -12,7 +12,7 @@ COMBAT_SOURCES = ['src/native/world.cpp', 'src/native/combat.cpp', 'src/native/s
                   'src/native/combat_rules.cpp', 'src/native/abilities.cpp', 'src/native/player.cpp',
                   'src/native/formation.cpp', 'src/native/formation_tables.cpp', 'src/native/commander.cpp',
                   'src/native/targeting.cpp', 'src/native/coord_abilities.cpp', 'src/native/dodge.cpp',
-                  'src/native/decisions.cpp', 'src/native/director.cpp', 'src/native/network.cpp', 'src/native/network_tables.cpp', 'src/native/search.cpp', 'src/native/artillery_prediction.cpp', 'src/native/artillery.cpp', 'src/native/api.cpp', 'src/native/controller.cpp', 'src/native/controller_bridge.cpp']
+                  'src/native/decisions.cpp', 'src/native/director.cpp', 'src/native/network.cpp', 'src/native/network_tables.cpp', 'src/native/search.cpp', 'src/native/artillery_prediction.cpp', 'src/native/artillery.cpp', 'src/native/api.cpp', 'src/native/controller.cpp', 'src/native/controller_bridge.cpp', 'src/native/s3_controller.cpp', 'src/native/s3_diagnostics.cpp']
 TARGETS = {
     'legacy': ('astelia', ['src/main.cpp', 'src/formation_sim.cpp', 'src/v8_ieee754.cpp']),
     'native': ('astelia_native', ['src/native/host.cpp', 'src/native/config_codec.cpp', *COMBAT_SOURCES]),
@@ -26,6 +26,7 @@ TARGETS = {
     'api-check': ('native_api_contract', ['native_api_contract.cpp', *COMBAT_SOURCES]),
     'full-check': ('native_full_contract', ['native_full_contract.cpp', *COMBAT_SOURCES]),
     'controller-check': ('native_controller_contract', ['native_controller_contract.cpp', *COMBAT_SOURCES]),
+    's3-check': ('native_s3_contract', ['native_s3_contract.cpp', *COMBAT_SOURCES]),
 }
 
 

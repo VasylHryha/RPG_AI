@@ -51,6 +51,7 @@ struct UnitState {
   double minRange=0, shotSpeed=0, lobSpeed=0, splash=0, launch=1, timeRate=1;
   double longSpeed=0, stepTime=0, dealt=0, meleeAt=-1;
   double damageDealt=0, damageTaken=0; // actual HP, all teams; resets on slot reuse
+  double dealtToEnemy=0,takenFromEnemy=0,friendlyDealt=0,friendlyTaken=0;
   UnitRef meleeAttacker;
   int8_t strafe=1;
   uint32_t kind=invalidSlot, ability=invalidSlot, player=invalidSlot;
@@ -88,6 +89,8 @@ struct AttackStats {uint64_t used=0,shells=0,kills=0;double damage=0,own=0;};
 struct ShellStats {uint64_t shells=0,hits=0,planShells=0;double damage=0,planPred=0,planDamage=0;};
 struct AbilityStats {uint64_t uses=0;double damage=0,blocked=0;};
 struct Stats {
+  std::array<uint64_t,2> controllerFailures{};
+  std::array<double,2> dealtToEnemy{},takenFromEnemy{},friendlyDealt{},friendlyTaken{};
   std::array<std::array<AbilityStats,6>,2> abilities;
   std::array<double,6> bySource{},takenBy{}; // melee, charge, shell, barrage, shot, aimed
   std::array<std::array<AttackStats,size_t(AttackFamily::Count)*2>,2> attacks;std::array<ShellStats,2> shellOut;

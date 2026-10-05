@@ -32,7 +32,7 @@ def test_controller_contracts_and_exact_field_list(controller_build):
     assert fields['world_fields'] == ['t', 'dt', 'width', 'height']
     assert fields['unit_fields'] == ['id', 'team', 'role', 'x', 'y', 'vx', 'vy',
         'hp', 'maxhp', 'radius', 'speed', 'range', 'dmg', 'cd', 'cdMax',
-        'target', 'damageDealt', 'damageTaken']
+        'target', 'damageDealt', 'damageTaken', 'minRange', 'dealtToEnemy', 'takenFromEnemy', 'friendlyDealt', 'friendlyTaken']
     assert fields['status'] == 'passed'
     assert rows[1] == 'native controller contracts passed'
 
@@ -60,7 +60,7 @@ def test_controller_profile_on_either_side(controller_build, side, name):
     ai[side] = {'controller': name, 'params': {}}
     req = {'mode': 'alone', 'options': {'seed': 20261005, 'scenario': 'mirror',
         'rules': 'game', 'duration': .2, 'ai': ai}}
-    rows = json.loads(subprocess.check_output([str(controller_build)],
+    rows = json.loads(subprocess.check_output([str(controller_build), "--test-controllers"],
         input=json.dumps([req, req])+'\n', text=True))
     assert rows[0] == rows[1] and 'error' not in rows[0]
 
@@ -70,7 +70,7 @@ def test_controller_profile_on_either_side(controller_build, side, name):
     {'controller': 'hold', 'params': []}])
 def test_invalid_controller_profiles_fail_closed(controller_build, profile):
     req = {'mode': 'alone', 'options': {'scenario': 'mirror', 'ai': [profile, {}]}}
-    row = json.loads(subprocess.check_output([str(controller_build)],
+    row = json.loads(subprocess.check_output([str(controller_build), "--test-controllers"],
         input=json.dumps(req)+'\n', text=True))
     assert 'error' in row
 
@@ -79,7 +79,7 @@ def test_invalid_controller_profiles_fail_closed(controller_build, profile):
 def test_special_player_body_rejected_on_controlled_side(controller_build, name):
     req = {'mode': 'alone', 'options': {'scenario': 'skirmish', 'rules': 'game',
         'duration': .1, 'ai': [{}, {'controller': name}]}}
-    row = json.loads(subprocess.check_output([str(controller_build)],
+    row = json.loads(subprocess.check_output([str(controller_build), "--test-controllers"],
         input=json.dumps(req)+'\n', text=True))
     assert 'special player body' in row['error']
 
@@ -90,6 +90,6 @@ def test_supported_skirmish_control_remains_available(controller_build, side, na
     ai[side] = {'controller': name}
     req = {'mode': 'alone', 'options': {'scenario': 'skirmish', 'rules': 'game',
         'duration': .1, 'ai': ai}}
-    row = json.loads(subprocess.check_output([str(controller_build)],
+    row = json.loads(subprocess.check_output([str(controller_build), "--test-controllers"],
         input=json.dumps(req)+'\n', text=True))
     assert 'error' not in row

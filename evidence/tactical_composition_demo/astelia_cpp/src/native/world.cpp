@@ -224,6 +224,8 @@ double World::damage(UnitRef source,UnitRef target,double amount,bool barrage) {
   }
   const double dealt=std::min(amount,dst->hp); dst->hp-=amount;
   state[source.slot].damageDealt+=dealt;state[target.slot].damageTaken+=dealt;
+  if(src->team!=dst->team){state[source.slot].dealtToEnemy+=dealt;state[target.slot].takenFromEnemy+=dealt;stats.dealtToEnemy[src->team]+=dealt;stats.takenFromEnemy[dst->team]+=dealt;}
+  else{state[source.slot].friendlyDealt+=dealt;state[target.slot].friendlyTaken+=dealt;stats.friendlyDealt[src->team]+=dealt;stats.friendlyTaken[dst->team]+=dealt;}
   const size_t kind=melee(src->role)?(amount>src->damage*1.2?1:0):src->role==Role::Artillery?(barrage?3:2):(amount>src->damage*1.2?5:4);
   stats.bySource[kind]+=dealt;if(dst->team==0&&src->team==1)stats.takenBy[kind]+=dealt;
   if(kind==1||kind==3||kind==5)stats.abilities[src->team][size_t(kind==1?Ability::Charge:kind==3?Ability::Barrage:Ability::Aimed)].damage+=dealt;

@@ -17,9 +17,10 @@ static_assert(std::is_aggregate_v<ControllerObservation>&&std::is_aggregate_v<Ob
 void fieldContract(const ControllerObservation& o){
   const auto& [t,dt,width,height,units]=o;
   require(t==o.t&&dt==o.dt&&width==o.width&&height==o.height&&&units==&o.units,"world view fields");
-  const auto& [id,team,role,x,y,vx,vy,hp,maxhp,radius,speed,range,dmg,cd,cdMax,target,dealt,taken]=units.front();
+  const auto& [id,team,role,x,y,vx,vy,hp,maxhp,radius,speed,range,dmg,cd,cdMax,target,dealt,taken,minRange,dealtToEnemy,takenFromEnemy,friendlyDealt,friendlyTaken]=units.front();
   require(id==units.front().id&&dealt==units.front().damageDealt&&taken==units.front().damageTaken,"unit view fields");
-  std::cout<<"{\"world_fields\":[\"t\",\"dt\",\"width\",\"height\"],\"unit_fields\":[\"id\",\"team\",\"role\",\"x\",\"y\",\"vx\",\"vy\",\"hp\",\"maxhp\",\"radius\",\"speed\",\"range\",\"dmg\",\"cd\",\"cdMax\",\"target\",\"damageDealt\",\"damageTaken\"],\"status\":\"passed\"}\n";
+  require(minRange==units.front().minRange&&dealtToEnemy==units.front().dealtToEnemy&&takenFromEnemy==units.front().takenFromEnemy&&friendlyDealt==units.front().friendlyDealt&&friendlyTaken==units.front().friendlyTaken,"S3 unit view fields");
+  std::cout<<"{\"world_fields\":[\"t\",\"dt\",\"width\",\"height\"],\"unit_fields\":[\"id\",\"team\",\"role\",\"x\",\"y\",\"vx\",\"vy\",\"hp\",\"maxhp\",\"radius\",\"speed\",\"range\",\"dmg\",\"cd\",\"cdMax\",\"target\",\"damageDealt\",\"damageTaken\",\"minRange\",\"dealtToEnemy\",\"takenFromEnemy\",\"friendlyDealt\",\"friendlyTaken\"],\"status\":\"passed\"}\n";
 }
 class Recording final:public Controller {
 public:
