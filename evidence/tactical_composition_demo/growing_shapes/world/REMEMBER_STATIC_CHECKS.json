@@ -1,0 +1,942 @@
+{
+  "status": "PASS",
+  "baseline_commit": "aeb75a73c1d00706ff8e264563ae0f9a554c5f1c",
+  "scope": "engine verification only; no judging, growth or learning",
+  "source_sha256": {
+    "world.h": "cae3bb890fcfbcdab72cf64121be3e2362b0e26408ce320f61cde5c302528667",
+    "world.cpp": "93fff84417baa32ff411eebfaa7b956be9036647a4662fcf6e4efa4b057de28a",
+    "world.py": "41c1f90d5b731836026fb481a2e58f64ea0ff507d528283069eccb3656fd5a7c",
+    "build.py": "a8924810d02f4427d4e6c2108e848e0783664b57a82876e1fc5d71a6b997f5d6",
+    "native_contract.cpp": "59102395fc5bc4387ec30c7f3d2450f7bfcbf714b9fdc941dfa16c8bd6b15a15",
+    "test_world.py": "7f819ce76d7efe8ee04c6110a2a1cc731f90037dc5f278516270df0958385cee",
+    "verify_world.py": "37bd8832a003fa5c578e424b8438b2631ae2843bfe39bb1a097112413b71ff7d",
+    ".gitignore": "7856e06136649c448bb1374c9005a55d4820042e320d8cbbdf133a5eddeabd22",
+    "verify_remember_static.py": "36b68d83e41778aaf50a6d262f13d158760e06ebca2408413c2a4d65f4d42a1f"
+  },
+  "build": {
+    "commands": [
+      [
+        "c++",
+        "-std=c++17",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-pedantic",
+        "-fPIC",
+        "-dynamiclib",
+        "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/world/world.cpp",
+        "-o",
+        "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/world/_build/libgs_world.dylib"
+      ],
+      [
+        "c++",
+        "-std=c++17",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-pedantic",
+        "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/world/world.cpp",
+        "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/world/native_contract.cpp",
+        "-o",
+        "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/world/_build/native_contract"
+      ]
+    ],
+    "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+    "sanitized": false,
+    "source_sha256": {
+      "world.h": "cae3bb890fcfbcdab72cf64121be3e2362b0e26408ce320f61cde5c302528667",
+      "world.cpp": "93fff84417baa32ff411eebfaa7b956be9036647a4662fcf6e4efa4b057de28a",
+      "native_contract.cpp": "59102395fc5bc4387ec30c7f3d2450f7bfcbf714b9fdc941dfa16c8bd6b15a15",
+      "build.py": "a8924810d02f4427d4e6c2108e848e0783664b57a82876e1fc5d71a6b997f5d6"
+    },
+    "binary_sha256": {
+      "libgs_world.dylib": "aecb0bc1e7109a8e54bca3c1b99edf7a0f9e020ff650a1dfb0215ee5c9b662bb",
+      "native_contract": "d8be414b3c54258d18dc92f36224e706314892d91e93ee652ba49641a3c19a4e"
+    }
+  },
+  "baseline_build": {
+    "commands": [
+      [
+        "c++",
+        "-std=c++17",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-pedantic",
+        "-fPIC",
+        "-dynamiclib",
+        "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/world/_build/original/world.cpp",
+        "-o",
+        "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/world/_build/original/_build/libgs_world.dylib"
+      ],
+      [
+        "c++",
+        "-std=c++17",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-pedantic",
+        "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/world/_build/original/world.cpp",
+        "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/world/_build/original/native_contract.cpp",
+        "-o",
+        "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/world/_build/original/_build/native_contract"
+      ]
+    ],
+    "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+    "sanitized": false,
+    "source_sha256": {
+      "world.h": "58a090bd629c01faa591449aa96da729f9579e6d26fbabbdc9f45e91192bf99d",
+      "world.cpp": "0a2d69c69b525af2ffc26bf6a72354d6f3bfb05760d608dfa9087be1d3a6d38f",
+      "native_contract.cpp": "c8d09321cf7f9035671844064f9c25619a20242a24d3b24b27e1856c8c7319a3",
+      "build.py": "a8924810d02f4427d4e6c2108e848e0783664b57a82876e1fc5d71a6b997f5d6"
+    },
+    "binary_sha256": {
+      "libgs_world.dylib": "e2fa140aab5f726b7707ec53c4d02b254dc727f374b88b2a096dc7f848301455",
+      "native_contract": "0fa1b6dc996362ac3d9561407d8484d485415953a9ad1d91d9bc57c5a2bd92f6"
+    }
+  },
+  "contract": "native world contract: PASS (8 tasks; no judging access)\n",
+  "scores": {
+    "dev": {
+      "remember_static": {
+        "reference": {
+          "episodes": 256,
+          "mean": {
+            "steps": 160,
+            "hidden_steps": 120,
+            "invalid_actions": 0,
+            "done": 1,
+            "angular_error": 0.0,
+            "distance_error": 0.0,
+            "goal_error": 0.0,
+            "settle_seconds": 16.0,
+            "correct_choice_rate": 0.0,
+            "damage_per_second": 0.0,
+            "in_range_rate": 0.0
+          }
+        },
+        "random": {
+          "episodes": 256,
+          "mean": {
+            "steps": 160,
+            "hidden_steps": 120,
+            "invalid_actions": 0,
+            "done": 1,
+            "angular_error": 1.5783683214759057,
+            "distance_error": 0.0,
+            "goal_error": 0.0,
+            "settle_seconds": 16.0,
+            "correct_choice_rate": 0.0,
+            "damage_per_second": 0.0,
+            "in_range_rate": 0.0
+          }
+        }
+      }
+    },
+    "validation": {
+      "remember_static": {
+        "reference": {
+          "episodes": 256,
+          "mean": {
+            "steps": 160,
+            "hidden_steps": 120,
+            "invalid_actions": 0,
+            "done": 1,
+            "angular_error": 0.0,
+            "distance_error": 0.0,
+            "goal_error": 0.0,
+            "settle_seconds": 16.0,
+            "correct_choice_rate": 0.0,
+            "damage_per_second": 0.0,
+            "in_range_rate": 0.0
+          }
+        },
+        "random": {
+          "episodes": 256,
+          "mean": {
+            "steps": 160,
+            "hidden_steps": 120,
+            "invalid_actions": 0,
+            "done": 1,
+            "angular_error": 1.5723513238614601,
+            "distance_error": 0.0,
+            "goal_error": 0.0,
+            "settle_seconds": 16.0,
+            "correct_choice_rate": 0.0,
+            "damage_per_second": 0.0,
+            "in_range_rate": 0.0
+          }
+        }
+      }
+    }
+  },
+  "compatibility": {
+    "original_scores_equal": true,
+    "original_scores": {
+      "dev": {
+        "perceive": {
+          "reference": {
+            "episodes": 256,
+            "mean": {
+              "steps": 160,
+              "hidden_steps": 0,
+              "invalid_actions": 0,
+              "done": 1,
+              "angular_error": 0.0,
+              "distance_error": 0.0,
+              "goal_error": 0.0,
+              "settle_seconds": 16.0,
+              "correct_choice_rate": 0.0,
+              "damage_per_second": 0.0,
+              "in_range_rate": 0.0
+            }
+          },
+          "random": {
+            "episodes": 256,
+            "mean": {
+              "steps": 160,
+              "hidden_steps": 0,
+              "invalid_actions": 0,
+              "done": 1,
+              "angular_error": 1.5608540323859081,
+              "distance_error": 11.721471845646747,
+              "goal_error": 0.0,
+              "settle_seconds": 16.0,
+              "correct_choice_rate": 0.0,
+              "damage_per_second": 0.0,
+              "in_range_rate": 0.0
+            }
+          }
+        },
+        "move": {
+          "reference": {
+            "episodes": 256,
+            "mean": {
+              "steps": 160,
+              "hidden_steps": 0,
+              "invalid_actions": 0,
+              "done": 1,
+              "angular_error": 0.0,
+              "distance_error": 0.0,
+              "goal_error": 0.2159328636789488,
+              "settle_seconds": 1.3925781249999996,
+              "correct_choice_rate": 0.0,
+              "damage_per_second": 0.0,
+              "in_range_rate": 0.919213867187499
+            }
+          },
+          "random": {
+            "episodes": 256,
+            "mean": {
+              "steps": 160,
+              "hidden_steps": 0,
+              "invalid_actions": 0,
+              "done": 1,
+              "angular_error": 0.0,
+              "distance_error": 0.0,
+              "goal_error": 4.25341209754795,
+              "settle_seconds": 15.372265624999999,
+              "correct_choice_rate": 0.0,
+              "damage_per_second": 0.0,
+              "in_range_rate": 0.020507812500000003
+            }
+          }
+        },
+        "remember": {
+          "reference": {
+            "episodes": 256,
+            "mean": {
+              "steps": 160,
+              "hidden_steps": 120,
+              "invalid_actions": 0,
+              "done": 1,
+              "angular_error": 1.1873614328056196e-17,
+              "distance_error": 0.0,
+              "goal_error": 0.0,
+              "settle_seconds": 16.0,
+              "correct_choice_rate": 0.0,
+              "damage_per_second": 0.0,
+              "in_range_rate": 0.0
+            }
+          },
+          "random": {
+            "episodes": 256,
+            "mean": {
+              "steps": 160,
+              "hidden_steps": 120,
+              "invalid_actions": 0,
+              "done": 1,
+              "angular_error": 1.5742972997421494,
+              "distance_error": 0.0,
+              "goal_error": 0.0,
+              "settle_seconds": 16.0,
+              "correct_choice_rate": 0.0,
+              "damage_per_second": 0.0,
+              "in_range_rate": 0.0
+            }
+          }
+        },
+        "choose": {
+          "reference": {
+            "episodes": 256,
+            "mean": {
+              "steps": 160,
+              "hidden_steps": 0,
+              "invalid_actions": 0,
+              "done": 1,
+              "angular_error": 0.0,
+              "distance_error": 0.0,
+              "goal_error": 0.0,
+              "settle_seconds": 16.0,
+              "correct_choice_rate": 1.0,
+              "damage_per_second": 0.0,
+              "in_range_rate": 0.0
+            }
+          },
+          "random": {
+            "episodes": 256,
+            "mean": {
+              "steps": 160,
+              "hidden_steps": 0,
+              "invalid_actions": 0,
+              "done": 1,
+              "angular_error": 0.0,
+              "distance_error": 0.0,
+              "goal_error": 0.0,
+              "settle_seconds": 16.0,
+              "correct_choice_rate": 0.20395507812500002,
+              "damage_per_second": 0.0,
+              "in_range_rate": 0.0
+            }
+          }
+        },
+        "chase": {
+          "reference": {
+            "episodes": 256,
+            "mean": {
+              "steps": 160,
+              "hidden_steps": 0,
+              "invalid_actions": 0,
+              "done": 1,
+              "angular_error": 0.0,
+              "distance_error": 0.0,
+              "goal_error": 0.014362325933007892,
+              "settle_seconds": 0.2820312500000002,
+              "correct_choice_rate": 0.0,
+              "damage_per_second": 0.0,
+              "in_range_rate": 0.9868408203125
+            }
+          },
+          "random": {
+            "episodes": 256,
+            "mean": {
+              "steps": 160,
+              "hidden_steps": 0,
+              "invalid_actions": 0,
+              "done": 1,
+              "angular_error": 0.0,
+              "distance_error": 0.0,
+              "goal_error": 1.3232397177864392,
+              "settle_seconds": 10.819921874999997,
+              "correct_choice_rate": 0.0,
+              "damage_per_second": 0.0,
+              "in_range_rate": 0.1390380859375
+            }
+          }
+        },
+        "pursuit": {
+          "reference": {
+            "episodes": 256,
+            "mean": {
+              "steps": 160,
+              "hidden_steps": 73,
+              "invalid_actions": 0,
+              "done": 1,
+              "angular_error": 0.0,
+              "distance_error": 0.0,
+              "goal_error": 0.03298198275642119,
+              "settle_seconds": 0.6546874999999998,
+              "correct_choice_rate": 0.0,
+              "damage_per_second": 0.0,
+              "in_range_rate": 0.9653320312500007
+            }
+          },
+          "random": {
+            "episodes": 256,
+            "mean": {
+              "steps": 160,
+              "hidden_steps": 115,
+              "invalid_actions": 0,
+              "done": 1,
+              "angular_error": 0.0,
+              "distance_error": 0.0,
+              "goal_error": 7.1486707122136,
+              "settle_seconds": 16.0,
+              "correct_choice_rate": 0.0,
+              "damage_per_second": 0.0,
+              "in_range_rate": 0.0
+            }
+          }
+        },
+        "focus_fire": {
+          "reference": {
+            "episodes": 256,
+            "mean": {
+              "steps": 160,
+              "hidden_steps": 0,
+              "invalid_actions": 0,
+              "done": 1,
+              "angular_error": 0.0,
+              "distance_error": 0.0,
+              "goal_error": 0.0,
+              "settle_seconds": 16.0,
+              "correct_choice_rate": 0.0,
+              "damage_per_second": 0.9760742187499993,
+              "in_range_rate": 0.9760742187500007
+            }
+          },
+          "random": {
+            "episodes": 256,
+            "mean": {
+              "steps": 160,
+              "hidden_steps": 0,
+              "invalid_actions": 0,
+              "done": 1,
+              "angular_error": 0.0,
+              "distance_error": 0.0,
+              "goal_error": 0.0,
+              "settle_seconds": 16.0,
+              "correct_choice_rate": 0.0,
+              "damage_per_second": 0.036425781250000004,
+              "in_range_rate": 0.03642578125
+            }
+          }
+        }
+      },
+      "validation": {
+        "perceive": {
+          "reference": {
+            "episodes": 256,
+            "mean": {
+              "steps": 160,
+              "hidden_steps": 0,
+              "invalid_actions": 0,
+              "done": 1,
+              "angular_error": 0.0,
+              "distance_error": 0.0,
+              "goal_error": 0.0,
+              "settle_seconds": 16.0,
+              "correct_choice_rate": 0.0,
+              "damage_per_second": 0.0,
+              "in_range_rate": 0.0
+            }
+          },
+          "random": {
+            "episodes": 256,
+            "mean": {
+              "steps": 160,
+              "hidden_steps": 0,
+              "invalid_actions": 0,
+              "done": 1,
+              "angular_error": 1.5656735285197503,
+              "distance_error": 11.634478211871697,
+              "goal_error": 0.0,
+              "settle_seconds": 16.0,
+              "correct_choice_rate": 0.0,
+              "damage_per_second": 0.0,
+              "in_range_rate": 0.0
+            }
+          }
+        },
+        "move": {
+          "reference": {
+            "episodes": 256,
+            "mean": {
+              "steps": 160,
+              "hidden_steps": 0,
+              "invalid_actions": 0,
+              "done": 1,
+              "angular_error": 0.0,
+              "distance_error": 0.0,
+              "goal_error": 0.25012933158101386,
+              "settle_seconds": 1.5046875000000008,
+              "correct_choice_rate": 0.0,
+              "damage_per_second": 0.0,
+              "in_range_rate": 0.9122070312499995
+            }
+          },
+          "random": {
+            "episodes": 256,
+            "mean": {
+              "steps": 160,
+              "hidden_steps": 0,
+              "invalid_actions": 0,
+              "done": 1,
+              "angular_error": 0.0,
+              "distance_error": 0.0,
+              "goal_error": 4.576567143743375,
+              "settle_seconds": 15.479296875000001,
+              "correct_choice_rate": 0.0,
+              "damage_per_second": 0.0,
+              "in_range_rate": 0.021801757812499992
+            }
+          }
+        },
+        "remember": {
+          "reference": {
+            "episodes": 256,
+            "mean": {
+              "steps": 160,
+              "hidden_steps": 120,
+              "invalid_actions": 0,
+              "done": 1,
+              "angular_error": 1.3162348487524001e-17,
+              "distance_error": 0.0,
+              "goal_error": 0.0,
+              "settle_seconds": 16.0,
+              "correct_choice_rate": 0.0,
+              "damage_per_second": 0.0,
+              "in_range_rate": 0.0
+            }
+          },
+          "random": {
+            "episodes": 256,
+            "mean": {
+              "steps": 160,
+              "hidden_steps": 120,
+              "invalid_actions": 0,
+              "done": 1,
+              "angular_error": 1.5631512833338408,
+              "distance_error": 0.0,
+              "goal_error": 0.0,
+              "settle_seconds": 16.0,
+              "correct_choice_rate": 0.0,
+              "damage_per_second": 0.0,
+              "in_range_rate": 0.0
+            }
+          }
+        },
+        "choose": {
+          "reference": {
+            "episodes": 256,
+            "mean": {
+              "steps": 160,
+              "hidden_steps": 0,
+              "invalid_actions": 0,
+              "done": 1,
+              "angular_error": 0.0,
+              "distance_error": 0.0,
+              "goal_error": 0.0,
+              "settle_seconds": 16.0,
+              "correct_choice_rate": 1.0,
+              "damage_per_second": 0.0,
+              "in_range_rate": 0.0
+            }
+          },
+          "random": {
+            "episodes": 256,
+            "mean": {
+              "steps": 160,
+              "hidden_steps": 0,
+              "invalid_actions": 0,
+              "done": 1,
+              "angular_error": 0.0,
+              "distance_error": 0.0,
+              "goal_error": 0.0,
+              "settle_seconds": 16.0,
+              "correct_choice_rate": 0.19548339843749998,
+              "damage_per_second": 0.0,
+              "in_range_rate": 0.0
+            }
+          }
+        },
+        "chase": {
+          "reference": {
+            "episodes": 256,
+            "mean": {
+              "steps": 160,
+              "hidden_steps": 0,
+              "invalid_actions": 0,
+              "done": 1,
+              "angular_error": 0.0,
+              "distance_error": 0.0,
+              "goal_error": 0.018909120322434178,
+              "settle_seconds": 0.3078125,
+              "correct_choice_rate": 0.0,
+              "damage_per_second": 0.0,
+              "in_range_rate": 0.9834960937500001
+            }
+          },
+          "random": {
+            "episodes": 256,
+            "mean": {
+              "steps": 160,
+              "hidden_steps": 0,
+              "invalid_actions": 0,
+              "done": 1,
+              "angular_error": 0.0,
+              "distance_error": 0.0,
+              "goal_error": 1.4268585380507601,
+              "settle_seconds": 11.890624999999995,
+              "correct_choice_rate": 0.0,
+              "damage_per_second": 0.0,
+              "in_range_rate": 0.12978515625
+            }
+          }
+        },
+        "pursuit": {
+          "reference": {
+            "episodes": 256,
+            "mean": {
+              "steps": 160,
+              "hidden_steps": 72,
+              "invalid_actions": 0,
+              "done": 1,
+              "angular_error": 0.0,
+              "distance_error": 0.0,
+              "goal_error": 0.03505727918973931,
+              "settle_seconds": 0.6773437499999995,
+              "correct_choice_rate": 0.0,
+              "damage_per_second": 0.0,
+              "in_range_rate": 0.9639160156250003
+            }
+          },
+          "random": {
+            "episodes": 256,
+            "mean": {
+              "steps": 160,
+              "hidden_steps": 115,
+              "invalid_actions": 0,
+              "done": 1,
+              "angular_error": 0.0,
+              "distance_error": 0.0,
+              "goal_error": 7.222212392184991,
+              "settle_seconds": 16.0,
+              "correct_choice_rate": 0.0,
+              "damage_per_second": 0.0,
+              "in_range_rate": 0.0
+            }
+          }
+        },
+        "focus_fire": {
+          "reference": {
+            "episodes": 256,
+            "mean": {
+              "steps": 160,
+              "hidden_steps": 0,
+              "invalid_actions": 0,
+              "done": 1,
+              "angular_error": 0.0,
+              "distance_error": 0.0,
+              "goal_error": 0.0,
+              "settle_seconds": 16.0,
+              "correct_choice_rate": 0.0,
+              "damage_per_second": 0.9749999999999992,
+              "in_range_rate": 0.9750000000000006
+            }
+          },
+          "random": {
+            "episodes": 256,
+            "mean": {
+              "steps": 160,
+              "hidden_steps": 0,
+              "invalid_actions": 0,
+              "done": 1,
+              "angular_error": 0.0,
+              "distance_error": 0.0,
+              "goal_error": 0.0,
+              "settle_seconds": 16.0,
+              "correct_choice_rate": 0.0,
+              "damage_per_second": 0.03227539062499999,
+              "in_range_rate": 0.032275390624999976
+            }
+          }
+        }
+      }
+    },
+    "original_table_equal": true,
+    "original_table_sha256": "11e396635bbbf1f2cdfbaead47510b9d5c071642757253dbe7d611880c010a65",
+    "original_artifacts_unchanged": true,
+    "original_artifact_sha256": {
+      "WORLD_CHECKS.json": "d4003033f4a944a9b14828569b1af1cc0d6f998c2b1cadabaf6db7aeece83a41",
+      "WORLD_TEST_LOG.txt": "7a26190451150cbd5599eb5e7ef4abe1ea47e22cfa4e9ded216441c02e6f48bd"
+    },
+    "original_report_prefix_sha256": "5d8c1ab0b136eec2d5d59593a08da018bdbc6f61a3170a551e761d73acfc293b",
+    "streams": [
+      {
+        "namespace": "dev",
+        "task": "perceive",
+        "policy": "reference",
+        "first_seed": 0,
+        "episodes": 256,
+        "baseline_sha256": "731fd22227c2c8c82108f037f4b08445aaae437e51329aa6afe4e15504c23e58",
+        "current_sha256": "731fd22227c2c8c82108f037f4b08445aaae437e51329aa6afe4e15504c23e58"
+      },
+      {
+        "namespace": "dev",
+        "task": "perceive",
+        "policy": "random",
+        "first_seed": 0,
+        "episodes": 256,
+        "baseline_sha256": "bc19211d0a94b10d049d10c1b54cd357829f36f05da36f6a716fae9e34a24fb5",
+        "current_sha256": "bc19211d0a94b10d049d10c1b54cd357829f36f05da36f6a716fae9e34a24fb5"
+      },
+      {
+        "namespace": "dev",
+        "task": "move",
+        "policy": "reference",
+        "first_seed": 0,
+        "episodes": 256,
+        "baseline_sha256": "b8d9a68bb5f0254914ecb68bc6d11d077c3104794471212406e9ede91e28c034",
+        "current_sha256": "b8d9a68bb5f0254914ecb68bc6d11d077c3104794471212406e9ede91e28c034"
+      },
+      {
+        "namespace": "dev",
+        "task": "move",
+        "policy": "random",
+        "first_seed": 0,
+        "episodes": 256,
+        "baseline_sha256": "0919777671db870178ac40137f545889e3d8fa0e96a9c117298a07b14308403e",
+        "current_sha256": "0919777671db870178ac40137f545889e3d8fa0e96a9c117298a07b14308403e"
+      },
+      {
+        "namespace": "dev",
+        "task": "remember",
+        "policy": "reference",
+        "first_seed": 0,
+        "episodes": 256,
+        "baseline_sha256": "18d77b1525036e64d2c56f7aa314274425091c877d01594e886c55ded18ca016",
+        "current_sha256": "18d77b1525036e64d2c56f7aa314274425091c877d01594e886c55ded18ca016"
+      },
+      {
+        "namespace": "dev",
+        "task": "remember",
+        "policy": "random",
+        "first_seed": 0,
+        "episodes": 256,
+        "baseline_sha256": "b79af159ac1a3b0c0247dda41ab4264651da99f608ba022ef0ee0c1ce2d522a8",
+        "current_sha256": "b79af159ac1a3b0c0247dda41ab4264651da99f608ba022ef0ee0c1ce2d522a8"
+      },
+      {
+        "namespace": "dev",
+        "task": "choose",
+        "policy": "reference",
+        "first_seed": 0,
+        "episodes": 256,
+        "baseline_sha256": "d7fc2a497827afd1c63f663f2a2d9f0e88f79f92965f7a04daca72613077c78a",
+        "current_sha256": "d7fc2a497827afd1c63f663f2a2d9f0e88f79f92965f7a04daca72613077c78a"
+      },
+      {
+        "namespace": "dev",
+        "task": "choose",
+        "policy": "random",
+        "first_seed": 0,
+        "episodes": 256,
+        "baseline_sha256": "c67fc2285b64aa8a89f21eb5ded1610c378ac0a08821179f04ce5731b2539ae1",
+        "current_sha256": "c67fc2285b64aa8a89f21eb5ded1610c378ac0a08821179f04ce5731b2539ae1"
+      },
+      {
+        "namespace": "dev",
+        "task": "chase",
+        "policy": "reference",
+        "first_seed": 0,
+        "episodes": 256,
+        "baseline_sha256": "4ea41b91c9c442d617d32eaf4a298dc3d0ee40409989cbd912694fc45df9adae",
+        "current_sha256": "4ea41b91c9c442d617d32eaf4a298dc3d0ee40409989cbd912694fc45df9adae"
+      },
+      {
+        "namespace": "dev",
+        "task": "chase",
+        "policy": "random",
+        "first_seed": 0,
+        "episodes": 256,
+        "baseline_sha256": "597e1f9ec2fe83e2e88c04fc5064dd628cdcb388e98c7d318841db7625654daf",
+        "current_sha256": "597e1f9ec2fe83e2e88c04fc5064dd628cdcb388e98c7d318841db7625654daf"
+      },
+      {
+        "namespace": "dev",
+        "task": "pursuit",
+        "policy": "reference",
+        "first_seed": 0,
+        "episodes": 256,
+        "baseline_sha256": "a112bcdfa607bd84ded50551575fa09b3e44b56c0c65b6cf505319ac60a9ea3b",
+        "current_sha256": "a112bcdfa607bd84ded50551575fa09b3e44b56c0c65b6cf505319ac60a9ea3b"
+      },
+      {
+        "namespace": "dev",
+        "task": "pursuit",
+        "policy": "random",
+        "first_seed": 0,
+        "episodes": 256,
+        "baseline_sha256": "8dbabf7f86952f7909830182edc8f69a660fab365656d2cd6595a415850e49c3",
+        "current_sha256": "8dbabf7f86952f7909830182edc8f69a660fab365656d2cd6595a415850e49c3"
+      },
+      {
+        "namespace": "dev",
+        "task": "focus_fire",
+        "policy": "reference",
+        "first_seed": 0,
+        "episodes": 256,
+        "baseline_sha256": "b1659349897fd1eaa57679096263169ed230f5d537d26bb6db34598a36d818b8",
+        "current_sha256": "b1659349897fd1eaa57679096263169ed230f5d537d26bb6db34598a36d818b8"
+      },
+      {
+        "namespace": "dev",
+        "task": "focus_fire",
+        "policy": "random",
+        "first_seed": 0,
+        "episodes": 256,
+        "baseline_sha256": "a5595355b412d9dcd5e8eb5c64a22a9829928e20754b5b19b7a7b70f0c26bc95",
+        "current_sha256": "a5595355b412d9dcd5e8eb5c64a22a9829928e20754b5b19b7a7b70f0c26bc95"
+      },
+      {
+        "namespace": "validation",
+        "task": "perceive",
+        "policy": "reference",
+        "first_seed": 0,
+        "episodes": 256,
+        "baseline_sha256": "5d9ce7a0f36b1f88bae1702234099a1d5670275a5ca2a1404c7ec5f32caf165a",
+        "current_sha256": "5d9ce7a0f36b1f88bae1702234099a1d5670275a5ca2a1404c7ec5f32caf165a"
+      },
+      {
+        "namespace": "validation",
+        "task": "perceive",
+        "policy": "random",
+        "first_seed": 0,
+        "episodes": 256,
+        "baseline_sha256": "801652674189709857a7cedbb92afde17b87296fb85ed8d4702f504016b0913a",
+        "current_sha256": "801652674189709857a7cedbb92afde17b87296fb85ed8d4702f504016b0913a"
+      },
+      {
+        "namespace": "validation",
+        "task": "move",
+        "policy": "reference",
+        "first_seed": 0,
+        "episodes": 256,
+        "baseline_sha256": "ff875246771eab596ca834258c2ec699ac7381a58193c72f7ea80e99be121c17",
+        "current_sha256": "ff875246771eab596ca834258c2ec699ac7381a58193c72f7ea80e99be121c17"
+      },
+      {
+        "namespace": "validation",
+        "task": "move",
+        "policy": "random",
+        "first_seed": 0,
+        "episodes": 256,
+        "baseline_sha256": "268eab63bc6e29607de248b0bfd9cf23b2b595686a6230924d09087dca957b02",
+        "current_sha256": "268eab63bc6e29607de248b0bfd9cf23b2b595686a6230924d09087dca957b02"
+      },
+      {
+        "namespace": "validation",
+        "task": "remember",
+        "policy": "reference",
+        "first_seed": 0,
+        "episodes": 256,
+        "baseline_sha256": "cd9eeaf29a1e4f6f787ec49f4af493cb6adc7b91a0b596e6a6894b92819a047b",
+        "current_sha256": "cd9eeaf29a1e4f6f787ec49f4af493cb6adc7b91a0b596e6a6894b92819a047b"
+      },
+      {
+        "namespace": "validation",
+        "task": "remember",
+        "policy": "random",
+        "first_seed": 0,
+        "episodes": 256,
+        "baseline_sha256": "4c7fd2ba23d6e1a7c8c1205b9c03444e0d7203f8feea529475c76e7d62dc3256",
+        "current_sha256": "4c7fd2ba23d6e1a7c8c1205b9c03444e0d7203f8feea529475c76e7d62dc3256"
+      },
+      {
+        "namespace": "validation",
+        "task": "choose",
+        "policy": "reference",
+        "first_seed": 0,
+        "episodes": 256,
+        "baseline_sha256": "6fc8231ffcf145d374258e9931ccb706c83ee3f665e411f701ef94742c16c0f8",
+        "current_sha256": "6fc8231ffcf145d374258e9931ccb706c83ee3f665e411f701ef94742c16c0f8"
+      },
+      {
+        "namespace": "validation",
+        "task": "choose",
+        "policy": "random",
+        "first_seed": 0,
+        "episodes": 256,
+        "baseline_sha256": "5bf2a08d48fb595af14d92339baaa4bb3d22220d57cb24f37705ca9a401fc215",
+        "current_sha256": "5bf2a08d48fb595af14d92339baaa4bb3d22220d57cb24f37705ca9a401fc215"
+      },
+      {
+        "namespace": "validation",
+        "task": "chase",
+        "policy": "reference",
+        "first_seed": 0,
+        "episodes": 256,
+        "baseline_sha256": "179f21667d82b3a543dee33e39cf5c0a1c7273865d0a518be8f03c7ea2845fb5",
+        "current_sha256": "179f21667d82b3a543dee33e39cf5c0a1c7273865d0a518be8f03c7ea2845fb5"
+      },
+      {
+        "namespace": "validation",
+        "task": "chase",
+        "policy": "random",
+        "first_seed": 0,
+        "episodes": 256,
+        "baseline_sha256": "eca742447a5b098f61e35ea2ff57856058c0d267eec9a1d32e51cf27acf41b94",
+        "current_sha256": "eca742447a5b098f61e35ea2ff57856058c0d267eec9a1d32e51cf27acf41b94"
+      },
+      {
+        "namespace": "validation",
+        "task": "pursuit",
+        "policy": "reference",
+        "first_seed": 0,
+        "episodes": 256,
+        "baseline_sha256": "da6e1af78ad1cc48515b1d1ce30a5eb2cfdc40c60ee9ba21db60684e88343aa2",
+        "current_sha256": "da6e1af78ad1cc48515b1d1ce30a5eb2cfdc40c60ee9ba21db60684e88343aa2"
+      },
+      {
+        "namespace": "validation",
+        "task": "pursuit",
+        "policy": "random",
+        "first_seed": 0,
+        "episodes": 256,
+        "baseline_sha256": "54addcf8d497a3177f6f956cd88ca33a36730260ed0d5012c0888e74b388155b",
+        "current_sha256": "54addcf8d497a3177f6f956cd88ca33a36730260ed0d5012c0888e74b388155b"
+      },
+      {
+        "namespace": "validation",
+        "task": "focus_fire",
+        "policy": "reference",
+        "first_seed": 0,
+        "episodes": 256,
+        "baseline_sha256": "85e8510afc7a0e5048c9b471c047b2d1732958242d273aaf3ffded3fe7762082",
+        "current_sha256": "85e8510afc7a0e5048c9b471c047b2d1732958242d273aaf3ffded3fe7762082"
+      },
+      {
+        "namespace": "validation",
+        "task": "focus_fire",
+        "policy": "random",
+        "first_seed": 0,
+        "episodes": 256,
+        "baseline_sha256": "6203e7831e07213a219fd71d6a20d9d400c14d01793434dbff7c2c7ac4c08db4",
+        "current_sha256": "6203e7831e07213a219fd71d6a20d9d400c14d01793434dbff7c2c7ac4c08db4"
+      }
+    ]
+  },
+  "pytest": {
+    "command": [
+      "/Users/new/RiderProjects/ai_RPG_test/.venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "--confcutdir",
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/world",
+      "-o",
+      "cache_dir=/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/world/.pytest_cache",
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/world/test_world.py"
+    ],
+    "returncode": 0,
+    "seconds": 0.675009708000001,
+    "output": "........................................................................ [ 91%]\n.......                                                                  [100%]\n79 passed in 0.47s\n"
+  },
+  "elapsed_seconds": 23.171959209
+}

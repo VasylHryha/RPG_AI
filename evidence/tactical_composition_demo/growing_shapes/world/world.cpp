@@ -92,14 +92,14 @@ struct GSWorld {
             x=-8; y=rng.uniform(0.8,1.4);
             enemies[0]={rng.uniform(-5,-4),rng.uniform(-0.6,0.6),rng.uniform(0.55,0.85),0,100};
         } else {
-            count=(task == GS_REMEMBER) ? 1 : 3+rng.integer(6);
+            count=(task == GS_REMEMBER || task == GS_REMEMBER_STATIC) ? 1 : 3+rng.integer(6);
             desired=(task == GS_CHASE) ? 2 :
                     ((task == GS_CHOOSE || task == GS_FOCUS_FIRE) ? attack_range : 0);
             bool inside=rng.integer(2) == 0;
             for (int i=0; i<count; ++i) {
                 bool moving=task == GS_PERCEIVE || task == GS_REMEMBER || task == GS_CHASE;
-                double rlo=task == GS_REMEMBER ? 3 : 1.5;
-                double rhi=task == GS_REMEMBER ? 6 : 8;
+                double rlo=(task == GS_REMEMBER || task == GS_REMEMBER_STATIC) ? 3 : 1.5;
+                double rhi=(task == GS_REMEMBER || task == GS_REMEMBER_STATIC) ? 6 : 8;
                 if (task == GS_CHOOSE) {
                     rlo=inside && i < 2 ? 0.5 : 3.5;
                     rhi=inside && i < 2 ? 2.0 : 8;
@@ -118,7 +118,7 @@ struct GSWorld {
         return best; // Exact ties resolved by lowest id.
     }
     bool visible(int i) const {
-        if (task == GS_REMEMBER) return step < visible_period;
+        if (task == GS_REMEMBER || task == GS_REMEMBER_STATIC) return step < visible_period;
         if (task == GS_PURSUIT) return !occluded(x,y,enemies[i].x,enemies[i].y);
         return true;
     }
@@ -166,7 +166,7 @@ struct GSWorld {
             sum_angle+=angular_error(a.angle,angle(enemies[i].x-x,enemies[i].y-y));
             sum_distance+=std::abs(a.magnitude-distance(i));
         }
-        if (task == GS_REMEMBER && !visible(0)) {
+        if ((task == GS_REMEMBER || task == GS_REMEMBER_STATIC) && !visible(0)) {
             ++hidden; sum_angle+=angular_error(a.angle,angle(enemies[0].x-x,enemies[0].y-y));
         }
         if (task == GS_CHOOSE) correct+=a.choice == correct_target();
@@ -199,7 +199,7 @@ struct GSWorld {
         GSScore s{}; s.steps=step; s.hidden_steps=hidden; s.invalid_actions=invalid;
         s.done=step==horizon;
         if (step>0) {
-            s.angular_error=sum_angle/(task == GS_REMEMBER ? std::max(1,hidden) : step);
+            s.angular_error=sum_angle/((task == GS_REMEMBER || task == GS_REMEMBER_STATIC) ? std::max(1,hidden) : step);
             s.distance_error=sum_distance/step; s.goal_error=sum_goal/step;
             s.correct_choice_rate=correct/step; s.damage_per_second=damage/(step*dt);
             s.in_range_rate=in_range/step;
@@ -250,7 +250,7 @@ struct GSPolicy {
             const auto &e=o.enemies[best];
             px=o.agent_x+e.dx; py=o.agent_y+e.dy; vx=e.vx; vy=e.vy;
             tracking=true; tracked_id=e.id;
-        } else if (tracking) {
+        } else if (tracking && task != GS_REMEMBER_STATIC) {
             px+=vx*o.dt; py+=vy*o.dt; reflect(px,vx); reflect(py,vy);
         }
         double dx=px-o.agent_x, dy=py-o.agent_y;
@@ -324,7 +324,7 @@ int32_t gs_policy_action(GSPolicy *p,const GSObservation *o,GSAction *out) {
     if (p->task!=GS_MOVE) {
         bool seen=false;
         for (int i=0;i<o->enemy_count;++i) seen |= o->enemies[i].visible && o->enemies[i].hp>0;
-        if (!seen && p->task!=GS_REMEMBER && p->task!=GS_PURSUIT) return GS_BAD_ARGUMENT;
+        if (!seen && p->task!=GS_REMEMBER && p->task!=GS_REMEMBER_STATIC && p->task!=GS_PURSUIT) return GS_BAD_ARGUMENT;
         if (o->enemy_count==0) return GS_BAD_ARGUMENT;
     }
     *out=p->action(*o); p->last_step=o->step; return GS_OK;

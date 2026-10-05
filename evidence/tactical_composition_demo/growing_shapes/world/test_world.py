@@ -61,7 +61,7 @@ def test_generator_statistics(library, task):
         assert all(o.enemy_count == 1 and o.enemies[0].visible for o in observations)
         assert all(0.55 <= o.enemies[0].vx <= 0.85 and o.enemies[0].vy == 0 for o in observations)
         return
-    if task == "remember":
+    if task in ("remember", "remember_static"):
         assert all(o.enemy_count == 1 for o in observations)
     else:
         assert set(o.enemy_count for o in observations) == set(range(3, 9))
@@ -86,7 +86,8 @@ def test_generator_statistics(library, task):
 @pytest.mark.parametrize("namespace", ("dev", "validation"))
 def test_reference_margin(library, task, namespace):
     # Reuse the measured rollouts instead of rerunning this comparison.
-    scores = json.loads((Path(__file__).parent / "WORLD_CHECKS.json").read_text())["scores"][namespace][task]
+    scores = json.loads((Path(__file__).parent / ("REMEMBER_STATIC_CHECKS.json" if task == "remember_static"
+                        else "WORLD_CHECKS.json")).read_text())["scores"][namespace][task]
     ref = SimpleNamespace(**scores["reference"]["mean"])
     rnd = SimpleNamespace(**scores["random"]["mean"])
     assert ref.done and rnd.done and ref.steps == rnd.steps == 160
@@ -94,7 +95,7 @@ def test_reference_margin(library, task, namespace):
     if task == "perceive":
         assert ref.angular_error < 1e-10 and rnd.angular_error > 1.4
         assert ref.distance_error < 1e-10 and rnd.distance_error > 8
-    elif task == "remember":
+    elif task in ("remember", "remember_static"):
         assert ref.hidden_steps == rnd.hidden_steps == 120
         assert ref.angular_error < 1e-10 and rnd.angular_error > 1.4
     elif task == "choose":
@@ -175,7 +176,7 @@ def test_choice_rejects_truncation(choice):
 
 
 def test_other_validation_and_done(library):
-    for task in ("unknown", -1, 7, 2**32, True):
+    for task in ("unknown", -1, len(TASKS), 2**32, True):
         with pytest.raises(ValueError):
             World(task, 0, library=library)
     with pytest.raises(ValueError):
@@ -196,7 +197,7 @@ def test_other_validation_and_done(library):
         assert w.score().steps == 160 and w.score().invalid_actions == 0
 
 
-@pytest.mark.parametrize("task", ("remember", "pursuit"))
+@pytest.mark.parametrize("task", ("remember", "pursuit", "remember_static"))
 def test_hidden_redaction_and_causal_memory(library, task):
     # Change ALL hidden value slots in a copied observation. The reference must
     # ignore them, using its own earlier observations and elapsed time only.
@@ -218,7 +219,7 @@ def test_hidden_redaction_and_causal_memory(library, task):
             assert a.as_dict() == b.as_dict()
             w.step(a)
         assert hidden > 30
-        if task == "remember":
+        if task in ("remember", "remember_static"):
             assert hidden == 120
 
 
@@ -299,7 +300,58 @@ def test_scores_and_speed_receipt():
     receipt = json.loads((Path(__file__).parent / "WORLD_CHECKS.json").read_text())
     assert receipt["status"] in ("PENDING_TESTS", "PASS")
     assert receipt["scope"] == "engine verification only; no judging, growth or learning"
-    for name, expected in receipt["source_sha256"].items():
+    current = json.loads((Path(__file__).parent / "REMEMBER_STATIC_CHECKS.json").read_text())
+    for name, expected in current["source_sha256"].items():
         assert hashlib.sha256((Path(__file__).parent / name).read_bytes()).hexdigest() == expected
     assert receipt["benchmark"]["optimized"]
     assert all(m["episodes_per_second"] >= 2000 for m in receipt["benchmark"]["native"].values())
+
+
+@pytest.mark.parametrize("namespace", ("dev", "validation"))
+def test_remember_static_holds_last_visible_position(library, namespace):
+    for seed in range(16):
+        with World("remember_static", seed, namespace, library=library) as w, Policy(
+                "remember_static", seed, namespace=namespace, library=library) as p:
+            initial = w.observe()
+            assert initial.task == 7 and initial.enemy_count == 1
+            assert 3 <= initial.enemies[0].distance <= 6
+            last = None
+            for step in range(160):
+                o = w.observe()
+                assert (o.agent_x, o.agent_y) == (initial.agent_x, initial.agent_y)
+                e = o.enemies[0]
+                assert e.visible == (step < 40)
+                if e.visible:
+                    assert e.as_dict() == initial.enemies[0].as_dict()
+                    assert e.vx == e.vy == 0
+                    last = (o.agent_x + e.dx, o.agent_y + e.dy)
+                a = p.action(o)
+                expected = math.atan2(last[1] - o.agent_y, last[0] - o.agent_x)
+                assert a.angle == expected and a.magnitude == 0 and a.choice == -1
+                w.step(a)
+            score = w.score()
+            assert score.hidden_steps == 120 and score.angular_error < 1e-10
+            assert score.done and score.invalid_actions == 0
+
+
+def test_remember_static_hidden_error_uses_hidden_decisions_only(library):
+    with World("remember_static", 4, library=library) as w:
+        heading = w.observe().enemies[0].angle
+        for step in range(160):
+            # Visible errors are deliberately pi; hidden errors are exactly 0.5.
+            error = math.pi if step < 40 else 0.5
+            w.step(Action(math.remainder(heading + error, 2 * math.pi), 1))
+        assert w.score().angular_error == pytest.approx(0.5)
+        assert w.score().hidden_steps == 120
+
+
+def test_original_comparison_and_streams_are_unchanged():
+    receipt = json.loads((Path(__file__).parent / "REMEMBER_STATIC_CHECKS.json").read_text())
+    compatibility = receipt["compatibility"]
+    assert compatibility["original_scores_equal"]
+    assert compatibility["original_table_equal"]
+    assert compatibility["original_artifacts_unchanged"]
+    assert len(compatibility["streams"]) == 7 * 2 * 2
+    for stream in compatibility["streams"]:
+        assert stream["episodes"] == 256
+        assert stream["baseline_sha256"] == stream["current_sha256"]
