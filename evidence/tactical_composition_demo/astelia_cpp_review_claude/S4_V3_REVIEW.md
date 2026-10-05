@@ -47,3 +47,13 @@ The proposed δ is 3.5 survivors (owner approval required).
   - (b) adding a registered endpoint for the morale controller's head-to-head result, as a separately labelled claim.
 
   Option (b) is an outcome-informed addition. It is legitimate only if declared as such and judged on fresh seeds.
+
+## Addendum: the owner-requested recheck (merged at `db082fc`; `astelia_cpp/S4_V3_RECHECK_REPORT.md`, READY)
+
+- **Correct and sound:** the mode logic matches section 14 in every case; the recorded evidence is sound; 12 tests pass.
+- **Fixed:** report overclaims, and the scope of the binary guarantee (it fixes one pair's preferred distance; the full velocity can still cancel across up to 16 enemies and the ally force).
+- **Documented for any future capped run:** the deadline guard (bounded submission, an absolute deadline).
+- **The key scientific diagnostic** (two matched replays): the resonator's ranged units flip commitment about every half cycle of their rotation (ω_ranged ≈ −1.8 rad/s, a period of about 3.4 s). That is far too fast to cross the gap between the commit distance (≈ 270 px) and the escape distance (≈ 606 px) against guns, so units reverse before reaching either safe region.
+
+  Morale has no intrinsic rotation, so its mode is stable. **This explains the regular gap: the sustained beat costs dithering against long-range threats.** It is a property of the circular state, not of the skeleton.
+- **Recommended for a later revision** (not applied to this record): a mode dwell tied to travel time; a vector-feasibility check that commitment actually moves the unit toward its chosen threat; decision traces.
