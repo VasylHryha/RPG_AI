@@ -28,7 +28,7 @@ def build(sanitize=False):
     for command in commands:
         subprocess.run(command, check=True, cwd=ROOT)
     manifest = {'source_sha256': {name: hashlib.sha256((ROOT/name).read_bytes()).hexdigest()
-                for name in ('medium.cpp', 'medium_c.cpp', 'medium.hpp', 'medium_c.h', 'build.py')},
+                for name in ('medium.cpp', 'medium_c.cpp', 'medium.hpp', 'medium_c.h', 'build.py', 'medium.py', '../native_guard.py')},
                 'binary_sha256': hashlib.sha256(LIBRARY.read_bytes()).hexdigest()}
     (LIBRARY.parent/'build.json').write_text(json.dumps(manifest, indent=2)+'\n')
     return {'identity': manifest, 'compiler': subprocess.check_output([compiler, '--version'], text=True).splitlines()[0],

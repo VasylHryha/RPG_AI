@@ -22,7 +22,7 @@ from . import qualification
 
 class Run:
     def __init__(self, seed, rows, reward=False, *, episodes=2000, control=False, library=None,
-                 backend='reference', batch_size=200, audit=False):
+                 backend='reference', batch_size=200, audit=False, audit_dir=None):
         qualification.assert_frozen_source()
         design = Path(__file__).parents[2]/'DESIGN_0H.md'
         if hashlib.sha256(design.read_bytes()).hexdigest() != '39a630c3f4d440a6634538121773253443dcb15e8166406f36cde3727c119925':
@@ -58,6 +58,12 @@ class Run:
         self.coverage_samples = []
         self.growth_counts = []
         self.drive_log = []
+        self.birth_index = {}
+        if audit_dir is not None:
+            from .trace_store import TraceStore
+            directory = Path(audit_dir)
+            self.medium.events = TraceStore(directory/'events.jsonl', self.medium.events)
+            self.drive_log = TraceStore(directory/'drives.jsonl')
         self.episode_log = []
         self.queue = ControlQueue(seed) if control else None
         self.exposure = dict(training_steps=0, training_episodes=0, qualification_frames=0,
@@ -72,6 +78,9 @@ class Run:
         for item in self.pending:
             item['saved'].close()
         self.medium.close()
+        for store in (self.medium.events,self.drive_log):
+            if hasattr(store,'close'):
+                store.close()
 
     def reward_update(self, task, score, signals):
         if not self.reward:
@@ -95,7 +104,7 @@ class Run:
                          alias_max=check['alias_max'], possibly_aliased=check['possibly_aliased'],
                          claim='driven/cohort-restricted', warning='screen does not certify absence of aliasing')
         # Immutable complete native state is preserved for audit, alongside clone.
-        saved = self.medium.clone()
+        saved = self.medium.clone(events=False)
         self.pending.append({'check': check, 'saved': saved, 'state': {'native': saved.native.save().hex(),
                              'world_step': saved.step_index, 'birth_steps': dict(saved.birth_steps),
                              'death_timers': dict(saved.death), 'novelty_timers': dict(saved.novelty),
@@ -109,8 +118,12 @@ class Run:
             if len(item['schedule']) != 600:
                 continue
             started = wallclock.perf_counter()
-            candidates, simulated = qualification.finish(item['saved'], item['check'], item['schedule'],
-                np.random.default_rng(entropy(self.seed, f"kick:{item['index']}")))
+            arguments = (item['saved'], item['check'], item['schedule'],
+                         np.random.default_rng(entropy(self.seed, f"kick:{item['index']}")))
+            if getattr(self,'backend','reference') == 'native':
+                candidates, simulated = qualification.finish(*arguments, backend='native', lib=self.perf_library)
+            else:
+                candidates, simulated = qualification.finish(*arguments)
             self.exposure['recovery_simulated_seconds'] += simulated
             self.medium.emit('recovery_complete', check_time=item['index']*.1,
                              candidates=[{'ids': c['ids'], 'stats': c['stats'], 'criteria': c.get('criteria')}
@@ -163,6 +176,9 @@ class Run:
                             self.step_audit.append({'index':row['frame']['index'],'frame':row['frame'],
                                 'death':row['death'],'novelty':row['novelty'],'covered':row['covered'],
                                 'action':row['action']})
+                    for store in (self.medium.events,self.drive_log):
+                        if hasattr(store,'flush'):
+                            store.flush()
                     if data['boundary']:
                         obs = world.observe()  # last held observation; boundary world action is deferred
                         self.step_boundary(intact)
@@ -214,7 +230,7 @@ class Run:
 
     def step_boundary(self, intact=None):
         if self.medium.step_index % 200 == 0:
-            self.medium.growth(births=not self.control)
+            self.birth_index[self.medium.step_index] = self.medium.growth(births=not self.control)
             self.growth_counts.append((self.medium.time/16, len(self.medium.native)))
             if self.control:
                 source = intact.births_at(self.medium.step_index) if intact else []
@@ -224,11 +240,13 @@ class Run:
         self.admissions()
 
     def births_at(self, index):
+        if index in self.birth_index:
+            return list(self.birth_index[index])
         return [id for e in self.medium.events if e['rule'] == 'B1' and abs(e['time']-index*.1) < 1e-8 for id in e['ids']]
 
     def evaluate(self):
         started = wallclock.perf_counter()
-        evaluator = Evaluator(self.rows, self.library)
+        evaluator = Evaluator(self.rows, self.library, getattr(self,'backend','reference'))
         for snapshot in self.snapshots[:20]:
             first, second = evaluator.evaluate(snapshot['template']), evaluator.evaluate(snapshot['template'], math.pi)
             self.evaluations.append({'type_id': snapshot['type_id'], 'per_task': first,
@@ -242,7 +260,11 @@ class Run:
     def report(self):
         late = [(ep, n) for ep, n in self.growth_counts if ep >= .8*self.episodes]
         slope = float(np.polyfit(*np.array(late).T, 1)[0]*100) if len(late) >= 2 else None
-        late_events = [e for e in self.medium.events if e['time'] >= .8*self.episodes*16]
+        rejected = protected = False
+        for e in self.medium.events:
+            if e['time'] >= .8*self.episodes*16:
+                rejected |= e['rule'] == 'B1_rejected'
+                protected |= e['rule'] == 'protected_over_budget'
         unique = {s['type_id']: s['template'] for s in self.snapshots}
         final = template(self.medium.native, [e.id for e in self.medium.native.elements], self.medium.time)
         pending = [{'check_time': item['index']*.1, 'state': item['state'],
@@ -255,12 +277,14 @@ class Run:
                 'coverage': sum(self.coverage_samples)/len(self.coverage_samples) if self.coverage_samples else None,
                 'eligible': len(self.coverage_samples), 'coverage_samples': self.coverage_samples,
                 'growth_counts': self.growth_counts, 'slope': slope,
-                'rejected': any(e['rule'] == 'B1_rejected' for e in late_events),
-                'protected_over_budget': any(e['rule'] == 'protected_over_budget' for e in late_events),
+                'rejected': rejected,
+                'protected_over_budget': protected,
                 'snapshots': self.snapshots, 'evaluations': self.evaluations,
                 'competence': self.final_competence,
                 'control_queue': None if self.queue is None else dict(additions=self.queue.additions, retries=self.queue.retries, drops=self.queue.drops),
-                'events': self.medium.events, 'drive_schedule': self.drive_log, 'episodes': self.episode_log,
+                'events': self.medium.events.receipt() if hasattr(self.medium.events,'receipt') else self.medium.events,
+                'drive_schedule': self.drive_log.receipt() if hasattr(self.drive_log,'receipt') else self.drive_log,
+                'episodes': self.episode_log,
                 'accounting': {'peak_learned_coefficients': 2*self.medium.peak,
                                'final_learned_coefficients': 2*len(self.medium.native),
                                'retained_position_phase_scalars': 3*len(self.medium.native),

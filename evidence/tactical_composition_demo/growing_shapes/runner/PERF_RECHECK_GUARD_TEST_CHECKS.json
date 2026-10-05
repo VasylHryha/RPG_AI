@@ -1,0 +1,21 @@
+{
+  "command": [
+    ".venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "-p",
+    "no:cacheprovider",
+    "evidence/tactical_composition_demo/growing_shapes/runner/test_perf_recheck.py::test_shared_handle_read_and_close_refused_from_other_thread",
+    "evidence/tactical_composition_demo/growing_shapes/runner/test_perf_recheck.py::test_process_image_replacement_refused",
+    "evidence/tactical_composition_demo/growing_shapes/runner/test_perf_recheck.py::test_loader_dependency_identity_failure",
+    "evidence/tactical_composition_demo/growing_shapes/runner/test_perf_recheck.py::test_handle_lock_closed_and_separate_thread_determinism",
+    "evidence/tactical_composition_demo/growing_shapes/runner/test_perf_recheck.py::test_run_spooled_audit_matches_in_memory_and_indexed_births",
+    "evidence/tactical_composition_demo/growing_shapes/runner/test_perf_recheck.py::test_individual_evaluator_copy_native_exact"
+  ],
+  "exit_code": 0,
+  "seconds": 2.116807875,
+  "reason": "final ownership/loaded-image guards; no numerical or protocol change",
+  "log": "PERF_RECHECK_GUARD_TEST_LOG.txt"
+}

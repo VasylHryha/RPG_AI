@@ -1,0 +1,22 @@
+{
+  "command": [
+    ".venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "-p",
+    "no:cacheprovider",
+    "evidence/tactical_composition_demo/growing_shapes/medium/test_design_0h.py",
+    "evidence/tactical_composition_demo/growing_shapes/runner/test_runner.py",
+    "evidence/tactical_composition_demo/growing_shapes/runner/test_perf.py",
+    "evidence/tactical_composition_demo/growing_shapes/runner/test_perf_recheck.py",
+    "-k",
+    "not (long_continuation_fixed_tolerance and False)"
+  ],
+  "exit_code": 0,
+  "seconds": 216.560812417,
+  "log": "PERF_RECHECK_FINAL_TEST_LOG.txt",
+  "reason": "final numeric-buffer futures, compact branch clones, fixed sensor cache and batched NumPy recovery estimators; unchanged full unforced integrator, world and legacy medium checks reused",
+  "long_output": "evidence/tactical_composition_demo/growing_shapes/runner/PERF_RECHECK_LONG_FINAL.json"
+}

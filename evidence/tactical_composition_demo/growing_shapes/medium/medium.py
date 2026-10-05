@@ -6,6 +6,7 @@ advances psi during the four RK stages. Reach uses a strict cutoff.
 Growth thresholds have NO defaults: the caller must specify the whole design.
 """
 import ctypes as C
+from ..native_guard import check_owner, pin_image, accessed
 from contextlib import contextmanager
 import json
 import hashlib
@@ -57,6 +58,7 @@ def _library(path=None):
                 raise RuntimeError(f'stale native medium build: {name}; run build.py')
         if hashlib.sha256(path.read_bytes()).hexdigest() != manifest['binary_sha256']:
             raise RuntimeError('native medium binary identity mismatch')
+    pin_image(path,hashlib.sha256(path.read_bytes()).hexdigest())
     lib = C.CDLL(str(path))
     h, d, u, i, z = C.c_void_p, C.c_double, C.c_uint64, C.c_int, C.c_size_t
     P = C.POINTER
@@ -94,7 +96,9 @@ class Medium:
         self = cls.__new__(cls)
         self._lib, self._handle, self.params = lib, handle, Params.from_buffer_copy(params)
         return self
+    @accessed
     def close(self):
+        check_owner(self)
         if getattr(self, '_handle', None):
             self._lib.gm_destroy(self._handle)
             self._handle = None
@@ -104,17 +108,23 @@ class Medium:
         return self
     def __exit__(self, *_):
         self.close()
+    @accessed
     def _call(self, name, *args):
+        check_owner(self)
         if not self._handle:
             raise RuntimeError('Medium is closed')
         if getattr(self._lib, 'gm_' + name)(self._handle, *args) != 0:
             raise ValueError(self._lib.gm_error(self._handle).decode())
+    @accessed
     def __len__(self):
+        check_owner(self)
         if not self._handle:
             raise RuntimeError('Medium is closed')
         return self._lib.gm_count(self._handle)
     @property
+    @accessed
     def time(self):
+        check_owner(self)
         if not self._handle:
             raise RuntimeError('Medium is closed')
         return self._lib.gm_time(self._handle)
@@ -216,9 +226,15 @@ class Medium:
         self._call('needs', values, len(values))
     def apply_growth_rules(self):
         self._call('apply_growth')
+    @accessed
     def clone(self):
+        check_owner(self)
+        if not self._handle:
+            raise RuntimeError('Medium is closed')
         return self._adopt(self._lib, self._lib.gm_clone(self._handle), self.params)
+    @accessed
     def save(self, path=None):
+        check_owner(self)
         if not self._handle:
             raise RuntimeError('Medium is closed')
         size = self._lib.gm_save(self._handle, None, 0)
@@ -247,7 +263,9 @@ class Medium:
             lib.gm_destroy(handle)
             raise
     @property
+    @accessed
     def events(self):
+        check_owner(self)
         if not self._handle:
             raise RuntimeError('Medium is closed')
         size = self._lib.gm_events(self._handle, None, 0)

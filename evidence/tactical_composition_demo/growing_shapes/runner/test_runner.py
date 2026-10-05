@@ -510,11 +510,11 @@ def test_cohort_missing_frame_and_nonfinite_history_invalid(medium):
         q.start(medium)
 
 
-def test_interrupted_development_keeps_partial_raw_evidence_and_invalid(monkeypatch):
+def test_interrupted_development_keeps_partial_raw_evidence_and_invalid(monkeypatch,tmp_path):
     import evidence.tactical_composition_demo.growing_shapes.runner.development as module
     calls = []
     class Run:
-        def __init__(self,seed,rows,reward,control=False,library=None):
+        def __init__(self,seed,rows,reward,control=False,library=None,**_):
             self.invalid = None
             self.library = object()
             self.control = control
@@ -526,7 +526,7 @@ def test_interrupted_development_keeps_partial_raw_evidence_and_invalid(monkeypa
         def close(self): pass
     monkeypatch.setattr(module,'Run',Run)
     monkeypatch.setattr(module,'seed_unit',lambda a,b:seed(invalid=a.invalid,complete=False))
-    result = module.execute_arm(list(range(8)),{'perceive':SimpleNamespace(usable=True)})
+    result = module.execute_arm(list(range(8)),{'perceive':SimpleNamespace(usable=True)},audit_root=tmp_path)
     assert len(result['runs']) == 1 and result['runs'][0]['intact']['raw'] == ['kept']
     assert set(result['readouts'].values()) == {'INVALID'}
     assert calls == [(False,0),(True,0)]

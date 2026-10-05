@@ -63,6 +63,19 @@ def normalize(value):
     return value
 
 
+def native_exact(value):
+    """Protocol configuration, opaque clocks/IDs and lifetime metadata are exact.
+
+    Serialized doubles otherwise become unnamed numeric leaves. Comparing those
+    only with the trajectory tolerance could silently admit a clock/timer drift.
+    """
+    return [value[1],value[2],value[3],
+            [[row[i] for i in (0,5,6,7,8,11,12,13)] for row in value[4]],
+            [[row[i] for i in (0,1,2,4,6,7,8)] for row in value[5]],
+            [[row[i] for i in (0,4,6,7)] for row in value[6]],
+            [event[0] for event in value[8]]]
+
+
 class Compare:
     def __init__(self):
         self.scalars = self.exact = 0
@@ -76,10 +89,12 @@ class Compare:
                 if k in ('final_type_id','type_id'):
                     continue
                 if k == 'native':
-                    self.check(snapshot(a[k]),snapshot(b[k]),path+'.native')
+                    aa,bb=snapshot(a[k]),snapshot(b[k])
+                    self.check(native_exact(aa),native_exact(bb),path+'.native_exact',True)
+                    self.check(aa,bb,path+'.native')
                 else:
                     self.check(a[k],b[k],path+'.'+k,exact or k in
-                        ('death','death_timers','novelty','novelty_timers','birth_steps','world_step','index','time','clock','step','check_time','admission_time'))
+                        ('death','death_timers','novelty','novelty_timers','birth_steps','world_step','index','time','clock','step','check_time','admission_time','tau_phase','tau_position'))
         elif isinstance(a,list):
             assert isinstance(b,list) and len(a)==len(b), f'{path}: length'
             for i,(x,y) in enumerate(zip(a,b)):
@@ -96,6 +111,8 @@ class Compare:
                 assert ratio<=1, f'{path}: {a} != {b}, tolerance fraction {ratio}'
                 self.scalars += 1
         else:
+            if isinstance(a,bool) or isinstance(b,bool):
+                assert type(a) is type(b), f'{path}: boolean type mismatch'
             assert a==b, f'{path}: {a!r} != {b!r}'
             self.exact += 1
     def report(self):

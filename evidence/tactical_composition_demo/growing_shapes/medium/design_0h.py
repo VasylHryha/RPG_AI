@@ -66,9 +66,11 @@ class DesignMedium:
     def close(self):
         self.native.close()
 
-    def clone(self):
+    def clone(self, *, events=True, frames=True):
         branch = object.__new__(type(self))
-        branch.__dict__ = {k: deepcopy(v) for k, v in self.__dict__.items() if k != 'native'}
+        branch.__dict__ = {k: ([] if k == 'events' and not events else
+                              deque([deepcopy(v[-1])] if v else [],maxlen=601) if k == 'frames' and not frames else deepcopy(v))
+                           for k, v in self.__dict__.items() if k != 'native'}
         branch.native = self.native.clone()
         return branch
 

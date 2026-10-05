@@ -1,0 +1,1682 @@
+{
+  "status": "PASS",
+  "label": "dev-only engineering; no recorded run or real validation panel",
+  "declaration_sha256": "e39561f549b3f4c9390484e270279c0febb7bd497585148c0d6f41848a51648f",
+  "cases": [
+    {
+      "task": "perceive",
+      "control": false,
+      "seed": 105061,
+      "episodes": 8,
+      "timings": {
+        "reference": {
+          "wall": 75.820716292,
+          "stages": {
+            "training": 75.349073624,
+            "qualification": 0.47071033299999954,
+            "recovery": 0.00020983299999954852,
+            "evaluation": 0.0
+          },
+          "steps": 1280,
+          "batch_calls": 0
+        },
+        "before": {
+          "wall": 7.37111933300001,
+          "stages": {
+            "training": 7.014946624000004,
+            "qualification": 0.35470441700000777,
+            "recovery": 0.00023641699999643606,
+            "evaluation": 0.0
+          },
+          "steps": 1280,
+          "batch_calls": 13
+        },
+        "native": {
+          "wall": 7.170248000000001,
+          "stages": {
+            "training": 6.847008207000016,
+            "qualification": 0.3223357499999935,
+            "recovery": 0.00020708299999228075,
+            "evaluation": 0.0
+          },
+          "steps": 1280,
+          "batch_calls": 13,
+          "profile": {
+            "seconds": {
+              "pack": 0.40979329199997494,
+              "gp_batch": 5.452490127000019,
+              "decode": 0.2564159589999804,
+              "unpack": 0.3239705830000048
+            },
+            "calls": {
+              "pack": 13,
+              "gp_batch": 13,
+              "decode": 13,
+              "unpack": 13
+            },
+            "other_python_seconds": 0.7275780390000222,
+            "native_call_fraction": 0.7604325717883145
+          }
+        }
+      }
+    },
+    {
+      "task": "move",
+      "control": false,
+      "seed": 105062,
+      "episodes": 5,
+      "timings": {
+        "reference": {
+          "wall": 29.918728625,
+          "stages": {
+            "training": 29.918654833000005,
+            "qualification": 0.0,
+            "recovery": 0.0,
+            "evaluation": 0.0
+          },
+          "steps": 800,
+          "batch_calls": 0
+        },
+        "before": {
+          "wall": 2.492626916000006,
+          "stages": {
+            "training": 2.4923532500000363,
+            "qualification": 0.0,
+            "recovery": 0.0,
+            "evaluation": 0.0
+          },
+          "steps": 800,
+          "batch_calls": 8
+        },
+        "native": {
+          "wall": 1.629590707999995,
+          "stages": {
+            "training": 1.6294536250000249,
+            "qualification": 0.0,
+            "recovery": 0.0,
+            "evaluation": 0.0
+          },
+          "steps": 800,
+          "batch_calls": 8,
+          "profile": {
+            "seconds": {
+              "pack": 0.09716945799999621,
+              "gp_batch": 1.2182418329999791,
+              "decode": 0.17776516500001094,
+              "unpack": 0.030607250000031172
+            },
+            "calls": {
+              "pack": 8,
+              "gp_batch": 8,
+              "decode": 8,
+              "unpack": 8
+            },
+            "other_python_seconds": 0.1058070019999775,
+            "native_call_fraction": 0.7475753433174233
+          }
+        }
+      }
+    },
+    {
+      "task": "remember_static",
+      "control": false,
+      "seed": 105063,
+      "episodes": 5,
+      "timings": {
+        "reference": {
+          "wall": 25.820433707999996,
+          "stages": {
+            "training": 25.820390831999987,
+            "qualification": 0.0,
+            "recovery": 0.0,
+            "evaluation": 0.0
+          },
+          "steps": 800,
+          "batch_calls": 0
+        },
+        "before": {
+          "wall": 2.1507448749999867,
+          "stages": {
+            "training": 2.1506248750000054,
+            "qualification": 0.0,
+            "recovery": 0.0,
+            "evaluation": 0.0
+          },
+          "steps": 800,
+          "batch_calls": 8
+        },
+        "native": {
+          "wall": 3.321333624999994,
+          "stages": {
+            "training": 3.321222958000021,
+            "qualification": 0.0,
+            "recovery": 0.0,
+            "evaluation": 0.0
+          },
+          "steps": 800,
+          "batch_calls": 8,
+          "profile": {
+            "seconds": {
+              "pack": 0.17660333399999217,
+              "gp_batch": 2.2541870009999627,
+              "decode": 0.6251184160000207,
+              "unpack": 0.02380075000004922
+            },
+            "calls": {
+              "pack": 8,
+              "gp_batch": 8,
+              "decode": 8,
+              "unpack": 8
+            },
+            "other_python_seconds": 0.24162412399996924,
+            "native_call_fraction": 0.6786993586047734
+          }
+        }
+      }
+    },
+    {
+      "task": "choose",
+      "control": false,
+      "seed": 105064,
+      "episodes": 8,
+      "timings": {
+        "reference": {
+          "wall": 69.07491766700002,
+          "stages": {
+            "training": 68.96275708400006,
+            "qualification": 0.11084399999998595,
+            "recovery": 0.0001876249999668289,
+            "evaluation": 0.0
+          },
+          "steps": 1280,
+          "batch_calls": 0
+        },
+        "before": {
+          "wall": 7.406449667000004,
+          "stages": {
+            "training": 7.084923834000108,
+            "qualification": 0.3203160840000123,
+            "recovery": 0.0002076659999943331,
+            "evaluation": 0.0
+          },
+          "steps": 1280,
+          "batch_calls": 13
+        },
+        "native": {
+          "wall": 6.502655167,
+          "stages": {
+            "training": 6.324858001999871,
+            "qualification": 0.17672416700003168,
+            "recovery": 0.00023645799996074857,
+            "evaluation": 0.0
+          },
+          "steps": 1280,
+          "batch_calls": 13,
+          "profile": {
+            "seconds": {
+              "pack": 0.5537196679999852,
+              "gp_batch": 4.449312750000047,
+              "decode": 0.30878128900002366,
+              "unpack": 0.618960248999997
+            },
+            "calls": {
+              "pack": 13,
+              "gp_batch": 13,
+              "decode": 13,
+              "unpack": 13
+            },
+            "other_python_seconds": 0.5718812109999476,
+            "native_call_fraction": 0.6842301545651139
+          }
+        }
+      }
+    },
+    {
+      "task": "perceive",
+      "control": true,
+      "seed": 105065,
+      "episodes": 5,
+      "timings": {
+        "reference": {
+          "wall": 46.051820416,
+          "stages": {
+            "training": 46.05172491500002,
+            "qualification": 0.0,
+            "recovery": 0.0,
+            "evaluation": 0.0
+          },
+          "steps": 800,
+          "batch_calls": 0
+        },
+        "before": {
+          "wall": 3.223474582999984,
+          "stages": {
+            "training": 3.223248333000072,
+            "qualification": 0.0,
+            "recovery": 0.0,
+            "evaluation": 0.0
+          },
+          "steps": 800,
+          "batch_calls": 8
+        },
+        "native": {
+          "wall": 4.048070499999994,
+          "stages": {
+            "training": 4.047870583000076,
+            "qualification": 0.0,
+            "recovery": 0.0,
+            "evaluation": 0.0
+          },
+          "steps": 800,
+          "batch_calls": 8,
+          "profile": {
+            "seconds": {
+              "pack": 0.15254649899998185,
+              "gp_batch": 2.872091252000075,
+              "decode": 0.6925911680000922,
+              "unpack": 0.08174345800000538
+            },
+            "calls": {
+              "pack": 8,
+              "gp_batch": 8,
+              "decode": 8,
+              "unpack": 8
+            },
+            "other_python_seconds": 0.2490981229998397,
+            "native_call_fraction": 0.7094963519039699
+          }
+        }
+      }
+    },
+    {
+      "task": "choose",
+      "control": true,
+      "seed": 105066,
+      "episodes": 5,
+      "timings": {
+        "reference": {
+          "wall": 46.322396000000026,
+          "stages": {
+            "training": 46.32230533300003,
+            "qualification": 0.0,
+            "recovery": 0.0,
+            "evaluation": 0.0
+          },
+          "steps": 800,
+          "batch_calls": 0
+        },
+        "before": {
+          "wall": 4.688613292000014,
+          "stages": {
+            "training": 4.6882589999999595,
+            "qualification": 0.0,
+            "recovery": 0.0,
+            "evaluation": 0.0
+          },
+          "steps": 800,
+          "batch_calls": 8
+        },
+        "native": {
+          "wall": 2.8039357920000043,
+          "stages": {
+            "training": 2.803779334000069,
+            "qualification": 0.0,
+            "recovery": 0.0,
+            "evaluation": 0.0
+          },
+          "steps": 800,
+          "batch_calls": 8,
+          "profile": {
+            "seconds": {
+              "pack": 0.1430552489999286,
+              "gp_batch": 2.2068082489999483,
+              "decode": 0.15195049999988441,
+              "unpack": 0.031210456999929193
+            },
+            "calls": {
+              "pack": 8,
+              "gp_batch": 8,
+              "decode": 8,
+              "unpack": 8
+            },
+            "other_python_seconds": 0.2709113370003138,
+            "native_call_fraction": 0.7870395089988369
+          }
+        }
+      }
+    }
+  ],
+  "comparison": {
+    "scalars": 5066046,
+    "exact": 5556694,
+    "max_abs": 2.220446049250313e-16,
+    "max_ratio": 1.2896637333867704e-06
+  },
+  "stages": {
+    "recovery_N4": {
+      "qualification_seconds": 0.10334783300004347,
+      "timings": {
+        "reference": {
+          "wall": 0.28653095799995754,
+          "seconds_per_candidate": 0.28653095799995754,
+          "profile": null
+        },
+        "native": {
+          "wall": 0.02119562500001848,
+          "seconds_per_candidate": 0.02119562500001848,
+          "profile": {
+            "seconds": {
+              "gp_future": 0.013080082999977094,
+              "decode": 4.995900007997989e-05
+            },
+            "calls": {
+              "gp_future": 2,
+              "decode": 2
+            },
+            "other_python_seconds": 0.008065582999961407,
+            "native_call_fraction": 0.6171123993732522
+          }
+        }
+      }
+    },
+    "recovery_N24": {
+      "qualification_seconds": 0.3338145830000485,
+      "timings": {
+        "reference": {
+          "wall": 0.5584340829999519,
+          "seconds_per_candidate": 0.5584340829999519,
+          "profile": null
+        },
+        "native": {
+          "wall": 0.0911138750000191,
+          "seconds_per_candidate": 0.0911138750000191,
+          "profile": {
+            "seconds": {
+              "gp_future": 0.08396341599996049,
+              "decode": 5.2333999974507606e-05
+            },
+            "calls": {
+              "gp_future": 2,
+              "decode": 2
+            },
+            "other_python_seconds": 0.00709812500008411,
+            "native_call_fraction": 0.9215217331053353
+          }
+        }
+      }
+    },
+    "recovery_N64": {
+      "qualification_seconds": 0.7184444999999187,
+      "timings": {
+        "reference": {
+          "wall": 1.840723541999978,
+          "seconds_per_candidate": 1.840723541999978,
+          "profile": null
+        },
+        "native": {
+          "wall": 0.4023931660000244,
+          "seconds_per_candidate": 0.4023931660000244,
+          "profile": {
+            "seconds": {
+              "gp_future": 0.33806637500003944,
+              "decode": 5.454299991924927e-05
+            },
+            "calls": {
+              "gp_future": 2,
+              "decode": 2
+            },
+            "other_python_seconds": 0.0642722480000657,
+            "native_call_fraction": 0.8401394545552967
+          }
+        }
+      }
+    },
+    "evaluation": [
+      {
+        "N": 3,
+        "task": "perceive",
+        "offset": 0.0,
+        "timings": {
+          "reference": {
+            "wall": 0.015106666999940899,
+            "profile": null
+          },
+          "native": {
+            "wall": 0.0031150419999903534,
+            "profile": {
+              "seconds": {
+                "pack": 4.8332999995182035e-05,
+                "gp_evaluate_episode": 0.0015774579999288108,
+                "decode": 1.004099999590835e-05
+              },
+              "calls": {
+                "pack": 1,
+                "gp_evaluate_episode": 1,
+                "decode": 1
+              },
+              "other_python_seconds": 0.0014792100000704522,
+              "native_call_fraction": 0.5064002347107024
+            }
+          }
+        },
+        "score": {
+          "steps": 160,
+          "hidden_steps": 0,
+          "invalid_actions": 0,
+          "done": 1,
+          "angular_error": 1.8400264565094666,
+          "distance_error": 3.6028377696928175,
+          "goal_error": 0.0,
+          "settle_seconds": 16.0,
+          "correct_choice_rate": 0.0,
+          "damage_per_second": 0.0,
+          "in_range_rate": 0.0
+        },
+        "state_sha256": "8fb782b74da671d82e1e6ca0dd38e198fedd98fd9c82d4b9fed7a1f35ed529be"
+      },
+      {
+        "N": 3,
+        "task": "perceive",
+        "offset": 3.141592653589793,
+        "timings": {
+          "reference": {
+            "wall": 0.01420420900001318,
+            "profile": null
+          },
+          "native": {
+            "wall": 0.0031365830000140704,
+            "profile": {
+              "seconds": {
+                "pack": 4.787499995018152e-05,
+                "gp_evaluate_episode": 0.0015784590000293974,
+                "decode": 1.5916000052129675e-05
+              },
+              "calls": {
+                "pack": 1,
+                "gp_evaluate_episode": 1,
+                "decode": 1
+              },
+              "other_python_seconds": 0.0014943329999823618,
+              "native_call_fraction": 0.5032415848782948
+            }
+          }
+        },
+        "score": {
+          "steps": 160,
+          "hidden_steps": 0,
+          "invalid_actions": 0,
+          "done": 1,
+          "angular_error": 1.8400264565094697,
+          "distance_error": 3.602837769692816,
+          "goal_error": 0.0,
+          "settle_seconds": 16.0,
+          "correct_choice_rate": 0.0,
+          "damage_per_second": 0.0,
+          "in_range_rate": 0.0
+        },
+        "state_sha256": "dcebf4a442bc834f83b9a19c1cd2ca36e885ea6c054ab47aa2b946566f63fd69"
+      },
+      {
+        "N": 3,
+        "task": "move",
+        "offset": 0.0,
+        "timings": {
+          "reference": {
+            "wall": 0.013280750000035368,
+            "profile": null
+          },
+          "native": {
+            "wall": 0.002976833000047918,
+            "profile": {
+              "seconds": {
+                "pack": 4.6166000061020895e-05,
+                "gp_evaluate_episode": 0.0015082090000078097,
+                "decode": 1.187500004107278e-05
+              },
+              "calls": {
+                "pack": 1,
+                "gp_evaluate_episode": 1,
+                "decode": 1
+              },
+              "other_python_seconds": 0.0014105829999380148,
+              "native_call_fraction": 0.5066488445887062
+            }
+          }
+        },
+        "score": {
+          "steps": 160,
+          "hidden_steps": 0,
+          "invalid_actions": 0,
+          "done": 1,
+          "angular_error": 0.0,
+          "distance_error": 0.0,
+          "goal_error": 6.488605286522497,
+          "settle_seconds": 16.0,
+          "correct_choice_rate": 0.0,
+          "damage_per_second": 0.0,
+          "in_range_rate": 0.0125
+        },
+        "state_sha256": "911bc2efb24feffd098cf8d4ae609e0089973447b67a3f6d378df590865bff9d"
+      },
+      {
+        "N": 3,
+        "task": "move",
+        "offset": 3.141592653589793,
+        "timings": {
+          "reference": {
+            "wall": 0.013218957999924896,
+            "profile": null
+          },
+          "native": {
+            "wall": 0.0029874580000068818,
+            "profile": {
+              "seconds": {
+                "pack": 4.533399999218091e-05,
+                "gp_evaluate_episode": 0.0015228330000809365,
+                "decode": 1.6167000012501376e-05
+              },
+              "calls": {
+                "pack": 1,
+                "gp_evaluate_episode": 1,
+                "decode": 1
+              },
+              "other_python_seconds": 0.001403123999921263,
+              "native_call_fraction": 0.509742061671638
+            }
+          }
+        },
+        "score": {
+          "steps": 160,
+          "hidden_steps": 0,
+          "invalid_actions": 0,
+          "done": 1,
+          "angular_error": 0.0,
+          "distance_error": 0.0,
+          "goal_error": 6.48860528652248,
+          "settle_seconds": 16.0,
+          "correct_choice_rate": 0.0,
+          "damage_per_second": 0.0,
+          "in_range_rate": 0.0125
+        },
+        "state_sha256": "26defda417d0bd15ecf19734f24d44ac37ecb74e5eda76645ab78b762d5091e7"
+      },
+      {
+        "N": 3,
+        "task": "remember_static",
+        "offset": 0.0,
+        "timings": {
+          "reference": {
+            "wall": 0.11793379200003073,
+            "profile": null
+          },
+          "native": {
+            "wall": 0.009008875000063199,
+            "profile": {
+              "seconds": {
+                "pack": 9.545800003252225e-05,
+                "gp_evaluate_episode": 0.0015262919999941005,
+                "decode": 2.0166000012977747e-05
+              },
+              "calls": {
+                "pack": 1,
+                "gp_evaluate_episode": 1,
+                "decode": 1
+              },
+              "other_python_seconds": 0.0073669590000235985,
+              "native_call_fraction": 0.16942093213452214
+            }
+          }
+        },
+        "score": {
+          "steps": 160,
+          "hidden_steps": 120,
+          "invalid_actions": 0,
+          "done": 1,
+          "angular_error": 2.762645548344199,
+          "distance_error": 0.0,
+          "goal_error": 0.0,
+          "settle_seconds": 16.0,
+          "correct_choice_rate": 0.0,
+          "damage_per_second": 0.0,
+          "in_range_rate": 0.0
+        },
+        "state_sha256": "35af2c2148297d5e94d8556b03c02797eb86690dbefb3f571389e7fc60ac4db6"
+      },
+      {
+        "N": 3,
+        "task": "remember_static",
+        "offset": 3.141592653589793,
+        "timings": {
+          "reference": {
+            "wall": 0.06701266699997177,
+            "profile": null
+          },
+          "native": {
+            "wall": 0.004918040999996265,
+            "profile": {
+              "seconds": {
+                "pack": 5.9207999925092736e-05,
+                "gp_evaluate_episode": 0.0015676250000069558,
+                "decode": 1.816700000745186e-05
+              },
+              "calls": {
+                "pack": 1,
+                "gp_evaluate_episode": 1,
+                "decode": 1
+              },
+              "other_python_seconds": 0.0032730410000567645,
+              "native_call_fraction": 0.3187498843560162
+            }
+          }
+        },
+        "score": {
+          "steps": 160,
+          "hidden_steps": 120,
+          "invalid_actions": 0,
+          "done": 1,
+          "angular_error": 2.7626455483442043,
+          "distance_error": 0.0,
+          "goal_error": 0.0,
+          "settle_seconds": 16.0,
+          "correct_choice_rate": 0.0,
+          "damage_per_second": 0.0,
+          "in_range_rate": 0.0
+        },
+        "state_sha256": "fc3d439368b1ceb6875c5355ecb0436dbac35c9e6c785b45d02bdb8b4389c651"
+      },
+      {
+        "N": 3,
+        "task": "choose",
+        "offset": 0.0,
+        "timings": {
+          "reference": {
+            "wall": 0.02048287499997059,
+            "profile": null
+          },
+          "native": {
+            "wall": 0.003588000000036118,
+            "profile": {
+              "seconds": {
+                "pack": 6.791700002395373e-05,
+                "gp_evaluate_episode": 0.0015801670000428203,
+                "decode": 2.4959000029411982e-05
+              },
+              "calls": {
+                "pack": 1,
+                "gp_evaluate_episode": 1,
+                "decode": 1
+              },
+              "other_python_seconds": 0.0019149569999399318,
+              "native_call_fraction": 0.4404032887477463
+            }
+          }
+        },
+        "score": {
+          "steps": 160,
+          "hidden_steps": 0,
+          "invalid_actions": 0,
+          "done": 1,
+          "angular_error": 0.0,
+          "distance_error": 0.0,
+          "goal_error": 0.0,
+          "settle_seconds": 16.0,
+          "correct_choice_rate": 0.0,
+          "damage_per_second": 0.0,
+          "in_range_rate": 0.0
+        },
+        "state_sha256": "842f496ccaee5c6415178906e1dff589727b8b55bb81abe4a78084037ddcc5e3"
+      },
+      {
+        "N": 3,
+        "task": "choose",
+        "offset": 3.141592653589793,
+        "timings": {
+          "reference": {
+            "wall": 0.01729970900009903,
+            "profile": null
+          },
+          "native": {
+            "wall": 0.0034881670000004306,
+            "profile": {
+              "seconds": {
+                "pack": 6.591600003957865e-05,
+                "gp_evaluate_episode": 0.0015928750000284708,
+                "decode": 1.9041999962610134e-05
+              },
+              "calls": {
+                "pack": 1,
+                "gp_evaluate_episode": 1,
+                "decode": 1
+              },
+              "other_python_seconds": 0.001810333999969771,
+              "native_call_fraction": 0.4566510147100968
+            }
+          }
+        },
+        "score": {
+          "steps": 160,
+          "hidden_steps": 0,
+          "invalid_actions": 0,
+          "done": 1,
+          "angular_error": 0.0,
+          "distance_error": 0.0,
+          "goal_error": 0.0,
+          "settle_seconds": 16.0,
+          "correct_choice_rate": 0.0,
+          "damage_per_second": 0.0,
+          "in_range_rate": 0.0
+        },
+        "state_sha256": "885446f915aadbd294869c1a559b631be3fb867200cefcea66c592ee729071c6"
+      },
+      {
+        "N": 24,
+        "task": "perceive",
+        "offset": 0.0,
+        "timings": {
+          "reference": {
+            "wall": 0.20254099999999653,
+            "profile": null
+          },
+          "native": {
+            "wall": 0.05238650000001144,
+            "profile": {
+              "seconds": {
+                "pack": 7.929200000944547e-05,
+                "gp_evaluate_episode": 0.049781332999941696,
+                "decode": 3.2000000032894604e-05
+              },
+              "calls": {
+                "pack": 1,
+                "gp_evaluate_episode": 1,
+                "decode": 1
+              },
+              "other_python_seconds": 0.0024938750000274013,
+              "native_call_fraction": 0.9502702604665482
+            }
+          }
+        },
+        "score": {
+          "steps": 160,
+          "hidden_steps": 0,
+          "invalid_actions": 0,
+          "done": 1,
+          "angular_error": 1.3434472679701392,
+          "distance_error": 3.54389822470345,
+          "goal_error": 0.0,
+          "settle_seconds": 16.0,
+          "correct_choice_rate": 0.0,
+          "damage_per_second": 0.0,
+          "in_range_rate": 0.0
+        },
+        "state_sha256": "4236eefd1c63b2daabf7c8afe5328a6efa7ec04ca45b8d174673e6bdcc626123"
+      },
+      {
+        "N": 24,
+        "task": "perceive",
+        "offset": 3.141592653589793,
+        "timings": {
+          "reference": {
+            "wall": 0.2080884590000096,
+            "profile": null
+          },
+          "native": {
+            "wall": 0.03228987499994673,
+            "profile": {
+              "seconds": {
+                "pack": 0.0002391660000284901,
+                "gp_evaluate_episode": 0.027663000000075044,
+                "decode": 2.4957999926300545e-05
+              },
+              "calls": {
+                "pack": 1,
+                "gp_evaluate_episode": 1,
+                "decode": 1
+              },
+              "other_python_seconds": 0.004362750999916898,
+              "native_call_fraction": 0.8567081786510687
+            }
+          }
+        },
+        "score": {
+          "steps": 160,
+          "hidden_steps": 0,
+          "invalid_actions": 0,
+          "done": 1,
+          "angular_error": 1.3434472679701392,
+          "distance_error": 3.543898224703451,
+          "goal_error": 0.0,
+          "settle_seconds": 16.0,
+          "correct_choice_rate": 0.0,
+          "damage_per_second": 0.0,
+          "in_range_rate": 0.0
+        },
+        "state_sha256": "cad14f3cf2e5d65718160d6ea26c46bffa9326380263d45775c5cd47c801638d"
+      },
+      {
+        "N": 24,
+        "task": "move",
+        "offset": 0.0,
+        "timings": {
+          "reference": {
+            "wall": 0.1793683329999567,
+            "profile": null
+          },
+          "native": {
+            "wall": 0.18635379099998772,
+            "profile": {
+              "seconds": {
+                "pack": 9.037500001340959e-05,
+                "gp_evaluate_episode": 0.14803312500009724,
+                "decode": 2.6666999929148005e-05
+              },
+              "calls": {
+                "pack": 1,
+                "gp_evaluate_episode": 1,
+                "decode": 1
+              },
+              "other_python_seconds": 0.03820362399994792,
+              "native_call_fraction": 0.7943660507561502
+            }
+          }
+        },
+        "score": {
+          "steps": 160,
+          "hidden_steps": 0,
+          "invalid_actions": 0,
+          "done": 1,
+          "angular_error": 0.0,
+          "distance_error": 0.0,
+          "goal_error": 9.3811709900252,
+          "settle_seconds": 16.0,
+          "correct_choice_rate": 0.0,
+          "damage_per_second": 0.0,
+          "in_range_rate": 0.00625
+        },
+        "state_sha256": "2caae07e26cfb30d86066be05f6ddcd08213692201596e1f32f2b3024a04487c"
+      },
+      {
+        "N": 24,
+        "task": "move",
+        "offset": 3.141592653589793,
+        "timings": {
+          "reference": {
+            "wall": 0.13643424999997933,
+            "profile": null
+          },
+          "native": {
+            "wall": 0.08263129199997366,
+            "profile": {
+              "seconds": {
+                "pack": 9.049999994203972e-05,
+                "gp_evaluate_episode": 0.07962595799995142,
+                "decode": 1.9082999983766058e-05
+              },
+              "calls": {
+                "pack": 1,
+                "gp_evaluate_episode": 1,
+                "decode": 1
+              },
+              "other_python_seconds": 0.002895751000096425,
+              "native_call_fraction": 0.9636295896229822
+            }
+          }
+        },
+        "score": {
+          "steps": 160,
+          "hidden_steps": 0,
+          "invalid_actions": 0,
+          "done": 1,
+          "angular_error": 0.0,
+          "distance_error": 0.0,
+          "goal_error": 9.3811709900252,
+          "settle_seconds": 16.0,
+          "correct_choice_rate": 0.0,
+          "damage_per_second": 0.0,
+          "in_range_rate": 0.00625
+        },
+        "state_sha256": "896360b92d7b8576be5d6069d1696193a107527bd4218026b5703e5f363a9200"
+      },
+      {
+        "N": 24,
+        "task": "remember_static",
+        "offset": 0.0,
+        "timings": {
+          "reference": {
+            "wall": 0.12513562500009812,
+            "profile": null
+          },
+          "native": {
+            "wall": 0.09971841700007644,
+            "profile": {
+              "seconds": {
+                "pack": 7.533300004070043e-05,
+                "gp_evaluate_episode": 0.09718612500000745,
+                "decode": 3.0292000019471743e-05
+              },
+              "calls": {
+                "pack": 1,
+                "gp_evaluate_episode": 1,
+                "decode": 1
+              },
+              "other_python_seconds": 0.0024266670000088197,
+              "native_call_fraction": 0.9746055736116724
+            }
+          }
+        },
+        "score": {
+          "steps": 160,
+          "hidden_steps": 120,
+          "invalid_actions": 0,
+          "done": 1,
+          "angular_error": 2.2388310989591385,
+          "distance_error": 0.0,
+          "goal_error": 0.0,
+          "settle_seconds": 16.0,
+          "correct_choice_rate": 0.0,
+          "damage_per_second": 0.0,
+          "in_range_rate": 0.0
+        },
+        "state_sha256": "16de08d1d3b3ab39aa4aa8138b8b4caa349ac3db8baaefff411a43686b4d6641"
+      },
+      {
+        "N": 24,
+        "task": "remember_static",
+        "offset": 3.141592653589793,
+        "timings": {
+          "reference": {
+            "wall": 0.13627120899991496,
+            "profile": null
+          },
+          "native": {
+            "wall": 0.07973029199990833,
+            "profile": {
+              "seconds": {
+                "pack": 7.695800002238684e-05,
+                "gp_evaluate_episode": 0.06842637499994453,
+                "decode": 2.7250000016465492e-05
+              },
+              "calls": {
+                "pack": 1,
+                "gp_evaluate_episode": 1,
+                "decode": 1
+              },
+              "other_python_seconds": 0.011199708999924951,
+              "native_call_fraction": 0.858223057806225
+            }
+          }
+        },
+        "score": {
+          "steps": 160,
+          "hidden_steps": 120,
+          "invalid_actions": 0,
+          "done": 1,
+          "angular_error": 2.238831098959138,
+          "distance_error": 0.0,
+          "goal_error": 0.0,
+          "settle_seconds": 16.0,
+          "correct_choice_rate": 0.0,
+          "damage_per_second": 0.0,
+          "in_range_rate": 0.0
+        },
+        "state_sha256": "ef7c2ef5739b93b6a56db8e559ed2b560415282f1d13c7621ba466bbe80ba0fa"
+      },
+      {
+        "N": 24,
+        "task": "choose",
+        "offset": 0.0,
+        "timings": {
+          "reference": {
+            "wall": 0.17332633299997724,
+            "profile": null
+          },
+          "native": {
+            "wall": 0.05793037499995535,
+            "profile": {
+              "seconds": {
+                "pack": 0.0015132500000163418,
+                "gp_evaluate_episode": 0.04812199999992117,
+                "decode": 2.129100005276996e-05
+              },
+              "calls": {
+                "pack": 1,
+                "gp_evaluate_episode": 1,
+                "decode": 1
+              },
+              "other_python_seconds": 0.008273833999965063,
+              "native_call_fraction": 0.830686837431283
+            }
+          }
+        },
+        "score": {
+          "steps": 160,
+          "hidden_steps": 0,
+          "invalid_actions": 0,
+          "done": 1,
+          "angular_error": 0.0,
+          "distance_error": 0.0,
+          "goal_error": 0.0,
+          "settle_seconds": 16.0,
+          "correct_choice_rate": 0.0,
+          "damage_per_second": 0.0,
+          "in_range_rate": 0.0
+        },
+        "state_sha256": "e5002252e38c592773b8ec8bddb866b4b681fafa707182e134ba8e7736871169"
+      },
+      {
+        "N": 24,
+        "task": "choose",
+        "offset": 3.141592653589793,
+        "timings": {
+          "reference": {
+            "wall": 0.11766212500003803,
+            "profile": null
+          },
+          "native": {
+            "wall": 0.03250420899996698,
+            "profile": {
+              "seconds": {
+                "pack": 9.57920000246304e-05,
+                "gp_evaluate_episode": 0.02393245799999022,
+                "decode": 2.56670000453596e-05
+              },
+              "calls": {
+                "pack": 1,
+                "gp_evaluate_episode": 1,
+                "decode": 1
+              },
+              "other_python_seconds": 0.008450291999906767,
+              "native_call_fraction": 0.7362879681217449
+            }
+          }
+        },
+        "score": {
+          "steps": 160,
+          "hidden_steps": 0,
+          "invalid_actions": 0,
+          "done": 1,
+          "angular_error": 0.0,
+          "distance_error": 0.0,
+          "goal_error": 0.0,
+          "settle_seconds": 16.0,
+          "correct_choice_rate": 0.0,
+          "damage_per_second": 0.0,
+          "in_range_rate": 0.0
+        },
+        "state_sha256": "89e5b679af9fcdca518a8f244a1916241715dfb9e5318896b7d4388c1b4d958d"
+      },
+      {
+        "N": 64,
+        "task": "perceive",
+        "offset": 0.0,
+        "timings": {
+          "reference": {
+            "wall": 0.4679484580000235,
+            "profile": null
+          },
+          "native": {
+            "wall": 0.20475787500004117,
+            "profile": {
+              "seconds": {
+                "pack": 0.00012683299996751884,
+                "gp_evaluate_episode": 0.1984472919999689,
+                "decode": 2.5208000010934484e-05
+              },
+              "calls": {
+                "pack": 1,
+                "gp_evaluate_episode": 1,
+                "decode": 1
+              },
+              "other_python_seconds": 0.006158542000093803,
+              "native_call_fraction": 0.9691802671810743
+            }
+          }
+        },
+        "score": {
+          "steps": 160,
+          "hidden_steps": 0,
+          "invalid_actions": 0,
+          "done": 1,
+          "angular_error": 0.38113543609017225,
+          "distance_error": 2.8202532825426205,
+          "goal_error": 0.0,
+          "settle_seconds": 16.0,
+          "correct_choice_rate": 0.0,
+          "damage_per_second": 0.0,
+          "in_range_rate": 0.0
+        },
+        "state_sha256": "72c253b645e3b05908ec77c7b1c391364a1ee76bd046fb47db79f47204882a7d"
+      },
+      {
+        "N": 64,
+        "task": "perceive",
+        "offset": 3.141592653589793,
+        "timings": {
+          "reference": {
+            "wall": 0.39574133400003575,
+            "profile": null
+          },
+          "native": {
+            "wall": 0.23128058299994336,
+            "profile": {
+              "seconds": {
+                "pack": 0.00014866599997276353,
+                "gp_evaluate_episode": 0.20240354099996694,
+                "decode": 2.6791999971464975e-05
+              },
+              "calls": {
+                "pack": 1,
+                "gp_evaluate_episode": 1,
+                "decode": 1
+              },
+              "other_python_seconds": 0.0287015840000322,
+              "native_call_fraction": 0.8751428173285801
+            }
+          }
+        },
+        "score": {
+          "steps": 160,
+          "hidden_steps": 0,
+          "invalid_actions": 0,
+          "done": 1,
+          "angular_error": 0.3811354360895083,
+          "distance_error": 2.8202532825687543,
+          "goal_error": 0.0,
+          "settle_seconds": 16.0,
+          "correct_choice_rate": 0.0,
+          "damage_per_second": 0.0,
+          "in_range_rate": 0.0
+        },
+        "state_sha256": "5380853dd200498fdfc74140470b1d19e1811a54fe176bc62a55e36c2ee4a031"
+      },
+      {
+        "N": 64,
+        "task": "move",
+        "offset": 0.0,
+        "timings": {
+          "reference": {
+            "wall": 0.4881570830000328,
+            "profile": null
+          },
+          "native": {
+            "wall": 0.29453750000004675,
+            "profile": {
+              "seconds": {
+                "pack": 0.00013566699999500997,
+                "gp_evaluate_episode": 0.2790972080000529,
+                "decode": 3.125000000636646e-05
+              },
+              "calls": {
+                "pack": 1,
+                "gp_evaluate_episode": 1,
+                "decode": 1
+              },
+              "other_python_seconds": 0.015273374999992484,
+              "native_call_fraction": 0.9475778398336666
+            }
+          }
+        },
+        "score": {
+          "steps": 160,
+          "hidden_steps": 0,
+          "invalid_actions": 0,
+          "done": 1,
+          "angular_error": 0.0,
+          "distance_error": 0.0,
+          "goal_error": 6.5341038937854155,
+          "settle_seconds": 16.0,
+          "correct_choice_rate": 0.0,
+          "damage_per_second": 0.0,
+          "in_range_rate": 0.0125
+        },
+        "state_sha256": "92e93cddc001f972f14fe0bfba766689b7615b7fe8cdcbc7d22d851092189f81"
+      },
+      {
+        "N": 64,
+        "task": "move",
+        "offset": 3.141592653589793,
+        "timings": {
+          "reference": {
+            "wall": 0.3079327089999424,
+            "profile": null
+          },
+          "native": {
+            "wall": 0.20309899999995196,
+            "profile": {
+              "seconds": {
+                "pack": 0.0001443339999696036,
+                "gp_evaluate_episode": 0.1569797079999944,
+                "decode": 2.9625000024680048e-05
+              },
+              "calls": {
+                "pack": 1,
+                "gp_evaluate_episode": 1,
+                "decode": 1
+              },
+              "other_python_seconds": 0.045945332999963284,
+              "native_call_fraction": 0.7729221118766293
+            }
+          }
+        },
+        "score": {
+          "steps": 160,
+          "hidden_steps": 0,
+          "invalid_actions": 0,
+          "done": 1,
+          "angular_error": 0.0,
+          "distance_error": 0.0,
+          "goal_error": 6.534103893788782,
+          "settle_seconds": 16.0,
+          "correct_choice_rate": 0.0,
+          "damage_per_second": 0.0,
+          "in_range_rate": 0.0125
+        },
+        "state_sha256": "eef6b54ab53e73f8944d5bbaae0361a8d6160478622cef9023c60f4bc78f7b13"
+      },
+      {
+        "N": 64,
+        "task": "remember_static",
+        "offset": 0.0,
+        "timings": {
+          "reference": {
+            "wall": 0.3604500830000461,
+            "profile": null
+          },
+          "native": {
+            "wall": 0.2767324579999695,
+            "profile": {
+              "seconds": {
+                "pack": 0.00014324999995096732,
+                "gp_evaluate_episode": 0.24374375000002146,
+                "decode": 2.9333000043152424e-05
+              },
+              "calls": {
+                "pack": 1,
+                "gp_evaluate_episode": 1,
+                "decode": 1
+              },
+              "other_python_seconds": 0.0328161249999539,
+              "native_call_fraction": 0.8807920536739074
+            }
+          }
+        },
+        "score": {
+          "steps": 160,
+          "hidden_steps": 120,
+          "invalid_actions": 0,
+          "done": 1,
+          "angular_error": 1.2576623019829503,
+          "distance_error": 0.0,
+          "goal_error": 0.0,
+          "settle_seconds": 16.0,
+          "correct_choice_rate": 0.0,
+          "damage_per_second": 0.0,
+          "in_range_rate": 0.0
+        },
+        "state_sha256": "e09b77dc37af515c91d6de70b6f8c3c93e5ded3eaed58dfbff9f39cfb3b7caab"
+      },
+      {
+        "N": 64,
+        "task": "remember_static",
+        "offset": 3.141592653589793,
+        "timings": {
+          "reference": {
+            "wall": 0.30638758300005975,
+            "profile": null
+          },
+          "native": {
+            "wall": 0.2755698329999632,
+            "profile": {
+              "seconds": {
+                "pack": 0.0031860829999459384,
+                "gp_evaluate_episode": 0.264075332999937,
+                "decode": 2.5916000026882102e-05
+              },
+              "calls": {
+                "pack": 1,
+                "gp_evaluate_episode": 1,
+                "decode": 1
+              },
+              "other_python_seconds": 0.008282501000053344,
+              "native_call_fraction": 0.9582882499332658
+            }
+          }
+        },
+        "score": {
+          "steps": 160,
+          "hidden_steps": 120,
+          "invalid_actions": 0,
+          "done": 1,
+          "angular_error": 1.2576623019833852,
+          "distance_error": 0.0,
+          "goal_error": 0.0,
+          "settle_seconds": 16.0,
+          "correct_choice_rate": 0.0,
+          "damage_per_second": 0.0,
+          "in_range_rate": 0.0
+        },
+        "state_sha256": "c70ed0f35c37f4317f8cdd79e35ea4c7c05e63e6475e34090ec18c387d242199"
+      },
+      {
+        "N": 64,
+        "task": "choose",
+        "offset": 0.0,
+        "timings": {
+          "reference": {
+            "wall": 0.3089231249999784,
+            "profile": null
+          },
+          "native": {
+            "wall": 0.17798641699994278,
+            "profile": {
+              "seconds": {
+                "pack": 0.006465457999979662,
+                "gp_evaluate_episode": 0.1658985420000363,
+                "decode": 2.758300001914904e-05
+              },
+              "calls": {
+                "pack": 1,
+                "gp_evaluate_episode": 1,
+                "decode": 1
+              },
+              "other_python_seconds": 0.005594833999907678,
+              "native_call_fraction": 0.9320854073942599
+            }
+          }
+        },
+        "score": {
+          "steps": 160,
+          "hidden_steps": 0,
+          "invalid_actions": 0,
+          "done": 1,
+          "angular_error": 0.0,
+          "distance_error": 0.0,
+          "goal_error": 0.0,
+          "settle_seconds": 16.0,
+          "correct_choice_rate": 0.0,
+          "damage_per_second": 0.0,
+          "in_range_rate": 0.0
+        },
+        "state_sha256": "18b16771ca6b5cb25fe7a63ed6b495a3c7d6f7c53f226c6a5ee2d09c5c14e974"
+      },
+      {
+        "N": 64,
+        "task": "choose",
+        "offset": 3.141592653589793,
+        "timings": {
+          "reference": {
+            "wall": 0.21004158300002018,
+            "profile": null
+          },
+          "native": {
+            "wall": 0.1230857499999729,
+            "profile": {
+              "seconds": {
+                "pack": 0.00014912500000718865,
+                "gp_evaluate_episode": 0.11368237499993938,
+                "decode": 2.866699992409849e-05
+              },
+              "calls": {
+                "pack": 1,
+                "gp_evaluate_episode": 1,
+                "decode": 1
+              },
+              "other_python_seconds": 0.009225583000102233,
+              "native_call_fraction": 0.923603057217951
+            }
+          }
+        },
+        "score": {
+          "steps": 160,
+          "hidden_steps": 0,
+          "invalid_actions": 0,
+          "done": 1,
+          "angular_error": 0.0,
+          "distance_error": 0.0,
+          "goal_error": 0.0,
+          "settle_seconds": 16.0,
+          "correct_choice_rate": 0.0,
+          "damage_per_second": 0.0,
+          "in_range_rate": 0.0
+        },
+        "state_sha256": "8ce5c2344ee61fb0430db93ab51a3162ae4961ec6a88110cb999f014054b4caa"
+      }
+    ],
+    "synthetic_training": [
+      {
+        "N": 24,
+        "steps": 200,
+        "timings": {
+          "reference": {
+            "wall": 8.904906250000067,
+            "seconds_per_step": 0.04452453125000034,
+            "profile": null
+          },
+          "native": {
+            "wall": 0.6647206249999726,
+            "seconds_per_step": 0.0033236031249998634,
+            "profile": {
+              "seconds": {
+                "pack": 0.03755683399992904,
+                "gp_replay": 0.6069509999999809,
+                "decode": 0.0118510839999999,
+                "unpack": 0.0066311250000126165
+              },
+              "calls": {
+                "pack": 1,
+                "gp_replay": 1,
+                "decode": 1,
+                "unpack": 1
+              },
+              "other_python_seconds": 0.0017305820000501626,
+              "native_call_fraction": 0.9130918722433291
+            }
+          }
+        }
+      },
+      {
+        "N": 50,
+        "steps": 200,
+        "timings": {
+          "reference": {
+            "wall": 22.87426320899999,
+            "seconds_per_step": 0.11437131604499996,
+            "profile": null
+          },
+          "native": {
+            "wall": 2.379432291999933,
+            "seconds_per_step": 0.011897161459999665,
+            "profile": {
+              "seconds": {
+                "pack": 0.031219082999996317,
+                "gp_replay": 2.191779833999931,
+                "decode": 0.0867278329999408,
+                "unpack": 0.016023125000060645
+              },
+              "calls": {
+                "pack": 1,
+                "gp_replay": 1,
+                "decode": 1,
+                "unpack": 1
+              },
+              "other_python_seconds": 0.053682417000004534,
+              "native_call_fraction": 0.9211356176719453
+            }
+          }
+        }
+      }
+    ]
+  },
+  "stage_comparison": {
+    "scalars": 242979,
+    "exact": 110969,
+    "max_abs": 1.1102230246251565e-16,
+    "max_ratio": 5.821449551812053e-07
+  },
+  "projection": {
+    "training_steps": 10240000,
+    "intact_qualification_checks": 8512,
+    "maximum_evaluator_episodes": 344064,
+    "measured_training_seconds_per_step": 0.004335797345312514,
+    "training_hours_at_observed_mix": 12.332934671111149,
+    "conditional_N": {
+      "24": {
+        "qualification_hours": 0.7892860362490036,
+        "recovery_hours_per_mean_candidate_per_check": 0.21543369555560074,
+        "evaluation_hours_at_cap": 7.449281291944596,
+        "evaluation_seconds_per_episode": 0.07794309387497833,
+        "maximum_candidate_count": 21,
+        "total_hours_by_mean_candidates": {
+          "0": 20.571501999304747,
+          "1": 20.78693569486035,
+          "3": 21.217803085971553,
+          "21": 25.095609605972367
+        }
+      },
+      "64": {
+        "qualification_hours": 1.6987221066664744,
+        "recovery_hours_per_mean_candidate_per_check": 0.9514362858311688,
+        "evaluation_hours_at_cap": 21.349283689811323,
+        "evaluation_seconds_per_episode": 0.22338117699997895,
+        "maximum_candidate_count": 21,
+        "total_hours_by_mean_candidates": {
+          "0": 35.38094046758894,
+          "1": 36.332376753420114,
+          "3": 38.23524932508246,
+          "21": 55.361102470043484
+        }
+      }
+    },
+    "limits": "Observed small training mix; recovery/qualification static synthetic cohort; evaluation compact coherent geometry. Not an upper runtime bound. No disk/full-horizon workload measurement or parallel speedup claim.",
+    "synthetic_training_hours_by_N": {
+      "24": 9.453804444444055,
+      "50": 33.8408148195546
+    }
+  },
+  "build": {
+    "source_sha256": {
+      "evidence/tactical_composition_demo/growing_shapes/runner/perf.cpp": "9d0d6263eec3284307f0850250d02a6695dfa34e8d97993a5b9c81b8e21d7c52",
+      "evidence/tactical_composition_demo/growing_shapes/runner/perf.h": "49fb3dc65b510acaea76dc4001b1b29563a75394c62d46d423673ac252126c3c",
+      "evidence/tactical_composition_demo/growing_shapes/runner/build_perf.py": "553c3bbc409d12e04e4b4994bec907f0d686b5f45866a00c36846bf00eb055b0",
+      "evidence/tactical_composition_demo/growing_shapes/medium/medium.cpp": "1f79df120820382855c38005580c8c04b1de78f78a9e3595f255a6b7cc9e83c8",
+      "evidence/tactical_composition_demo/growing_shapes/medium/medium_c.cpp": "4e84f53b631c810863bfc0e3e3e732e62e4427529e3c18506ddcf27319b9f69e",
+      "evidence/tactical_composition_demo/growing_shapes/medium/medium.hpp": "ea4acac21e2fa112db7de76a23907d7eb694b7e255e69208c269d77ee23d0d25",
+      "evidence/tactical_composition_demo/growing_shapes/medium/medium_c.h": "7838d1f6a8085b36a9d84a929b1635526c519505e8b1eac1e47cebb78066ee43",
+      "evidence/tactical_composition_demo/growing_shapes/world/world.cpp": "93fff84417baa32ff411eebfaa7b956be9036647a4662fcf6e4efa4b057de28a",
+      "evidence/tactical_composition_demo/growing_shapes/world/world.h": "cae3bb890fcfbcdab72cf64121be3e2362b0e26408ce320f61cde5c302528667",
+      "evidence/tactical_composition_demo/growing_shapes/medium/build.py": "e455d53b2e6eb927eaa9c1a2eced51c0b4a9dac6e48d268f2e970ee6890ea84d",
+      "evidence/tactical_composition_demo/growing_shapes/world/build.py": "0c5674717cd9a048e0510a940056d19568c4281a220196f315a956101dee2882",
+      "evidence/tactical_composition_demo/growing_shapes/runner/native.py": "9b2b3d7fe38cd521130944a518d1ee8a590225df108e4ce4ab887d9ffa6d5372",
+      "evidence/tactical_composition_demo/growing_shapes/medium/medium.py": "c4e034f3708a424d63da571f083f0d3e44699fd5ba77694258a7c8988ef17fc4",
+      "evidence/tactical_composition_demo/growing_shapes/world/world.py": "e6e8c93ecc052ad235578852cc2eb363b619f17d8ea80054be0cd7c8fa3143d7",
+      "evidence/tactical_composition_demo/growing_shapes/native_guard.py": "d2b023e1dbc296feef3adb0840c2fd2ad4c2eda6fd396d2c5103ea5e6f815a7b"
+    },
+    "binary_sha256": "87650143c2cd98c7a9e51bc7c9e2048f3e53a2c84e72821000ca24891d7d8f69",
+    "command": [
+      "/usr/bin/clang++",
+      "-std=c++17",
+      "-O3",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-fno-fast-math",
+      "-ffp-contract=off",
+      "-fPIC",
+      "-dynamiclib",
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/runner/perf.cpp",
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/medium/_build/medium.dylib",
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/world/_build/libgs_world.dylib",
+      "-o",
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/runner/_build/perf.dylib"
+    ],
+    "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+    "platform": "macOS-26.6.2-arm64-arm-64bit",
+    "numpy": "2.0.2",
+    "abi": 3,
+    "dependencies": {
+      "evidence/tactical_composition_demo/growing_shapes/medium/_build/medium.dylib": "922ef1f7b3852e0afdd9f39fabf959f1546151d546551cc3eb987006469e704d",
+      "evidence/tactical_composition_demo/growing_shapes/world/_build/libgs_world.dylib": "aecb0bc1e7109a8e54bca3c1b99edf7a0f9e020ff650a1dfb0215ee5c9b662bb"
+    },
+    "medium": {
+      "source_sha256": {
+        "medium.cpp": "1f79df120820382855c38005580c8c04b1de78f78a9e3595f255a6b7cc9e83c8",
+        "medium_c.cpp": "4e84f53b631c810863bfc0e3e3e732e62e4427529e3c18506ddcf27319b9f69e",
+        "medium.hpp": "ea4acac21e2fa112db7de76a23907d7eb694b7e255e69208c269d77ee23d0d25",
+        "medium_c.h": "7838d1f6a8085b36a9d84a929b1635526c519505e8b1eac1e47cebb78066ee43",
+        "build.py": "e455d53b2e6eb927eaa9c1a2eced51c0b4a9dac6e48d268f2e970ee6890ea84d",
+        "medium.py": "c4e034f3708a424d63da571f083f0d3e44699fd5ba77694258a7c8988ef17fc4",
+        "../native_guard.py": "d2b023e1dbc296feef3adb0840c2fd2ad4c2eda6fd396d2c5103ea5e6f815a7b"
+      },
+      "binary_sha256": "922ef1f7b3852e0afdd9f39fabf959f1546151d546551cc3eb987006469e704d"
+    },
+    "world": {
+      "commands": [
+        [
+          "c++",
+          "-std=c++17",
+          "-O2",
+          "-Wall",
+          "-Wextra",
+          "-Werror",
+          "-pedantic",
+          "-fPIC",
+          "-dynamiclib",
+          "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/world/world.cpp",
+          "-o",
+          "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/world/_build/libgs_world.dylib"
+        ],
+        [
+          "c++",
+          "-std=c++17",
+          "-O2",
+          "-Wall",
+          "-Wextra",
+          "-Werror",
+          "-pedantic",
+          "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/world/world.cpp",
+          "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/world/native_contract.cpp",
+          "-o",
+          "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/world/_build/native_contract"
+        ]
+      ],
+      "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+      "sanitized": false,
+      "source_sha256": {
+        "world.h": "cae3bb890fcfbcdab72cf64121be3e2362b0e26408ce320f61cde5c302528667",
+        "world.cpp": "93fff84417baa32ff411eebfaa7b956be9036647a4662fcf6e4efa4b057de28a",
+        "native_contract.cpp": "59102395fc5bc4387ec30c7f3d2450f7bfcbf714b9fdc941dfa16c8bd6b15a15",
+        "build.py": "0c5674717cd9a048e0510a940056d19568c4281a220196f315a956101dee2882",
+        "world.py": "e6e8c93ecc052ad235578852cc2eb363b619f17d8ea80054be0cd7c8fa3143d7",
+        "../native_guard.py": "d2b023e1dbc296feef3adb0840c2fd2ad4c2eda6fd396d2c5103ea5e6f815a7b"
+      },
+      "binary_sha256": {
+        "libgs_world.dylib": "aecb0bc1e7109a8e54bca3c1b99edf7a0f9e020ff650a1dfb0215ee5c9b662bb",
+        "native_contract": "d8be414b3c54258d18dc92f36224e706314892d91e93ee652ba49641a3c19a4e"
+      }
+    }
+  },
+  "before_build": {
+    "base": "bc00869",
+    "source_sha256": "c6e14cbef58128922fc95273ca1305d8dc5533e755fbce02042fce7e39882aac",
+    "binary_sha256": "cedce43f8906bae21e75c83e39adca6045dacd2d6962910fbea403f806b41f0b",
+    "command": [
+      "/usr/bin/clang++",
+      "-I",
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/runner",
+      "-std=c++17",
+      "-O3",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-fno-fast-math",
+      "-ffp-contract=off",
+      "-fPIC",
+      "-dynamiclib",
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/runner/_build/perf_before.cpp",
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/medium/_build/medium.dylib",
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/world/_build/libgs_world.dylib",
+      "-o",
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/runner/_build/perf_before.dylib"
+    ]
+  },
+  "audit_sha256": "2826d22c603c24637416f9babf070afdbd1d7a286d27aa947bb5ad715c47201c"
+}

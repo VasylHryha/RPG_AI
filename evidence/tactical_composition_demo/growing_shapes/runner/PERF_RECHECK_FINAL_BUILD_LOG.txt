@@ -1,0 +1,97 @@
+{
+  "source_sha256": {
+    "evidence/tactical_composition_demo/growing_shapes/runner/perf.cpp": "9d0d6263eec3284307f0850250d02a6695dfa34e8d97993a5b9c81b8e21d7c52",
+    "evidence/tactical_composition_demo/growing_shapes/runner/perf.h": "49fb3dc65b510acaea76dc4001b1b29563a75394c62d46d423673ac252126c3c",
+    "evidence/tactical_composition_demo/growing_shapes/runner/build_perf.py": "e04a23b981b8547b492665f8551aa4a3ad1a03eb78c56e9fea95b3515f105ff4",
+    "evidence/tactical_composition_demo/growing_shapes/medium/medium.cpp": "1f79df120820382855c38005580c8c04b1de78f78a9e3595f255a6b7cc9e83c8",
+    "evidence/tactical_composition_demo/growing_shapes/medium/medium_c.cpp": "4e84f53b631c810863bfc0e3e3e732e62e4427529e3c18506ddcf27319b9f69e",
+    "evidence/tactical_composition_demo/growing_shapes/medium/medium.hpp": "ea4acac21e2fa112db7de76a23907d7eb694b7e255e69208c269d77ee23d0d25",
+    "evidence/tactical_composition_demo/growing_shapes/medium/medium_c.h": "7838d1f6a8085b36a9d84a929b1635526c519505e8b1eac1e47cebb78066ee43",
+    "evidence/tactical_composition_demo/growing_shapes/world/world.cpp": "93fff84417baa32ff411eebfaa7b956be9036647a4662fcf6e4efa4b057de28a",
+    "evidence/tactical_composition_demo/growing_shapes/world/world.h": "cae3bb890fcfbcdab72cf64121be3e2362b0e26408ce320f61cde5c302528667",
+    "evidence/tactical_composition_demo/growing_shapes/medium/build.py": "eb86d53e4b0b6776a11e03b3cd58ac21c1e4716bcb46484074290543037082ff",
+    "evidence/tactical_composition_demo/growing_shapes/world/build.py": "a8924810d02f4427d4e6c2108e848e0783664b57a82876e1fc5d71a6b997f5d6",
+    "evidence/tactical_composition_demo/growing_shapes/runner/native.py": "003969a8a5cfa5d82e7b654873c043566c1846dbe63e37ab49f975dfcc56a28c",
+    "evidence/tactical_composition_demo/growing_shapes/medium/medium.py": "812581d7a2d820a6f23d8e670e1975607c9403f5ae70b6dc9e543bf3abecb2b8",
+    "evidence/tactical_composition_demo/growing_shapes/world/world.py": "41c1f90d5b731836026fb481a2e58f64ea0ff507d528283069eccb3656fd5a7c"
+  },
+  "binary_sha256": "87650143c2cd98c7a9e51bc7c9e2048f3e53a2c84e72821000ca24891d7d8f69",
+  "command": [
+    "/usr/bin/clang++",
+    "-std=c++17",
+    "-O3",
+    "-Wall",
+    "-Wextra",
+    "-Wpedantic",
+    "-fno-fast-math",
+    "-ffp-contract=off",
+    "-fPIC",
+    "-dynamiclib",
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/runner/perf.cpp",
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/medium/_build/medium.dylib",
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/world/_build/libgs_world.dylib",
+    "-o",
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/runner/_build/perf.dylib"
+  ],
+  "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+  "platform": "macOS-26.6.2-arm64-arm-64bit",
+  "numpy": "2.0.2",
+  "abi": 3,
+  "dependencies": {
+    "evidence/tactical_composition_demo/growing_shapes/medium/_build/medium.dylib": "922ef1f7b3852e0afdd9f39fabf959f1546151d546551cc3eb987006469e704d",
+    "evidence/tactical_composition_demo/growing_shapes/world/_build/libgs_world.dylib": "aecb0bc1e7109a8e54bca3c1b99edf7a0f9e020ff650a1dfb0215ee5c9b662bb"
+  },
+  "medium": {
+    "source_sha256": {
+      "medium.cpp": "1f79df120820382855c38005580c8c04b1de78f78a9e3595f255a6b7cc9e83c8",
+      "medium_c.cpp": "4e84f53b631c810863bfc0e3e3e732e62e4427529e3c18506ddcf27319b9f69e",
+      "medium.hpp": "ea4acac21e2fa112db7de76a23907d7eb694b7e255e69208c269d77ee23d0d25",
+      "medium_c.h": "7838d1f6a8085b36a9d84a929b1635526c519505e8b1eac1e47cebb78066ee43",
+      "build.py": "eb86d53e4b0b6776a11e03b3cd58ac21c1e4716bcb46484074290543037082ff"
+    },
+    "binary_sha256": "922ef1f7b3852e0afdd9f39fabf959f1546151d546551cc3eb987006469e704d"
+  },
+  "world": {
+    "commands": [
+      [
+        "c++",
+        "-std=c++17",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-pedantic",
+        "-fPIC",
+        "-dynamiclib",
+        "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/world/world.cpp",
+        "-o",
+        "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/world/_build/libgs_world.dylib"
+      ],
+      [
+        "c++",
+        "-std=c++17",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-pedantic",
+        "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/world/world.cpp",
+        "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/world/native_contract.cpp",
+        "-o",
+        "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/world/_build/native_contract"
+      ]
+    ],
+    "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+    "sanitized": false,
+    "source_sha256": {
+      "world.h": "cae3bb890fcfbcdab72cf64121be3e2362b0e26408ce320f61cde5c302528667",
+      "world.cpp": "93fff84417baa32ff411eebfaa7b956be9036647a4662fcf6e4efa4b057de28a",
+      "native_contract.cpp": "59102395fc5bc4387ec30c7f3d2450f7bfcbf714b9fdc941dfa16c8bd6b15a15",
+      "build.py": "a8924810d02f4427d4e6c2108e848e0783664b57a82876e1fc5d71a6b997f5d6"
+    },
+    "binary_sha256": {
+      "libgs_world.dylib": "aecb0bc1e7109a8e54bca3c1b99edf7a0f9e020ff650a1dfb0215ee5c9b662bb",
+      "native_contract": "d8be414b3c54258d18dc92f36224e706314892d91e93ee652ba49641a3c19a4e"
+    }
+  }
+}

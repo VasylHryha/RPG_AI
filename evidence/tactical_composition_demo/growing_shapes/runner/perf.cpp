@@ -5,10 +5,12 @@
 #include <limits>
 #include <set>
 #include <sstream>
+#include <locale>
+#include <tuple>
 namespace {
 constexpr double pi=3.14159265358979323846, dt=.1;
 using growing::require;
-struct Row { double x,y,phase; std::vector<uint64_t> links; };
+struct Row { double x,y,phase; std::vector<uint64_t> links; int slot=0; };
 struct Frame { int index; std::map<uint64_t,Row> rows; std::map<uint64_t,gm_drive> sites; };
 using Stats=std::pair<double,double>;
 struct Engine {
@@ -16,6 +18,8 @@ struct Engine {
     std::deque<Frame> frames;
     std::map<uint64_t,double> death;
     std::array<double,8> novelty{};
+    mutable std::array<std::array<Stats,8>,64> sensor_cache{};
+    mutable std::array<uint8_t,64> sensor_valid{};
     std::ostringstream out;
     Engine(void* handle,const PerfFrame* input,int count,int k,const uint64_t* ids,
            const double* timers,int n,const double* nov):m(*static_cast<growing::Medium*>(handle)),index(k) {
@@ -31,13 +35,13 @@ struct Engine {
             for(int j=0;j<f.count;++j){auto& r=f.rows[j];require(r.count>=0 && r.count<=64,"invalid links");
                 for(double v:{r.x,r.y,r.phase})growing::finite(v);
                 require(!frame.rows.count(r.id),"duplicate historical id");
-                frame.rows[r.id]={r.x,r.y,r.phase,std::vector<uint64_t>(r.neighbors,r.neighbors+r.count)};}
+                frame.rows[r.id]={r.x,r.y,r.phase,std::vector<uint64_t>(r.neighbors,r.neighbors+r.count),j};}
             for(int j=0;j<f.sites;++j){auto d=f.drives[j];require(d.id<8 && !frame.sites.count(d.id),"invalid historical site");
                 for(double v:{d.x,d.y,d.phase,d.strength})growing::finite(v);frame.sites[d.id]=d;}
             frames.push_back(std::move(frame));
         }
         require(frames.back().index==k,"history endpoint mismatch");
-        out<<std::setprecision(17);
+        out.imbue(std::locale::classic());out<<std::setprecision(17);
     }
     bool samples(uint64_t id,int count) const {
         if(int(frames.size())<count)return false;
@@ -69,11 +73,18 @@ struct Engine {
         double scale=1./v.size(),real=total.first*scale,imag=total.second*scale;
         return {std::min(1.,std::hypot(real,imag)),std::atan2(imag,real)};
     }
+    Stats statistic(uint64_t id,uint64_t partner,bool sensor) const {
+        if(!sensor){auto v=offsets(id,partner,false);return v.empty()?Stats{-1,0}:stats(v);}
+        auto slot=frames.back().rows.at(id).slot;uint8_t bit=uint8_t(1u<<partner);
+        if(sensor_valid[slot]&bit)return sensor_cache[slot][partner];
+        auto v=offsets(id,partner,sensor);auto result=v.empty()?Stats{-1,0}:stats(v);
+        sensor_cache[slot][partner]=result;sensor_valid[slot]|=bit;return result;
+    }
     double lock(uint64_t id) const {
         if(!samples(id,100))return -1;
         std::set<uint64_t> partners;for(auto i=frames.end()-100;i!=frames.end();++i){auto& links=i->rows.at(id).links;partners.insert(links.begin(),links.end());}
-        double best=0;for(auto j:partners){auto v=offsets(id,j,false);if(!v.empty())best=std::max(best,stats(v).first);}
-        for(int s=0;s<8;++s){auto v=offsets(id,s,true);if(!v.empty())best=std::max(best,stats(v).first);}return best;
+        double best=0;for(auto j:partners)best=std::max(best,statistic(id,j,false).first);
+        for(int s=0;s<8;++s)best=std::max(best,statistic(id,s,true).first);return best;
     }
     double signal(uint64_t id) const {
         if(!samples(id,101))return -1;
@@ -81,18 +92,19 @@ struct Engine {
         for(auto& kv:f.sites){auto s=kv.second;if(s.strength<=0)continue;double distance=std::hypot(e.x-s.x,e.y-s.y);
             double weight=s.strength*(distance<3?std::exp(-distance*distance/2):0);
             if(weight>best){best=weight;site=kv.first;}}
-        if(best<=0)return -1;auto v=offsets(id,site,true);return v.empty()?-1:stats(v).first;
+        if(best<=0)return -1;return statistic(id,site,true).first;
     }
     bool covered(int site) const {
         auto& f=frames.back();auto s=f.sites.find(site);if(s==f.sites.end() || s->second.strength<=0)return false;
         for(auto& kv:f.rows){auto id=kv.first;auto e=kv.second;
             if(!samples(id,101) || std::hypot(e.x-s->second.x,e.y-s->second.y)>=3)continue;
-            auto v=offsets(id,site,true);if(!v.empty()){auto z=stats(v);if(z.first>=.8 && std::abs(z.second)<=.5)return true;}}
+            auto z=statistic(id,site,true);if(z.first>=.8 && std::abs(z.second)<=.5)return true;}
         return false;
     }
     void record(const std::vector<gm_drive>& drives){
+        sensor_valid.fill(0); // one immutable endpoint window per cache lifetime
         Frame f;f.index=index;auto neighbors=m.neighbors(true);
-        for(size_t i=0;i<m.elements.size();++i){auto e=m.elements[i].v;Row r{e.x,e.y,e.phase,{}};
+        for(size_t i=0;i<m.elements.size();++i){auto e=m.elements[i].v;Row r{e.x,e.y,e.phase,{},int(i)};
             for(int j:neighbors[i])if(std::hypot(e.x-m.elements[j].v.x,e.y-m.elements[j].v.y)<m.p.radius)r.links.push_back(m.elements[j].v.id);
             f.rows[e.id]=std::move(r);}
         for(auto d:drives)f.sites[d.id]=d;frames.push_back(std::move(f));if(frames.size()>601)frames.pop_front();
@@ -130,6 +142,7 @@ struct Engine {
         out<<"},\"novelty\":[";for(int s=0;s<8;++s){if(s)out<<',';out<<novelty[s];}out<<']';
     }
     std::vector<gm_drive> bindings(const GSObservation& o,const int32_t* assignment,const double* sites){
+        require(o.enemy_count>=0 && o.enemy_count<=8,"invalid enemy count");
         std::vector<gm_drive> ds;for(int s=0;s<8;++s)ds.push_back({uint64_t(s),sites[2*s],sites[2*s+1],pi*(index*dt),pi,0.,1.,3.});
         if(o.task==GS_MOVE){double angle=o.target_angle+(o.target_distance<o.desired_range?pi:0.);auto& d=ds[assignment[0]];d.phase+=angle;d.strength=2*std::min(1.,std::abs(o.target_distance-o.desired_range)/2);}
         else{std::vector<GSEnemy> enemies(o.enemies,o.enemies+o.enemy_count);std::sort(enemies.begin(),enemies.end(),[](auto a,auto b){return a.id<b.id;});
@@ -149,11 +162,22 @@ struct Engine {
     }
 };
 thread_local std::string response;
-template<class F>const char* guarded(F f){try{response=f();}catch(const std::exception& e){response=std::string("{\"error\":\"")+e.what()+"\"}";}return response.c_str();}
+std::string quote(const char* s){std::ostringstream out;out<<'"';for(const unsigned char* p=reinterpret_cast<const unsigned char*>(s);*p;++p){
+    if(*p=='"' || *p=='\\')out<<'\\'<<*p;else if(*p<32)out<<"\\u"<<std::hex<<std::setw(4)<<std::setfill('0')<<int(*p);else out<<*p;}out<<'"';return out.str();}
+template<class F>const char* guarded(F f){try{response=f();}catch(const std::exception& e){response="{\"error\":"+quote(e.what())+"}";}return response.c_str();}
+void validate_drives(const gm_drive* ds,int n){require(n>=0 && n<=8 && (n==0 || ds),"invalid drive count");std::set<uint64_t> ids;
+    for(int i=0;i<n;++i){auto d=ds[i];require(d.id<8 && ids.insert(d.id).second,"invalid protocol site");
+        for(double v:{d.x,d.y,d.phase,d.rate,d.strength,d.width,d.reach})growing::finite(v);
+        require(d.strength>=0 && d.width>0 && d.reach>0,"invalid drive geometry");}}
+void validate_binding(const int32_t* assignment,const double* sites){require(assignment && sites,"missing binding");std::set<int> slots;
+    for(int s=0;s<8;++s){require(assignment[s]>=0 && assignment[s]<8,"invalid binding");slots.insert(assignment[s]);growing::finite(sites[2*s]);growing::finite(sites[2*s+1]);}
+    require(slots.size()==8,"binding not permutation");}
 }
+extern "C" int gp_abi_version(){return 3;}
+extern "C" int gp_struct_size(int which){return which==0?sizeof(PerfRow):which==1?sizeof(PerfFrame):which==2?sizeof(PerfDrives):0;}
 extern "C" const char* gp_batch(void* medium,GSWorld* world,const PerfFrame* frames,int count,int index,const uint64_t* ids,const double* death,int n,const double* novelty,const int32_t* assignment,const double* sites,int steps,double coverage_start){
     return guarded([&]{require(medium && world && assignment && sites && steps>0 && steps<=200,"invalid batch");
-        std::set<int> slots;for(int s=0;s<8;++s){require(assignment[s]>=0 && assignment[s]<8,"invalid binding");slots.insert(assignment[s]);growing::finite(sites[2*s]);growing::finite(sites[2*s+1]);}require(slots.size()==8,"binding not permutation");
+        validate_binding(assignment,sites);growing::finite(coverage_start);
         require(steps<=200-index%200,"batch crosses growth boundary");
         Engine e(medium,frames,count,index,ids,death,n,novelty);e.out<<"{\"steps\":[";
         int ran=0;GSObservation obs{};
@@ -168,7 +192,35 @@ extern "C" const char* gp_batch(void* medium,GSWorld* world,const PerfFrame* fra
         e.out<<"],\"boundary\":"<<(ran && e.index%200==0?"true":"false")<<'}';return e.out.str();});
 }
 extern "C" const char* gp_contract(void* medium,const PerfFrame* frames,int count,int index,const uint64_t* ids,const double* death,int n,const double* novelty,const gm_drive* drives,int nd,int adapt){
-    return guarded([&]{require(medium && nd>=0 && nd<=8 && (nd==0 || drives) && (adapt==0 || adapt==1),"invalid contract");Engine e(medium,frames,count,index,ids,death,n,novelty);e.out<<"{\"steps\":[";
+    return guarded([&]{require(medium && (adapt==0 || adapt==1),"invalid contract");validate_drives(drives,nd);Engine e(medium,frames,count,index,ids,death,n,novelty);e.out<<"{\"steps\":[";
         std::vector<gm_drive> ds;if(nd)ds.assign(drives,drives+nd);
         e.endpoint(ds,adapt,0);e.out<<"}]}";return e.out.str();});
+}
+extern "C" const char* gp_replay(void* medium,const PerfFrame* frames,int count,int index,const uint64_t* ids,const double* death,int n,const double* novelty,const PerfDrives* schedule,int steps,int adapt){
+    return guarded([&]{require(medium && schedule && steps>0 && steps<=600 && (adapt==0 || adapt==1),"invalid replay");
+        // Validate the entire supplied future before touching the medium.
+        for(int i=0;i<steps;++i)validate_drives(schedule[i].drives,schedule[i].count);
+        Engine e(medium,frames,count,index,ids,death,n,novelty);e.out<<"{\"steps\":[";
+        for(int i=0;i<steps;++i){if(i)e.out<<',';auto& s=schedule[i];e.endpoint(std::vector<gm_drive>(s.drives,s.drives+s.count),adapt,0);e.out<<'}';}
+        e.out<<"]}";return e.out.str();});
+}
+extern "C" const char* gp_evaluate_episode(void* medium,GSWorld* world,const PerfFrame* frames,int count,int index,const uint64_t* ids,const double* death,int n,const double* novelty,const int32_t* assignment,const double* sites){
+    return guarded([&]{require(medium && world,"invalid evaluation");validate_binding(assignment,sites);
+        Engine e(medium,frames,count,index,ids,death,n,novelty);GSObservation obs{};std::vector<gm_drive> ds;
+        // Fresh evaluation copy: no adaptation, growth, timers, reward or recovery.
+        for(int steps=0;;++steps){require(gs_observe(world,&obs)==GS_OK,"world observation failed");if(obs.done)break;
+            require(steps<160 && (obs.task==GS_PERCEIVE || obs.task==GS_MOVE || obs.task==GS_REMEMBER_STATIC || obs.task==GS_CHOOSE),"invalid evaluation task/horizon");
+            ds=e.bindings(obs,assignment,sites);e.m.set_drives(ds.data(),int(ds.size()));for(int j=0;j<5;++j)e.m.step(.02);
+            ++e.index;e.m.observe();auto a=e.action(obs);require(gs_step(world,&a)==GS_OK,"native world action rejected");}
+        e.out<<"{\"index\":"<<e.index<<'}';return e.out.str();});
+}
+extern "C" const char* gp_future(void* medium,const PerfDrives* schedule,int steps,double* trajectory,int scalars){
+    return guarded([&]{require(medium && schedule && trajectory && steps>0 && steps<=600,"invalid future");
+        auto& m=*static_cast<growing::Medium*>(medium);int n=int(m.elements.size());
+        require(n<=64 && scalars==steps*n*3 && !m.automatic_samples && m.carried_sites && m.undirected_cost,"invalid frozen future state/size");
+        for(int i=0;i<steps;++i)validate_drives(schedule[i].drives,schedule[i].count);
+        for(int k=0;k<steps;++k){auto& ds=schedule[k];m.set_drives(ds.drives,ds.count);
+            for(int j=0;j<5;++j)m.step(.02);m.observe();
+            for(int i=0;i<n;++i){auto e=m.elements[i].v;auto p=trajectory+(k*n+i)*3;p[0]=e.x;p[1]=e.y;p[2]=e.phase;}}
+        return std::string("{}");});
 }

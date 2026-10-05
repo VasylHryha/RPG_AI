@@ -46,7 +46,13 @@ def copy_template(value, carrier_offset=0.):
 
 
 class Evaluator:
-    def __init__(self, calibration_rows, library=None):
+    def __init__(self, calibration_rows, library=None, backend='reference'):
+        if backend not in ('reference','native'):
+            raise ValueError('unknown evaluator backend')
+        self.backend = backend
+        if backend == 'native':
+            from .native import library as perf_library
+            self.perf_library = perf_library()
         self.rows = dict(calibration_rows)
         self.usable = tuple(t for t in TASKS if self.rows[t].usable)
         if not self.usable:
@@ -68,10 +74,14 @@ class Evaluator:
                 try:
                     assignment = permutation(episode)
                     with World(task, episode, 'validation', library=self.library) as world:
-                        while not world.observe().done:
-                            obs = world.observe()
-                            medium.integrate(bindings(task, obs, assignment, medium.time))
-                            world.step(action(task, obs, medium.native, medium.time))
+                        if self.backend == 'native':
+                            from .native import evaluate_episode
+                            evaluate_episode(medium,world,assignment,self.perf_library)
+                        else:
+                            while not world.observe().done:
+                                obs = world.observe()
+                                medium.integrate(bindings(task, obs, assignment, medium.time))
+                                world.step(action(task, obs, medium.native, medium.time))
                         scores.append(oriented(task, world.score()))
                     self.episodes += 1
                 finally:

@@ -39,7 +39,12 @@ def start(medium):
     if len(frames) != 601 or [f.index for f in frames] != list(range(medium.step_index-600, medium.step_index+1)):
         raise ValueError('INVALID: qualification requires 601 consecutive endpoint frames')
     alive = {e.id for e in medium.native.elements}
-    cohort = sorted(id for id in alive if medium.birth_steps[id] <= medium.step_index-600)
+    first_index = medium.step_index-600
+    # Growth follows the appended endpoint. A birth at the window's left
+    # boundary has no sample in that endpoint and is an entrant, unlike the
+    # initialized t=0 population recorded before its first qualification window.
+    cohort = sorted(id for id in alive if medium.birth_steps[id] <= first_index
+                    and not (medium.birth_steps[id] == first_index and id not in frames[0].elements))
     if any(id not in f.elements for id in cohort for f in frames):
         raise ValueError('INVALID: missing frame for whole-window cohort member')
     if len(cohort) < 3:
@@ -85,15 +90,26 @@ def snapshot_order(candidates):
     return sorted(candidates, key=lambda c: (-len(c['ids']), min(c['ids'])))[:3]
 
 
-def finish(saved, check, schedule, rng):
+def deviation_series(a, b):
+    """Batch the frozen NumPy estimators with the same member reduction axes."""
+    phase = np.ascontiguousarray(wrap(b[:,:,2]-a[:,:,2]))
+    phase = wrap(phase-c4.circular_mean(phase,axis=1)[:,None])
+    dx = np.ascontiguousarray(b[:,:,:2]-a[:,:,:2])
+    dx -= dx.mean(1)[:,None,:]
+    return np.sqrt(np.mean(phase**2,axis=1)), np.sqrt(np.mean(np.sum(dx**2,axis=2),axis=1))
+
+
+def finish(saved, check, schedule, rng, *, backend='reference', lib=None):
     """Replay 600 actual next-world-step drives, five substeps each; no plasticity."""
     if len(schedule) != 600:
         raise ValueError('INVALID: replay requires the full next 60 seconds')
+    if backend not in ('reference','native'):
+        raise ValueError('unknown recovery backend')
     admitted = []
     if check['possibly_aliased']:
         return admitted, 0.
     for candidate in check['candidates']:
-        control, kicked = saved.clone(), saved.clone()
+        control, kicked = saved.clone(events=False,frames=False), saved.clone(events=False,frames=False)
         try:
             all_elements = saved.native.elements
             all_ids = [e.id for e in all_elements]
@@ -106,13 +122,21 @@ def finish(saved, check, schedule, rng):
                 kicked.native.set_element(e.id, *kx[i], kth[i], e.rate)
             initial = deviations(control, kicked, candidate['ids'])
             taus = [None, None]
-            for step, drives in enumerate(schedule, 1):
-                control.integrate(drives)
-                kicked.integrate(drives)
-                dev = deviations(control, kicked, candidate['ids'])
-                for j in range(2):
-                    if taus[j] is None and dev[j] < initial[j]/math.e:
-                        taus[j] = step*.1
+            if backend == 'native':
+                from .native import future
+                a = future(control,schedule,lib=lib)[:,member_indices]
+                b = future(kicked,schedule,lib=lib)[:,member_indices]
+                for j, dev in enumerate(deviation_series(a,b)):
+                    reached=np.flatnonzero(dev < initial[j]/math.e)
+                    if len(reached):taus[j]=(int(reached[0])+1)*.1
+            else:
+                for step, drives in enumerate(schedule, 1):
+                    control.integrate(drives)
+                    kicked.integrate(drives)
+                    dev = deviations(control, kicked, candidate['ids'])
+                    for j in range(2):
+                        if taus[j] is None and dev[j] < initial[j]/math.e:
+                            taus[j] = step*.1
             def state(branch):
                 elems = {e.id: e for e in branch.native.elements}
                 return (np.array([[elems[id].x, elems[id].y] for id in check['cohort']]),

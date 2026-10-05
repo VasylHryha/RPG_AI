@@ -11,7 +11,7 @@ import sys
 ROOT = Path(__file__).resolve().parent
 BUILD = ROOT / "_build"
 LIBRARY = BUILD / ("libgs_world.dylib" if sys.platform == "darwin" else "libgs_world.so")
-SOURCES = ("world.h", "world.cpp", "native_contract.cpp", "build.py")
+SOURCES = ("world.h", "world.cpp", "native_contract.cpp", "build.py", "world.py", "../native_guard.py")
 
 
 def digest(path):

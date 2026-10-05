@@ -11,6 +11,7 @@ normalized speed for motion tasks. choose/focus_fire also require choice=id.
 Invalid actions raise InvalidAction; the native counter still records rejection.
 """
 import ctypes as C
+from ..native_guard import check_owner, pin_image, accessed
 from enum import IntEnum
 import hashlib
 import json
@@ -126,6 +127,7 @@ class Library:
         filename = "libgs_world.dylib" if sys.platform == "darwin" else "libgs_world.so"
         if hashlib.sha256((build_dir / filename).read_bytes()).hexdigest() != manifest["binary_sha256"][filename]:
             raise RuntimeError("native binary identity mismatch; run build.py")
+        pin_image(build_dir/filename,manifest['binary_sha256'][filename])
         self.api = C.CDLL(str(build_dir / filename))
         specs = {
             "gs_abi_version": (C.c_int32, []),
@@ -164,10 +166,13 @@ class Library:
 
 class _Handle:
     def _open(self):
+        check_owner(self)
         if not self._handle:
             raise RuntimeError("closed handle")
 
+    @accessed
     def close(self):
+        check_owner(self)
         if getattr(self, "_handle", None):
             getattr(self.library.api, self._destroy)(self._handle)
             self._handle = C.c_void_p()
@@ -192,18 +197,21 @@ class World(_Handle):
         _check(self.library.api.gs_create(_index(task, TASKS), _index(namespace, NAMESPACES),
                                          _seed(seed), _flags(allow_judging), C.byref(self._handle)))
 
+    @accessed
     def observe(self):
         self._open()
         result = Observation()
         _check(self.library.api.gs_observe(self._handle, C.byref(result)))
         return result
 
+    @accessed
     def step(self, action):
         self._open()
         if not isinstance(action, Action):
             raise TypeError("step requires an Action")
         _check(self.library.api.gs_step(self._handle, C.byref(action)))
 
+    @accessed
     def score(self):
         self._open()
         result = Score()
@@ -211,6 +219,7 @@ class World(_Handle):
         return result
 
     @property
+    @accessed
     def seed_tag(self):
         self._open()
         result = C.c_uint64()
@@ -228,6 +237,7 @@ class Policy(_Handle):
                                                 _seed(seed), _index(kind, ("reference", "random")),
                                                 _flags(allow_judging), C.byref(self._handle)))
 
+    @accessed
     def action(self, observation):
         self._open()
         if not isinstance(observation, Observation):

@@ -1,0 +1,14 @@
+PASS perceive control=False: reference 75.821s, old batch 7.371s -> new 7.170s
+PASS move control=False: reference 29.919s, old batch 2.493s -> new 1.630s
+PASS remember_static control=False: reference 25.820s, old batch 2.151s -> new 3.321s
+PASS choose control=False: reference 69.075s, old batch 7.406s -> new 6.503s
+PASS perceive control=True: reference 46.052s, old batch 3.223s -> new 4.048s
+PASS choose control=True: reference 46.322s, old batch 4.689s -> new 2.804s
+PASS recovery N=4: 0.287s -> 0.021s
+PASS recovery N=24: 0.558s -> 0.091s
+PASS recovery N=64: 1.841s -> 0.402s
+PASS evaluator individual dev episodes N=3, all tasks, both offsets
+PASS evaluator individual dev episodes N=24, all tasks, both offsets
+PASS evaluator individual dev episodes N=64, all tasks, both offsets
+PASS supplied-drive adapted training N=24: 8.905s -> 0.665s
+PASS supplied-drive adapted training N=50: 22.874s -> 2.379s

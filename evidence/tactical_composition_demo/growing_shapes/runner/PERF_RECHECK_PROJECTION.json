@@ -1,0 +1,45 @@
+{
+  "label": "algebraic estimate only; no section-10 or 200-episode execution",
+  "measured_receipt_sha256": "3fb22f1d4ba318a76976a64429f87e5857937e4a43c0cbe4ed01afa60cbb2b31",
+  "estimator_sha256": "cedeec4f39cb8b056dae73e2dbaa9bd0f7f02bbcf0a371f2e54308b2c4092d74",
+  "projection": {
+    "training_steps": 10240000,
+    "intact_qualification_checks": 8512,
+    "maximum_evaluator_episodes": 344064,
+    "measured_training_seconds_per_step": 0.004335797345312514,
+    "training_hours_at_observed_mix": 12.332934671111149,
+    "conditional_N": {
+      "24": {
+        "qualification_hours": 0.7892860362490036,
+        "recovery_hours_per_mean_candidate_per_check": 0.21543369555560074,
+        "evaluation_hours_at_cap": 7.449281291944596,
+        "evaluation_seconds_per_episode": 0.07794309387497833,
+        "maximum_candidate_count": 8,
+        "total_hours_by_mean_candidates": {
+          "0": 20.571501999304747,
+          "1": 20.78693569486035,
+          "3": 21.217803085971553,
+          "8": 22.294971563749552
+        }
+      },
+      "64": {
+        "qualification_hours": 1.6987221066664744,
+        "recovery_hours_per_mean_candidate_per_check": 0.9514362858311688,
+        "evaluation_hours_at_cap": 21.349283689811323,
+        "evaluation_seconds_per_episode": 0.22338117699997895,
+        "maximum_candidate_count": 21,
+        "total_hours_by_mean_candidates": {
+          "0": 35.38094046758894,
+          "1": 36.332376753420114,
+          "3": 38.23524932508246,
+          "21": 55.361102470043484
+        }
+      }
+    },
+    "limits": "Observed small training mix; recovery/qualification static synthetic cohort; evaluation compact coherent geometry. Not an upper runtime bound. No disk/full-horizon workload measurement or parallel speedup claim.",
+    "synthetic_training_hours_by_N": {
+      "24": 9.453804444444055,
+      "50": 33.8408148195546
+    }
+  }
+}

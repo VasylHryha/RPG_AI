@@ -8,7 +8,7 @@ from .run import Run
 from .readouts import seed_unit, aggregate
 
 
-def execute_arm(seeds, frozen_rows, reward=False, *, library=None):
+def execute_arm(seeds, frozen_rows, reward=False, *, library=None, backend='reference', audit_root=None):
     """Eight seeds x 2000 episodes and paired controls, for future authorization.
 
     Exceptions preserve both partial reports and produce INVALID. Frozen usable
@@ -19,10 +19,20 @@ def execute_arm(seeds, frozen_rows, reward=False, *, library=None):
     if not any(row.usable for row in frozen_rows.values()):
         return {'readouts': {k: 'INVALID' for k in ('G0', "G0'", 'G1', 'G1c', 'G5')},
                 'reason': 'zero usable tasks', 'runs': []}
+    if audit_root is None:
+        raise ValueError('section-10 orchestration requires a lossless audit_root')
     reports, units = [], []
     for seed in seeds:
-        intact = Run(seed, frozen_rows, reward, library=library)
-        control = Run(seed, frozen_rows, reward, control=True, library=intact.library)
+        # Explicit opt-in, no execution on import. Distinct arm/seed directories
+        # preserve raw audit identities and prevent accidental overwrite.
+        options = {} if backend == 'reference' else {'backend':backend}
+        intact_options, control_options = dict(options),dict(options)
+        if audit_root is not None:
+            from pathlib import Path
+            root = Path(audit_root)/('reward' if reward else 'task_blind')/str(seed)
+            intact_options['audit_dir'],control_options['audit_dir'] = root/'intact',root/'control'
+        intact = Run(seed, frozen_rows, reward, library=library, **intact_options)
+        control = Run(seed, frozen_rows, reward, control=True, library=intact.library, **control_options)
         try:
             try:
                 for episode in range(2000):
