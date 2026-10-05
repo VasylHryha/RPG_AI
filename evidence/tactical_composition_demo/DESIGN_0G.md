@@ -291,7 +291,7 @@ The general host rejects passthrough unless started explicitly with `--test-cont
    - Enemy pressure P(j) is unchanged.
 2. **Target preference toward the most engaged enemies.**
    - The score term γ · tanh(P(j)) preferred enemies being beaten **and not hurting us** (P(j) falls with the damage j deals).
-   - It becomes **γ · tanh(κ · (z_in(j) + z_out(j)))**: prefer the enemies most involved in the exchange, being hit by us or hitting us.
+   - It becomes **γ · tanh(κ · (z_in(j) + z_out(j)) · 1 s)**: prefer the enemies most involved in the exchange, being hit by us or hitting us. It keeps the revision-3 normalization: κ is dimensionless and the rates are multiplied by a fixed 1 s inside tanh, exactly as for the term it replaces.
 
 **What stays:**
 - the equations of sections 2-4 otherwise;

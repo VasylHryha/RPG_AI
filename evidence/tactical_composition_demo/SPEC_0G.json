@@ -1,7 +1,7 @@
 {
  "experiment": "0g",
  "revision": 4,
- "status": "DRAFT. Not executable until: (1) a Codex review of THIS revision returns APPROVE or APPROVE_WITH_NOTES; (2) the owner approves delta and n; (3) the owner authorizes S6 naming this file's sha256. The runner checks all three records (gates.authorization_file).",
+ "status": "WITHDRAWN 2026-10-05 without any judging fight (decision 0028 item 16). Never executable: the review gate named this file's previous hash. A new specification with a fresh root replaces it.",
  "authority_chain": [
   "DESIGN_0G.md revision 3 (sections 1-4, 6, 7, 10, 11)",
   "astelia_cpp/S4_AMENDED_PROTOCOL.md (CMA-ES optimizer supersedes design section 5's racing rule)",
@@ -331,5 +331,11 @@
   "codex_review": "docs/reviews/tactical_0g_spec_review_codex_r4.md: first line APPROVE or APPROVE_WITH_NOTES, and it names this file's sha256 (a later revision must name its own review file here)",
   "authorization_file": "astelia_cpp/S6_AUTHORIZATION.json: {spec_sha256, delta_approved, n_approved, s6_authorized, owner_words, date}, written only from the owner's explicit words"
  },
- "request_template_note": "one native request per fight, JSON line to the binary; <...> are filled per fight; controlled side is always 0 (ai[0]); every other field is literal. This note is not part of any request: request_template holds only native fields."
+ "request_template_note": "one native request per fight, JSON line to the binary; <...> are filled per fight; controlled side is always 0 (ai[0]); every other field is literal. This note is not part of any request: request_template holds only native fields.",
+ "withdrawn": {
+  "date": "2026-10-05",
+  "record": "docs/decisions/0028-owner-directed-exploratory-composable-shapes.md item 16",
+  "previous_sha256": "158031e9e90b9cc86feb840eca81917ca4913416bb683be6172434a64f7c8335",
+  "judging_root_used": false
+ }
 }

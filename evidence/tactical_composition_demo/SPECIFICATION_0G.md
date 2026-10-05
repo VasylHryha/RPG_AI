@@ -1,3 +1,5 @@
+> **WITHDRAWN 2026-10-05 without any judging fight** (decision 0028 item 16). It is kept as a record. The controllers are being improved (`DESIGN_0G.md` section 12), and a new specification on a fresh root will replace it.
+
 # Specification 0g, revision 4 (S5 registration DRAFT): the resonator AI against Astelia's scripted AI
 
 **Status: DRAFT.** Revision 2 answered the Codex review of revision 1 (`docs/reviews/tactical_0g_spec_review_codex.md`). Revision 3 answers the review of revision 2 (`docs/reviews/tactical_0g_spec_review_codex_r2.md`) and the runner's questions (`astelia_cpp/S6_RUNNER_REPORT.md`). The self-audit is below.

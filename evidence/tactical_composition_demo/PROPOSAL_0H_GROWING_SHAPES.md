@@ -69,7 +69,7 @@ All thresholds are fixed in the design before development: L_on > L_off (a hyste
 | **Stability** (the theory alone) | what locks and recovers persists | B1, B2, D1, D3 by lock |
 | **Stability + reward** (labelled addition) | locks during good outcomes strengthen (three-factor rule), and usefulness also counts | B1, B2, B3, D1, D2, D3 by utility |
 
-Yardsticks:
+Yardsticks (**size is counted as learnable scalars**: element positions, natural rates and couplings, including those of born elements; the neural network gets the same count of weights):
 - a fixed-size medium of the same final size, trained the same way;
 - the same medium trained by gradient through its dynamics (AKOrN-like);
 - a normal neural network of equal parameter count.
@@ -102,6 +102,7 @@ Checks:
   - focus fire.
 
   The Astelia bench comes only after level 2 works.
+- **The tiny 2D task world is its own deliverable:** a small engine, specified and tested before any atom is grown, with fixed task generators, development and judging seed separation, and a scripted reference per task.
 
 ## 7. Predictions that can fail
 
@@ -145,7 +146,9 @@ Only the tasks are chosen by the drafter. Atoms, bonds and growth are produced b
 
 ## 8. Dependencies and order
 
-1. **C6 first:** its medium must exist and run fast (the C++ port, revision R007). 0h builds on that medium.
+1. **The dependency is split (recheck 2026-10-05):**
+   - **Steps 1-2 (atoms and the library)** need only a fast C4 medium with input drive and output readout, plus the tiny 2D task world. They can start as soon as the owner approves 0h, in parallel with C6.
+   - **Steps 3-4 (a seeded background)** need the C6 pilot's answer: does a background changed by earlier structure suppress new formation? If it does, step 3 waits for the redesign that the pilot points to.
 2. Then:
    - an 0h design with every threshold fixed;
    - a Codex review;

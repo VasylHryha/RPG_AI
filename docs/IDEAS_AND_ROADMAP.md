@@ -29,9 +29,9 @@ The test of "real" is that the AI wins against Astelia's scripted AI in a game r
 | Typed C++ game engine | DONE (reviewed APPROVE_WITH_NOTES) | about 12× faster than the JS; same ladder order; compare only within one engine | `astelia_cpp/PORT_REPORT.md`, `astelia_cpp_review_claude/INDEPENDENT_REVIEW.md` |
 | AI plug (S2) and controllers (S3) | DONE (reviewed) | our AI controls units through a clean view; resonator, plain morale and push-pull built | `astelia_cpp/S2_*`, `S3_*`, the reviews |
 | 0g tuning (S4) | DONE | the resonator beats novice head-to-head (+5.9) but loses to regular (−8.7); it equals or trails plain morale (−1.1); it beats push-pull by about 7.3 | `astelia_cpp/s4_amended_development/`, `astelia_cpp_review_claude/S4_*` |
-| 0g final test spec (S5) | WITHDRAWN unrun | four Codex review rounds, APPROVE_WITH_NOTES; the runner was approved; withdrawn to improve first; seeds never used | `SPEC_0G.json`, `docs/decisions/0028` items 15-16 |
-| Replay viewer | DONE | the **retreat trap** found: enemy guns out-range our units, damage keeps them pulled back | `viz_0g/` (claude.ai/artifact/4AhiRJomJTM8QcVRLEWWWL) |
-| 0g v1 (two fixes) | RUNNING (Codex) | unanswered damage drives attack; targets prefer engaged enemies | `DESIGN_0G.md` section 12 |
+| 0g final test spec (S5) | WITHDRAWN unrun (marked inside `SPEC_0G.json`; its hash changed, so it can never pass the review gate) | four Codex review rounds, APPROVE_WITH_NOTES; the runner was approved; withdrawn to improve first; seeds never used | `SPEC_0G.json`, `docs/decisions/0028` items 15-16 |
+| Replay viewer | DONE | the **retreat trap** found: enemy guns out-range our units, damage keeps them pulled back | `viz_0g/` (claude.ai/artifact/4AhiRJomJTM8QcVRLEWWWL, private until the owner shares it) |
+| 0g v1 (two fixes) | RUNNING (Codex) | unanswered damage drives attack; targets prefer engaged enemies. **The review must check that the evidence binds to committed code**: at the recheck the C++ changes were uncommitted while the run used them | `DESIGN_0G.md` section 12 |
 | 0h growing shapes | PROPOSED (draft) | growth and death, a shared medium, a library, bonds | `evidence/tactical_composition_demo/PROPOSAL_0H_GROWING_SHAPES.md` |
 
 ## 3. Waiting for the owner
@@ -39,7 +39,7 @@ The test of "real" is that the AI wins against Astelia's scripted AI in a game r
 | # | Decision | Options | Drafter's recommendation |
 |---|---|---|---|
 | W1 | C6 next step | **A** a small pilot: does a changed background suppress the next unit? **B** the C++ port of the unchanged model; **C** pause | **A** first: it decides whether chaining can work at all; then B |
-| W2 | Approve 0h as the direction | approve, change, reject | approve; it depends on C6 (W1) |
+| W2 | Approve 0h as the direction | approve, change, reject | approve; its atom bootstrap does not depend on C6, only its later seeded-background steps do |
 | W3 | Confirm the reading of "go ahead" (improve before registering) | confirm, correct | marked [R] in decision 0028 item 16 |
 | W4 | Later: approve δ, n and the run of a new 0g specification | after v1 development | registered only after review |
 
@@ -55,7 +55,7 @@ The test of "real" is that the AI wins against Astelia's scripted AI in a game r
 | Quick checks (racing), one change after another | DONE | about 10× fewer fights per round | `compose_seq.js` |
 | Two-step check (harmful-alone parts) | DONE | finds pairs that single steps miss | run 4 |
 | Grow units separately, then merge (bigger things) | DONE (partly) | units grew; the merges never ran (stopped) | run 5 |
-| Fight cache, seed ledger, combination library | DONE | repeats cost nothing; fresh seeds for grading | `astelia_compose/cache.js` |
+| Fight cache, seed ledger, combination library | DONE | JS search: `astelia_compose/cache.js`. C++ runs use Codex's `astelia_cpp/result_cache.py` and seed ledgers (settled in S4) | both |
 | CMA-ES for continuous knobs | ADOPTED | better than the switch rule for smooth knobs | `astelia_cpp/S4_AMENDED_PROTOCOL.md` |
 
 ### 4.2 The game bench
@@ -121,15 +121,21 @@ The test of "real" is that the AI wins against Astelia's scripted AI in a game r
 | Step | What | Depends on | Status |
 |---|---|---|---|
 | 1 | Finish 0g v1 development, review it, update the replays | Codex run | RUNNING |
-| 2 | A new 0g specification on a fresh root; Codex review; owner approval; one recorded run | step 1, W4 | next |
+| 2 | A new 0g specification on a fresh root; the approved S6 runner adapted and re-reviewed; Codex review; owner approval; one recorded run | step 1, W4 | next |
 | 3 | C6 pilot (option A) | W1 | waiting |
 | 4 | C6 C++ port and R007, if the pilot is favourable | step 3 | waiting |
-| 5 | 0h design (thresholds fixed), Codex review | W2, step 4 | waiting |
-| 6 | 0h bootstrap: atoms grow and are locked into the library | step 5 | |
-| 7 | 0h combinations: seeded media grow level-2 shapes | step 6 | |
+| 5 | 0h design (thresholds fixed) and the tiny 2D task world, Codex review | W2 (**not** C6: the atoms need only a fast C4 medium) | waiting |
+| 6 | 0h bootstrap: atoms grow and are locked into the library | step 5 (parallel with steps 3-4) | |
+| 7 | 0h combinations: seeded media grow level-2 shapes | steps 6 and 3 (the C6 pilot's answer on background suppression) | |
 | 8 | Level-2 and level-3 shapes control units on the Astelia bench | step 7 | |
 
 ## 6. Lessons learned (so they are not repeated)
+
+- **Recheck 2026-10-05:**
+  - a withdrawn specification must say so inside the governing file, not only in a decision;
+  - a formula change must restate its normalization;
+  - long runs must bind to committed code;
+  - dependencies are split by step, so independent work is not blocked.
 
 - **The line drifted once** into tuning the game's own scripted skills (the switch search). Every experiment now states what its pieces are made of, how connections form, and the closest known method.
 - **Specify before building:** design revision 1 had contradicting formulas and a sign error; the S5 specification took four review rounds. Write equations and data formats exactly, and run the sign and degenerate-case checks early.
