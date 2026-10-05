@@ -79,6 +79,57 @@ void contracts(){
   require(engage.decide(hit,1).target==3,"stable initial target tie");hit.units[2].dealtToEnemy=10;hit.units[0].takenFromEnemy=10;
   engage.prepare(hit);old.prepare(hit);require(engage.decide(hit,1).target==4&&old.decide(hit,1).target==3,"enemy damage target preference and v0 negative control");
  }
+ { // v2 threat geometry: both radii for direct/melee, inclusive artillery min/max, living engaged enemies only.
+ auto threat=fixture();auto self=threat.units[0],enemy=threat.units[2];enemy.x=self.x+220;
+ for(auto role:{ObservedRole::Melee,ObservedRole::Ranged}){enemy.role=role;require(v2Threat(self,enemy,.1),"direct threat boundary");enemy.x+=.01;require(!v2Threat(self,enemy,.1),"direct threat outside");enemy.x-=.01;}
+ require(!v2Threat(self,enemy,0),"inactive enemy is not a threat");enemy.hp=0;require(!v2Threat(self,enemy,.1),"dead threat");enemy.hp=100;enemy.team=0;require(!v2Threat(self,enemy,.1),"ally threat");enemy.team=1;
+ enemy.role=ObservedRole::Artillery;enemy.minRange=80;
+ for(double distance:{79.0,80.0,200.0,200.01}){enemy.x=self.x+distance;require(v2Threat(self,enemy,.1)==(distance>=80&&distance<=200),"artillery threat dead zone/boundaries");}
+ // Both centre-reach cases, mixed roles, extreme bounds: committed distances stay in own legal reach.
+ for(auto ownRole:{ObservedRole::Melee,ObservedRole::Ranged,ObservedRole::Artillery})for(auto enemyRole:{ObservedRole::Melee,ObservedRole::Ranged,ObservedRole::Artillery})for(double er:{100.0,400.0})for(double fc:{.3,1.0})for(double mk:{.2,1.0}){
+  self.role=ownRole;self.range=250;self.minRange=80;enemy.role=enemyRole;enemy.range=er;enemy.minRange=40;
+  Knobs k;k.fc=fc;k.mk=mk;k.w=1.5;double Ri=(self.range+(ownRole==ObservedRole::Artillery?0:self.radius+enemy.radius))/100;
+  double Re=(enemy.range+(enemyRole==ObservedRole::Artillery?0:self.radius+enemy.radius))/100;
+  double committed=ownRole==ObservedRole::Artillery?std::max(fc*Ri,.84):Re<Ri?Re+mk*(Ri-Re):fc*Ri;
+  close(v2Preferred(self,enemy,k,1),committed);require(committed<=Ri,"v2 commit exceeds reach");
+  if(ownRole==ObservedRole::Artillery)require(committed>=.84,"gun commit below minimum");
+  close(v2Preferred(self,enemy,k,0),Re<Ri?committed+k.w*(Ri-Re)/2:(committed+Re+k.w*Ri)/2);
+  if(Re>=Ri)close(v2Preferred(self,enemy,k,-1),Re+k.w*Ri);
+  for(double ratio:{.5,1.0,2.0}){enemy.x=self.x+100*committed*ratio;enemy.y=self.y;std::map<UnitId,Memory> memory;memory[enemy.id].zOut=.5;k.lambdaTh=0;
+   auto force=v2EnemyMotion(self,{&enemy},memory,k,1);close(force[0],k.G*(1-1/ratio));close(force[1],0);require(ratio==1?std::abs(force[0])<1e-12:force[0]*(ratio-1)>0,"v2 restoring sign");}
+ }
+ // Deterministic cap keeps the eight nearest; added threats sort by damage, distance and id.
+ auto many=fixture();many.units.resize(1);self=many.units[0];self.range=20;
+ for(unsigned n=0;n<18;++n){enemy.id=10+n;enemy.role=ObservedRole::Artillery;enemy.range=2000;enemy.minRange=0;enemy.x=self.x+100+n*10;enemy.y=self.y;many.units.push_back(enemy);}
+ std::map<UnitId,Memory> mm;std::vector<const ObservedUnit*> ordered;
+ for(size_t n=1;n<many.units.size();++n){auto* u=&many.units[n];ordered.push_back(u);mm[u->id].zOut=n<=8?0:.2;}
+ mm[27].zOut=.9;mm[26].zOut=.8;many.units[15].x=many.units[14].x; // equal distance: id tie
+ auto selected=v2EnemySet(self,ordered,mm);require(selected.size()==16,"v2 cap");
+ for(size_t n=0;n<8;++n)require(selected[n]->id==10+n,"nearest not retained");
+ require(selected[8]->id==27&&selected[9]->id==26&&selected[10]->id==18,"threat priority");
+ require(selected[14]->id==22&&selected[15]->id==23,"threat distance/id tie");
+ Knobs zeroWeight;zeroWeight.lambdaTh=0;auto mean=v2EnemyMotion(self,selected,mm,zeroWeight,1);double plain=0;
+ for(auto u:selected)plain+=zeroWeight.G*(1-v2Preferred(self,*u,zeroWeight,1)/(std::hypot(u->x-self.x,u->y-self.y)/100))/selected.size();close(mean[0],plain);close(mean[1],0);
+ zeroWeight.lambdaTh=3;auto weighted=v2EnemyMotion(self,selected,mm,zeroWeight,1);double numerator=0,denominator=0;
+ for(auto u:selected){double weight=1+3*std::tanh(mm[u->id].zOut);denominator+=weight;numerator+=weight*zeroWeight.G*(1-v2Preferred(self,*u,zeroWeight,1)/(std::hypot(u->x-self.x,u->y-self.y)/100));}close(weighted[0],numerator/denominator);
+ // Full threat attribution remains independent of the movement cap and of unrelated legal targets.
+ for(auto arm:{Arm::Resonator,Arm::Morale}){
+  auto seq=fixture();seq.units={seq.units[0],seq.units[2],seq.units[3]};seq.units[0].range=20;seq.units[1].x=seq.units[0].x+30;seq.units[2].x=seq.units[0].x+150;seq.units[2].range=200;
+  Probe split(7,0,arm,{},"v2");split.prepare(seq);require(!split.memory().at(1).hadUnansweredThreat,"fabricated initial threat");
+  seq.units[2].dealtToEnemy+=3;split.prepare(seq);require(split.memory().at(1).hadLegalTarget&&split.memory().at(1).hadUnansweredThreat,"reachable decoy masked threat");
+  seq.units[2].x=1100;seq.units[0].takenFromEnemy+=3;split.prepare(seq);close(split.memory().at(1).zInUnanswered,(1-q)*3/seq.dt/100);close(split.memory().at(1).zInAnswered,0);
+  require(!split.memory().at(1).hadUnansweredThreat,"outside enemy still a threat");
+  seq.units[0].takenFromEnemy+=3;split.prepare(seq);close(split.memory().at(1).zInAnswered,(1-q)*3/seq.dt/100);
+  seq.units[2].x=seq.units[0].x+30;split.prepare(seq);require(!split.memory().at(1).hadUnansweredThreat,"reachable threat labeled unanswered");
+  auto branch=split.clone();seq.units[2].x=seq.units[0].x+150;branch->prepare(seq);require(dynamic_cast<S3Controller*>(branch.get())->memory().at(1).hadUnansweredThreat&&!split.memory().at(1).hadUnansweredThreat,"v2 clone attribution leaked");
+  auto overflow=many;overflow.units[0].range=240;overflow.units.back().role=ObservedRole::Artillery;overflow.units.back().minRange=0;
+  Probe capped(7,0,arm,{},"v2");capped.prepare(overflow);
+  for(size_t n=1;n<overflow.units.size();++n)overflow.units[n].dealtToEnemy=double(100-n);
+  capped.prepare(overflow);require(capped.memory().at(1).hadUnansweredThreat,"full threat label was capped");
+  // No active threat: damage is answered even with an empty own legal set.
+  auto inactive=fixture();inactive.units={inactive.units[0],inactive.units[2]};inactive.units[1].x=1100;Probe quiet(7,0,arm,{},"v2");quiet.prepare(inactive);inactive.units[0].takenFromEnemy=3;quiet.prepare(inactive);close(quiet.memory().at(1).zInUnanswered,0);close(quiet.memory().at(1).zInAnswered,(1-q)*3/inactive.dt/100);
+ }
+ }
  // Artillery legality uses centre-distance min/max range, retained for attribution.
  auto gun=fixture();gun.units={gun.units[0],gun.units[2]};gun.units[0].role=ObservedRole::Artillery;gun.units[0].minRange=80;gun.units[1].x=gun.units[0].x+40;
  Probe splitGun(7,0,Arm::Morale);splitGun.prepare(gun);require(!splitGun.memory().at(1).hadLegalTarget,"inside artillery min range must be unanswered");

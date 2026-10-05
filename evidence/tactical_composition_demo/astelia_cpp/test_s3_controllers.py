@@ -132,17 +132,17 @@ def test_refinement_clips_only_at_game_tick_end(s3_build):
     assert np.max(np.abs(actual['step']-expected)) < 1e-12
 
 
-@pytest.mark.parametrize('skeleton', ['v0', 'v1', 'bad', 0, True, None])
+@pytest.mark.parametrize('skeleton', ['v0', 'v1', 'v2', 'bad', 0, True, None])
 def test_skeleton_flag_admission(s3_build, skeleton):
     spec = dict(arm='morale', skeleton=skeleton)
-    if skeleton not in ('v0', 'v1'):
+    if skeleton not in ('v0', 'v1', 'v2'):
         with pytest.raises(ValueError): request(spec)
     # Native admission is checked without running a development fight.
     req = request(dict(arm='morale'))
     req['options']['duration'] = 0
     req['options']['ai'][0]['skeleton'] = skeleton
     row = json.loads(subprocess.check_output([str(ROOT/'build/astelia_native')], input=json.dumps(req)+'\n', text=True))
-    assert ('error' in row) == (skeleton not in ('v0', 'v1'))
+    assert ('error' in row) == (skeleton not in ('v0', 'v1', 'v2'))
 
 
 def test_v0_fixture_summary_bytes_and_v1_engineering_fights(s3_build):

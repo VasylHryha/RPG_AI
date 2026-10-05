@@ -37,7 +37,7 @@ def request(spec):
     if not isinstance(params, dict):
         raise ValueError('params must be an object')
     opponent = spec.get('opponent', 'alone')
-    if 'skeleton' in spec and spec['skeleton'] not in ('v0', 'v1'):
+    if 'skeleton' in spec and spec['skeleton'] not in ('v0', 'v1', 'v2'):
         raise ValueError('invalid skeleton')
     if opponent not in POOL + ['novice', 'regular', 'elite', 'elite-fast']:
         raise ValueError('invalid opponent')
