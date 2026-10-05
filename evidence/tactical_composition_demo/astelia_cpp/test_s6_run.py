@@ -26,6 +26,15 @@ def forbid_real_root(monkeypatch):
         return derive(root, namespace, index)
 
     monkeypatch.setattr(s6, "derive_seed", guarded)
+    popen = s6.subprocess.Popen
+
+    def stub_only(command, *args, **kwargs):
+        binary = Path(command[0])
+        assert "fake_repo" in binary.parts, "Tests may only launch a fake-repository stub"
+        assert binary.read_text().startswith("#!" + sys.executable + "\n" + STUB)
+        return popen(command, *args, **kwargs)
+
+    monkeypatch.setattr(s6.subprocess, "Popen", stub_only)
 
 
 @pytest.fixture
@@ -40,17 +49,36 @@ STUB = r'''
 import json, os, pathlib, sys, time
 mode = pathlib.Path(__file__).with_suffix('.mode').read_text().strip()
 log = pathlib.Path(__file__).with_suffix('.requests')
-identity = pathlib.Path(__file__).parents[1] / 's6_run/identity.json'
+output = pathlib.Path(__file__).parents[1] / 's6_run'
+identity = output / 'identity.json'
+schedule = json.loads((output / 'schedule.json').read_text())
+assert identity.is_file(), 'identity must precede worker launch'
+batch = None
+returns = 0
 for line in sys.stdin:
     assert identity.is_file(), 'identity must precede the first fight'
     request = json.loads(line)
+    key = next(row['key'] for row in schedule if row['request'] == request)
+    current = (key[0], key[1] if key[0] == 'HEAD' else None, key[2], key[4])
+    batch = batch or current
+    assert current == batch, 'worker mixed clusters/blocks/arms/panels'
+    attempts = [json.loads(line) for line in (output / 'attempts.jsonl').read_text().split('\n')[:-1]]
+    assert any(row['key'] == key and row['request'] == request for row in attempts), 'send before attempt'
     arm = request['options']['ai'][0]['controller']
     panel = 'HEAD' if 'level' in request['options']['ai'][1] else 'POOL'
     with log.open('a') as f:
         f.write(json.dumps(request) + '\n')
-    if mode == 'strict_template' and 'comment' in request:
-        print(json.dumps({'error':'unsupported native combat field: comment'}), flush=True)
-        continue
+    if mode == 'strict_template':
+        assert set(request) == {'trace', 'debug', 'mode', 's3', 'diagnostics', 'opponent', 'options'}
+        assert 'request_template_note' not in request and 'comment' not in request
+    if mode.startswith('late_') and arm == 'morale' and panel == 'POOL' and key[2] == 0 and returns == 1:
+        if mode == 'late_timeout':
+            time.sleep(2)
+        elif mode == 'late_malformed':
+            print('{bad json', flush=True)
+            continue
+        elif mode == 'late_missing':
+            sys.exit(0)
     if mode == 'timeout' and arm == 'resonator' and panel == 'HEAD':
         time.sleep(2)
     if mode == 'error' and arm == 'resonator' and panel == 'HEAD':
@@ -77,10 +105,13 @@ for line in sys.stdin:
     if request['diagnostics']:
         print(json.dumps(dict(diagnostics=True, second=1, t=1, sides=[])), flush=True)
     print(json.dumps(summary), flush=True)
+    returns += 1
     if mode == 'duplicate' and arm == 'nearest':
         print(json.dumps(summary), flush=True)
-if mode == 'late_nonzero' and arm == 'morale' and panel == 'POOL':
+if mode == 'late_nonzero' and arm == 'morale' and panel == 'POOL' and key[2] == 0:
     sys.exit(9)
+if mode == 'shutdown_timeout' and arm == 'morale' and panel == 'POOL' and key[2] == 0:
+    time.sleep(2)
 '''
 
 
@@ -107,6 +138,9 @@ def fake(tmp_path, spec):
     binary.with_suffix(".mode").write_text("normal")
     manifest = binary.with_suffix(".build.json")
     s6.dump(manifest, {"binary_sha256": s6.sha256(binary)})
+    # Synthetic registration has a literal existing path. The real revision-3
+    # field embeds prose; its resulting refusal is covered separately below.
+    spec["engine"]["build_manifest"] = "astelia_cpp/build/astelia_native.build.json"
     spec["engine"]["binary_sha256"] = s6.sha256(binary)
     spec["engine"]["build_manifest_sha256"] = s6.sha256(manifest)
     # Tiny synthetic panel for subprocess integration, not real judging entropy.
@@ -170,6 +204,14 @@ def test_registered_schedule_and_diagnostics(spec):
     seeds, schedule, rows = schedule_data(spec)
     assert len(schedule) == 6464 and len(set(schedule)) == 6464
     assert sum(k[0] == "HEAD" for k in schedule) == 1600
+    batches = s6.scheduled_batches(schedule)
+    assert len(batches) == 928
+    assert sum(len(batch) == 2 for batch in batches) == 800
+    assert sum(len(batch) == 38 for batch in batches) == 128
+    assert {key for batch in batches for key in batch} == set(schedule)
+    assert sum(map(len, batches)) == len(schedule)
+    for batch in batches:
+        assert len({(k[0], k[1] if k[0] == "HEAD" else None, k[2], k[4]) for k in batch}) == 1
     diagnostic = [r for r in rows if r["request"]["diagnostics"]]
     assert len(diagnostic) == 57
     assert all(r["key"][0] == "POOL" and r["key"][2] in (0, 1, 2)
@@ -200,7 +242,6 @@ def test_requests_every_field(spec, panel):
                     profile = (spec["opponents"]["head"][opponent] if panel == "HEAD"
                                else spec["opponents"]["pool"]["profile_for_every_doctrine"])
                     expected = {
-                        "comment": spec["request_template"]["comment"],
                         "trace": False, "debug": False, "mode": "alone", "s3": True,
                         "diagnostics": panel == "POOL" and arm == "resonator" and i == 0 and not orientation,
                         "opponent": "alone" if panel == "HEAD" else opponent,
@@ -223,7 +264,7 @@ def test_owner_gate_refuses_before_seed_derivation(fake, monkeypatch, gate, inva
     s6.dump(fake["auth"], auth)
     monkeypatch.setattr(s6, "derive_seed", lambda *a: pytest.fail("Gate refusal must precede seeds"))
     with pytest.raises(s6.Refusal, match=gate):
-        s6.run(fake["spec_path"], fake["repo"], workers=1, host_timeout=2)
+        s6.run(fake["spec_path"], fake["repo"], workers=1)
     assert not fake["output"].exists()
 
 
@@ -232,7 +273,7 @@ def test_missing_gate_or_ledger(fake, record):
     path = fake["cpp"] / "S4_SEED_LEDGER.json" if record == "ledger" else fake[record]
     path.unlink()
     with pytest.raises(s6.Refusal):
-        s6.run(fake["spec_path"], fake["repo"], workers=1, host_timeout=2)
+        s6.run(fake["spec_path"], fake["repo"], workers=1)
     assert not fake["output"].exists()
 
 
@@ -255,6 +296,16 @@ def test_gate_wrong_spec_hash(fake, record):
         s6.preflight(fake["spec_path"], fake["repo"])
 
 
+def test_unregistered_approving_review_cannot_replace_named_rejection(fake, monkeypatch):
+    alternate = fake["review"].with_name("tactical_0g_spec_review_codex_r3.md")
+    alternate.write_text("APPROVE\n" + s6.sha256(fake["spec_path"]))
+    fake["review"].write_text("CHANGES_REQUIRED\n" + "0" * 64)
+    monkeypatch.setattr(s6, "derive_seed", lambda *a: pytest.fail("Review refusal must precede seeds"))
+    with pytest.raises(s6.Refusal, match="review"):
+        s6.run(fake["spec_path"], fake["repo"], workers=1)
+    assert not fake["output"].exists()
+
+
 @pytest.mark.parametrize("field", ["owner_words", "date"])
 def test_authorization_provenance_required(fake, field):
     auth = s6.read_json(fake["auth"])
@@ -270,7 +321,7 @@ def test_binary_and_manifest_hash_refusal(fake, monkeypatch, artifact):
         stream.write("\nmodified\n")
     monkeypatch.setattr(s6, "derive_seed", lambda *a: pytest.fail("Hash refusal must precede seeds"))
     with pytest.raises(s6.Refusal, match="sha256 mismatch"):
-        s6.run(fake["spec_path"], fake["repo"], workers=1, host_timeout=2)
+        s6.run(fake["spec_path"], fake["repo"], workers=1)
     assert not fake["output"].exists()
 
 
@@ -280,6 +331,62 @@ def test_manifest_binary_binding(fake):
     rebind(fake)
     with pytest.raises(s6.Refusal, match="admitted binary"):
         s6.preflight(fake["spec_path"], fake["repo"])
+
+
+def test_manifest_path_is_registered_not_inferred(fake):
+    manifest = fake["base"] / "declared_manifest.json"
+    fake["manifest"].rename(manifest)
+    fake["spec"]["engine"]["build_manifest"] = "declared_manifest.json"
+    rebind(fake)
+    _, _, _, identity = s6.preflight(fake["spec_path"], fake["repo"])
+    assert identity["manifest_sha256"] == s6.sha256(manifest)
+    manifest.unlink()
+    with pytest.raises(s6.Refusal):
+        s6.preflight(fake["spec_path"], fake["repo"])
+
+
+def test_revision3_manifest_explanation_is_literal_and_refuses(fake, monkeypatch):
+    # Use the actual path string only, with fake root, engine and gate records.
+    registered = json.loads((HERE.parent / "SPEC_0G.json").read_text())["engine"]["build_manifest"]
+    assert registered.endswith(" (its binary_sha256 field must equal engine.binary_sha256)")
+    fake["spec"]["engine"]["build_manifest"] = registered
+    rebind(fake)
+    monkeypatch.setattr(s6, "derive_seed", lambda *a: pytest.fail("Path refusal must precede seeds"))
+    with pytest.raises(s6.Refusal, match="Preflight record invalid"):
+        s6.run(fake["spec_path"], fake["repo"], workers=1)
+    assert not fake["output"].exists()
+
+
+@pytest.mark.parametrize("revision", [1, 2, 4])
+def test_other_revisions_refused(fake, revision):
+    fake["spec"]["revision"] = revision
+    rebind(fake)
+    with pytest.raises(s6.Refusal, match="revision 3"):
+        s6.preflight(fake["spec_path"], fake["repo"])
+
+
+def test_registered_host_timeouts(spec):
+    assert spec["failures"]["host"]["per_fight_timeout_seconds"] == 120
+    assert spec["failures"]["host"]["worker_shutdown_timeout_seconds"] == 30
+
+
+def test_cli_has_no_host_timeout_override(monkeypatch):
+    monkeypatch.setattr(sys, "argv", ["s6_run.py", "--host-timeout", "120"])
+    monkeypatch.setattr(s6, "run", lambda *a, **k: pytest.fail("Unsupported flag must precede run"))
+    with pytest.raises(SystemExit) as exc:
+        s6.main()
+    assert exc.value.code == 2
+
+
+@pytest.mark.parametrize("field", ["per_fight_timeout_seconds", "worker_shutdown_timeout_seconds"])
+@pytest.mark.parametrize("value", [0, -1, True, "120", None])
+def test_invalid_registered_host_timeout_refused_before_seeds(fake, monkeypatch, field, value):
+    fake["spec"]["failures"]["host"][field] = value
+    rebind(fake)
+    monkeypatch.setattr(s6, "derive_seed", lambda *a: pytest.fail("Timeout refusal must precede seeds"))
+    with pytest.raises(s6.Refusal, match="registered host timeout"):
+        s6.run(fake["spec_path"], fake["repo"], workers=1)
+    assert not fake["output"].exists()
 
 
 @pytest.mark.parametrize("first", ["APPROVE", "APPROVE_WITH_NOTES"])
@@ -293,7 +400,7 @@ def test_duplicate_scheduled_key_refused_before_latch(fake):
     fake["spec"]["panels"]["HEAD"]["orientations"] = [False, False]
     rebind(fake)
     with pytest.raises(s6.Refusal, match="Duplicate scheduled key"):
-        s6.run(fake["spec_path"], fake["repo"], workers=1, host_timeout=2)
+        s6.run(fake["spec_path"], fake["repo"], workers=1)
     assert not fake["output"].exists()
 
 
@@ -305,7 +412,7 @@ def test_seed_duplicate_preflight(fake, monkeypatch, cross_namespace):
         offsets["P1_regular"] = offsets["P1_novice"]
     monkeypatch.setattr(s6, "derive_seed", lambda root, ns, i: offsets[ns] + (i if cross_namespace else 0))
     with pytest.raises(s6.Refusal, match="Duplicate"):
-        s6.run(fake["spec_path"], fake["repo"], workers=1, host_timeout=2)
+        s6.run(fake["spec_path"], fake["repo"], workers=1)
     assert not fake["output"].exists()
 
 
@@ -315,7 +422,7 @@ def test_seed_duplicate_preflight(fake, monkeypatch, cross_namespace):
 def test_development_overlap_each_source(fake, monkeypatch, seed):
     monkeypatch.setattr(s6, "derive_seed", lambda *a: seed)
     with pytest.raises(s6.Refusal, match="overlap"):
-        s6.run(fake["spec_path"], fake["repo"], workers=1, host_timeout=2)
+        s6.run(fake["spec_path"], fake["repo"], workers=1)
     assert not fake["output"].exists()
 
 
@@ -333,7 +440,7 @@ def test_preflight_all_seeds_and_latch(fake, monkeypatch):
     sentinel.write_text("one-shot")
     monkeypatch.setattr(s6.subprocess, "Popen", lambda *a, **k: pytest.fail("Latch must precede host"))
     with pytest.raises(s6.Refusal, match="latch"):
-        s6.run(fake["spec_path"], fake["repo"], workers=1, host_timeout=2)
+        s6.run(fake["spec_path"], fake["repo"], workers=1)
     assert sentinel.read_text() == "one-shot"
     assert list(fake["output"].iterdir()) == [sentinel]
 
@@ -440,10 +547,13 @@ def test_pairing_orientations_equal_doctrines_and_blocks(fake):
 
 @pytest.mark.parametrize("failure_kind", ["controllerStatus", "controllerFailures", "technical", "missing",
                                            "duplicate", "schedule_missing", "schedule_duplicate"])
-def test_required_failure_no_partial_averaging(fake, failure_kind):
+@pytest.mark.parametrize("panel,arm,affected", [
+    ("POOL", "morale", ("P2",)), ("POOL", "pushpull", ("P3",)),
+    ("POOL", "resonator", ("P2", "P3")), ("HEAD", "resonator", ("P1",))])
+def test_required_failure_no_partial_averaging(fake, failure_kind, panel, arm, affected):
     spec = fake["spec"]
     _, keys, rows = schedule_data(spec)
-    target = next(r for r in rows if r["key"][0] == "POOL" and r["key"][4] == "morale")
+    target = next(r for r in rows if r["key"][0] == panel and r["key"][4] == arm)
     if failure_kind in ("controllerStatus", "controllerFailures"):
         summary = copy.deepcopy(target["summary"])
         summary[failure_kind] = "controller_failure" if failure_kind == "controllerStatus" else [1, 0]
@@ -460,13 +570,15 @@ def test_required_failure_no_partial_averaging(fake, failure_kind):
     else:
         keys.append(tuple(target["key"]))
     result = s6.evaluate(spec, keys, rows)
-    p2 = result["endpoint_coverage"]["P2"]
-    assert p2["verdict"] == "INDETERMINATE" and p2["value"] is None and p2["bounds"] is None
-    assert p2["failures"] and all(f["reason"] for f in p2["failures"])
-    assert result["endpoint_coverage"]["P3"]["verdict"] == "SUPPORTED"
-    assert result["endpoint_coverage"]["P1"]["verdict"] == "SUPPORTED"
-    assert next(t for t in result["descriptive_tables"] if t["arm"] == "morale"
-                and t["opponent"] == "equal-weight pool")["mean_S"] is None
+    for name, endpoint in result["endpoint_coverage"].items():
+        if name in affected:
+            assert endpoint["verdict"] == "INDETERMINATE"
+            assert endpoint["value"] is None and endpoint["bounds"] is None
+            assert endpoint["failures"] and all(f["reason"] for f in endpoint["failures"])
+        else:
+            assert endpoint["verdict"] == "SUPPORTED"
+    assert next(t for t in result["descriptive_tables"] if t["arm"] == arm
+                and t["panel"] == panel)["mean_S"] is None
     check_coverage(result)
 
 
@@ -519,25 +631,18 @@ def test_s_d_timeout_and_controller_rule(spec):
 
 
 def test_complete_stub_run(fake):
-    result = s6.run(fake["spec_path"], fake["repo"], workers=4, host_timeout=5)
+    result = s6.run(fake["spec_path"], fake["repo"], workers=4)
     disk = s6.read_json(fake["output"] / "results.json")
     assert result == disk
     assert all(e["verdict"] == "SUPPORTED" for e in result["endpoint_coverage"].values())
     rows = [json.loads(line) for line in (fake["output"] / "fights.jsonl").read_text().splitlines()]
-    attempts = [r for r in rows if r["kind"] == "attempt"]
-    fights = [r for r in rows if r["kind"] == "fight"]
-    assert len(rows) == 672 and len(attempts) == len(fights) == 336
-    assert result["recorded_fights"] == 336
-    pending = set()
-    for row in rows:
-        key = tuple(row["key"])
-        if row["kind"] == "attempt":
-            pending.add(key)
-        else:
-            assert key in pending
-            pending.remove(key)
-    assert not pending
-    rows = fights
+    attempts = [json.loads(line) for line in (fake["output"] / "attempts.jsonl").read_text().splitlines()]
+    assert len(rows) == len(attempts) == 336
+    assert all(r["kind"] == "fight" for r in rows)
+    assert all(r["kind"] == "attempt" for r in attempts)
+    assert result["recorded_fights"] == result["attempted_fights"] == 336
+    assert {tuple(r["key"]): r["request"] for r in rows} == {
+        tuple(r["key"]): r["request"] for r in attempts}
     assert len({tuple(r["key"]) for r in rows}) == 336
     assert all(r["status"] == "completed" for r in rows)
     panels = [r["key"][0] for r in rows]
@@ -547,7 +652,12 @@ def test_complete_stub_run(fake):
     assert identity["root"] == FAKE_ROOT
     assert identity["spec_sha256"] == s6.sha256(fake["spec_path"])
     assert identity["binary_sha256"] == s6.sha256(fake["binary"])
-    assert len(identity["scheduled_keys"]) == 336
+    assert identity["host"] == fake["spec"]["failures"]["host"]
+    schedule = s6.read_json(fake["output"] / "schedule.json")
+    seeds = identity["seeds"]
+    assert schedule == [{"key": list(key), "request": s6.request_for(fake["spec"], seeds, key)}
+                        for key in s6.scheduled_keys(fake["spec"], seeds)]
+    assert len(schedule) == 336
     check_coverage(disk)
 
 
@@ -556,8 +666,10 @@ def test_complete_stub_run(fake):
     ("missing", "missing")])
 def test_stub_failures_p1_does_not_stop_pool(fake, mode, reason):
     fake["binary"].with_suffix(".mode").write_text(mode)
-    result = s6.run(fake["spec_path"], fake["repo"], workers=4,
-                    host_timeout=.5 if mode == "timeout" else 5)
+    if mode == "timeout":
+        fake["spec"]["failures"]["host"]["per_fight_timeout_seconds"] = .1
+        rebind(fake)
+    result = s6.run(fake["spec_path"], fake["repo"], workers=4)
     p1 = result["endpoint_coverage"]["P1"]
     assert p1["verdict"] == "INDETERMINATE" and reason in json.dumps(p1)
     assert result["endpoint_coverage"]["P2"]["verdict"] == "SUPPORTED"
@@ -569,7 +681,7 @@ def test_stub_failures_p1_does_not_stop_pool(fake, mode, reason):
 @pytest.mark.parametrize("mode", ["nonzero", "duplicate"])
 def test_stub_descriptive_process_failure_independent(fake, mode):
     fake["binary"].with_suffix(".mode").write_text(mode)
-    result = s6.run(fake["spec_path"], fake["repo"], workers=4, host_timeout=5)
+    result = s6.run(fake["spec_path"], fake["repo"], workers=4)
     assert all(e["verdict"] == "SUPPORTED" for e in result["endpoint_coverage"].values())
     events = [json.loads(line) for line in (fake["output"] / "fights.jsonl").read_text().splitlines()]
     assert any(e["kind"] == "process_failure" for e in events)
@@ -579,19 +691,95 @@ def test_stub_descriptive_process_failure_independent(fake, mode):
                                           ("late_nonzero", ("P2",))])
 def test_required_nonzero_exit_invalidates_only_dependent_endpoints(fake, mode, affected):
     fake["binary"].with_suffix(".mode").write_text(mode)
-    result = s6.run(fake["spec_path"], fake["repo"], workers=4, host_timeout=5)
+    result = s6.run(fake["spec_path"], fake["repo"], workers=4)
     for name, endpoint in result["endpoint_coverage"].items():
         assert endpoint["verdict"] == ("INDETERMINATE" if name in affected else "SUPPORTED")
     check_coverage(result)
 
 
-def test_registered_literal_comment_is_retained_and_engine_refusal_is_recorded(fake):
+def test_native_template_excludes_explanatory_note(fake):
     fake["binary"].with_suffix(".mode").write_text("strict_template")
-    result = s6.run(fake["spec_path"], fake["repo"], workers=4, host_timeout=5)
-    assert all(e["verdict"] == "INDETERMINATE" for e in result["endpoint_coverage"].values())
-    assert all("unsupported native combat field: comment" in json.dumps(e)
-               for e in result["endpoint_coverage"].values())
+    result = s6.run(fake["spec_path"], fake["repo"], workers=4)
+    assert all(e["verdict"] == "SUPPORTED" for e in result["endpoint_coverage"].values())
+    schedule = s6.read_json(fake["output"] / "schedule.json")
+    assert "request_template_note" in fake["spec"]
+    assert all(set(row["request"]) == set(fake["spec"]["request_template"]) for row in schedule)
     check_coverage(result)
+
+
+@pytest.mark.parametrize("mode,reason", [
+    ("late_nonzero", "nonzero native exit"), ("late_timeout", "host timeout"),
+    ("late_malformed", "Expecting property"), ("late_missing", "missing summary"),
+    ("shutdown_timeout", "worker shutdown timeout")])
+def test_host_fault_invalidates_whole_block_including_prior_valid_returns(fake, mode, reason):
+    fake["binary"].with_suffix(".mode").write_text(mode)
+    host = fake["spec"]["failures"]["host"]
+    host["per_fight_timeout_seconds"] = .3
+    host["worker_shutdown_timeout_seconds"] = .1
+    rebind(fake)
+    result = s6.run(fake["spec_path"], fake["repo"], workers=4)
+    coverage = result["endpoint_coverage"]
+    assert coverage["P1"]["verdict"] == coverage["P3"]["verdict"] == "SUPPORTED"
+    p2 = coverage["P2"]
+    assert p2["verdict"] == "INDETERMINATE" and p2["bounds"] is None
+    assert len(p2["failures"]) == 38
+    assert {tuple(f["key"])[2:] for f in p2["failures"]} == {
+        (0, orientation, "morale") for orientation in (False, True)}
+    events = [json.loads(line) for line in (fake["output"] / "fights.jsonl").read_text().splitlines()]
+    prior_valid = [e for e in events if e["kind"] == "fight" and e["status"] == "completed"
+                   and e["key"][0] == "POOL" and e["key"][2] == 0 and e["key"][4] == "morale"]
+    assert prior_valid, "Fault must follow an already returned valid summary"
+    faults = [e for e in events if e["kind"] == "process_failure" and reason in e["reason"]]
+    assert faults
+    assert all(len(e["keys"]) == 38 and all(k[0] == "POOL" and k[2] == 0 and k[4] == "morale"
+                                         for k in e["keys"]) for e in faults)
+    assert result["identity"]["host"] == host
+    check_coverage(result)
+
+
+@pytest.mark.parametrize("fault,reason", [
+    ("unmatched", "unmatched attempt"), ("duplicate", "duplicate attempted"),
+    ("absent", "without attempt"), ("mismatch", "request mismatch")])
+def test_attempt_return_pairing_invalidates_dependent_endpoint(fake, fault, reason):
+    spec = fake["spec"]
+    _, keys, rows = schedule_data(spec)
+    attempts = [{"kind": "attempt", "key": row["key"], "request": copy.deepcopy(row["request"])}
+                for row in rows]
+    index = next(i for i, row in enumerate(rows) if row["key"][0] == "POOL"
+                 and row["key"][4] == "pushpull")
+    if fault == "unmatched":
+        rows.pop(index)
+    elif fault == "duplicate":
+        attempts.append(copy.deepcopy(attempts[index]))
+    elif fault == "absent":
+        attempts.pop(index)
+    else:
+        attempts[index]["request"]["options"]["seed"] += 1
+    result = s6.evaluate(spec, keys, rows, attempts=attempts)
+    p3 = result["endpoint_coverage"]["P3"]
+    assert p3["verdict"] == "INDETERMINATE" and p3["value"] is None and p3["bounds"] is None
+    assert reason in json.dumps(p3)
+    assert all(result["endpoint_coverage"][p]["verdict"] == "SUPPORTED" for p in ("P1", "P2"))
+
+
+def test_interruption_after_attempt_retains_invalid_unmatched_request(fake, monkeypatch):
+    original = s6.native_batch
+
+    def interrupted(binary, spec, seeds, keys, journal, attempts, stop):
+        if keys[0][0] == "HEAD" and keys[0][4] == "resonator":
+            key = keys[0]
+            attempts.append({"kind": "attempt", "key": list(key),
+                             "request": s6.request_for(spec, seeds, key)})
+            raise KeyboardInterrupt("synthetic interruption after journaling")
+        return original(binary, spec, seeds, keys, journal, attempts, stop)
+
+    monkeypatch.setattr(s6, "native_batch", interrupted)
+    result = s6.run(fake["spec_path"], fake["repo"], workers=1)
+    assert result["run_status"] == "interrupted"
+    assert "unmatched attempt" in json.dumps(result["endpoint_coverage"]["P1"])
+    assert (fake["output"] / "attempts.jsonl").read_text()
+    assert (fake["output"] / "schedule.json").is_file()
+    check_coverage(s6.read_json(fake["output"] / "results.json"))
 
 
 def test_interrupted_run_keeps_latch_and_all_endpoint_coverage(fake, monkeypatch):
@@ -599,12 +787,14 @@ def test_interrupted_run_keeps_latch_and_all_endpoint_coverage(fake, monkeypatch
         raise KeyboardInterrupt("synthetic interruption")
 
     monkeypatch.setattr(s6, "native_batch", interrupted)
-    result = s6.run(fake["spec_path"], fake["repo"], workers=1, host_timeout=2)
+    result = s6.run(fake["spec_path"], fake["repo"], workers=1)
     assert result["run_status"] == "interrupted"
     assert "KeyboardInterrupt" in result["interruption_reason"]
     assert all(e["verdict"] == "INDETERMINATE" for e in result["endpoint_coverage"].values())
     check_coverage(s6.read_json(fake["output"] / "results.json"))
     assert (fake["output"] / "identity.json").is_file()
     assert (fake["output"] / "fights.jsonl").is_file()
+    assert (fake["output"] / "attempts.jsonl").is_file()
+    assert (fake["output"] / "schedule.json").is_file()
     with pytest.raises(s6.Refusal, match="latch"):
-        s6.run(fake["spec_path"], fake["repo"], workers=1, host_timeout=2)
+        s6.run(fake["spec_path"], fake["repo"], workers=1)

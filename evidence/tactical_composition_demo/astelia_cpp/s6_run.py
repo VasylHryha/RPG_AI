@@ -1,8 +1,9 @@
-"""One-shot 0g revision-2 runner. Importing this module derives no seeds.
+"""One-shot 0g revision-3 runner. Importing this module derives no seeds.
 
 Only the registered output path is supported; there is no resume/output override.
 Native workers consume JSON lines, one outstanding request per process, and
-retain diagnostics with that request. Workers never mix arms or panels.
+retain diagnostics with that request. Each worker handles one arm and one
+HEAD cluster or POOL block, with registered timeouts and batch attribution.
 """
 import argparse
 import collections
@@ -36,7 +37,10 @@ def read_json(path):
 
 
 def dump(path, value):
-    Path(path).write_text(json.dumps(value, indent=2, allow_nan=False) + "\n")
+    with Path(path).open("w") as stream:
+        stream.write(json.dumps(value, indent=2, allow_nan=False) + "\n")
+        stream.flush()
+        os.fsync(stream.fileno())
 
 
 def derive_seed(root, namespace, index):
@@ -105,8 +109,8 @@ def preflight(spec_path, repo_root):
     try:
         spec_bytes = spec_path.read_bytes()
         spec = json.loads(spec_bytes)
-        if spec["experiment"] != "0g" or spec["revision"] != 2:
-            raise Refusal("Only SPEC_0G.json revision 2 is implemented")
+        if spec["experiment"] != "0g" or spec["revision"] != 3:
+            raise Refusal("Only SPEC_0G.json revision 3 is implemented")
         spec_hash = hashlib.sha256(spec_bytes).hexdigest()
         review_path = repo_root / spec["gates"]["codex_review"].split(",", 1)[0]
         review_bytes = review_path.read_bytes()
@@ -126,8 +130,7 @@ def preflight(spec_path, repo_root):
                    for k in ("owner_words", "date")):
             raise Refusal("Authorization must retain owner_words and date")
         binary = base / spec["engine"]["binary"]
-        # The existing build.py names its manifest target.with_suffix('.build.json').
-        manifest = binary.with_suffix(".build.json")
+        manifest = base / spec["engine"]["build_manifest"]
         binary_hash, manifest_hash = sha256(binary), sha256(manifest)
         if binary_hash != spec["engine"]["binary_sha256"]:
             raise Refusal("Binary sha256 mismatch")
@@ -135,13 +138,19 @@ def preflight(spec_path, repo_root):
             raise Refusal("Build manifest sha256 mismatch")
         if read_json(manifest).get("binary_sha256") != binary_hash:
             raise Refusal("Manifest does not name admitted binary")
+        host = spec["failures"]["host"]
+        for field in ("per_fight_timeout_seconds", "worker_shutdown_timeout_seconds"):
+            if (type(host[field]) not in (int, float) or not math.isfinite(host[field])
+                    or host[field] <= 0):
+                raise Refusal("Invalid registered host timeout: " + field)
         seeds = seed_preflight(spec, development_seeds(base))
         identity = {"spec_sha256": spec_hash, "revision": spec["revision"],
                     "root": spec["seeds"]["judging_root_hex"],
                     "binary_sha256": binary_hash, "manifest_sha256": manifest_hash,
                     "authorization_record": auth,
                     "authorization_sha256": hashlib.sha256(auth_bytes).hexdigest(),
-                    "review_sha256": hashlib.sha256(review_bytes).hexdigest(), "seeds": seeds}
+                    "review_sha256": hashlib.sha256(review_bytes).hexdigest(), "seeds": seeds,
+                    "host": copy.deepcopy(host)}
         return spec, binary, seeds, identity
     except Refusal:
         raise
@@ -185,6 +194,15 @@ def request_for(spec, seeds, key):
     request["options"]["ai"] = [copy.deepcopy(spec["arms"][panel.lower()][arm]),
                                 copy.deepcopy(profile)]
     return request
+
+
+def scheduled_batches(schedule):
+    """One arm x HEAD (level, i) cluster or POOL i block, in schedule order."""
+    groups = collections.defaultdict(list)
+    for key in schedule:
+        panel, opponent, i, _, arm = key
+        groups[(panel, opponent if panel == "HEAD" else None, i, arm)].append(key)
+    return list(groups.values())
 
 
 def _finite_tree(value):
@@ -334,37 +352,55 @@ def verdict(bound, margin):
     return "INDETERMINATE"
 
 
-def evaluate(spec, schedule, records, interrupted=None):
+def evaluate(spec, schedule, records, interrupted=None, *, attempts=None):
     """Evaluate against scheduled keys, never averages partial clusters/blocks."""
     schedule_counts = collections.Counter(schedule)
     # Reconstruct the registered key universe without deriving any seed. Even a
     # missing key in the caller's schedule must not shrink the required set.
     schedule = scheduled_keys(spec, {ns: range(n) for ns, n in namespace_sizes(spec).items()})
     expected = set(schedule)
-    by_key, invalid = collections.defaultdict(list), {}
+    by_key, invalid = collections.defaultdict(list), collections.defaultdict(list)
     unknown = []
     for record in records:
         if record.get("kind") == "process_failure":
             for key in record["keys"]:
-                invalid[tuple(key)] = record["reason"]
+                invalid[tuple(key)].append(record["reason"])
         elif record.get("kind") == "fight":
             key = tuple(record["key"])
             if key in expected:
                 by_key[key].append(record)
             else:
                 unknown.append(key)
+    attempted = collections.defaultdict(list)
+    if attempts is not None:
+        for record in attempts:
+            key = tuple(record["key"])
+            if key in expected:
+                attempted[key].append(record)
+            else:
+                unknown.append(key)
+
     def issue(key):
         if schedule_counts[key] == 0:
             return "technical_failure: missing scheduled key"
         if schedule_counts[key] != 1 or len(by_key[key]) > 1:
             return "technical_failure: duplicate scheduled key"
+        if attempts is not None:
+            if len(attempted[key]) > 1:
+                return "technical_failure: duplicate attempted key"
+            if attempted[key] and not by_key[key]:
+                return "technical_failure: unmatched attempt without returned record"
+            if by_key[key] and not attempted[key]:
+                return "technical_failure: returned record without attempt"
+            if by_key[key] and attempted[key][0]["request"] != by_key[key][0]["request"]:
+                return "technical_failure: attempt/return request mismatch"
+        if key in invalid:
+            return "technical_failure: " + "; ".join(invalid[key])
         if not by_key[key]:
             return "technical_failure: missing scheduled key"
         row = by_key[key][0]
         if row["status"] != "completed":
             return row["status"] + ": " + row.get("reason", "failure")
-        if key in invalid:
-            return "technical_failure: " + invalid[key]
         # Recompute from the summary; do not trust a cached score/status.
         try:
             _, controller = score_summary(spec, row.get("summary"))
@@ -458,6 +494,7 @@ def evaluate(spec, schedule, records, interrupted=None):
             "run_status": "interrupted" if interrupted else "finished",
             "interruption_reason": interrupted, "scheduled_fights": len(schedule),
             "recorded_fights": sum(len(v) for v in by_key.values()),
+            "attempted_fights": None if attempts is None else len(attempts),
             "endpoint_coverage": coverage, "P1_subtests": subtests,
             "descriptive_tables": tables, "unexpected_keys": [list(k) for k in unknown],
             "limits": [spec["statistics"]["assumption"],
@@ -481,9 +518,17 @@ class Journal:
         self.file.close()
 
 
-def native_batch(binary, spec, seeds, keys, journal, host_timeout, stop):
-    """One homogeneous arm/panel batch, using a persistent native process."""
-    lines, attempted, process = queue.Queue(), [], None
+def native_batch(binary, spec, seeds, keys, journal, attempts, stop):
+    """One registered cluster/block batch; technical host faults veto all keys."""
+    lines, process, reader = queue.Queue(), None, None
+    host = spec["failures"]["host"]
+    fight_timeout = host["per_fight_timeout_seconds"]
+    shutdown_timeout = host["worker_shutdown_timeout_seconds"]
+
+    def invalidate(reason, **details):
+        journal.append({"kind": "process_failure", "keys": [list(k) for k in keys],
+                        "reason": reason, **details})
+
     with tempfile.TemporaryFile() as errors:
         def read_lines():
             try:
@@ -494,8 +539,7 @@ def native_batch(binary, spec, seeds, keys, journal, host_timeout, stop):
 
         try:
             if sha256(binary) != spec["engine"]["binary_sha256"]:
-                journal.append({"kind": "process_failure", "keys": [list(k) for k in keys],
-                                "reason": "binary sha256 changed after preflight"})
+                invalidate("binary sha256 changed after preflight")
                 return
             process = subprocess.Popen([str(binary)], stdin=subprocess.PIPE, stdout=subprocess.PIPE,
                                        stderr=errors, text=True, bufsize=1)
@@ -505,42 +549,44 @@ def native_batch(binary, spec, seeds, keys, journal, host_timeout, stop):
                 if stop.is_set():
                     break
                 request = request_for(spec, seeds, key)
-                diagnostics, summary, failure, fatal = [], None, None, False
-                attempted.append(key)
-                # Durable before dispatch: a hard interruption still leaves the
-                # in-flight request. Completion is a separate keyed fight line.
-                journal.append({"kind": "attempt", "key": list(key), "request": request})
+                diagnostics, summary, failure = [], None, None
+                # Durable before dispatch, in a separate journal. A hard
+                # interruption leaves an unmatched attempt, which is invalid.
+                attempts.append({"kind": "attempt", "key": list(key), "request": request})
                 try:
                     if not lines.empty():
                         raise ValueError("unsolicited/duplicate native output")
                     process.stdin.write(json.dumps(request, allow_nan=False) + "\n")
                     process.stdin.flush()
-                    deadline = time.monotonic() + host_timeout
+                    deadline = time.monotonic() + fight_timeout
                     while True:
                         line = lines.get(timeout=max(0.001, deadline - time.monotonic()))
                         if line is None:
                             raise ValueError("missing summary / native exit")
                         response = json.loads(line)
                         if isinstance(response, dict) and response.get("diagnostics") is True:
-                            if not request["diagnostics"]:
-                                raise ValueError("unexpected diagnostics")
+                            if not request["diagnostics"] or not _finite_tree(response):
+                                raise ValueError("unexpected or non-finite diagnostics")
                             diagnostics.append(safe_evidence(response))
                             if time.monotonic() >= deadline:
                                 raise queue.Empty
                             continue
                         summary = response
+                        # Malformed summaries/error lines must invalidate prior
+                        # returns too. A controller failure is local to this fight.
+                        score_summary(spec, summary)
                         break
                 except queue.Empty:
-                    failure, fatal = "host timeout", True
+                    failure = "host timeout"
                 except (OSError, ValueError) as exc:
-                    failure, fatal = str(exc), True
+                    failure = str(exc)
                 journal.append(fight_record(spec, key, request, summary, failure, diagnostics))
-                if fatal:
-                    break  # Unattempted keys remain missing; never retry any fight.
+                if failure:
+                    invalidate(failure)
+                    process.kill()
+                    break  # No retries; the entire batch, including prior returns, is invalid.
         except OSError as exc:
-            # No request reached the host; all these scheduled keys remain missing.
-            journal.append({"kind": "process_failure", "keys": [list(k) for k in keys],
-                            "reason": "native launch failed: " + str(exc)})
+            invalidate("native launch/I/O failed: " + str(exc))
         finally:
             if process is not None:
                 try:
@@ -548,11 +594,12 @@ def native_batch(binary, spec, seeds, keys, journal, host_timeout, stop):
                 except OSError:
                     pass
                 try:
-                    exit_code = process.wait(timeout=host_timeout)
+                    exit_code = process.wait(timeout=shutdown_timeout)
                 except subprocess.TimeoutExpired:
+                    invalidate("worker shutdown timeout")
                     process.kill()
                     exit_code = process.wait()
-                reader.join(timeout=1)
+                reader.join(timeout=shutdown_timeout)
                 extras = []
                 while not lines.empty():
                     line = lines.get_nowait()
@@ -560,16 +607,16 @@ def native_batch(binary, spec, seeds, keys, journal, host_timeout, stop):
                         extras.append(line)
                 errors.seek(0)
                 stderr = errors.read().decode("utf-8", errors="replace")
-                if exit_code or extras:
-                    journal.append({"kind": "process_failure", "keys": [list(k) for k in attempted],
-                                    "reason": "nonzero native exit" if exit_code else "duplicate native output",
-                                    "exit_code": exit_code, "stderr": stderr, "extra_output": extras})
+                if exit_code or extras or reader.is_alive():
+                    invalidate("nonzero native exit" if exit_code else "duplicate native output"
+                               if extras else "native output reader did not finish",
+                               exit_code=exit_code, stderr=stderr, extra_output=extras)
                 process.stdout.close()
 
 
-def run(spec_path, repo_root, *, workers, host_timeout):
-    if workers < 1 or not math.isfinite(host_timeout) or host_timeout <= 0:
-        raise Refusal("Positive worker count and explicit positive host timeout required")
+def run(spec_path, repo_root, *, workers):
+    if type(workers) is not int or workers < 1:
+        raise Refusal("Positive integer worker count required")
     spec, binary, seeds, identity = preflight(spec_path, repo_root)
     schedule = scheduled_keys(spec, seeds)
     output = Path(spec_path).parent / spec["execution"]["output_dir"]
@@ -577,25 +624,21 @@ def run(spec_path, repo_root, *, workers, host_timeout):
         os.mkdir(output)
     except FileExistsError as exc:
         raise Refusal("One-shot output latch already exists; never delete/reuse/resume it") from exc
-    identity.update(workers=workers, host_timeout_seconds=host_timeout,
-                    scheduled_keys=[list(k) for k in schedule],
+    identity.update(workers=workers,
                     started_at_utc=time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()))
     dump(output / "identity.json", identity)
+    dump(output / "schedule.json", [{"key": list(key), "request": request_for(spec, seeds, key)}
+                                    for key in schedule])
     journal = Journal(output / "fights.jsonl")
+    attempts = Journal(output / "attempts.jsonl")
     stop, interruption = threading.Event(), None
     executor = concurrent.futures.ThreadPoolExecutor(max_workers=workers)
     try:
+        batches = scheduled_batches(schedule)
         for panel in ("HEAD", "POOL"):
-            futures = []
-            # Arm-isolated batches also isolate a late nonzero process exit.
-            shards = max(1, math.ceil(workers / len(spec["panels"][panel]["arms"])))
-            for arm in spec["panels"][panel]["arms"]:
-                keys = [k for k in schedule if k[0] == panel and k[4] == arm]
-                for shard in range(shards):
-                    batch = keys[shard::shards]
-                    if batch:
-                        futures.append(executor.submit(native_batch, binary, spec, seeds, batch,
-                                                       journal, host_timeout, stop))
+            futures = [executor.submit(native_batch, binary, spec, seeds, batch,
+                                       journal, attempts, stop)
+                       for batch in batches if batch[0][0] == panel]
             for future in concurrent.futures.as_completed(futures):
                 future.result()
     except BaseException as exc:
@@ -603,8 +646,9 @@ def run(spec_path, repo_root, *, workers, host_timeout):
         stop.set()
     finally:
         executor.shutdown(wait=True)
+        attempts.close()
         journal.close()
-        results = evaluate(spec, schedule, journal.records, interruption)
+        results = evaluate(spec, schedule, journal.records, interruption, attempts=attempts.records)
         results["identity"] = identity
         dump(output / "results.json", results)
     return results
@@ -613,13 +657,11 @@ def run(spec_path, repo_root, *, workers, host_timeout):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--workers", type=int, default=max(1, os.cpu_count() or 1))
-    parser.add_argument("--host-timeout", type=float, required=True,
-                        help="Explicit per-fight/worker-shutdown wall timeout in seconds; spec leaves it unset")
     args = parser.parse_args()
     script = Path(__file__).resolve()
     try:
         result = run(script.parents[1] / "SPEC_0G.json", script.parents[3],
-                     workers=args.workers, host_timeout=args.host_timeout)
+                     workers=args.workers)
     except Refusal as exc:
         parser.exit(2, "REFUSED: " + str(exc) + "\n")
     print(json.dumps({k: v["verdict"] for k, v in result["endpoint_coverage"].items()}))
