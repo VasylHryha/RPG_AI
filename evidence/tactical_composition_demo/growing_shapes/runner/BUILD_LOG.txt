@@ -1,0 +1,47 @@
+{
+  "identity": {
+    "source_sha256": {
+      "medium.cpp": "1f79df120820382855c38005580c8c04b1de78f78a9e3595f255a6b7cc9e83c8",
+      "medium_c.cpp": "4e84f53b631c810863bfc0e3e3e732e62e4427529e3c18506ddcf27319b9f69e",
+      "medium.hpp": "ea4acac21e2fa112db7de76a23907d7eb694b7e255e69208c269d77ee23d0d25",
+      "medium_c.h": "7838d1f6a8085b36a9d84a929b1635526c519505e8b1eac1e47cebb78066ee43",
+      "build.py": "eb86d53e4b0b6776a11e03b3cd58ac21c1e4716bcb46484074290543037082ff"
+    },
+    "binary_sha256": "922ef1f7b3852e0afdd9f39fabf959f1546151d546551cc3eb987006469e704d"
+  },
+  "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+  "platform": "macOS-26.6.2-arm64-arm-64bit",
+  "commands": [
+    [
+      "/usr/bin/clang++",
+      "-std=c++17",
+      "-O3",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-fno-fast-math",
+      "-ffp-contract=off",
+      "-fPIC",
+      "-dynamiclib",
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/medium/medium.cpp",
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/medium/medium_c.cpp",
+      "-o",
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/medium/_build/medium.dylib"
+    ],
+    [
+      "/usr/bin/clang++",
+      "-std=c++17",
+      "-O3",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-fno-fast-math",
+      "-ffp-contract=off",
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/medium/medium.cpp",
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/medium/medium_c.cpp",
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/medium/contract.cpp",
+      "-o",
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/medium/_build/medium_contract"
+    ]
+  ]
+}

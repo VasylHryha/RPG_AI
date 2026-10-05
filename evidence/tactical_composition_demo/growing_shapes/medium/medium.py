@@ -8,6 +8,7 @@ Growth thresholds have NO defaults: the caller must specify the whole design.
 import ctypes as C
 from contextlib import contextmanager
 import json
+import hashlib
 from pathlib import Path
 import platform
 
@@ -49,6 +50,13 @@ class Measure(C.Structure):
 
 def _library(path=None):
     path = Path(path) if path else ROOT / '_build' / ('medium.dylib' if platform.system() == 'Darwin' else 'medium.so')
+    if path.parent == ROOT/'_build':
+        manifest = json.loads((path.parent/'build.json').read_text())
+        for name, expected in manifest['source_sha256'].items():
+            if hashlib.sha256((ROOT/name).read_bytes()).hexdigest() != expected:
+                raise RuntimeError(f'stale native medium build: {name}; run build.py')
+        if hashlib.sha256(path.read_bytes()).hexdigest() != manifest['binary_sha256']:
+            raise RuntimeError('native medium binary identity mismatch')
     lib = C.CDLL(str(path))
     h, d, u, i, z = C.c_void_p, C.c_double, C.c_uint64, C.c_int, C.c_size_t
     P = C.POINTER
@@ -56,6 +64,8 @@ def _library(path=None):
         'create': (h, [u, P(Params)]), 'destroy': (None, [h]), 'clone': (h, [h]), 'error': (C.c_char_p, [h]),
         'count': (i, [h]), 'time': (d, [h]), 'elements': (i, [h, P(Element), i]),
         'add': (i, [h, d, d, d, d, P(u)]), 'set_element': (i, [h, u, d, d, d, d]),
+        'clock': (i, [h, d]), 'options': (i, [h, i, i, i]), 'first_id': (i, [h, u]),
+        'gain': (i, [h, u, d]), 'get_gain': (i, [h, u, P(d)]),
         'remove': (i, [h, u]), 'split': (i, [h, u, d, d, d, P(u)]), 'silence': (i, [h, u, i]),
         'drives': (i, [h, P(Drive), i]), 'rhs': (i, [h, P(d), i]),
         'neighbors': (i, [h, P(C.c_int32), P(d), P(d), i]), 'step': (i, [h, d]), 'observe': (i, [h]),
@@ -119,6 +129,20 @@ class Medium:
         return output.value
     def set_element(self, id, x, y, phase, rate):
         self._call('set_element', id, x, y, phase, rate)
+    def options(self, *, automatic_samples=True, carried_sites=False, undirected_cost=False):
+        self._call('options', int(automatic_samples), int(carried_sites), int(undirected_cost))
+    def start_clock(self, time):
+        self._call('clock', time)
+    def first_id(self, value):
+        if not isinstance(value, int) or not 0 <= value < 2**64-1:
+            raise ValueError('invalid first id')
+        self._call('first_id', value)
+    def set_gain(self, id, value):
+        self._call('gain', id, value)
+    def gain(self, id):
+        output = C.c_double()
+        self._call('get_gain', id, C.byref(output))
+        return output.value
     def remove(self, id):
         self._call('remove', id)
     def split(self, id, phase1, phase2, offset):

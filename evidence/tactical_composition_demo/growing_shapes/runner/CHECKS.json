@@ -1,0 +1,128 @@
+{
+  "label": "engineering-only; not development evidence",
+  "ready_for": "Claude independent review",
+  "original_build": {
+    "command": [
+      "/Users/new/RiderProjects/ai_RPG_test/.venv/bin/python",
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/medium/build.py"
+    ],
+    "seconds": 6.821655499999999,
+    "exit_code": 0,
+    "log": "BUILD_LOG.txt"
+  },
+  "legacy_tests": {
+    "passed": 70,
+    "evidence": "TEST_ATTEMPT_1.txt",
+    "unchanged_after_pass": true
+  },
+  "new_contract_batch": {
+    "passed": 102,
+    "seconds": 5.59,
+    "evidence": "TEST_LOG.txt"
+  },
+  "runner_after_cohort_and_final_state_audit": {
+    "passed": 58,
+    "seconds": 5.31,
+    "evidence": "TEST_RUNNER_FINAL.txt"
+  },
+  "interruption_and_pending_state_contracts": {
+    "passed": 2,
+    "seconds": 0.57,
+    "evidence": "TEST_INTERRUPTION_FINAL.txt"
+  },
+  "distinct_passing_contracts": 175,
+  "failed_attempt": {
+    "passed": 89,
+    "failed": 1,
+    "cause": "exact floating-point PLV assertion",
+    "evidence": "TEST_ATTEMPT_1.txt"
+  },
+  "smoke": {
+    "seed": 105051,
+    "episodes": 8,
+    "clock_seconds": 128,
+    "complete": true,
+    "invalid": null,
+    "timing": {
+      "training": 35.17608729,
+      "qualification": 0.5326612920000002,
+      "recovery": 0.0002485420000013505,
+      "evaluation": 0.0
+    },
+    "events": 1333,
+    "qualification_frames": 601,
+    "candidate_recovery_simulated_seconds": 0,
+    "evaluator_episodes": 0,
+    "artifact_sha256": "7579b2beb5fb66563620c6d259117c2efada2f336727dd3335abb36474142e0c",
+    "source_sha256_at_execution": {
+      "evidence/tactical_composition_demo/growing_shapes/medium/test_design_0h.py": "2992622c8d2aed1f22f1618c64cac54e824d55896848a5a663c293868443b423",
+      "evidence/tactical_composition_demo/growing_shapes/medium/build.py": "eb86d53e4b0b6776a11e03b3cd58ac21c1e4716bcb46484074290543037082ff",
+      "evidence/tactical_composition_demo/growing_shapes/medium/benchmark.py": "1441a546f5a8920139361920693ea481b45702aa4c92c8777fa064cbde6bc7c7",
+      "evidence/tactical_composition_demo/growing_shapes/medium/medium.py": "812581d7a2d820a6f23d8e670e1975607c9403f5ae70b6dc9e543bf3abecb2b8",
+      "evidence/tactical_composition_demo/growing_shapes/medium/design_0h.py": "af27389469656ab6d7f27f991e7345ec36a62b8d616193a2f8ecfe03aee6a739",
+      "evidence/tactical_composition_demo/growing_shapes/medium/test_medium.py": "2832e6ebb37fcdae8be7e0a9e4d42c6c107b61dc71c3556a9cf37ddf1e3db80f",
+      "evidence/tactical_composition_demo/growing_shapes/medium/contract.cpp": "d0ce6d6cd1dcf72a17d2c03292c6d76360af3791ca23ae9998f757d78e3d1ddf",
+      "evidence/tactical_composition_demo/growing_shapes/medium/medium.cpp": "1f79df120820382855c38005580c8c04b1de78f78a9e3595f255a6b7cc9e83c8",
+      "evidence/tactical_composition_demo/growing_shapes/medium/medium_c.cpp": "4e84f53b631c810863bfc0e3e3e732e62e4427529e3c18506ddcf27319b9f69e",
+      "evidence/tactical_composition_demo/growing_shapes/medium/medium.hpp": "ea4acac21e2fa112db7de76a23907d7eb694b7e255e69208c269d77ee23d0d25",
+      "evidence/tactical_composition_demo/growing_shapes/medium/medium_c.h": "7838d1f6a8085b36a9d84a929b1635526c519505e8b1eac1e47cebb78066ee43",
+      "evidence/tactical_composition_demo/growing_shapes/runner/run.py": "3813b22b72944e9ed1ff6abdd67a82daa2d3af4e9a42a1bb5dbda9196677dd60",
+      "evidence/tactical_composition_demo/growing_shapes/runner/protocol.py": "211342941b2990e67c727a109819f314cc5452e04963c3db4944277d41587feb",
+      "evidence/tactical_composition_demo/growing_shapes/runner/control.py": "d63be5a7d2e1a0f01d857a71708edc0663daacc0c600be531efb303522185d3b",
+      "evidence/tactical_composition_demo/growing_shapes/runner/readouts.py": "21baed413906076234124cf3035f3e2d7efd051407f48214bb403a2b12d0532b",
+      "evidence/tactical_composition_demo/growing_shapes/runner/development.py": "663da4c0de528e67b16fd63777718895dae22019e62d84d5969656039177ba68",
+      "evidence/tactical_composition_demo/growing_shapes/runner/test_runner.py": "d865e56eece117967d9551bba62826ef74dfa6c1a2bef6712c51dc8535788bea",
+      "evidence/tactical_composition_demo/growing_shapes/runner/qualification.py": "5efaaeb28676fed59d16e62a3131d9b23b71964dfad5a05e8aacd6370f3c2cb6",
+      "evidence/tactical_composition_demo/growing_shapes/runner/verify.py": "4904ec67833b112390d0b3e1fb09f2fce138d225bc940af86b660653dbdf31ca",
+      "evidence/tactical_composition_demo/growing_shapes/runner/evaluator.py": "f23e8f1d4573d162694344dd996f4991d2e379c00ddb6430e53cc2842faf71da"
+    },
+    "post_smoke_changes": "Cohort guards and report preservation only; dynamic path unchanged; focused synthetic checks passed; smoke not repeated.",
+    "retained_cohort_equivalence": true
+  },
+  "source_sha256": {
+    "evidence/tactical_composition_demo/growing_shapes/runner/run.py": "61c76a5bde99464df24e4f21e0183fcc0b20a201b92e3282b68ed1081845871a",
+    "evidence/tactical_composition_demo/growing_shapes/runner/protocol.py": "211342941b2990e67c727a109819f314cc5452e04963c3db4944277d41587feb",
+    "evidence/tactical_composition_demo/growing_shapes/runner/control.py": "d63be5a7d2e1a0f01d857a71708edc0663daacc0c600be531efb303522185d3b",
+    "evidence/tactical_composition_demo/growing_shapes/runner/readouts.py": "21baed413906076234124cf3035f3e2d7efd051407f48214bb403a2b12d0532b",
+    "evidence/tactical_composition_demo/growing_shapes/runner/development.py": "e7ca8c1a51cd6f71a3117c5f97e07dc27d0b2541f66f0f25392121905d200a03",
+    "evidence/tactical_composition_demo/growing_shapes/runner/test_runner.py": "5e8dff3e72548e8d8a52460e5b95f90c1e8bba48922064b6b70f9b27b2e1bfaa",
+    "evidence/tactical_composition_demo/growing_shapes/runner/qualification.py": "4b24f382292a4ead3f1ee40fd72d056068fe2d65035390f90bde7e368df62737",
+    "evidence/tactical_composition_demo/growing_shapes/runner/verify.py": "4904ec67833b112390d0b3e1fb09f2fce138d225bc940af86b660653dbdf31ca",
+    "evidence/tactical_composition_demo/growing_shapes/runner/evaluator.py": "f23e8f1d4573d162694344dd996f4991d2e379c00ddb6430e53cc2842faf71da",
+    "evidence/tactical_composition_demo/growing_shapes/medium/test_design_0h.py": "c44e24ce0287e33469386dcd9fdfc16716b1a226c4776c5f9cc0247838fba171",
+    "evidence/tactical_composition_demo/growing_shapes/medium/build.py": "eb86d53e4b0b6776a11e03b3cd58ac21c1e4716bcb46484074290543037082ff",
+    "evidence/tactical_composition_demo/growing_shapes/medium/benchmark.py": "1441a546f5a8920139361920693ea481b45702aa4c92c8777fa064cbde6bc7c7",
+    "evidence/tactical_composition_demo/growing_shapes/medium/medium.py": "812581d7a2d820a6f23d8e670e1975607c9403f5ae70b6dc9e543bf3abecb2b8",
+    "evidence/tactical_composition_demo/growing_shapes/medium/design_0h.py": "af27389469656ab6d7f27f991e7345ec36a62b8d616193a2f8ecfe03aee6a739",
+    "evidence/tactical_composition_demo/growing_shapes/medium/test_medium.py": "2832e6ebb37fcdae8be7e0a9e4d42c6c107b61dc71c3556a9cf37ddf1e3db80f",
+    "evidence/tactical_composition_demo/growing_shapes/medium/contract.cpp": "d0ce6d6cd1dcf72a17d2c03292c6d76360af3791ca23ae9998f757d78e3d1ddf",
+    "evidence/tactical_composition_demo/growing_shapes/medium/medium.cpp": "1f79df120820382855c38005580c8c04b1de78f78a9e3595f255a6b7cc9e83c8",
+    "evidence/tactical_composition_demo/growing_shapes/medium/medium_c.cpp": "4e84f53b631c810863bfc0e3e3e732e62e4427529e3c18506ddcf27319b9f69e",
+    "evidence/tactical_composition_demo/growing_shapes/medium/medium.hpp": "ea4acac21e2fa112db7de76a23907d7eb694b7e255e69208c269d77ee23d0d25",
+    "evidence/tactical_composition_demo/growing_shapes/medium/medium_c.h": "7838d1f6a8085b36a9d84a929b1635526c519505e8b1eac1e47cebb78066ee43"
+  },
+  "frozen_sha256": {
+    "geomind/c4_detect.py": "ba7fd94efc0edf028df137dc617666c9b8540b914ab4fca1ce793c84d78aacb8",
+    "geomind/c4_model.py": "4fafc161b65914a44dccaca6caefb59a5154079f17f564b4cdc4d44f58c59d33",
+    "geomind/c5_detect.py": "19e1153c1d85ddc48eba765d46b66c87567da6ea1aff7309ad19df7390739f9a"
+  },
+  "design_sha256": "39a630c3f4d440a6634538121773253443dcb15e8166406f36cde3727c119925",
+  "native_build": {
+    "source_sha256": {
+      "medium.cpp": "1f79df120820382855c38005580c8c04b1de78f78a9e3595f255a6b7cc9e83c8",
+      "medium_c.cpp": "4e84f53b631c810863bfc0e3e3e732e62e4427529e3c18506ddcf27319b9f69e",
+      "medium.hpp": "ea4acac21e2fa112db7de76a23907d7eb694b7e255e69208c269d77ee23d0d25",
+      "medium_c.h": "7838d1f6a8085b36a9d84a929b1635526c519505e8b1eac1e47cebb78066ee43",
+      "build.py": "eb86d53e4b0b6776a11e03b3cd58ac21c1e4716bcb46484074290543037082ff"
+    },
+    "binary_sha256": "922ef1f7b3852e0afdd9f39fabf959f1546151d546551cc3eb987006469e704d"
+  },
+  "not_run": [
+    "section-10 development",
+    "200-episode cost projection",
+    "judging seeds",
+    "recorded run",
+    "scientific acceptance",
+    "Claude independent review"
+  ]
+}

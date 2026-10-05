@@ -9,7 +9,7 @@
 #include <vector>
 namespace growing {
 struct Track { double since=-1; void update(bool yes,double t) { if(!yes) since=-1; else if(since<0) since=t; } bool ready(double t,double duration) const { return since>=0 && t-since>=duration; } };
-struct Element { gm_element v{}; Track split, death; double utility=0; bool has_utility=false, utility_known=false; int useless=0; };
+struct Element { gm_element v{}; Track split, death; double gain=1; double utility=0; bool has_utility=false, utility_known=false; int useless=0; };
 struct Drive { gm_drive v{}; Track novelty; };
 struct Need { gm_need v{}; Track need; double last_birth=-1; };
 struct Sample { std::map<uint64_t,double> elements, drives; std::map<uint64_t,gm_measure> strain; };
@@ -18,6 +18,7 @@ using Neighbors=std::vector<std::vector<int>>;
 class Medium {
 public:
     gm_params p; gm_growth growth{}; bool configured=false;
+    bool automatic_samples=true, carried_sites=false, undirected_cost=false;
     double time=0, last_growth=0; uint64_t next_id=1, rng;
     std::vector<Element> elements; std::vector<Drive> drives; std::vector<Need> needs;
     std::deque<Sample> history; std::vector<Event> events; std::string error;

@@ -98,7 +98,7 @@ std::vector<double> Medium::rhs(const std::vector<gm_element>& s,const Neighbors
         for(const auto& d:drives) {
             double r=std::hypot(d.v.x-e.x,d.v.y-e.y);
             // Caller supplies phase at start of step; rate advances it at RK stages.
-            if(r<d.v.reach) out[3*i+2]+=d.v.strength*kernel(r,d.v.width)*std::sin(d.v.phase-e.phase);
+            if(r<d.v.reach) out[3*i+2]+=elements[i].gain*d.v.strength*kernel(r,d.v.width)*std::sin(d.v.phase-e.phase);
         }
     }
     return out;
@@ -120,7 +120,7 @@ void Medium::step(double dt) {
         result[i].phase+=dt/6*(k1[3*i+2]+2*k2[3*i+2]+2*k3[3*i+2]+k4[3*i+2]);
         if(!std::isfinite(result[i].x)||!std::isfinite(result[i].y)||!std::isfinite(result[i].phase)) { drives=initial_drives; throw std::runtime_error("non-finite RK4 result"); }
     }
-    finite(time+dt); for(size_t i=0;i<elements.size();++i) elements[i].v=result[i]; time+=dt; observe();
+    finite(time+dt); for(size_t i=0;i<elements.size();++i) elements[i].v=result[i]; time+=dt; if(automatic_samples) observe();
 }
 void Medium::set_drives(const gm_drive* v,int count) {
     require(count>=0 && (count==0 || v),"invalid drives"); std::vector<Drive> next; std::set<uint64_t> ids, reset_history;
@@ -130,13 +130,13 @@ void Medium::set_drives(const gm_drive* v,int count) {
         Drive d; d.v=v[i];bool same_identity=false;
         for(const auto& old:drives) if(old.v.id==v[i].id) {
             // A changed drive identity/band/geometry starts a new novelty episode.
-            if(old.v.x==v[i].x && old.v.y==v[i].y && old.v.rate==v[i].rate && old.v.reach==v[i].reach && old.v.width==v[i].width && old.v.strength==v[i].strength) {d.novelty=old.novelty;same_identity=true;}
+            if(old.v.x==v[i].x && old.v.y==v[i].y && old.v.rate==v[i].rate && old.v.reach==v[i].reach && old.v.width==v[i].width && (carried_sites || old.v.strength==v[i].strength)) {d.novelty=old.novelty;same_identity=true;}
         }
         if(!same_identity)reset_history.insert(d.v.id);
         next.push_back(d);
     }
     for(const auto& old:drives)if(!ids.count(old.v.id))reset_history.insert(old.v.id);
-    for(auto& frame:history)for(uint64_t id:reset_history)frame.drives.erase(id);
+    if(!carried_sites) for(auto& frame:history)for(uint64_t id:reset_history)frame.drives.erase(id);
     drives=std::move(next);
 }
 void Medium::set_needs(const gm_need* v,int count) {
@@ -240,7 +240,7 @@ std::vector<double> Medium::readout(double x,double y,double width,double reach)
     double c=0,s=0,w=0;for(const auto& e:elements)if(!e.v.silent) {double r=std::hypot(x-e.v.x,y-e.v.y);if(r<reach){double a=kernel(r,width);w+=a;c+=a*std::cos(e.v.phase);s+=a*std::sin(e.v.phase);}}
     return {w>0?std::clamp(std::hypot(c,s)/w,0.0,1.0):0,(w>0 && std::hypot(c,s)>1e-15*w)?std::atan2(s,c):0};
 }
-int Medium::couplings() const {auto n=neighbors();int count=0;for(auto row:n)count+=int(row.size());for(const auto& e:elements)if(!e.v.silent)for(const auto& d:drives)if(d.v.strength>0 && std::hypot(e.v.x-d.v.x,e.v.y-d.v.y)<d.v.reach)++count;return count;}
+int Medium::couplings() const {auto n=neighbors();if(undirected_cost){std::set<std::pair<int,int>> pairs;for(size_t i=0;i<n.size();++i)for(int j:n[i])pairs.insert(std::minmax(int(i),j));return int(pairs.size());}int count=0;for(auto row:n)count+=int(row.size());for(const auto& e:elements)if(!e.v.silent)for(const auto& d:drives)if(d.v.strength>0 && std::hypot(e.v.x-d.v.x,e.v.y-d.v.y)<d.v.reach)++count;return count;}
 double Medium::cost() const {return growth.c_e*elements.size()+growth.c_c*couplings();}
 void Medium::configure(gm_growth g) {
     for(double v:{g.L_on,g.L_off,g.S_split,g.T_nov,g.T_split,g.T_death,g.growth_period,g.T_protect,g.split_offset,g.c_e,g.c_c,g.C_max,g.E_need,g.T_need,g.epsilon_U})finite(v);
@@ -327,19 +327,20 @@ struct Reader {
 #define NEED_FIELDS(F) F(id) F(x) F(y) F(phase) F(rate) F(error)
 #define MEASURE_FIELDS(F) F(lock) F(strain) F(phase1) F(phase2) F(samples)
 std::vector<char> Medium::save() const {
-    Writer w;w.str("growing-medium-v1");
+    Writer w;w.str("growing-medium-v2");
 #define WRITE_P(f) w.pod(p.f);
     PARAM_FIELDS(WRITE_P)
 #undef WRITE_P
 #define WRITE_G(f) w.pod(growth.f);
     GROWTH_FIELDS(WRITE_G)
 #undef WRITE_G
+    w.pod<int32_t>(automatic_samples);w.pod<int32_t>(carried_sites);w.pod<int32_t>(undirected_cost);
     w.pod<int32_t>(configured);w.pod(time);w.pod(last_growth);w.pod(next_id);w.pod(rng);
     w.pod<uint64_t>(elements.size());for(const auto& e:elements){
 #define WRITE_E(f) w.pod(e.v.f);
         ELEMENT_FIELDS(WRITE_E)
 #undef WRITE_E
-        w.pod(e.split.since);w.pod(e.death.since);w.pod(e.utility);w.pod<int32_t>(e.has_utility);w.pod<int32_t>(e.utility_known);w.pod(e.useless);
+        w.pod(e.gain);w.pod(e.split.since);w.pod(e.death.since);w.pod(e.utility);w.pod<int32_t>(e.has_utility);w.pod<int32_t>(e.utility_known);w.pod(e.useless);
     }
     w.pod<uint64_t>(drives.size());for(const auto& d:drives){
 #define WRITE_D(f) w.pod(d.v.f);
@@ -365,7 +366,7 @@ std::vector<char> Medium::save() const {
     w.str(error);return w.b;
 }
 Medium Medium::load(const void* data,size_t size) {
-    require(data && size>0,"empty snapshot");Reader r{static_cast<const char*>(data),size};require(r.str()=="growing-medium-v1","snapshot version mismatch");gm_params p{};
+    require(data && size>0,"empty snapshot");Reader r{static_cast<const char*>(data),size};auto version=r.str();require(version=="growing-medium-v1" || version=="growing-medium-v2","snapshot version mismatch");bool v2=version=="growing-medium-v2";gm_params p{};
 #define READ_P(f) p.f=r.pod<decltype(p.f)>();
     PARAM_FIELDS(READ_P)
 #undef READ_P
@@ -373,13 +374,14 @@ Medium Medium::load(const void* data,size_t size) {
 #define READ_G(f) m.growth.f=r.pod<decltype(m.growth.f)>();
     GROWTH_FIELDS(READ_G)
 #undef READ_G
+    if(v2){auto flag=[&](){int32_t f=r.pod<int32_t>();require(f==0||f==1,"invalid option flag");return bool(f);};m.automatic_samples=flag();m.carried_sites=flag();m.undirected_cost=flag();}
     int32_t conf=r.pod<int32_t>();require(conf==0||conf==1,"invalid configured flag");m.configured=conf;
     m.time=r.pod<double>();m.last_growth=r.pod<double>();m.next_id=r.pod<uint64_t>();m.rng=r.pod<uint64_t>();
     size_t n=r.count();for(size_t i=0;i<n;++i){Element e;
 #define READ_E(f) e.v.f=r.pod<decltype(e.v.f)>();
         ELEMENT_FIELDS(READ_E)
 #undef READ_E
-        e.split.since=r.pod<double>();e.death.since=r.pod<double>();e.utility=r.pod<double>();e.has_utility=r.pod<int32_t>();e.utility_known=r.pod<int32_t>();e.useless=r.pod<int>();m.elements.push_back(e);
+        if(v2)e.gain=r.pod<double>();e.split.since=r.pod<double>();e.death.since=r.pod<double>();e.utility=r.pod<double>();e.has_utility=r.pod<int32_t>();e.utility_known=r.pod<int32_t>();e.useless=r.pod<int>();m.elements.push_back(e);
     }
     n=r.count();for(size_t i=0;i<n;++i){Drive d;
 #define READ_D(f) d.v.f=r.pod<decltype(d.v.f)>();
@@ -404,8 +406,8 @@ Medium Medium::load(const void* data,size_t size) {
     }
     n=r.count();for(size_t i=0;i<n;++i){Event e;e.time=r.pod<double>();e.rule=r.str();size_t count=r.count();for(size_t j=0;j<count;++j)e.ids.push_back(r.pod<uint64_t>());count=r.count();for(size_t j=0;j<count;++j){auto key=r.str();double value=r.pod<double>();e.measurements[key]=value;}m.events.push_back(std::move(e));}
     m.error=r.str();require(r.pos==size,"trailing snapshot data");
-    finite(m.time);finite(m.last_growth);require(m.time>=0 && m.last_growth<=m.time && m.next_id>0,"invalid snapshot clock/id");
-    std::set<uint64_t> ids;for(const auto& e:m.elements){for(double v:{e.v.x,e.v.y,e.v.phase,e.v.rate,e.v.born,e.utility,e.split.since,e.death.since})finite(v);require(e.v.id>0 && e.v.id<m.next_id && ids.insert(e.v.id).second && e.v.born<=m.time && (e.v.silent==0||e.v.silent==1),"invalid snapshot element");}
+    finite(m.time);finite(m.last_growth);require(m.time>=0 && m.last_growth<=m.time,"invalid snapshot clock/id");
+    std::set<uint64_t> ids;for(const auto& e:m.elements){for(double v:{e.v.x,e.v.y,e.v.phase,e.v.rate,e.v.born,e.utility,e.split.since,e.death.since})finite(v);require(e.gain>=0 && e.gain<=2 && std::isfinite(e.gain) && e.v.id<m.next_id && ids.insert(e.v.id).second && e.v.born<=m.time && (e.v.silent==0||e.v.silent==1),"invalid snapshot element");}
     // Reuse public validation without resetting saved timers/configuration.
     Medium check=m;check.set_drives(nullptr,0);std::vector<gm_drive> ds;for(auto d:m.drives)ds.push_back(d.v);check.set_drives(ds.data(),int(ds.size()));
     std::vector<gm_need> ns;for(auto d:m.needs)ns.push_back(d.v);check.set_needs(ns.data(),int(ns.size()));
