@@ -77,6 +77,17 @@ Every arm is tuned with the same number of fights on development seeds, then jud
 
 The largest uncertainty is the development step. If the resonator AI cannot beat novice after the tuning budget, we stop and report that before registering anything.
 
+## 5a. Revision 2 of the design (2026-10-05)
+
+After the Codex design review (`docs/reviews/tactical_0g_design_review_codex.md`, CHANGES_REQUIRED), `DESIGN_0G.md` revision 2 is the **single executable contract** for S3-S5. It covers:
+- the controllers' equations;
+- the knobs;
+- the panels;
+- inference;
+- the stop rows.
+
+Where this plan's older text differs, the design wins. The rows below are updated to match it.
+
 ## 5b. Changes after the owner's review (2026-10-04)
 
 `DESIGN_0G.md` section 3 replaces sections 2 and 4 of this plan where they differ:
@@ -96,23 +107,22 @@ until the failure is fixed or the owner decides. Tests run once, at the end of e
 
 | Session | Builds | Acceptance (all must hold) | Agent time | Machine |
 |---|---|---|---|---|
-| **S1 Bench** | `cache.js` (fingerprint, fight memory, spot check, seed ledger), the artillery-crash fix in our copy (recorded in `SOURCE.md`), the frozen ladder file | (a) a repeated identical search plays 0 new fights; (b) a changed game byte gives a new cache folder; (c) the spot check refuses a forged result; (d) the ladder (novice, regular, veteran, run 5 best, elite-fast) has its results on the judging seeds committed with hashes **before** any controller exists; (e) `test_cache.js` passes | 1-2 h | 30 min |
+| **S1 Bench** | `cache.js` (fingerprint, fight memory, spot check, seed ledger), the artillery-crash fix in our copy (recorded in `SOURCE.md`), the frozen ladder file | (a) a repeated identical search plays 0 new fights; (b) a changed game byte gives a new cache folder; (c) the spot check refuses a forged result; (d) the ladder (novice, regular, veteran, run 5 best, elite-fast) has its results on **development** seeds committed with hashes before any controller exists (judging seeds are drawn at S5 and never inspected; design rev 2 section 6); (e) `test_cache.js` passes | 1-2 h | 30 min |
 | **S1b C++ port (Codex)** | the whole simulation in C++ (`astelia_cpp/`), host with JSON lines in and out, batch mode | (a) at least 400 check fights identical to the JS, field by field; (b) the full state is equal at every step on 20 fights; (c) determinism; (d) the speed-up measured; (e0) the permanent reference gate (`check_reference.py`, about 80 fights against the frozen JS) prints `identical`, and every later C++ change must keep it so, or change JS and C++ together with a recorded reason; (e) `PORT_REPORT.md` says READY; (f) a Claude review of the port | 4-6 h (Codex) | 1 h |
 | **S2 Adapter** | brain `external` at `decide(w, u)` (in the C++ port); what a unit sees (own state, allies and enemies in sight: position, velocity, HP, role, range, cooldown) and what it may return (move vector, target id; abilities later); `nearest` controller | (a) **plumbing:** a pass-through controller that calls the game's own decision gives byte-identical summaries and traces on 40 fights (an outside copy of `alone` cannot work: the built-in brain reads shots, which the observation excludes); (b) `nearest` plays 114 fights with no error; (c) the adapter adds under 20% to fight time; (d) the controller cannot read anything outside its view (a test feeds a poisoned hidden field and checks it is never read) | 2-4 h | 15 min |
-| **S3 Controllers** | the resonator AI; its ablations (J=0, K=0, no groups); the potential-field controller; the group detector on our units | (a) the law in JS matches `geomind/c4_model.py` `rhs` on 5 fixed states to 1e-9; (b) each ablation zeroes exactly its term (checked on the derivative); (c) the detector, on 5 C4 reference worlds, accepts the same groups as `geomind/c4_detect.py`; (d) all arms play 114 fights with no error; (e) cost per fight measured and recorded | 4-8 h | 30 min |
-| **S4 Development** | tuning of every arm with the **same fight budget** (provisional 3,000 fights each) on development seeds only; noise measurement; attainability checks | (a) budgets equal and logged; (b) **stop gate:** if the tuned resonator AI does not beat novice on development seeds, stop and report (no registration); (c) every threshold in S5 is shown attainable on development data, and the noise per comparison is measured; (d) raw results committed | 2-4 h | 3-6 runs, 30-60 min each |
+| **S3 Controllers (C++)** | the plug extensions and the resonator, plain morale and push-pull controllers on the S2 plug; the group diagnostics (design rev 2 sections 2-4, 7, 8) | every check in design rev 2 section 8: the C4 reference to 1e-9, the enemy-term sign, damage rates, ordering independence, degenerate cases, failure reporting, clone memory, determinism, cost, 38 failure-free fights per arm, step refinement; the 80 reference requests and the S2 passthrough fixtures unchanged | 4-8 h | 30 min |
+| **S4 Development** | 10v10 melee first, then full armies (owner); tuning by the one protocol of design rev 2 section 5 (equal budgets for resonator, morale, push-pull; nearest untuned); fights watched; paired spread measured on a development split and a separate validation split | (a) budgets and every candidate logged; (b) the stop rows of design rev 2 section 10; (c) δ proposed and n chosen by a power rule (section 6); (d) raw results committed | 2-4 h | 3-6 runs, 30-60 min each |
 | **S5 Registration** | `SPEC_0G.json` (frozen parameters, seeds from the ledger, endpoints, thresholds, alpha) and `SPECIFICATION_0G.md`; prompt for Codex | Codex verdict APPROVE or APPROVE_WITH_NOTES; every endpoint has a verdict rule that code computes | 2-3 h | |
 | **S6 Recorded run** | owner approval naming the specification; one run; report | the run uses exactly the registered spec (hash-checked); every endpoint reported as evaluated or not_run with a reason; report states the verdicts and limits | 1-2 h | 1-2 h |
 | **S7 Review** | a cross-family review of the committed result | review file with the verdict, reviewer family and results hash | owner/Codex | |
 
-**The experiment's acceptance criteria** (provisional; S4 sets the margins from measured noise, S5 freezes them). Fresh judging seeds: 19 opponents x 3 seeds x 2 sides = 114 fights per comparison. Familywise alpha 0.01, split equally over the endpoints:
-- **P1:** against novice and against regular, the resonator AI wins at least 60% of the 114 fights, with the Clopper-Pearson lower bound above 50%.
-- **P2:** against each ablation (J=0, K=0, no groups), the paired mean margin difference (our survivors minus enemy survivors, same fights) exceeds the registered margin delta, with the lower confidence bound above delta.
-- **P3:** the same rule against the potential-field controller.
-- **P4:**
-  - (a) the detector finds at least one group in at least 70% of fights;
-  - (b) a forced phase scramble of every group at a fixed time lowers the paired margin by more than delta.
-- **The verdict words:** SUPPORTED if every part of an endpoint passes, REFUTED if the opposite direction is significant, INDETERMINATE otherwise. A result is never reworded after the run.
+**The experiment's acceptance criteria** are in `DESIGN_0G.md` revision 2, section 6. That section has:
+- P1, head-to-head against novice and regular;
+- P2, beats plain morale;
+- P3, beats the specified push-pull baseline;
+- clustered seeds, alpha 0.01/3 per endpoint with a separate refutation budget, and verdict rules.
+
+The older P1-P4 text with "114 fights" and the J=0 / K=0 / no-groups ablations is withdrawn (its causes are in design section 9). Groups are diagnostics only (design section 7).
 
 ## 7. Risks, stated now
 
