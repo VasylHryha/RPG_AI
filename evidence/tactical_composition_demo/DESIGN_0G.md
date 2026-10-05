@@ -1,8 +1,8 @@
-# Design 0g, revision 2: four controllers on the S2 plug, judged against Astelia's scripted AI (DRAFT for the owner)
+# Design 0g, revision 3: four controllers on the S2 plug, judged against Astelia's scripted AI (S3 engineering contract; owner-authorized correction)
 
-Revision 2 answers the Codex design review `docs/reviews/tactical_0g_design_review_codex.md` (CHANGES_REQUIRED, 13 findings). The self-audit (section 9)
+Revision 2 answered the Codex design review `docs/reviews/tactical_0g_design_review_codex.md` (CHANGES_REQUIRED, 13 findings). The self-audit (section 9)
 lists each finding, its fix and its cause. Revision 1 is in git history (`85cf576`). This document replaces `PLAN_RESONATOR_AI.md` sections 2, 4 and 5b where they
-differ, and it is the single executable contract for S3-S5. Nothing here is run or built yet. The owner's decisions are kept:
+differ, and it is the single executable contract for S3-S5. Revision 3 resolves the S3 report after the owner explicitly asked Codex to handle/fix the blockers (2026-10-05). Codex owns these corrections. S3 build/checks are authorized; tuning and recorded experiments remain outside this session. The owner's decisions are kept:
 - four arms;
 - damage dealt and taken as the input;
 - full sight;
@@ -52,7 +52,8 @@ The runner refuses `passthrough`, which is test-only.
 | Model distance | r | model units | distance_px / L |
 | Time | Δ | s | each tick integrates the controller's state over Δ = dt = 1/30 s (no separate time scale) |
 | Damage rate | z | 1/s | exponential average of cross-team HP per second, divided by own max HP |
-| Rates, gains | ω, K, K_t, κ, λ | 1/s | per second of game time |
+| Rates | ω, K, K_t, λ | 1/s | per second of game time |
+| Damage gain | κ | dimensionless | multiplies normalized damage rate |
 | Reach distance to an enemy | ρ | model units | melee and direct: surface gap = (centre distance − both radii)/L; artillery: centre distance/L (the bridge's own legality, `controller_bridge.cpp:51-53`) |
 
 **Damage rates** (one recurrence for every arm). For each unit u (ours and enemies'), from the cross-team counters C_out (HP dealt to the other team) and C_in (HP taken from the other team):
@@ -97,8 +98,8 @@ not depend on commitment. S3 tests the sign of the enemy term inside, at and out
 **Target** (computed for all own units in `prepare` from the frozen snapshot and the **previous tick's** assignments; never updated during the shuffled `decide` calls):
 - **Legal set:** living enemies within the bridge's reach for the unit's role. Melee and direct: gap ≤ range. Artillery: minRange ≤ centre distance ≤ range.
 - An empty legal set gives target none.
-- **Score:** S_ij = a_ij + γ · tanh(P(j)). The arm's alignment a_ij is defined in section 4. The second term prefers enemies that are being beaten (γ ≥ 0).
-- **Hysteresis:** keep the previous target if it is still legal and the best score exceeds its score by less than η = 0.2 (fixed). Ties go to the lowest id.
+- **Score:** S_ij = a_ij + γ · tanh(P(j) · 1 s). The arm's alignment a_ij is defined in section 4. Push-pull instead uses only negative centre distance, with no pressure preference. The second term prefers enemies that are being beaten (γ ≥ 0).
+- **Hysteresis:** keep the previous target if it is still legal and the best score exceeds its score by less than η = 0.2 (fixed). Ties in selecting the best candidate go to the lowest id; a still-legal previous target then takes precedence if the improvement is strictly less than η.
 
 **Terminal and degenerate states:**
 - With no living enemy, every unit holds with target none.
@@ -111,12 +112,12 @@ not depend on commitment. S3 tests the sign of the enemy term inside, at and out
 
 | Arm | Internal state per own unit | State update per tick (game time, Δ = dt) | Commitment c | Alignment a_ij (target score) |
 |---|---|---|---|---|
-| **resonator** | phase θ_i (initial: uniform from the controller's RNG) | one RK4 step of dθ_i/dt = ω_role + K · mean_{N_i} e^{−r²} sin(θ_j − θ_i) + K_t · sin(ψ_i − θ_i) + P(i) · sin θ_i, positions frozen at the snapshot | cos θ_i | cos(θ_i − ψ_ij), with ψ_ij = arg Σ_{k ≠ i, previous target of k = j} e^{iθ_k}; 0 when there are no such k or the resultant is < 0.1 per attacker |
-| **plain morale** | m_i ∈ [−1, 1] (initial 0) | one RK4 step of dm_i/dt = −λ_role m_i + K · mean_{N_i} e^{−r²}(m_j − m_i) + K_t (μ_i − m_i) − P(i), then clipped to [−1, 1] | m_i | 1 − abs(m_i − μ_ij), with μ_ij = the mean m of j's other previous attackers; 0 when there are none |
-| **push-pull** | none | none | 1 | target = nearest legal enemy (the review's option: a whole-controller baseline). Hysteresis as above |
+| **resonator** | phase θ_i (initial: uniform from the controller's RNG) | one RK4 step of dθ_i/dt = ω_role + K · mean_{N_i} e^{−r²} sin(θ_j − θ_i) + K_t · sin(ψ_i − θ_i) + P(i) · sin θ_i, positions frozen at the snapshot | cos θ_i | cos(θ_i − ψ_ij), with ψ_ij = arg Σ_{k ≠ i, previous target of k = j} e^{iθ_k}; **alignment a_ij = 0** when there are no such k or the resultant is < 0.1 per attacker (ψ is then undefined) |
+| **plain morale** | m_i ∈ [−1, 1] (initial 0) | one RK4 step of dm_i/dt = −λ_role m_i + K · mean_{N_i} e^{−r²}(m_j − m_i) + K_t (μ_i − m_i) − P(i), then clipped to [−1, 1] | m_i | 1 − abs(m_i − μ_ij), with μ_ij = the mean m of j's other previous attackers; **alignment a_ij = 0** when there are none (μ is then undefined) |
+| **push-pull** | none | none | 1 | target = nearest legal enemy (the review's option: a whole-controller baseline). centre-distance score a_ij = −distance_px/L; hysteresis η = 0.2 in model-distance score units, as above; no damage score |
 | **nearest** | none | as built in S2 (untuned floor) | | |
 
-In the resonator, ψ_i in the K_t term is ψ of the unit's own current target, excluding itself, and the term is 0 when that is undefined. In morale, μ_i is defined the same way.
+In the resonator, ψ_i in the K_t term is ψ of the unit's own current target, excluding itself, and the term is 0 when that is undefined. In morale, μ_i is defined the same way, and its entire K_t term is zero for an undefined group. Assignments/topology and pressure are held through RK4; ψ/μ and neighbour states are recomputed from the joint trial state at each stage. Integrate all own states together, then compute movement and target scores from the updated state. Artillery uses the ranged rate in both arms. New ids start with damage averages zero and current counters as their baseline; future counter differences are consumed once per prepare. Previous assignments start empty. A failed own unit retains its last finite state but publishes hold/no target for the tick; a non-finite retained state remains failed until removed. All ids are initialized/processed in increasing id order.
 
 - **The resonator's drive P sin θ:** P > 0 pushes θ toward π (pull back), P < 0 toward 0 (attack).
 - **Locking** (the review's finding 2): with constant P and no coupling, θ locks only when |P| ≥ |ω|, at an offset from 0 or π. Otherwise it keeps rotating. Both are allowed outcomes, and the logs record which occurs.
@@ -177,11 +178,12 @@ orientation), never by array position.
 
 ## 7. Groups: diagnostics only
 
-Each second the runner logs, with stable ids and a 3-second history window:
-- the phase coherence of our side;
-- the number of distinct phases among occupied targets;
-- target concentration (the largest share of our units on one enemy);
-- spatial-phase **candidate** clusters.
+Diagnostics are output-only, sampled from the prepared observation and newly prepared assignments/state, once per integer second (first tick reaching that second, no t=0 row). Keep every prepared frame over the preceding 3 s, including the boundary. Member ids are the stable unit ids; no persistent cluster id is claimed. Output for each controlled side:
+- `phaseCoherence`: instantaneous |mean exp(iθ)| for resonator; null for no own units or arms without phases.
+- `distinctTargetPhases`: group own units by their newly assigned living enemy target; compute each group's circular mean, discard mean resultants < 0.1, connect means with circular separation ≤ 0.3 rad, and count connected components. Null for arms without phases; zero for no valid occupied groups.
+- `targetConcentration`: largest target-group count / number of living own units (untargeted units remain in denominator); zero with no units/targets.
+- `candidates`: resonator-only connected components, size ≥ 2. For pairs present in every history frame, connect if current centre distance ≤ 1.5 model units and circular std of their unwrapped phase difference over the window ≤ 0.2 rad. Circular std = sqrt(max(0, −2 log(max(|mean exp(iΔθ)|, 1e−300)))). Wait for a full 3-second window before candidates; `windowReady` reports warmup. Other arms return empty candidates and null phase quantities. Candidate identity is its sorted member-id list; sort candidate lists lexicographically. These thresholds are fixed diagnostics, not tuning knobs.
+- Per-unit resonator phases (unwrapped), commitments, normalized damage averages and prepared target ids; morale state/commitment for morale. These support independent trajectory/refinement checks. Locking versus rotation is represented by the unwrapped phase history; no equilibrium classification is inferred under changing drive.
 
 They are labelled candidates: the C4 criteria 1-4 need time windows, and criterion 5 (recovery under kicks) is not tested in combat. There is no detector feedback into the controller, and no
 C5 claim. Global synchrony is an allowed outcome, not evidence of several groups.
@@ -197,7 +199,7 @@ C5 claim. Global synchrony is an allowed outcome, not evidence of several groups
 **Gate:** the 80 reference requests stay byte-identical, and so do the S2 passthrough fixtures.
 
 **Controller checks:**
-1. The resonator's ally law with s = cos(Δθ), and the phase law with K_t = κ = 0 and positions held, equals `c4_reference/c4_reference_states.json` (rhs and one RK4 step) to 1e-9.
+1. Check the shared ally/phase RHS against every stored C4 variant using that fixture's parameters and epsilon, and a test-only full coupled RK4 adapter against its stored x/θ step, to 1e-9. Production uses frozen measured positions and epsilon 0.01; it does not claim equality to the stored coupled step or C4's near-contact regularization. Check production frozen-position RK4 against an independent implementation of the section-4 ODE, including K_t and pressure. No accepted/reference file is modified.
 2. The sign of the enemy term inside, at and outside d, for c ∈ {−1, 0, 1}.
 3. The damage-rate recurrence on a scripted counter sequence (step, constant, decay).
 4. Targets are computed once in `prepare` and do not change when `decide` is called in a different order.
@@ -208,7 +210,7 @@ C5 claim. Global synchrony is an allowed outcome, not evidence of several groups
 9. The cost per fight against nearest, with opponent planning work recorded.
 10. All arms play 38 fights with no failure.
 
-**A step-refinement check:** halving dt inside the controller's integration changes the commitment trajectories by less than a stated tolerance on development fights.
+**A step-refinement check:** compare one full phase/morale step with two half steps on the **same captured snapshots**, holding world dt, damage recurrence and previous assignments fixed; carry both state trajectories across the replay. Maximum absolute commitment difference must be < 0.02 over the 38 default-knob engineering fights per stateful arm. This isolates integration refinement from divergent game worlds; no additional fight is needed. Frozen-position ODE tests also use nonzero role rates, since midpoint resonator rates are zero.
 
 ## 9. Self-audit: the review's findings, fixes and causes
 
@@ -238,3 +240,27 @@ C5 claim. Global synchrony is an allowed outcome, not evidence of several groups
 | Is the S4-measured spread such that the owner-approved δ needs n above 2,000 clusters per endpoint? | Report the trade-off and let the owner choose n or δ | drafter |
 | Does any judging seed appear in development logs? | Draw new judging seeds and record it | implementer |
 | Is there an outcome-informed equation change after S4 starts? | Log it and restart that arm's budget | implementer |
+
+## 11. Revision-3 S3 correction self-audit and execution boundary
+
+| S3 question | Correction | Cause |
+|---|---|---|
+| C4 oracle versus frozen-position phase step | Separate shared RHS/full coupled algebra checks from independent production ODE/refinement checks; retain epsilon 0.01 | The old acceptance row confused frozen neighbour indices with frozen geometry |
+| Push-pull hysteresis score | Negative centre distance in model units; eta 0.2; no damage score | Nearest targeting was named without its hysteresis scale |
+| Group diagnostics | Fixed formulas/window/thresholds, stable member ids and non-phase-arm null semantics in section 7 | Diagnostic names were mistaken for an executable algorithm |
+| Pressure units | Dimensionless kappa and a fixed 1-second tanh normalization | The rates row incorrectly included a gain multiplying a rate |
+| Empty group scores | Alignment zero, invalid aggregate, entire target-coupling term zero | “0 when empty” failed to name which quantity becomes zero |
+
+Owner steering: “so can oyu ahndel /fix blcokers or what ? we a rewitgin for what to soelve them ?” after the S3 NOT_READY report. This authorizes Codex to repair its reported blockers and continue the previously authorized S3 build/checks, not S4 tuning or S5 execution. Claude remains the independent reviewer of completed S3.
+
+Defaults (untuned midpoints): resonator K=2.5, K_t=2.5, kappa=25, beta=1.5, omega_melee=omega_ranged=0, G=2.5, w=1.5, f=0.75, gamma=1; morale substitutes lambda_melee=lambda_ranged=1; pushpull G=2.5, f=0.75. JSON parameter names are exactly the ASCII names in this sentence. Missing params use defaults; unknown, nonnumeric, nonfinite or out-of-bounds values fail before fight creation.
+
+The general native host retains legacy schemas for nonsubstantive legacy requests. S3 substantive arms or `s3:true` opt into the extended summary: `controllerFailures` (two counts), cross-team dealt/taken and friendly-fire dealt/taken per side, and `controllerStatus` (`completed` or `controller_failure`). Totals are fight-long Stats counters, including dead/reclaimed units; they do not sum living-only observations. Internal failure flags and raw invalid actions each count once per unit per decision tick, and fail to hold/no target. Clone memory is isolated; branch-only failure counts do not taint the parent's played fight. Planning work is separately reported by existing metrics.
+
+The general host rejects passthrough unless started explicitly with `--test-controllers`; that flag is used solely by engineering tests/legacy fixture parity. The S3 runner accepts only fixed-world requests and never enables that flag. Its narrow input is arm, params, seed, swapSides, controlledSide, opponent, diagnostics; opponent may be a doctrine name or novice/regular/elite/elite-fast. Controlled-side skills always use game defaults plus Auto, regardless of opponent profile. The 38 checks are the 19 existing doctrine names × both orientations on fixed development seeds 2026100500+doctrine_index; one checked fight per arm/configuration, no tuning. Determinism uses fresh-process replay of one request per arm; cost uses timed executions from these 38 fights, with nearest on the same requests. Tests may use tiny synthetic worlds; no additional development fight grid.
+
+| Stop question | Yes action | Role |
+|---|---|---|
+| Does a further unresolved design conflict appear? | Report it without silently changing the contract | implementer |
+| Does an engineering check fail? | Complete the repair batch, then rerun only affected failed/invalidated checks | implementer |
+| Is S3 engineering ready? | Hand off committed code and evidence for Claude review | implementer |
