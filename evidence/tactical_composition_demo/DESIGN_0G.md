@@ -363,7 +363,7 @@ The cause is section 13 item 3's **interpolation** in the out-ranged case. A mid
 - **The mode is controller memory:** it is cloned with the rest, and it is dropped when either unit dies.
 
 **Checks:**
-- no preferred distance strictly between f_c · R_i and R_e in the out-ranged case;
+- no preferred distance strictly between the **effective** commit distance d_c = f_c · R_i (artillery: max(f_c R_i, 1.05 Rmin(i))) and R_e in the out-ranged case (answering Codex's v3 stop, `astelia_cpp/S4_V3_DEVELOPMENT_REPORT.md` at `ae6bc34`). If d_c ≥ R_e (only possible for artillery with a large Rmin), the commit distance is d_c and the check is vacuous for that pair;
 - the hysteresis holds the mode for c in [−0.2, 0.2];
 - the mode memory is cloned and isolated;
 - v0, v1 and v2 fixtures stay unchanged with the skeleton flag.
