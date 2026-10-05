@@ -1,0 +1,18 @@
+{
+  "version": "4.5.0",
+  "archive_sha256": "fc710e65e31598c14920246042de39203ecba344461eda52e1ec93e46b55caf3",
+  "installation": "uv --cache-dir build/s4_uv_cache pip install --target build/s4_cma_vendor --no-deps cma==4.5.0",
+  "numpy": "existing project numpy; project environment and frozen locks unchanged",
+  "official_api": "https://cma-es.github.io/apidocs-pycma/cma.evolution_strategy.CMAEvolutionStrategy.html",
+  "test_development_seed": {
+    "seed": 414000000,
+    "uses": [
+      "one fresh nearest-melee10 cache roundtrip",
+      "one identical cache hit"
+    ],
+    "judging": false
+  },
+  "run_approval": "Owner: Run the amended protocol separately",
+  "numpy_version": "2.0.2",
+  "python_version": "3.9.6 (default, Aug 25 2026, 21:26:21) \n[Clang 21.0.0 (clang-2100.3.34.2)]"
+}

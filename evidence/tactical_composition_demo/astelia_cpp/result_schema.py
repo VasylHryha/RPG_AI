@@ -4,6 +4,7 @@ import re
 
 SUMMARY_FIELDS = {'mode','melee','ranged','artillery','total','wasted','monsterDeaths',
                   'hunterKills','aliveSeconds','enemyDamage','survivors','enemySurvivors','t'}
+S3_FIELDS = {'controllerFailures','controllerStatus','crossTeamDealt','crossTeamTaken','friendlyDealt','friendlyTaken'}
 COUNTS = {'monsterDeaths','hunterKills','survivors','enemySurvivors'}
 
 
@@ -19,7 +20,7 @@ def validate_summary(row, allow_error=True):
         if allow_error:
             return 'error'
         raise ValueError('fight did not complete: ' + row['error'])
-    if not isinstance(row, dict) or set(row) != SUMMARY_FIELDS or not isinstance(row['mode'], str):
+    if not isinstance(row, dict) or set(row) not in (SUMMARY_FIELDS, SUMMARY_FIELDS | S3_FIELDS) or not isinstance(row['mode'], str):
         raise ValueError('invalid combat summary schema')
     for key in SUMMARY_FIELDS - {'mode'}:
         if not finite(row[key]) or row[key] < 0:
@@ -29,6 +30,16 @@ def validate_summary(row, allow_error=True):
             raise ValueError('invalid integer summary quantity: ' + key)
     if abs(row['total']-(row['melee']+row['ranged']+row['artillery'])) > 1e-9 * max(1, row['total']):
         raise ValueError('summary damage total inconsistent')
+    if S3_FIELDS <= set(row):
+        for field in S3_FIELDS - {'controllerStatus'}:
+            values=row[field]
+            if not isinstance(values,list) or len(values)!=2 or any(not finite(x) or x<0 for x in values):
+                raise ValueError('invalid extended summary: '+field)
+        failures=row['controllerFailures']
+        if any(x!=int(x) for x in failures):raise ValueError('invalid controller failure count')
+        expected='controller_failure' if any(failures) else 'completed'
+        if row['controllerStatus']!=expected:raise ValueError('inconsistent controller status')
+        if expected=='controller_failure':return expected
     return 'completed'
 
 
