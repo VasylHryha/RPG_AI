@@ -1,0 +1,19 @@
+{
+  "command": [
+    "/Users/new/RiderProjects/ai_RPG_test/.venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/test_s4_v3_recheck.py",
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/test_s4_v3_report.py",
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/test_s4_v3.py",
+    "-k",
+    "not test_v0_v1_v2_fixture_bytes_and_v3_engineering and not test_v3_knob_rejections"
+  ],
+  "elapsed_seconds": 3.318930708,
+  "exit_code": 0,
+  "workers": 1,
+  "combat_fights": 0,
+  "receipt_writing_parity_excluded": true
+}
