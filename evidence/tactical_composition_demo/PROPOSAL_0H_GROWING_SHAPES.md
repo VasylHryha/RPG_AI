@@ -130,6 +130,19 @@ Checks:
 
 Only the tasks are chosen by the drafter. Atoms, bonds and growth are produced by the rules of section 3 and the bond conditions. Steps 1-2 are the bootstrap: after them, the library is relied on as given (reused, never retrained), and every later level is built on it.
 
+## 7c. Types and copies, duplicates and shared building blocks (the owner, 2026-10-05: parts can be unlimited, recombined again and again; a complex shape may contain two duplicate smaller shapes, or shapes built from similar basic shapes)
+
+- **The library holds types; the medium holds instances.** Placing a type creates an instance. Any number of instances of one type may sit in a medium, and **one combined shape may contain several instances of the same type** (as water contains two H).
+- **Identical instances can take different roles.** C4 permits stable phase offsets inside a locked group, including anti-phase. Two instances of one type may lock at an offset and divide the work. This is tested (G7), not assumed.
+- **The "same shape?" check:** before a new stable shape enters the library, it is compared with every entry: the identity card within registered tolerances **and** the same behaviour on its task panel. A match is recorded as a reuse of the existing type, not a new type.
+- **The composition record:** for every combined type, the library records which types it contains and how many of each. This is the "periodic table plus molecules" record.
+- **Unlimited but paid for:** parts may recombine without limit. The element and coupling cost (section 3) and the sameness check keep library growth tied to need.
+
+| ID | Prediction | Check |
+|---|---|---|
+| **G7 duplicates** | when a task needs it (for example advance-and-cover), combinations with two or more instances of one type form, and the instances take differentiated roles (a stable phase offset and different action statistics) rather than redundant ones | against the same task with only one instance allowed |
+| **G8 shared building blocks** | a small set of types appears in many combined types, and the rate of new types entering the library falls as more tasks are learned | across tasks, in training order |
+
 ## 8. Dependencies and order
 
 1. **C6 first:** its medium must exist and run fast (the C++ port, revision R007). 0h builds on that medium.
