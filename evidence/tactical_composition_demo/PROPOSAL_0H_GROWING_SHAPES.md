@@ -1,105 +1,151 @@
-# Proposal 0h: growing shapes, from atomic skills to combined skills (DRAFT for the owner; nothing built or run)
+# Proposal 0h, revision 2: shapes that grow and die in a shared medium (DRAFT for the owner; nothing built or run)
 
 Exploratory line under decision 0028. It comes from the owner's direction of 2026-10-05:
-- AI should be built from shapes, from the simplest to the complex;
-- parts connect only when together they do better than apart, and stay connected when the combination is stable;
-- each atomic shape is crystallized on a tiny task (move, spatial recognition, memory, …), and what one shape produces is what the next consumes.
+- build from the simplest shapes to complex ones;
+- parts connect only when together they beat apart and the combination is stable;
+- atomic shapes are crystallized on tiny tasks;
+- **"we should allow it grow and die, that's the main thing, and have clear conditions for it"**.
 
-**The claim boundary**, to be kept:
-- first test exactly that, in a small 2D world;
-- no claim about general AI, scale, the brain, or novelty over the related work listed in section 8.
+Revision 1 (`6c6cbe0`) is replaced. The changes and their causes are in section 10.
 
-## 1. The three statements every experiment makes
+## 1. The three statements
 
 | | This proposal |
 |---|---|
-| **What the pieces are made of** | Small media running the C4 element law: position, phase, natural rate; in-phase elements attract, neighbours sync. Their geometry (positions, rates, couplings) is **learned** (section 4). |
-| **How connections form** | By the three bond conditions (section 3): a connection is possible only between matching frequency bands; it stays only if the joint result beats the parts and the joint shape is stable under kicks. No connection is wired by hand. |
-| **Closest known methods, and what differs** | Cascade-correlation, progressive networks, neural module networks, options in hierarchical reinforcement learning, mixtures of experts, oscillator networks (AKOrN), communication through coherence (neuroscience). What differs: locked parts that publish a rhythm interface and **bond by band matching plus measured benefit and stability**, with no retraining of the parts' insides. Whether that works is the question. |
+| **What the pieces are made of** | Elements running the C4 law (position, phase, natural rate; in-phase elements attract, neighbours sync), living in **one shared medium**: the background, as in C6. |
+| **How structure forms** | Elements are **born and die** by the conditions in section 3. Shapes are groups that lock (C4/C5 detection). Shapes connect **through the medium** when their bands match, and the connection stays only if it is stable (and, as a labelled addition, useful). Nothing is wired by hand. |
+| **Closest known methods, and what differs** | Growing neural gas, cascade-correlation, NEAT, dynamically expandable networks, progressive networks, oscillator networks (AKOrN), communication through coherence. What differs: birth and death driven by **resonance** (novelty, strain, locking), structure carried by a **shared background** the shapes change (the RRG background, as in C6), and bonds by band match plus stability. |
 
-## 2. The common language: phase and frequency bands
+## 2. What comes from the theory and what is added (so that no result is read as more than it is)
 
-Every shape receives and emits **rhythms**:
-- **A direction in the plane is an angle, carried as a phase.**
-- **Strength or distance** is an amplitude.
-- **Memory** is a phase held after its input stops.
-- **Different kinds of signal use different frequency bands.**
-
-An output port emits in one band and an input port listens in one band. This makes type compatibility **band matching**, not a declared list. The band layout is fixed by the drafter for v0 and stated before any run; letting bands emerge is a later step.
-
-## 3. The bond: when two shapes connect
-
-A connection from shape A's output to shape B's input:
-1. **can form** only if A's output band matches B's input band (the valence);
-2. **stays** only if the joint result beats both (a) each shape alone on the combined task and (b) the two side by side without the connection (the benefit, measured on paired episodes with a registered margin);
-3. **stays** only if the joint shape recovers from kicks: input noise, or an input dropped for a moment. This reuses the C4 recovery idea, with thresholds fixed before running.
-
-A connection that fails condition 2 or 3 dissolves. Bonds are tried where they are possible and kept where they help and hold.
-
-## 4. Learning a shape: resonance plus selection, and locking
-
-- **Resonance:** inputs drive the phases of sensor elements, and elements that lock pull together and couple more strongly (the C4 law's own mode → geometry).
-- **Selection:** a task reward decides which locks become permanent: locks during good outcomes strengthen, and locks during bad outcomes loosen (three-factor learning).
-- **Yardstick variant:** the same medium trained by gradient through its smooth dynamics (AKOrN-like). This shows whether resonance plus selection can stand alone.
-- **Locking (consolidation):** a shape is locked when its task score has stopped improving and it passes the stability test. Its inside then stops changing, and it publishes its interface (bands, ports).
-
-## 5. Nature's four conditions, applied
-
-| Condition (source) | In 0h |
+| Element | Source |
 |---|---|
-| Changing related goals make networks modular (Kashtan and Alon 2005) | Atomic tasks are trained in rotation, not one at a time to the end |
-| Connection cost makes networks modular (Clune, Mouret and Lipson 2013) | Every coupling has a cost in the score |
-| Routing by synchrony (communication through coherence, Fries) | Shapes connect only through band-matched phase coupling |
-| Staged consolidation (complementary learning systems) | Lock, then learn the next level on top |
+| C4 law; groups lock and publish an interface; the same law at every level; resonance shapes geometry; stability selects | **theory and accepted C4/C5** (decision 0007) |
+| Structure transforms the background, which grows the next structure | **RRG v0.2.1** (B → R → B); requires C6's medium |
+| Birth by novelty and by strain; death of unlocked elements | **derived** from resonance and stability (section 3) |
+| **Task reward and usefulness** | **added** (machine learning and neuroscience), labelled; it is tested against "stability only" |
+| Direction carried as phase, frequency bands as types | **design choice** (fits the spirit; not dictated by the theory) |
+| Atomic tasks | **chosen by the drafter** (a hand-made split, a known weakness) |
+| A cost per element and per coupling; changing goals | **borrowed** from modularity research |
 
-## 6. The atomic shapes and the first combinations (a 2D world, small)
+## 3. Birth and death: the main mechanism, with exact conditions
 
-| Atomic shape | Consumes | Produces | Tiny crystallization task |
-|---|---|---|---|
-| Perceive | nearby positions | direction (phase) and distance (amplitude) of the most relevant enemy | point at the right enemy |
-| Move | a direction plus approach or avoid | a step | reach a point; keep a distance |
-| Remember | a direction | the same direction held over time | keep pointing where an enemy was after it vanishes |
-| Choose | several directions | one selected direction | pick the nearest or weakest |
+**Measured quantities** (computed by the runner and logged):
+- **Lock** L(i, j): the phase-locking value of elements i and j over a window W (1 = perfectly locked, 0 = unrelated).
+- An element's **lock** L(i): the largest L(i, j) over its neighbours and over the input sites in range.
+- **Strain** S(i): the bimodality of the phases its coupling partners pull it toward, from a two-cluster circular fit (0 = one direction, 1 = two opposite directions, equally strong).
+- **Utility** U(i): the change in task score when element i is silenced for one evaluation block. Computed only for elements alive longer than one growth period.
+- **Cost:** c_e per element plus c_c per active coupling, subtracted from the score.
 
-**Level 2 combinations:**
-- perceive → move: chase or kite;
-- perceive → remember → move: pursuit out of sight;
-- perceive → choose → move: focus fire.
+**Birth (each rule is checked once per growth period):**
 
-**Level 3:** combinations of level-2 shapes in game-like fights. The world is a small purpose-built 2D task suite first. The Astelia bench is used only after level 2 works.
+| Rule | Condition | Birth |
+|---|---|---|
+| **B1 Novelty** | an input site drives a band and phase to which no element within reach has lock ≥ L_on, for at least T_nov | one element at that site, natural rate at the band's centre, phase at the input phase |
+| **B2 Strain split** | S(i) ≥ S_split and L(i) < L_on for at least T_split | element i divides into two, at the two cluster phases, offset by a small fixed distance |
+| **B3 Need** (labelled addition, active only in the reward arm) | the task error accumulated at a state region exceeds E_need for at least T_need, with no birth there in the last T_need | one element there, tuned to the inputs present |
 
-## 7. Predictions that can fail (measured against two yardsticks: one medium of equal total size trained from scratch, and a normal neural network of equal parameter count)
+**Death:**
 
-- **G1, atoms form:** each atomic shape reaches a registered task score and passes the stability test.
-- **G2, bonds are selective:**
-  - band-matched connections that help are kept;
-  - mismatched or useless connections are not formed or dissolve;
-  - checked against a control in which bonds form at random.
-- **G3, growing is cheaper:** a level-2 shape built from locked atoms reaches the registered score in fewer training episodes than either yardstick learning the same task from scratch.
-- **G4, reuse:** the same locked atom works inside at least two different level-2 shapes without changes to its inside.
-- **G5, no forgetting:** after level 2 is learned, every atom still passes its own task.
+| Rule | Condition |
+|---|---|
+| **D1 Unlocked** | L(i) < L_off for at least T_death: it synchronizes with nothing |
+| **D2 Useless** (only in the reward arm) | abs(U(i)) < ε_U in each of K consecutive checks |
+| **D3 Budget** | the total cost exceeds the budget C_max: remove the element with the lowest lock (stability arm) or the lowest utility (reward arm) |
 
-Each can fail, and each failure says which part of the idea does not hold.
+**Order and timescales** (the level ledger, section 5):
+- activity (beats) runs on the fast scale τ_a;
+- reshaping (positions and couplings, by the C4 law) runs on τ_g ≥ 10 τ_a;
+- birth and death are checked every τ_l ≥ 10 τ_g.
 
-## 8. Related work, to be read before the design is frozen
+Within one check, deaths come first, then births. A newborn element is protected from death for T_protect.
 
+All thresholds are fixed in the design before development: L_on > L_off (a hysteresis gap, so that an element is not born and killed at the same level), S_split, T_nov, T_split, T_death, T_need, E_need, ε_U, K, c_e, c_c, C_max, T_protect, and a hard cap N_max. Development may only report them as attainable, not tune them per task.
+
+## 4. Two arms that test the theory against the addition
+
+| Arm | Selection | Birth and death rules |
+|---|---|---|
+| **Stability** (the theory alone) | what locks and recovers persists | B1, B2, D1, D3 by lock |
+| **Stability + reward** (labelled addition) | locks during good outcomes strengthen (three-factor rule), and usefulness also counts | B1, B2, B3, D1, D2, D3 by utility |
+
+Yardsticks:
+- a fixed-size medium of the same final size, trained the same way;
+- the same medium trained by gradient through its dynamics (AKOrN-like);
+- a normal neural network of equal parameter count.
+
+## 5. Level, size and timescale ledger (required by AGENTS.md and the principle-first rule)
+
+| Level | Unit | Size | Own timescale | What it publishes upward |
+|---|---|---|---|---|
+| 0 | element | 1 | τ_a (beat) | phase, natural rate |
+| 1 | atomic shape (a locked group) | measured | collective period, expected ≥ 3 τ_a (C5 measured a 3.4× separation) | collective phase, band, ports (C5 interface fields) |
+| 2 | combined shape (locked atoms through the medium) | measured | slower again, measured | the same fields, one level up |
+
+Checks:
+- each level's timescale is measured on its own clock;
+- no check mixes levels;
+- descendant reads stay on the evaluator side.
+
+## 6. Language, bonds and tasks
+
+- **The language:** direction as phase, strength as amplitude, memory as a held phase, kinds of signal as frequency bands. The band layout is fixed before running.
+- **Bonds between shapes:** they form only **through the medium** between band-matched shapes. A bond stays if it recovers from kicks (stability) and, in the reward arm only, if the joint result beats the parts alone and side by side without the bond.
+- **Atomic tasks in a small 2D world**, rotated rather than trained one after the other (changing goals):
+  - perceive (point at the right enemy);
+  - move (reach a point or keep a distance);
+  - remember (keep pointing after the enemy vanishes);
+  - choose (pick one target).
+- **Then combined tasks:**
+  - chase and kite;
+  - pursuit out of sight;
+  - focus fire.
+
+  The Astelia bench comes only after level 2 works.
+
+## 7. Predictions that can fail
+
+| ID | Prediction | Check |
+|---|---|---|
+| **G0 growth is driven by need** | births happen at novel inputs and strained elements, not uniformly | against a control with births at random places and times at the same rate |
+| **G0' growth stops** | the element count levels off once the tasks are solved | it does not grow without bound under the cost |
+| **G1 atoms form** | locked groups appear that do each atomic task to a registered score and pass the recovery test | |
+| **G2 selective bonds** | bonds through the medium form between band-matched shapes and persist only where stable (and useful in the reward arm) | against random bonding |
+| **G3 growing is cheaper** | a grown medium reaches the combined-task scores in fewer episodes and with fewer elements | than the fixed-size medium and the neural network |
+| **G4 reuse** | the same locked atom serves at least two combined shapes unchanged | |
+| **G5 no forgetting** | the atoms still pass their tasks after level 2 forms | |
+| **G6 the theory alone** | the stability arm meets G0, G0', G1, G2 and G5 without reward | if only the reward arm works, the result says usefulness had to be added |
+
+## 8. Dependencies and order
+
+1. **C6 first:** its medium must exist and run fast (the C++ port, revision R007). 0h builds on that medium.
+2. Then:
+   - an 0h design with every threshold fixed;
+   - a Codex review;
+   - development (G0 and G1 first, with a stop row if births do not track novelty and strain);
+   - registration, owner approval naming the specification, and one recorded run.
+
+Nothing runs before the owner's approval.
+
+## 9. Related work, to read before the design is frozen
+
+- growing neural gas (Fritzke 1995);
 - cascade-correlation (Fahlman and Lebiere 1990);
-- progressive neural networks (Rusu et al. 2016);
-- neural module networks;
-- the options framework;
-- lottery tickets (Frankle and Carbin 2019);
-- the grokking circuits (Nanda et al. 2023);
+- NEAT (Stanley and Miikkulainen 2002);
+- dynamically expandable networks (Yoon et al. 2018);
+- progressive networks (Rusu et al. 2016);
 - AKOrN (Miyato et al. 2025);
-- modularity under varying goals (Kashtan and Alon 2005) and under connection cost (Clune, Mouret and Lipson 2013);
+- grokking circuits (Nanda et al. 2023);
+- modularity under varying goals (Kashtan and Alon 2005) and connection cost (Clune, Mouret and Lipson 2013);
 - communication through coherence (Fries);
 - complementary learning systems (McClelland, McNaughton and O'Reilly 1995).
 
-## 9. Order and approval
+## 10. Changes from revision 1, and causes
 
-Owner approval of this proposal comes first. Then:
-1. the band layout, the task suite, the learning rules and all thresholds written into a design;
-2. a Codex review;
-3. development: atoms first, with a stop row if G1 fails;
-4. registration, the owner's approval naming the specification, and one recorded run.
-
-Nothing in this proposal runs before the owner's approval. It sits alongside the C6 C++ port request and the running 0g v1 development.
+| Change | Cause |
+|---|---|
+| Shapes live in one shared medium, and bonds form through it | Revision 1 wired shapes port to port, which leaves out the RRG background transformation |
+| Stability is the main selection; reward is a labelled addition and is tested against stability alone (G6) | Revision 1 let reward decide, which tests machine learning, not the theory |
+| A level, size and timescale ledger | It was missing (AGENTS.md, principle-first rule) |
+| Borrowed elements marked (section 2) | So that results are not read as proving more than they do |
+| Growth and death, with exact conditions, as the main mechanism | The owner's direction |
