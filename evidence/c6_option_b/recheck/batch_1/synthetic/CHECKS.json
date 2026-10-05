@@ -1,0 +1,192 @@
+{
+  "passed": true,
+  "kind": "SYNTHETIC_ENGINEERING_ONLY",
+  "entropy": 882901,
+  "source_pin": {
+    "status": "PASS",
+    "source_files_verified": 25,
+    "owner_identities_verified": 12,
+    "manifest_entries_verified": 23,
+    "checksum_entries_verified": 24,
+    "handoff_sha256": "719781cbd5a302f58f0f57c064b32ca0a49e49546a1f88160582ba6235ca575e",
+    "expected_record_sha256": "37e8249338a95e32de72f4e30091e104697606faebd53b22bda8b90124e3bceb",
+    "import_record_sha256": "3f34717f795415f5ed4b11df060cdfc3c36f0bd8b1d491853141778bbc2d3da2"
+  },
+  "option_b_build": {
+    "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+    "compiler_version": "Apple clang version 21.0.0 (clang-2100.3.34.2)\nTarget: arm64-apple-darwin25.6.0\nThread model: posix\nInstalledDir: /Library/Developer/CommandLineTools/usr/bin\n",
+    "platform": "Darwin",
+    "architecture": "arm64",
+    "flags": [
+      "-std=c++17",
+      "-O2",
+      "-fno-fast-math",
+      "-ffp-contract=off",
+      "-dynamiclib"
+    ],
+    "source_hashes": {
+      "native/c6_option_b/field.cpp": "0c3079fa1c7c9125a3bc031a615630a5b863df36503fea62e95d9544a5637ad8",
+      "native/c6_option_b/detection.cpp": "fd2ab679359cb00e857555ee7614adaa4d335464ea242abf0c869e6400b00b52"
+    },
+    "binary_sha256": "914e836debe58a9fd9a2c15c6864c3ff4cf3039d6e51f6f013321d5f8aefb9d4",
+    "build_seconds": 1.233305792
+  },
+  "reference_build": {
+    "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+    "flags": [
+      "-std=c++17",
+      "-O2",
+      "-fno-fast-math",
+      "-ffp-contract=off",
+      "-dynamiclib"
+    ],
+    "source_sha256": "be46eb613db693d7321070243d0ea3e4e35d8aeda620de62f01aed200d651e14",
+    "binary_sha256": "4830141d5585f6a0e684808ccf339314bc3205f7dd6a30c4a5838b0dce5e01f4"
+  },
+  "python": "3.9.6 (default, Aug 25 2026, 21:26:21) \n[Clang 21.0.0 (clang-2100.3.34.2)]",
+  "numpy": "2.0.2",
+  "platform": "macOS-26.6.2-arm64-arm-64bit",
+  "load_average": [
+    19.705078125,
+    24.31298828125,
+    32.4072265625
+  ],
+  "calls_bit_compared": 342,
+  "float64_values_bit_compared": 1357236,
+  "maximum_error": 0.0,
+  "cache_churn": [
+    {
+      "case": "uncached",
+      "calls": 30,
+      "wall_seconds": 0.06552570800000002,
+      "process_cpu_seconds": 0.064549,
+      "stats": {
+        "retired_hits": 0,
+        "control_hits": 0,
+        "eligible_misses": 30,
+        "avoided_material_rk_steps": 0,
+        "retired_bytes": 0,
+        "control_bytes": 0,
+        "probation_bytes": 0,
+        "drive_bytes": 0
+      }
+    },
+    {
+      "case": "pressure",
+      "calls": 30,
+      "wall_seconds": 0.04980058299999998,
+      "process_cpu_seconds": 0.048983,
+      "stats": {
+        "retired_hits": 29,
+        "control_hits": 0,
+        "eligible_misses": 1,
+        "avoided_material_rk_steps": 2900,
+        "retired_bytes": 60492,
+        "control_bytes": 0,
+        "probation_bytes": 0,
+        "drive_bytes": 0
+      }
+    },
+    {
+      "case": "default",
+      "calls": 30,
+      "wall_seconds": 0.03259920900000002,
+      "process_cpu_seconds": 0.03248999999999999,
+      "stats": {
+        "retired_hits": 29,
+        "control_hits": 0,
+        "eligible_misses": 1,
+        "avoided_material_rk_steps": 2900,
+        "retired_bytes": 60492,
+        "control_bytes": 0,
+        "probation_bytes": 0,
+        "drive_bytes": 121600
+      }
+    }
+  ],
+  "workers": [
+    {
+      "worker": 0,
+      "calls": 60,
+      "float64_values": 35400,
+      "stats": {
+        "retired_hits": 0,
+        "control_hits": 0,
+        "eligible_misses": 60,
+        "avoided_material_rk_steps": 0,
+        "retired_bytes": 8268,
+        "control_bytes": 0,
+        "probation_bytes": 0,
+        "drive_bytes": 0
+      }
+    },
+    {
+      "worker": 1,
+      "calls": 60,
+      "float64_values": 35400,
+      "stats": {
+        "retired_hits": 0,
+        "control_hits": 0,
+        "eligible_misses": 60,
+        "avoided_material_rk_steps": 0,
+        "retired_bytes": 8268,
+        "control_bytes": 0,
+        "probation_bytes": 0,
+        "drive_bytes": 0
+      }
+    },
+    {
+      "worker": 2,
+      "calls": 60,
+      "float64_values": 35400,
+      "stats": {
+        "retired_hits": 0,
+        "control_hits": 0,
+        "eligible_misses": 60,
+        "avoided_material_rk_steps": 0,
+        "retired_bytes": 8268,
+        "control_bytes": 0,
+        "probation_bytes": 0,
+        "drive_bytes": 0
+      }
+    },
+    {
+      "worker": 3,
+      "calls": 60,
+      "float64_values": 35400,
+      "stats": {
+        "retired_hits": 0,
+        "control_hits": 0,
+        "eligible_misses": 60,
+        "avoided_material_rk_steps": 0,
+        "retired_bytes": 8268,
+        "control_bytes": 0,
+        "probation_bytes": 0,
+        "drive_bytes": 0
+      }
+    }
+  ],
+  "unit_timings": [
+    {
+      "case": "reference",
+      "calls": 40,
+      "wall_seconds": 0.029637750000000018,
+      "process_cpu_seconds": 0.02963400000000005
+    },
+    {
+      "case": "disabled",
+      "calls": 40,
+      "wall_seconds": 0.04647687499999997,
+      "process_cpu_seconds": 0.04647800000000002
+    },
+    {
+      "case": "warm",
+      "calls": 40,
+      "wall_seconds": 0.008903792000000021,
+      "process_cpu_seconds": 0.008903999999999912
+    }
+  ],
+  "peak_rss_bytes": 32833536,
+  "helper_sha256": "130fba639febe18972f5a8ff863a4275d67a5d87fc95ba8e4dff11f9e547512d",
+  "limits": "Payload bounds exclude container overhead, in-flight arrays and protocol evidence; not an RSS bound."
+}

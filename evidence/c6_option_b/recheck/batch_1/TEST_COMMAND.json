@@ -1,0 +1,19 @@
+{
+  "command": [
+    ".venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "tests/test_c6_option_b.py",
+    "tests/test_c6_option_b_parallel.py",
+    "--junitxml=evidence/c6_option_b/recheck/contracts.xml"
+  ],
+  "exit_code": 0,
+  "wall_seconds": 6.982601083,
+  "load_average": [
+    22.61767578125,
+    25.29345703125,
+    33.033203125
+  ]
+}

@@ -1,0 +1,78 @@
+[
+  {
+    "command": [
+      ".venv/bin/python",
+      "tools/c6_option_b_recheck.py",
+      "--output",
+      "evidence/c6_option_b/recheck/synthetic"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 0.6945064169999999,
+    "load_average": [
+      22.744140625,
+      23.44970703125,
+      30.02392578125
+    ]
+  },
+  {
+    "command": [
+      ".venv/bin/python",
+      "tools/c6_option_b_check.py",
+      "--backend",
+      "native",
+      "--fixture",
+      "--audit",
+      "--output",
+      "evidence/c6_option_b/recheck/fixture_sequential"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 5.971689124999999,
+    "load_average": [
+      21.046875,
+      23.0703125,
+      29.8125
+    ]
+  },
+  {
+    "command": [
+      ".venv/bin/python",
+      "tools/c6_option_b_check.py",
+      "--backend",
+      "native",
+      "--fixture",
+      "--audit",
+      "--parallel",
+      "--output",
+      "evidence/c6_option_b/recheck/fixture_forward"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 4.385002792,
+    "load_average": [
+      19.921875,
+      22.80322265625,
+      29.6787109375
+    ]
+  },
+  {
+    "command": [
+      ".venv/bin/python",
+      "tools/c6_option_b_check.py",
+      "--backend",
+      "native",
+      "--fixture",
+      "--audit",
+      "--parallel",
+      "--schedule",
+      "reverse",
+      "--output",
+      "evidence/c6_option_b/recheck/fixture_reverse"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 4.406160667,
+    "load_average": [
+      19.921875,
+      22.80322265625,
+      29.6787109375
+    ]
+  }
+]

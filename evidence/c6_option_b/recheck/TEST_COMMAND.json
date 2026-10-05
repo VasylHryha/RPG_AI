@@ -1,0 +1,20 @@
+{
+  "command": [
+    ".venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "tests/test_c6_option_b.py",
+    "tests/test_c6_option_b_parallel.py",
+    "--junitxml=evidence/c6_option_b/recheck/contracts.xml"
+  ],
+  "exit_code": 0,
+  "wall_seconds": 7.74884475,
+  "load_average": [
+    25.13720703125,
+    23.8740234375,
+    30.32373046875
+  ],
+  "reason_for_followup": "Native store allocation failure could corrupt cache accounting; regression injection and final-source verification."
+}

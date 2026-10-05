@@ -3,10 +3,11 @@
 #include <cmath>
 #include <limits>
 #include <vector>
+#include <climits>
 
 extern "C" int option_b_components(int n, const double* x, double link,
                                   const unsigned char* locked, long long* labels) {
-    if (n < 0 || !std::isfinite(link)) return 1;
+    if (n < 0 || n > INT_MAX/2 || !std::isfinite(link) || (n && (!x || !locked || !labels))) return 1;
     try {
         std::vector<double> distances(size_t(n)*n), nearest(n);
         for (int i=0;i<n;i++) {

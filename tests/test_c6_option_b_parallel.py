@@ -77,3 +77,31 @@ def test_restores_after_worker_exception_and_drains_tasks():
                 scheduler.map(task,[(0,),(1,)])
     assert finished.is_set()
     assert (A.GridSet,A.recovery,A.causal)==originals
+
+
+def test_bounded_submission_longest_first_and_indexed_exceptions():
+    with O.backend('native'):
+        with Q.parallel() as scheduler:
+            jobs=[(i,) for i in range(40)]
+            seen=[];lock=threading.Lock()
+            def task(i):
+                with lock:seen.append(i)
+                time.sleep(.001)
+                return i
+            result=dict(scheduler.completed(task,jobs,list(range(40))))
+            assert result=={i:i for i in range(40)}
+            assert set(seen[:4])==set(range(36,40))
+            assert scheduler.summary()['maximum_inflight_jobs']==4
+            def failure(i):
+                if i in (0,3):raise RuntimeError(str(i))
+                return i
+            with pytest.raises(RuntimeError,match='^0$'):scheduler.map(failure,jobs)
+
+
+def test_parallel_selection_requires_backend_and_rejects_nesting():
+    with pytest.raises(RuntimeError,match='active native'):
+        with Q.parallel():pass
+    with O.backend('native'):
+        with Q.parallel():
+            with pytest.raises(RuntimeError,match='Nested'):
+                with Q.parallel():pass
