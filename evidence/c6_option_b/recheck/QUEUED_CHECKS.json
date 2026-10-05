@@ -1,0 +1,507 @@
+{
+  "state": "QUEUED_NOT_EXECUTED",
+  "preconditions": [
+    "Timed 0g and other heavy work finished; owner scheduler confirms machine is quiet.",
+    "Verify current source pin, exact helper/source and both binary/BUILD identities from this delivery; new identities need separate evidence.",
+    "Fresh processes and fresh output paths; at most two world processes and four compute workers per process; BLAS teams one.",
+    "Run equivalence first; quiet timing separately without --audit. Stop on any error or bit/digest/decision mismatch."
+  ],
+  "run_count": 17,
+  "queued_full_world_computations": [
+    {
+      "id": "reference_development_1",
+      "kind": "equivalence_baseline",
+      "command": [
+        ".venv/bin/python",
+        "tools/c6_option_b_check.py",
+        "--backend",
+        "reference",
+        "--entropy",
+        "development",
+        "--world",
+        "1",
+        "--output",
+        "evidence/c6_option_b/recheck_later/reference_development_1"
+      ]
+    },
+    {
+      "id": "smoke_0_sequential",
+      "kind": "equivalence",
+      "command": [
+        ".venv/bin/python",
+        "tools/c6_option_b_check.py",
+        "--backend",
+        "native",
+        "--audit",
+        "--entropy",
+        "smoke",
+        "--world",
+        "0",
+        "--output",
+        "evidence/c6_option_b/recheck_later/smoke_0_sequential"
+      ],
+      "comparison_command": [
+        ".venv/bin/python",
+        "tools/c6_option_b_compare.py",
+        "--reference",
+        "evidence/c6_option_b/reference_smoke_0/world.json.gz",
+        "--native",
+        "evidence/c6_option_b/recheck_later/smoke_0_sequential/world.json.gz",
+        "--exact",
+        "--output",
+        "evidence/c6_option_b/recheck_later/smoke_0_sequential_EXACT.json"
+      ]
+    },
+    {
+      "id": "smoke_0_forward",
+      "kind": "equivalence",
+      "command": [
+        ".venv/bin/python",
+        "tools/c6_option_b_check.py",
+        "--backend",
+        "native",
+        "--audit",
+        "--parallel",
+        "--entropy",
+        "smoke",
+        "--world",
+        "0",
+        "--output",
+        "evidence/c6_option_b/recheck_later/smoke_0_forward"
+      ],
+      "comparison_command": [
+        ".venv/bin/python",
+        "tools/c6_option_b_compare.py",
+        "--reference",
+        "evidence/c6_option_b/reference_smoke_0/world.json.gz",
+        "--native",
+        "evidence/c6_option_b/recheck_later/smoke_0_forward/world.json.gz",
+        "--exact",
+        "--output",
+        "evidence/c6_option_b/recheck_later/smoke_0_forward_EXACT.json"
+      ]
+    },
+    {
+      "id": "smoke_0_reverse",
+      "kind": "equivalence",
+      "command": [
+        ".venv/bin/python",
+        "tools/c6_option_b_check.py",
+        "--backend",
+        "native",
+        "--audit",
+        "--parallel",
+        "--schedule",
+        "reverse",
+        "--entropy",
+        "smoke",
+        "--world",
+        "0",
+        "--output",
+        "evidence/c6_option_b/recheck_later/smoke_0_reverse"
+      ],
+      "comparison_command": [
+        ".venv/bin/python",
+        "tools/c6_option_b_compare.py",
+        "--reference",
+        "evidence/c6_option_b/reference_smoke_0/world.json.gz",
+        "--native",
+        "evidence/c6_option_b/recheck_later/smoke_0_reverse/world.json.gz",
+        "--exact",
+        "--output",
+        "evidence/c6_option_b/recheck_later/smoke_0_reverse_EXACT.json"
+      ]
+    },
+    {
+      "id": "smoke_1_sequential",
+      "kind": "equivalence",
+      "command": [
+        ".venv/bin/python",
+        "tools/c6_option_b_check.py",
+        "--backend",
+        "native",
+        "--audit",
+        "--entropy",
+        "smoke",
+        "--world",
+        "1",
+        "--output",
+        "evidence/c6_option_b/recheck_later/smoke_1_sequential"
+      ],
+      "comparison_command": [
+        ".venv/bin/python",
+        "tools/c6_option_b_compare.py",
+        "--reference",
+        "evidence/c6_option_b/reference_smoke_1/world.json.gz",
+        "--native",
+        "evidence/c6_option_b/recheck_later/smoke_1_sequential/world.json.gz",
+        "--exact",
+        "--output",
+        "evidence/c6_option_b/recheck_later/smoke_1_sequential_EXACT.json"
+      ]
+    },
+    {
+      "id": "smoke_1_forward",
+      "kind": "equivalence",
+      "command": [
+        ".venv/bin/python",
+        "tools/c6_option_b_check.py",
+        "--backend",
+        "native",
+        "--audit",
+        "--parallel",
+        "--entropy",
+        "smoke",
+        "--world",
+        "1",
+        "--output",
+        "evidence/c6_option_b/recheck_later/smoke_1_forward"
+      ],
+      "comparison_command": [
+        ".venv/bin/python",
+        "tools/c6_option_b_compare.py",
+        "--reference",
+        "evidence/c6_option_b/reference_smoke_1/world.json.gz",
+        "--native",
+        "evidence/c6_option_b/recheck_later/smoke_1_forward/world.json.gz",
+        "--exact",
+        "--output",
+        "evidence/c6_option_b/recheck_later/smoke_1_forward_EXACT.json"
+      ]
+    },
+    {
+      "id": "smoke_1_reverse",
+      "kind": "equivalence",
+      "command": [
+        ".venv/bin/python",
+        "tools/c6_option_b_check.py",
+        "--backend",
+        "native",
+        "--audit",
+        "--parallel",
+        "--schedule",
+        "reverse",
+        "--entropy",
+        "smoke",
+        "--world",
+        "1",
+        "--output",
+        "evidence/c6_option_b/recheck_later/smoke_1_reverse"
+      ],
+      "comparison_command": [
+        ".venv/bin/python",
+        "tools/c6_option_b_compare.py",
+        "--reference",
+        "evidence/c6_option_b/reference_smoke_1/world.json.gz",
+        "--native",
+        "evidence/c6_option_b/recheck_later/smoke_1_reverse/world.json.gz",
+        "--exact",
+        "--output",
+        "evidence/c6_option_b/recheck_later/smoke_1_reverse_EXACT.json"
+      ]
+    },
+    {
+      "id": "development_0_sequential",
+      "kind": "equivalence",
+      "command": [
+        ".venv/bin/python",
+        "tools/c6_option_b_check.py",
+        "--backend",
+        "native",
+        "--audit",
+        "--entropy",
+        "development",
+        "--world",
+        "0",
+        "--output",
+        "evidence/c6_option_b/recheck_later/development_0_sequential"
+      ],
+      "comparison_command": [
+        ".venv/bin/python",
+        "tools/c6_option_b_compare.py",
+        "--reference",
+        "evidence/c6_option_b/profile_run/reference_world_000.json.gz",
+        "--native",
+        "evidence/c6_option_b/recheck_later/development_0_sequential/world.json.gz",
+        "--exact",
+        "--output",
+        "evidence/c6_option_b/recheck_later/development_0_sequential_EXACT.json"
+      ]
+    },
+    {
+      "id": "development_0_forward",
+      "kind": "equivalence",
+      "command": [
+        ".venv/bin/python",
+        "tools/c6_option_b_check.py",
+        "--backend",
+        "native",
+        "--audit",
+        "--parallel",
+        "--entropy",
+        "development",
+        "--world",
+        "0",
+        "--output",
+        "evidence/c6_option_b/recheck_later/development_0_forward"
+      ],
+      "comparison_command": [
+        ".venv/bin/python",
+        "tools/c6_option_b_compare.py",
+        "--reference",
+        "evidence/c6_option_b/profile_run/reference_world_000.json.gz",
+        "--native",
+        "evidence/c6_option_b/recheck_later/development_0_forward/world.json.gz",
+        "--exact",
+        "--output",
+        "evidence/c6_option_b/recheck_later/development_0_forward_EXACT.json"
+      ]
+    },
+    {
+      "id": "development_0_reverse",
+      "kind": "equivalence",
+      "command": [
+        ".venv/bin/python",
+        "tools/c6_option_b_check.py",
+        "--backend",
+        "native",
+        "--audit",
+        "--parallel",
+        "--schedule",
+        "reverse",
+        "--entropy",
+        "development",
+        "--world",
+        "0",
+        "--output",
+        "evidence/c6_option_b/recheck_later/development_0_reverse"
+      ],
+      "comparison_command": [
+        ".venv/bin/python",
+        "tools/c6_option_b_compare.py",
+        "--reference",
+        "evidence/c6_option_b/profile_run/reference_world_000.json.gz",
+        "--native",
+        "evidence/c6_option_b/recheck_later/development_0_reverse/world.json.gz",
+        "--exact",
+        "--output",
+        "evidence/c6_option_b/recheck_later/development_0_reverse_EXACT.json"
+      ]
+    },
+    {
+      "id": "development_1_sequential",
+      "kind": "equivalence",
+      "command": [
+        ".venv/bin/python",
+        "tools/c6_option_b_check.py",
+        "--backend",
+        "native",
+        "--audit",
+        "--entropy",
+        "development",
+        "--world",
+        "1",
+        "--output",
+        "evidence/c6_option_b/recheck_later/development_1_sequential"
+      ],
+      "comparison_command": [
+        ".venv/bin/python",
+        "tools/c6_option_b_compare.py",
+        "--reference",
+        "evidence/c6_option_b/recheck_later/reference_development_1/world.json.gz",
+        "--native",
+        "evidence/c6_option_b/recheck_later/development_1_sequential/world.json.gz",
+        "--exact",
+        "--output",
+        "evidence/c6_option_b/recheck_later/development_1_sequential_EXACT.json"
+      ]
+    },
+    {
+      "id": "development_1_forward",
+      "kind": "equivalence",
+      "command": [
+        ".venv/bin/python",
+        "tools/c6_option_b_check.py",
+        "--backend",
+        "native",
+        "--audit",
+        "--parallel",
+        "--entropy",
+        "development",
+        "--world",
+        "1",
+        "--output",
+        "evidence/c6_option_b/recheck_later/development_1_forward"
+      ],
+      "comparison_command": [
+        ".venv/bin/python",
+        "tools/c6_option_b_compare.py",
+        "--reference",
+        "evidence/c6_option_b/recheck_later/reference_development_1/world.json.gz",
+        "--native",
+        "evidence/c6_option_b/recheck_later/development_1_forward/world.json.gz",
+        "--exact",
+        "--output",
+        "evidence/c6_option_b/recheck_later/development_1_forward_EXACT.json"
+      ]
+    },
+    {
+      "id": "development_1_reverse",
+      "kind": "equivalence",
+      "command": [
+        ".venv/bin/python",
+        "tools/c6_option_b_check.py",
+        "--backend",
+        "native",
+        "--audit",
+        "--parallel",
+        "--schedule",
+        "reverse",
+        "--entropy",
+        "development",
+        "--world",
+        "1",
+        "--output",
+        "evidence/c6_option_b/recheck_later/development_1_reverse"
+      ],
+      "comparison_command": [
+        ".venv/bin/python",
+        "tools/c6_option_b_compare.py",
+        "--reference",
+        "evidence/c6_option_b/recheck_later/reference_development_1/world.json.gz",
+        "--native",
+        "evidence/c6_option_b/recheck_later/development_1_reverse/world.json.gz",
+        "--exact",
+        "--output",
+        "evidence/c6_option_b/recheck_later/development_1_reverse_EXACT.json"
+      ]
+    },
+    {
+      "id": "quiet_smoke_0",
+      "kind": "quiet_timing",
+      "concurrency_pair": "smoke",
+      "command": [
+        ".venv/bin/python",
+        "tools/c6_option_b_check.py",
+        "--backend",
+        "native",
+        "--parallel",
+        "--entropy",
+        "smoke",
+        "--world",
+        "0",
+        "--output",
+        "evidence/c6_option_b/recheck_later/quiet_smoke_0"
+      ],
+      "comparison_command": [
+        ".venv/bin/python",
+        "tools/c6_option_b_compare.py",
+        "--reference",
+        "evidence/c6_option_b/reference_smoke_0/world.json.gz",
+        "--native",
+        "evidence/c6_option_b/recheck_later/quiet_smoke_0/world.json.gz",
+        "--exact",
+        "--output",
+        "evidence/c6_option_b/recheck_later/quiet_smoke_0_EXACT.json"
+      ]
+    },
+    {
+      "id": "quiet_smoke_1",
+      "kind": "quiet_timing",
+      "concurrency_pair": "smoke",
+      "command": [
+        ".venv/bin/python",
+        "tools/c6_option_b_check.py",
+        "--backend",
+        "native",
+        "--parallel",
+        "--entropy",
+        "smoke",
+        "--world",
+        "1",
+        "--output",
+        "evidence/c6_option_b/recheck_later/quiet_smoke_1"
+      ],
+      "comparison_command": [
+        ".venv/bin/python",
+        "tools/c6_option_b_compare.py",
+        "--reference",
+        "evidence/c6_option_b/reference_smoke_1/world.json.gz",
+        "--native",
+        "evidence/c6_option_b/recheck_later/quiet_smoke_1/world.json.gz",
+        "--exact",
+        "--output",
+        "evidence/c6_option_b/recheck_later/quiet_smoke_1_EXACT.json"
+      ]
+    },
+    {
+      "id": "quiet_development_0",
+      "kind": "quiet_timing",
+      "concurrency_pair": "development",
+      "command": [
+        ".venv/bin/python",
+        "tools/c6_option_b_check.py",
+        "--backend",
+        "native",
+        "--parallel",
+        "--entropy",
+        "development",
+        "--world",
+        "0",
+        "--output",
+        "evidence/c6_option_b/recheck_later/quiet_development_0"
+      ],
+      "comparison_command": [
+        ".venv/bin/python",
+        "tools/c6_option_b_compare.py",
+        "--reference",
+        "evidence/c6_option_b/profile_run/reference_world_000.json.gz",
+        "--native",
+        "evidence/c6_option_b/recheck_later/quiet_development_0/world.json.gz",
+        "--exact",
+        "--output",
+        "evidence/c6_option_b/recheck_later/quiet_development_0_EXACT.json"
+      ]
+    },
+    {
+      "id": "quiet_development_1",
+      "kind": "quiet_timing",
+      "concurrency_pair": "development",
+      "command": [
+        ".venv/bin/python",
+        "tools/c6_option_b_check.py",
+        "--backend",
+        "native",
+        "--parallel",
+        "--entropy",
+        "development",
+        "--world",
+        "1",
+        "--output",
+        "evidence/c6_option_b/recheck_later/quiet_development_1"
+      ],
+      "comparison_command": [
+        ".venv/bin/python",
+        "tools/c6_option_b_compare.py",
+        "--reference",
+        "evidence/c6_option_b/recheck_later/reference_development_1/world.json.gz",
+        "--native",
+        "evidence/c6_option_b/recheck_later/quiet_development_1/world.json.gz",
+        "--exact",
+        "--output",
+        "evidence/c6_option_b/recheck_later/quiet_development_1_EXACT.json"
+      ]
+    }
+  ],
+  "existing_reference_sha256": {
+    "evidence/c6_option_b/reference_smoke_0/world.json.gz": "aeea74a98f3ffc1dec799633269382fa9b111d8a947e50bf3b4f2a79f290e0aa",
+    "evidence/c6_option_b/reference_smoke_1/world.json.gz": "ae0e47fcb98711f8606f2ce8576dd04df24d989374e679398a8cdb1a0bb4b87f",
+    "evidence/c6_option_b/profile_run/reference_world_000.json.gz": "896576d2308b1b8bcda6ed13e6b073308d0c5962bb2bd9a1c9b8da35d95f940f"
+  },
+  "runtime_rule": "max(normal quiet world seconds)*40/2*1.5 <= 10800; every measured world <= 360 seconds. No milestone/science acceptance follows.",
+  "quiet_pair_order": [
+    "smoke 0 and 1 concurrently in cold processes, wait for both exits",
+    "development 0 and 1 concurrently in cold processes, wait for both exits"
+  ],
+  "reference_metadata_exclusions": "Only established root cost/build fields; use --exact; nested diagnostics/digests/decisions remain required."
+}

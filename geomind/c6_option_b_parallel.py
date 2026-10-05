@@ -4,7 +4,7 @@ One isolated world process owns one coordinator and four pool threads. Nested
 forks are flattened into grid/block jobs; workers never wait for other workers.
 Only the coordinator writes owners, checks, traces and reduction accumulators.
 """
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, wait, FIRST_COMPLETED
 from contextlib import contextmanager
 import hashlib
 import threading
@@ -14,6 +14,7 @@ from geomind import c6_option_b as O
 
 THREADS_PER_WORLD = 5
 WORLD_WORKERS = 2
+_PARALLEL_LOCK = threading.Lock()
 
 
 class Scheduler:
@@ -23,9 +24,10 @@ class Scheduler:
         self.order = order
         self.lib, _ = O.load()
         self.stats = {}
+        self.max_inflight = 0
         self.lock = threading.Lock()
         self.pool = ThreadPoolExecutor(max_workers=THREADS_PER_WORLD-1,
-            thread_name_prefix='c6-grid', initializer=self.lib.option_b_cache_clear)
+            thread_name_prefix='c6-grid', initializer=lambda:self.lib.option_b_cache_limits(*O.CACHE_LIMITS))
 
     def invoke(self, fn, args):
         try:
@@ -36,18 +38,44 @@ class Scheduler:
             with self.lock:
                 self.stats[threading.get_ident()] = O.cache_stats(self.lib)
 
-    def map(self, fn, jobs):
+    def completed(self, fn, jobs, costs=None):
+        # Bound submitted futures as well as workers. Consumers discard outgoing
+        # arrays immediately and retain full flows only for three-grid checks.
         indices = list(range(len(jobs)))
+        if costs is not None:
+            indices.sort(key=lambda i:(-costs[i],i))
         if self.order == 'reverse': indices.reverse()
-        pending = {i:self.pool.submit(self.invoke, fn, jobs[i]) for i in indices}
-        # Resolve/raise by original index, never completion or submission order.
-        return [pending[i].result() for i in range(len(jobs))]
+        todo = iter(indices); pending = {}; errors = {}
+        def refill():
+            while len(pending) < THREADS_PER_WORLD-1:
+                try: i = next(todo)
+                except StopIteration: break
+                pending[self.pool.submit(self.invoke,fn,jobs[i])] = i
+                self.max_inflight = max(self.max_inflight,len(pending))
+        refill()
+        while pending:
+            done, _ = wait(pending,return_when=FIRST_COMPLETED)
+            for future in done:
+                i = pending.pop(future)
+                try: result = future.result()
+                except BaseException as error: errors[i] = error
+                else: yield i,result
+            # Release completed futures/results before queuing more full blocks.
+            done.clear()
+            refill()
+        if errors:
+            raise errors[min(errors)]
+
+    def map(self, fn, jobs):
+        results = [None]*len(jobs)
+        for i,result in self.completed(fn,jobs): results[i] = result
+        return results
 
     def summary(self):
         rows = list(self.stats.values())
         return {'threads_per_world':THREADS_PER_WORLD, 'world_workers':WORLD_WORKERS,
                 'total_thread_budget':THREADS_PER_WORLD*WORLD_WORKERS,
-                'submission_order':self.order, 'worker_threads_used':len(rows),
+                'submission_order':self.order, 'maximum_inflight_jobs':self.max_inflight, 'worker_threads_used':len(rows),
                 'native_cache_worker_snapshots':rows,
                 'native_cache_worker_totals':{k:sum(row[k] for row in rows) for k in rows[0]} if rows else {}}
 
@@ -82,31 +110,37 @@ def run_many(scheduler, requests):
             powers=[np.zeros(len(initial[0].z)) for _ in range(3)], out_max=[0.,0.,0.], first=[None,None,None],
             intervals=F.exact_steps(duration, sample_dt), block_intervals=max(1,int(10./sample_dt)), begin=0))
     while any(st['begin'] < st['intervals'] for st in states):
-        jobs = []; active = []
+        jobs = []; active = []; locations = []; costs = []
         for st in states:
             if st['begin'] >= st['intervals']:continue
             block_duration = min(st['block_intervals'],st['intervals']-st['begin'])*st['sample_dt']
             active.append((st, block_duration))
             for k in range(3):
-                jobs.append((st['grid'].owners[k],st['initial'][k],block_duration,(st['dt']/(2**k),st['dt'])))
-        returned = iter(scheduler.map(grid_block, jobs))
-        for st, block_duration in active:
-            flows = []
-            for k in range(3):
-                end, flow, outgoing = next(returned)
-                st['grid'].owners[k] = end
-                flows.append(flow)
-                stride = F.exact_steps(st['sample_dt'],st['dt'])
-                st['collected'][k].extend(flow[stride::stride].copy())
-                st['trace'][k].update(flow[1:,2*len(st['initial'][k].z):].tobytes())
-                st['powers'][k] += np.sum(np.abs(outgoing[1:])**2,axis=0)*st['dt']
-                st['out_max'][k] = max(st['out_max'][k],float(np.abs(outgoing).max()))
-                indices = np.flatnonzero(np.max(np.abs(outgoing),axis=1)>0)
-                if st['first'][k] is None and len(indices):
-                    st['first'][k] = end.time-block_duration+int(indices[0])*st['dt']
-            errors = A.state_errors(st['initial'][0],flows,st['scales'])
-            for name in st['maxima']:st['maxima'][name] = max(st['maxima'][name],errors[name])
-            st['begin'] += st['block_intervals']
+                owner = st['grid'].owners[k]
+                jobs.append((owner,st['initial'][k],block_duration,(st['dt']/(2**k),st['dt'])))
+                locations.append((len(active)-1,k))
+                costs.append(block_duration/(st['dt']/(2**k)) * max(1,len(owner.cohorts)))
+        flows = [[None]*3 for _ in active]
+        for index, (end,flow,outgoing) in scheduler.completed(grid_block,jobs,costs):
+            j,k = locations[index]; st,block_duration = active[j]
+            st['grid'].owners[k] = end
+            flows[j][k] = flow
+            stride = F.exact_steps(st['sample_dt'],st['dt'])
+            st['collected'][k].extend(flow[stride::stride].copy())
+            st['trace'][k].update(flow[1:,2*len(st['initial'][k].z):].tobytes())
+            st['powers'][k] += np.sum(np.abs(outgoing[1:])**2,axis=0)*st['dt']
+            st['out_max'][k] = max(st['out_max'][k],float(np.abs(outgoing).max()))
+            indices = np.flatnonzero(np.max(np.abs(outgoing),axis=1)>0)
+            if st['first'][k] is None and len(indices):
+                st['first'][k] = end.time-block_duration+int(indices[0])*st['dt']
+            if all(f is not None for f in flows[j]):
+                # Within each three-grid diagnostic the reduction order stays
+                # coarse-to-fine; states and per-grid sums are independent.
+                errors = A.state_errors(st['initial'][0],flows[j],st['scales'])
+                for name in st['maxima']:st['maxima'][name] = max(st['maxima'][name],errors[name])
+                flows[j] = [None]*3
+                st['begin'] += st['block_intervals']
+            del flow,outgoing
     results = []
     for st in states:
         limits = st['grid'].s['numerics']; maxima = st['maxima']
@@ -126,8 +160,16 @@ def run_many(scheduler, requests):
 @contextmanager
 def parallel(order='forward'):
     """Select inside O.backend('native'); exit before restoring that backend."""
+    if not O._ACTIVE_NATIVE:
+        raise RuntimeError('Parallel option B requires an active native backend')
+    if not _PARALLEL_LOCK.acquire(blocking=False):
+        raise RuntimeError('Nested parallel selection forbidden')
     previous_grid, previous_recovery, previous_causal = A.GridSet, A.recovery, A.causal
-    scheduler = Scheduler(order)
+    try:
+        scheduler = Scheduler(order)
+    except BaseException:
+        _PARALLEL_LOCK.release()
+        raise
     class ParallelGridSet(previous_grid):
         def clone(self):return ParallelGridSet(self.owners,self.s,self.checks)
         def run(self,duration,scope,sample_dt=None):
@@ -141,8 +183,11 @@ def parallel(order='forward'):
         yield scheduler
     finally:
         # Drain every task before any module/backend restoration, even on errors.
-        scheduler.close()
-        A.GridSet, A.recovery, A.causal = previous_grid, previous_recovery, previous_causal
+        try:
+            scheduler.close()
+        finally:
+            A.GridSet, A.recovery, A.causal = previous_grid, previous_recovery, previous_causal
+            _PARALLEL_LOCK.release()
 
 
 def parallel_recovery(scheduler,grid,members,locks,pert,scope):

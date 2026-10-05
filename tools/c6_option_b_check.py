@@ -55,6 +55,8 @@ def main():
     parser.add_argument('--output',type=Path,required=True)
     args=parser.parse_args()
     if args.parallel and args.backend != 'native':parser.error('--parallel requires --backend native')
+    if args.audit and args.backend != 'native':parser.error('--audit requires --backend native')
+    if args.schedule != 'forward' and not args.parallel:parser.error('--schedule requires --parallel')
     args.output.mkdir(parents=True,exist_ok=False)
     s=P.load_settings();pin=validate_pin(ROOT)
     meta={'kind':'OPTION_B_ENGINEERING_ONLY','backend':args.backend,'audit':args.audit,
@@ -62,15 +64,31 @@ def main():
           'thread_budget':{'world_workers':2,'threads_per_world':5 if args.parallel else 1,
                            'blas_threads':1},
           'entropy':s[args.entropy+'_entropy'],'world':args.world,'fixture':args.fixture,
-          'start_machine':machine(),'source_pin':pin}
+          'start_machine':machine(),'source_pin':pin,
+          'fixture_inputs':{'population_entropy':882901,'second_population_entropy':552} if args.fixture else None,
+          'reference_build':O.reference_record(),
+          'option_b_build':O.verify_build() if args.backend=='native' else None,
+          'python':sys.version,'numpy':np.__version__,
+          'helper_hashes':{str(p.relative_to(ROOT)):hashlib.sha256(p.read_bytes()).hexdigest()
+              for p in (Path(__file__).resolve(),ROOT/'geomind/c6_option_b.py',
+                        ROOT/'geomind/c6_option_b_parallel.py',ROOT/'geomind/c6_r4_field.py',
+                        ROOT/'geomind/c6_r4_field_assay.py',ROOT/'geomind/c6_r4_field_protocol.py')},
+          'native_cache_limits_per_thread':dict(zip(('retired','control','probation','drive'),O.CACHE_LIMITS))}
+
     write(args.output/'START.json',(json.dumps(meta,indent=2)+'\n').encode())
     started=time.perf_counter();cpu=time.process_time()
-    with O.backend(args.backend,args.audit) as checker:
-        from geomind.c6_option_b_parallel import parallel
-        with parallel(args.schedule) if args.parallel else nullcontext() as scheduler:
-            row=fixture() if args.fixture else P.run_world(s,meta['entropy'],args.world)
-            audit=checker.summary() if checker else None
-            cache=scheduler.summary() if scheduler else O.cache_stats(O.load()[0]) if args.backend=='native' else None
+    try:
+        with O.backend(args.backend,args.audit) as checker:
+            from geomind.c6_option_b_parallel import parallel
+            with parallel(args.schedule) if args.parallel else nullcontext() as scheduler:
+                row=fixture() if args.fixture else P.run_world(s,meta['entropy'],args.world)
+                audit=checker.summary() if checker else None
+                cache=scheduler.summary() if scheduler else O.cache_stats(O.load()[0]) if args.backend=='native' else None
+    except BaseException as error:
+        write(args.output/'FAILURE.json',(json.dumps({'exception_type':type(error).__name__,
+            'message':str(error),'elapsed_seconds':time.perf_counter()-started,
+            'machine':machine(),'start_metadata':meta},indent=2)+'\n').encode())
+        raise
     compute=time.perf_counter()-started
     compute_cpu=time.process_time()-cpu
     io=time.perf_counter();io_cpu=time.process_time()

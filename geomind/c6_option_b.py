@@ -8,6 +8,8 @@ from contextlib import contextmanager
 import ctypes as ct
 import json
 import threading
+import platform
+from concurrent.futures import Future
 import numpy as np
 from geomind import c4_detect as D, c6_r4_field as F
 from geomind.c6_r4_integrity import sha256
@@ -15,41 +17,79 @@ from tools import build_c6_option_b as B, build_c6_r4 as R
 
 TOLERANCE = 1e-10
 PTR = ct.POINTER(ct.c_double)
+_SELECTION_LOCK = threading.Lock()
+_LOAD_LOCK = threading.Lock()
+_LOADED = {}
+_ACTIVE_NATIVE = False
+CACHE_LIMITS = (256*1024*1024,32*1024*1024,2*1024*1024,32*1024*1024)
+
 
 def verify_build(library=B.LIBRARY):
     record = json.loads((library.parent/'BUILD.json').read_text())
     expected = {str(s.relative_to(B.ROOT)):sha256(s) for s in B.SOURCES}
-    if record.get('source_hashes') != expected or record.get('binary_sha256') != sha256(library) or record.get('flags') != list(B.FLAGS):
+    if record.get('source_hashes') != expected or record.get('binary_sha256') != sha256(library) or record.get('flags') != list(B.FLAGS) or record.get('platform') != platform.system() or record.get('architecture') != platform.machine():
         raise RuntimeError('Option B source/build identity mismatch')
     return record
 
-def reference():
+def _checked_load(library, record):
+    identity = (sha256(library), json.dumps(record,sort_keys=True))
+    with _LOAD_LOCK:
+        previous = _LOADED.get(str(library))
+        if previous and previous[0] != identity:
+            raise RuntimeError('Loaded native identity changed; restart process')
+        if previous:
+            return previous[1]
+        lib = ct.CDLL(str(library))
+        ints = ct.POINTER(ct.c_int)
+        tail = [PTR,PTR,PTR,PTR,ints,PTR,PTR,ints,PTR,PTR,PTR]
+        lib.field_rhs.argtypes = [ct.c_int]*3+[ct.c_double]+tail
+        lib.field_run.argtypes = [ct.c_int]*3+[ct.c_double]*2+[ct.c_int]*2+tail
+        lib.field_rhs.restype = lib.field_run.restype = ct.c_int
+        if sha256(library) != identity[0]:
+            raise RuntimeError('Native identity changed during load; restart process')
+        _LOADED[str(library)] = (identity,lib)
+        return lib
+
+
+def reference_record():
     record = json.loads((R.LIBRARY.parent/'BUILD.json').read_text())
-    if record.get('source_sha256') != sha256(R.SOURCE) or record.get('binary_sha256') != sha256(R.LIBRARY):
+    if (record.get('source_sha256') != sha256(R.SOURCE) or
+        record.get('binary_sha256') != sha256(R.LIBRARY) or record.get('flags') != list(R.FLAGS)):
         raise RuntimeError('Reference source/build identity mismatch; explicit rebuild required')
-    return F.native()
+    return record
+
+
+def reference():
+    # Configure ctypes here: F.native() can rebuild implicitly and is forbidden.
+    record = reference_record()
+    if F._NATIVE is not None and F._NATIVE[1] != record:
+        raise RuntimeError('Reference already loaded with another identity; restart process')
+    lib = _checked_load(R.LIBRARY,record)
+    if reference_record() != record:
+        raise RuntimeError('Reference identity changed during load')
+    return lib,record
+
 
 def load():
     record = verify_build()
-    lib = ct.CDLL(str(B.LIBRARY))
-    ints = ct.POINTER(ct.c_int)
-    tail = [PTR,PTR,PTR,PTR,ints,PTR,PTR,ints,PTR,PTR,PTR]
-    lib.field_rhs.argtypes = [ct.c_int]*3+[ct.c_double]+tail
-    lib.field_run.argtypes = [ct.c_int]*3+[ct.c_double]*2+[ct.c_int]*2+tail
-    lib.field_rhs.restype = lib.field_run.restype = ct.c_int
+    lib = _checked_load(B.LIBRARY,record)
     lib.option_b_components.argtypes = [ct.c_int,PTR,ct.c_double,ct.POINTER(ct.c_ubyte),ct.POINTER(ct.c_int64)]
     lib.option_b_components.restype = ct.c_int
     lib.option_b_cache_clear.argtypes = []
     lib.option_b_cache_clear.restype = None
+    lib.option_b_cache_limits.argtypes = [ct.c_uint64]*4
+    lib.option_b_cache_limits.restype = None
     lib.option_b_cache_stats.argtypes = [ct.POINTER(ct.c_uint64)]
     lib.option_b_cache_stats.restype = None
+    if verify_build() != record:
+        raise RuntimeError('Option B identity changed during load')
     return lib, record
 
 def cache_stats(lib):
-    values=(ct.c_uint64*7)()
+    values=(ct.c_uint64*8)()
     lib.option_b_cache_stats(values)
     return dict(zip(('retired_hits','control_hits','eligible_misses','avoided_material_rk_steps',
-                     'retired_bytes','control_bytes','probation_bytes'),map(int,values)))
+                     'retired_bytes','control_bytes','probation_bytes','drive_bytes'),map(int,values)))
 
 class Audit:
     """Compare every returned full production-step array on identical inputs."""
@@ -106,43 +146,79 @@ def components(lib, X, link_factor, locked):
     if code: raise ValueError('Native detection failed: '+str(code))
     return labels
 
+def single_flight_cache():
+    """Backend-local exact reuse: one concurrent computation per existing key."""
+    inflight = {}
+    def cached(cache,limit,key,compute):
+        token = (id(cache),key)
+        with F._CACHE_LOCK:
+            result = cache.get(key)
+            if result is not None:
+                cache.move_to_end(key)
+                return result
+            pending = inflight.get(token)
+            leader = pending is None
+            if leader:
+                pending = Future()
+                inflight[token] = pending
+        if not leader:
+            return pending.result()
+        try:
+            result = compute()
+            result.flags.writeable = False
+            with F._CACHE_LOCK:
+                if result.nbytes <= limit:
+                    cache[key] = result
+                    while sum(v.nbytes for v in cache.values()) > limit:
+                        cache.popitem(last=False)
+            pending.set_result(result)
+            return result
+        except BaseException as error:
+            pending.set_exception(error)
+            raise
+        finally:
+            with F._CACHE_LOCK:
+                del inflight[token]
+    return cached
+
+
 @contextmanager
 def backend(name='reference', audit=False):
+    global _ACTIVE_NATIVE
     if name not in ('reference','native'):
         raise ValueError('Unknown Option B backend')
-    if name=='reference':
-        reference()
-        yield None
-        return
-    ref, _ = reference()
-    lib, record = load()
-    lib.option_b_cache_clear()
-    checker = Audit(lib,ref) if audit else None
-    previous_native, previous_components = F.native,D.components
-    # Cache keys precede backend selection and do not bind a kernel identity.
-    # A backend boundary must never reuse trajectories from the other kernel.
-    with F._CACHE_LOCK:
-        F._PASSIVE_CACHE.clear()
-        F._EMISSION_CACHE.clear()
-    def detected(X, link_factor, locked):
-        result = components(lib,X,link_factor,locked)
-        if checker:
-            if not np.array_equal(result,previous_components(X,link_factor,locked)):
-                raise RuntimeError('Option B detection decision flip')
-            with checker.lock:
-                checker.component_calls += 1
-        return result
-    F.native = lambda:(checker if checker else lib,record)
-    D.components = detected
+    if not _SELECTION_LOCK.acquire(blocking=False):
+        raise RuntimeError('Option B selection requires one isolated coordinator; nested contexts forbidden')
+    previous_native, previous_components, previous_cache = F.native,D.components,F.cached_array
     try:
-        yield checker
-        verify_build()
-        # Verify the reference again without invoking its implicit builder.
-        r = json.loads((R.LIBRARY.parent/'BUILD.json').read_text())
-        if r['source_sha256']!=sha256(R.SOURCE) or r['binary_sha256']!=sha256(R.LIBRARY):
-            raise RuntimeError('Reference identity changed during Option B run')
-    finally:
-        F.native,D.components = previous_native,previous_components
+        ref, ref_record = reference()
+        lib, record = load() if name == 'native' else (ref,ref_record)
+        if name == 'native':
+            lib.option_b_cache_limits(*CACHE_LIMITS)
+        checker = Audit(lib,ref) if audit and name == 'native' else None
         with F._CACHE_LOCK:
-            F._PASSIVE_CACHE.clear()
-            F._EMISSION_CACHE.clear()
+            F._PASSIVE_CACHE.clear(); F._EMISSION_CACHE.clear()
+        def detected(X,link_factor,locked):
+            result = components(lib,X,link_factor,locked)
+            if checker:
+                if not np.array_equal(result,previous_components(X,link_factor,locked)):
+                    raise RuntimeError('Option B detection decision flip')
+                with checker.lock:
+                    checker.component_calls += 1
+            return result
+        F.native = lambda:(checker if checker else lib,record)
+        if name == 'native':
+            D.components = detected
+            F.cached_array = single_flight_cache()
+            _ACTIVE_NATIVE = True
+        yield checker
+        if name == 'native' and verify_build() != record:
+            raise RuntimeError('Option B identity changed during run')
+        if reference_record() != ref_record:
+            raise RuntimeError('Reference identity changed during run')
+    finally:
+        _ACTIVE_NATIVE = False
+        F.native,D.components,F.cached_array = previous_native,previous_components,previous_cache
+        with F._CACHE_LOCK:
+            F._PASSIVE_CACHE.clear(); F._EMISSION_CACHE.clear()
+        _SELECTION_LOCK.release()
