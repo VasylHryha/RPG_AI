@@ -39,6 +39,8 @@ A fair development run.
 
 1. **The knob source per endpoint must be frozen before judging seeds exist:** P1 from `B_best.json`, P2/P3 from `C_best.json`. The registered claim is then "the AI as tuned for that panel".
 2. **Keep P1 as designed (both levels).** Do not narrow it to novice after seeing regular's development result. Report the novice and regular subtests separately as diagnostics.
-3. **The resonator's regular SD is suspiciously small** (0.70 over 100 clusters at −8.69). Check a replay for a degenerate repeated pattern (for example a stalemate or timeout) before registering.
+3. **The resonator's regular SD is small** (0.70 over 100 clusters at −8.69). Checked: of the 5,026 logged resonator-against-regular fights, most reach the 150 s time limit with 1-4 of
+   ours against 7-10 of theirs (the most common endings are (1, 8), (2, 8), (1, 9)). It is a consistent timeout pattern: the resonator cannot finish regular's line. It is not a defect. S5 treats a timeout as an
+   ordinary fight with its S (design section 6).
 4. δ = 4.0 (Codex's rule applied to amended validation) and n (P1 49 per level, P2/P3 16 per doctrine) need owner approval. The inference unit is the shared seed block for P2/P3,
    as computed.

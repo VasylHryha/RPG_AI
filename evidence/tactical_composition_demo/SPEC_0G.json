@@ -1,0 +1,153 @@
+{
+ "experiment": "0g",
+ "status": "DRAFT pending owner approval of delta and n, and a Codex review; no judging fight may run before both",
+ "design": {
+  "file": "DESIGN_0G.md",
+  "revision": 3,
+  "sha256": "fc6494b2bf3e2e8127a7f60a1e2a5b607dd910eeb52a65ccb4ca26c9ff6c262b"
+ },
+ "engine": {
+  "binary_sha256": "a1a2d5288481a66f75ec2d151c58ba3b5378121b23bc59396a268815b552c74a",
+  "build_manifest_sha256": "d3c4d8f9bc35a6e3c6eeab180ba0f5a81b09f4d12f693b6991ee48bbdaecb1fd",
+  "rule": "the runner refuses any other binary; a rebuild with a different hash needs a new specification"
+ },
+ "fixed_world": "DESIGN_0G.md section 1 and astelia_cpp/s3_runner.py fixed fields (rules game, mirror, 150 s, dt 1/30, 10/30/10 army, perception false, sandboxAbilities false, controlled skills game defaults + Auto)",
+ "knobs": {
+  "P1": {
+   "source": "S4 amended B_best (tuned on full-army head-to-head novice+regular)",
+   "resonator": {
+    "K": 0.4671114257592718,
+    "K_t": 2.1611439512911677,
+    "kappa": 47.83444686183811,
+    "beta": 0.09147746828762744,
+    "G": 4.9858180929832425,
+    "w": 1.398866114311581,
+    "f": 0.6237532179788647,
+    "gamma": 1.4553664802457205,
+    "omega_melee": 0.756051718410367,
+    "omega_ranged": 1.889427416086531
+   },
+   "morale": {
+    "K": 0.04174535687314922,
+    "K_t": 4.28162143527474,
+    "kappa": 49.790737768672095,
+    "beta": 1.9079685384928762,
+    "G": 4.995787850221623,
+    "w": 0.5454547841658395,
+    "f": 1.0415146458891198,
+    "gamma": 1.6372437230401136,
+    "lambda_melee": 1.3251181549560693,
+    "lambda_ranged": 0.002128858403241805
+   },
+   "pushpull": {
+    "G": 4.945638395457931,
+    "f": 1.12999851675065
+   }
+  },
+  "P2_P3": {
+   "source": "S4 amended C_best (tuned on the 19-doctrine pool)",
+   "resonator": {
+    "K": 0.1146005424260256,
+    "K_t": 2.8613217928671775,
+    "kappa": 49.79913917026518,
+    "beta": 2.115631402449082,
+    "G": 3.0419934314391694,
+    "w": 1.7458214382679222,
+    "f": 1.1408653514265181,
+    "gamma": 1.9840186643919593,
+    "omega_melee": -1.9266519071026342,
+    "omega_ranged": 1.36788853807457
+   },
+   "morale": {
+    "K": 0.2671314155627666,
+    "K_t": 1.6874615414840446,
+    "kappa": 37.158869433946016,
+    "beta": 0.3993925506787569,
+    "G": 4.238874014446685,
+    "w": 2.523930908198116,
+    "f": 1.1397357952504337,
+    "gamma": 1.7368346833501231,
+    "lambda_melee": 0.2540878122622323,
+    "lambda_ranged": 0.04515816274507218
+   },
+   "pushpull": {
+    "G": 4.993916367097466,
+    "f": 1.1381410268510632
+   }
+  }
+ },
+ "entropy": {
+  "judging_root_hex": "d567c1fd75c26c5e66a882516e3aae95",
+  "derivation": "seed(endpoint, index) = int.from_bytes(sha256(root || endpoint || index as 8-byte big-endian)[:4], 'big'); orientation pairs share the seed; P2/P3 block b uses one seed for all 19 doctrines and all arms",
+  "note": "drawn at drafting; never used for any fight before the recorded run"
+ },
+ "endpoints": {
+  "P1": {
+   "claim": "the resonator (P1 knobs) beats the scripted level head-to-head, for BOTH novice and regular",
+   "panel": {
+    "setting": "s4_full_head",
+    "levels": [
+     "novice",
+     "regular"
+    ],
+    "clusters_per_level": 100,
+    "cluster": "one seed, both orientations (swapSides false/true), controlledSide 0, mean S of the two"
+   },
+   "statistic": "mean cluster S per level; one-sided t bounds with df n-1",
+   "verdict": {
+    "SUPPORTED": "lower bound at 1-0.0025 > 0 for BOTH levels (intersection-union, no further split)",
+    "REFUTED": "for EITHER level, upper bound at 1-0.000417 < 0 (two refutation subtests share 0.000833)",
+    "INDETERMINATE": "otherwise"
+   },
+   "subtests_reported": "novice and regular reported separately as diagnostics; never relabelled as the endpoint"
+  },
+  "P2": {
+   "claim": "the resonator beats plain morale by more than delta on the doctrine pool",
+   "panel": {
+    "setting": "s4_p23 (19 doctrines; elite skills with artyRollout null and lookahead null)",
+    "seed_blocks": 32,
+    "block": "one seed for all 19 doctrines x 2 orientations; arms paired by (doctrine, seed, orientation)"
+   },
+   "statistic": "per block the mean of S_resonator - S_morale over its 38 fights; one-sided t bounds over the 32 blocks, df 31",
+   "verdict": {
+    "SUPPORTED": "lower bound at 1-0.0025 > delta",
+    "REFUTED": "upper bound at 1-0.000833 < 0",
+    "INDETERMINATE": "otherwise"
+   }
+  },
+  "P3": {
+   "claim": "the resonator beats the specified push-pull baseline by more than delta on the doctrine pool",
+   "panel": "as P2",
+   "statistic": "as P2 with S_resonator - S_pushpull",
+   "verdict": {
+    "SUPPORTED": "lower bound at 1-0.0025 > delta",
+    "REFUTED": "upper bound at 1-0.000833 < 0",
+    "INDETERMINATE": "otherwise"
+   }
+  }
+ },
+ "alpha": {
+  "familywise": 0.01,
+  "per_endpoint": "0.01/3 = 0.003333, split 0.0025 support + 0.000833 refutation"
+ },
+ "delta_survivors": {
+  "value": 4.0,
+  "source": "S4 amended rule max(1, 0.25 x max pooled validation paired SD), rounded up to 0.5",
+  "owner_approved": false
+ },
+ "n_rationale": "power-rule floors from S4 (P1 49 per level, P2/P3 16 per doctrine) raised to 100 per level and 32 blocks before any judging fight, because C++ fights are cheap; owner to approve",
+ "failures": "a controller failure in any fight of an endpoint makes that endpoint INDETERMINATE with reason controller_failure; no fight is dropped or replaced",
+ "descriptive_only": [
+  "morale, push-pull and nearest on the P1 panel",
+  "nearest on the P2/P3 panel",
+  "damage difference D for every fight",
+  "group diagnostics for the resonator on 3 fixed P2/P3 blocks",
+  "timeouts per arm"
+ ],
+ "development_expectation_disclosed": {
+  "P1": "resonator B knobs: novice +5.92, regular -8.69 in S4 validation, so P1 is expected to fail on regular",
+  "P2": "resonator - morale -1.09 [-1.69, -0.50]: not expected to be supported",
+  "P3": "resonator - push-pull +7.32 [6.91, 7.73]: expected near or above delta"
+ },
+ "outputs": "astelia_cpp/s6_run/: results.json with endpoint_coverage (every endpoint evaluated or not_run with reason), raw fights, verdicts computed by code; the output directory must not exist (one-shot latch)"
+}
