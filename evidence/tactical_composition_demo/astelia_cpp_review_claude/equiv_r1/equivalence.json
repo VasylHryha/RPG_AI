@@ -1,0 +1,320 @@
+{
+ "seeds": [
+  701,
+  702,
+  703,
+  704
+ ],
+ "players": {
+  "novice": {
+   "level": "novice"
+  },
+  "regular": {
+   "level": "regular"
+  },
+  "veteran": {
+   "level": "veteran"
+  },
+  "elite-fast": {
+   "level": "elite-fast"
+  },
+  "run4-best": {
+   "brain": "alone",
+   "lookahead": null,
+   "skills": {
+    "dodgeShots": true,
+    "shotReact": 0.3,
+    "dodgeShells": "smart",
+    "lead": "none",
+    "pursuit": "chase",
+    "kite": 0,
+    "abilities": "off",
+    "reactAim": false,
+    "castDodge": true
+   }
+  }
+ },
+ "settings": {
+  "pool-defaults": {},
+  "elite-no-rollout": {
+   "skills": {
+    "artyFire": "plan",
+    "lockedDodge": true,
+    "dodgeShells": "smart",
+    "castDodge": true,
+    "weaponsFree": true,
+    "saveWounded": 0.3,
+    "artyBattery": true
+   }
+  }
+ },
+ "n_requests": 1520,
+ "load_before": [
+  113.94287109375,
+  119.11865234375,
+  106.27294921875
+ ],
+ "cpp_seconds": 198.28073716163635,
+ "cpp_workers": 4,
+ "js_seconds": 1589.3303217887878,
+ "js_workers": 6,
+ "cells": [
+  {
+   "player": "elite-fast",
+   "setting": "elite-no-rollout",
+   "js": {
+    "n": 152,
+    "errors": 0,
+    "margin": 28.79605263157895,
+    "margin_var": 182.7991896131057,
+    "won": 0.9210526315789473
+   },
+   "cpp": {
+    "n": 152,
+    "errors": 0,
+    "margin": 29.710526315789473,
+    "margin_var": 141.39909376089224,
+    "won": 0.9144736842105263
+   },
+   "margin_diff": 0.9144736842105239,
+   "se": 1.4604394692180798,
+   "z": 0.6261633593757457,
+   "won_diff": -0.006578947368421018
+  },
+  {
+   "player": "novice",
+   "setting": "elite-no-rollout",
+   "js": {
+    "n": 152,
+    "errors": 0,
+    "margin": -15.638157894736842,
+    "margin_var": 81.68939525967237,
+    "won": 0.006578947368421052
+   },
+   "cpp": {
+    "n": 152,
+    "errors": 0,
+    "margin": -12.828947368421053,
+    "margin_var": 50.08975252701288,
+    "won": 0.02631578947368421
+   },
+   "margin_diff": 2.8092105263157894,
+   "se": 0.9311112057879992,
+   "z": 3.017051571126088,
+   "won_diff": 0.019736842105263157
+  },
+  {
+   "player": "regular",
+   "setting": "elite-no-rollout",
+   "js": {
+    "n": 152,
+    "errors": 0,
+    "margin": -2.986842105263158,
+    "margin_var": 87.07267340536771,
+    "won": 0.375
+   },
+   "cpp": {
+    "n": 152,
+    "errors": 0,
+    "margin": -0.8157894736842105,
+    "margin_var": 57.979086789822226,
+    "won": 0.3881578947368421
+   },
+   "margin_diff": 2.1710526315789473,
+   "se": 0.9768766022487111,
+   "z": 2.222443066587238,
+   "won_diff": 0.01315789473684209
+  },
+  {
+   "player": "run4-best",
+   "setting": "elite-no-rollout",
+   "js": {
+    "n": 152,
+    "errors": 0,
+    "margin": 20.49342105263158,
+    "margin_var": 41.8012809341234,
+    "won": 1.0
+   },
+   "cpp": {
+    "n": 152,
+    "errors": 0,
+    "margin": 21.92763157894737,
+    "margin_var": 50.650357267340574,
+    "won": 0.993421052631579
+   },
+   "margin_diff": 1.4342105263157912,
+   "se": 0.7798938785833216,
+   "z": 1.838981643144881,
+   "won_diff": -0.006578947368421018
+  },
+  {
+   "player": "veteran",
+   "setting": "elite-no-rollout",
+   "js": {
+    "n": 152,
+    "errors": 0,
+    "margin": -3.6184210526315788,
+    "margin_var": 103.40310212617642,
+    "won": 0.34210526315789475
+   },
+   "cpp": {
+    "n": 152,
+    "errors": 0,
+    "margin": -2.973684210526316,
+    "margin_var": 88.64830951551062,
+    "won": 0.34868421052631576
+   },
+   "margin_diff": 0.6447368421052628,
+   "se": 1.124053436995602,
+   "z": 0.5735820210011826,
+   "won_diff": 0.006578947368421018
+  },
+  {
+   "player": "elite-fast",
+   "setting": "pool-defaults",
+   "js": {
+    "n": 152,
+    "errors": 0,
+    "margin": 44.56578947368421,
+    "margin_var": 26.76385500174278,
+    "won": 1.0
+   },
+   "cpp": {
+    "n": 152,
+    "errors": 0,
+    "margin": 44.11842105263158,
+    "margin_var": 23.84018821889161,
+    "won": 0.993421052631579
+   },
+   "margin_diff": -0.4473684210526301,
+   "se": 0.5769933595613193,
+   "z": -0.7753441415560807,
+   "won_diff": -0.006578947368421018
+  },
+  {
+   "player": "novice",
+   "setting": "pool-defaults",
+   "js": {
+    "n": 152,
+    "errors": 0,
+    "margin": -1.3092105263157894,
+    "margin_var": 67.47329208783552,
+    "won": 0.3157894736842105
+   },
+   "cpp": {
+    "n": 152,
+    "errors": 0,
+    "margin": -1.3092105263157894,
+    "margin_var": 66.53289473684215,
+    "won": 0.2894736842105263
+   },
+   "margin_diff": 0.0,
+   "se": 0.9389460315493927,
+   "z": 0.0,
+   "won_diff": -0.02631578947368418
+  },
+  {
+   "player": "regular",
+   "setting": "pool-defaults",
+   "js": {
+    "n": 152,
+    "errors": 0,
+    "margin": 12.105263157894736,
+    "margin_var": 49.04844893691177,
+    "won": 0.8881578947368421
+   },
+   "cpp": {
+    "n": 152,
+    "errors": 0,
+    "margin": 12.539473684210526,
+    "margin_var": 44.60770303241547,
+    "won": 0.9276315789473685
+   },
+   "margin_diff": 0.4342105263157894,
+   "se": 0.7849578934790372,
+   "z": 0.553164099530627,
+   "won_diff": 0.03947368421052633
+  },
+  {
+   "player": "run4-best",
+   "setting": "pool-defaults",
+   "js": {
+    "n": 152,
+    "errors": 0,
+    "margin": 35.25,
+    "margin_var": 15.513245033112582,
+    "won": 1.0
+   },
+   "cpp": {
+    "n": 152,
+    "errors": 0,
+    "margin": 35.06578947368421,
+    "margin_var": 16.075113279888456,
+    "won": 1.0
+   },
+   "margin_diff": -0.1842105263157876,
+   "se": 0.4558707566800699,
+   "z": -0.40408498157969486,
+   "won_diff": 0.0
+  },
+  {
+   "player": "veteran",
+   "setting": "pool-defaults",
+   "js": {
+    "n": 152,
+    "errors": 0,
+    "margin": 14.355263157894736,
+    "margin_var": 92.12460787730917,
+    "won": 0.9210526315789473
+   },
+   "cpp": {
+    "n": 152,
+    "errors": 0,
+    "margin": 13.782894736842104,
+    "margin_var": 80.7008975252701,
+    "won": 0.9276315789473685
+   },
+   "margin_diff": -0.5723684210526319,
+   "se": 1.0663066650660762,
+   "z": -0.5367765576305047,
+   "won_diff": 0.006578947368421129
+  }
+ ],
+ "order_pool-defaults": {
+  "js": [
+   "elite-fast",
+   "run4-best",
+   "veteran",
+   "regular",
+   "novice"
+  ],
+  "cpp": [
+   "elite-fast",
+   "run4-best",
+   "veteran",
+   "regular",
+   "novice"
+  ]
+ },
+ "order_elite-no-rollout": {
+  "js": [
+   "elite-fast",
+   "run4-best",
+   "regular",
+   "veteran",
+   "novice"
+  ],
+  "cpp": [
+   "elite-fast",
+   "run4-best",
+   "regular",
+   "veteran",
+   "novice"
+  ]
+ },
+ "load_after": [
+  98.3076171875,
+  103.3349609375,
+  108.3505859375
+ ]
+}
