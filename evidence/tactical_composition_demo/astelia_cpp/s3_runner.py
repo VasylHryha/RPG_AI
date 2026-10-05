@@ -19,7 +19,7 @@ SETTINGS = ('s3_full_pool', 's4_melee10', 's4_full_head', 's4_p23',
 
 
 def request(spec):
-    if not isinstance(spec, dict) or set(spec) - {'arm', 'params', 'seed', 'swapSides', 'controlledSide', 'opponent', 'diagnostics', 'setting', 'trace'}:
+    if not isinstance(spec, dict) or set(spec) - {'arm', 'params', 'seed', 'swapSides', 'controlledSide', 'opponent', 'diagnostics', 'setting', 'trace', 'skeleton', 'endCounts'}:
         raise ValueError('unsupported S3 field')
     seed = spec.get('seed', 2026100500)
     if type(seed) not in (int, float) or not math.isfinite(seed):
@@ -30,13 +30,15 @@ def request(spec):
     side = spec.get('controlledSide', 0)
     if type(side) is not int or side not in (0, 1):
         raise ValueError('invalid controlled side')
-    for key in ('swapSides', 'diagnostics', 'trace'):
+    for key in ('swapSides', 'diagnostics', 'trace', 'endCounts'):
         if key in spec and type(spec[key]) is not bool:
             raise ValueError('invalid boolean: ' + key)
     params = spec.get('params', {})
     if not isinstance(params, dict):
         raise ValueError('params must be an object')
     opponent = spec.get('opponent', 'alone')
+    if 'skeleton' in spec and spec['skeleton'] not in ('v0', 'v1'):
+        raise ValueError('invalid skeleton')
     if opponent not in POOL + ['novice', 'regular', 'elite', 'elite-fast']:
         raise ValueError('invalid opponent')
     setting = spec.get('setting', 's3_full_pool')
@@ -52,6 +54,7 @@ def request(spec):
         raise ValueError('anomaly requires a level')
     ai = [{}, {}]
     ai[side] = {'controller': arm, 'params': params}
+    if 'skeleton' in spec: ai[side]['skeleton'] = spec['skeleton']
     if opponent not in POOL:
         ai[1-side] = {'level': opponent}
     elif side == 1:
@@ -69,12 +72,14 @@ def request(spec):
         if opponent != 'regular':
             raise ValueError('anomaly regular mismatch')
         ai[1-side].update(brain='alone')
-    return {'trace': spec.get('trace', False), 'debug': spec.get('trace', False), 'mode': 'alone', 'opponent': opponent if opponent in POOL and side == 0 else 'alone',
+    result = {'trace': spec.get('trace', False), 'debug': spec.get('trace', False), 'mode': 'alone', 'opponent': opponent if opponent in POOL and side == 0 else 'alone',
             's3': True, 'diagnostics': spec.get('diagnostics', False), 'options': {
                 'seed': spec.get('seed', 2026100500), 'rules': 'game', 'scenario': 'mirror',
                 'sandboxAbilities': False, 'perception': False, 'duration': 150, 'dt': 1/30,
                 'army': {'melee': 10, 'ranged': 0 if setting == 's4_melee10' else 30, 'artillery': 0 if setting == 's4_melee10' else 10},
                 'swapSides': spec.get('swapSides', False), 'ai': ai}}
+    if 'endCounts' in spec: result['endCounts'] = spec['endCounts']
+    return result
 
 
 def main():

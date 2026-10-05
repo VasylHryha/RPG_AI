@@ -13,7 +13,7 @@
 
 namespace {
 using js::V;
-V encodeSummary(const astelia::World& w,bool extended) {
+V encodeSummary(const astelia::World& w,bool extended,bool endCounts) {
   const auto s=astelia::summary(w);
   auto out=js::obj({{"mode",w.config->mode},{"melee",s.melee},{"ranged",s.ranged},{"artillery",s.artillery},
     {"total",s.total},{"wasted",s.wasted},{"monsterDeaths",double(s.monsterDeaths)},
@@ -23,6 +23,8 @@ V encodeSummary(const astelia::World& w,bool extended) {
     js::set(out,"controllerStatus",stats.controllerFailures[0]||stats.controllerFailures[1]?"controller_failure":"completed");
     js::set(out,"crossTeamDealt",js::arr({stats.dealtToEnemy[0],stats.dealtToEnemy[1]}));js::set(out,"crossTeamTaken",js::arr({stats.takenFromEnemy[0],stats.takenFromEnemy[1]}));
     js::set(out,"friendlyDealt",js::arr({stats.friendlyDealt[0],stats.friendlyDealt[1]}));js::set(out,"friendlyTaken",js::arr({stats.friendlyTaken[0],stats.friendlyTaken[1]}));}
+  if(endCounts){std::array<unsigned,2> guns{};for(const auto& u:w.units)if(u.occupied&&u.alive&&u.role==astelia::Role::Artillery)++guns[u.team];
+    js::set(out,"artilleryAlive",js::arr({double(guns[0]),double(guns[1])}));}
   return out;
 }
 V state(const astelia::World& w,std::map<astelia::UnitId,V>& history,bool debug) {
@@ -80,7 +82,7 @@ V fight(V request,astelia::WorkCounters& counts,uint64_t& fights,bool testContro
   counts.branchUnitActions+=w.work->branchUnitActions;counts.branchProjectileSteps+=w.work->branchProjectileSteps;counts.branchSteps+=w.work->branchSteps;counts.forks+=w.work->forks;counts.searchCalls+=w.work->searchCalls;counts.inferenceCalls+=w.work->inferenceCalls;counts.candidateModels+=w.work->candidateModels;counts.artilleryRollouts+=w.work->artilleryRollouts;counts.artilleryPredictions+=w.work->artilleryPredictions;counts.artilleryCandidates+=w.work->artilleryCandidates;counts.predictionSteps+=w.work->predictionSteps;counts.predictionUnitSteps+=w.work->predictionUnitSteps;
   for(auto setting:w.work->branchSettings)counts.branchSettings[setting.first]+=setting.second;
   counts.outerSteps+=w.counters.outerSteps;counts.unitActions+=w.counters.unitActions;counts.projectileSteps+=w.counters.projectileSteps;
-  return encodeSummary(w,extended);
+  return encodeSummary(w,extended,js::truth(js::get(request,"endCounts")));
   } catch (const std::exception& e) { return js::obj({{"error",e.what()}}); }
 }
 } // namespace

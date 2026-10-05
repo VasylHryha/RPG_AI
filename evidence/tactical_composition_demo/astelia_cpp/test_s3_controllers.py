@@ -130,3 +130,62 @@ def test_refinement_clips_only_at_game_tick_end(s3_build):
     actual = evaluate(s3_build, dict(operation='frozen', arm='morale', units=units,
                                    dt=1/30, K=2.5, K_t=2.5, substeps=2))
     assert np.max(np.abs(actual['step']-expected)) < 1e-12
+
+
+@pytest.mark.parametrize('skeleton', ['v0', 'v1', 'bad', 0, True, None])
+def test_skeleton_flag_admission(s3_build, skeleton):
+    spec = dict(arm='morale', skeleton=skeleton)
+    if skeleton not in ('v0', 'v1'):
+        with pytest.raises(ValueError): request(spec)
+    # Native admission is checked without running a development fight.
+    req = request(dict(arm='morale'))
+    req['options']['duration'] = 0
+    req['options']['ai'][0]['skeleton'] = skeleton
+    row = json.loads(subprocess.check_output([str(ROOT/'build/astelia_native')], input=json.dumps(req)+'\n', text=True))
+    assert ('error' in row) == (skeleton not in ('v0', 'v1'))
+
+
+def test_v0_fixture_summary_bytes_and_v1_engineering_fights(s3_build):
+    import concurrent.futures
+    import gzip
+    from build_admission import admit, sha
+    checks = ROOT/'s4_v1_checks'
+    checks.mkdir(exist_ok=True)
+    binary = ROOT/'build/astelia_native'
+    specs = json.loads((ROOT/'s3_controllers_r3/default.requests.json').read_text())
+    jobs = []
+    for spec in specs:
+        index = spec['seed'] - 2026100500
+        stem = f"{spec['arm']}_{index:02d}_{int(spec['swapSides'])}"
+        jobs.append(('s3', dict(spec, skeleton='v0', diagnostics=False), ROOT/'s3_controllers_r3'/(stem+'.summary.json')))
+    for p in sorted((ROOT/'s4_amended_development/replays').glob('*.replay.json.gz')):
+        payload = json.loads(gzip.decompress(p.read_bytes()))
+        jobs.append(('s4', dict(payload['spec'], skeleton='v0', trace=False), p))
+    def replay(job):
+        kind, spec, path = job
+        run = subprocess.run([str(binary)], input=json.dumps(request(spec))+'\n', text=True, capture_output=True, check=True)
+        if kind == 's3':
+            actual = (json.dumps(json.loads(run.stdout), indent=2)+'\n').encode()
+            expected = path.read_bytes()
+        else:
+            actual = run.stdout.encode()
+            raw = path.with_name(path.name.replace('.replay.json.gz', '.jsonl.gz'))
+            expected = gzip.decompress(raw.read_bytes()).splitlines(keepends=True)[-1]
+        assert actual == expected, (kind, spec)
+        return dict(fixture=str(path.relative_to(ROOT)), summary_bytes_sha256=__import__('hashlib').sha256(actual).hexdigest(), byte_identical=True)
+    with concurrent.futures.ThreadPoolExecutor(max_workers=10) as pool:
+        parity = list(pool.map(replay, jobs))
+    # Thirty-eight unchanged fixtures per stateful arm, now with v1; same captured-snapshot refinement contract.
+    def engineering(spec):
+        req = request(dict(spec, skeleton='v1', diagnostics=False))
+        run = subprocess.run([str(binary), '--capture-s3', '--metrics'], input=json.dumps(req)+'\n', text=True, capture_output=True, check=True)
+        lines = run.stdout.splitlines(keepends=True)
+        capture = ''.join(x for x in lines if json.loads(x).get('capture'))
+        result = json.loads(lines[-1]); assert result['controllerStatus']=='completed' and result['controllerFailures']==[0,0]
+        refine = json.loads(subprocess.check_output([str(s3_build), '--refinement'], input=capture, text=True))
+        assert refine['samples']>0 and refine['maximum']<.02
+        return dict(spec=dict(spec,skeleton='v1'), summary=result, refinement=refine, metrics=json.loads(run.stderr))
+    with concurrent.futures.ThreadPoolExecutor(max_workers=10) as pool:
+        fresh = list(pool.map(engineering, [s for s in specs if s['arm'] in ('resonator','morale')]))
+    receipt = dict(v0_s3_fixtures=152, v0_amended_replays=12, parity=parity, v1_engineering=fresh, native_build=admit(binary), contract_build=admit(s3_build))
+    (checks/'PART1_PARITY.json').write_text(json.dumps(receipt, indent=2)+'\n')

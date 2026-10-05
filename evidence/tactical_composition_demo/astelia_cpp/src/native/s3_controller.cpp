@@ -16,7 +16,7 @@ Group aggregate(const std::vector<ModelUnit>& a,size_t i,UnitId target,Arm arm){
   for(size_t j=0;j<a.size();++j)if(j!=i&&a[j].target==target){++count;if(arm==Arm::Resonator){x+=std::cos(a[j].state);y+=std::sin(a[j].state);}else x+=a[j].state;}
   if(!count)return {};if(arm==Arm::Resonator){if(std::hypot(x,y)<.1*count)return {};return {std::atan2(y,x),true};}return {x/count,true};
 }
-bool finite(const Memory& m){return std::isfinite(m.state)&&std::isfinite(m.zOut)&&std::isfinite(m.zIn)&&std::isfinite(m.lastOut)&&std::isfinite(m.lastIn);}
+bool finite(const Memory& m){return std::isfinite(m.state)&&std::isfinite(m.zOut)&&std::isfinite(m.zIn)&&std::isfinite(m.lastOut)&&std::isfinite(m.lastIn)&&std::isfinite(m.zInAnswered)&&std::isfinite(m.zInUnanswered);}
 std::vector<ModelUnit> shifted(const std::vector<ModelUnit>& a,const std::vector<Derivative>& d,double h,bool positions){auto out=a;for(size_t i=0;i<a.size();++i){if(positions){out[i].x+=h*d[i].x;out[i].y+=h*d[i].y;}out[i].state+=h*d[i].state;}return out;}
 }
 Knobs controllerKnobs(Arm arm,const ControllerParams& params){
@@ -67,7 +67,7 @@ std::vector<ModelUnit> frozenStep(std::vector<ModelUnit> a,Arm arm,const Knobs& 
   return a;
 }
 
-S3Controller::S3Controller(double seed,uint8_t side,Arm arm,const ControllerParams& params):Controller(seed,side),arm_(arm),knobs_(controllerKnobs(arm,params)){}
+S3Controller::S3Controller(double seed,uint8_t side,Arm arm,const ControllerParams& params,const std::string& skeleton):Controller(seed,side),arm_(arm),knobs_(controllerKnobs(arm,params)),v1_(skeleton=="v1"){if(skeleton!="v0"&&skeleton!="v1")throw std::invalid_argument("invalid skeleton");}
 void S3Controller::prepare(const Observation& o){
   prepared_.clear();diagnostic_.clear();std::vector<const ObservedUnit*> units;std::set<UnitId> live;
   for(const auto& u:o.units)if(u.hp>0){units.push_back(&u);live.insert(u.id);}
@@ -78,8 +78,14 @@ void S3Controller::prepare(const Observation& o){
   for(auto p:units){const auto& u=*p;auto found=memory_.find(u.id);if(found==memory_.end()){Memory m;m.lastOut=u.dealtToEnemy;m.lastIn=u.takenFromEnemy;if(u.team==side_&&arm_==Arm::Resonator)m.state=2*pi*random_();found=memory_.emplace(u.id,m).first;}
     auto& m=found->second;if(m.target&&!live.count(m.target))m.target=0;
     if(!(o.dt>0)||!std::isfinite(o.dt)||!(u.maxhp>0)||!std::isfinite(u.maxhp)||!finite(m)||!std::isfinite(u.dealtToEnemy)||!std::isfinite(u.takenFromEnemy)||u.dealtToEnemy<m.lastOut||u.takenFromEnemy<m.lastIn)bad.insert(u.id);
-    else{m.zOut=q*m.zOut+(1-q)*(u.dealtToEnemy-m.lastOut)/o.dt/u.maxhp;m.zIn=q*m.zIn+(1-q)*(u.takenFromEnemy-m.lastIn)/o.dt/u.maxhp;m.lastOut=u.dealtToEnemy;m.lastIn=u.takenFromEnemy;if(!finite(m))bad.insert(u.id);}
-    if(u.team==side_)own.push_back({u.x/100,u.y/100,m.state,u.role==ObservedRole::Melee?knobs_.rateM:knobs_.rateR,knobs_.kappa*(m.zIn-knobs_.beta*m.zOut),u.id,m.target});}
+    else{m.zOut=q*m.zOut+(1-q)*(u.dealtToEnemy-m.lastOut)/o.dt/u.maxhp;m.zIn=q*m.zIn+(1-q)*(u.takenFromEnemy-m.lastIn)/o.dt/u.maxhp;// Consume tick k damage using legality retained at prepare(k), never current geometry.
+      if(v1_&&arm_!=Arm::PushPull&&u.team==side_){
+        const double incoming=(1-q)*(u.takenFromEnemy-m.lastIn)/o.dt/u.maxhp;
+        m.zInAnswered=q*m.zInAnswered+(m.hadLegalTarget?incoming:0);
+        m.zInUnanswered=q*m.zInUnanswered+(m.hadLegalTarget?0:incoming);
+      }
+      m.lastOut=u.dealtToEnemy;m.lastIn=u.takenFromEnemy;if(!finite(m))bad.insert(u.id);}
+    if(u.team==side_)own.push_back({u.x/100,u.y/100,m.state,u.role==ObservedRole::Melee?knobs_.rateM:knobs_.rateR,knobs_.kappa*(v1_&&arm_!=Arm::PushPull?m.zInAnswered-knobs_.beta*m.zOut-m.zInUnanswered:m.zIn-knobs_.beta*m.zOut),u.id,m.target});}
   model_=own;auto next=arm_==Arm::PushPull?own:frozenStep(own,arm_,knobs_,o.dt,substeps_);
   for(size_t i=0;i<next.size();++i){auto& m=memory_.at(next[i].id);if(!std::isfinite(next[i].state))bad.insert(next[i].id);else m.state=next[i].state;}
   const auto motion=allyRhs(next,0,.8,.01,arm_,true);
@@ -92,10 +98,11 @@ void S3Controller::prepare(const Observation& o){
     const double preferred=knobs_.f*self.range/100*(1+(arm_==Arm::PushPull?0:knobs_.w)*(1-c)/2);
     for(size_t e=0;e<std::min(size_t(8),enemies.size());++e){auto u=enemies[e];double dx=(u->x-self.x)/100,dy=(u->y-self.y)/100,r=std::hypot(dx,dy);if(r==0)continue;
       double rho=r-(self.role==ObservedRole::Artillery?0:(self.radius+u->radius)/100);double term=knobs_.G*(1-preferred/std::max(rho,.01))/std::min(size_t(8),enemies.size());vx+=dx/r*term;vy+=dy/r*term;}
-    double best=-INFINITY,old=-INFINITY;UnitId target=0;for(auto u:enemies){double r=std::hypot(u->x-self.x,u->y-self.y),gap=r-self.radius-u->radius;
-      bool legal=self.role==ObservedRole::Artillery?r>=self.minRange&&r<=self.range:gap<=self.range;if(!legal)continue;
-      double score;if(arm_==Arm::PushPull)score=-r/100;else{auto g=aggregate(next,i,u->id,arm_);double a=!g.valid?0:arm_==Arm::Resonator?std::cos(m.state-g.value):1-std::abs(m.state-g.value);auto& em=memory_.at(u->id);score=a+knobs_.gamma*std::tanh(knobs_.kappa*(em.zIn-knobs_.beta*em.zOut));if(bad.count(u->id))bad.insert(id);}
+    double best=-INFINITY,old=-INFINITY;UnitId target=0;bool hasLegalTarget=false;for(auto u:enemies){double r=std::hypot(u->x-self.x,u->y-self.y),gap=r-self.radius-u->radius;
+      bool legal=self.role==ObservedRole::Artillery?r>=self.minRange&&r<=self.range:gap<=self.range;if(!legal)continue;hasLegalTarget=true;
+      double score;if(arm_==Arm::PushPull)score=-r/100;else{auto g=aggregate(next,i,u->id,arm_);double a=!g.valid?0:arm_==Arm::Resonator?std::cos(m.state-g.value):1-std::abs(m.state-g.value);auto& em=memory_.at(u->id);score=a+knobs_.gamma*std::tanh(knobs_.kappa*(v1_?em.zIn+em.zOut:em.zIn-knobs_.beta*em.zOut));if(bad.count(u->id))bad.insert(id);}
       if(!std::isfinite(score)){bad.insert(id);continue;}if(score>best||(score==best&&u->id<target)){best=score;target=u->id;}if(u->id==m.target)old=score;}
+    m.hadLegalTarget=hasLegalTarget; // snapshot status for the next counter increment; clone-owned memory
     if(std::isfinite(old)&&best-old<.2)target=m.target;d.target=target;
     const double speed=std::hypot(vx,vy);if(!enemies.empty()&&speed>=1e-9){d.x=self.x+200*vx/speed;d.y=self.y+200*vy/speed;d.multiplier=std::min(1.0,speed);}
     if(!std::isfinite(speed)||!std::isfinite(d.x)||!std::isfinite(d.y)||!std::isfinite(d.multiplier)||!std::isfinite(c)||bad.count(id))d={self.x,self.y,0,0,0,true};

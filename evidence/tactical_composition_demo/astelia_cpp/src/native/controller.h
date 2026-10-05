@@ -28,7 +28,7 @@ struct UnitDecision {
   bool controllerFailure=false;
 };
 using ControllerParams = std::map<std::string,double>;
-struct ControllerProfile { std::string name; ControllerParams params; };
+struct ControllerProfile { std::string name; ControllerParams params; std::string skeleton="v1"; };
 class Controller {
 protected:
   Rng random_;

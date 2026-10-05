@@ -144,9 +144,9 @@ void thresholds(AbilityThresholds& a,V v){only(v,{"chargeSync","shieldAimedAt","
 }
 }
 Config configuration(const js::V& request) {
-  only(request,{"mode","options","trace","opponent","debug","decisionTrace","diagnostics","s3"});
+  only(request,{"mode","options","trace","opponent","debug","decisionTrace","diagnostics","s3","endCounts"});
   const auto mode=string(request,"mode","alone");brain(mode);
-  boolean(request,"s3",false);boolean(request,"diagnostics",false);
+  boolean(request,"s3",false);boolean(request,"diagnostics",false);boolean(request,"endCounts",false);
   V o=js::get(request,"options");if(o.tag==V::Undefined)o=js::obj({});
   only(o,{"seed","dt","duration","width","height","army","scenario","swapSides","rules","abilities","sandboxAbilities","ai","shots","shotSpeed","windUp",
     "hunters","enemyArmy","ours","unitSet","skirmishSet","temporal","playerStyle","perception","attackerCap","abilOff",
@@ -217,14 +217,15 @@ Config configuration(const js::V& request) {
     for(size_t t=0;t<list.size();++t)if(list[t].tag!=V::Null)profiles[t]=list[t];}
   c.reactiveDodge=boolean(o,"reactiveDodge",true);
   c.bcRecord=boolean(o,"bcRecord",false);
-  for(size_t t=0;t<2;++t){const auto p=profiles[t];only(p,{"level","brain","skills","lookahead","formation","ab","disablePlans","fewPlan","objective","controller","params"});
+  for(size_t t=0;t<2;++t){const auto p=profiles[t];only(p,{"level","brain","skills","lookahead","formation","ab","disablePlans","fewPlan","objective","controller","params","skeleton"});
     if(present(p,"controller")){
       c.controllers[t].name=string(p,"controller","");
       if(c.controllers[t].name.empty())throw std::invalid_argument("empty controller name");
       if(present(p,"params")){const auto params=js::get(p,"params");if(params.tag!=V::Heap||params.p->kind!=js::Object::Plain)throw std::invalid_argument("expected controller params object");for(auto key:js::keys(params)){const auto name=js::str(key);c.controllers[t].params[name]=number(params,name.c_str(),0);}}
+      c.controllers[t].skeleton=string(p,"skeleton","v1");
       // Closed S2 registry; invalid names fail before fight construction.
       makeController(c.controllers[t],c.seed,uint8_t(t));
-    }else if(present(p,"params"))throw std::invalid_argument("params requires controller");
+    }else if(present(p,"params")||present(p,"skeleton"))throw std::invalid_argument("params/skeleton requires controller");
     const auto level=string(p,"level","");if(!level.empty()&&level!="novice"&&level!="regular"&&level!="veteran"&&level!="elite"&&level!="elite-fast")throw std::invalid_argument("unknown level");
     const auto oldBrain=t==0?mode:c.scenario==Scenario::Mirror?enemy:"alone";
     const auto defaultBrain=level=="novice"?"alone":level=="regular"?"formation":level.empty()?oldBrain:"rules";
