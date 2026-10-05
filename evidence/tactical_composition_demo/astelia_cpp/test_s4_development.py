@@ -76,3 +76,17 @@ def test_equal_budget_with_cache_hits_and_rank_pruning(tmp_path):
 def test_source_identity_and_native_admission():
     assert S.verify_sources()['verification_status']=='VERIFIED'
     assert S.admit(S.BINARY)['engine']=='native'
+
+
+def test_replay_packaging_keeps_fields_and_is_self_contained(tmp_path):
+    import base64
+    import gzip
+    payload=dict(spec={'arm':'morale'},summary={},frames=[dict(step=3,state=dict(t=.1,debug={},units=[dict(id=1,team=0,role='melee',x=2,y=3,hp=4,alive=True,target=9,controllerState=.2,commitment=.2,cd=1,debug=dict(r=5,maxhp=10,ep=2))]))])
+    S.package_replay(tmp_path,'fight',payload)
+    decoded=json.loads(gzip.decompress((tmp_path/'fight.replay.json.gz').read_bytes()))
+    unit=decoded['frames'][0]['state']['units'][0]
+    assert unit['debug']==dict(r=5,maxhp=10) and unit['target']==9 and unit['controllerState']==.2
+    assert 'cd' not in unit
+    html=(tmp_path/'fight.html').read_text()
+    assert '/*REPLAY_DATA*/null' not in html and '<script src=' not in html
+    assert base64.b64encode((tmp_path/'fight.replay.json.gz').read_bytes()).decode() in html
