@@ -264,10 +264,229 @@
      ],
      "score": 15.72,
      "sec_per_fight": 5.03
+    },
+    {
+     "round": 4,
+     "from_pieces": 4,
+     "from_score": 15.72,
+     "singles_tried": 55,
+     "singles_total": 55,
+     "firsts_tried": 2,
+     "firsts_total": 55,
+     "pairs_tried": 63,
+     "fights": 2216,
+     "seconds": 1526,
+     "accepted": "artyFire=\"plan\" + waves=3",
+     "how": "2 together",
+     "gain": 2.75,
+     "se": 1.14,
+     "pieces": [
+      "dodgeShots=true",
+      "dodgeShells=true",
+      "waves=3",
+      "artyFire=\"plan\"",
+      "brain=formation",
+      "formation=swarm"
+     ],
+     "score": 18.47,
+     "sec_per_fight": 6.52
+    },
+    {
+     "round": 5,
+     "from_pieces": 6,
+     "from_score": 18.47,
+     "singles_tried": 55,
+     "singles_total": 55,
+     "firsts_tried": 55,
+     "firsts_total": 55,
+     "pairs_tried": 2729,
+     "fights": 18752,
+     "seconds": 21246,
+     "stopped": "no single change or two-step pair was accepted"
     }
    ],
    "start_score": -19.78,
-   "start_sec_per_fight": 3.03
+   "start_sec_per_fight": 3.03,
+   "path": [
+    "formation",
+    "dodgeShells=true",
+    "formation=swarm",
+    "dodgeShots=true",
+    "artyFire=\"plan\" + waves=3"
+   ],
+   "pieces": [
+    "dodgeShots=true",
+    "dodgeShells=true",
+    "waves=3",
+    "artyFire=\"plan\"",
+    "brain=formation",
+    "formation=swarm"
+   ],
+   "score": 18.47,
+   "sec_per_fight": 6.52,
+   "seconds": 21246
+  },
+  {
+   "name": "rules",
+   "start": [
+    "brain=rules",
+    "formation=line"
+   ],
+   "rounds": [
+    {
+     "round": 1,
+     "from_pieces": 2,
+     "from_score": -19.78,
+     "singles_tried": 10,
+     "singles_total": 55,
+     "fights": 104,
+     "seconds": 25,
+     "accepted": "dodgeShells=true",
+     "how": "single",
+     "gain": 17.22,
+     "se": 1.15,
+     "pieces": [
+      "dodgeShells=true",
+      "brain=rules",
+      "formation=line"
+     ],
+     "score": -2.56,
+     "sec_per_fight": 4.08
+    },
+    {
+     "round": 2,
+     "from_pieces": 3,
+     "from_score": -2.56,
+     "singles_tried": 10,
+     "singles_total": 55,
+     "fights": 136,
+     "seconds": 65,
+     "accepted": "formation=loose free",
+     "how": "single",
+     "gain": 5.22,
+     "se": 1.87,
+     "pieces": [
+      "dodgeShells=true",
+      "brain=rules",
+      "formation=loose free"
+     ],
+     "score": 2.66,
+     "sec_per_fight": 2.66
+    },
+    {
+     "round": 3,
+     "from_pieces": 3,
+     "from_score": 2.66,
+     "singles_tried": 10,
+     "singles_total": 55,
+     "fights": 176,
+     "seconds": 121,
+     "accepted": "dodgeShots=true",
+     "how": "single",
+     "gain": 7.91,
+     "se": 2.12,
+     "pieces": [
+      "dodgeShots=true",
+      "dodgeShells=true",
+      "brain=rules",
+      "formation=loose free"
+     ],
+     "score": 10.56,
+     "sec_per_fight": 3.2
+    },
+    {
+     "round": 4,
+     "from_pieces": 4,
+     "from_score": 10.56,
+     "singles_tried": 20,
+     "singles_total": 55,
+     "fights": 360,
+     "seconds": 237,
+     "accepted": "formation=wide line",
+     "how": "single",
+     "gain": 3.56,
+     "se": 1.39,
+     "pieces": [
+      "dodgeShots=true",
+      "dodgeShells=true",
+      "brain=rules",
+      "formation=wide line"
+     ],
+     "score": 14.13,
+     "sec_per_fight": 2.44
+    },
+    {
+     "round": 5,
+     "from_pieces": 4,
+     "from_score": 14.13,
+     "singles_tried": 20,
+     "singles_total": 55,
+     "fights": 312,
+     "seconds": 424,
+     "accepted": "artyFire=\"plan\"",
+     "how": "single",
+     "gain": 1.94,
+     "se": 0.97,
+     "pieces": [
+      "dodgeShots=true",
+      "dodgeShells=true",
+      "artyFire=\"plan\"",
+      "brain=rules",
+      "formation=wide line"
+     ],
+     "score": 16.06,
+     "sec_per_fight": 6.97
+    },
+    {
+     "round": 6,
+     "from_pieces": 5,
+     "from_score": 16.06,
+     "singles_tried": 20,
+     "singles_total": 55,
+     "fights": 392,
+     "seconds": 735,
+     "accepted": "saveWounded=0.3",
+     "how": "single",
+     "gain": 2.72,
+     "se": 0.97,
+     "pieces": [
+      "dodgeShots=true",
+      "dodgeShells=true",
+      "artyFire=\"plan\"",
+      "saveWounded=0.3",
+      "brain=rules",
+      "formation=wide line"
+     ],
+     "score": 18.78,
+     "sec_per_fight": 7.02
+    },
+    {
+     "round": 7,
+     "from_pieces": 6,
+     "from_score": 18.78,
+     "singles_tried": 20,
+     "singles_total": 55,
+     "fights": 376,
+     "seconds": 1119,
+     "accepted": "artyRollout={\"top\":5,\"horizon\":2,\"shape\":[\"battery\",\"split\",\"herd\"],\"score\":\"ltd2\"}",
+     "how": "single",
+     "gain": 6.5,
+     "se": 1.22,
+     "pieces": [
+      "dodgeShots=true",
+      "dodgeShells=true",
+      "artyFire=\"plan\"",
+      "artyRollout={\"top\":5,\"horizon\":2,\"shape\":[\"battery\",\"split\",\"herd\"],\"score\":\"ltd2\"}",
+      "saveWounded=0.3",
+      "brain=rules",
+      "formation=wide line"
+     ],
+     "score": 25.28,
+     "sec_per_fight": 67.15
+    }
+   ],
+   "start_score": -19.78,
+   "start_sec_per_fight": 3.13
   }
  ],
  "synergies": [
@@ -291,6 +510,29 @@
      "dropped_after": 32,
      "gain": 2.41,
      "se": 1.51
+    }
+   ]
+  },
+  {
+   "unit": "formation",
+   "round": 4,
+   "combination": "artyFire=\"plan\" + waves=3",
+   "gain": 2.75,
+   "se": 1.14,
+   "parts_alone": [
+    {
+     "move": "artyFire=\"plan\"",
+     "first_stage_gain": 3.25,
+     "dropped_after": 32,
+     "gain": 1.16,
+     "se": 1.23
+    },
+    {
+     "move": "waves=3",
+     "first_stage_gain": 1.63,
+     "dropped_after": 32,
+     "gain": -2.53,
+     "se": 1.1
     }
    ]
   }

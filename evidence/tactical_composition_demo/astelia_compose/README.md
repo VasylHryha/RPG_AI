@@ -11,6 +11,20 @@ looking at results, so none of it is a registered test.
 | 3 | `compose_seq.js` at commit 387455a (one change after another, quick checks) | elite skills without artyRollout | 2,864 fights, about 10 min | dodgeShells, dodgeShots | +11.4, 91% won; +14.3 over regular, +15.5 over veteran; **17.9 below the hand-built elite-fast** |
 | 4 | `compose_seq.js` (plus the two-step check and free brain moves) | the same | 8,232 fights, 38 min (the last 23 min only to show nothing more helps) | dodgeShots, dodgeShells smart, castDodge (the last two as a pair) | +21.3, 100% won; +24.1 over regular, +25.3 over veteran; **8.1 (se 1.0) below elite-fast** |
 
+**Run 5** (`compose_seq.js` with units and merges; the first check at 8 fights; DROP_SE 1; development) was **stopped by the owner's decision** during the rules unit's round 8, after about 15 hours. The merges and the confirmation were not run, so its scores are selection scores only (32 battles), on the JS engine:
+
+| Unit (start brain) | Pieces | Selection score | Seconds per fight | Pair found only together |
+|---|---|---|---|---|
+| alone | 4 | +20.9 | 2.2 | faster shot reaction + smart shell dodging (+2.8) |
+| formation | 6 | +18.5 | 6.5 | planned artillery fire + attacking in 3 waves (+2.8) |
+| rules | 7 | +25.3 | 67 | none; it took the artillery rollout alone (+6.5, at about 10x the time per fight) |
+
+Lessons:
+- The gentler first check made the stopping rounds very long: the formation unit's last round took about 5 hours.
+- The rules unit grew, by itself, an elite-like group: rules brain, wide line, planned artillery, saving the wounded, the rollout.
+- The time cost of a piece is now visible.
+- The engine moved to the typed C++ (`../astelia_cpp`, review `../astelia_cpp_review_claude`). These JS scores are not comparable with C++ scores: profiles must be re-scored there.
+
 ## What made the search faster (run 3)
 
 - **Cheaper opponents.** The elite opponents' `artyRollout` simulates futures before every volley: 11-33 s per fight. Without it a fight takes about 0.7 s and the opponents stay strong (novice loses every fight).
