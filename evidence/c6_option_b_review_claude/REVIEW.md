@@ -33,3 +33,14 @@ Date: 2026-10-05
 - **Exact equivalence in both schedules** (forward and reverse): zero maximum error and zero changed digests on the stored fixture, both smoke worlds and the development world. 378 existing checks and 4 new tests pass.
 - **Under load 34-87, world wall times were 267-643 s.** The report's quiet-machine planning estimate for the worst world is about 304 s (band 190-434 s), uncalibrated and correctly labelled as an estimate.
 - **Next:** the official quiet-machine measurement, scheduled after the 0g v3 and 0h development runs. If it exceeds 360 s, the remaining option is the owner's resource-rule decision.
+
+## Addendum 2: the owner-requested recheck (merged at `6960782`; `evidence/c6_option_b/RECHECK_REPORT.md`, NOT_READY pending the queued checks)
+
+- **Four high findings fixed:**
+  - F1: the drive cache was not fully cleared, and its key merged ±0;
+  - F2: oversized entries were allocated before being rejected;
+  - F3: allocation exceptions crossed the C boundary, with integer overflow risks;
+  - F4: implicit rebuilds, and unbound compiler flags.
+- **Five medium findings fixed or corrected** (F5-F9), including overclaims in the earlier reports (an exhausted speed ceiling, full coldness, the only remaining option). Those claims are withdrawn.
+- **I ran `tests/test_c6_option_b.py`:** 72 passed. The fixture is bit-exact in the sequential and both parallel schedules.
+- **The full-world zero-tolerance reruns and the official quiet-machine timing are queued** exactly as the report lists them. They run automatically after the 0h development run, when no other heavy job runs.
