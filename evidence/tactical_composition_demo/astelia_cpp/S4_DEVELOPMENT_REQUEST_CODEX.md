@@ -23,12 +23,19 @@ Repository `/Users/new/RiderProjects/ai_RPG_test`. Read `AGENTS.md`.
 
 ## 1. Tuning protocol (design section 5)
 
-- **One optimizer for every tuned arm** (resonator, morale, push-pull):
-  - each round samples candidates within the knob bounds around the current best;
-  - candidates are raced in stages (for example 8, 16, 32 clusters, dropping one that is clearly behind);
-  - a candidate is accepted only by the compose acceptance rule (gain > max(min_gain, 2 se)).
-  - State the exact sampler, stages and rule **before** the first tuning fight. They are the same for every arm.
-- **Equal fight budget per tuned arm,** declared before tuning. Cache hits count. Nearest is untuned.
+- **One standard derivative-free optimizer for every tuned arm** (resonator, morale, push-pull). Recommended: **CMA-ES**, the usual choice for 2-10 continuous bounded parameters, with:
+  - knobs scaled to [0, 1] by their bounds;
+  - one fixed population size and initial step for all arms;
+  - **common random numbers**: every candidate in a generation plays the same development clusters;
+  - the score: the mean cluster S over a fixed number of clusters per evaluation.
+
+  The "keep only if better by 2 standard errors" rule of the old switch search is **not** used for continuous knobs. State the exact optimizer, settings and evaluation size
+  **before** the first tuning fight. They are the same for every arm.
+- **Equal fight budget per tuned arm and stage,** declared before tuning. Suggested: about 10,000 fights per arm per stage (fewer for stage A if it converges).
+  - Cache hits count. Nearest is untuned.
+  - **Time cap:** the whole of S4 should fit in about 2-3 hours of machine time on 10 cores. If it will not, stop and report the estimate to the owner before continuing.
+- **One cache and one seed ledger:** use `result_cache.py`, keyed on the admitted binary and source identity, and keep a seed ledger file (`s4_seeds.json`) that records every seed's
+  use. `../astelia_compose/cache.js` is not used for C++ runs.
 - **Every evaluated candidate is logged:** knobs, fights, scores, accepted or rejected, failures.
 - **Seeds:** a development (tuning) split and a separate validation split, both recorded in a seed ledger. **Judging seeds are not drawn or used.**
 - **Stages** (owner):
@@ -37,19 +44,26 @@ Repository `/Users/new/RiderProjects/ai_RPG_test`. Read `AGENTS.md`.
   - **C:** full armies, the P2/P3 panel (19 doctrines, elite-no-rollout skills).
 
   Each stage starts from the previous stage's best knobs. Record fights to watch at the end of each stage.
+- **Stage A is the only clean test of the law.**
+  - Melee-only fights have no projectiles.
+  - In B and C the scripted brains read shots and shells in flight to dodge, and our controllers cannot see projectiles (a declared asymmetry, design section 1).
+  - Report results **per stage**. If the resonator beats novice in A but not in B, say so plainly; it points to the projectile asymmetry, not to the law.
+- **Stage C must not simulate our controller:** confirm from the metrics that its fights record **zero** forks, search calls and artillery rollouts (design section 1, asymmetry 3).
+  If not, stop and report.
 
 ## 2. Measurements for S5
 
 On the **validation split** only, after tuning:
 - each tuned arm and nearest: head-to-head clusters against novice and against regular, and the paired P2/P3 panel (resonator against morale, resonator against push-pull);
-- report the means, the paired cluster spread and its uncertainty;
+- report the means, the paired cluster spread and its uncertainty, using at least 100 validation clusters per comparison;
 - propose δ (in survivors) with the reasoning, and n per endpoint by a stated bounded power rule.
 
 δ is the owner's decision. Never shrink it to obtain a pass.
 
 ## 3. Stop rows (design section 10)
 
-- **If the tuned resonator does not beat novice head-to-head** on the validation split (mean cluster S ≤ 0) after its full budget: stop, set the report's first line to `STOP`, and describe what was seen.
+- **If the tuned resonator does not beat novice head-to-head** on the validation split (mean cluster S ≤ 0) after its full budget, in stage A **or** stage B: stop, set the report's first line to `STOP`, and say which stage.
+  Even on `STOP`, report the validation results of **all four arms**, so the owner sees whether any arm beat novice.
 - **Any controller failure in a development fight:** fix it first, and restart that arm's budget.
 - **An outcome-informed equation change:** log it, and restart that arm's budget.
 
