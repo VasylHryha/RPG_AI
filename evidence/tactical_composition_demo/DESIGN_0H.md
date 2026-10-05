@@ -1,6 +1,6 @@
-# Design 0h, revision 3: the bootstrap of atoms and the library (DRAFT for a Codex re-review; no growth experiment run)
+# Design 0h, revision 4: the bootstrap of atoms and the library (DRAFT for a Codex re-review; no growth experiment run)
 
-Revision 3 answers the Codex re-review of revision 2 (`docs/reviews/tactical_0h_design_review_codex_r2.md`, CHANGES_REQUIRED, 10 findings R2-1 … R2-10). Revision 1 had 14 findings (`docs/reviews/tactical_0h_design_review_codex.md`). The self-audits are section 14. Earlier revisions are in git history (`85c656b`, `fc55cd2`, `d0264cb`).
+Revision 4 answers the third review (`docs/reviews/tactical_0h_design_review_codex_r3.md`, CHANGES_REQUIRED, 10 findings R3-1 … R3-10). Revision 3 answered the second (`docs/reviews/tactical_0h_design_review_codex_r2.md`, R2-1 … R2-10), and revision 2 the first (`docs/reviews/tactical_0h_design_review_codex.md`, 14 findings). The self-audits are in section 14. Earlier revisions are in git history (`85c656b`, `fc55cd2`, `b323803`).
 
 **Scope:** the **bootstrap** only: atoms grow in one continuously running medium, are qualified structurally, and are copied into a snapshot library.
 - Combinations, bonds, duplicates, library trends, yardstick efficiency claims and background claims are **deferred**.
@@ -19,7 +19,7 @@ The world's constants used here: dt_w = 0.1 s, 160 decisions = 16 s per episode,
 | Element | Status |
 |---|---|
 | C4 element law; the C4 criterion **functions** 1-5 and their thresholds; C5 interface fields | **accepted, reused** |
-| The driven-history **adapter** for those criterion functions (section 6) | **new**: its driven qualification is not accepted C4 evidence |
+| The driven-history **adapter** for those criterion functions (section 6) | **new**: not accepted C4 evidence. **Atoms here are structurally qualified driven snapshots** (R3-9): a recovery under drive can come from common-input entrainment, so internally maintained closure and autonomous persistence are **not claimed** |
 | The driven phase term (input drive) | **an addition** (as in the C6 R4 design) |
 | Rate and gain adaptation; novelty birth; unlocked death; the budget | **motivated hypotheses** |
 | One carrier band; the sensor ring and readout layout; distance salience; task-to-action bindings | **engineering choices** |
@@ -50,6 +50,19 @@ No arm is called "theory alone". The **task-blind arm** never uses a task score 
 - 8 sensor sites, evenly on a ring of radius 4 m.u. around the medium origin.
 - At each **episode start**, the episode's items are assigned to sites by a permutation drawn from the episode seed. The assignment holds for the episode, and unused sites get k = 0.
 - A site whose item changes between episodes jumps in ψ. Windows that cross that jump record lower PLV. This is accepted and declared.
+
+**Per-task input binding** (legal observation fields only; R3-4):
+
+| Task | Items → sites | Direction α | Strength k |
+|---|---|---|---|
+| perceive | each visible enemy → its slot's site | enemy angle | 2 · exp(−distance / 10) |
+| move | the single target record → site 0 | target_angle if target_distance ≥ desired_range, else target_angle + π (retreat) | 2 · min(1, abs(target_distance − desired_range) / 2) |
+| remember_static | the enemy → site 0 while visible; k = 0 while hidden | enemy angle | 2 · exp(−distance / 10) while visible |
+| choose | each enemy → its slot's site | enemy angle | 2 · exp(−d / 10) × (1 + (1 − HP/100)) × (1 if d ≤ 2.5 else 0.5) |
+
+- The move binding is a declared engineering transform of observed fields (desired range enters only through the retreat sign and the strength), and the controller may legitimately fail keep-mode episodes.
+- The action's `choice` is −1 for every non-choice task.
+- `remember_static` is the world's additive stationary-target task (id 7).
 
 **Drive on element i:**
 
@@ -87,6 +100,14 @@ Observations are held over the 5 substeps.
 - g_i = 0.5;
 - ids 0-23, from a monotone id counter.
 
+**Sampling contract** (R3-2):
+- Sample k is recorded at the end of world step k (t_k = 0.1 k, after integration), holding θ_i, and per site ψ_s and k_s.
+- **Rate estimate:** ω̂_i = (θ_i(t_k) − θ_i(t_{k−100})) / 10 s, unwrapped. It needs both endpoints (101 samples).
+- **Gain signal:** P_i is defined only if i has ≥ 101 samples and s* was active in ≥ 80 of the last 100; then it is the PLV over s*'s active samples. Otherwise P_i is undefined and **g_i is unchanged** that step (also when no drive reaches i).
+- **Coverage** additionally requires the candidate element to have ≥ 101 samples.
+- **Reward eligibility:** e_i is the mean of the defined P_i values in the episode, and 0 if none is defined.
+- g is clipped to [0, 2] after every update, including reward updates.
+
 **Per world step:**
 1. read the observation;
 2. 5 × (drive + one C4 RK4 step, with neighbours held per step);
@@ -105,7 +126,7 @@ Observations are held over the 5 substeps.
 **The two arms (R2-1):** both have the **same structural qualification, snapshots and library** (sections 6-7).
 - The **task-blind arm** has no reward term.
 - The **reward arm** adds exactly one term at each episode end:
-  - Δg_i = 0.5 · (r − r̄) · e_i, where e_i is the episode mean of P_i, clipped;
+  - Δg_i = 0.5 · (r − r̄) · e_i, with e_i from the sampling contract, then g clipped to [0, 2];
   - then r̄ ← r̄ + 0.1 (r − r̄), with r̄ = 0.5 at the run start and never reset;
   - r is the bounded reward of section 9.
 
@@ -145,7 +166,8 @@ Observations are held over the 5 substeps.
 
 **Every 60 s, a qualification check:**
 - **Cohort:** the elements alive for the whole last 60 s (immutable ids). Entrants and leavers in the window are excluded from that check; missing frames are impossible within the cohort.
-- **Frames:** every world step (0.1 s; 600 frames). This **avoids the stroboscopic aliasing** of carrier-period sampling: the relative phase rate is ≤ π rad/s, so the step is ≤ 0.31 rad per frame. The S3-style contract includes the reviewer's counter-example (rates 0.5ω_D and 1.5ω_D), which must **not** register as locked.
+- **Frames** (R3-1): **601 endpoint-inclusive frames** at t_check − 60 + 0.1 j, j = 0 … 600, giving two exact 30-second halves for the frozen window function. The id mapping is fixed. A cohort with fewer than 3 elements yields no candidate (logged).
+- **Aliasing** (R3-10): the revision-2 counter-example (rates 0.5ω_D and 1.5ω_D) remains a negative contract. No general rate bound is claimed: coupling and drive add to the intrinsic spread. Each check reports the maximum wrapped per-frame relative-phase increment among candidate pairs; a check with any increment > π/2 is flagged **possibly aliased**, and its candidates are not snapshotted.
 - **Criteria 1-4:** the accepted criterion functions on these frames, with C4 thresholds and C5-style scaling by **T = 2** (s per C4 time unit):
 
 | Threshold | C4 value | Here |
@@ -157,8 +179,19 @@ Observations are held over the 5 substeps.
 | kick: position RMS, phase RMS | 0.1 × the median spacing, 0.3 rad | same |
 | recovery Jaccard | 0.9 | same |
 
+**The check-time state** (R3-3):
+- At t_check the **complete live medium state** is saved immutably: all elements alive then, including entrants, with their coefficients and the clock.
+- The recovery futures start from it **with all elements present**, so entrants exert their forces.
+- Membership comparisons are restricted to the cohort (entrants masked out), and the claim is labelled cohort-restricted.
+- **The template is taken from this saved state.** Admission is at completion (t_check + 60), with both timestamps recorded. A later death of the live source does not affect an admitted snapshot.
+- Recovery never modifies the live run.
+
 **Criterion 5, recovery** (paired futures from the snapshot at the check):
-- **Open-loop input replay:** both futures receive the **identical recorded legal observations** of the next 60 s of the actual run. If the run has not produced them yet, the check completes after 60 s.
+- **Open-loop input replay:** both futures receive the **recorded drive schedule** of the next 60 s of the actual run: per world step and site, ψ_s on the original run clock and k_s, with each episode's sensor assignment already applied.
+- **Relaxation estimators** over the candidate's cohort members:
+  - phase: RMS of wrap(θ_kick − θ_ctrl) after removing the circular-mean difference;
+  - position: RMS of (x_kick − x_ctrl) after removing the centroid shift;
+  - τ is the first fall below 1/e of the initial deviation, censored at 60 s (flagged).
 - **Plasticity, growth and reward are off** in both futures.
 - The kicked future applies the kicks of the table above. Both futures integrate the driven C4 law.
 - **Pass** if all three Jaccards are ≥ 0.9 and the recovered pair-pattern error is ≤ 0.1 rad.
@@ -176,9 +209,9 @@ Observations are held over the 5 substeps.
   - per member: position relative to the medium origin, phase minus φ(t_snap), ω, g;
   - the task bindings (task id, slot-to-site map rule);
   - the constants version.
-- **Content hash:** sha256 of the canonical JSON (sorted keys, floats by repr).
+- **Content hash** (R3-8): sha256 of the canonical JSON: members in **ascending persistent id**, each [rel x, rel y, phase offset, ω, g]; bindings as {"task_id": int, "slot_sites": [8 site indices in slot order]} per task; the constants version; sorted keys; floats by repr.
 - **Copy for evaluation** (an isolated extracted group): an **empty** medium (no other elements) with the same sensor ring and readout geometry. The members are placed at their stored positions (identity pose). Phases are θ = stored offset + φ(t_copy), a uniform shift, so zero-resultant groups are handled.
-- **Plasticity and growth are off** during evaluation. The drive is on, from the evaluation episodes.
+- **Plasticity and growth are off** during evaluation. The drive is on, from the evaluation episodes. **A fresh copy is made for each evaluation episode** (R3-8), with its run clock starting at the copy time.
 - A copy whose readout region contains no member **abstains**. That is scored, not dropped.
 - **Type id** = the content hash (immutable). Instances get monotone ids.
 
@@ -216,7 +249,9 @@ The usable list is **frozen before training** and shared by both arms. The world
 ## 10. The development run (attainability only)
 
 - **All constants above are fixed.**
-- **Per arm:** 8 independent medium seeds; usable atom tasks rotated in blocks of 20 episodes; 2,000 episodes per seed (8,000 s of run time).
+- **Per arm:** 8 independent medium seeds, 2,000 episodes per seed. At 16 s per episode that is **32,000 s** of run time (R3-5).
+- **Fixed rotation:** perceive, move, remember_static, choose, in blocks of 20 episodes, cyclic. The run clock is t = 16 · episode + 0.1 · step.
+- **Qualification checks** start at t = 60 m, m = 1 … 532. The last start is 31,920 s, whose replay ends at 31,980 s. No check is scheduled whose replay would exceed the run, and the reported horizon is 32,000 s.
 - **Exposure ledger, reported:**
   - training world steps and episodes;
   - qualification frames (they include driven observations but no task score);
@@ -230,11 +265,11 @@ The usable list is **frozen before training** and shared by both arms. The world
 
 | ID | Estimand per seed | PASS | FAIL | INCONCLUSIVE |
 |---|---|---|---|---|
-| **G0** | coverage = the time-average fraction of active sites covered over the last 20%; medium competence = the mean n over usable tasks of the **whole live medium** (copied at the end, isolated rules as section 7) on the evaluator panel. The control: the same run with B1 births at the **same times**, placed uniformly in a disk of radius 5 m.u., phase uniform, ω = π, g = 1, same protection and budget. An infeasible control birth is retried at the next check once; otherwise it is dropped and logged, and the match is reported | conditional > control on **both** estimands in ≥ 6 of 8 seeds | conditional ≤ control on both in ≥ 6 of 8 seeds | otherwise |
-| **G0'** (count settling, not demand) | the OLS slope of N over the growth checks in the last 20%, with **no** cap, cost, placement or protected-over-budget rejection in the last 20%; turnover and uncovered-site time reported | slope within ±0.5 per 100 episodes with no rejections, in ≥ 6 of 8 seeds | outside the band, or any rejection, in ≥ 3 of 8 | otherwise |
+| **G0** (narrowed, R3-6: **two budget-constrained growth policies compared**, conditional against random placement-and-phase; not a matched-placement effect) | **coverage** = the mean, over samples in the last 20% with ≥ 1 active site, of the fraction of active sites covered (eligible exposure reported; a seed with no eligible sample is INVALID). **Medium competence** = the mean n over usable tasks of the whole live medium, copied at the end (section 7), on the evaluator panel. **Control:** at each growth check, as many births as the intact run made at that check, uniform in a disk of radius 5 m.u., phase from a paired entropy stream, ω = π, g = 1, same protection and budget. An infeasible control birth is retried once at the next check, then dropped; a seed with any dropped control birth is flagged and counts as non-PASS | conditional > control on both, in ≥ 6 of 8 unflagged seeds | conditional ≤ control on both, in ≥ 6 of 8 | otherwise |
+| **G0'** (narrowed, R3-7: **count stability under the declared budget**; budget regulation is reported, not excluded) | the OLS slope of N over the growth checks in the last 20%; no birth rejected for cap, cost or placement and no protected-over-budget state in the last 20%; D3 removals and turnover reported | slope within ±0.5 per 100 episodes and no rejection, in ≥ 6 of 8 seeds | outside the band or any rejection, in ≥ 3 of 8 | otherwise |
 | **G1** | ≥ 1 qualified snapshot in the run | in ≥ 6 of 8 seeds | in ≤ 2 of 8 | otherwise |
 | **G1c** | competence of the snapshots, descriptive (per task and best task) | (descriptive) | | |
-| **G5** (behavioural reproducibility) | for each snapshot, two isolated copies made at different copy times (different φ) on the same panel: |n₁ − n₂| ≤ 0.1 on every usable task; the per-seed value is the median over its snapshots | median passes in ≥ 6 of 8 seeds (with ≥ 1 snapshot) | in ≤ 2 of 8 | otherwise |
+| **G5** (behavioural reproducibility, R3-8) | per snapshot, D = the maximum over usable tasks of abs(n₁ − n₂) between two isolated copies at carrier offsets 0 and π, fresh per episode, on the same panel; per seed, the fraction of its snapshots with D ≤ 0.1. A seed with no snapshot is **no formation**, excluded from G5 | the fraction is ≥ 0.8 in ≥ 6 of the seeds with snapshots, and there are ≥ 6 such seeds | the fraction is < 0.5 in ≥ 3 such seeds | otherwise, or fewer than 6 seeds with snapshots |
 
 **INVALID**, not FAIL: a non-finite measurement, zero usable tasks, or an incomplete or interrupted run. The raw evidence is kept, and the reason is reported.
 
@@ -252,7 +287,7 @@ The usable list is **frozen before training** and shared by both arms. The world
 
 ## 13. What this revision tests, in one sentence
 
-Whether, in a continuously driven C4 medium with novelty birth, unlocked death and a budget, **structurally qualified groups (atoms) form**, whether **conditional growth beats random growth**, whether **the element count settles without hitting limits**, and whether **atoms copy reproducibly**, with competence on simple tasks measured afterwards and never fed back in the task-blind arm.
+Whether, in a continuously driven C4 medium with novelty birth, unlocked death and a budget: **structurally qualified driven groups (atoms) form**; **conditional growth beats a random growth policy**; **the element count is stable under the budget**; and **atoms copy reproducibly**. Competence on simple tasks is measured afterwards, and never fed back in the task-blind arm.
 
 ## 14. Self-audits
 
@@ -271,4 +306,19 @@ Whether, in a continuously driven C4 medium with novelty birth, unlocked death a
 | R2-9 | Comparator accounting discretionary | Yardsticks deferred; accounting reported, not compared | Out of the active scope |
 | R2-10 | Revision rules limited to constants | Every protocol change becomes a new revision; INVALID and INCOMPLETE dispositions; yes/no rows | Too narrow |
 
-**Revision-1 findings** (14, fixed in revision 2 except as refined above): see revision 2's table in git history (`fc55cd2`, section 13).
+**Revision-3 findings:**
+
+| # | Finding | Fix | Cause |
+|---|---|---|---|
+| R3-1 | 600 frames break the frozen window function | 601 endpoint-inclusive frames; a small-cohort disposition | Off-by-one; I did not read the function's indexing |
+| R3-2 | Short-history cases | A timestamped sampling contract; undefined P leaves g unchanged; coverage needs history; newborn eligibility | Gaps |
+| R3-3 | Recovery population and snapshot timing | A full check-time state; cohort-restricted membership; the template from the saved state; exact drive-schedule replay; estimators | Underspecified |
+| R3-4 | Move lacked an input binding | A per-task input table; choice = −1 | I assumed enemies in every task |
+| R3-5 | 2,000 episodes are 32,000 s | Corrected; the rotation; the last qualifying check | An arithmetic error |
+| R3-6 | G0 denominator and an unmatched control | An eligible-exposure denominator; narrowed; flagged seeds non-PASS | Underspecified |
+| R3-7 | G0' allowed D3-enforced settling | Narrowed to count stability under the budget | Overclaim |
+| R3-8 | G5 aggregation and copy identity | A per-snapshot scalar, thresholds, a no-formation rule, fixed offsets, per-episode copies, canonical order | Underspecified |
+| R3-9 | Driven recovery can be entrainment | Atoms are driven snapshots; closure and autonomy not claimed | Missed the drive's restoring force |
+| R3-10 | A false rate bound | Removed; aliasing diagnostics and a flag; the counter-example kept | Wrong reasoning |
+
+**Revision-1 findings** (14, fixed in revision 2 except as refined later): see revision 2 in git history (`fc55cd2`, section 13).
