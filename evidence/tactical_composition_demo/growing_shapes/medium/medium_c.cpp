@@ -20,6 +20,11 @@ double gm_time(const void* h){return h?obj(h).time:-1;}
 int gm_elements(void* h,gm_element* output,int cap){return call(h,[&](Medium& m){buffer(output,cap,m.elements.size());for(size_t i=0;i<m.elements.size();++i)output[i]=m.elements[i].v;});}
 int gm_add(void* h,double x,double y,double phase,double rate,uint64_t* id){return call(h,[&](Medium& m){growing::require(id,"null id output");*id=m.add(x,y,phase,rate);});}
 int gm_set_element(void* h,uint64_t id,double x,double y,double phase,double rate){return call(h,[&](Medium& m){for(double v:{x,y,phase,rate})growing::finite(v);auto& e=m.elements[m.index(id)].v;e.x=x;e.y=y;e.phase=phase;e.rate=rate;});}
+int gm_options(void* h,int samples,int carried,int undirected){return call(h,[&](Medium& m){for(int f:{samples,carried,undirected})growing::require(f==0||f==1,"invalid option");m.automatic_samples=samples;m.carried_sites=carried;m.undirected_cost=undirected;});}
+int gm_clock(void* h,double time){return call(h,[&](Medium& m){growing::finite(time);growing::require(time>=0 && m.elements.empty() && m.events.empty(),"clock requires pristine medium");m.time=time;m.last_growth=time;});}
+int gm_first_id(void* h,uint64_t first){return call(h,[&](Medium& m){growing::require(m.elements.empty() && m.time==0 && m.events.empty(),"first id requires pristine medium");m.next_id=first;});}
+int gm_gain(void* h,uint64_t id,double gain){return call(h,[&](Medium& m){growing::finite(gain);growing::require(gain>=0 && gain<=2,"gain outside [0,2]");m.elements[m.index(id)].gain=gain;});}
+int gm_get_gain(void* h,uint64_t id,double* gain){return call(h,[&](Medium& m){growing::require(gain,"null gain output");*gain=m.elements[m.index(id)].gain;});}
 int gm_remove(void* h,uint64_t id){return call(h,[&](Medium& m){m.remove(id);});}
 int gm_split(void* h,uint64_t id,double a,double b,double offset,uint64_t* ids){return call(h,[&](Medium& m){growing::require(ids,"null ids output");auto v=m.split(id,a,b,offset);ids[0]=v[0];ids[1]=v[1];});}
 int gm_silence(void* h,uint64_t id,int silent){return call(h,[&](Medium& m){growing::require(silent==0||silent==1,"invalid silence flag");m.elements[m.index(id)].v.silent=silent;});}

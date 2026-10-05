@@ -1,0 +1,26 @@
+........................................................................ [ 41%]
+.................F
+=================================== FAILURES ===================================
+_______ test_site_eligibility_offset_and_samples[0.50001-False-80-True] ________
+
+medium = <evidence.tactical_composition_demo.growing_shapes.medium.design_0h.DesignMedium object at 0x106c6de50>
+active = 80, expected = True, offset = 0.50001, covered = False
+
+    @pytest.mark.parametrize('active,expected', [(79, False), (80, True), (100, True)])
+    @pytest.mark.parametrize('offset,covered', [(0., True), (.5, True), (.50001, False), (math.pi, False)])
+    def test_site_eligibility_offset_and_samples(medium, active, expected, offset, covered):
+        id = medium.add((0, 0), 0)
+        history(medium, [id], active=active, offset=offset)
+        assert (medium.gain_signal(id) is not None) == expected
+        assert medium.covered(0) == (expected and covered)
+>       assert medium.lock(id) == float(expected)  # lock permits anti-phase
+E       assert 0.9999999999999998 == 1.0
+E        +  where 0.9999999999999998 = lock(0)
+E        +    where lock = <evidence.tactical_composition_demo.growing_shapes.medium.design_0h.DesignMedium object at 0x106c6de50>.lock
+E        +  and   1.0 = float(True)
+
+evidence/tactical_composition_demo/growing_shapes/medium/test_design_0h.py:103: AssertionError
+=========================== short test summary info ============================
+FAILED evidence/tactical_composition_demo/growing_shapes/medium/test_design_0h.py::test_site_eligibility_offset_and_samples[0.50001-False-80-True]
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 89 passed in 1.26s

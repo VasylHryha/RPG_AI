@@ -1,5 +1,6 @@
 """Explicit dependency-free C++17 build; no implicit compilation on import."""
 import argparse
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -26,7 +27,11 @@ def build(sanitize=False):
     ]
     for command in commands:
         subprocess.run(command, check=True, cwd=ROOT)
-    return {'compiler': subprocess.check_output([compiler, '--version'], text=True).splitlines()[0],
+    manifest = {'source_sha256': {name: hashlib.sha256((ROOT/name).read_bytes()).hexdigest()
+                for name in ('medium.cpp', 'medium_c.cpp', 'medium.hpp', 'medium_c.h', 'build.py')},
+                'binary_sha256': hashlib.sha256(LIBRARY.read_bytes()).hexdigest()}
+    (LIBRARY.parent/'build.json').write_text(json.dumps(manifest, indent=2)+'\n')
+    return {'identity': manifest, 'compiler': subprocess.check_output([compiler, '--version'], text=True).splitlines()[0],
             'platform': platform.platform(), 'commands': commands}
 
 if __name__ == '__main__':

@@ -31,6 +31,12 @@ double gm_time(const void* handle);
 int gm_elements(void* handle, gm_element* output, int capacity);
 int gm_add(void* handle, double x, double y, double phase, double rate, uint64_t* id);
 int gm_set_element(void* handle, uint64_t id, double x, double y, double phase, double rate);
+/* Additive v2 options; defaults retain the v1 behavior. ids may start at zero. */
+int gm_options(void* handle, int automatic_samples, int carried_sites, int undirected_cost);
+int gm_clock(void* handle, double time);
+int gm_first_id(void* handle, uint64_t first);
+int gm_gain(void* handle, uint64_t id, double gain);
+int gm_get_gain(void* handle, uint64_t id, double* gain);
 int gm_remove(void* handle, uint64_t id);
 int gm_split(void* handle, uint64_t id, double phase1, double phase2, double offset, uint64_t* ids);
 int gm_silence(void* handle, uint64_t id, int silent);
