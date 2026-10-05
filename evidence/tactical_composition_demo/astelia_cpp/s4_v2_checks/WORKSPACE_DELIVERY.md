@@ -1,27 +1,30 @@
-Workspace delivery: S4 v2 contract STOP
+Workspace delivery: S4 v2 implementation and partial development
 
-Report commit: `1856b264242d75c480c00a66700bb965980655ab`. Base: `2edac7fcad8a7a933fe8707544c884934719ca23`. Isolated checkout: `/private/tmp/ai_RPG_test_s4_v2_20261005`; branch: `codex/s4-v2-contract-stop`. The report and this delivery note are the complete task changes. Both commits carry `Assisted-by: Codex:GPT-6` and use the repository git hooks. No Part 1 implementation or Part 2 development has been performed.
+Status: NOT_READY — conservative runtime projection stop in C, not an A/B novice stop. Part 1 is complete; C development, C validation/replays and fresh P2/P3 spread/δ/n are incomplete. Claude review remains next. No registration or judging execution is authorized.
 
-The permission profile permits reading the original workspace's `.git`, but not writing it. Delivery therefore uses an isolated local checkout, as authorized in the request. The original workspace branch and Git metadata remain unchanged. Original unrelated untracked files were not imported, staged or edited; `growing_shapes/` was not accessed.
+Implementation commit: `8e6e97ea496f48ddeb85b8882c1dbf292c70d2d6`. Evidence/report commit: `47d4be59ed7948fa839a96d792c92c9e1e611521`. Both carry `Assisted-by: Codex:GPT-6` and passed repository hooks. Base: `aeb75a73c1d00706ff8e264563ae0f9a554c5f1c` (the shared checkout advanced between the initial 22cdd21 observation and cloning; the section-13 clarifications are unchanged). Isolated checkout: `/private/tmp/ai_RPG_test_s4_v2_clarified_20261005`, branch `codex/s4-v2-development`. Original shared `.git` is read-only in this permission profile and was not modified.
 
-At delivery the original workspace HEAD advanced concurrently to `40c0cb5aae30af1be2052132c2fe170ce675effd`; that external tracker commit changes `docs/IDEAS_AND_ROADMAP.md`. The report remains based on the pinned source snapshot above, and section 13 is unchanged. Integration must preserve the newer original history.
+Measured execution: 91.48 minutes. Before C resonator generation 10, projected combined duration 181.8 minutes exceeded the unchanged 180-minute cap. A/B completed all three tuned budgets and all four validations; C has only resonator initial + nine generations. The stop, raw failures/checkpoints, all 66,506 logged fresh fights and eight A/B replay captures are retained. No extra fight or code/test edit during execution. A separate post-run auditor reconstructs every CMA candidate, twelve complete validation endpoints, paired orientations and replay equality, with zero controller failures or planning counters; it does not execute fights.
 
-The report starts STOP under the user's explicit ambiguity rule. Section 13's knob arithmetic gives eleven rather than the required ten for resonator/morale; movement-union overflow selection and mixed-role reach coordinates also need drafter answers. Read the report for the exact questions. No implicit design choices, build, tests, development fights, judging-root reads, seed ledger, registration or recorded run occurred. No new parity or scientific acceptance claim is made.
+Part 1: 87 affected tests passed once after the complete change batch, 324 predecessor fixture summaries byte-identical, 76 v2 stateful engineering fixtures and maximum refinement 0.0022835 < 0.02. The one failed contract compile attempt is kept separately from successful testing.
 
-Contract pins at the reviewed source snapshot:
+B resonator validation: novice +16.385, regular −4.100. Morale: novice +9.720, regular +2.930. The regular resonator deficit remains. Timeouts and enemy guns alive for every executed arm/setting are in the report and END_STATES_BY_SPLIT.json. Partial C is not comparable across arms. The report's NOT_READY is not scientific acceptance or permission to register.
 
-| Source | SHA256 |
-|---|---|
-| evidence/tactical_composition_demo/DESIGN_0G.md | 9845aca7c7d71fd04d7526fc4c51b21002746f82b5ae40282443792c8f223400 |
-| evidence/tactical_composition_demo/astelia_cpp_review_claude/S4_V1_REVIEW.md | c138bd79be98fde7a04d5a0230b25caac33af79a80a5dc7890c61b9d319835f5 |
-| evidence/tactical_composition_demo/astelia_cpp/S4_AMENDED_PROTOCOL.md | f911443ab10a4df13c4bac6c34a59ee97a629e76bb4319de68e462090726e6fb |
+All task files are delivered byte-for-byte to the requested workspace, verified against the bundle branch tree. DELIVERY_CONTENTS.json records the 71 source/evidence/report file hashes at the evidence commit and the source comparison. Observed workspace HEAD before delivery: `68c10ac0ae809a1fed2c50d0556b73f7932d31d3`; another lane advanced it. Its dirty/staged work, growing_shapes/, C6 files and untracked visualization artifacts are preserved. Current DESIGN_0G and SPEC_0G hashes match the run snapshot. No frozen GeoMind files, committed receipts, status or source definitions were changed by this task.
 
-`commits.bundle` contains the report and delivery-note commits relative to the base above. Before delivery, the bundle is checked with `git bundle verify`, fetched into a second temporary repository supplied with the base objects, and its delivered file bytes compared to both the isolated branch tip and the workspace copies. The bundle itself is generated after these commits and is not tracked inside its own history.
+Bundle: `development.bundle`, with `BUNDLE_VERIFIED.json` recording its SHA256, prerequisites, exact branch tip, verified import and workspace tree equality. The old `commits.bundle` contains the preceding contract-stop delivery and is left intact. The new delivery note replaces the old note, which stays in history.
 
-Import without replacing current history:
+Import the scoped branch without changing the current checkout:
 
 ```sh
-git fetch evidence/tactical_composition_demo/astelia_cpp/s4_v2_checks/commits.bundle refs/heads/codex/s4-v2-contract-stop:refs/heads/codex/s4-v2-contract-stop
+git bundle verify evidence/tactical_composition_demo/astelia_cpp/s4_v2_checks/development.bundle
+git fetch evidence/tactical_composition_demo/astelia_cpp/s4_v2_checks/development.bundle refs/heads/codex/s4-v2-development:refs/heads/codex/s4-v2-development
 ```
 
-Claude reviews and integrates the scoped branch. Next work: the drafter resolves the report's questions in DESIGN_0G section 13 and records the cause in its self-audit; Codex then resumes Part 1, finishes all code/tests, rebuilds, verifies v0/v1 fixture parity and runs the affected test batch once. Commit Part 1 before any fresh-seed development; announce its expected duration, refuse an existing `s4_v2_development/`, and retain the amended A/B/C protocol and novice stop gates. Stop on any remaining contract ambiguity. Independent Claude development review and owner S5 decisions remain separate gates.
+Claude reviews and integrates the branch; do not reset the newer shared history. Review the run against its isolated source/binary/optimizer identity. The existing original-workspace build predates the copied v2 sources and must not be silently used as the admitted v2 binary. The pinned binaries and CMA vendor remain in the isolated checkout. For read-only reconstruction of the retained data (no fights), use:
+
+```sh
+PYTHONPYCACHEPREFIX=/private/tmp/s4_v2_review_pycache /Users/new/RiderProjects/ai_RPG_test/.venv/bin/python /private/tmp/ai_RPG_test_s4_v2_clarified_20261005/evidence/tactical_composition_demo/astelia_cpp/s4_v2_finalize.py
+```
+
+Next-session handoff: review DESIGN_0G section 13 plus Clarifications at 22cdd21, implementation 8e6e97e, evidence 47d4be5, S4_V2_DEVELOPMENT_REPORT.md and PARTIAL_AUDIT.json. Verify the bundle/tree hashes and the explicit own-artillery distance override. Reuse unchanged test evidence; do not rerun passed fights. Keep the runtime stop, the incomplete C arms/endpoints/replays/planning, and the regular deficit visible. Stop at the independent development-review verdict. Any continuation requires an explicit resource/budget decision; do not choose one, extend the cap, register, inspect/generate judging seeds, or touch growing_shapes/ or frozen GeoMind files.
