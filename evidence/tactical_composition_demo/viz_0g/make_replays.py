@@ -1,4 +1,4 @@
-"""Development replays for the owner (not S5/S6 evidence). Seeds 2026100700-2026100702 are development seeds already excluded by SPEC_0G preflight.
+"""Development replays for the owner (usage: make_replays.py <out.json> [knob file under astelia_cpp/] [skeleton v1|v2]) (not S5/S6 evidence). Seeds 2026100700-2026100702 are development seeds already excluded by SPEC_0G preflight.
 Runs three fights with the amended-S4 stage-B knobs and writes compact replays (10 frames per game second) plus an end-of-fight analysis.
   python3 make_replays.py <out.json>"""
 import json, math, subprocess, sys, collections
@@ -6,12 +6,16 @@ from pathlib import Path
 CPP = Path(__file__).resolve().parent.parent / 'astelia_cpp'
 sys.path.insert(0, str(CPP))
 import s3_runner as R
-B = json.load(open(CPP / 's4_amended_development/B_best.json'))
+KNOBS = sys.argv[2] if len(sys.argv) > 2 else 's4_amended_development/B_best.json'   # knob file under astelia_cpp/
+SKELETON = sys.argv[3] if len(sys.argv) > 3 else None                                  # None = v0 (as originally), or 'v1' / 'v2'
+B = json.load(open(CPP / KNOBS))
 ROLE = {'melee': 0, 'ranged': 1, 'artillery': 2}
 FIGHTS = [('resonator_vs_novice', 'resonator', 'novice', 2026100700), ('resonator_vs_regular', 'resonator', 'regular', 2026100701), ('morale_vs_regular', 'morale', 'regular', 2026100702)]
 
 def one(name, arm, opp, seed):
-    req = R.request({'arm': arm, 'params': B[arm], 'seed': seed, 'swapSides': False, 'controlledSide': 0, 'opponent': opp, 'setting': 's4_full_head'})
+    spec = {'arm': arm, 'params': B[arm], 'seed': seed, 'swapSides': False, 'controlledSide': 0, 'opponent': opp, 'setting': 's4_full_head'}
+    if SKELETON: spec['skeleton'] = SKELETON
+    req = R.request(spec)
     req['trace'] = True
     run = subprocess.run([str(CPP / 'build/astelia_native'), '--capture-s3'], input=json.dumps(req) + '\n', text=True, capture_output=True, timeout=300, check=True)
     rows = [json.loads(x) for x in run.stdout.splitlines()]

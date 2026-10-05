@@ -345,3 +345,25 @@ All of the following use only observed fields (positions, radii, range, minRange
 - the sign of the restoring force on both sides of d in both cases;
 - the weighted mean reduces to the plain mean at λ_th = 0;
 - v0 and v1 fixtures unchanged with the skeleton flag.
+
+## 14. Revision 6 (v3): no hovering in the kill zone (2026-10-05, after the v2 replay)
+
+**Logged as an outcome-informed change** (section 10). It comes from a development replay (`viz_0g/replays_v2.json`, seed 2026100701, v2 stage-B knobs, against regular):
+- the resonator destroyed every non-gun enemy by t = 62 s, with 34 of its 50 units alive;
+- the remaining 7-8 guns then killed all 34 by t = 93 s, while our units hovered 294-416 px from the nearest gun with mean commitment +0.16.
+
+The cause is section 13 item 3's **interpolation** in the out-ranged case. A middling commitment gives a preferred distance between our own reach (about 278 px centre to centre for shooters) and the enemy's (320 px): exactly where we are hit and cannot hit back.
+
+**Change (out-ranged case only: R_e ≥ R_i, centre distances as in section 13; the kite band is unchanged):**
+- **The mode is binary with hysteresis,** per own unit and enemy pair:
+  - **commit** sets d = f_c · R_i (artillery: max(f_c R_i, 1.05 Rmin(i)));
+  - **escape** sets d = R_e + w · R_i.
+- **Switching:** the mode becomes commit when c > +0.2 and escape when c < −0.2. Otherwise it keeps its previous value. The initial mode is commit if c ≥ 0, else escape.
+- **The hysteresis band 0.2 is fixed**, not a knob. Knob counts are unchanged (11, 11, 3).
+- **The mode is controller memory:** it is cloned with the rest, and it is dropped when either unit dies.
+
+**Checks:**
+- no preferred distance strictly between f_c · R_i and R_e in the out-ranged case;
+- the hysteresis holds the mode for c in [−0.2, 0.2];
+- the mode memory is cloned and isolated;
+- v0, v1 and v2 fixtures stay unchanged with the skeleton flag.
