@@ -1,0 +1,153 @@
+CHANGES_REQUIRED
+Reviewer family: Codex
+Reviewed DESIGN_0H.md SHA256: ea0b53dab49b5e06d335aedd5eefb6762ceaa245027a531f376714d870b7ef0e
+
+Reviewed document: evidence/tactical_composition_demo/DESIGN_0H.md, revision 1.
+Comparison proposal: evidence/tactical_composition_demo/PROPOSAL_0H_GROWING_SHAPES.md, revision 2; SHA256 e171e115b1c21469db1f313f06b0197482d272820a063cbb93f90bdee974e890.
+Checkout at review start: 85c656bb7886ccfaabe6024bb73d063cd39b7d8c.
+Date: 2026-10-05.
+
+Document/source review only, within the requested approximately 25-minute cap. Inspected AGENTS.md, the requested design/proposal, the five geomind/c5_*.py modules, geomind/c4_model.py and geomind/c4_detect.py, docs/IDEAS_AND_ROADMAP.md, and decision 0028, especially items 15–17. Consulted the accepted manifests/receipt for detector and timescale identities, decisions 0007/0010, R5, research/rrg/CURRENT.md and the pinned source/alignment passages relevant to attribution. The seven C4/C5 implementation files named above match their SHA256 entries in evidence/c5_r003/results.json:259–266. The consulted current RRG source 04 also matches its CURRENT.md pin. No project code, tests, fights, growth experiments or development search were run. Concurrent engine work was neither edited nor qualified by this review. Only this review file was written; no commit.
+
+The direction is reviewable, but this draft is not yet an exact executable contract. Its strongest problems are an offset-blind choice/novelty statistic, task-scored selection inside the stability arm, and rigid locking presented as unchanged C4 dynamics. These are document-level counterexamples, not experimental predictions.
+
+1. **Blocking — the stability arm receives task selection through locking and configuration choice.**
+
+   Evidence: design §6, lines 88–92, makes task score a condition for locking; §7, lines 109–112, chooses dynamics by maximizing task-qualified G1. Proposal §4 calls the stability arm “the theory alone,” and G6 explicitly claims operation without reward.
+
+   A task score need not enter the differential equation to select a policy: deciding which group to freeze, retain and copy because it passes the task is outcome-based selection. Selecting up to 200 dynamics configurations by that criterion supplies another task-selection path. Neither is merely an evaluator label if it changes the subsequent library/background. The gain rule itself, based only on observed PLV, is unsupervised and is not intrinsically hidden task reward. HP/in-range salience is a disclosed task prior if it uses legal observations, but must also be disclosed and shared with the yardsticks.
+
+   **Concrete fix:** separate structural persistence/locking from task evaluation. In the stability arm, score observations must not change learning, survival, locking, admission, copying or placement. Evaluate task competence after the resulting structural library is frozen, including failures. Use outcome-independent dynamics calibration for a genuinely task-free selection claim. Alternatively retain task-qualified bootstrap/search, label it supervised outer selection, and narrow G6 to “no online reward after task-selected bootstrap.” Log this distinction explicitly; do not call that arm the theory alone.
+
+2. **Blocking — PLV cannot implement the stated choice rule or direction novelty.**
+
+   Evidence: design §2, lines 35–38; §3, line 48; B1 at line 73. Proposal §3 defines lock as PLV.
+
+   For stationary candidates, let sensor s have phase ω_C t + α_s and the readout have phase ω_C t + β. Every candidate has PLV = |mean(exp(i(β − α_s)))| = 1, however different its direction. The choice rule therefore ties all such candidates and selects the lowest id, even when the readout points exactly at another candidate. For B1, an element locked with a constant offset to one same-band site is also locked to another site with a different fixed direction; a new phase/direction is not novel under this test. This is not an objection to PLV as a lock detector: offset and anti-phase locking are deliberately allowed by C4.
+
+   **Concrete fix:** keep PLV for temporal locking, but add an explicitly defined phase-offset correspondence for content/choice, such as smallest wrapped decoded-direction error, with a legal tie policy. Define whether B1 novelty concerns frequency coverage alone or also directional content; if the latter, add an offset/error condition. Include static unequal-direction candidates and a new opposite-direction input as contract examples that must produce distinguishable decisions.
+
+3. **High — the encoding/decoding contract is incomplete, and coherence is being called amplitude.**
+
+   Evidence: design §§2–3, lines 26–48; §8, line 119.
+
+   Missing pieces include band widths and element band assignment; complete item-to-band/input and task-to-output tables; the drive equation, spatial kernel/range and normalization; sensor/readout coordinates; exact f(item), including HP/in-range factors; observation holding between substeps; and absent-item, reassignment and clock-reset behavior. “Random item order” does not make a fixed-site encoder permutation invariant, nor say whether assignments persist during an episode. Different input/output frequencies also need a stated transport/conversion mechanism: decoding a D-rate signal against the A clock otherwise produces a rotating direction.
+
+   A normalized order-parameter magnitude R measures coherence, not drive magnitude. One coherent element has R = 1 even under a weak drive; a legitimate anti-phase pattern may have R = 0. An unnormalized sum instead scales with population size. Consequently strength-to-speed and bonds require a defined estimator, including behavior when the kernel sum or resultant is zero. The M band’s “held direction” must not be supplied from the hidden vanished target or a task-answer memory in the encoder.
+
+   **Concrete fix:** supply one complete forward map from legal world observations to drive terms, through dynamics to legal actions, for each atom task. State stable item bookkeeping, reference frames and reset rules. Define normalized readout weights and a no-direction/abstain result at zero resultant. Describe speed as coherence-controlled if that is intended, or add a labelled, measurable amplitude channel. Memory must be generated by the controller’s own state after disappearance. Simplest cut: use a common direction carrier for the first bootstrap until cross-band transfer is specified. The pending world report is a dependency, not permission for the implementer to invent these mappings.
+
+4. **High — the ledger mixes angular periods, relaxation times and clocks; plasticity rates do not bound C4 motion.**
+
+   Evidence: design §1, lines 13–20, and §4, lines 58–60. Accepted C5: geomind/c5_experiment.py:264–273, 465–497; experiments/c5_manifest.json:42–50; evidence/c5_r003/results.json:5023–5066.
+
+   Since φ = ωt is an angle, the beat period is 2π/|ω|, not 1/ω. C5’s approximately 3.4 ratio is the mean between-unit/within-unit kick-relaxation ratio among 17 formed worlds (3.38956), not a collective oscillation-period ratio, and not a promise of a threefold separation at each future level. The ledger also divides a world-time step by a medium-time step without stating their conversion, and leaves fractional substep handling unspecified.
+
+   Small η_ω and η_g can slow rate/gain adaptation but cannot enforce slow geometry under the unchanged C4 x_dot law. For an in-phase isolated pair at separation r, its radial coefficient is 1.8 − 1/r: it is repulsive at sufficiently small r, not always attractive, and its magnitude is not bounded by those η values.
+
+   **Concrete fix:** give an explicit world-to-medium time conversion and step-exact/remainder policy. Separate carrier period, phase relaxation, geometric relaxation and adaptation time; specify each estimator and censoring. Either measure geometry’s timescale and fail the proposed separation when violated, or declare a motion rescaling as a model addition. Complete the ledger with units/normalization for drive strength and g, every η, eligibility, reward/utility/error/cost, all windows and timers, and the level/owner of each measurement. For example η_ω and η_g have units 1/s_m; reward-step η_r and η_r' have inverse-reward units if eligibility is dimensionless. Freeze dimensionless rules and measured scale conversions, not identical absolute W/T_rec at every level: accepted C5 scales window/recovery/frame time by T and frequency tolerance by 1/T (c5_detect.py:22–31). Zero/signed rate and unmeasurable timescales need explicit dispositions.
+
+5. **High — learning remains discretionary, and the two arms may differ beyond reward.**
+
+   Evidence: design §4, lines 52–64.
+
+   There is no initial state/distribution for N, positions, phases, rates, gains or band membership; no precise W estimator/warm-up for observed velocity; no strongest-site tie rule; and no clipping/integration rule for continuous adaptation. Eligibility is described but not defined: “lock with active drive and readout sites” leaves aggregation, sign, normalization and timing open. The reward mean has no update order, reset convention or averaging rule. “Resonance (both arms)” is followed by a gain equation labelled stability arm only, so it is unclear whether the reward arm adds reward updates to the same unsupervised dynamics or replaces gain adaptation.
+
+   **Concrete fix:** state initializers and a per-substep/per-episode update sequence, including history length, unwrapped velocity estimator, all bounds, eligibility differential/update equation, and reward-baseline update order. Specify that both arms share the same unsupervised update and the reward arm adds only the declared reward/birth/death differences, or name the additional confound. Give zero-drive, zero-gain, reward-equals-baseline and exhausted-history cases. These rules must be fixed before development, not chosen by whichever engine adapter is written first.
+
+6. **High — birth/death quantities, utility sign and competing limits are not executable.**
+
+   Evidence: design §5, lines 73–83; proposal §3, lines 33–63.
+
+   The proposal’s “two-cluster circular fit” supplies no objective, weights, fit selection, bimodality formula or deterministic degeneracy rule. L(i) needs an exact neighbour/site set, isolated-element value and changing-membership history policy. U(i) as “change … with i silenced” does not fix the sign. If it means score_silenced − score_intact, a useful element has negative utility and D3 removes it first. “Silenced” also does not specify which drives, phase/motion forces, readout contributions and costs remain. Its extra evaluation blocks need paired seeds/states and an age/undefined-utility policy.
+
+   Missing state-machine cases include B1/B2/B3 precedence and shared triggers; timer resets; births’ initial g/history/id; B2’s cluster estimates, protection and whether two children or net +1 consume the cap; tie-breaking for removal; and D3 versus newborn/locked protection. Deaths-before-births can restore the budget and then immediately exceed it again. Cost counts of directed C4 neighbour links, sensor drives and internal frozen links are unspecified. “In range” is 2 m.u. for B1 versus the C4 element radius 3; that can be a design choice but needs a reason and one explicit drive range.
+
+   **Concrete fix:** write definitions and one ordered state-transition table. Choose U = paired mean(score_intact − score_silenced) if “remove lowest U” is intended, and separate raw task benefit from any changed cost penalty. Define the silencing intervention. Reserve/reject births using the post-event N and cost, including split net growth. Define protected/locked removal and a stop when constraints cannot be satisfied. Set finite rules for empty partner sets, equal/opposite clusters, missing history, no candidates and coincident placements. Simplest cut: defer strain fitting and per-element utility ablation in the initial bootstrap; B1/D1 with a clear budget still test growth and death.
+
+7. **Blocking — rigid locking changes the full law and the detector drops accepted resonator checks.**
+
+   Evidence: design §6, lines 87–92, 105. Accepted comparison: c4_detect.py:100–127, 161–203; c5_compose.py:3–18; c5_detect.py:8–13, 61–90; c5_coarse.py:3–22.
+
+   Accepted C5’s full dynamics evolve all members under C4; rigidity is used for interventions and a scored coarse approximation. Freezing relative positions while outside forces move a rigid body is a new constraint/projection, not the unchanged C4 element law. The draft supplies neither its translation/rotation equation nor whether phases can deform. This can preserve geometry by construction and changes what a recovery test means.
+
+   A persistent lock-graph component plus task score and membership recovery is also weaker than accepted C4 criteria 1–5: shape variation, all-pairs lock, reproducible frequency/pattern and recovered phase pattern are missing. Membership alone can survive a phase kick without restoring the mode. A driven component may merely follow a common input; acceptance of undriven C4 does not automatically qualify every adaptive/driven group. Level-2 detection additionally needs live direct-part validity and distinctness, not just a primitive component with atom labels.
+
+   **Concrete fix:** freeze learned coefficients ω/g, while leaving full positions and phases active under the declared driven C4 law; treat “unchanged atom” as template/coefficient identity rather than bit-identical dynamical state. Reuse the accepted detector procedure with a declared driven-history adapter, paired kicked/unkicked futures, all three Jaccards and phase-pattern recovery. At the next level use child published states and direct-part validity; measure time scaling. Define whether drive and plasticity remain on during recovery, and distinguish driven tracking from autonomous persistence with a predeclared drive intervention if the latter is claimed. If rigidity is retained, label the new law and qualify its recovery separately. Handle singletons/zero spacing, zero radius and degenerate hulls without granting a pass.
+
+8. **High — identity cards cannot yet reproduce atoms, and “same type” is not a reliable identity relation.**
+
+   Evidence: design §6, lines 93–100; proposal §§7b–7c, lines 126–140. Accepted interface: c5_units.py:136–199, 210–235.
+
+   The card omits the per-element learned ω/g and the executable input/output bindings needed to reconstruct a copy. It also omits the C5 upper-facing position/size, ports/capacities and validity interface promised by proposal §2/§5. Fixed global sensor/readout regions leave transplanting, rotation, phase reference and duplicate placement undefined. A score in the full medium does not establish that an individual detected group is the atom responsible for that score; an isolated copied candidate must pass the promised fresh-medium test.
+
+   The sameness rule ignores its own geometry/phase-pattern fields. Equal aggregate task scores can conceal opposite biases or different policies. Relative 5% rate error is undefined at zero unless a denominator rule is given; size/rate tolerances are non-transitive, so insertion order can change library types. Repeated comparison on the same 50 dev episodes can overfit the deduplication criterion. G4/G8 can then report reuse or falling type counts because the evaluator collapsed different objects.
+
+   **Concrete fix:** separate a private reproducible template (coefficients, relative initial state, bindings and content hash), the public C5-style interface, and evaluator-only task metadata. Define copy/reset/placement and fresh-medium qualification without allowing task answers into the online stability arm. Use immutable type ids and instance ids plus the proposal’s composition multiset/DAG. Compare paired behavioral outputs/errors as well as declared structural fields on a fixed evaluator panel; define zero-rate tolerances and deterministic exemplar/clustering policy. For “unchanged reuse,” require the same template hash, not merely two fuzzy cards with similar mean scores.
+
+9. **High — a bond is observationally correlated, not yet a causal connection; its controls can remove input access.**
+
+   Evidence: design §6, lines 101–105; proposal §6, line 93.
+
+   A and B can have PLV = 1 because they share a band clock or external drive, even with no A→B influence. The draft never states how A’s output changes the medium near B, whether sensor/readout regions move with instances, or what “keep a bond” does physically. A band-match eligibility check does not itself prevent mismatched primitives from interacting under C4. Conversely, adding a directed output-to-input drive would be an extra transmission rule requiring disclosure.
+
+   Moving shapes far apart may disconnect them from fixed world-drive/readout regions, so poorer task score would not isolate the bond. In a shared medium, direct distance alone does not exclude a multi-hop relay. Best-single comparisons also need legal complete actions and a declared way to combine side-by-side outputs.
+
+   **Concrete fix:** define the transmission path and bond state explicitly, without hand-wiring a pair. Keep common input and output access, constituent state, population and cost treatment matched in a paired no-transfer control that removes every claimed inter-shape path. Add a causal perturbation/transfer check to distinguish common-drive lock from transmission. Define single/side-by-side decoders, evaluation episodes, score orientation, margin and recovery. Separate “eligible by declared band” from “couples and supports useful transfer.”
+
+10. **High — section 7 is a bounded search, not yet a declared fair once-only procedure, and it can overfit.**
+
+    Evidence: design §7, lines 109–115; proposal §3, line 63, and §8, lines 153–156.
+
+    A cap of 200 evaluated configurations limits search but does not remove selection bias. Grid values/ranges, the precise sampled list/entropy, seed count, per-configuration episode budgets, failure handling, arm used for selection, ties and the numerical G0'/G1 feasibility criteria are absent. Many symbols are not marked dev and have no fixed value. It is unclear whether detector thresholds/atom score criteria themselves are searched, which could improve apparent formation simply by relaxing measurement. Maximizing mean formation can sacrifice one atom task. Proposal revision 2 also says thresholds are fixed in the design before development and that development reports attainability; that needs reconciliation with the draft’s explicit optimizer.
+
+    **Concrete fix:** choose one interpretation and record it in the drafter’s self-audit. For search, freeze the complete candidate list, legality constraints, common development episodes, budgets, objective, per-task feasibility requirement and deterministic tie rule before running. Keep score baselines and acceptance definitions outside the search. Select once on development data, then assess on untouched validation/judging data with no selection feedback; include unsuccessful configurations. Give competitors comparable tuning budgets rather than only equal final training episodes. A held-out failure remains a failure; no retrospective second search under the same revision. For strict proposal fidelity, fix numerical thresholds now and use development only as an attainability check. Neither alternative makes task-maximized configuration choice “theory alone.”
+
+11. **High — G0–G8 need failure rules; several currently restate programmed constraints.**
+
+    Evidence: design §9, lines 126–139, and §8, line 120. Registration can supply final statistical details later, but §7/§10 already require G1/G0' pass/fail decisions now.
+
+    | Read-out | Present failure or confound | Concrete operational repair |
+    |---|---|---|
+    | G0 | B1 births are explicitly placed within 1 m.u. of a qualifying sensor and B2 within 0.1 of strain, so the 2 m.u. statistic largely verifies the placement code. B3 births are not necessarily novel/strained. Matching count alone does not match two-child splits. | Stratify birth reasons; specify the random-place/time null and spatial/time support. Separate trigger/placement fidelity from functional need. For an adaptive-growth claim compare held-out coverage/task/stability effects of conditional and randomized births with matched element additions/resources. |
+    | G0' | A hard N cap, budget clipping, or equal births and deaths can force zero count slope despite perpetual unmet need. “Compared with zero” supplies no tolerance or feasibility test. | Require a preregistered slope-equivalence interval, task attainment and no cap saturation/rejected-birth pressure; report birth/death turnover. Distinguish resource-forced stopping from demand settling. |
+    | G1 | No seed-level denominator, required rate, all-four-task rule or score attribution to individual groups. No births/groups can disappear from conditioning. | Define success per task/independent medium seed, minimum rate and uncertainty, retaining all unsuccessful seeds; qualify extracted copies as in finding 8. |
+    | G2 | Mismatched bonds are forbidden by definition. Zero mismatched bonds is guaranteed and random “kept bonds” may also be passed through the same eligibility gate. | Distinguish candidate, eligible, formed and retained counts; compare equally eligible candidate pairs against a matched randomized eligibility/placement control, scoring causal transfer and persistence with the same detector. |
+    | G3 | No attainment/censoring rule, superiority margin or total-resource accounting; final-size yardstick makes lower final N versus that yardstick impossible by construction. | Use a fixed held-out checkpoint rule, treat non-attainment as censored/failure, and preregister episode/capacity margins. Report the equal-final-size comparison as such; a fewer-elements claim requires a separately declared baseline capacity-to-attainment comparison. |
+    | G4 | Counting fuzzy same-type cards does not prove unchanged reuse by two successful combinations. | Require two distinct qualified combined types referencing one immutable atom template, with composition records and copy checks. |
+    | G5 | A before/after mean comparison can pass despite loss of task attainment; frozen coefficients alone are not a no-forgetting assay. | Use paired untouched task episodes, a non-inferiority tolerance and continued absolute atom competence; report both isolated and embedded behavior if both are claimed. |
+    | G6 | Inherits the above metric defects and task-selected library/configuration from finding 1. | Require the conjunction of predeclared G0/G0'/G1/G2/G5 rules in the correctly labelled arm; failure of any required constituent defeats the conjunction. |
+    | G7 | Offset plus different statistics can arise from arbitrary initial phases/noise. The proposal’s one-instance control and a task requiring differentiated duplicate roles are absent. | Declare the duplicate-demand task and compare with one-instance and redundant-duplicate controls, matching capacity where claimed; require stable role differentiation and a task/stability benefit, or defer G7. |
+    | G8 | No task sequence, definition of reuse opportunity, library-cost measure or declining-rate criterion. Deduplication can create the trend. | Freeze the sequence, exposure denominator, novelty/reuse counters and trend/margin; preserve identical deduplication and all attempts. If the current three combined tasks cannot test the intended library trend, report G8 as deferred. |
+
+    For every read-out specify estimator, unit of analysis, empty/non-finite outcomes, margins and PASS/FAIL/INCONCLUSIVE logic. Use independent medium/training seeds as replicates, not correlated atoms/episodes as independent replicates. The halfway threshold needs a fixed score orientation and baseline/reference estimates with separation/attainability checks: a reference equal to or worse than random makes the target vacuous or backwards. Freeze the corresponding criterion on normalized task score, then keep selection data out of the judging panel.
+
+12. **High — equal learnable-scalar counts and equal episode budgets are not actually defined.**
+
+    Evidence: design §4, lines 66–69; §8, lines 121–124; proposal §4, lines 72–75.
+
+    The declared per-element fields imply 4 scalar coordinates/rates/gains before additional learned couplings or readout parameters, whereas the proposal explicitly mentions couplings. It is unclear whether positions are trainable initial parameters, evolving state, or gradient-adjusted coordinates. Freezing atoms does not erase the learned information in them; counting only remaining mutable parameters gives the GRU an artificially small capacity. Copied shared templates also need separate counts for unique learned coefficients and instantiated state/compute. A GRU architecture with “the same count” is not specified.
+
+    Final N is outcome-dependent and may vary per seed/arm. A fixed-size comparator can be constructed retrospectively at that N, but this must be declared, use fresh training initialization and be identified as a matched final-size comparison, rather than a prospective common model. Gradient training needs a defined loss, unroll/optimizer schedule and treatment of hard neighbour/readout/choice operations. Utility-ablation blocks, bond tests, recovery checks, sameness episodes, configuration search and bootstrap training all consume observations or compute not covered by “same episodes.” Pretrained library combinations versus a from-scratch GRU do not test equal learning budgets unless bootstrap is charged or also provided.
+
+    **Concrete fix:** provide a parameter/state accounting table and explicit architecture/scalar-count construction, counting stored learned atom coefficients and any learned adapters. Freeze the per-seed matching rule and report peak/final/unique-template/instantiated counts separately. Specify gradient loss and optimization/truncation budgets without changing the observed inputs. Share task schedules and legal observation/action information. Give an exposure ledger separating training, selection and evaluator-only episodes, and account for utility/bond evaluations if they affect training; pair the baselines’ prior task training and tuning opportunities. Report total cost and both bootstrap-inclusive and explicitly amortized combination cost. Fewer episodes or N alone is not a total-efficiency result.
+
+13. **High — theory attribution and the stage boundary exceed what this design tests.**
+
+    Evidence: proposal §2, lines 23–29; §§7b/8, lines 124–129, 149–156; design lines 7, 57–64 and §§6/9/10. Roadmap lines 125–129 keeps combinations dependent on the C6 background pilot. Decision 0028 item 17 authorizes engine parts/drafting and explicitly does not authorize a growth or recorded run.
+
+    C4 position/phase dynamics and the C4/C5 detector/interface are the accepted basis. Natural-rate adaptation, gain plasticity, novelty placement, strain splitting, hysteresis, budget selection and rigid locking are new hypotheses/engineering choices; “derived from resonance and stability” is a motivation, not a mathematical derivation or an accepted C4/C5 result. Bands, task decomposition, handcrafted input salience and outcome selection likewise have to remain labelled additions. Decision 0007 requires a normalized common procedure as an experimental guard, not universally identical equations; slower/bigger levels are measured hypotheses, not theory definitions.
+
+    A shared medium, copied library and high PLV do not establish R→B causation or changed later possibilities. There is no prospectively measured background descriptor, formation/backreaction control or later-candidate assay here. “READY world and medium” in §10 also does not replace the proposal’s separate C6 dependency for steps 3–4.
+
+    **Concrete fix:** add a design-level claim/assumption ledger separating accepted reuse, motivated growth hypotheses and ML/interface additions. Restrict the first development scope to bootstrap atoms/library; explicitly defer combined-background execution until the proposal’s C6 prerequisite and its authorization are satisfied. Leave H-BG/H-PS/H-RBG NOT_TESTED unless a separately specified causal background assay is added. Do not impose a new C6 experiment merely to repair bootstrap: narrowing the current claim and retaining the existing dependency is the simplest fix. Direction approval and engine implementation are not run approval.
+
+14. **Medium — stop rows do not preserve the once-only comparative revision after an outcome-informed change.**
+
+    Evidence: design §10, lines 145–149.
+
+    “Log it; restart that arm” allows a changed arm to be compared with unchanged arms selected/trained under the old protocol after outcomes have been seen. It also does not distinguish development entropy from an immutable recorded revision. The “no G1” row gives both a drafter action and an owner decision, while the initial row has no explicit treatment of a missing/not-yet-READY report. Existing G0'/G1 rows cannot execute until the definitions in finding 11 are fixed.
+
+    **Concrete fix:** split development failure reporting from any next owner decision, one action/role per row. Treat missing/NOT_READY dependencies as a stop. An outcome-informed development change becomes a disclosed new design/development revision with a newly fixed comparison protocol; reused unchanged evidence must be identified, not silently pooled. After judging outcomes, preserve the prior receipt and register the next revision on fresh judging entropy rather than “restart that arm.” Add explicit stage/prerequisite and invalid-normalization dispositions without changing milestone status here.
+
+The smallest repair batch is to keep bootstrap as the active scope, define a complete legal-observation forward map, fix offset-sensitive choice/novelty, retain live full C4 dynamics while freezing learned coefficients, and make score-only evaluation distinct from structural selection. Start with fully specified novelty/unlocked/budget growth rules; defer strain/utility machinery if it cannot be made exact now. Then freeze a reproducible development procedure, detector/score definitions and comparator accounting together. G2–G8 and source-background claims can remain explicitly deferred rather than being made to pass through programmed eligibility, caps or library bookkeeping. These are recommendations to the drafter, not edits to the proposal or authorization to execute.
