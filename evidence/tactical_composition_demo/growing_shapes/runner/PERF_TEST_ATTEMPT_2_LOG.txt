@@ -1,0 +1,67 @@
+........................................................................ [ 20%]
+........................................................................ [ 40%]
+........................................................................ [ 60%]
+........................................................................ [ 80%]
+.F
+=================================== FAILURES ===================================
+____________ test_warmup_eligibility_offset_and_timers[0.5-80-100] _____________
+
+count = 100, active = 80, offset = 0.5
+native_library = <CDLL '/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/runner/_build/perf.dylib', handle 7f483d00 at 0x10b37f4c0>
+
+    @pytest.mark.parametrize('count',[98,99,100,101])
+    @pytest.mark.parametrize('active',[0,78,79,80,100])
+    @pytest.mark.parametrize('offset',[0.,.5,.50001,math.pi])
+    def test_warmup_eligibility_offset_and_timers(count,active,offset,native_library):
+        m = DesignMedium(params=Params(A=0,B=0,K=0,geometry_rate=0,window=101,min_samples=100))
+        id = m.add((0,0),math.pi*(count-1)*.1+offset,gain=0)
+        m.frames = deque([Frame(k,k*.1,{id:(0.,0.,math.pi*k*.1+offset)},
+            {0:(0.,0.,math.pi*k*.1,float(k>=count-active))},{id:()}) for k in range(count)],maxlen=601)
+        m.step_index = count-1
+        m.death[id] = 3.
+        m.novelty[0] = 4.
+        n = m.clone()
+        try:
+>           pair_step(m,n,[Drive(0,0,0,math.pi*m.time,math.pi,float(active>0),1,3)],native_library)
+
+evidence/tactical_composition_demo/growing_shapes/runner/test_perf.py:66: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+evidence/tactical_composition_demo/growing_shapes/runner/test_perf.py:29: in pair_step
+    Compare().check(medium_state(reference),medium_state(native))
+evidence/tactical_composition_demo/growing_shapes/runner/perf_compare.py:81: in check
+    self.check(a[k],b[k],path+'.'+k,exact or k in
+evidence/tactical_composition_demo/growing_shapes/runner/perf_compare.py:81: in check
+    self.check(a[k],b[k],path+'.'+k,exact or k in
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <evidence.tactical_composition_demo.growing_shapes.runner.perf_compare.Compare object at 0x10aef75e0>
+a = 0.0, b = 4.1, path = 'root.novelty.0', exact = True
+
+    def check(self,a,b,path='root',exact=False):
+        a,b = normalize(a),normalize(b)
+        if isinstance(a,dict):
+            assert isinstance(b,dict) and a.keys()==b.keys(), f'{path}: keys'
+            # Digest is checked independently; its numeric content is compared below.
+            for k in a:
+                if k in ('final_type_id','type_id'):
+                    continue
+                if k == 'native':
+                    self.check(snapshot(a[k]),snapshot(b[k]),path+'.native')
+                else:
+                    self.check(a[k],b[k],path+'.'+k,exact or k in
+                        ('death','death_timers','novelty','novelty_timers','birth_steps','world_step','index','time','clock','step','check_time','admission_time'))
+        elif isinstance(a,list):
+            assert isinstance(b,list) and len(a)==len(b), f'{path}: length'
+            for i,(x,y) in enumerate(zip(a,b)):
+                self.check(x,y,f'{path}[{i}]',exact)
+        elif isinstance(a,float) and not isinstance(b,bool) and isinstance(b,(float,int)):
+            assert math.isfinite(a) and math.isfinite(b), f'{path}: nonfinite'
+            if exact:
+>               assert struct.pack('=d',a)==struct.pack('=d',float(b)), f'{path}: exact {a} != {b}'
+E               AssertionError: root.novelty.0: exact 0.0 != 4.1
+
+evidence/tactical_composition_demo/growing_shapes/runner/perf_compare.py:90: AssertionError
+=========================== short test summary info ============================
+FAILED evidence/tactical_composition_demo/growing_shapes/runner/test_perf.py::test_warmup_eligibility_offset_and_timers[0.5-80-100]
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 289 passed in 8.46s

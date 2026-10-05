@@ -21,7 +21,8 @@ from . import qualification
 
 
 class Run:
-    def __init__(self, seed, rows, reward=False, *, episodes=2000, control=False, library=None):
+    def __init__(self, seed, rows, reward=False, *, episodes=2000, control=False, library=None,
+                 backend='reference', batch_size=200, audit=False):
         qualification.assert_frozen_source()
         design = Path(__file__).parents[2]/'DESIGN_0H.md'
         if hashlib.sha256(design.read_bytes()).hexdigest() != '39a630c3f4d440a6634538121773253443dcb15e8166406f36cde3727c119925':
@@ -33,6 +34,14 @@ class Run:
         if not isinstance(episodes, int) or episodes < 1:
             raise ValueError('positive episode count required')
         self.episodes, self.control = episodes, control
+        if backend not in ('reference', 'native') or not isinstance(batch_size,int) or not 1 <= batch_size <= 200:
+            raise ValueError('select reference/native and batch size 1..200')
+        self.backend, self.batch_size, self.audit = backend, batch_size, audit
+        self.step_audit = []
+        self.batch_calls = 0
+        if backend == 'native':
+            from .native import library as perf_library
+            self.perf_library = perf_library()
         self.library = library or Library()
         self.medium = DesignMedium(seed)
         rng = np.random.default_rng(entropy(seed, 'initial'))
@@ -133,6 +142,35 @@ class Run:
         signals = defaultdict(list)
         with World(task, episode, 'dev', library=self.library) as world:
             while not world.observe().done:
+                if self.backend == 'native':
+                    from .native import batch
+                    count = min(self.batch_size, 200-self.medium.step_index % 200)
+                    data = batch(self.medium, world, assignment, count,
+                                 .8*self.episodes*160, self.perf_library)
+                    self.batch_calls += 1
+                    for row in data['steps']:
+                        drives = [self._drive(d) for d in row['drives']]
+                        self.drive_log.append({'step':row['step'],'episode':episode,
+                                               'assignment':assignment,'sites':row['drives']})
+                        for pending in self.pending:
+                            pending['schedule'].append(deepcopy(drives))
+                        self.exposure['training_steps'] += 1
+                        for id, signal in row['event']['values']['defined_signals'].items():
+                            signals[id].append(signal)
+                        if row['coverage'] is not None:
+                            self.coverage_samples.append(row['coverage'])
+                        if self.audit:
+                            self.step_audit.append({'index':row['frame']['index'],'frame':row['frame'],
+                                'death':row['death'],'novelty':row['novelty'],'covered':row['covered'],
+                                'action':row['action']})
+                    if data['boundary']:
+                        obs = world.observe()  # last held observation; boundary world action is deferred
+                        self.step_boundary(intact)
+                        chosen = action(task, obs, self.medium.native, self.medium.time)
+                        if self.audit:
+                            self.step_audit[-1]['action'] = [chosen.angle,chosen.magnitude,chosen.choice]
+                        world.step(chosen)
+                    continue
                 obs = world.observe()
                 drives = bindings(task, obs, assignment, self.medium.time)
                 self.drive_log.append({'step': self.medium.step_index, 'episode': episode,
@@ -143,20 +181,21 @@ class Run:
                 self.exposure['training_steps'] += 1
                 for id, signal in self.medium.adapt().items():
                     signals[id].append(signal)
-                self.medium.timers()
+                coverage = self.medium.timers()
+                if self.audit:
+                    f = self.medium.frames[-1]
+                    self.step_audit.append({'index':f.index,'frame':{'index':f.index,'time':f.time,
+                        'elements':f.elements,'sites':f.sites,'neighbors':f.neighbors},
+                        'death':dict(self.medium.death),'novelty':list(self.medium.novelty.values()),
+                        'covered':coverage})
                 active = [d.id for d in drives if d.strength > 0]
                 if self.medium.step_index >= .8*self.episodes*160 and active:
                     self.coverage_samples.append(sum(self.medium.covered(s) for s in active)/len(active))
-                if self.medium.step_index % 200 == 0:
-                    born = self.medium.growth(births=not self.control)
-                    self.growth_counts.append((self.medium.time/16, len(self.medium.native)))
-                    if self.control:
-                        source = intact.births_at(self.medium.step_index) if intact else []
-                        self.queue.check(self.medium, source)
-                if self.medium.step_index % 600 == 0 and self.medium.step_index+600 <= self.episodes*160 and not self.control:
-                    self.qualify()
-                self.admissions()
-                world.step(action(task, obs, self.medium.native, self.medium.time))
+                self.step_boundary(intact)
+                chosen = action(task, obs, self.medium.native, self.medium.time)
+                if self.audit:
+                    self.step_audit[-1]['action'] = [chosen.angle,chosen.magnitude,chosen.choice]
+                world.step(chosen)
             score = oriented(task, world.score())
         self.reward_update(task, score, signals)
         self.episode_log.append({'episode': episode, 'task': task, 'score': score})
@@ -167,6 +206,22 @@ class Run:
             if self.queue:
                 self.queue.terminal(self.medium)
             self.complete = True
+
+    @staticmethod
+    def _drive(values):
+        from ..medium.medium import Drive
+        return Drive(*values)
+
+    def step_boundary(self, intact=None):
+        if self.medium.step_index % 200 == 0:
+            self.medium.growth(births=not self.control)
+            self.growth_counts.append((self.medium.time/16, len(self.medium.native)))
+            if self.control:
+                source = intact.births_at(self.medium.step_index) if intact else []
+                self.queue.check(self.medium, source)
+        if self.medium.step_index % 600 == 0 and self.medium.step_index+600 <= self.episodes*160 and not self.control:
+            self.qualify()
+        self.admissions()
 
     def births_at(self, index):
         return [id for e in self.medium.events if e['rule'] == 'B1' and abs(e['time']-index*.1) < 1e-8 for id in e['ids']]
@@ -215,10 +270,10 @@ class Run:
                 'copy_instances': getattr(self, 'copy_instances', [])}
 
 
-def smoke(seed, rows, episodes=8):
+def smoke(seed, rows, episodes=8, *, backend='reference'):
     if not 1 <= episodes <= 10:
         raise ValueError('engineering smoke is capped at ten episodes')
-    run = Run(seed, rows, episodes=episodes)
+    run = Run(seed, rows, episodes=episodes, backend=backend)
     try:
         for episode in range(episodes):
             run.episode(episode)
@@ -242,11 +297,12 @@ def main():
     parser.add_argument('--seed', type=int, default=105051)
     parser.add_argument('--episodes', type=int, default=8)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--backend', choices=('reference','native'), default='reference')
     args = parser.parse_args()
     if not 1 <= args.episodes <= 10:
         parser.error('only 1..10 engineering episodes are authorized')
     rows, frozen = freeze()
-    result = {'frozen_validation': frozen, 'smoke': smoke(args.seed, rows, args.episodes)}
+    result = {'frozen_validation': frozen, 'smoke': smoke(args.seed, rows, args.episodes, backend=args.backend)}
     args.output.write_text(json.dumps(result, indent=2, allow_nan=False)+'\n')
 
 

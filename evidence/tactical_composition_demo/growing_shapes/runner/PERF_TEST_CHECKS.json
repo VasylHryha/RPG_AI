@@ -1,0 +1,18 @@
+{
+  "command": [
+    ".venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "-p",
+    "no:cacheprovider",
+    "evidence/tactical_composition_demo/growing_shapes/medium/test_medium.py",
+    "evidence/tactical_composition_demo/growing_shapes/medium/test_design_0h.py",
+    "evidence/tactical_composition_demo/growing_shapes/world/test_world.py",
+    "evidence/tactical_composition_demo/growing_shapes/runner/test_runner.py",
+    "evidence/tactical_composition_demo/growing_shapes/runner/test_perf.py"
+  ],
+  "seconds": 90.800319625,
+  "exit_code": 0
+}

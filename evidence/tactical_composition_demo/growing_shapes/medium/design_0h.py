@@ -202,9 +202,14 @@ class DesignMedium:
         for e in self.native.elements:
             lock = self.lock(e.id)
             self.death[e.id] = self.death.get(e.id, 0.)+DT if lock is not None and lock < .5 else 0.
+        coverage = []
         for site in range(8):
             s = self.frames[-1].sites.get(site)
-            self.novelty[site] = self.novelty[site]+DT if s is not None and s[3] > 0 and not self.covered(site) else 0.
+            active = s is not None and s[3] > 0
+            covered = self.covered(site) if active else False
+            coverage.append(covered)
+            self.novelty[site] = self.novelty[site]+DT if active and not covered else 0.
+        return coverage  # audit reuses the measured decisions without re-running statistics
 
     def feasible(self, position, phase):
         if len(self.native)+1 > 64:
