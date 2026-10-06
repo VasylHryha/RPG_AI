@@ -1,0 +1,488 @@
+{
+  "status": "DEVELOPMENT_PARTIAL_EVIDENCE_RECONSTRUCTED",
+  "raw_fights": 88470,
+  "fresh_fights": 88470,
+  "cache_hits": 0,
+  "replay_capture_fights": 8,
+  "total_executed_fights": 88478,
+  "tuning_fights": 86070,
+  "validation_fights": 2400,
+  "candidates": 2256,
+  "budgets_by_stage": {
+    "A": {
+      "resonator": 9766,
+      "morale": 9766,
+      "pushpull": 9766
+    },
+    "B": {
+      "resonator": 9766,
+      "morale": 9766,
+      "pushpull": 9766
+    },
+    "C": {
+      "resonator": 9766,
+      "morale": 9766,
+      "pushpull": 7942
+    }
+  },
+  "controller_failures": 0,
+  "planning_counters": {
+    "forks": 0,
+    "search_calls": 0,
+    "artillery_rollouts": 0
+  },
+  "both_orientations_verified": true,
+  "all_completed_100_cluster_endpoints_reconstructed": true,
+  "validation_endpoint_coverage": {
+    "A|resonator|s4_melee10|novice": {
+      "status": "evaluated",
+      "clusters": 100,
+      "orientations_per_cluster": 2
+    },
+    "A|morale|s4_melee10|novice": {
+      "status": "evaluated",
+      "clusters": 100,
+      "orientations_per_cluster": 2
+    },
+    "A|pushpull|s4_melee10|novice": {
+      "status": "evaluated",
+      "clusters": 100,
+      "orientations_per_cluster": 2
+    },
+    "A|nearest|s4_melee10|novice": {
+      "status": "evaluated",
+      "clusters": 100,
+      "orientations_per_cluster": 2
+    },
+    "B|resonator|s4_full_head|novice": {
+      "status": "evaluated",
+      "clusters": 100,
+      "orientations_per_cluster": 2
+    },
+    "B|resonator|s4_full_head|regular": {
+      "status": "evaluated",
+      "clusters": 100,
+      "orientations_per_cluster": 2
+    },
+    "B|morale|s4_full_head|novice": {
+      "status": "evaluated",
+      "clusters": 100,
+      "orientations_per_cluster": 2
+    },
+    "B|morale|s4_full_head|regular": {
+      "status": "evaluated",
+      "clusters": 100,
+      "orientations_per_cluster": 2
+    },
+    "B|pushpull|s4_full_head|novice": {
+      "status": "evaluated",
+      "clusters": 100,
+      "orientations_per_cluster": 2
+    },
+    "B|pushpull|s4_full_head|regular": {
+      "status": "evaluated",
+      "clusters": 100,
+      "orientations_per_cluster": 2
+    },
+    "B|nearest|s4_full_head|novice": {
+      "status": "evaluated",
+      "clusters": 100,
+      "orientations_per_cluster": 2
+    },
+    "B|nearest|s4_full_head|regular": {
+      "status": "evaluated",
+      "clusters": 100,
+      "orientations_per_cluster": 2
+    },
+    "C|resonator|s4_full_head|novice": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|resonator|s4_full_head|regular": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|resonator|s4_p23|alone": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|resonator|s4_p23|box": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|resonator|s4_p23|column": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|resonator|s4_p23|crescent": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|resonator|s4_p23|line": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|resonator|s4_p23|line anvil": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|resonator|s4_p23|loose": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|resonator|s4_p23|loose berserk": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|resonator|s4_p23|loose free": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|resonator|s4_p23|loose skirmish": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|resonator|s4_p23|ring": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|resonator|s4_p23|screen": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|resonator|s4_p23|storm": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|resonator|s4_p23|swarm": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|resonator|s4_p23|wedge": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|resonator|s4_p23|wedge flank": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|resonator|s4_p23|wedge hold": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|resonator|s4_p23|wide line": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|resonator|s4_p23|wolfpack": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|morale|s4_full_head|novice": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|morale|s4_full_head|regular": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|morale|s4_p23|alone": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|morale|s4_p23|box": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|morale|s4_p23|column": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|morale|s4_p23|crescent": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|morale|s4_p23|line": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|morale|s4_p23|line anvil": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|morale|s4_p23|loose": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|morale|s4_p23|loose berserk": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|morale|s4_p23|loose free": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|morale|s4_p23|loose skirmish": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|morale|s4_p23|ring": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|morale|s4_p23|screen": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|morale|s4_p23|storm": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|morale|s4_p23|swarm": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|morale|s4_p23|wedge": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|morale|s4_p23|wedge flank": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|morale|s4_p23|wedge hold": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|morale|s4_p23|wide line": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|morale|s4_p23|wolfpack": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|pushpull|s4_full_head|novice": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|pushpull|s4_full_head|regular": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|pushpull|s4_p23|alone": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|pushpull|s4_p23|box": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|pushpull|s4_p23|column": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|pushpull|s4_p23|crescent": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|pushpull|s4_p23|line": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|pushpull|s4_p23|line anvil": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|pushpull|s4_p23|loose": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|pushpull|s4_p23|loose berserk": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|pushpull|s4_p23|loose free": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|pushpull|s4_p23|loose skirmish": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|pushpull|s4_p23|ring": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|pushpull|s4_p23|screen": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|pushpull|s4_p23|storm": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|pushpull|s4_p23|swarm": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|pushpull|s4_p23|wedge": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|pushpull|s4_p23|wedge flank": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|pushpull|s4_p23|wedge hold": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|pushpull|s4_p23|wide line": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|pushpull|s4_p23|wolfpack": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|nearest|s4_full_head|novice": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|nearest|s4_full_head|regular": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|nearest|s4_p23|alone": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|nearest|s4_p23|box": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|nearest|s4_p23|column": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|nearest|s4_p23|crescent": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|nearest|s4_p23|line": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|nearest|s4_p23|line anvil": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|nearest|s4_p23|loose": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|nearest|s4_p23|loose berserk": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|nearest|s4_p23|loose free": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|nearest|s4_p23|loose skirmish": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|nearest|s4_p23|ring": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|nearest|s4_p23|screen": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|nearest|s4_p23|storm": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|nearest|s4_p23|swarm": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|nearest|s4_p23|wedge": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|nearest|s4_p23|wedge flank": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|nearest|s4_p23|wedge hold": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|nearest|s4_p23|wide line": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    },
+    "C|nearest|s4_p23|wolfpack": {
+      "status": "not_run",
+      "reason": "projection cap stopped C tuning before validation"
+    }
+  },
+  "stop_reason": "TimeoutError('projected combined runtime 360.0 minutes exceeds 360; stop before continuing')",
+  "stages_with_validation": [
+    "A",
+    "B"
+  ],
+  "C_pushpull_generations": 13,
+  "C_validation_not_run": true,
+  "CMA_ask_tell_reconstructed": true,
+  "candidate_parameters_verified": true,
+  "spec_0g_unchanged": true,
+  "replay_equality": [
+    {
+      "file": "A_resonator.html",
+      "matches_original": true,
+      "raw_sha256": "520c7265a4c60269cc47e24680062fba0b831c39c8a6dc0f2711d9f0331bace9"
+    },
+    {
+      "file": "A_morale.html",
+      "matches_original": true,
+      "raw_sha256": "b100d6f08cfac2eedfc1be3f91d691d5445dc23d09fed54ecf5c60f2273b8485"
+    },
+    {
+      "file": "A_pushpull.html",
+      "matches_original": true,
+      "raw_sha256": "ea13345b20dc07c8c8c4c82b9e461c523be19081d760276ea57d0b06f890fa76"
+    },
+    {
+      "file": "A_nearest.html",
+      "matches_original": true,
+      "raw_sha256": "bc21d7ceff890312b5ca0cf837cf47036c51520b891f3bf750dfe9ee9fb4797b"
+    },
+    {
+      "file": "B_resonator.html",
+      "matches_original": true,
+      "raw_sha256": "f4575508c8845d0384cc408ccddb3b7716d7832320f362625377d26a688e8945"
+    },
+    {
+      "file": "B_morale.html",
+      "matches_original": true,
+      "raw_sha256": "57f71de8e182964da066947719a7e5f14ded8784997556cafe999d78aa1f6bb5"
+    },
+    {
+      "file": "B_pushpull.html",
+      "matches_original": true,
+      "raw_sha256": "5f9af8146a474afc6c9aa895c6993e9135a107c5b12289926c2044d11cc23db3"
+    },
+    {
+      "file": "B_nearest.html",
+      "matches_original": true,
+      "raw_sha256": "73fe8e0132ee6974d9d00dbe1884f7b66b54aaf0b901cda24a055a4c0f541fb7"
+    }
+  ],
+  "judging_seeds_used": false,
+  "seed_declaration_sha256": "e5cedcdf8548833ff743c4f6402d7b8ffa1f13e8b66de73572fbdf2e05f210fd"
+}

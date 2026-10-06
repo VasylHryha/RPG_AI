@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/Users/new/RiderProjects/ai_RPG_test/.venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "--basetemp=/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/build/s4_v4_pytest_source_pin",
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/test_s4_deadline.py",
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/test_s4_v4_report.py",
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/test_s4_v4.py",
+    "-k",
+    "not test_v0_v1_v2_v3_fixture_bytes and not test_native_synthetic_six_contracts and not test_v4_native_rejects_invalid_knobs and not test_output_only_decisions_leave_complete_actions_identical"
+  ],
+  "exit_code": 0,
+  "wall_seconds": 1.659688917,
+  "unchanged_native_checks_reused": true
+}

@@ -19,7 +19,7 @@ SETTINGS = ('s3_full_pool', 's4_melee10', 's4_full_head', 's4_p23',
 
 
 def request(spec):
-    if not isinstance(spec, dict) or set(spec) - {'arm', 'params', 'seed', 'swapSides', 'controlledSide', 'opponent', 'diagnostics', 'setting', 'trace', 'skeleton', 'endCounts'}:
+    if not isinstance(spec, dict) or set(spec) - {'arm', 'params', 'seed', 'swapSides', 'controlledSide', 'opponent', 'diagnostics', 'setting', 'trace', 'skeleton', 'endCounts', 'decisionDiagnostics'}:
         raise ValueError('unsupported S3 field')
     seed = spec.get('seed', 2026100500)
     if type(seed) not in (int, float) or not math.isfinite(seed):
@@ -30,14 +30,14 @@ def request(spec):
     side = spec.get('controlledSide', 0)
     if type(side) is not int or side not in (0, 1):
         raise ValueError('invalid controlled side')
-    for key in ('swapSides', 'diagnostics', 'trace', 'endCounts'):
+    for key in ('swapSides', 'diagnostics', 'trace', 'endCounts', 'decisionDiagnostics'):
         if key in spec and type(spec[key]) is not bool:
             raise ValueError('invalid boolean: ' + key)
     params = spec.get('params', {})
     if not isinstance(params, dict):
         raise ValueError('params must be an object')
     opponent = spec.get('opponent', 'alone')
-    if 'skeleton' in spec and spec['skeleton'] not in ('v0', 'v1', 'v2', 'v3'):
+    if 'skeleton' in spec and spec['skeleton'] not in ('v0', 'v1', 'v2', 'v3', 'v4'):
         raise ValueError('invalid skeleton')
     if opponent not in POOL + ['novice', 'regular', 'elite', 'elite-fast']:
         raise ValueError('invalid opponent')
@@ -78,6 +78,7 @@ def request(spec):
                 'sandboxAbilities': False, 'perception': False, 'duration': 150, 'dt': 1/30,
                 'army': {'melee': 10, 'ranged': 0 if setting == 's4_melee10' else 30, 'artillery': 0 if setting == 's4_melee10' else 10},
                 'swapSides': spec.get('swapSides', False), 'ai': ai}}
+    if 'decisionDiagnostics' in spec: result['decisionDiagnostics'] = spec['decisionDiagnostics']
     if 'endCounts' in spec: result['endCounts'] = spec['endCounts']
     return result
 

@@ -66,9 +66,22 @@ V fight(V request,astelia::WorkCounters& counts,uint64_t& fights,bool testContro
   const bool debug=js::truth(js::get(request,"debug"));
   const auto dump=[&](){std::cout<<js::stringify(js::obj({{"step",double(tick)},{"state",state(w,history,debug)}}))<<'\n';};
   if (trace) dump();
+  const bool decisionDiagnostics=js::truth(js::get(request,"decisionDiagnostics"));
   const bool diagnostics=js::truth(js::get(request,"diagnostics"));std::array<astelia::control::DiagnosticHistory,2> histories;uint64_t second=1;
   const auto numeric=[](double n){return std::isfinite(n)?V(n):V(nullptr);};
   while (!w.done()) {astelia::coreStep(w);++tick;if (trace) dump();
+    // Output-only: read prepare(k) records after coreStep(k), including collision and clipping.
+    if(decisionDiagnostics)for(uint8_t side=0;side<2;++side)if(auto* c=dynamic_cast<astelia::control::S3Controller*>(w.controllers[side].get())){
+      js::Args rows,events;
+      for(const auto& d:c->decisionDiagnostic()){
+        double mx=0,my=0;for(const auto& u:w.units)if(u.id==d.id){mx=u.pos.x-d.x;my=u.pos.y-d.y;break;}
+        const auto feasibility=astelia::control::v4Feasibility(d,mx,my);const auto& reason=feasibility.reason;const double cosine=feasibility.cosine;
+        js::Args pairs;for(const auto& p:d.pairs)pairs.push_back(js::obj({{"enemy",double(p.enemy)},{"mode",p.commit?"commit":"escape"},{"remainingHold",p.remaining},{"preferred",p.preferred}}));
+        rows.push_back(js::obj({{"id",double(d.id)},{"focus",d.focus?V(double(d.focus)):V(nullptr)},{"reference",d.reference?V(double(d.reference)):V(nullptr)},{"c",d.c},{"pairs",js::arr(std::move(pairs))},{"feasibility",reason.empty()?V(cosine):V(nullptr)},{"undefinedReason",reason.empty()?V(nullptr):V(reason)}}));
+      }
+      for(const auto& e:c->holdEvents())events.push_back(js::obj({{"id",double(e.id)},{"enemy",double(e.enemy)},{"reason",e.reason},{"duration",e.duration},{"planned",e.planned}}));
+      std::cout<<js::stringify(js::obj({{"decisionDiagnostics",true},{"step",double(tick)},{"prepareTime",w.observations[side].t},{"t",w.time},{"dt",w.dt},{"side",double(side)},{"units",js::arr(std::move(rows))},{"holdEvents",js::arr(std::move(events))}}))<<'\n';
+    }
     if(capture)for(uint8_t side=0;side<2;++side)if(auto* c=dynamic_cast<astelia::control::S3Controller*>(w.controllers[side].get()))if(c->arm()!=astelia::control::Arm::PushPull){js::Args rows;size_t i=0;for(const auto& u:c->model()){rows.push_back(js::obj({{"id",double(u.id)},{"target",double(u.target)},{"x",u.x},{"y",u.y},{"state",u.state},{"rate",u.rate},{"pressure",u.pressure},{"commitment",numeric(c->diagnostic()[i++].commitment)}}));}std::cout<<js::stringify(js::obj({{"capture",true},{"arm",c->arm()==astelia::control::Arm::Resonator?"resonator":"morale"},{"side",double(side)},{"dt",w.dt},{"K",c->knobs().K},{"K_t",c->knobs().Kt},{"units",js::arr(std::move(rows))}}))<<'\n';}
     if(diagnostics){js::Args sides;
       for(uint8_t side=0;side<2;++side)if(w.controllers[side]){auto* controller=dynamic_cast<astelia::control::S3Controller*>(w.controllers[side].get());std::vector<astelia::control::DiagnosticUnit> units;

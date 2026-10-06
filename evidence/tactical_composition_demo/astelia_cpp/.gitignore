@@ -1,2 +1,24 @@
 /build/
 /__pycache__/
+
+# V4 local raw evidence and transport artifacts stay outside commits.
+/S4_V4_SEEDS.json
+/s4_v4_development/fights.jsonl.gz
+/s4_v4_development/s4_seeds.json
+/s4_v4_development/*_tuning.json
+/s4_v4_development/*_partial.json
+/s4_v4_development/*_validation.json
+/s4_v4_development/replays/
+/s4_v4_checks/*.bundle
+/s4_v4_checks/*.stdout.txt
+/s4_v4_checks/*.log
+/s4_v4_checks/implement_v4.py
+/s4_v4_checks/finish_native.py
+/s4_v4_checks/make_runner.py
+/s4_v4_checks/make_report.py
+/s4_v4_checks/PART1_DELIVERY.json
+/s4_v4_checks/BUNDLE_VERIFIED.json
+/s4_v4_development_failed_r1/
+/s4_v4_checks/PART1_INITIAL_DELIVERY.json
+/s4_v4_development_failed_r2/
+/s4_v4_checks/PART1_DESIGN_GUARD_DELIVERY.json

@@ -26,7 +26,7 @@ Knobs controllerKnobs(Arm arm,const ControllerParams& params,const std::string& 
   if(arm!=Arm::PushPull){bounds.insert({{"K",{&k.K,0,5}},{"K_t",{&k.Kt,0,5}},{"kappa",{&k.kappa,0,50}},{"beta",{&k.beta,0,3}},{"w",{&k.w,0,3}},{"gamma",{&k.gamma,0,2}}});
     if(arm==Arm::Resonator){bounds["omega_melee"]={&k.rateM,-2,2};bounds["omega_ranged"]={&k.rateR,-2,2};}
     else{bounds["lambda_melee"]={&k.rateM,0,2};bounds["lambda_ranged"]={&k.rateR,0,2};}}
-  if(skeleton=="v2"||skeleton=="v3"){
+  if(skeleton=="v2"||skeleton=="v3"||skeleton=="v4"){
     bounds.erase("f");bounds.erase("gamma");
     bounds["f_c"]={&k.fc,.3,1};bounds["m_k"]={&k.mk,.2,1};
     if(arm!=Arm::PushPull)bounds["lambda_th"]={&k.lambdaTh,0,3};else k.lambdaTh=0;
@@ -55,6 +55,38 @@ double v3Preferred(const ObservedUnit& self,const ObservedUnit& enemy,const Knob
   if(c>.2)entry->second=true;else if(c<-.2)entry->second=false;
   const double committed=self.role==ObservedRole::Artillery?std::max(k.fc*own,1.05*self.minRange/100):k.fc*own;
   return entry->second?committed:opposing+k.w*own;
+}
+Feasibility v4Feasibility(const DecisionDiagnostic& d,double mx,double my){
+  const double rho=std::hypot(d.dx,d.dy),displacement=std::hypot(mx,my);
+  if(!d.reference)return {0,"no_reference"};
+  if(rho<1e-9)return {0,"coincident"};
+  if(std::abs(rho-d.preferred)<=1e-6)return {0,"at_distance"};
+  if(displacement<1e-9)return {0,"zero_displacement"};
+  return {std::max(-1.0,std::min(1.0,(mx*d.dx+my*d.dy)/(displacement*rho)*(rho>d.preferred?1:-1))),""};
+}
+double v4Preferred(const ObservedUnit& self,const ObservedUnit& enemy,const Knobs& k,double c,PairModes& modes,PairHolds& holds,double now,std::vector<HoldEvent>& events){
+  const double own=(self.range+(self.role==ObservedRole::Artillery?0:self.radius+enemy.radius))/100;
+  const double opposing=(enemy.range+(enemy.role==ObservedRole::Artillery?0:self.radius+enemy.radius))/100;
+  if(opposing<own)return v2Preferred(self,enemy,k,c);
+  const double committed=self.role==ObservedRole::Artillery?std::max(k.fc*own,1.05*self.minRange/100):k.fc*own;
+  const double escaped=opposing+k.w*own;
+  const auto key=std::make_pair(self.id,enemy.id);
+  auto inserted=modes.emplace(key,c>=0);auto& mode=inserted.first->second;
+  if(inserted.second)return mode?committed:escaped; // first mode has no hold
+  auto held=holds.find(key);
+  if(held!=holds.end()){
+    const double rho=std::hypot(enemy.x-self.x,enemy.y-self.y)/100;
+    const bool early=std::abs(rho-(mode?committed:escaped))<=.1*own;
+    if(self.speed>1&&now<held->second.until&&!early)return mode?committed:escaped;
+    events.push_back({self.id,enemy.id,self.speed<=1?"immobile":early&&now<held->second.until?"target_band":"expired",now-held->second.started,held->second.until-held->second.started});
+    holds.erase(held);
+  }
+  const bool next=c>.2?true:c<-.2?false:mode;
+  if(next!=mode){mode=next;
+    if(self.speed>1){const double duration=100*std::abs(escaped-committed)/self.speed;
+      if(duration>0){holds[key]={now,now+duration};events.push_back({self.id,enemy.id,"started",0,duration});}}
+  }
+  return mode?committed:escaped;
 }
 std::vector<const ObservedUnit*> v2EnemySet(const ObservedUnit& self,const std::vector<const ObservedUnit*>& nearest,const std::map<UnitId,Memory>& memory){
   auto selected=nearest;if(selected.size()>8)selected.resize(8);
@@ -124,13 +156,16 @@ std::vector<ModelUnit> frozenStep(std::vector<ModelUnit> a,Arm arm,const Knobs& 
   return a;
 }
 
-S3Controller::S3Controller(double seed,uint8_t side,Arm arm,const ControllerParams& params,const std::string& skeleton):Controller(seed,side),arm_(arm),knobs_(controllerKnobs(arm,params,skeleton)),v1_(skeleton!="v0"),v2_(skeleton=="v2"||skeleton=="v3"),v3_(skeleton=="v3"){if(skeleton!="v0"&&skeleton!="v1"&&skeleton!="v2"&&skeleton!="v3")throw std::invalid_argument("invalid skeleton");}
+S3Controller::S3Controller(double seed,uint8_t side,Arm arm,const ControllerParams& params,const std::string& skeleton):Controller(seed,side),arm_(arm),knobs_(controllerKnobs(arm,params,skeleton)),v1_(skeleton!="v0"),v2_(skeleton=="v2"||skeleton=="v3"||skeleton=="v4"),v3_(skeleton=="v3"||skeleton=="v4"),v4_(skeleton=="v4"){if(skeleton!="v0"&&skeleton!="v1"&&skeleton!="v2"&&skeleton!="v3"&&skeleton!="v4")throw std::invalid_argument("invalid skeleton");}
 void S3Controller::prepare(const Observation& o){
-  prepared_.clear();diagnostic_.clear();std::vector<const ObservedUnit*> units;std::set<UnitId> live;
+  prepared_.clear();diagnostic_.clear();decisionDiagnostic_.clear();holdEvents_.clear();focus_.clear();std::vector<const ObservedUnit*> units;std::set<UnitId> live;
   for(const auto& u:o.units)if(u.hp>0){units.push_back(&u);live.insert(u.id);}
   std::sort(units.begin(),units.end(),[](auto a,auto b){return a->id<b->id;});
   for(auto it=memory_.begin();it!=memory_.end();)if(!live.count(it->first))it=memory_.erase(it);else ++it;
   for(auto it=pairModes_.begin();it!=pairModes_.end();)if(!live.count(it->first.first)||!live.count(it->first.second))it=pairModes_.erase(it);else ++it;
+  for(auto it=pairHolds_.begin();it!=pairHolds_.end();)if(!live.count(it->first.first)||!live.count(it->first.second)){
+    holdEvents_.push_back({it->first.first,it->first.second,"disappeared",o.t-it->second.started,it->second.until-it->second.started});it=pairHolds_.erase(it);
+  }else ++it;
   const double q=std::exp(-o.dt/2);std::set<UnitId> bad;
   std::vector<ModelUnit> own;
   for(auto p:units){const auto& u=*p;auto found=memory_.find(u.id);if(found==memory_.end()){Memory m;m.lastOut=u.dealtToEnemy;m.lastIn=u.takenFromEnemy;if(u.team==side_&&arm_==Arm::Resonator)m.state=2*pi*random_();found=memory_.emplace(u.id,m).first;}
@@ -156,8 +191,33 @@ void S3Controller::prepare(const Observation& o){
     std::sort(enemies.begin(),enemies.end(),[&](auto a,auto b){double ra=std::hypot(a->x-self.x,a->y-self.y),rb=std::hypot(b->x-self.x,b->y-self.y);return ra<rb||(ra==rb&&a->id<b->id);});
     if(v2_){auto selected=v2EnemySet(self,enemies,memory_);
       // Update all living pairs, even while excluded from the movement cap, so a threshold crossing is retained.
-      if(v3_)for(auto enemy:enemies)v3Preferred(self,*enemy,knobs_,c,pairModes_);
-      const auto enemyMotion=v3_?v3EnemyMotion(self,selected,memory_,knobs_,c,pairModes_):v2EnemyMotion(self,selected,memory_,knobs_,c);vx+=enemyMotion[0];vy+=enemyMotion[1];}
+      if(v4_){
+        DecisionDiagnostic diagnostic;diagnostic.id=id;diagnostic.x=self.x;diagnostic.y=self.y;diagnostic.c=c;
+        std::map<UnitId,double> distances;
+        const ObservedUnit* focus=nullptr;double focusWeight=-1;
+        for(auto enemy:enemies){
+          const double preferred=v4Preferred(self,*enemy,knobs_,c,pairModes_,pairHolds_,o.t,holdEvents_);distances[enemy->id]=preferred;
+          const auto key=std::make_pair(id,enemy->id);auto mode=pairModes_.find(key);
+          if(mode!=pairModes_.end()&&self.range+(self.role==ObservedRole::Artillery?0:self.radius+enemy->radius)<=enemy->range+(enemy->role==ObservedRole::Artillery?0:self.radius+enemy->radius)){
+            auto h=pairHolds_.find(key);diagnostic.pairs.push_back({enemy->id,mode->second,h==pairHolds_.end()?0:std::max(0.0,h->second.until-o.t),100*preferred});
+            const double weight=1+knobs_.lambdaTh*std::tanh(memory_.at(enemy->id).zOut);
+            if(mode->second&&(weight>focusWeight||(weight==focusWeight&&(!focus||enemy->id<focus->id)))){focus=enemy;focusWeight=weight;}
+          }
+        }
+        // Section 15 selects among all committed out-ranged pairs. The fallback uses E_i unchanged.
+        if(focus){selected={focus};diagnostic.focus=focus->id;focus_[id]=focus->id;}
+        const ObservedUnit* reference=focus;double mainWeight=-1,total=0;
+        for(auto enemy:selected){const double weight=1+knobs_.lambdaTh*std::tanh(memory_.at(enemy->id).zOut);total+=weight;
+          if(!focus&&(weight>mainWeight||(weight==mainWeight&&(!reference||enemy->id<reference->id)))){reference=enemy;mainWeight=weight;}}
+        for(auto enemy:selected){const double dx=(enemy->x-self.x)/100,dy=(enemy->y-self.y)/100,r=std::hypot(dx,dy);if(r==0)continue;
+          const double weight=1+knobs_.lambdaTh*std::tanh(memory_.at(enemy->id).zOut);
+          const double term=knobs_.G*(1-distances.at(enemy->id)/std::max(r,.01))*weight/total;vx+=dx/r*term;vy+=dy/r*term;
+        }
+        if(reference){diagnostic.reference=reference->id;diagnostic.dx=reference->x-self.x;diagnostic.dy=reference->y-self.y;diagnostic.preferred=100*distances.at(reference->id);}
+        decisionDiagnostic_.push_back(std::move(diagnostic));
+      }else{
+        if(v3_)for(auto enemy:enemies)v3Preferred(self,*enemy,knobs_,c,pairModes_);
+        const auto enemyMotion=v3_?v3EnemyMotion(self,selected,memory_,knobs_,c,pairModes_):v2EnemyMotion(self,selected,memory_,knobs_,c);vx+=enemyMotion[0];vy+=enemyMotion[1];}}
     else{const double preferred=knobs_.f*self.range/100*(1+(arm_==Arm::PushPull?0:knobs_.w)*(1-c)/2);
     for(size_t e=0;e<std::min(size_t(8),enemies.size());++e){auto u=enemies[e];double dx=(u->x-self.x)/100,dy=(u->y-self.y)/100,r=std::hypot(dx,dy);if(r==0)continue;
       double rho=r-(self.role==ObservedRole::Artillery?0:(self.radius+u->radius)/100);double term=knobs_.G*(1-preferred/std::max(rho,.01))/std::min(size_t(8),enemies.size());vx+=dx/r*term;vy+=dy/r*term;}}

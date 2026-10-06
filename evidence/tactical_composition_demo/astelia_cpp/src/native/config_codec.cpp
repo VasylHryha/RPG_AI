@@ -144,7 +144,7 @@ void thresholds(AbilityThresholds& a,V v){only(v,{"chargeSync","shieldAimedAt","
 }
 }
 Config configuration(const js::V& request) {
-  only(request,{"mode","options","trace","opponent","debug","decisionTrace","diagnostics","s3","endCounts"});
+  only(request,{"mode","options","trace","opponent","debug","decisionTrace","diagnostics","s3","endCounts","decisionDiagnostics"});
   const auto mode=string(request,"mode","alone");brain(mode);
   boolean(request,"s3",false);boolean(request,"diagnostics",false);boolean(request,"endCounts",false);
   V o=js::get(request,"options");if(o.tag==V::Undefined)o=js::obj({});
@@ -154,6 +154,7 @@ Config configuration(const js::V& request) {
     "forcePlan","forceTeam","disablePlans","lookahead","ab","coordAbilities","reactAim","reactiveDodge","bcRecord"});
   const auto rules=string(o,"rules","sandbox");if(rules!="sandbox"&&rules!="game")throw std::invalid_argument("unknown rules");
   auto c=rules=="game"?gameConfig():sandboxConfig();c.mode=mode;
+  if(boolean(request,"decisionDiagnostics",false)&&!boolean(request,"trace",false))throw std::invalid_argument("decisionDiagnostics requires trace");
   c.decisionTrace=boolean(request,"decisionTrace",false);
   if(c.decisionTrace&&!boolean(request,"trace",false))throw std::invalid_argument("decisionTrace requires trace");
   c.seed=number(o,"seed",c.seed);c.dt=number(o,"dt",c.dt);c.duration=number(o,"duration",c.duration);
