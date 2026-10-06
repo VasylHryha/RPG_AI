@@ -367,3 +367,56 @@ The cause is section 13 item 3's **interpolation** in the out-ranged case. A mid
 - the hysteresis holds the mode for c in [−0.2, 0.2];
 - the mode memory is cloned and isolated;
 - v0, v1 and v2 fixtures stay unchanged with the skeleton flag.
+
+## 15. Revision 7 (v4): a decision lives as long as it takes to carry out (2026-10-06, after the v3 recheck)
+
+**Logged as an outcome-informed change** (section 10). It comes from the v3 recheck's matched regular replays (`astelia_cpp/S4_V3_RECHECK_REPORT.md`, `s4_v3_recheck_checks/replays/`):
+- The resonator's ranged units rotate at ω_ranged ≈ −1.8 rad/s, a period of about 3.4 s. Their commitment c = cos θ therefore crosses ±0.2 about every 1.7 s.
+- Crossing the gap between the commit distance (about 270 px) and the escape distance (about 606 px) takes 336 px ÷ 40–120 px/s ≈ 3–8 s. **Units reverse before they reach either safe distance**, and stay in the guns' range.
+- Morale has no rotation and keeps its mode. It beats the regular script; the resonator does not.
+
+A second cause is force cancellation (recheck F3): the summed enemy term over up to 16 pairs can cancel even when every pair is committed.
+
+**The principle** (the owner's timescale ledger): a decision belongs to its own level's time. A unit-level movement decision's natural time is the time the unit needs to execute it. The oscillator keeps rotating; the decision holds over its own timescale.
+
+**Change 1, travel-time hold (out-ranged pairs only; the kite band is unchanged):**
+- When a pair's binary mode (section 14) **switches**, it is held for
+
+      T_hold,ij = |d_escape,ij − d_commit,ij| / v_i
+
+  Here v_i is the unit's own speed field from the observation, and both distances are as in section 14 (artillery: the effective commit distance).
+- **The hold ends early** when the unit reaches its target band: |ρ_ij − d_mode,ij| ≤ 0.1 R_i.
+- During a hold, c's threshold crossings are ignored. After it, section 14's hysteresis applies again from the current c.
+- **A new pair's first mode** is set as in section 14, with no hold. A pair that dies or disappears drops its hold with its mode.
+- If v_i ≤ 1 px/s (immobile or rooted), there is no hold.
+- **No new knob:** the hold is computed from observed geometry and speed. Knob counts are unchanged (11, 11, 3).
+
+**Change 2, commit focus** (against force cancellation):
+- If a unit has **at least one out-ranged pair in commit mode**, its enemy velocity term uses **only its focus pair**: the committed out-ranged pair with the highest damage weight (section 13's threat weighting), ties by lowest enemy id. The other enemy terms are dropped for that tick.
+- The ally force is unchanged.
+- If no out-ranged pair is committed, the section-13/14 weighted mean over the threat set applies unchanged (escape from all threats stays coherent).
+- Kite pairs keep the inherited law.
+
+**Change 3, decision traces (output-only diagnostics; they change no action):** per unit and tick, retained in the replay export:
+- the focus id;
+- every out-ranged pair's mode and remaining hold;
+- c;
+- **velocity feasibility:** cos(the angle between the unit's actual velocity and the direction that reduces |ρ − d_mode| for its focus or main threat).
+
+They report how often a held decision actually moves the unit the right way.
+
+**Applies to:** resonator and morale identically (it is a skeleton feature). Push-pull is unaffected in effect, because c = 1 always: it has no switches and commits to a focus by construction.
+
+**Checks:**
+1. A switch starts a hold of exactly T_hold. Crossings of c during a hold are ignored. The hold ends at T_hold or on reaching the band, whichever comes first.
+2. A v_i ≤ 1 unit has no hold.
+3. **Focus:** with two symmetric enemies and both pairs committed, the summed enemy term is **not** zero (the recheck's counterexample now moves toward the focus).
+4. The hold and focus memory are cloned and isolated, and dropped on death.
+5. Traces leave actions byte-identical: the v4 run with traces equals the run without them.
+6. The v0–v3 fixtures stay unchanged with the skeleton flag.
+
+**Development:** exactly the amended S4 CMA-ES protocol (population, generations, budgets, stages A/B/C, validation sizes, A/B novice gates) for resonator, morale and push-pull with skeleton v4, on **fresh** development seeds in a new ledger.
+
+**Before the capped run**, the runner gets the recheck F2 deadline repairs: bounded submission, an absolute monotonic deadline passed to the workers, timeouts clamped to the remaining allowance, cancellation of pending futures, and termination of active children on stop. They are tested with fake workers and no combat. Allowance: 360 minutes.
+
+No registration, judging seeds or recorded run.
