@@ -1,0 +1,99 @@
+{
+  "status": "PASS_STORED_EVIDENCE_RECHECK",
+  "combat_executions": 0,
+  "tuning_executions": 0,
+  "replay_exports": 0,
+  "builds": 0,
+  "test_suites": 0,
+  "source_hash_checks": "three inspected native files and exact approved design pin match original identity",
+  "raw_replay_hash_checks": "two B regular files match original inventory and extracted receipt",
+  "count_reconciliation": "eight original counters per arm",
+  "preservation": "15 tracked inputs match HEAD bytes",
+  "report_first_line": "CHANGES_REQUIRED",
+  "report_links_checked": 11,
+  "review": "separate Codex reviewer completed; findings resolved; Claude development review separate",
+  "inputs": {
+    "S4_V3_DEVELOPMENT_REPORT.md": {
+      "sha256": "d37038af01fb2924219ea2cbd8d1615bc079734fe12cc8ae832cfd418d2ec482",
+      "bytes": 23748
+    },
+    "S4_V3_RECHECK_REPORT.md": {
+      "sha256": "cf83aa412fbd53fc9967df85b92899d0bbdc8e507ffea84a2ebb04343133787d",
+      "bytes": 19931
+    },
+    "S4_V4_DEVELOPMENT_REPORT.md": {
+      "sha256": "5eeb7ef0fea2df5e7f3accd945d23d1cab8ba244db2f3a9909fce49442fb5918",
+      "bytes": 14813
+    },
+    "S4_V4_DESIGN_PIN.md": {
+      "sha256": "6a6d782f6abb0d6f7a1eb5b84c0b43f7457bf237373cefadb28c8a506b8a1c1b",
+      "bytes": 42410
+    },
+    "s4_v4_development/DECISION_TRACE_SUMMARY.json": {
+      "sha256": "82adf9f941e12519f533aae600776ab00a24b468ef211db8229b5cd31e6e6b3f",
+      "bytes": 9111
+    },
+    "s4_v4_development/VALIDATION_END_STATES.json": {
+      "sha256": "41b020d5bcc4e4715bdcd0c61c113719232fcdaf290e839d8c8063346d9e3933",
+      "bytes": 2216
+    },
+    "s4_v4_development/END_STATES_BY_SPLIT.json": {
+      "sha256": "71ff77204ebc785da5c360636eba8fa39b846e8ae7d1b3cc54c35b728542a6cc",
+      "bytes": 13278
+    },
+    "s4_v4_development/VALIDATION_SUMMARY.json": {
+      "sha256": "d616d310a71a2773ddb80281d6fc80d5f7ea81d39ca93859fdef3866e22478e0",
+      "bytes": 3249
+    },
+    "s4_v4_development/AUDIT.json": {
+      "sha256": "38cf6ec361e4a919627d632c3c18a64ab0e805532b7937473d6fdcd7324a7768",
+      "bytes": 15785
+    },
+    "s4_v4_development/RUN_TIMING.json": {
+      "sha256": "865f7362468101b9d1b9a56013a5892758b7b24f5c662707a3a75f7b746e7a64",
+      "bytes": 315
+    },
+    "s4_v4_development/run_identity.json": {
+      "sha256": "546c896aef5956198c0a125931f174423c43a5b1cda968e73d06b3a77fef70e6",
+      "bytes": 13260
+    },
+    "s4_v4_development/LOCAL_ARTIFACTS.json": {
+      "sha256": "6b568141b38ff92f3ff499fd377084fcd798bcd453a8a33073a39f66c9e31665",
+      "bytes": 28515
+    },
+    "src/native/s3_controller.cpp": {
+      "sha256": "fbe8ca455c15b8362437c082e6eedf16b90c2815372b63e4d671de05d6694bc7",
+      "bytes": 21319
+    },
+    "src/native/host.cpp": {
+      "sha256": "39628bc1efcc6c2b5593a308458c3ad52a4b9cbd26f0fce785b47443458c6965",
+      "bytes": 13433
+    },
+    "src/native/world.cpp": {
+      "sha256": "f121972faa8d48378c47e222c28af182da5645c29fd2236b532d7ff8c4236c24",
+      "bytes": 19435
+    }
+  },
+  "deliverables": {
+    "S4_V4_RECHECK_REPORT.md": {
+      "sha256": "ae0418a284198f3f4a111c54507956a71a99de8a538926b0c8b04c29903622ff",
+      "bytes": 22621
+    },
+    "s4_v4_recheck_checks/analyze_stored.py": {
+      "sha256": "e32b51b866ec802ef2dad78c1c4775745826ec856e1206d525f7ab304a110567",
+      "bytes": 9436
+    },
+    "s4_v4_recheck_checks/STORED_TRACE_ANALYSIS.json": {
+      "sha256": "bcbde4ec235e83e4f09a1fcbd3c44107464f7298284884c0dbdc2541a9d03633",
+      "bytes": 13694
+    },
+    "s4_v4_recheck_checks/PLAN_AND_REVIEW.md": {
+      "sha256": "3f8f19490450bb21d628c0f2516af6f534b0ed6d4f59465deb3b808e2e871597",
+      "bytes": 4859
+    },
+    "s4_v4_recheck_checks/DELIVERY_NOTE.md": {
+      "sha256": "e74eb801b16fa38f503458182b18a9ba71f01e962e17fb24a52c815124b984af",
+      "bytes": 2596
+    }
+  }
+}

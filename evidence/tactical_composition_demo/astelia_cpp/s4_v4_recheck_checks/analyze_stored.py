@@ -114,7 +114,8 @@ def analyze(arm):
                                 after_hp=post['hp'], before_hp=a['hp']))
                     if d['undefinedReason'] == 'zero_displacement':
                         c['zero_displacement'] += 1
-                        wall = a['x'] <= a['debug']['r'] + 1e-6 or a['x'] >= 1200-a['debug']['r']-1e-6 or a['y'] <= a['debug']['r']+1e-6 or a['y'] >= 700-a['debug']['r']-1e-6
+                        # sandboxConfig defaults; request has no width/height override.
+                        wall = a['x'] <= a['debug']['r'] + 1e-6 or a['x'] >= 1400-a['debug']['r']-1e-6 or a['y'] <= a['debug']['r']+1e-6 or a['y'] >= 800-a['debug']['r']-1e-6
                         c['zero_wall'] += wall
                         c['zero_focus'] += focus is not None
                         c['zero_under_guns'] += danger
