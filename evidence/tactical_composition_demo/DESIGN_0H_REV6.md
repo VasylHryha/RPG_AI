@@ -1,6 +1,6 @@
-# Design 0h, revision 6.1: an input-to-output path grown on purpose (consolidated; supersedes `DESIGN_0H_REV6_DRAFT.md` sections 2–6)
+# Design 0h, revision 6.2: an input-to-output path grown on purpose (consolidated; supersedes `DESIGN_0H_REV6_DRAFT.md` sections 2–6)
 
-**Revision 6.1** answers the second Codex review (`docs/reviews/tactical_0h_rev6_design_review_codex_r2.md`, R2-1 … R2-11). **Section 12 replaces the clauses it names and governs wherever it conflicts with sections 1–11.** Section 13 is its self-audit.
+**Revision 6.1** answers the second Codex review (`docs/reviews/tactical_0h_rev6_design_review_codex_r2.md`, R2-1 … R2-11). **Section 12 replaces the clauses it names and governs wherever it conflicts with sections 1–11.** Section 13 is its self-audit. **Revision 6.2** answers the third review (`…_r3.md`, R3-1 … R3-6). **Section 14 governs over section 12 and over sections 1–11 wherever they conflict.** Section 15 is its self-audit.
 
 **Status:** drafted by Claude for the second Codex review. Not approved, and no execution is authorized. The base is `DESIGN_0H.md` revision 5.1: every rule not changed below stays as written there. The failure report of the 5.1 run is `DESIGN_0H_REV6_DRAFT.md` section 1, as corrected by section 4 there and by section 9 here. The 5.1 verdicts and evidence are unchanged.
 
@@ -429,3 +429,141 @@ Plasticity and growth are off in evaluation (base), and roles are preserved, so 
 | R2-9 | F2 contradicted the law; criteria were missing | 12.7: F2(b) bitwise input independence; numeric F1/F5 criteria; F7 and F8 added; 12.8 a complete stop table | Under-specified |
 | R2-10 | G0' window and new codes | 12.9 | Under-specified |
 | R2-11 | Memory eligibility at a block boundary | 12.10 and F8: a limitation, reported separately | Missed carried histories |
+
+## 14. Revision 6.2 amendments (each replaces the named clause)
+
+### 14.1 Graph sampling (R3-6; applies everywhere)
+
+**At every world step**, after integration and before the timers:
+- G is computed **fresh from the endpoint positions** (k ≤ 8 nearest, strict r < 3). It does not use any substep's held lists.
+- The effective roots come from the current drives (12.3).
+
+D4 timers, path exposure, F-fixture diagnostics and growth checks all use this graph. At growth checks it is recomputed again after every removal and birth. The convention is identical in intact, control and fixture runs.
+
+### 14.2 B-path trial, completed (amends 12.1 condition 1, R3-2)
+
+**Conditions 1 and 2 of 12.1 are replaced by** (conditions 3 and 4 stay):
+1. a → newborn is an edge of the post-trial graph;
+2. **the newborn is in Reach(the post-trial effective roots of s, the post-trial graph)**;
+3. **a itself stays in that reach**;
+4. no site that had a directed path to O loses it.
+
+**A rejected trial restores the complete pre-trial state** (positions, neighbour lists, ids, counters) before the next candidate is tried.
+
+The implementation batch includes **Codex's saturated-receiver counterexample** (`…_r3.md`, R3-2) as a unit test. The candidate c = (0.556, 0) there must be **rejected**.
+
+### 14.3 F1, honest scaffolds under intact C4 (replaces 12.7 F1, R3-1)
+
+**Common settings** (neighbour lists always come from intact C4; nothing is forced):
+- one active site at q = (4, 0) with constant strength k = 2;
+- growth, D-rules and adaptation off (η_ω = η_g = 0);
+- every member has ω = π and phase 0 at t = 0;
+- the site angle is 0 until t = 8 s, then π/2.
+
+**Members:**
+- **S** (source): at (3.2, 0), g = 1, an ordinary element.
+- **Intermediates:** ordinary, at the listed positions, with **g = 0** (no drive channel, though in reach).
+- **O:** the output.
+
+**Configurations:**
+- **F1a, direct:** S, with O at (3.2 − r*, 0).
+- **F1b, dense scaffold:** S, two intermediates at r* spacing toward the origin, and O next. All are mutual neighbours.
+- **F1c, long chain (descriptive):** S, then intermediates at r* spacing along the x axis down to x = −1.25, then O at x = −1.25 − r*. **O is farther than 3 from S**, so no shortcut exists from S.
+
+**Recorded:** every neighbour list per world step; the link weights; the direct-drive exposure (zero for g = 0 and for O); the output angle.
+
+**PASS** (F1a and F1b): the output angle is within 0.3 rad of π/2 + φ(t) by t = 16 s, and the directed S → O path exists in ≥ 80% of the world steps of a 160 s run. F1c reports its delay and persistence only.
+
+**This tests output response on dense scaffolds.** It does not test the serial bandwidth of long chains; F1c only describes that.
+
+### 14.4 F2 settings (amends 12.7 F2)
+
+F2(b) uses the F1 common settings, with **growth and adaptation off**. The single output member sits at (−3, 0), more than 3 from every ordinary element. Ordinary elements are F1b's members shifted to (+3.2, …). The two input streams are: the site angle constant at 0, and a step to π/2 at t = 8 s.
+
+### 14.5 F5, a paired frozen assay (replaces 12.7 F5, R3-3)
+
+**Growth phase (full rules)** under fixture medium slot `F5/i` or `F5/ii` (seeds as in 14.6): 50 perceive episodes on the fixture world episodes (14.6).
+
+**Starts:**
+- **(i)** the base initial state.
+- **(ii)** a hand-built state:
+  - six ordinary elements, g = 1, on a hexagon of radius r* around (3.4, 0) (an effective-root frontier at site 0, physical site 0 fixed at (4, 0));
+  - **one output at (−0.5, 0)**, more than 3 from every ordinary element, so the output route is missing.
+
+  Any other site starts empty.
+
+**Checkpoints:** the full state after episodes 40, 45 and 50.
+
+**Assay at each checkpoint** (growth and plasticity off, carrier offset 0, roles preserved), with frozen paired copies of **the same** checkpoint:
+- **own input** on 10 recipient episodes;
+- **donor input** on the paired donor episodes (14.6);
+- **own input with the channel lesion** (12.6).
+
+**Gate quantities, pooled over 3 checkpoints × 10 episodes = 30 assay episodes:**
+- A = the mean absolute wrapped difference between the own-input and donor-input output angles, over each episode's 160 decisions;
+- B = the mean absolute wrapped difference between the own-input and lesion output angles;
+- E = per site, path exposure pooled over the 30 own-input assay episodes.
+
+**PASS** (both starts): B-out fired in (i); ≥ 1 B-path birth was accepted in (ii); E ≥ 0.5 for at least one site; A ≥ 0.3 rad; B ≥ 0.3 rad.
+
+A checkpoint without an output member counts its episodes as A = B = 0.
+
+### 14.6 The entropy inventory (R3-4; frozen now, without running anything)
+
+**Seeds:**
+- Every non-world seed is **uint64 = the first 8 bytes (big-endian) of SHA-256 of the ASCII string** `0h-rev6/<domain>/<key>`.
+- Domains: `medium`, `growth`, `matched`, `random_policy`, `lesion` and `donor_perm`.
+- Keys: `<arm>/<slot k>` for development, `F5/i` and `F5/ii` for fixtures, or as named below.
+
+**World episodes** (the native world API, namespaces `dev` and `validation` only, never `judging`):
+
+| Use | Namespace | Episode ids |
+|---|---|---|
+| 5.1 (for reference) | dev | 0–1999 |
+| Revision-6 training, slot k (0–15, both arms) | dev | **1,000,000 + 10,000·k + e**, e = 0–1999 (disjoint from 5.1) |
+| Calibration (reused, labelled) | validation | 0–255 |
+| Evaluation recipients | validation | 512–639 |
+| Evaluation donors | validation | 640–767, through π |
+| Fixture recipients | validation | 768–777 |
+| Fixture donors | validation | 778–787, paired one to one |
+| Fixture growth episodes (F5) | dev | 2,000,000 + e |
+
+**Donor permutation:** π(j), for j = 0 … 127, is the rank of j when the 128 values SHA-256(`0h-rev6/donor_perm/` + decimal j) are sorted ascending as big-endian integers. Donor = 640 + π(j). It is deterministic, and **the implementer writes the 128 entries into the fixture receipt before any evaluation.**
+
+**Bindings:** the inherited permutation(episode) on the episode ids above.
+
+**Sharing:**
+- intact, M and U of a slot share the training world episodes, bindings and medium seed;
+- M uses `matched/<arm>/<k>`;
+- own and donor copies share the checkpoint state and carrier;
+- random-policy, lesion and growth draws use their own domains.
+
+### 14.7 F6 estimator (amends 12.7 F6)
+
+- **The estimator:** the Jammalamadaka–SenGupta circular correlation between the encoded angle (the last visible frame) and the mean hidden-interval output angle, over the assay episodes.
+- **Undefined** (zero circular variance on either side, or fewer than 5 episodes with an output): the result is null with its reason.
+- It stays descriptive.
+
+### 14.8 G2-sel label (amends 12.6, R3-5)
+
+It is reported as **"superiority to the site-0 relay"**, with no selection interpretation. Avoiding empty sites can produce it. No stronger selection diagnostic is registered.
+
+### 14.9 Stop table additions (amends 12.8)
+
+| Yes/no question | Yes → one action | Role |
+|---|---|---|
+| Is the medium's design-specific integration for revision 6 (the new RHS, masks, roles, graph, B-path trial and template v1) not implemented, tested and reviewed? | Do not start any fixture or development run | implementer |
+| Did a fixture's measurement fail (a crash, a non-finite value, a missing record)? | Report it INVALID; block the next stage | implementer |
+| Is perceive not usable under the frozen usable-task rule? | Block G2 and G0; do not substitute another primary task | implementer |
+| Does any seed of the full run have an unmatched control-M birth? | That seed is G0-INCONCLUSIVE (F7 does not guarantee full-run matching) | implementer |
+
+## 15. Self-audit: Codex round-3 findings
+
+| # | Finding | Disposition | Cause |
+|---|---|---|---|
+| R3-1 | F1's predecessor-only chains cannot exist under C4 | 14.3: honest dense scaffolds, intermediates with g = 0, a long-chain case without a shortcut (descriptive), and neighbour lists from intact C4 | Ignored C4's k-nearest radius rule |
+| R3-2 | The trial could disconnect its own source | 14.2: post-trial reach of the newborn and of a, a full restore on rejection, and Codex's counterexample as a unit test | Inferred reachability from one edge |
+| R3-3 | F5 was not a paired procedure | 14.5: checkpoints, frozen paired copies, own, donor and lesion assays, pooled quantities, a concrete (ii) start | Under-specified |
+| R3-4 | Entropy names without derivations | 14.6: SHA-256 seeds, world-id ranges, the donor permutation recipe, the sharing rules | Under-specified |
+| R3-5 | G2-sel overinterpreted | 14.8: label only | Overclaimed |
+| R3-6 | Graph sampling convention | 14.1: a fresh endpoint graph every world step | Under-specified |
