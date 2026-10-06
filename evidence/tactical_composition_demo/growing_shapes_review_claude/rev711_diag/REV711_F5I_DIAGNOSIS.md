@@ -1,4 +1,4 @@
-DIAGNOSED (narrowed, revision 2): in the current empty-start growth trajectory, each closing link is lost because the motion law pulls the bridge tip back; the tested birth-rule, margin, budget, kernel and O-placement interventions did not sustain late connectivity in both starts
+DIAGNOSED (narrowed, revision 2): in the empty-start trajectory each closing link is lost because the motion law pulls the bridge tip back; in the scaffold pilots, growth succeeded only when started from a driven root mass inside the sensor ring; no tested rule change sustained late connectivity in both starts
 
 # Why F5(i) (growth from an empty start) fails: diagnosis after revision 7.11
 
@@ -74,6 +74,11 @@ All pilots run the 50 F5 episodes (800 s) with the fixture keys.
 | **Motion range 1.5 m.u.** (scratch; the N^x cutoff, 3 → 1.5) | 0.337 | path held from 461.5 s | 0.000 | — | — |
 | Motion range 1.5 + bidirectional | 0.323 | held from 272 s | 0.096 | — | — |
 | **O placement swapped** ((i): B-out puts O at (−0.5, 0); (ii): literal O at (0, 0)) | **0.000** | — | **0.409** | held from 272 s (sites 0, 6, 7: 0.7, 0.8, 0.4) | **O's position is not what separates the two starts** |
+| **Scaffold: hexagon on the ring** ((ii) with the six-element hexagon centred at (4.0, 0) on site 0 instead of (3.1, 0)) | — | — | **0.000** | never | Moving the seed onto the ring makes (ii) fail like (i) |
+| **Scaffold: random phases** ((ii) hexagon phases uniform from a fixed pilot RNG) | — | — | 0.397 | held from 272 s | Phase coherence of the seed is not needed |
+| **Scaffold: zero gain** ((ii) hexagon elements are not driven roots) | — | — | **0.000** | never | The seed must be driven roots |
+| **Inward B1** (B1's spiral centred 0.9 or 0.6 m.u. inward from the site; one root per B1 birth) | 0.000 (both offsets) | (20 s-held episode at 380 s only) | 0.362 (0.9) | held from 272 s | A single inward root does not reproduce the seed's effect; (ii) unaffected |
+| **B1 root groups** (the first B1 birth at each site becomes a compact group of 3 or 6 driven roots 0.9 m.u. inward; `pilot_rootgroup.py`) | 0.000 (3 and 6) | held from 330 s (group 3) only; any path 31% of all steps (group 3) | 0.363 (group 3) | held from 272 s | Groups form at **every** demanding site (14–18 extra births), which splits the budget; (ii) has exactly **one** group |
 
 Earlier revisions changed the birth rules:
 - fairness (7.9);
@@ -85,10 +90,12 @@ Earlier revisions changed the birth rules:
   - Bidirectional growth and a shorter motion range each rescue (i) and fail (ii).
   - Robust service helps (ii) and transiently (i).
 - **O placement is ruled out as the separating factor:** with O swapped, (i) still fails and (ii) still passes.
-- **What separates the starts is therefore the initial scaffold and the growth history:**
-  - (ii) begins with six gain-1, in-phase elements at radius about 3.1, inside the sensor ring next to site 0;
-  - (i) grows from B1 elements placed on the ring at radius about 4.
-- These pilots do not isolate which aspect of the scaffold matters.
+- **What separates the starts is the initial scaffold.** The scaffold pilots isolate its relevant property:
+  - **a group of several driven root elements** (six, gain 1), placed as a mass about 0.9 m.u. **inside** the sensor ring;
+  - moving the group onto the ring, or removing its drive (gain 0), makes (ii) fail like (i);
+  - randomizing its phases does not.
+- **One B1 root placed inward is not enough.** It does not reproduce the effect: the empty start still fails with B1 births 0.6–0.9 m.u. inward.
+- So the success of (ii) comes from a **driven root mass inside the ring**, which the empty start's one-at-a-time B1 births on the ring never build within this budget and horizon.
 
 ## 4. Options (the next revision is a design decision)
 
@@ -99,12 +106,10 @@ Earlier revisions changed the birth rules:
 | **C. Growth-rule variants** | Two-ended growth (tested: (i) yes, (ii) no); a growth order in which the output-side component is supported before the forward bridge arrives (untested); a robust-closing-edge requirement (untested; the tested trial pruning did not require one) | Keeps "from nothing" | Each needs pilots on **both** starts. Rescuing one start is not a fix |
 | ~~D. O placement~~ | Swapping O between the starts did not change either outcome (section 3) | — | Ruled out as the separating factor; no design change proposed |
 
-**Drafter's recommendation:**
-- **Next, test the scaffold question directly with cheap pilots**, before any design revision. That identifies which property of (ii)'s start makes growth succeed. Three variants:
-  - (i) given a minimal coherent root group of the same size at site 0 but on the ring;
-  - (ii)'s hexagon moved out onto the ring at radius 4;
-  - (ii) with randomized phases.
-- **If a small, principled initial condition explains the difference, A becomes a well-founded protocol choice** rather than an arbitrary seed.
+**Drafter's recommendation (after the scaffold pilots):**
+- **A is now a well-founded protocol choice, not an arbitrary seed.** The property that makes growth succeed is identified: a small group of driven root elements as a mass inside the sensor ring. Phase is free.
+- **A seeded protocol (A)** would specify that "embryo" explicitly and identically for intact, M and U: k driven elements in a compact group about 0.9 m.u. inward of one site.
+- **A "from nothing" alternative within C was piloted:** B1 grows a compact root group (3 or 6) inward of each site at its first birth. It **did not sustain late connectivity in (i)**, because groups formed at every site and split the budget. A variant with **one** group (for example at the first site to demand, with later sites as single roots) is the remaining untested "from nothing" candidate.
 - **B stays the long-term root option.**
 - **A and the claim narrowing are the owner's decision** (`docs/PLAN_CURRENT.md`).
 
