@@ -42,7 +42,8 @@
 | A6c | Revision-7 integration (new files) | DONE: `55a9f7a` + repair `a660de0`; Claude review READY_FOR_FIXTURES (pin `3b6cf563…b551`; `growing_shapes_review_claude/REV7_FIXTURE_READINESS.md`) | Codex, then Claude | — |
 | A6d | Fixtures N1, F1–F9 under 7.3 | DONE: FIXTURES_FAIL at F1c by 0.1 s (live geometry, 6 links); N1, F1a, F1b (2.5 s) and F2–F4 PASS; no collapse | Codex | decision 0031 |
 | A6e | Revision 7.4: λ = 32, h = 0.005 | DONE: approved; fixtures **FAIL at N1d** (a knife-edge test start), but **N1f (the live layout) settles in 2.1 s**, so λ = 32 works | Claude, Codex | decision 0031 |
-| A6f | **Revision 7.5:** N1d starts off the unstable antiphase point; the old start kept as descriptive N1g | **Codex review + implementation RUNNING**; then a Claude check and the fixtures re-run | Claude, Codex | decision 0031 |
+| A6f | Revision 7.5 fixtures | **N1 and F1–F4 PASS** (F1c, the live layout: 2.1 s, persistence 100%); F5 INVALID (Codex's measurement wrapper defect, not science) | Claude, Codex | decision 0031 |
+| A6g | **Complete re-run N1–F9 with a new wrapper** (no line tracing) | **RUNNING** (`rev75b_fixture_run_20261006`) | Codex | decision 0031 |
 | A7 | Cost projection from the measured F rates | — | Codex | — |
 | A8 | **The development run** (48 trainings, about 16 h or more of serial compute) | — | Codex | **[OWNER] approve the run and its time** |
 | A9 | Review the results, then the owner's recheck | — | Claude, then Codex | — |
