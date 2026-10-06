@@ -669,3 +669,11 @@ The definitions are hashed with the N1 recipes.
 | Item | Cause |
 |---|---|
 | Paths were connected but too weak | The path graph used the coupling radius, not a strength derived from the clock ledger (R2-2's warning was recorded but not acted on) |
+
+### 14.3 Codex 7.7 review notes (APPROVE_WITH_NOTES; applied)
+
+- **R77-1:** the weak-last-link diagnosis is a **supported bottleneck hypothesis**, not an isolated cause. The positional figures are those of the accepted B-path trial positions.
+- **R77-2:** w ≥ 0.5 gives λKw/n ≥ 2 /s per edge. That is a single, aligned, small-angle edge scale. It is **not a guarantee of 3 s settling for the whole network**, which conflicting inputs, detuning and phase differences can slow. The F5 gates measure the actual response.
+- **R77-3:** the predicate is **inclusive**: a computed distance r ≤ r_s = √(ln 2) ≈ 0.8325546, in both native and Python. G_s is a subset of G with the same edge direction (j → i when j is in i's held N^θ list).
+- **R77-4:** O is geometrically reachable. r* = 0.556 has w ≈ 0.734 > 0.5, and the closing birth clears O's 0.05 exclusion. Whether growth actually closes the gap stays conditional on clearance, the budget and the frontier.
+- **R77-5:** there is no trivial pass. G_s ⊆ G makes E harder to satisfy, and a permanent isolated O gains no path privilege. Every claim limit is kept.
