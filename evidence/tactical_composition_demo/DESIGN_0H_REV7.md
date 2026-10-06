@@ -1,6 +1,6 @@
-# Design 0h, revision 7.7: phase on the task's clock, pinned ends (after the revision-6.5 fixture failure)
+# Design 0h, revision 7.8: phase on the task's clock, pinned ends (after the revision-6.5 fixture failure)
 
-**Status:** revision 7.7 (section 14: paths must be made of strong links, after the 7.6 F5 failure; under review). Revision 7.6 (section 13) was approved with notes. Revision 7.5 (section 12) was approved with notes. Revision 7.4 (section 11) was approved with notes. Revision 7.3 was design-approved by the Codex round-4 review (APPROVE_WITH_NOTES; its three low notes applied in 10.6). This is design review only: integration and execution readiness are separate gates. **Section 8 answers the Codex review** `docs/reviews/tactical_0h_rev7_design_review_codex.md` (R7-1 … R7-12) **and governs over sections 1–7. Section 9 (revision 7.2) answers the round-2 review `…_codex_r2.md` (R2-1 … R2-7) and governs over everything before it. Section 10 (revision 7.3) answers round 3 (`…_codex_r3.md`, R3-1 … R3-4) and governs over everything before it.** Drafted by Claude for Codex review. Not approved, and no execution is authorized. **The base is revision 6.5** (`DESIGN_0H_REV6.md`, with every section through 19.9). Every rule not changed below stays as written there. This is a new revision on **fresh entropy**: every key prefix `0h-rev6/` becomes `0h-rev7/`, and every world-id range moves up by 10,000,000.
+**Status:** revision 7.8 (section 15: the strong-link threshold re-derived for real chain degree, after the 7.7 F1 result; under review). Revision 7.7 (section 14) was approved with notes. Revision 7.6 (section 13) was approved with notes. Revision 7.5 (section 12) was approved with notes. Revision 7.4 (section 11) was approved with notes. Revision 7.3 was design-approved by the Codex round-4 review (APPROVE_WITH_NOTES; its three low notes applied in 10.6). This is design review only: integration and execution readiness are separate gates. **Section 8 answers the Codex review** `docs/reviews/tactical_0h_rev7_design_review_codex.md` (R7-1 … R7-12) **and governs over sections 1–7. Section 9 (revision 7.2) answers the round-2 review `…_codex_r2.md` (R2-1 … R2-7) and governs over everything before it. Section 10 (revision 7.3) answers round 3 (`…_codex_r3.md`, R3-1 … R3-4) and governs over everything before it.** Drafted by Claude for Codex review. Not approved, and no execution is authorized. **The base is revision 6.5** (`DESIGN_0H_REV6.md`, with every section through 19.9). Every rule not changed below stays as written there. This is a new revision on **fresh entropy**: every key prefix `0h-rev6/` becomes `0h-rev7/`, and every world-id range moves up by 10,000,000.
 
 ## 1. What the 6.5 fixtures showed (`growing_shapes/runner/REV6_FIXTURE_REPORT.md`, decision 0030)
 
@@ -677,3 +677,28 @@ The definitions are hashed with the N1 recipes.
 - **R77-3:** the predicate is **inclusive**: a computed distance r ≤ r_s = √(ln 2) ≈ 0.8325546, in both native and Python. G_s is a subset of G with the same edge direction (j → i when j is in i's held N^θ list).
 - **R77-4:** O is geometrically reachable. r* = 0.556 has w ≈ 0.734 > 0.5, and the closing birth clears O's 0.05 exclusion. Whether growth actually closes the gap stays conditional on clearance, the budget and the frontier.
 - **R77-5:** there is no trivial pass. G_s ⊆ G makes E harder to satisfy, and a permanent isolated O gains no path privilege. Every claim limit is kept.
+
+## 15. Revision 7.8: the strong-link threshold for real chain degree (an outcome-informed change; disclosed)
+
+**What the 7.7 fixtures showed** (`growing_shapes/runner/REV77_FIXTURE_REPORT.md`, the owner's go, pin `9628282d…`):
+- N1 and F2–F4 pass. F1a passes on both graphs.
+- **F1b and F1c fail only the strong-path fraction:** 1.75% and 0.375% on G_s, against 100% on G. **Their responses pass** (F1b: β reaches π/2 by about 2 s after the step).
+- The F1b link record shows why:
+  - the free chain packs at **0.364 m.u.** (S–i1, i1–i2);
+  - **the last link to the pinned O settles at about 0.87 m.u.**, with w = exp(−0.87²) ≈ 0.47, just under 7.7's w_min = 0.5.
+- **The threshold was over-strict for a pinned end.** The response it was meant to guarantee was achieved.
+
+**The change:**
+- **w_min = n_chain / (λ · K · τ_link) = 4 / (32 · 1 · 0.5 s) = 0.25,** so **r_s = √(ln 4) ≈ 1.1774 m.u.** (inclusive).
+  - n_chain = 4 is the degree of a chain element: at most two chain neighbours on each side within the coupling radius, as in the F1 scaffolds (n = 3–4). 7.7's n_max = 8 assumed a saturated neighbourhood that chains do not have.
+  - The per-link scale stays τ_link = 0.5 s.
+- **The threshold still separates what matters:**
+  - links that respond on the task clock: F1's last link, w ≈ 0.47, passes;
+  - the weak last links of the 7.6 F5 failure, at 2.2–2.6 m.u.: **w ≈ 0.001–0.008, still excluded by a factor of 30–250.**
+- **Unchanged:** every use of G_s from 14.2 (including F1's path fraction, as implemented and disclosed in the 7.7 review), λ, h, every gate, and every other rule.
+
+**Disclosure:** this is an outcome-informed revision, made after the 7.7 F1 result. The 7.7 FAIL is kept as recorded. The F1 scaffolds are deterministic. F5 and F7 reuse the fixture keys under 13.3's exception, and the development inventory is untouched.
+
+| Item | Cause |
+|---|---|
+| w_min was too strict for a pinned end | The derivation used the neighbour cap (8) instead of the actual chain degree, and was not checked against a pinned-end equilibrium |
