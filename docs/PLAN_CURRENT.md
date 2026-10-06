@@ -2,7 +2,7 @@
 
 **Rule:** work follows this file, top to bottom, within each track. After every step, update its status line here and commit. If context is lost, read this file first, then `docs/IDEAS_AND_ROADMAP.md` (the tracker) and the files named in the step.
 
-**Last updated:** 2026-10-06, after A4.
+**Last updated:** 2026-10-06, revision 7.2 under review.
 
 ## Standing rules (from the owner; never skip)
 
@@ -38,7 +38,7 @@
 | A4 | Add 19.9 comparators (input average, K = 0, frozen positions) and review notes D1–D3 | DONE (`855d931`; 71 tests; Claude's short check READY_FOR_FIXTURES) | Codex, then a short Claude check | — |
 | A5 | **Engineering tests F1–F9** | DONE: **FIXTURES_FAIL at F1b** (a 3-link path is too slow: 15.4 s; F1c compacts); F2–F4 pass; F5–F9 blocked (`growing_shapes/runner/REV6_FIXTURE_REPORT.md`) | Codex | done |
 | A6 | Read the F results | DONE: a timescale mismatch (phase coupling far slower than the task clock) plus compaction | Claude | — |
-| A6b | **Revision 7** (`DESIGN_0H_REV7.md`): phase-rate scale λ = 8 from the cue clock, pinned ends (output pinned; sites as pinned bodies in motion), freeze-not-reset demand, empty start | **DRAFTED; Codex review running** | Claude drafts, Codex reviews | **[OWNER]** approves the revision-7 fixture run after the review |
+| A6b | **Revision 7** (`DESIGN_0H_REV7.md`, now 7.2): phase speed-up λ = 8, pinned ends with separate neighbour lists, freeze-not-reset demand, empty start, numerical fixture N1, a frame excursion bound | Codex rounds 1 (12 findings) and 2 (7) answered; **round 3 running** (with the owner's recheck prompt) | Claude drafts, Codex reviews | then Codex implements and Claude reviews; the fixtures (under 1 hour) then run under decision 0031 |
 | A7 | Cost projection from the measured F rates | — | Codex | — |
 | A8 | **The development run** (48 trainings, about 16 h or more of serial compute) | — | Codex | **[OWNER] approve the run and its time** |
 | A9 | Review the results, then the owner's recheck | — | Claude, then Codex | — |
