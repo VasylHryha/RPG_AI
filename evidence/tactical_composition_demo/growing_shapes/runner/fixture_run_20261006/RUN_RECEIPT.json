@@ -1,0 +1,154 @@
+{
+  "verdict": "FIXTURES_FAIL",
+  "integration_commit": "855d9310fbae5c71fa9d507d288372b17858a88c",
+  "execution_head": "d82114b3d346d343294d5f6f355bf37c116e1041",
+  "approval": {
+    "path": "docs/decisions/0030-0h-rev6-fixture-run.md",
+    "sha256": "36579b122c0a6ff545b4bcd4f7e8401e1d825b72a66f0fad97c2ebcb25ac6cce",
+    "commit": "d82114b3d346d343294d5f6f355bf37c116e1041"
+  },
+  "results": {
+    "F1": {
+      "verdict": "FAIL",
+      "raw": {
+        "path": "evidence/tactical_composition_demo/growing_shapes/runner/fixture_run_20261006/F1.json.gz",
+        "bytes": 1141377,
+        "sha256": "ba01b127b466975376a706ad4676f22cec195974c7a58440f190063c04128547",
+        "decoded_bytes": 7208234,
+        "decoded_sha256": "13abd438737c27128902672aa65f3514ac9abf8201ab4a2b3e49788d5a1921db"
+      }
+    },
+    "F2": {
+      "verdict": "PASS",
+      "raw": {
+        "path": "evidence/tactical_composition_demo/growing_shapes/runner/fixture_run_20261006/F2.json.gz",
+        "bytes": 1642,
+        "sha256": "f7312516501f8c277d8146f36101c26ebe48667c1e80d4ac6c0e406e9e23239e",
+        "decoded_bytes": 7909,
+        "decoded_sha256": "353e18340b87bc1f354021060f49bc3978f77966366359c378810d1c867837f5"
+      }
+    },
+    "F3": {
+      "verdict": "PASS",
+      "raw": {
+        "path": "evidence/tactical_composition_demo/growing_shapes/runner/fixture_run_20261006/F3.json.gz",
+        "bytes": 540,
+        "sha256": "b1bae692b5515f9b2fb7eb6539116a3e7606391fe9332325265b3c40d553d074",
+        "decoded_bytes": 1735,
+        "decoded_sha256": "b81fa69a7859aebb4c53f27a0cb1e566e5a5d13e96282f058057a11726057e83"
+      }
+    },
+    "F4": {
+      "verdict": "PASS",
+      "raw": {
+        "path": "evidence/tactical_composition_demo/growing_shapes/runner/fixture_run_20261006/F4.json.gz",
+        "bytes": 294712,
+        "sha256": "3dc07f7aaa3ed54b3fddfc0fb9be411121d4d300a8082f3c047c468a12e1a0ae",
+        "decoded_bytes": 1746088,
+        "decoded_sha256": "ca53a75c7c9046b1a5824546ebb4b30cb73ae2aa390d76e9665427c3956835a2"
+      }
+    }
+  },
+  "timings": {
+    "F1": {
+      "start_utc": "2026-10-06T09:56:26.077965+00:00",
+      "end_utc": "2026-10-06T09:56:29.151340+00:00",
+      "elapsed_utc_seconds": 3.073375,
+      "awake_seconds": 3.073385459,
+      "continuous_seconds": 3.07339325
+    },
+    "F2": {
+      "start_utc": "2026-10-06T09:56:30.160810+00:00",
+      "end_utc": "2026-10-06T09:56:30.274449+00:00",
+      "elapsed_utc_seconds": 0.113639,
+      "awake_seconds": 0.113650709,
+      "continuous_seconds": 0.113652
+    },
+    "F3": {
+      "start_utc": "2026-10-06T09:56:30.275462+00:00",
+      "end_utc": "2026-10-06T09:56:30.276044+00:00",
+      "elapsed_utc_seconds": 0.000582,
+      "awake_seconds": 0.000582375,
+      "continuous_seconds": 0.000582
+    },
+    "F4": {
+      "start_utc": "2026-10-06T09:56:30.276523+00:00",
+      "end_utc": "2026-10-06T09:56:30.761359+00:00",
+      "elapsed_utc_seconds": 0.484836,
+      "awake_seconds": 0.484849833,
+      "continuous_seconds": 0.484854208
+    }
+  },
+  "traces": {
+    "F1": {
+      "path": "evidence/tactical_composition_demo/growing_shapes/runner/fixture_run_20261006/F1.json.gz",
+      "bytes": 1141377,
+      "sha256": "ba01b127b466975376a706ad4676f22cec195974c7a58440f190063c04128547",
+      "decoded_bytes": 7208234,
+      "decoded_sha256": "13abd438737c27128902672aa65f3514ac9abf8201ab4a2b3e49788d5a1921db"
+    },
+    "F2": {
+      "path": "evidence/tactical_composition_demo/growing_shapes/runner/fixture_run_20261006/F2.json.gz",
+      "bytes": 1642,
+      "sha256": "f7312516501f8c277d8146f36101c26ebe48667c1e80d4ac6c0e406e9e23239e",
+      "decoded_bytes": 7909,
+      "decoded_sha256": "353e18340b87bc1f354021060f49bc3978f77966366359c378810d1c867837f5"
+    },
+    "F3": {
+      "path": "evidence/tactical_composition_demo/growing_shapes/runner/fixture_run_20261006/F3.json.gz",
+      "bytes": 540,
+      "sha256": "b1bae692b5515f9b2fb7eb6539116a3e7606391fe9332325265b3c40d553d074",
+      "decoded_bytes": 1735,
+      "decoded_sha256": "b81fa69a7859aebb4c53f27a0cb1e566e5a5d13e96282f058057a11726057e83"
+    },
+    "F4": {
+      "path": "evidence/tactical_composition_demo/growing_shapes/runner/fixture_run_20261006/F4.json.gz",
+      "bytes": 294712,
+      "sha256": "3dc07f7aaa3ed54b3fddfc0fb9be411121d4d300a8082f3c047c468a12e1a0ae",
+      "decoded_bytes": 1746088,
+      "decoded_sha256": "ca53a75c7c9046b1a5824546ebb4b30cb73ae2aa390d76e9665427c3956835a2"
+    }
+  },
+  "flags": {
+    "fixture_invalid": false,
+    "F1_F4_failed": true,
+    "F5_failed": false,
+    "F7_unmatched": false
+  },
+  "stops": [
+    {
+      "question": "F1_F4_failed",
+      "action": "Block F5 and development and report",
+      "role": "implementer"
+    }
+  ],
+  "not_run": [
+    "F5",
+    "F6",
+    "F7",
+    "F8",
+    "F9"
+  ],
+  "total": {
+    "start_utc": "2026-10-06T09:56:26.077877+00:00",
+    "end_utc": "2026-10-06T09:56:30.874858+00:00",
+    "elapsed_utc_seconds": 4.796981,
+    "awake_seconds": 4.796945333,
+    "continuous_seconds": 4.796938958
+  },
+  "clock_methods": {
+    "awake": "mach_absolute_time, excludes sleep",
+    "elapsed": "UTC timestamps",
+    "continuous": "mach_continuous_time, includes sleep"
+  },
+  "calibration": {
+    "label": "REUSED_5_1_CALIBRATION",
+    "source": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/runner/development_20261006/CALIBRATION.json",
+    "namespace": "validation",
+    "episodes": [
+      0,
+      255
+    ]
+  },
+  "provenance": "Assisted-by: Codex:GPT-6"
+}

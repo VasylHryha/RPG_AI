@@ -1,0 +1,92 @@
+{
+  "status": "A7_PARTIAL_TOTAL_NOT_QUALIFIED_FROM_MEASURED_FIXTURES",
+  "reason": "F1 blocked F5-F9; live growth, qualification, recovery and native assays at grown populations are unmeasured",
+  "measured_fixture_costs": {
+    "F1": {
+      "start_utc": "2026-10-06T09:56:26.077965+00:00",
+      "end_utc": "2026-10-06T09:56:29.151340+00:00",
+      "elapsed_utc_seconds": 3.073375,
+      "awake_seconds": 3.073385459,
+      "continuous_seconds": 3.07339325
+    },
+    "F2": {
+      "start_utc": "2026-10-06T09:56:30.160810+00:00",
+      "end_utc": "2026-10-06T09:56:30.274449+00:00",
+      "elapsed_utc_seconds": 0.113639,
+      "awake_seconds": 0.113650709,
+      "continuous_seconds": 0.113652
+    },
+    "F3": {
+      "start_utc": "2026-10-06T09:56:30.275462+00:00",
+      "end_utc": "2026-10-06T09:56:30.276044+00:00",
+      "elapsed_utc_seconds": 0.000582,
+      "awake_seconds": 0.000582375,
+      "continuous_seconds": 0.000582
+    },
+    "F4": {
+      "start_utc": "2026-10-06T09:56:30.276523+00:00",
+      "end_utc": "2026-10-06T09:56:30.761359+00:00",
+      "elapsed_utc_seconds": 0.484836,
+      "awake_seconds": 0.484849833,
+      "continuous_seconds": 0.484854208
+    }
+  },
+  "measured_total": {
+    "start_utc": "2026-10-06T09:56:26.077877+00:00",
+    "end_utc": "2026-10-06T09:56:30.874858+00:00",
+    "elapsed_utc_seconds": 4.796981,
+    "awake_seconds": 4.796945333,
+    "continuous_seconds": 4.796938958
+  },
+  "measured_frozen_step_seconds": {
+    "F1": 0.0006402886372916666,
+    "F2": 0.000355158465625
+  },
+  "workload_if_all_four_tasks_usable": {
+    "trainings": 48,
+    "training_world_steps": 15360000,
+    "qualification_checks": 8512,
+    "growth_checks": 76800,
+    "snapshot_assay_episodes_max": 327680,
+    "intact_final_panel_episodes": 88064,
+    "control_final_assay_episodes": 16384,
+    "total_assay_episodes_max": 432128,
+    "donor_capture_episodes": 8192,
+    "section_19_9_added_assay_episodes": 18432
+  },
+  "historical_rate_source": {
+    "path": "evidence/tactical_composition_demo/growing_shapes/runner/REV6_COST_ESTIMATE.json",
+    "sha256": "d4afc9401bc9f5ccb4bba4bf5791377ae8b6532d1bee8c5dd22ca5e1f1daccc8",
+    "label": "REUSED_5_1_RATES_AND_STATIC_SYNTHETIC_BPATH; not measured rev6 fixture rates"
+  },
+  "unqualified_static_proxy": {
+    "hours_by_stage": {
+      "training": 11.944425593066683,
+      "qualification": 1.2909279079941853,
+      "recovery": 0.3218456676017107,
+      "evaluation": 2.2943701568678168,
+      "donor_capture": 0.0038135797222222222
+    },
+    "base_serial_hours": 15.855382905252617,
+    "bpath_scenarios": [
+      {
+        "elements": 26,
+        "one_exhausted_site_per_growth_check_hours": 16.96228244658595,
+        "eight_exhausted_sites_per_growth_check_hours": 24.71057923591928
+      },
+      {
+        "elements": 48,
+        "one_exhausted_site_per_growth_check_hours": 18.213714467919285,
+        "eight_exhausted_sites_per_growth_check_hours": 34.72203540658596
+      },
+      {
+        "elements": 64,
+        "one_exhausted_site_per_growth_check_hours": 19.453272697252615,
+        "eight_exhausted_sites_per_growth_check_hours": 44.638501241252605
+      }
+    ],
+    "assumptions": "Maximum 20 snapshots per intact run, two carrier offsets; all four tasks usable; all virtual/singleton/comparator copies priced at the historical medium assay proxy. B-path assumes one/eight exhausted searches per check. Actual growth/population/diagnostic/I/O costs and comparator dispatch unmeasured. Not a bound."
+  },
+  "development_authorized": false,
+  "development_gate": "BLOCKED_F1"
+}

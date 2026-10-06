@@ -1,0 +1,498 @@
+{
+  "verdict": "FIXTURES_FAIL",
+  "F1": {
+    "F1a": {
+      "verdict": "PASS",
+      "response_pass": true,
+      "first_entry_time": 12.600000000000001,
+      "delay": 4.600000000000001,
+      "deadline_sample_present": true,
+      "continuous_from_first_entry": true,
+      "criterion": "all world steps from first entry through t=16 inclusive within 0.3 rad",
+      "path_exposure": 1.0,
+      "output_id": 1,
+      "world_steps": 1600,
+      "deadline_beta": 1.5010874589260368,
+      "deadline_angle_error": 0.06970886786885977,
+      "first_entry_over_full_saved_trace": 12.600000000000001,
+      "full_trace_entry_delay": 4.600000000000001,
+      "deadline_minimum_error": 0.06970886786885977,
+      "deadline_maximum_error": 1.5657330335304973,
+      "maximum_error_from_deadline_first_entry": 0.2981764165519518,
+      "final_beta": 1.5707963267943796,
+      "final_angle_error": 5.169198402654729e-13,
+      "path_steps": 1600,
+      "output_steps": 1600,
+      "maximum_endpoint_radius": 3.225108103047032,
+      "final_radius": {
+        "0": 3.1997777777777796,
+        "1": 2.6442222222222207
+      },
+      "wall_element_seconds": 0.0,
+      "no_sensor_access_element_seconds": 0.0,
+      "output_direct_drive_steps": 0,
+      "ordinary_non_source_direct_drive_steps": 0,
+      "readout_time_bins": [
+        {
+          "window_seconds": [
+            0.0,
+            20.0
+          ],
+          "world_steps": 200,
+          "output_member_steps": 200,
+          "readout_occupancy": 1.0,
+          "path_fraction": 1.0,
+          "maximum_radius": 3.225108103047032,
+          "source_drive_fraction": 1.0
+        },
+        {
+          "window_seconds": [
+            20.0,
+            40.0
+          ],
+          "world_steps": 200,
+          "output_member_steps": 200,
+          "readout_occupancy": 1.0,
+          "path_fraction": 1.0,
+          "maximum_radius": 3.199781291616973,
+          "source_drive_fraction": 1.0
+        },
+        {
+          "window_seconds": [
+            40.0,
+            60.0
+          ],
+          "world_steps": 200,
+          "output_member_steps": 200,
+          "readout_occupancy": 1.0,
+          "path_fraction": 1.0,
+          "maximum_radius": 3.199777777777909,
+          "source_drive_fraction": 1.0
+        },
+        {
+          "window_seconds": [
+            60.0,
+            80.0
+          ],
+          "world_steps": 200,
+          "output_member_steps": 200,
+          "readout_occupancy": 1.0,
+          "path_fraction": 1.0,
+          "maximum_radius": 3.1997777777777796,
+          "source_drive_fraction": 1.0
+        },
+        {
+          "window_seconds": [
+            80.0,
+            100.0
+          ],
+          "world_steps": 200,
+          "output_member_steps": 200,
+          "readout_occupancy": 1.0,
+          "path_fraction": 1.0,
+          "maximum_radius": 3.1997777777777796,
+          "source_drive_fraction": 1.0
+        },
+        {
+          "window_seconds": [
+            100.0,
+            120.0
+          ],
+          "world_steps": 200,
+          "output_member_steps": 200,
+          "readout_occupancy": 1.0,
+          "path_fraction": 1.0,
+          "maximum_radius": 3.1997777777777796,
+          "source_drive_fraction": 1.0
+        },
+        {
+          "window_seconds": [
+            120.0,
+            140.0
+          ],
+          "world_steps": 200,
+          "output_member_steps": 200,
+          "readout_occupancy": 1.0,
+          "path_fraction": 1.0,
+          "maximum_radius": 3.1997777777777796,
+          "source_drive_fraction": 1.0
+        },
+        {
+          "window_seconds": [
+            140.0,
+            160.0
+          ],
+          "world_steps": 200,
+          "output_member_steps": 200,
+          "readout_occupancy": 1.0,
+          "path_fraction": 1.0,
+          "maximum_radius": 3.1997777777777796,
+          "source_drive_fraction": 1.0
+        }
+      ]
+    },
+    "F1b": {
+      "verdict": "FAIL",
+      "response_pass": false,
+      "first_entry_time": null,
+      "delay": null,
+      "deadline_sample_present": true,
+      "continuous_from_first_entry": false,
+      "criterion": "all world steps from first entry through t=16 inclusive within 0.3 rad",
+      "path_exposure": 1.0,
+      "output_id": 3,
+      "world_steps": 1600,
+      "deadline_beta": 0.8329768833340836,
+      "deadline_angle_error": 0.737819443460813,
+      "first_entry_over_full_saved_trace": 23.400000000000002,
+      "full_trace_entry_delay": 15.400000000000002,
+      "deadline_minimum_error": 0.737819443460813,
+      "deadline_maximum_error": 1.5701632866384312,
+      "maximum_error_from_deadline_first_entry": null,
+      "final_beta": 1.570796312341372,
+      "final_angle_error": 1.4453524599389311e-08,
+      "path_steps": 1600,
+      "output_steps": 1600,
+      "maximum_endpoint_radius": 3.1343196234207014,
+      "final_radius": {
+        "0": 2.86911043032007,
+        "1": 2.523335375706511,
+        "2": 2.2086646242935104,
+        "3": 1.8628895696799532
+      },
+      "wall_element_seconds": 0.0,
+      "no_sensor_access_element_seconds": 0.0,
+      "output_direct_drive_steps": 0,
+      "ordinary_non_source_direct_drive_steps": 0,
+      "readout_time_bins": [
+        {
+          "window_seconds": [
+            0.0,
+            20.0
+          ],
+          "world_steps": 200,
+          "output_member_steps": 200,
+          "readout_occupancy": 1.0,
+          "path_fraction": 1.0,
+          "maximum_radius": 3.1343196234207014,
+          "source_drive_fraction": 1.0
+        },
+        {
+          "window_seconds": [
+            20.0,
+            40.0
+          ],
+          "world_steps": 200,
+          "output_member_steps": 200,
+          "readout_occupancy": 1.0,
+          "path_fraction": 1.0,
+          "maximum_radius": 2.8756155815976325,
+          "source_drive_fraction": 1.0
+        },
+        {
+          "window_seconds": [
+            40.0,
+            60.0
+          ],
+          "world_steps": 200,
+          "output_member_steps": 200,
+          "readout_occupancy": 1.0,
+          "path_fraction": 1.0,
+          "maximum_radius": 2.869156030827815,
+          "source_drive_fraction": 1.0
+        },
+        {
+          "window_seconds": [
+            60.0,
+            80.0
+          ],
+          "world_steps": 200,
+          "output_member_steps": 200,
+          "readout_occupancy": 1.0,
+          "path_fraction": 1.0,
+          "maximum_radius": 2.8691107590228326,
+          "source_drive_fraction": 1.0
+        },
+        {
+          "window_seconds": [
+            80.0,
+            100.0
+          ],
+          "world_steps": 200,
+          "output_member_steps": 200,
+          "readout_occupancy": 1.0,
+          "path_fraction": 1.0,
+          "maximum_radius": 2.8691104326898937,
+          "source_drive_fraction": 1.0
+        },
+        {
+          "window_seconds": [
+            100.0,
+            120.0
+          ],
+          "world_steps": 200,
+          "output_member_steps": 200,
+          "readout_occupancy": 1.0,
+          "path_fraction": 1.0,
+          "maximum_radius": 2.86911043033714,
+          "source_drive_fraction": 1.0
+        },
+        {
+          "window_seconds": [
+            120.0,
+            140.0
+          ],
+          "world_steps": 200,
+          "output_member_steps": 200,
+          "readout_occupancy": 1.0,
+          "path_fraction": 1.0,
+          "maximum_radius": 2.869110430320191,
+          "source_drive_fraction": 1.0
+        },
+        {
+          "window_seconds": [
+            140.0,
+            160.0
+          ],
+          "world_steps": 200,
+          "output_member_steps": 200,
+          "readout_occupancy": 1.0,
+          "path_fraction": 1.0,
+          "maximum_radius": 2.8691104303200707,
+          "source_drive_fraction": 1.0
+        }
+      ]
+    },
+    "F1c": {
+      "verdict": "DESCRIPTIVE",
+      "response_pass": false,
+      "first_entry_time": null,
+      "delay": null,
+      "deadline_sample_present": true,
+      "continuous_from_first_entry": false,
+      "criterion": "all world steps from first entry through t=16 inclusive within 0.3 rad",
+      "path_exposure": 1.0,
+      "output_id": 9,
+      "world_steps": 1600,
+      "deadline_beta": 0.025130319929154155,
+      "deadline_angle_error": 1.5456660068657424,
+      "first_entry_over_full_saved_trace": null,
+      "full_trace_entry_delay": null,
+      "deadline_minimum_error": 1.5456660068657424,
+      "deadline_maximum_error": 1.5707961277850035,
+      "maximum_error_from_deadline_first_entry": null,
+      "final_beta": 0.811821551134642,
+      "final_angle_error": 0.7589747756602546,
+      "path_steps": 1600,
+      "output_steps": 1600,
+      "maximum_endpoint_radius": 3.1035576772612554,
+      "final_radius": {
+        "0": 1.5181143571326063,
+        "1": 1.307091883492408,
+        "2": 1.1330825580561175,
+        "3": 0.9741756817051576,
+        "4": 0.8207955649604244,
+        "5": 0.6627380639446446,
+        "6": 0.5093888029931155,
+        "7": 0.3505474284872488,
+        "8": 0.17668044473773153,
+        "9": 0.03370943667886818
+      },
+      "wall_element_seconds": 0.0,
+      "no_sensor_access_element_seconds": 1117.0,
+      "output_direct_drive_steps": 0,
+      "ordinary_non_source_direct_drive_steps": 0,
+      "readout_time_bins": [
+        {
+          "window_seconds": [
+            0.0,
+            20.0
+          ],
+          "world_steps": 200,
+          "output_member_steps": 200,
+          "readout_occupancy": 1.0,
+          "path_fraction": 1.0,
+          "maximum_radius": 3.1035576772612554,
+          "source_drive_fraction": 1.0
+        },
+        {
+          "window_seconds": [
+            20.0,
+            40.0
+          ],
+          "world_steps": 200,
+          "output_member_steps": 200,
+          "readout_occupancy": 1.0,
+          "path_fraction": 1.0,
+          "maximum_radius": 1.4858949478932846,
+          "source_drive_fraction": 1.0
+        },
+        {
+          "window_seconds": [
+            40.0,
+            60.0
+          ],
+          "world_steps": 200,
+          "output_member_steps": 200,
+          "readout_occupancy": 1.0,
+          "path_fraction": 1.0,
+          "maximum_radius": 1.4928399754173993,
+          "source_drive_fraction": 1.0
+        },
+        {
+          "window_seconds": [
+            60.0,
+            80.0
+          ],
+          "world_steps": 200,
+          "output_member_steps": 200,
+          "readout_occupancy": 1.0,
+          "path_fraction": 1.0,
+          "maximum_radius": 1.4992575444624467,
+          "source_drive_fraction": 1.0
+        },
+        {
+          "window_seconds": [
+            80.0,
+            100.0
+          ],
+          "world_steps": 200,
+          "output_member_steps": 200,
+          "readout_occupancy": 1.0,
+          "path_fraction": 1.0,
+          "maximum_radius": 1.5050288593338763,
+          "source_drive_fraction": 1.0
+        },
+        {
+          "window_seconds": [
+            100.0,
+            120.0
+          ],
+          "world_steps": 200,
+          "output_member_steps": 200,
+          "readout_occupancy": 1.0,
+          "path_fraction": 1.0,
+          "maximum_radius": 1.5100938243437645,
+          "source_drive_fraction": 1.0
+        },
+        {
+          "window_seconds": [
+            120.0,
+            140.0
+          ],
+          "world_steps": 200,
+          "output_member_steps": 200,
+          "readout_occupancy": 1.0,
+          "path_fraction": 1.0,
+          "maximum_radius": 1.5144447654994255,
+          "source_drive_fraction": 1.0
+        },
+        {
+          "window_seconds": [
+            140.0,
+            160.0
+          ],
+          "world_steps": 200,
+          "output_member_steps": 200,
+          "readout_occupancy": 1.0,
+          "path_fraction": 1.0,
+          "maximum_radius": 1.5181143571326063,
+          "source_drive_fraction": 1.0
+        }
+      ]
+    }
+  },
+  "F2": {
+    "verdict": "PASS",
+    "empty_default": true,
+    "bitwise_identical": true,
+    "decisions_per_stream": 160,
+    "nonzero_path_steps": 0,
+    "maximum_phase_delta": 0.0
+  },
+  "F3": {
+    "verdict": "PASS",
+    "stages": 20,
+    "output_drive_hex": [
+      "0x0.0p+0"
+    ]
+  },
+  "F4": {
+    "verdict": "PASS",
+    "stages": 20,
+    "output_coupling_hex": [
+      "0x0.0p+0"
+    ],
+    "site0_angle": 0.3999999999999999,
+    "oracle_angle": 1.0999999999999996,
+    "parity": {
+      "intact": {
+        "status": "MATCH",
+        "decisions": 160,
+        "maximum_wrapped_angle_error": 0.0,
+        "tolerance": 1e-12
+      },
+      "donor": {
+        "status": "MATCH",
+        "decisions": 160,
+        "maximum_wrapped_angle_error": 0.0,
+        "tolerance": 1e-12
+      },
+      "output_channel": {
+        "status": "MATCH",
+        "decisions": 160,
+        "maximum_wrapped_angle_error": 0.0,
+        "tolerance": 1e-12
+      },
+      "site0": {
+        "status": "MATCH",
+        "decisions": 160,
+        "maximum_wrapped_angle_error": 0.0,
+        "tolerance": 1e-12
+      },
+      "oracle": {
+        "status": "MATCH",
+        "decisions": 160,
+        "maximum_wrapped_angle_error": 0.0,
+        "tolerance": 1e-12
+      }
+    }
+  },
+  "not_run": {
+    "F5": {
+      "status": "NOT_RUN",
+      "reason": "F1 failed; F5 blocked by section 12.8; subsequent fixtures not reached in the specified sequence",
+      "measured_values": null,
+      "awake_seconds": null,
+      "elapsed_utc_seconds": null
+    },
+    "F6": {
+      "status": "NOT_RUN",
+      "reason": "F1 failed; F5 blocked by section 12.8; subsequent fixtures not reached in the specified sequence",
+      "measured_values": null,
+      "awake_seconds": null,
+      "elapsed_utc_seconds": null
+    },
+    "F7": {
+      "status": "NOT_RUN",
+      "reason": "F1 failed; F5 blocked by section 12.8; subsequent fixtures not reached in the specified sequence",
+      "measured_values": null,
+      "awake_seconds": null,
+      "elapsed_utc_seconds": null
+    },
+    "F8": {
+      "status": "NOT_RUN",
+      "reason": "F1 failed; F5 blocked by section 12.8; subsequent fixtures not reached in the specified sequence",
+      "measured_values": null,
+      "awake_seconds": null,
+      "elapsed_utc_seconds": null
+    },
+    "F9": {
+      "status": "NOT_RUN",
+      "reason": "F1 failed; F5 blocked by section 12.8; subsequent fixtures not reached in the specified sequence",
+      "measured_values": null,
+      "awake_seconds": null,
+      "elapsed_utc_seconds": null
+    }
+  }
+}
