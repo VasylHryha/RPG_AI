@@ -3,13 +3,13 @@ FAIL
 Owner-authorized exploratory development; DESIGN_0H revision 5.1, decision 0028 items 17–19.
 Implementer: Codex (GPT-6). Not milestone acceptance or scientific qualification.
 
-Expected cost announced before execution: 21–55 serial hours; ideal 3–7 wall hours at eight workers, subject to contention.
-Measured cost seed 106060: 200 episodes, 415.407 wall seconds including calibration.
+Expected cost announced before execution: 21–55 serial hours; ideal 3–7 elapsed hours at eight workers (a pre-run estimate), subject to contention.
+Measured cost seed 106060: 200 episodes, 415.407 awake monotonic seconds including calibration.
 Measured serial projection: 11.403 hours at the full 20-snapshot evaluator cap.
 Stage rates, projection arithmetic, exposure and limitations: [COST.json](development_20261006/COST.json).
 The 24-hour report line is retained; owner authorized continuation through 60 serial hours.
 
-Full-run wall time: 2.059 hours; maximum eight worker processes.
+Full-run awake monotonic time: 2.059 hours (7,410.865621166 seconds); maximum eight worker processes. This excludes suspended host time and is not elapsed calendar duration or CPU time. The host idle-slept during 01:24–08:00 local time, with dark wakes. RESULTS.json records completion at 2026-10-06 05:23:25 UTC (08:23:25 local). The review’s approximately 00:50–08:37 window includes later delivery work; the exact full-run calendar start was not retained.
 
 | Arm | G0 | G0' | G1 | G1c | G5 |
 |---|---|---|---|---|---|
@@ -55,11 +55,11 @@ Seed units, G0 coverage denominators and paired competencies, flags, control add
 | reward/106078/intact | 320000 | 2000 | 319732 | 78840.000 | 20992 | 2000 | 1113.659 / 334.928 / 287.896 / 517.622 | 90/88 | 132/135 | 20992 |
 | reward/106078/control | 320000 | 2000 | 0 | 0.000 | 512 | 2000 | 1086.248 / 0.000 / 0.000 / 29.544 | 90/88 | 132/135 | 512 |
 
-Measured full-run summed stage costs: training 9.528 h, qualification 1.452 h, recovery 1.389 h, evaluation 2.367 h.
+Measured full-run summed worker awake stage times: training 9.528 h, qualification 1.452 h, recovery 1.389 h, evaluation 2.367 h.
 Template scalar storage per content hash, complete snapshots with recovery timescales and flags, final templates, evaluator-copy identities, episodes, pending state and raw ledger receipts are retained in each seed’s REPORT.json.gz. Coefficient accounting is not RAM usage or an efficiency comparison.
 Qualified atom export (task_blind): [REPLAY_task_blind.json.gz](development_20261006/REPLAY_task_blind.json.gz); one additional diagnostic validation episode, excluded from read-outs.
 Qualified atom export (reward): [REPLAY_reward.json.gz](development_20261006/REPLAY_reward.json.gz); one additional diagnostic validation episode, excluded from read-outs.
-Stop-row responsibility: drafter if task-blind G1 FAIL or any G0' FAIL; report INVALID with raw evidence. Any protocol change requires a new design revision and fresh development seeds. Owner decides any next development step.
+Stop-row responsibility: drafter if task-blind G1 FAIL or any G0' FAIL; write the failure report and stop development. INVALID is reserved for execution or measurement failures, nonfinite data, zero usable tasks or incomplete protocol. Any protocol change requires a new design revision and fresh development seeds. Owner decides any next development step.
 
 All event logs and drive schedules are retained losslessly as ordered JSONL. Recovery-complete events retain complete immutable check-time native state and 601 frames; drive schedules retain the 600-step replay. All admitted snapshots and templates are retained, including those beyond the evaluation cap. File hashes and sizes: [ARTIFACTS.json](development_20261006/ARTIFACTS.json).
 Calibration is frozen once on validation 0–255 and shared by cost, both arms and controls. Training uses dev episode seeds; control uses g0_control entropy. No judging namespace was used. Reviewed code, constants, schedules and receipt files were unchanged. The additive launch harness uses a ledger adapter to expose ordered event rows to the reviewed seed_unit function; receipts remain unchanged in stored reports.
@@ -94,4 +94,6 @@ Retention verification: [PROTOCOL_AUDIT.json](development_20261006/PROTOCOL_AUDI
 
 Audit transport: every original event/drive ledger is retained in a verified gzip archive. [AUDIT_TRANSPORT.json](development_20261006/AUDIT_TRANSPORT.json) maps original receipt paths to archives, preserving the original decoded SHA256, byte count and record count. Stored Run receipts are unchanged; unpacking restores their exact bytes. No event, snapshot, template or replay was discarded.
 
-Summed stage timings are worker elapsed time under parallel execution, not isolated serial CPU measurements. The measured cost seed projected 11.403 serial hours; summed full-run stage time was 14.736 worker hours. Development stops under the G0' failure row; no further development or outcome-informed protocol change was performed.
+Summed stage timings are worker awake monotonic time under parallel execution, not calendar duration or isolated serial CPU measurements. The measured cost seed projected 11.403 serial hours; summed full-run stage time was 14.736 worker hours. Development stops under the G0' failure row; no further development or outcome-informed protocol change was performed.
+
+Accounting correction, 2026-10-06: only prose was amended; all original development receipts, values and verdicts remain unchanged. Historical keys named `wall_seconds` retain their original bytes and mean awake monotonic seconds on this host. See [DEVELOPMENT_RECHECK_REPORT.md](DEVELOPMENT_RECHECK_REPORT.md) for the descriptive artifact audit and its limits.

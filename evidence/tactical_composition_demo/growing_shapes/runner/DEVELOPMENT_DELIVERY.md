@@ -1,6 +1,6 @@
 DELIVERED — exploratory development; summary FAIL, no scientific acceptance
 
-The owner-authorized DESIGN_0H revision-5.1 section-10 run completed without invalid seed pairs. Cost measurement: 415.407 s for 200 episodes; projected 11.403 serial hours. Full run: 2.059 wall hours, at most eight seed-pair workers. Both arms: G0 INCONCLUSIVE; G0' FAIL; G1 PASS; G1c DESCRIPTIVE; G5 PASS. Every seed had a late birth rejection, so development stops under the declared G0' row. No constants, rules, schedule, reviewed source or native build changed during execution. No judging namespace was used.
+The owner-authorized DESIGN_0H revision-5.1 section-10 run completed without invalid seed pairs. Cost measurement: 415.407 s for 200 episodes; projected 11.403 serial hours. Full run: 2.059 awake monotonic hours (host sleep excluded; calendar elapsed time was longer), at most eight seed-pair workers. Both arms: G0 INCONCLUSIVE; G0' FAIL; G1 PASS; G1c DESCRIPTIVE; G5 PASS. Every seed had a late birth rejection, so development stops under the declared G0' row. No constants, rules, schedule, reviewed source or native build changed during execution. No judging namespace was used.
 
 Evidence commit: `f87158bdf5dad321fae58c64ce4fd90a4d52a976`. Bundle prerequisite/base: `bab6dc973071eaca64c08b5fcdb1bfaaf5033ad4`. Branch: `codex/0h-development`.
 
@@ -21,3 +21,5 @@ git cherry-pick f87158bdf5dad321fae58c64ce4fd90a4d52a976
 ```
 
 Native build products are local ignored artifacts and are not bundled. The saved run identity binds their binaries/dependencies/platform. Importing the evidence requires no experimental rerun. An outcome-informed protocol change requires a new design revision and fresh development seeds; the owner decides any next development step. Driven snapshots and numerical copy covariance do not establish autonomous closure, usefulness, background recursion or efficiency.
+
+Accounting correction, 2026-10-06: the duration wording above was amended without changing the delivered receipts or verdicts. This is the historical delivery note: its original bundle contains raw ledgers and must not be used for the present recheck delivery. The current imported run is `a9cbe83` (formerly `7e5f6b0`; see `docs/HISTORY_CLEANUP_2026-10-06_MAP.tsv`). The new recheck bundle and its explicit file whitelist are documented in [DEVELOPMENT_RECHECK_DELIVERY.md](DEVELOPMENT_RECHECK_DELIVERY.md); they exclude all raw ledgers.

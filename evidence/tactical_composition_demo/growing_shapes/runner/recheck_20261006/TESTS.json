@@ -1,0 +1,21 @@
+{
+  "label": "offline analysis fixtures only; no simulation or experimental entropy",
+  "command": [
+    ".venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "-p",
+    "no:cacheprovider",
+    "evidence/tactical_composition_demo/growing_shapes/runner/test_recheck_development.py"
+  ],
+  "awake_seconds": 0.20477958400000001,
+  "exit_code": 0,
+  "log": "TEST_LOG.txt",
+  "source_sha256": {
+    "recheck_development.py": "573f542a82807de49460fc7dcebeb9d3d37c2d3e7b2590664f28dbf8e55f93d6",
+    "recheck_validation_chance.py": "ecc01b72438eb75ad3991e2a01e64d5ebd4d067088e796ca465477ca49099790",
+    "test_recheck_development.py": "be114927f9034222c4ffc711b65d4440f8a4bb64e7e2465eb44ccfe5cc60733c"
+  }
+}

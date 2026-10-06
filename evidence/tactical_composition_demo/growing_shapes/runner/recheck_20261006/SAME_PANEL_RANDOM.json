@@ -1,0 +1,39 @@
+{
+  "label": "descriptive comparison of stored scores only; no new episodes",
+  "inputs": {
+    "development_20261006/CALIBRATION.json": "93bf6bae768bfdd9fdbce7891eed8e6e36183f601322d5333fa7adbe42f03f42",
+    "recheck_20261006/full/ANALYSIS.json": "73831bccad1a5f7140d5de9325104b4feccb0511512e2cf0f0602421d67775ee",
+    "recheck_20261006/full/SNAPSHOTS.csv": "6a614e8c0305111914b25907e3e87c1400a39f09c75246101d0b108036883c99"
+  },
+  "normalization": "unchanged 256-episode calibration",
+  "tasks": {
+    "perceive": {
+      "random_first_128_oriented_mean": -1.572409099379757,
+      "random_first_128_normalized_mean": -0.00430202768157871,
+      "stored_default_oriented_mean": -1.5579175080472514,
+      "above_same_panel_random": 290,
+      "above_floor_and_same_panel_random": 64
+    },
+    "move": {
+      "random_first_128_oriented_mean": -4.7544636176927995,
+      "random_first_128_normalized_mean": -0.041118463196056255,
+      "stored_default_oriented_mean": -4.718976980279208,
+      "above_same_panel_random": 221,
+      "above_floor_and_same_panel_random": 0
+    },
+    "remember_static": {
+      "random_first_128_oriented_mean": -1.57205755205862,
+      "random_first_128_normalized_mean": 0.00018683598149019887,
+      "stored_default_oriented_mean": -1.7413763848024941,
+      "above_same_panel_random": 51,
+      "above_floor_and_same_panel_random": 51
+    },
+    "choose": {
+      "random_first_128_oriented_mean": 0.201171875,
+      "random_first_128_normalized_mean": 0.007070676417928551,
+      "stored_default_oriented_mean": 0.375,
+      "above_same_panel_random": 300,
+      "above_floor_and_same_panel_random": 1
+    }
+  }
+}
