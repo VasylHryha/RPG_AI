@@ -1,0 +1,16 @@
+
+==================================== ERRORS ====================================
+_ ERROR collecting evidence/tactical_composition_demo/growing_shapes/runner/test_rev6.py _
+ImportError while importing test module '/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/runner/test_rev6.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/importlib/__init__.py:127: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+evidence/tactical_composition_demo/growing_shapes/runner/test_rev6.py:10: in <module>
+    from ..medium.medium import Medium, Params, Drive
+E   ImportError: attempted relative import with no known parent package
+=========================== short test summary info ============================
+ERROR evidence/tactical_composition_demo/growing_shapes/runner/test_rev6.py
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+1 error in 0.84s

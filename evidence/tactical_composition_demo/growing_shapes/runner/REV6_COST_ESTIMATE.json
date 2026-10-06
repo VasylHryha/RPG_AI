@@ -1,0 +1,80 @@
+{
+  "label": "PRE_EXECUTION_ARITHMETIC_FROM_5_1_RATES_ONLY",
+  "source": "evidence/tactical_composition_demo/growing_shapes/runner/development_20261006/COST.json",
+  "source_sha256": "94abcb6b40b397342b6fb806358b6f61664cbfb925405554cb7be643fe02cde7",
+  "rates_seconds": {
+    "training_per_step": 0.0027994747483750036,
+    "qualification_per_check": 0.5459751490576912,
+    "recovery_per_check_observed_mix": 0.13611893836538516,
+    "medium_evaluation_per_episode": 0.019114087873787718,
+    "world_episode_calibration_proxy": 0.0016758895263671875
+  },
+  "fixtures": {
+    "by_fixture": {
+      "F1": {
+        "integration_steps": 4800,
+        "seconds_proxy": 13.437478792200018
+      },
+      "F2": {
+        "integration_steps": 320,
+        "seconds_proxy": 0.8958319194800012,
+        "horizon": "two 16-second streams; empty O is an algebra check"
+      },
+      "F3_F4": {
+        "world_step_equivalents": 2,
+        "seconds_proxy": 0.005598949496750007
+      },
+      "F5": {
+        "training_steps": 16000,
+        "qualification_checks": 24,
+        "frozen_assay_episodes": 180,
+        "seconds_proxy": 64.60238988943568
+      },
+      "F6": {
+        "frozen_assay_episodes": 120,
+        "seconds_proxy": 2.293690544854526
+      },
+      "F7": {
+        "training_steps": 8000,
+        "qualification_checks": 0,
+        "seconds_proxy": 22.39579798700003
+      },
+      "F8": {
+        "training_steps": 6400,
+        "qualification_checks": 10,
+        "seconds_proxy": 24.73757926383079
+      }
+    },
+    "integration_steps": 35522,
+    "qualification_checks": 34,
+    "frozen_assay_episodes": 300,
+    "donor_capture_world_episodes": 20,
+    "serial_stage_proxy_seconds": 128.40188513682514
+  },
+  "development": {
+    "trainings": 48,
+    "training_steps": 15360000,
+    "intact_qualification_checks": 8512,
+    "snapshot_evaluation_episodes": 327680,
+    "whole_medium_evaluation_episodes": 24576,
+    "medium_intervention_episodes": 24576,
+    "total_medium_evaluation_episodes": 376832,
+    "virtual_default_random_site0_oracle_episodes": 32768,
+    "donor_capture_world_episodes": 8192,
+    "hours": {
+      "training": 11.944425593066683,
+      "qualification": 1.2909279079941853,
+      "recovery_at_observed_mix": 0.3218456676017107,
+      "medium_evaluation": 2.000777767126437,
+      "virtual_comparators_priced_at_medium_episode_proxy": 0.17398067540229886,
+      "donor_capture_at_calibration_episode_proxy": 0.0038135797222222222
+    },
+    "serial_stage_proxy_hours": 15.735771190913537
+  },
+  "sensitivity": {
+    "evaluation_hours_N24": 8.158736653082176,
+    "evaluation_hours_N64": 23.382548803126685,
+    "training_hours_N50": 50.761222229331906
+  },
+  "unpriced": "Revision-6 graph/search/mask/wall overhead, larger populations/candidate mixes, trace I/O and host contention. These proxies are neither upper bounds nor elapsed-time guarantees. Fixture gate stops can reduce actual workload. No benchmark, fixture or training was run."
+}

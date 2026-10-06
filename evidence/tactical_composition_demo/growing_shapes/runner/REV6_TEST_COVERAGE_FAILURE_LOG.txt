@@ -1,0 +1,50 @@
+.......F
+=================================== FAILURES ===================================
+_________________ test_role_measurement_histories_and_coverage _________________
+
+    def test_role_measurement_histories_and_coverage():
+        with medium() as m:
+            ordinary=m.add((4,0),0.,gain=1.)
+            output=m.add((4.2,0),0.,role='output')
+            m.frames.clear()
+            for k in range(101):
+                m.frames.append(Frame(k,k*.1,{ordinary:(4,0,math.pi*k*.1),output:(4.2,0,math.pi*k*.1)}, {0:(4,0,math.pi*k*.1,2)}, {ordinary:(output,),output:(ordinary,)}))
+            assert m.gain_signal(output) is None
+            assert m.offsets(output,0,True) is None
+            assert m.lock(output)==1.
+            assert m.covered(0)
+            assert m.gain_signal(ordinary)==1.
+            m.remove(ordinary,'SYNTHETIC')
+>           assert not m.covered(0)
+
+evidence/tactical_composition_demo/growing_shapes/runner/test_rev6.py:142: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+evidence/tactical_composition_demo/growing_shapes/medium/design_0h.py:179: in covered
+    values = self.offsets(id, site, True)
+evidence/tactical_composition_demo/growing_shapes/medium/rev6_design.py:92: in offsets
+    if sensor and self.role(id)=='output':return None
+evidence/tactical_composition_demo/growing_shapes/medium/rev6_design.py:77: in role
+    def role(self,id):return self.native.role(id)
+evidence/tactical_composition_demo/growing_shapes/medium/rev6_native.py:50: in role
+    value=C.c_int();self._call('role',id,C.byref(value))
+evidence/tactical_composition_demo/growing_shapes/native_guard.py:45: in wrapped
+    with access(owner):return function(owner,*args,**kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <evidence.tactical_composition_demo.growing_shapes.medium.rev6_native.Rev6Native object at 0x10ad46d60>
+name = 'role', args = (0, <cparam 'P' (0x10ac25288)>)
+
+    @accessed
+    def _call(self, name, *args):
+        check_owner(self)
+        if not self._handle:
+            raise RuntimeError('Medium is closed')
+        if getattr(self._lib, 'gm_' + name)(self._handle, *args) != 0:
+>           raise ValueError(self._lib.gm_error(self._handle).decode())
+E           ValueError: unknown element id
+
+evidence/tactical_composition_demo/growing_shapes/medium/medium.py:117: ValueError
+=========================== short test summary info ============================
+FAILED evidence/tactical_composition_demo/growing_shapes/runner/test_rev6.py::test_role_measurement_histories_and_coverage
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 7 passed in 1.33s

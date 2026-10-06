@@ -1,0 +1,19 @@
+{
+  "scope": "tiny synthetic revision-6 unit/contract tests and construct-only dry check",
+  "command": [
+    ".venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "evidence/tactical_composition_demo/growing_shapes/runner/test_rev6.py",
+    "--basetemp=evidence/tactical_composition_demo/growing_shapes/runner/_rev6_build/pytest-tmp",
+    "-o",
+    "cache_dir=evidence/tactical_composition_demo/growing_shapes/runner/_rev6_build/pytest-cache"
+  ],
+  "seconds": 1.90684375,
+  "exit_code": 1,
+  "fixture_execution": "NOT_RUN",
+  "training_execution": "NOT_RUN",
+  "evaluation_execution": "NOT_RUN"
+}

@@ -1,0 +1,69 @@
+{
+  "version": "rev6_rhs_v1",
+  "abi": 3,
+  "numpy": "2.0.2",
+  "source_sha256": {
+    "evidence/tactical_composition_demo/growing_shapes/runner/rev6_perf.cpp": "b5f557bc34684cbd7f1c7ab54e58942b76c1f539a33d5f111ee645e9b59d00dc",
+    "evidence/tactical_composition_demo/growing_shapes/runner/perf.h": "49fb3dc65b510acaea76dc4001b1b29563a75394c62d46d423673ac252126c3c",
+    "evidence/tactical_composition_demo/growing_shapes/runner/rev6_native.py": "f5bef685f110566f85e5676dd2db9c0e3d79367cd9eb218eb79ec09c904ba9d1",
+    "evidence/tactical_composition_demo/growing_shapes/runner/build_rev6.py": "b3eeb70a3fff238182ff9be7b19a8b491d5843a7fa75edc8bdf83dec36cb118e",
+    "evidence/tactical_composition_demo/growing_shapes/native_guard.py": "d2b023e1dbc296feef3adb0840c2fd2ad4c2eda6fd396d2c5103ea5e6f815a7b",
+    "evidence/tactical_composition_demo/growing_shapes/world/world.cpp": "93fff84417baa32ff411eebfaa7b956be9036647a4662fcf6e4efa4b057de28a",
+    "evidence/tactical_composition_demo/growing_shapes/world/world.h": "cae3bb890fcfbcdab72cf64121be3e2362b0e26408ce320f61cde5c302528667",
+    "evidence/tactical_composition_demo/growing_shapes/world/world.py": "e6e8c93ecc052ad235578852cc2eb363b619f17d8ea80054be0cd7c8fa3143d7",
+    "evidence/tactical_composition_demo/growing_shapes/medium/rev6_medium.hpp": "945bbe7c62749d1d293f75bd12ae72b6886a4a07ff30ee7dd303e6f3f200685f"
+  },
+  "binary_sha256": "66dc18c6d07c00d338e8a3ee6af459526a0cc36ce75b8cfb7fb0a880d7c282a9",
+  "dependencies": {
+    "evidence/tactical_composition_demo/growing_shapes/medium/_rev6_build/rev6_medium.dylib": "7c1e6048a312af8edd549a15afba85f1e10d99974ad1e1cffdb5e5fd680e4c31",
+    "evidence/tactical_composition_demo/growing_shapes/world/_build/libgs_world.dylib": "aecb0bc1e7109a8e54bca3c1b99edf7a0f9e020ff650a1dfb0215ee5c9b662bb"
+  },
+  "command": [
+    "/usr/bin/clang++",
+    "-std=c++17",
+    "-O3",
+    "-Wall",
+    "-Wextra",
+    "-Wpedantic",
+    "-fno-fast-math",
+    "-ffp-contract=off",
+    "-fPIC",
+    "-dynamiclib",
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/runner/rev6_perf.cpp",
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/medium/_rev6_build/rev6_medium.dylib",
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/world/_build/libgs_world.dylib",
+    "-o",
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/runner/_rev6_build/rev6_perf.dylib"
+  ],
+  "medium": {
+    "version": "rev6_rhs_v1",
+    "source_sha256": {
+      "rev6_medium.cpp": "d74bba42bd9023e933efc8ad6e88c018e2f093c214c41b371f61c3ecaf291f82",
+      "rev6_medium_c.cpp": "376d46e7d11308cf0a4f3d553ceb75c73b2f896f46656905a1fa2587d9f99a7e",
+      "rev6_medium.hpp": "945bbe7c62749d1d293f75bd12ae72b6886a4a07ff30ee7dd303e6f3f200685f",
+      "medium_c.h": "7838d1f6a8085b36a9d84a929b1635526c519505e8b1eac1e47cebb78066ee43",
+      "rev6_native.py": "1690d4dc5d86412e61b13ac40cdde2613d7a91bc3c95d99d83afaead13dee0d8",
+      "medium.py": "c4e034f3708a424d63da571f083f0d3e44699fd5ba77694258a7c8988ef17fc4",
+      "build_rev6.py": "b145add4457d7eccf976dce3734a4817bacc1b42feff989321a32cd343bb2563",
+      "../native_guard.py": "d2b023e1dbc296feef3adb0840c2fd2ad4c2eda6fd396d2c5103ea5e6f815a7b"
+    },
+    "binary_sha256": "7c1e6048a312af8edd549a15afba85f1e10d99974ad1e1cffdb5e5fd680e4c31",
+    "command": [
+      "/usr/bin/clang++",
+      "-std=c++17",
+      "-O3",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-fno-fast-math",
+      "-ffp-contract=off",
+      "-fPIC",
+      "-dynamiclib",
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/medium/rev6_medium.cpp",
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/medium/rev6_medium_c.cpp",
+      "-o",
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/medium/_rev6_build/rev6_medium.dylib"
+    ],
+    "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)"
+  }
+}

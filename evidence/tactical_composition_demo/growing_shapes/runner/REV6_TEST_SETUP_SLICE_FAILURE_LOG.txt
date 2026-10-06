@@ -1,0 +1,24 @@
+...........F
+=================================== FAILURES ===================================
+____________ test_post_trial_birth_acceptance_and_full_order_quota _____________
+
+    def test_post_trial_birth_acceptance_and_full_order_quota():
+        with medium() as m:
+            for s in range(8):
+                angle=s*math.pi/4;m.add((4*math.cos(angle),4*math.sin(angle)),0)
+            m.drives=[drive(s,4*math.cos(s*math.pi/4),4*math.sin(s*math.pi/4)) for s in range(8)]
+            m.frames.clear();m.record();m.novelty={s:20. for s in range(8)}
+            added=m.growth()
+            births=[e['rule'] for e in m.events if e['rule'] in ('B-out','B-path','B1')]
+>           assert births==['B-out','B-path','B-path','B1','B1']
+E           AssertionError: assert ['B1', 'B1', ...1', 'B1', ...] == ['B-out', 'B-...', 'B1', 'B1']
+E             
+E             At index 0 diff: 'B1' != 'B-out'
+E             Left contains 8 more items, first extra item: 'B1'
+E             Use -v to get more diff
+
+evidence/tactical_composition_demo/growing_shapes/runner/test_rev6.py:205: AssertionError
+=========================== short test summary info ============================
+FAILED evidence/tactical_composition_demo/growing_shapes/runner/test_rev6.py::test_post_trial_birth_acceptance_and_full_order_quota
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 11 passed in 0.83s

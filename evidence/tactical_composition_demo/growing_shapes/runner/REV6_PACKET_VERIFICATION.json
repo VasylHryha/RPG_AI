@@ -1,0 +1,28 @@
+{
+  "status": "VERIFIED",
+  "archive": "REV6_SPECIFICATION_STOP_PACKET.tar.gz",
+  "archive_sha256": "deab81fc858373f530de5c3e24cd1270f052b9d015feb8fac7d702ac4c5ccc60",
+  "archive_bytes": 69902,
+  "members": [
+    "REV6_INTEGRATION_REPORT.md",
+    "REV6_DELIVERY.md",
+    "REV6_SEED_INVENTORY.json",
+    "REV6_COST_ESTIMATE.json",
+    "REV6_DOCUMENT_CONTRACTS.json",
+    "REV6_PACKET_MANIFEST.json"
+  ],
+  "manifest_sha256": "77d8cc34ee72447405084e2c5a71f4b99ff72107756c13756910b4e159d62b02",
+  "checks": [
+    "exact member allowlist",
+    "complete archive byte read-back matches workspace",
+    "manifest SHA256 and sizes match every payload",
+    "every member and archive below 50 MB",
+    "202 original tracked growing_shapes files unchanged"
+  ],
+  "commit_created": false,
+  "git_metadata_written": false,
+  "reason": "Workspace .git read-only in supplied permission profile; verified archive fallback",
+  "fixture_execution": "NOT_RUN",
+  "development_execution": "NOT_RUN",
+  "integration_implemented": false
+}
