@@ -38,7 +38,9 @@
 | A4 | Add 19.9 comparators (input average, K = 0, frozen positions) and review notes D1–D3 | DONE (`855d931`; 71 tests; Claude's short check READY_FOR_FIXTURES) | Codex, then a short Claude check | — |
 | A5 | **Engineering tests F1–F9** | DONE: **FIXTURES_FAIL at F1b** (a 3-link path is too slow: 15.4 s; F1c compacts); F2–F4 pass; F5–F9 blocked (`growing_shapes/runner/REV6_FIXTURE_REPORT.md`) | Codex | done |
 | A6 | Read the F results | DONE: a timescale mismatch (phase coupling far slower than the task clock) plus compaction | Claude | — |
-| A6b | **Revision 7** (`DESIGN_0H_REV7.md`, now 7.2): phase speed-up λ = 8, pinned ends with separate neighbour lists, freeze-not-reset demand, empty start, numerical fixture N1, a frame excursion bound | Codex round 3 **CHANGES_REQUIRED** (`docs/reviews/tactical_0h_rev7_design_review_codex_r3.md`): restore inherited stop rules, define pair-validity masks, add numerical position comparison; comparator scope is a low note. Claude's repair dispositions pending. | Claude drafts, Codex reviews | repair and review before Codex implements and Claude reviews; the fixtures (under 1 hour) then run under decision 0031 |
+| A6b | **Revision 7.3** (`DESIGN_0H_REV7.md`): λ = 8, pinned ends with separate neighbour lists, freeze-not-reset demand, empty start, N1, validity masks | DONE: **Codex round 4 APPROVE_WITH_NOTES** (12 → 7 → 4 → 3 low; notes applied) | Claude drafts, Codex reviews | — |
+| A6c | Revision-7 integration (new files) | **RUNNING** (Codex; prompt `scratchpad/impl7_prompt.txt`) | Codex, then a Claude implementation review with the owner's recheck prompt | — |
+| A6d | Fixtures N1, F1–F9 (under 1 hour) | — | Codex | decision 0031: no separate approval after a passing review |
 | A7 | Cost projection from the measured F rates | — | Codex | — |
 | A8 | **The development run** (48 trainings, about 16 h or more of serial compute) | — | Codex | **[OWNER] approve the run and its time** |
 | A9 | Review the results, then the owner's recheck | — | Claude, then Codex | — |
