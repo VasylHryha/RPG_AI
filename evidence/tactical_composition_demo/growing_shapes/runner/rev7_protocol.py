@@ -1,4 +1,4 @@
-"""Revision-7.4 identity, entropy, decoder, inference and registered stop rules."""
+"""Revision-7.5 identity, entropy, decoder, inference and registered stop rules."""
 import hashlib
 import math
 import numpy as np

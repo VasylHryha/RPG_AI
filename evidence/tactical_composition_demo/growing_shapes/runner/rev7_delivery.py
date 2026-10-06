@@ -5,10 +5,11 @@ import json
 from pathlib import Path
 import tarfile
 from .rev7_identity import HERE,ROOT,assert_inputs
+from .rev7_config import CONFIG
 
 MAX_BYTES=50_000_000
-ARCHIVE=HERE/'REV7_SOURCE_ONLY.tar.gz'
-MANIFEST=HERE/'REV7_SOURCE_ONLY_MANIFEST.json'
+ARCHIVE=HERE/'REV75_SOURCE_ONLY.tar.gz'
+MANIFEST=HERE/'REV75_SOURCE_ONLY_MANIFEST.json'
 
 
 def package():
@@ -16,9 +17,12 @@ def package():
     base=HERE.parent
     paths=list(base.glob('medium/rev7_*.*'))+[base/'medium/build_rev7.py']
     paths+=list(HERE.glob('rev7_*.py'))+[HERE/'test_rev7.py']
-    paths+=[p for p in HERE.glob('REV7_*') if p.is_file() and p not in (ARCHIVE,MANIFEST,HERE/'REV7_DELIVERY_NOTE.md',HERE/'REV7_DELIVERY_VERIFICATION.json')]
+    paths+=[p for p in HERE.glob('REV7_*') if p.is_file() and not p.name.endswith('.tar.gz') and p not in (HERE/'REV7_DELIVERY_NOTE.md',HERE/'REV7_DELIVERY_VERIFICATION.json',HERE/'REV7_SOURCE_ONLY_MANIFEST.json')]
     paths+=list((HERE/'rev73_integration_history').glob('REV7_*'))
     paths+=list((HERE/'rev74_failed_synthetic_attempt').glob('*'))
+    paths+=list((HERE/'rev74_integration_history').glob('*'))
+    paths+=[p for p in (HERE/'rev75_delivery').glob('*') if p.is_file() and p.name not in ('DELIVERY_NOTE.md','DELIVERY_VERIFICATION.json')]
+    paths+=[ROOT/'docs/reviews/tactical_0h_rev75_design_review_codex.md']
     forbidden={'.dylib','.so','.dll','.o','.obj','.a','.lib','.pyc'}
     entries={}
     for p in sorted(set(paths)):
@@ -30,7 +34,7 @@ def package():
             if len(data)>=MAX_BYTES:raise ValueError(f'oversize compressed receipt: {p}')
             p.write_bytes(data)
         entries[str(p.relative_to(ROOT))]=dict(bytes=len(data),sha256=hashlib.sha256(data).hexdigest())
-    manifest=dict(kind='SOURCE_ONLY',revision='7.4',execution_pin_sha256=identity['pin_sha256'],files=entries,
+    manifest=dict(kind='SOURCE_ONLY',revision=CONFIG['revision'],execution_pin_sha256=identity['pin_sha256'],files=entries,
         native_products='EXCLUDED',fixture_execution='NOT_RUN',provenance='Assisted-by: Codex:GPT-6')
     MANIFEST.write_text(json.dumps(manifest,sort_keys=True,indent=2)+'\n')
     with tarfile.open(ARCHIVE,'w:gz') as output:

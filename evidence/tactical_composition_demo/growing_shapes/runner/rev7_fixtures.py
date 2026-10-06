@@ -12,7 +12,7 @@ from .rev7_protocol import generator, seed, template, copy_template, bindings, p
 from .rev7_run import Run
 from .rev7_evaluator import Evaluator, reused_calibration
 from .rev7_execution import Execution
-from .rev7_config import N1_RECIPES,CONFIG_SHA256,PRODUCTION_H,REFINEMENT_H,WORLD_DT,F1D_SCALES
+from .rev7_config import CONFIG,N1_RECIPES,N1_SADDLE_DIAGNOSTIC,CONFIG_SHA256,PRODUCTION_H,REFINEMENT_H,WORLD_DT,F1D_SCALES
 
 CHECKPOINTS=(40,45,50)
 F6_PAIRS=tuple((10000788+j,10000798+j) for j in range(10))
@@ -186,8 +186,8 @@ class Harness:
                         records.append(dict(time=m.time,phases=[e.phase-math.pi*m.time for e in es],positions=[[e.x,e.y] for e in es],free=[m.role(e.id)!='output' for e in es],phase_topology=m.phase_topology(),motion_topology=diag['motion_neighbors'],excursion=diag['excursion'],used_pairs=sorted({tuple(sorted((target,source))) for target,sources in m.phase_topology().items() for source in sources}),pin_invariant=all((e.x,e.y)==m.native.pin(e.id)[1] for e in es if m.role(e.id)=='output'),minimum_distances=minimum_distances(m)))
                     runs.append(records)
                 finally:m.close()
-            cases[name]=compare_n1(runs[0],runs[1],recipe['entry'],recipe['entry_member'],seconds=recipe['seconds'])
-        return dict(verdict='PASS' if all(c['verdict']=='PASS' for c in cases.values()) else 'FAIL',cases=cases,configuration_sha256=CONFIG_SHA256,deterministic_no_entropy=True)
+            cases[name]=n1_case_result(name,runs[0],runs[1])
+        return dict(verdict=n1_verdict(cases),cases=cases,configuration_sha256=CONFIG_SHA256,deterministic_no_entropy=True)
 
     def F1d(self):
         self.require('F1');runs={}
@@ -384,7 +384,7 @@ class Harness:
             from .rev7_protocol import stops
             gates=stops(dict(N1_failed_or_invalid=self.results.get('N1',{}).get('verdict') in ('FAIL','INVALID'),fixture_invalid=any(r['verdict']=='INVALID' for r in self.results.values()),F1_F4_failed=any(self.results.get(n,{}).get('verdict')=='FAIL' for n in ('F1','F2','F3','F4')),F5_failed=self.results.get('F5',{}).get('verdict')=='FAIL',F7_unmatched=self.results.get('F7',{}).get('verdict')=='FAIL'))
             from .rev7_reporting import INTERPRETATION
-            return dict(revision='7.4',identity_snapshot=self.identity_snapshot,interpretation=INTERPRETATION,results=self.results,stops=gates,not_run=[n for n in ('N1','F1','F2','F3','F4','F5','F6','F7','F8','F9') if n not in self.results],calibration=self.calibration)
+            return dict(revision=CONFIG['revision'],identity_snapshot=self.identity_snapshot,interpretation=INTERPRETATION,results=self.results,stops=gates,not_run=[n for n in ('N1','F1','F2','F3','F4','F5','F6','F7','F8','F9') if n not in self.results],calibration=self.calibration)
         finally:self.close()
 
 
@@ -429,9 +429,44 @@ def f1c_response(records):
         four_second_margin_met=sustained is not None and sustained<=12+1e-9,margin_used_in_verdict=False,sustained_entry_hold_until=24.)
 
 
-def compare_n1(a,b,entry,entry_member=0,*,seconds=16.):
+def n1_saddle_slip(rows,initial_phase):
+    """Endpoint-resolved unwrapped escape diagnostic, never an accuracy gate."""
+    member=N1_SADDLE_DIAGNOSTIC['member'];cut=N1_SADDLE_DIAGNOSTIC['departure_radians']
+    first=next((j for j,r in enumerate(rows) if abs(r['phases'][member]-initial_phase)>=cut),None)
+    displacement=rows[-1]['phases'][member]-initial_phase
+    crossed=None if first is None else rows[first]['phases'][member]-initial_phase
+    return dict(status='NOT_OBSERVED' if first is None else 'OBSERVED',member=member,initial_phase=initial_phase,
+        departure_radians=cut,direction=None if crossed is None else (1 if crossed>0 else -1),
+        time_seconds=None if first is None else rows[first]['time'],
+        time_bracket_seconds=None if first is None else [0. if first==0 else rows[first-1]['time'],rows[first]['time']],
+        displacement_at_departure=crossed,final_unwrapped_phase=rows[-1]['phases'][member],
+        final_unwrapped_displacement=displacement,horizon_seconds=rows[-1]['time'],used_in_verdict=False)
+
+
+def n1_case_result(name,a,b):
+    recipe=N1_RECIPES[name]
+    result=compare_n1(a,b,recipe['entry'],recipe['entry_member'],seconds=recipe['seconds'],used_in_verdict=recipe['used_in_verdict'])
+    if name=='N1g':
+        result['interpretation']='SENSITIVITY_NOT_ACCURACY'
+        result['slip_definition']=N1_SADDLE_DIAGNOSTIC
+        initial=recipe['members'][N1_SADDLE_DIAGNOSTIC['member']][2]
+        result['slip']=[dict(h=h,**n1_saddle_slip(rows,initial)) for h,rows in zip((PRODUCTION_H,REFINEMENT_H),(a,b))]
+    return result
+
+
+def n1_verdict(cases):
+    """Require all registered cases; only N1a-f contribute accuracy cuts."""
+    if set(cases)!=set(N1_RECIPES):raise ValueError('INVALID: incomplete N1 cases')
+    for name,recipe in N1_RECIPES.items():
+        expected=('PASS','FAIL') if recipe['used_in_verdict'] else ('DESCRIPTIVE',)
+        if cases[name].get('verdict') not in expected or cases[name].get('used_in_verdict') is not recipe['used_in_verdict']:
+            raise ValueError('INVALID: N1 case verdict policy mismatch')
+    return 'PASS' if all(cases[name]['verdict']=='PASS' for name,recipe in N1_RECIPES.items() if recipe['used_in_verdict']) else 'FAIL'
+
+
+def compare_n1(a,b,entry,entry_member=0,*,seconds=16.,used_in_verdict=True):
     count=round(seconds/WORLD_DT)
-    if len(a)!=count or len(b)!=count or any(abs(row['time']-(j+1)*WORLD_DT)>1e-9 for rows in (a,b) for j,row in enumerate(rows)):raise ValueError('INVALID: unmatched N1 endpoints')
+    if len(a)!=count or len(b)!=count or any(not math.isfinite(row['time']) or abs(row['time']-(j+1)*WORLD_DT)>1e-9 for rows in (a,b) for j,row in enumerate(rows)):raise ValueError('INVALID: unmatched N1 endpoints')
     # Missing/non-finite measurements cannot become FAIL or a topology agreement.
     for rows in (a,b):
         for row in rows:
@@ -448,7 +483,9 @@ def compare_n1(a,b,entry,entry_member=0,*,seconds=16.):
     entry_pass=not entry or (times==[None,None]) or all(t is not None for t in times) and abs(times[0]-times[1])<=.1+1e-12
     validity=n1_validity(a,b)
     holds=[t is not None and all(abs(float(wrap(r['phases'][entry_member]-math.pi/2)))<=.3 for r in rows if t<=r['time']<=24+1e-9) for t,rows in zip(times,(a,b))] if entry and seconds>=24 else None
-    return dict(verdict='PASS' if wrapped<=.01 and unwrapped<=.01 and position<=.01 and phase_top>=.99 and motion_top>=.99 and pins and entry_pass else 'FAIL',maximum_wrapped_phase=wrapped,maximum_unwrapped_phase=unwrapped,maximum_free_position=position,Ntheta_agreement=phase_top,Nx_agreement=motion_top,pins_invariant=pins,entry_applicable=entry,entry_times=times,entry_pass=entry_pass,entry_hold_through_24=holds,hold_used_in_verdict=False,records=[a,b],seconds=seconds,h=[PRODUCTION_H,REFINEMENT_H],substeps=[20,80],phase_scale=32.,validity=validity,fast_transient_frames=validity['individual_invalid_frames'])
+    verdict='DESCRIPTIVE'
+    if used_in_verdict:verdict='PASS' if wrapped<=.01 and unwrapped<=.01 and position<=.01 and phase_top>=.99 and motion_top>=.99 and pins and entry_pass else 'FAIL'
+    return dict(verdict=verdict,used_in_verdict=used_in_verdict,maximum_wrapped_phase=wrapped,maximum_unwrapped_phase=unwrapped,maximum_free_position=position,Ntheta_agreement=phase_top,Nx_agreement=motion_top,pins_invariant=pins,entry_applicable=entry,entry_times=times,entry_pass=entry_pass,entry_hold_through_24=holds,hold_used_in_verdict=False,records=[a,b],seconds=seconds,h=[PRODUCTION_H,REFINEMENT_H],substeps=[20,80],phase_scale=32.,validity=validity,fast_transient_frames=validity['individual_invalid_frames'])
 
 
 def n1_validity(a,b):

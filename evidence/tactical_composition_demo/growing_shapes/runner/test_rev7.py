@@ -16,7 +16,7 @@ from evidence.tactical_composition_demo.growing_shapes.runner import rev7_protoc
 from evidence.tactical_composition_demo.growing_shapes.runner.rev7_config import CONFIG,CONFIG_SHA256,N1_RECIPES,PIN_TABLE
 from evidence.tactical_composition_demo.growing_shapes.runner.rev7_inventory import construct,check_disjoint
 from evidence.tactical_composition_demo.growing_shapes.runner.rev7_execution import Execution
-from evidence.tactical_composition_demo.growing_shapes.runner.rev7_fixtures import scaffold,literal_start,compare_n1,f1c_response,Harness
+from evidence.tactical_composition_demo.growing_shapes.runner.rev7_fixtures import scaffold,literal_start,compare_n1,n1_case_result,n1_verdict,f1c_response,Harness
 from evidence.tactical_composition_demo.growing_shapes.runner.rev7_run import Run
 from evidence.tactical_composition_demo.growing_shapes.runner.rev7_control import Matched,Queue
 from evidence.tactical_composition_demo.growing_shapes.runner import rev7_qualification as q
@@ -465,9 +465,11 @@ def test_development_fixture_receipt_requires_all_gates_and_current_pin(tmp_path
     from evidence.tactical_composition_demo.growing_shapes.runner.rev7_execution import validate_fixture_receipt
     with pytest.raises(PermissionError,match='required'):validate_fixture_receipt('', 'pin')
     path=tmp_path/'synthetic_fixture.json'
-    value=dict(revision='7.4',identity_snapshot=dict(pin_sha256='pin'),results={name:dict(verdict='DESCRIPTIVE' if name in ('F6','F8','F9') else 'PASS') for name in ('N1','F1','F2','F3','F4','F5','F6','F7','F8','F9')},not_run=[],stops=[])
+    value=dict(revision=CONFIG['revision'],identity_snapshot=dict(pin_sha256='pin'),results={name:dict(verdict='DESCRIPTIVE' if name in ('F6','F8','F9') else 'PASS') for name in ('N1','F1','F2','F3','F4','F5','F6','F7','F8','F9')},not_run=[],stops=[])
     path.write_text(json.dumps(value));assert validate_fixture_receipt(path,'pin')['sha256']
     with pytest.raises(PermissionError,match='mismatch'):validate_fixture_receipt(path,'stale-pin')
+    stale=deepcopy(value);stale['revision']='7.4';path.write_text(json.dumps(stale))
+    with pytest.raises(PermissionError,match='mismatch'):validate_fixture_receipt(path,'pin')
     for name in ('N1','F1','F2','F3','F4','F5','F7'):
         failed=deepcopy(value);failed['results'][name]['verdict']='FAIL';path.write_text(json.dumps(failed))
         with pytest.raises(PermissionError,match='FAIL'):validate_fixture_receipt(path,'pin')
@@ -499,13 +501,13 @@ def test_clock_ledger_declared_units_no_rescaled_admission_windows():
         assert INTERPRETATION['revision_7_motion']['status']=='DESCRIPTIVE'
 
 
-def test_rev74_configuration_identity_and_N1f_literal_recipe():
+def test_rev75_configuration_identity_and_N1f_literal_recipe():
     from evidence.tactical_composition_demo.growing_shapes.runner.rev7_config import F1D_SCALES
-    assert CONFIG['revision']=='7.4' and CONFIG['phase_scale']==32.
+    assert CONFIG['revision']=='7.5' and CONFIG['phase_scale']==32.
     assert CONFIG['excursion']['h']==.005 and CONFIG['excursion']['substeps']==20
     assert CONFIG['N1']['h']==[.005,.00125] and CONFIG['N1']['substeps']==[20,80]
     assert F1D_SCALES==(1.,8.,32.) and CONFIG['F1']['F1d']['h']==.005
-    assert set(N1_RECIPES)=={'N1a','N1b','N1c','N1d','N1e','N1f'}
+    assert set(N1_RECIPES)=={'N1a','N1b','N1c','N1d','N1e','N1f','N1g'}
     m=scaffold('F1c')
     try:
         assert N1_RECIPES['N1f']['members']==[[e.x,e.y,e.phase,e.rate,m.native.gain(e.id),m.role(e.id)] for e in m.native.elements]
@@ -515,6 +517,84 @@ def test_rev74_configuration_identity_and_N1f_literal_recipe():
         altered=deepcopy(CONFIG);altered[key]=value
         assert hashlib.sha256(p.canonical(altered)).hexdigest()!=CONFIG_SHA256
     with pytest.raises(ValueError,match='solver'):Rev7Medium(h=.02)
+
+
+def test_rev75_offset_and_saddle_preserve_old_recipes_and_inside_cutoff():
+    previous=json.loads((HERE/'rev74_integration_history/REV7_SOURCE_IDENTITY.json').read_text())['configuration']['N1']['recipes']
+    for name,recipe in N1_RECIPES.items():
+        prior=deepcopy(previous['N1d' if name=='N1g' else name])
+        if name=='N1d':prior['members'][0][2]=math.pi-.5
+        assert {k:v for k,v in recipe.items() if k!='used_in_verdict'}==prior
+        assert recipe['used_in_verdict'] is (name!='N1g')
+    d,g=N1_RECIPES['N1d'],N1_RECIPES['N1g']
+    assert d['members'][0][2]==math.pi-.5 and g['members'][0][2]==math.pi
+    assert abs(d['sites'][0][0]-d['members'][0][0])==pytest.approx(.3,rel=0,abs=1e-15)
+    assert abs(d['sites'][0][0]-d['members'][1][0])<CONFIG['site_body_r0']
+    changed=deepcopy(CONFIG);changed['N1']['saddle_diagnostic']['departure_radians']=.25
+    assert hashlib.sha256(p.canonical(changed)).hexdigest()!=CONFIG_SHA256
+    changed=deepcopy(CONFIG);changed['N1']['recipes']['N1g']['used_in_verdict']=True
+    assert hashlib.sha256(p.canonical(changed)).hexdigest()!=CONFIG_SHA256
+
+
+def synthetic_saddle_records():
+    """Fabricated endpoints; neither a solver nor Harness.N1 is called."""
+    return [dict(time=(j+1)*.1,phases=[math.pi,0.],positions=[[3.7,0.],[3.956,0.]],
+        free=[True,True],phase_topology={0:[1],1:[0]},motion_topology={0:[1],1:[0]},
+        pin_invariant=True,excursion={0:0.,1:0.}) for j in range(160)]
+
+
+@pytest.mark.parametrize('direction',[-1,1])
+@pytest.mark.parametrize('first',[0,4])
+def test_N1g_slip_direction_time_and_unwrapped_winding_synthetic(direction,first):
+    rows=synthetic_saddle_records()
+    for r in rows[first:]:r['phases'][0]=math.pi+direction*.5
+    rows[-1]['phases'][0]=math.pi+direction*2*math.pi
+    result=n1_case_result('N1g',rows,deepcopy(rows))
+    assert result['verdict']=='DESCRIPTIVE' and result['used_in_verdict'] is False
+    assert result['interpretation']=='SENSITIVITY_NOT_ACCURACY'
+    for h,slip in zip((.005,.00125),result['slip']):
+        assert slip['h']==h and slip['status']=='OBSERVED' and slip['direction']==direction
+        assert slip['time_seconds']==rows[first]['time']
+        assert slip['time_bracket_seconds']==[0. if first==0 else rows[first-1]['time'],rows[first]['time']]
+        assert slip['final_unwrapped_displacement']==pytest.approx(direction*2*math.pi,rel=0,abs=1e-14)
+        assert slip['horizon_seconds']==16. and slip['used_in_verdict'] is False
+
+
+def test_N1g_censored_branch_and_accuracy_gate_exclusion_synthetic():
+    a,b=synthetic_saddle_records(),synthetic_saddle_records()
+    for r in a:r['phases'][0]=math.pi-.4 # below the declared diagnostic cut
+    quiet=n1_case_result('N1g',a,b)
+    for slip in quiet['slip']:
+        assert slip['status']=='NOT_OBSERVED' and slip['direction'] is None
+        assert slip['time_seconds'] is None and slip['time_bracket_seconds'] is None
+    for rows,phase in ((a,0.),(b,2*math.pi)):
+        for r in rows:r['phases'][0]=phase
+    b[0]['positions'][0][0]+=1.
+    b[0]['phase_topology']={0:[],1:[]};b[0]['pin_invariant']=False
+    diagnostic=n1_case_result('N1g',a,b)
+    assert diagnostic['verdict']=='DESCRIPTIVE' and diagnostic['maximum_unwrapped_phase']==pytest.approx(2*math.pi)
+    assert diagnostic['maximum_free_position']==1. and not diagnostic['pins_invariant']
+    assert [s['direction'] for s in diagnostic['slip']]==[-1,1]
+    cases={name:dict(verdict='PASS',used_in_verdict=True) for name in N1_RECIPES if name!='N1g'}
+    cases['N1g']=diagnostic
+    assert n1_verdict(cases)=='PASS'
+    cases['N1d']=n1_case_result('N1d',a,b)
+    assert cases['N1d']['verdict']=='FAIL' and n1_verdict(cases)=='FAIL'
+    del cases['N1g']
+    with pytest.raises(ValueError,match='incomplete'):n1_verdict(cases)
+
+
+def test_N1g_descriptive_still_rejects_invalid_measurements_and_policy_synthetic():
+    rows=synthetic_saddle_records();bad=deepcopy(rows);bad[0]['phases'][0]=float('nan')
+    with pytest.raises(ValueError,match='nonfinite'):n1_case_result('N1g',rows,bad)
+    with pytest.raises(ValueError,match='unmatched'):n1_case_result('N1g',rows,rows[:-1])
+    for invalid in (float('nan'),float('inf')):
+        bad=deepcopy(rows);bad[0]['time']=invalid
+        with pytest.raises(ValueError,match='unmatched'):n1_case_result('N1g',rows,bad)
+    bad=deepcopy(rows);del bad[0]['excursion'][1]
+    with pytest.raises(ValueError,match='INVALID'):n1_case_result('N1g',rows,bad)
+    cases={name:dict(verdict='PASS',used_in_verdict=True) for name in N1_RECIPES}
+    with pytest.raises(ValueError,match='policy'):n1_verdict(cases)
 
 
 @pytest.mark.parametrize('h',[.005,.00125])
