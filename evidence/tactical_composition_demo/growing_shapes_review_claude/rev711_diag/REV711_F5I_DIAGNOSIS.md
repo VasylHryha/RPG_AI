@@ -1,9 +1,9 @@
-DIAGNOSED (narrowed, revision 2): in the empty-start trajectory each closing link is lost because the motion law pulls the bridge tip back; in the scaffold pilots, growth succeeded only when started from a driven root mass inside the sensor ring; no tested rule change sustained late connectivity in both starts
+DIAGNOSED (narrowed, revision 3): in the empty-start trajectory each closing link is lost because the motion law pulls the bridge tip back; no tested intervention sustained late training connectivity in both starts; the seeded trajectory is sensitive to its scaffold, but no minimal embryo is identified
 
 # Why F5(i) (growth from an empty start) fails: diagnosis after revision 7.11
 
 **Date:** 2026-10-07 (night). **Author:** Claude (claude-opus-5-5), drafter of revisions 7.x.
-**Revision 2.** It answers Codex's owner recheck `docs/reviews/tactical_0h_rev711_diagnosis_recheck_codex.md` (CHANGES_REQUIRED, R1–R4); see the self-audit in section 7. Revision 1 is in git at `15cda3e` and `fa367a0`.
+**Revision 3.** It answers Codex's owner rechecks round 1 (`docs/reviews/tactical_0h_rev711_diagnosis_recheck_codex.md`, R1–R4) and round 2 (`…_r2.md`, R2-F1 to R2-F4); see section 7. Earlier revisions are in git (`15cda3e`, `fa367a0`, `739b167`, `423591c`).
 
 **Status:** diagnostic and pilot evidence only. No verdict, no fixture result, no pinned file changed.
 - Pilots patch behaviour **in-process only**, or run on a **scratch copy**.
@@ -55,68 +55,115 @@ The motion law (`medium/rev7_medium.cpp`, the `rhs` loop) gives each element the
 
 ## 3. Pilots
 
-**The metric is a late training-connectivity diagnostic, not E.** Per training step, the number of active sites with a strong path to O, divided by the number of active sites, averaged over t > 640 s.
-- **It differs from E.** F5's E is an unconditional per-site path frequency, measured on fresh growth-frozen assay copies from checkpoints 40/45/50, and the gate uses max over sites.
-- **So the diagnostic must not be compared with E's 0.5 gate.** For example, the baseline seeded run scores 0.323 on it, while its late unconditional site-0 frequency is 0.70 and its fixture max(E) is 0.80.
-- Zero training connectivity also does not prove zero connectivity in assay copies. The pilots do not measure A or B.
+**The metric is a late training-connectivity diagnostic, not E.** Per training step, the number of active sites with a strong path to O is divided by the number of active sites; this is averaged over t > 640 s, each step weighted equally.
+- F5's E is an unconditional per-site path frequency, measured on fresh growth-frozen assay copies from checkpoints 40/45/50, and its gate uses max over sites. **So the diagnostic must not be compared with E's 0.5 gate.**
+  - For example, the baseline seeded run scores 0.323 on it, while its late unconditional site-0 frequency is 0.70 and its fixture max(E) is 0.80.
+- Zero training connectivity does not prove an assay FAIL. The pilots measure no A or B.
 
-All pilots run the 50 F5 episodes (800 s) with the fixture keys.
+**Path exposure, one definition throughout.** Recomputed from the stored traces (`durations.txt`), without rerunning:
+- "present" = a sample with a strong path for **any** active site;
+- "longest any-site interval" = the longest run of consecutive present 0.1 s samples (start–end, and the sample count);
+- "longest same-site run" = the longest run for one site.
+  - Sites are active only part of the time, so an any-site interval can join different sites, and an inactive episode can interrupt a site's run without the chain breaking.
 
-| Pilot (what changed) | (i) late connectivity | (i) longest continuous path | (ii) late connectivity | (ii) longest continuous path | Note |
-|---|---:|---:|---:|---:|---|
-| Baseline (7.11 law) | **0.000** | 16.7 s | 0.323 | (site 0: 0.70 of late steps) | — |
-| **Stricter trial graph** (edges incident to the newborn pruned below 1.0 /s in the trial graph only) | 0.000 | 16.7 s | 0.323 | — | Traces and events identical to the baseline: a deficit-reducing birth is still accepted. **This does not test a rule that requires a robust closing edge.** |
-| **Robust service** (B-path decisions use 1.0 /s; E, B1 and measurement keep 0.5) | 0.000 | 44.2 s (440–484 s) | 0.433 | 288 s | Active and verified. Connectivity rises, but is not sustained late in (i) |
-| **Budget 96** (admission and D3 limits) | 0.003 | 16.7 s | — | — | 67 elements |
-| **Budget 128** | 0.015 | 16.7 s | — | — | 81 elements; zero cost/cap refusals and zero D3. Not sustained **within 800 s with this scheduler**; a larger budget with a different scheduler or horizon is not ruled out |
-| **Local motion kernel** (scratch; every element and site pair term, attraction and repulsion, × exp(−r²)) | 0.003 | — | 0.000 | — | Both lose late training connectivity. Says nothing about bonded or other local laws |
-| **Bidirectional B-path** (every second B-path birth grows from O's side toward the roots) | **0.605** | **677.5 s** (site max 0.8) | **0.000** | 2.7 s | (i) connects and holds. In (ii), each lone output-side birth, about 15 times at (0.05, −0.09), is pulled into the seed structure |
-| **Motion range 1.5 m.u.** (scratch; the N^x cutoff, 3 → 1.5) | 0.337 | path held from 461.5 s | 0.000 | — | — |
-| Motion range 1.5 + bidirectional | 0.323 | held from 272 s | 0.096 | — | — |
-| **O placement swapped** ((i): B-out puts O at (−0.5, 0); (ii): literal O at (0, 0)) | **0.000** | — | **0.409** | held from 272 s (sites 0, 6, 7: 0.7, 0.8, 0.4) | **O's position is not what separates the two starts** |
-| **Scaffold: hexagon on the ring** ((ii) with the six-element hexagon centred at (4.0, 0) on site 0 instead of (3.1, 0)) | — | — | **0.000** | never | Moving the seed onto the ring makes (ii) fail like (i) |
-| **Scaffold: random phases** ((ii) hexagon phases uniform from a fixed pilot RNG) | — | — | 0.397 | held from 272 s | Phase coherence of the seed is not needed |
-| **Scaffold: zero gain** ((ii) hexagon elements are not driven roots) | — | — | **0.000** | never | The seed must be driven roots |
-| **Inward B1** (B1's spiral centred 0.9 or 0.6 m.u. inward from the site; one root per B1 birth) | 0.000 (both offsets) | (20 s-held episode at 380 s only) | 0.362 (0.9) | held from 272 s | A single inward root does not reproduce the seed's effect; (ii) unaffected |
-| **B1 root groups** (the first B1 birth at each site becomes a compact group of 3 or 6 driven roots 0.9 m.u. inward; `pilot_rootgroup.py`) | 0.000 (3 and 6) | held from 330 s (group 3) only; any path 31% of all steps (group 3) | 0.363 (group 3) | held from 272 s | Groups form at **every** demanding site (14–18 extra births), which splits the budget; (ii) has exactly **one** group |
+**All valid pilots ran 8,000 training steps (800 s) with the fixture keys.**
+- **One pilot is INVALID and preserved as such:** range 1.5 + bidirectional on (ii) (`kpilot_r15bidir_ii`), finding R2-F1 in section 7.
+  - Its recovery clones inherited the closure-wrapped `integrate` and advanced the **live** run: 9,200 steps ending at 920 s.
+  - Its 0.096 is withdrawn.
+  - The other 25 traces have exactly 8,000 steps ending at 800 s and **no recovery candidates**, so this defect did not touch them.
+
+| Pilot (what changed) | Start | Late connectivity | Present samples (first–last present) | Longest any-site interval (samples) | Longest same-site run (samples) |
+|---|---|---:|---|---|---|
+| Baseline (7.11 law) | (i) | **0.000** | 365 (220.1–456.7) | 440.1–456.7 (167) | site 3 (167) |
+| Baseline (7.11 law) | (ii) | 0.323 | 5,020 (140.1–800.0) | 272.1–608.0 (3,360) | site 2 (960) |
+| **Stricter trial graph** (edges incident to the newborn pruned below 1.0 /s in the trial graph only) | (i) | 0.000 | identical to the baseline (traces and events identical) | — | — |
+| **Robust service** (B-path decisions use 1.0 /s; E, B1 and measurement keep 0.5) | (i) | 0.000 | 984 (220.1–484.2) | 440.1–484.2 (442) | site 3 (442) |
+| Robust service | (ii) | 0.433 | 5,046 | 320.1–608.0 (2,880) | site 6 (960) |
+| **Budget 96** (admission, and D3 through scaled cost) | (i) | 0.003 | 644 (220.1–682.3) | 440.1–456.7 (167) | site 3 (167) |
+| **Budget 128** | (i) | 0.015 | 687 (220.1–780.4) | 440.1–456.7 (167) | site 3 (167) |
+| **Local motion kernel** (scratch; each element and site pair term, attraction and repulsion, × exp(−r²)) | (i) | 0.003 | 659 | 400.1–410.0 (100) | site 2 (100) |
+| Local motion kernel | (ii) | 0.000 | 220 (160.1–362.5) | 300.1–304.0 (40) | site 0 (40) |
+| **Bidirectional B-path** (unconditional alternation; every second B-path birth grows from O's side) | (i) | **0.605** | 6,903 (80.1–800.0) | **122.6–800.0 (6,775)** | site 3 (2,775) |
+| Bidirectional B-path | (ii) | 0.000 | 180 (61.4–401.3) | 61.4–64.0 (27) | site 0 (27) |
+| **Motion range 1.5** (scratch; element and site N^x cutoff 3 → 1.5; phase selection stays at 3) | (i) | 0.337 | 3,567 (200.1–800.0) | 461.6–704.0 (2,425) | site 3 (1,120) |
+| Motion range 1.5 | (ii) | 0.000 | 38 (200.1–400.6) | 220.1–220.7 (7) | site 0 (7) |
+| Motion range 1.5 + bidirectional | (i) | 0.323 | 4,841 (80.1–800.0) | 361.5–608.0 (2,466) | site 2 (960) |
+| ~~Motion range 1.5 + bidirectional~~ | (ii) | ~~0.096~~ **INVALID** | — | — | — |
+| **O placement swapped** ((i): B-out puts O at (−0.5, 0)) | (i) | 0.000 | 63 (260.1–443.2) | 440.1–443.2 (32) | site 1 (32) |
+| O placement swapped ((ii): the literal O at (0, 0)) | (ii) | 0.409 | 5,173 (100.1–800.0) | 320.1–624.0 (3,040) | site 6 (1,120) |
+| **Scaffold: hexagon on the ring** (centre (4.0, 0) instead of (3.1, 0)) | (ii) | **0.000** | 5 (380.1–400.4) | 400.1–400.4 (4) | site 0 (4) |
+| **Scaffold: random phases** (from a fixed pilot RNG) | (ii) | 0.397 | 5,021 | 272.1–608.0 (3,360) | site 2 (960) |
+| **Scaffold: zero gain** (the hexagon elements are not driven roots) | (ii) | **0.000** | 12 (220.1–360.6) | 360.1–360.6 (6) | site 0 (6) |
+| **Inward B1** (B1's spiral centred 0.9 or 0.6 m.u. inward; one root per birth) | (i) | 0.000 (both offsets; identical traces) | 818 (220.1–465.9) | 380.1–418.3 (383) | site 2 (383) |
+| Inward B1 (0.9) | (ii) | 0.362 | 4,811 | 380.1–608.0 (2,280) | site 2 (960) |
+| **B1 root groups, 3** (see the caveats below) | (i) | 0.000 | 2,451 (160.5–564.4) | **330.2–564.4 (2,343)** | site 1 (800) |
+| B1 root groups, 6 | (i) | 0.000 | 19 (160.1–240.9) | 240.1–240.9 (9) | site 0 (9) |
+| B1 root groups, 3 | (ii) | 0.363 | 4,860 | 320.1–608.0 (2,880) | site 2 (960) |
+
+**Caveats on the B1 root-group pilot** (`pilot_rootgroup.py`; finding R2-F2):
+- **What the wrapper does.** The first accepted B1 birth at a site is removed and re-added as a group centre 0.9 m.u. inward, plus up to GROUP−1 members at r* in a ring around it.
+- **The centre is re-added with no clearance or cost check.** For example, in (i) group 3, the centre at t = 360 (site 0) took the cost to 64.4, above 64, and D3 then removed two elements.
+- **Members bypass the two-birth B1 quota.** Groups can be partial.
+- **The group geometry (centre plus ring) differs from the seed's hexagon,** and it forms over time, not at t = 0.
+- **Group counts** (counting B1 events includes the removed original and its re-added centre, so these are not net additions):
+  - (i) group 3: 6 centres, 8 members;
+  - (i) group 6: 3 centres, 15 members;
+  - (ii) group 3: **5** centres (sites 2, 3, 5, 6, 7; 240–340 s) and 9 members, on top of the six-element scaffold.
+- So the earlier statement that (ii) has exactly one group was wrong, and the pilot **does not identify why late connectivity disappears in (i).** Resource refusals occurred; budget competition is plausible but not isolated.
 
 Earlier revisions changed the birth rules:
 - fairness (7.9);
 - smallest deficit first (7.10);
 - output first (7.11).
 
-**Conclusions (narrowed):**
-- **These specific interventions did not sustain late connectivity in both starts.**
-  - Bidirectional growth and a shorter motion range each rescue (i) and fail (ii).
-  - Robust service helps (ii) and transiently (i).
-- **O placement is ruled out as the separating factor:** with O swapped, (i) still fails and (ii) still passes.
-- **What separates the starts is the initial scaffold.** The scaffold pilots isolate its relevant property:
-  - **a group of several driven root elements** (six, gain 1), placed as a mass about 0.9 m.u. **inside** the sensor ring;
-  - moving the group onto the ring, or removing its drive (gain 0), makes (ii) fail like (i);
-  - randomizing its phases does not.
-- **One B1 root placed inward is not enough.** It does not reproduce the effect: the empty start still fails with B1 births 0.6–0.9 m.u. inward.
-- So the success of (ii) comes from a **driven root mass inside the ring**, which the empty start's one-at-a-time B1 births on the ring never build within this budget and horizon.
+**Conclusions (narrowed after round 2; training-connectivity observations only):**
+- **No tested intervention sustained late connectivity in both starts.**
+  - Unconditional bidirectional growth and a 1.5 m.u. motion range each gave (i) long connected intervals (from 122.6 s, and 461.6–704.0 s), and lost (ii).
+  - Robust service raised (ii) and lengthened (i)'s transient (440–484 s).
+- **Long transient successes exist in (i):**
+  - root groups of 3: 330.2–564.4 s;
+  - inward B1: 380.1–418.3 s;
+  - range 1.5: 461.6–704.0 s.
+  - These are relevant to scheduling and support alternatives, even though none sustained connectivity late.
+- **The seeded trajectory was sensitive to its initial scaffold** in these tested realizations:
+  - moving the six-root hexagon onto the ring, or setting its gain to 0, removed late connectivity;
+  - one random-phase realization kept it. So initial perfect phase coherence was **not necessary in that realization**.
+  - These pilots do **not** identify a sufficient or minimal embryo: there is no count ablation, no gain or radius sweep, and no proof that any compact inward root mass succeeds.
+- **The seed's growth history is also not equalized with the empty start.** Seed initialization changes O's birth time, phase and identity, and the two starts use different growth and recovery keys.
+- **The O swap rules out only the specific explanation that x = 0 versus x = −0.5 by itself determines the contrast.**
+  - It measured no F5 verdict.
+  - Both pins lie on the x-axis, while (i)'s first root is at site 2 on the +y axis.
+  - Placement does affect the dynamics: (ii)'s diagnostic rose from 0.323 to 0.409.
+  - **An O placement rule** (for example one relative to the roots) **is not ruled out.**
 
 ## 4. Options (the next revision is a design decision)
 
 | Option | What it is | Claim | Cost and risk |
 |---|---|---|---|
-| **A. A seeded protocol** (owner decision) | A **new protocol revision**, not a flag. Codex R3 explains why: F6 takes its baseline from checkpoint (i, 40), and F7/F8 use the (i) run, so they cannot simply continue on (ii). It must specify the common initial structure (roles, gains, phases, positions, pin), RNG treatment and cost accounting for intact/M/U; revise F6–F9 targets and stop rows; and pass review before implementation. The present F5 stop is not bypassed. | Narrowed to **seed-assisted growth**. F5(ii) transmission does not establish learning, resonator qualification, recursive background generation or superiority to scripted AI. | A design revision plus implementation; not necessarily the fastest complete route |
-| **B. A mechanically supported medium law** | Codex's sharper version: a locally formed, bounded-degree **bond graph** with reciprocal, phase-dependent spring stiffness and a rest length, plus short-range exclusion; motion follows the gradient of that local energy. An aligned chain between two fixed ends then has balanced interior tensions and positive restoring stiffness. Bond formation, breaking and remodelling come from local state; site anchors and the geometry→mode feedback must be defined. Needs its own design, normalization ledger and N1/F1–F4. | Keeps "from nothing" | A science-level change to the medium; long; untested |
-| **C. Growth-rule variants** | Two-ended growth (tested: (i) yes, (ii) no); a growth order in which the output-side component is supported before the forward bridge arrives (untested); a robust-closing-edge requirement (untested; the tested trial pruning did not require one) | Keeps "from nothing" | Each needs pilots on **both** starts. Rescuing one start is not a fix |
-| ~~D. O placement~~ | Swapping O between the starts did not change either outcome (section 3) | — | Ruled out as the separating factor; no design change proposed |
+| **A. A seeded protocol** (owner decision) | A **new protocol revision**, not a flag. F6 takes its baseline from checkpoint (i, 40), and F7/F8 use the (i) run. It must specify the common initial structure (roles, gains, phases, positions, pin), RNG treatment and cost accounting for intact/M/U, and revise the F6–F9 targets and stop rows, before review and implementation. The present F5 stop is not bypassed. **The embryo is a design prior, not an experimentally established minimum.** | Narrowed to **seed-assisted growth**. F5(ii) transmission does not establish learning, qualification, recursive background generation or superiority to scripted AI | A design revision plus implementation; not necessarily the fastest complete route |
+| **B. A mechanically supported medium law** | A locally formed, bounded-degree **bond graph**: reciprocal bonds with positive, phase-dependent stiffness k (kept positive over the operating region), rest length ℓ, short-range exclusion, motion as the gradient of the local energy. **A positive tensile prestrain is required:** with equal spacing d > ℓ between fixed ends, the tension T = k(d − ℓ) > 0 balances interior forces and gives transverse restoring stiffness ∝ T/d. This holds only for the specified chain with frozen phases and bonds; the coupled geometry–phase–bond system needs its own analysis. Bond formation, breaking and remodelling, degree and cost accounting, site anchors and the geometry→mode feedback must be defined. | Keeps "from nothing" | A science-level change; its own design, normalization ledger and N1/F1–F4; long; untested |
+| **C1. Supported output-side growth under the current law** | Keep forward growth when it is mechanically adequate. When a closing or frontier body's predicted motion (the actual N^x, site terms and full force balance) is away from O, prioritize a **bounded local support structure on the output side**, instead of alternating lone births blindly. Preserve existing strong paths; require adequate closing coefficients. | Keeps "from nothing" | Untested; instantaneous balance does not guarantee dynamic stability. Must pass **both** starts |
+| **C2. A declared root-relative O pin** | At a specified initialization event, choose O once in the radius-1 central disk toward the first eligible driven root or demand, then freeze it. That disk stays ≥ 3 m.u. from the radius-4 sites. O keeps its non-root, no-direct-drive role; its pin is copied into assays; the same causal rule, cost and RNG treatment apply to every comparison policy. **The positional prior is disclosed.** | Keeps "from nothing", with a disclosed positional prior | Untested (the x-axis swap does not test it); needs owner approval because it changes the origin-pin contract |
+| **C3. A single B1 root group** | One compact group (for example at the first demanding site), with **atomic feasibility including the centre**, explicit group and quota accounting, and a declared geometry | Keeps "from nothing" | Untested |
 
-**Drafter's recommendation (after the scaffold pilots):**
-- **A is now a well-founded protocol choice, not an arbitrary seed.** The property that makes growth succeed is identified: a small group of driven root elements as a mass inside the sensor ring. Phase is free.
-- **A seeded protocol (A)** would specify that "embryo" explicitly and identically for intact, M and U: k driven elements in a compact group about 0.9 m.u. inward of one site.
-- **A "from nothing" alternative within C was piloted:** B1 grows a compact root group (3 or 6) inward of each site at its first birth. It **did not sustain late connectivity in (i)**, because groups formed at every site and split the budget. A variant with **one** group (for example at the first site to demand, with later sites as single roots) is the remaining untested "from nothing" candidate.
-- **B stays the long-term root option.**
-- **A and the claim narrowing are the owner's decision** (`docs/PLAN_CURRENT.md`).
+**Drafter's recommendation (after round 2):**
+- **Do not treat A, or a medium rewrite, as compelled by the evidence.**
+- Run a fair, separated comparison of C1, C2 and C3 on **both** starts, with corrected instrumentation (below), before choosing.
+  - Each variant changes one factor, so support, placement and initialization are separated.
+  - Cost: pilots of about 10 minutes each.
+- **A remains available** if the owner prefers seed-assisted growth now. That is the owner's decision.
+- **B remains the long-term candidate**, with the prestrain condition.
+- **Instrumentation fix before any further pilot:**
+  - bind the per-step recorder at the Run or world-step boundary, not as an instance function that clones copy;
+  - keep a training-only sink outside cloned state;
+  - add a synthetic clone-isolation check: clone integration must leave the live state, clock and sink unchanged, and training must contain exactly 160 steps per episode.
 
 ## 5. Files
 
 - `diag_f5i_link_hold.py`, `analyze.py`, `trace.json.gz`: the per-step replay (committed).
-- In-process pilots, each with its log: `pilot_formation_margin.py`, `pilot_service_margin.py`, `pilot_budget.py`, `pilot_bidirectional.py`, `pilot_oswap.py`.
+- In-process pilots, each with its log: `pilot_formation_margin.py`, `pilot_service_margin.py`, `pilot_budget.py`, `pilot_bidirectional.py`, `pilot_oswap.py`, `pilot_scaffold.py`, `pilot_inward_b1.py`, `pilot_rootgroup.py`.
+- `durations.txt`: path exposure recomputed from all stored traces, under the single definition of section 3.
+- Known comment errors in the pilot scripts, unchanged as evidence: `kpilot.py` calls its metric "what E averages"; `pilot_formation_margin.py` says every incident edge must be robust. Section 3 gives the correct descriptions.
 - `kernel_pilot/`: scratch-copy pilots (`kpilot.py`, `kpilot2.py`, logs, `rev7_medium_kernel.patch`, `rev7_medium_motion_range_1p5.patch`).
   - Provenance limit: no launch receipt cryptographically binds those processes to the scratch builds. The scratch build manifests verify their sources and images.
 - Raw pilot traces (11–12 MB each) stay local, out of git, listed with SHA256 in `RAW_FILES_OUTSIDE_GIT.json`.
@@ -133,3 +180,7 @@ Earlier revisions changed the birth rules:
 | **R3 (medium):** option A cannot continue F6–F9 on (ii) as the code stands | Option A is now described as a new seeded protocol revision, with the required specification items and the narrowed claim | I treated a protocol change as a flag |
 | **R4 (low):** the force table omitted the positive nearest-rear term | The table now shows signed O, nearest-rear, other-six and site sums, labelled as instantaneous RHS projections | I listed only the rear terms that pulled back |
 | (new) An O-placement confound was raised in the review | Tested by swapping O between the starts: no change in either outcome; ruled out as the separating factor | — |
+| **R2-F1 (high, round 2):** the combined range-1.5 + bidirectional seeded pilot was contaminated: recovery clones inherited the closure-wrapped `integrate` and advanced the live run (9,200 steps, 920 s) | The pilot is marked INVALID and its 0.096 withdrawn; the instrumentation fix is specified (section 4); the other 25 traces are verified at 8,000 steps with no recovery candidates | I instrumented by assigning an instance function that closes over the live object, without considering that clone() deep-copies the instance dictionary |
+| **R2-F2 (medium):** the root-group pilot was misreported ((ii) has 5 groups, not 1) and it bypasses feasibility for the centre and the quota | Correct counts; the admission bypass and partial groups disclosed; the causal "budget split" phrase replaced | I read event counts as groups and did not audit my wrapper's admission path |
+| **R2-F3 (medium):** the scaffold and O-swap claims were overbroad ("identified", "phase is free", "O placement ruled out") | Narrowed to tested realizations; the untested confounds listed; O placement rules kept as C2 | I generalized single realizations into necessity and exclusion claims, the round-1 error again |
+| **R2-F4 (medium):** the durations mixed first appearance, recurrence and exposure | One definition, recomputed from the stored data for every trace (`durations.txt`) | I wrote the durations from different quick queries |
