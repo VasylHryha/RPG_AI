@@ -566,3 +566,8 @@ The definitions are hashed with the N1 recipes.
 | Item | Cause |
 |---|---|
 | N1d started at an unstable equilibrium | The recipe was chosen for "the strongest repulsion" without checking the phase stability of that start |
+
+### 12.1 Codex 7.5 review notes (APPROVE_WITH_NOTES; applied)
+
+- The growth-rate figure (about 61 /s) is an order-of-magnitude estimate for the saddle's instability, not an exact eigenvalue.
+- **Coverage:** member 0 at (3.7, 0) sits **at** the r₀ = 0.3 boundary in exact arithmetic, not strictly inside. Member 1 at (3.956, 0), 0.044 from the site, is strictly inside. The case therefore still covers the inside-cutoff law. No tolerance is relaxed.
