@@ -1,0 +1,89 @@
+{
+  "kind": "OPTION_B_ENGINEERING_ONLY",
+  "backend": "native",
+  "audit": false,
+  "parallel": true,
+  "schedule": "forward",
+  "thread_budget": {
+    "world_workers": 2,
+    "threads_per_world": 5,
+    "blas_threads": 1,
+    "protocol_task_threads": 4
+  },
+  "entropy": 46036001,
+  "world": 3,
+  "fixture": false,
+  "start_machine": {
+    "utc": "2026-10-06T20:31:21Z",
+    "load_average": [
+      57.552734375,
+      50.51953125,
+      42.83740234375
+    ],
+    "cpu_count": 10,
+    "platform": "macOS-26.6.2-arm64-arm-64bit"
+  },
+  "source_pin": {
+    "status": "PASS",
+    "source_files_verified": 25,
+    "owner_identities_verified": 12,
+    "manifest_entries_verified": 23,
+    "checksum_entries_verified": 24,
+    "handoff_sha256": "719781cbd5a302f58f0f57c064b32ca0a49e49546a1f88160582ba6235ca575e",
+    "expected_record_sha256": "37e8249338a95e32de72f4e30091e104697606faebd53b22bda8b90124e3bceb",
+    "import_record_sha256": "3f34717f795415f5ed4b11df060cdfc3c36f0bd8b1d491853141778bbc2d3da2"
+  },
+  "fixture_inputs": null,
+  "reference_build": {
+    "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+    "flags": [
+      "-std=c++17",
+      "-O2",
+      "-fno-fast-math",
+      "-ffp-contract=off",
+      "-dynamiclib"
+    ],
+    "source_sha256": "be46eb613db693d7321070243d0ea3e4e35d8aeda620de62f01aed200d651e14",
+    "binary_sha256": "4830141d5585f6a0e684808ccf339314bc3205f7dd6a30c4a5838b0dce5e01f4"
+  },
+  "option_b_build": {
+    "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+    "compiler_version": "Apple clang version 21.0.0 (clang-2100.3.34.2)\nTarget: arm64-apple-darwin25.6.0\nThread model: posix\nInstalledDir: /Library/Developer/CommandLineTools/usr/bin\n",
+    "platform": "Darwin",
+    "architecture": "arm64",
+    "flags": [
+      "-std=c++17",
+      "-O2",
+      "-fno-fast-math",
+      "-ffp-contract=off",
+      "-dynamiclib",
+      "-framework",
+      "Accelerate"
+    ],
+    "source_hashes": {
+      "native/c6_option_b/field.cpp": "d27d46bb6053bed84acbed330e0c28fa2c174ae417ad80bd9e4d1f6c5338582d",
+      "native/c6_option_b/detection.cpp": "fd2ab679359cb00e857555ee7614adaa4d335464ea242abf0c869e6400b00b52"
+    },
+    "binary_sha256": "e9c3a10fecb81d63558253d4e6eda35cf6b631f4659a05c0e75a4e3d6fd69ec1",
+    "build_seconds": 2.722438083
+  },
+  "python": "3.9.6 (default, Aug 25 2026, 21:26:21) \n[Clang 21.0.0 (clang-2100.3.34.2)]",
+  "numpy": "2.0.2",
+  "helper_hashes": {
+    "tools/c6_option_b_check.py": "bdef1e25a2f626456dd0535579a34a29967943fb7c2e8a7e1cd8fe336752c1bf",
+    "geomind/c6_option_b.py": "ce0cf9aef30f84c13da859d8e5c807a232a6ab790d3dc30d35fa171325fc0cd3",
+    "geomind/c6_option_b_parallel.py": "6bb6f55dea7b680b85892c3e80443299bfbc35aef7dc2490b110d76681096ad1",
+    "geomind/c6_r4_field.py": "ee3c775b918f165add8820a253ff87d190b2ec399f56219dcd5030abbf53e4fb",
+    "geomind/c6_r4_field_assay.py": "1a246728e63c304d633c0f6bdb9d625017389953bf7602ecc61025466aceb3dd",
+    "geomind/c6_r4_field_protocol.py": "6a1671be6e810b6666c43b0dc77a71004c0140fc5d7c2113eff1009cc1ecb8f0"
+  },
+  "native_cache_limits_process": {
+    "material": 1073741824,
+    "medium": 67108864,
+    "drive": 134217728
+  },
+  "python_cache_limits_process": {
+    "passive": 67108864,
+    "emission": 134217728
+  }
+}

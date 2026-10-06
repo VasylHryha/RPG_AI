@@ -1,0 +1,52 @@
+--- repo_exact/native/c6_option_b/field.cpp	2026-10-06 23:08:23
++++ repo_inexact/native/c6_option_b/field.cpp	2026-10-06 23:23:03
+@@ -23,6 +23,7 @@
+ #include <condition_variable>
+ #include <unordered_map>
+ #include <math.h>
++#include <Accelerate/Accelerate.h>
+ using C=std::complex<double>;
+ static C get(const double* a,int i){return C(a[2*i],a[2*i+1]);}
+ static void put(double* a,int i,C v){a[2*i]=v.real();a[2*i+1]=v.imag();}
+@@ -260,8 +261,8 @@
+    // and adding it changes nothing (1.+(+-0.)==1.; vt stays +0.). Nonfinite
+    // operands keep the original evaluation, so every error decision is kept.
+    const bool need_cos=J!=0., need_coupling=K!=0.;
+-   if(need_cos||need_coupling)for(int k=0;k<pairs;k++)__sincos(pf[k],psin+k,pcos+k);
+-   if(need_coupling)for(int k=0;k<pairs;k++)pexp[k]=std::exp(parg[k]);
++   if(need_cos||need_coupling){int np_=pairs;vvsincos(psin,pcos,pf,&np_);}
++   if(need_coupling){int np_=pairs;vvexp(pexp,parg,&np_);}
+    for(int i=0,k=0;i<n;i++)for(int j=i+1;j<n;j++,k++){
+      const double s=ps[k],phase=pf[k],dx=pdx[k],dy=pdy[k];
+      double cosine=0.;
+@@ -281,11 +282,14 @@
+    const bool fixed=mode==2;
+    double* const weight=fixed?work.fixed_w.data()+size_t(c)*sites:sw;
+    if(!fixed||!work.fixed_ready[c]){
+-     for(int i=0;i<n;i++)for(int a=0;a<ns;a++){
+-       double dx=q[2*a]-weights[2*i],dy=q[2*a+1]-weights[2*i+1];
+-       sarg[i*ns+a]=-(dx*dx+dy*dy)/(2*p[6]*p[6]);
+-     }
+-     for(int k=0;k<sites;k++)weight[k]=std::exp(sarg[k]);
++     double ux[64],uy[64];int ix[64],iy[64],nux=0,nuy=0;
++     for(int a=0;a<ns;a++){int u=0;while(u<nux&&ux[u]!=q[2*a])u++;if(u==nux)ux[nux++]=q[2*a];ix[a]=u;
++       int v=0;while(v<nuy&&uy[v]!=q[2*a+1])v++;if(v==nuy)uy[nuy++]=q[2*a+1];iy[a]=v;}
++     static thread_local double tx[64*64],ty[64*64],ex[64*64],ey[64*64];
++     for(int i=0;i<n;i++){for(int u=0;u<nux;u++){double d=ux[u]-weights[2*i];tx[i*nux+u]=-(d*d)/(2*p[6]*p[6]);}
++                          for(int v=0;v<nuy;v++){double d=uy[v]-weights[2*i+1];ty[i*nuy+v]=-(d*d)/(2*p[6]*p[6]);}}
++     {int m1=n*nux,m2=n*nuy;vvexp(ex,tx,&m1);vvexp(ey,ty,&m2);}
++     for(int i=0;i<n;i++)for(int a=0;a<ns;a++)weight[i*ns+a]=ex[i*nux+ix[a]]*ey[i*nuy+iy[a]];
+      if(fixed)work.fixed_ready[c]=1;
+    }
+    const double* own=weight;
+--- repo_exact/tools/build_c6_option_b.py	2026-10-06 23:08:23
++++ repo_inexact/tools/build_c6_option_b.py	2026-10-06 23:23:03
+@@ -12,7 +12,7 @@
+ ROOT = Path(__file__).resolve().parents[1]
+ SOURCES = (ROOT/'native/c6_option_b/field.cpp', ROOT/'native/c6_option_b/detection.cpp')
+ LIBRARY = ROOT/'build/c6_option_b/option_b.dylib'
+-FLAGS = ('-std=c++17','-O2','-fno-fast-math','-ffp-contract=off','-dynamiclib')
++FLAGS = ('-std=c++17','-O2','-fno-fast-math','-ffp-contract=off','-dynamiclib','-framework','Accelerate')
+ 
+ 
+ def digest(path):

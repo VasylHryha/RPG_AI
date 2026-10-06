@@ -1,0 +1,162 @@
+{
+ "root": "/private/tmp/claude-501/-Users-new-RiderProjects-ai-RPG-test/266628b5-c225-443d-b8f6-8f99d66d38db/scratchpad/inexact_study/repo_exact",
+ "option_b_build": {
+  "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+  "compiler_version": "Apple clang version 21.0.0 (clang-2100.3.34.2)\nTarget: arm64-apple-darwin25.6.0\nThread model: posix\nInstalledDir: /Library/Developer/CommandLineTools/usr/bin\n",
+  "platform": "Darwin",
+  "architecture": "arm64",
+  "flags": [
+   "-std=c++17",
+   "-O2",
+   "-fno-fast-math",
+   "-ffp-contract=off",
+   "-dynamiclib"
+  ],
+  "source_hashes": {
+   "native/c6_option_b/field.cpp": "9ebe2acf7dd873d3437b5d645091e41bb9ed1a3e69a56a6fc36ebdfdfff96920",
+   "native/c6_option_b/detection.cpp": "fd2ab679359cb00e857555ee7614adaa4d335464ea242abf0c869e6400b00b52"
+  },
+  "binary_sha256": "3e269f1464b328e660b5b37ee16a72ed7273c090ee00dd27370129f60ff38f90",
+  "build_seconds": 2.689356125
+ },
+ "seconds": 80.184205667,
+ "b_reference_equivalence": {
+  "passed": true,
+  "tolerance": 1e-10,
+  "fixtures": [
+   {
+    "condition": "intact",
+    "duration": 100.0,
+    "maximum_error": 1.5265566588595902e-13,
+    "rhs_maximum_error": 1.6653345369377348e-16,
+    "passed": true
+   },
+   {
+    "condition": "no_r",
+    "duration": 100.0,
+    "maximum_error": 1.5265566588595902e-13,
+    "rhs_maximum_error": 1.6653345369377348e-16,
+    "passed": true
+   },
+   {
+    "condition": "no_backreaction",
+    "duration": 100.0,
+    "maximum_error": 1.5265566588595902e-13,
+    "rhs_maximum_error": 1.6653345369377348e-16,
+    "passed": true
+   },
+   {
+    "condition": "no_geometry_to_mode",
+    "duration": 30.0,
+    "maximum_error": 9.46687173097871e-13,
+    "rhs_maximum_error": 2.220446049250313e-16,
+    "passed": true
+   },
+   {
+    "condition": "no_mode_to_geometry",
+    "duration": 30.0,
+    "maximum_error": 2.886579864025407e-14,
+    "rhs_maximum_error": 1.6653345369377348e-16,
+    "passed": true
+   },
+   {
+    "condition": "probe",
+    "duration": 10.0,
+    "maximum_error": 1.0547118733938987e-15,
+    "passed": true
+   },
+   {
+    "condition": "recovery",
+    "duration": 30.0,
+    "maximum_error": 3.419486915845482e-14,
+    "passed": true
+   },
+   {
+    "condition": "isolated_periodic",
+    "radius": 0.0,
+    "duration": 10.0,
+    "maximum_error": 0.0,
+    "passed": true
+   },
+   {
+    "condition": "isolated_periodic",
+    "radius": 0.4852060066544322,
+    "duration": 10.0,
+    "maximum_error": 2.0136187106596043e-14,
+    "passed": true
+   },
+   {
+    "condition": "isolated_periodic",
+    "radius": 0.8743998691139306,
+    "duration": 10.0,
+    "maximum_error": 1.6726427350050596e-13,
+    "passed": true
+   }
+  ]
+ },
+ "b_transform_equivariance": {
+  "passed": true,
+  "scene_maximum_error": 7.549516567451064e-15,
+  "rename_maximum_error": 0.0,
+  "element_order": [
+   8,
+   3,
+   5,
+   22,
+   20,
+   1,
+   16,
+   18,
+   23,
+   9,
+   14,
+   15,
+   11,
+   12,
+   6,
+   13,
+   7,
+   0,
+   10,
+   17,
+   21,
+   4,
+   19,
+   2
+  ],
+  "site_order": [
+   18,
+   22,
+   8,
+   1,
+   13,
+   7,
+   6,
+   2,
+   14,
+   0,
+   24,
+   20,
+   21,
+   4,
+   10,
+   11,
+   17,
+   15,
+   23,
+   12,
+   3,
+   9,
+   5,
+   19,
+   16
+  ],
+  "angle": 0.71,
+  "phase": 0.29,
+  "shift": [
+   1.1,
+   -0.7
+  ],
+  "horizon": 5.0
+ }
+}
