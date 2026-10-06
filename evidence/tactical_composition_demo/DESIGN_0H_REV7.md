@@ -1,6 +1,6 @@
-# Design 0h, revision 7.4: phase on the task's clock, pinned ends (after the revision-6.5 fixture failure)
+# Design 0h, revision 7.5: phase on the task's clock, pinned ends (after the revision-6.5 fixture failure)
 
-**Status:** revision 7.4 (section 11, an outcome-informed λ change after the 7.3 fixtures; under review). Revision 7.3 was design-approved by the Codex round-4 review (APPROVE_WITH_NOTES; its three low notes applied in 10.6). This is design review only: integration and execution readiness are separate gates. **Section 8 answers the Codex review** `docs/reviews/tactical_0h_rev7_design_review_codex.md` (R7-1 … R7-12) **and governs over sections 1–7. Section 9 (revision 7.2) answers the round-2 review `…_codex_r2.md` (R2-1 … R2-7) and governs over everything before it. Section 10 (revision 7.3) answers round 3 (`…_codex_r3.md`, R3-1 … R3-4) and governs over everything before it.** Drafted by Claude for Codex review. Not approved, and no execution is authorized. **The base is revision 6.5** (`DESIGN_0H_REV6.md`, with every section through 19.9). Every rule not changed below stays as written there. This is a new revision on **fresh entropy**: every key prefix `0h-rev6/` becomes `0h-rev7/`, and every world-id range moves up by 10,000,000.
+**Status:** revision 7.5 (section 12, an outcome-informed N1d recipe fix after the 7.4 fixtures; under review). Revision 7.4 (section 11) was approved with notes. Revision 7.3 was design-approved by the Codex round-4 review (APPROVE_WITH_NOTES; its three low notes applied in 10.6). This is design review only: integration and execution readiness are separate gates. **Section 8 answers the Codex review** `docs/reviews/tactical_0h_rev7_design_review_codex.md` (R7-1 … R7-12) **and governs over sections 1–7. Section 9 (revision 7.2) answers the round-2 review `…_codex_r2.md` (R2-1 … R2-7) and governs over everything before it. Section 10 (revision 7.3) answers round 3 (`…_codex_r3.md`, R3-1 … R3-4) and governs over everything before it.** Drafted by Claude for Codex review. Not approved, and no execution is authorized. **The base is revision 6.5** (`DESIGN_0H_REV6.md`, with every section through 19.9). Every rule not changed below stays as written there. This is a new revision on **fresh entropy**: every key prefix `0h-rev6/` becomes `0h-rev7/`, and every world-id range moves up by 10,000,000.
 
 ## 1. What the 6.5 fixtures showed (`growing_shapes/runner/REV6_FIXTURE_REPORT.md`, decision 0030)
 
@@ -542,3 +542,27 @@ The definitions are hashed with the N1 recipes.
   - Changed valid-window denominators and transient exclusions are reported.
   - The configuration and artifact identities distinguish λ = 32 and h = 0.005 under `rev7_rhs_v1`.
 - **R74-6, cost:** "4×" is a nominal ratio of right-hand-side work per substep, not a runtime multiplier. The fixture and A7 costs are re-measured from the 7.4 run, with unavailable parts null.
+
+## 12. Revision 7.5: N1d starts off the unstable equilibrium (an outcome-informed change; disclosed)
+
+**What the 7.4 fixtures showed** (`growing_shapes/runner/REV74_FIXTURE_REPORT.md`; decision 0031; pin `f370c3b5…`):
+- **N1a, b, c, e and f PASS.** Every difference is ≤ 0.0004.
+- **N1f, the live 6-link F1c geometry at λ = 32, settles 2.1 s after the step.** The coarse and fine runs agree on entry and on the hold through 24 s. **λ = 32 meets the 4 s margin.**
+- **N1d FAILS:** the two step sizes differ by exactly one full turn of unwrapped phase (wrapped 2.18 rad, position 0.081 m.u.). That blocks F1–F9.
+
+**The diagnosis:**
+- N1d (9.2) starts member 0 at **θ₀ = π against a site with α = 0**: exact antiphase, the **unstable** equilibrium of the driven oscillator.
+- Near it, perturbations grow at about λ g k K_d ≈ 32 · 1 · 2 · 0.96 ≈ 61 /s. A round-off difference of 10⁻¹⁶ between two integrations reaches 1 rad in about ln(10¹⁶)/61 ≈ 0.6 s.
+- Which way the phase slips (±2π) is therefore decided by rounding. Two step sizes cannot agree on it, however accurate each is.
+- **The case tested sensitivity at a saddle, not accuracy.** The fault is the drafter's recipe, not the integrator: at λ = 8 the same case passed, because the growth rate was 4× smaller.
+
+**The change:**
+- **N1d member 0 starts at θ₀ = π − 0.5** (0.5 rad off the saddle; the slip direction is determined). Its position stays (3.7, 0), inside the site-body regime it was meant to test.
+- Every other N1d field is unchanged: member 1 at (3.956, 0) with θ₀ = 0, both tolerances, and the other cases.
+- **New descriptive case N1g:** the original saddle start (θ₀ = π). It reports the slip direction and time in each integration and records **sensitivity, not accuracy**. It has no gate.
+
+**Disclosure:** this is made after seeing N1d's failure, and the 7.4 FAIL is kept as recorded. N1's fixtures are deterministic, so the re-run is new engineering evidence and not an independent replication.
+
+| Item | Cause |
+|---|---|
+| N1d started at an unstable equilibrium | The recipe was chosen for "the strongest repulsion" without checking the phase stability of that start |
