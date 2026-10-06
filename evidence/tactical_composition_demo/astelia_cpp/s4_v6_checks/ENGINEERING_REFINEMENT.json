@@ -1,0 +1,361 @@
+{
+  "status": "PASS",
+  "default_knobs": {
+    "K": 2.5,
+    "K_t": 2.5,
+    "kappa": 25.0,
+    "beta": 1.5,
+    "G": 2.5,
+    "w": 1.5,
+    "f_c": 0.65,
+    "m_k": 0.6,
+    "lambda_th": 1.5,
+    "mu": 0.0,
+    "omega_ranged": 0.0
+  },
+  "rows": [
+    {
+      "name": "A",
+      "request": {
+        "trace": false,
+        "debug": false,
+        "mode": "alone",
+        "opponent": "alone",
+        "s3": true,
+        "diagnostics": true,
+        "options": {
+          "seed": 1975896796,
+          "rules": "game",
+          "scenario": "mirror",
+          "sandboxAbilities": false,
+          "perception": false,
+          "duration": 150,
+          "dt": 0.03333333333333333,
+          "army": {
+            "melee": 10,
+            "ranged": 0,
+            "artillery": 0
+          },
+          "swapSides": false,
+          "ai": [
+            {
+              "controller": "resonator",
+              "params": {
+                "K": 2.5,
+                "K_t": 2.5,
+                "kappa": 25.0,
+                "beta": 1.5,
+                "G": 2.5,
+                "w": 1.5,
+                "f_c": 0.65,
+                "m_k": 0.6,
+                "lambda_th": 1.5,
+                "mu": 0.0,
+                "omega_ranged": 0.0
+              },
+              "skeleton": "v6"
+            },
+            {
+              "level": "novice"
+            }
+          ]
+        },
+        "endCounts": true
+      },
+      "summary": {
+        "mode": "alone",
+        "melee": 2580,
+        "ranged": 0,
+        "artillery": 0,
+        "total": 2580,
+        "wasted": 0,
+        "monsterDeaths": 7,
+        "hunterKills": 10,
+        "aliveSeconds": 453.20000000000454,
+        "enemyDamage": 2196,
+        "survivors": 3,
+        "enemySurvivors": 0,
+        "t": 62.999999999998984,
+        "controllerFailures": [
+          0,
+          0
+        ],
+        "controllerStatus": "completed",
+        "crossTeamDealt": [
+          2580,
+          2196
+        ],
+        "crossTeamTaken": [
+          2196,
+          2580
+        ],
+        "friendlyDealt": [
+          0,
+          0
+        ],
+        "friendlyTaken": [
+          0,
+          0
+        ],
+        "artilleryAlive": [
+          0,
+          0
+        ],
+        "complexDiagnostics": {
+          "side": 0,
+          "samples": 13603,
+          "lowAmplitudeSamples": 3428,
+          "fractionBelow02": 0.2520032345806072,
+          "argRateSamples": 10161,
+          "argRateAbsSum": 0,
+          "argRateAbsMean": 0,
+          "argRateNullReason": null,
+          "argValidityThreshold": 0.2,
+          "retryCount": 0,
+          "numericalFailureTicks": 0,
+          "mu": 0,
+          "omega_ranged": 0,
+          "omega_melee": 0
+        }
+      },
+      "ticks": 1890,
+      "unit_samples": 13603,
+      "max_commitment_refinement_error": 2.125875103509145e-06,
+      "threshold_strict": 0.02,
+      "status": "PASS",
+      "raw_path": "s4_v6_checks/engineering/A.jsonl.gz",
+      "raw_sha256": "7c09f93747434a27336e1ff61f688278e1f9e6d562108918300f74f63f8f6e7f",
+      "stderr_sha256": "a4fa5b3043f9c8d1e70b24497ab9553c7dd4585f072465cfb382e3969dae9e2b"
+    },
+    {
+      "name": "B_novice",
+      "request": {
+        "trace": false,
+        "debug": false,
+        "mode": "alone",
+        "opponent": "alone",
+        "s3": true,
+        "diagnostics": true,
+        "options": {
+          "seed": 2464838144,
+          "rules": "game",
+          "scenario": "mirror",
+          "sandboxAbilities": false,
+          "perception": false,
+          "duration": 150,
+          "dt": 0.03333333333333333,
+          "army": {
+            "melee": 10,
+            "ranged": 30,
+            "artillery": 10
+          },
+          "swapSides": false,
+          "ai": [
+            {
+              "controller": "resonator",
+              "params": {
+                "K": 2.5,
+                "K_t": 2.5,
+                "kappa": 25.0,
+                "beta": 1.5,
+                "G": 2.5,
+                "w": 1.5,
+                "f_c": 0.65,
+                "m_k": 0.6,
+                "lambda_th": 1.5,
+                "mu": 0.0,
+                "omega_ranged": 0.0
+              },
+              "skeleton": "v6"
+            },
+            {
+              "level": "novice"
+            }
+          ]
+        },
+        "endCounts": true
+      },
+      "summary": {
+        "mode": "alone",
+        "melee": 195,
+        "ranged": 674,
+        "artillery": 4538,
+        "total": 5407,
+        "wasted": 678.3999999999995,
+        "monsterDeaths": 50,
+        "hunterKills": 39,
+        "aliveSeconds": 871.2999999999973,
+        "enemyDamage": 8005,
+        "survivors": 0,
+        "enemySurvivors": 11,
+        "t": 26.46666666666714,
+        "controllerFailures": [
+          0,
+          0
+        ],
+        "controllerStatus": "completed",
+        "crossTeamDealt": [
+          5141,
+          6884
+        ],
+        "crossTeamTaken": [
+          6884,
+          5141
+        ],
+        "friendlyDealt": [
+          266,
+          1121
+        ],
+        "friendlyTaken": [
+          266,
+          1121
+        ],
+        "artilleryAlive": [
+          0,
+          2
+        ],
+        "complexDiagnostics": {
+          "side": 0,
+          "samples": 26189,
+          "lowAmplitudeSamples": 12637,
+          "fractionBelow02": 0.4825308335560732,
+          "argRateSamples": 13495,
+          "argRateAbsSum": 0,
+          "argRateAbsMean": 0,
+          "argRateNullReason": null,
+          "argValidityThreshold": 0.2,
+          "retryCount": 0,
+          "numericalFailureTicks": 0,
+          "mu": 0,
+          "omega_ranged": 0,
+          "omega_melee": 0
+        }
+      },
+      "ticks": 794,
+      "unit_samples": 26189,
+      "max_commitment_refinement_error": 4.8559172880491275e-06,
+      "threshold_strict": 0.02,
+      "status": "PASS",
+      "raw_path": "s4_v6_checks/engineering/B_novice.jsonl.gz",
+      "raw_sha256": "5247b743627ad5e7307640a12ebf7f2517309ecdae37d3c5cac7fe47e5c97b2b",
+      "stderr_sha256": "fbfb0dea4059051561eb5af404a21e69c2d30380038d6a35f232def356138ac2"
+    },
+    {
+      "name": "B_regular",
+      "request": {
+        "trace": false,
+        "debug": false,
+        "mode": "alone",
+        "opponent": "alone",
+        "s3": true,
+        "diagnostics": true,
+        "options": {
+          "seed": 930834629,
+          "rules": "game",
+          "scenario": "mirror",
+          "sandboxAbilities": false,
+          "perception": false,
+          "duration": 150,
+          "dt": 0.03333333333333333,
+          "army": {
+            "melee": 10,
+            "ranged": 30,
+            "artillery": 10
+          },
+          "swapSides": false,
+          "ai": [
+            {
+              "controller": "resonator",
+              "params": {
+                "K": 2.5,
+                "K_t": 2.5,
+                "kappa": 25.0,
+                "beta": 1.5,
+                "G": 2.5,
+                "w": 1.5,
+                "f_c": 0.65,
+                "m_k": 0.6,
+                "lambda_th": 1.5,
+                "mu": 0.0,
+                "omega_ranged": 0.0
+              },
+              "skeleton": "v6"
+            },
+            {
+              "level": "regular"
+            }
+          ]
+        },
+        "endCounts": true
+      },
+      "summary": {
+        "mode": "alone",
+        "melee": 218,
+        "ranged": 800,
+        "artillery": 2508,
+        "total": 3526,
+        "wasted": 632.3999999999999,
+        "monsterDeaths": 50,
+        "hunterKills": 29,
+        "aliveSeconds": 1081.0999999999772,
+        "enemyDamage": 8211,
+        "survivors": 0,
+        "enemySurvivors": 21,
+        "t": 50.266666666666374,
+        "controllerFailures": [
+          0,
+          0
+        ],
+        "controllerStatus": "completed",
+        "crossTeamDealt": [
+          3312,
+          6936
+        ],
+        "crossTeamTaken": [
+          6936,
+          3312
+        ],
+        "friendlyDealt": [
+          214,
+          1275
+        ],
+        "friendlyTaken": [
+          214,
+          1275
+        ],
+        "artilleryAlive": [
+          0,
+          10
+        ],
+        "complexDiagnostics": {
+          "side": 0,
+          "samples": 32483,
+          "lowAmplitudeSamples": 17637,
+          "fractionBelow02": 0.5429609334113229,
+          "argRateSamples": 14786,
+          "argRateAbsSum": 0,
+          "argRateAbsMean": 0,
+          "argRateNullReason": null,
+          "argValidityThreshold": 0.2,
+          "retryCount": 0,
+          "numericalFailureTicks": 0,
+          "mu": 0,
+          "omega_ranged": 0,
+          "omega_melee": 0
+        }
+      },
+      "ticks": 1508,
+      "unit_samples": 32483,
+      "max_commitment_refinement_error": 7.576572378154012e-06,
+      "threshold_strict": 0.02,
+      "status": "PASS",
+      "raw_path": "s4_v6_checks/engineering/B_regular.jsonl.gz",
+      "raw_sha256": "d24eb2e3c617324c4685a1ec6df326dfc03c225120cf1bde85d708d0764dcb2c",
+      "stderr_sha256": "5b58ccd2a3054efee664e20289932b2f4e49de174f8895dd11b0b2f4f4f38f3e"
+    }
+  ],
+  "elapsed_seconds": 5.540769083000001,
+  "purpose": "required section8 captured-default-knob engineering accuracy; no tuning/selection",
+  "development_panel_fights": 0,
+  "engineering_fights": 3
+}

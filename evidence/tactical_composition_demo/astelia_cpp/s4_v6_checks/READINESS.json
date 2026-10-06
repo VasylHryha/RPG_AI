@@ -1,0 +1,38 @@
+{
+  "status": "ALL_REQUIRED_CHECKS_PASS",
+  "distinct_tests": 37,
+  "no_combat_grid_cases": 10763,
+  "max_component_errors": {
+    "real": {
+      "value": 0.00022134104711302172,
+      "case": "isolated/mu=0/omega=0/P=-100/r=2/real+"
+    },
+    "imag": {
+      "value": 0.0003355726134107728,
+      "case": "pair_opposing_singleton/mu=-2/omega=0/P=-1/K=5/Kt=5"
+    },
+    "commitment": {
+      "value": 0.00022059447662814424,
+      "case": "pair_asymmetric_singleton/mu=-2/omega=0/P=-1/K=5/Kt=5"
+    },
+    "implementation": {
+      "value": 3.552822097363439e-15,
+      "case": "isolated/mu=2/omega=-2/P=-6000/r=0.5/imag-"
+    }
+  },
+  "engineering_fights": 3,
+  "max_engineering_commitment_error": 7.576572378154012e-06,
+  "passed_native_contract_reused_not_repeated": true,
+  "partial_test_batches": [
+    20,
+    7,
+    8
+  ],
+  "harness_false_failures": [
+    "arbitrary native-byte threshold",
+    "unattributed concurrent Track A commits"
+  ],
+  "all_failures_preserved": true,
+  "development_run": false,
+  "source_pin": "DESIGN_0G 18.2 > 18.1 > 18; round3 N1 applied"
+}

@@ -1,0 +1,20 @@
+Version: v6. Authority: DESIGN_0G.md sections 18.2 > 18.1 > 18; Codex r3 APPROVE_WITH_NOTES, N1 applied.
+
+No registered claim or source-recursion/C5/unchanged-C4/oscillation-necessity claim.
+Separate complex state per own resonator unit, zero birth, unbounded finite real/imaginary components; nu=1/s. Similarity uses the amplitude product gate, delta=.2. Alignment uses morale's distance scale, with arithmetic groups of other living previous attackers recomputed at every joint stage. Only empty groups are undefined.
+
+Eleven resonator knobs: K, K_t, kappa, beta, G, w, f_c, m_k, lambda_th, mu, omega_ranged. Mu in [-2,2]; omega_melee fixed zero, artillery inherits ranged rotation. Other bounds and unchanged-arm ledgers are inherited from v5. Unknown, removed, nonfinite and out-of-bound inputs fail admission.
+
+The exact 18.2 kernel derives Z at tick start, L=abs(mu)+max(abs(omega))+3Z^2+K+K_t, n=max(1,ceil(dt L)), with 64 allowed. Every joint RK4 stage and endpoint is monitored; one retry from the joint tick-start state with doubled Z. Counters/pressure/positions/assignments are frozen during retry, counters consumed once. Nonfinite values, retry exhaustion, pressure beyond 6000 and n>64 fail atomically through the inherited controllerFailure/stop path. No state clipping, policy adjustment or extrapolation.
+
+The declared 10,763-case no-combat grid passed. The separate integration check batch must pass before development: historical contracts, unchanged-arm action bytes, counter/status/clone isolation, threshold fixtures, diagnostics on/off identity, fake-record gates and captured default-knob commitment refinement strictly below .02. Failed no-combat acceptance requires stopping implementation and a drafter policy revision.
+
+A/B-only fresh development: common fresh seeds for all four arms, two orientations per seed averaged before each head's mean. CMA 4.5.0, population16, generations16; three tuned arms with 9,766 evaluations per stage per arm. A:19 novice tuning clusters; B:10 novice and9 regular tuning clusters. Initial candidate plus256 candidates; no early optimizer stop. B ranks novice tuning mean>=0 eligibility first, then regular mean, including among ineligible candidates. Earlier exact ties stay incumbent. The same ordering feeds CMA and retention. Validation is never used for selection. A100 novice validation clusters; B100 novice and100 regular validation clusters, sharing B seed ids across heads. Maximum60,996 evaluations; caching/accounting is preserved and reported.
+
+Separate novice validation gate strictly>0 in A and B. B PROGRESS only if regular validation strictly>-6.025. READY_TO_DRAFT_S5 only if regular strictly>0, novice pass and failure-free completion. Equality fails every validation gate. Tuning equality remains eligible. Historical -6.025 is an unmatched descriptive reference, not a paired comparison. C/P2/P3 not_run. No S5/judging/registration/status change.
+
+Fresh OS entropy ledger S4_V6_SEEDS.json, declared before any engineering/development fight; engineering seeds are separate and never used for tuning/validation. Claim development ledger once before combat. Input/binary/build/vendor/source pins checked before and after batches. Ten workers, absolute monotonic360-minute deadline, inherited projection guard and child cleanup. Launch under caffeinate -i -s; record actual elapsed/awake/load, do not wait for low load.
+
+Complex host diagnostics: real, imaginary, amplitude; arg valid at amplitude>=.2; wrapped increments within consecutive valid endpoints only, gap reset, null reasons and denominators. Scalar phase coherence/target-phase/candidates explicitly not_run for v6. Summaries accumulate unit-tick denominators, low-amplitude counts, valid arg-rate counts and absolute-rate sum. Diagnostics are output-only.
+
+Raw files exceeding45MB remain local and listed by SHA256. No raw file>=50MB enters a commit; split raw retention if necessary. Reproducible scripts/checks/review and a scoped normal-hook bundle are the delivery when main .git is read-only. Claude owns PLAN_CURRENT; status and recheck disposition are in the delivery note.

@@ -1,0 +1,52 @@
+{
+  "verdict": "APPROVE_WITH_NOTES",
+  "reviewer_family": "Codex",
+  "reviewer_task": "/root/v6_kernel_recheck",
+  "cross_family": false,
+  "claude_attempt": "S4_V6_CLAUDE_REVIEW_ATTEMPT.json",
+  "request_verbatim": "Recheck what you did please, check if it is the best we can do, we want 10 out of 10 or above 9 - it's fine to break the things or fully rework. Check for issues, conflicts, gaps.",
+  "source_hashes": {
+    "src/native/s4_v6_controller.h": "7d25d27ef511a84149d63bf6c56bc0ae1239c0ea3e8b874bb33cefd60ba70ec5",
+    "src/native/s4_v6_controller.cpp": "25a0733cc3081fa298fc1664fa4c5a481e5b7a0aea8d6d6cbb1025808757142f",
+    "src/native/s4_v6_dispatch.cpp": "a8c6f6624eb464062ccb27107bec39996fd3ba89b93d718f4dbe28721c420af5",
+    "src/native/host_v6.cpp": "a396440c3f713b4b5b631b12c5560bf0effa195e7bfedca8752c823f4df1dabc",
+    "native_s4_v6_contract.cpp": "3ee40bf50fbb5f4e73747e0349d776e2fa00a0b9389a12a8e02434b20b22a5ce",
+    "build_v6.py": "5fb6ffd11f5c57e10b66ee6bc3ada9cb6f6107670bb6b9606c9be7f33e1d033e",
+    "s3_v6_runner.py": "4e4d9d7fe608776cbd1cdec9774886e8b11ffe55a9d833af3ebdb361e9687c7f",
+    "s4_v6.py": "b11b558f94e280d5c9b15c2977e1e9ecd364d3557178d4dad9773b3f60c119b4",
+    "s4_v6_engineering.py": "b12850b345c14fdbad31e51c80a8800ad24f0fb54a2607283d05581f569001a4",
+    "test_s4_v6.py": "b4dad5debc3a79cdd5ee537292e7d814a148f4481f054552dd3e83d2c7d55b3c",
+    "S4_V6_PROTOCOL.md": "e1e1ec9e6833af5632c95b840e0fffe28a1a484c930890bbfbd1a1e296e21907"
+  },
+  "dispositions": {
+    "numerical_R1": "coverage/finiteness before reductions",
+    "numerical_R2": "all-zero pressure-triggered neighbour",
+    "numerical_N1": "independent Z/n accounting",
+    "integration_R1": "finite components/native commitments, exact IDs,n,positive ticks; NOT_READY exception receipt",
+    "integration_R2": "distinct uint32 engineering entropy disjoint from panels/prior, fake rejection fixtures",
+    "integration_N1": "exact/below/above .2 equilibrium arg validity"
+  },
+  "scope": "Source-only, no tests/build/fights by reviewer; not scientific acceptance",
+  "harness_dispositions": {
+    "arbitrary_byte_threshold": "NativePASS13367bytes retained; wrapper corrected to meaningful positive coverage and admitted unchanged binary identity",
+    "external_commits": "External exact committed TrackA plan/design identities checked; all historical0g/frozen bytes preserved"
+  },
+  "supporting_script_recheck": {
+    "verdict": "APPROVE_WITH_NOTES",
+    "reviewer_task": "/root/v6_kernel_recheck",
+    "findings_disposition": [
+      "raw/logged/normalized tuning parameters and winners linked",
+      "partial knobs retained and independently checked",
+      "overall STOPPED on process failure without changing recorded gates",
+      "missing-record fallback preserves incomplete observed results",
+      "unscored failures forbid S and D",
+      "fallback raw-only inventory filter applied"
+    ],
+    "source_hashes": {
+      "s4_v6_delivery.py": "1f70a0b48d9f104880ee197347e09ff856c4172aca2ac0f8151bc19de44348a5",
+      "s4_v6_run_once.py": "464bf2f9ce000e53fb79bf0f17bfa0fe1a676f987bc68b166e4e8945aea966cd",
+      "s4_v6_report.py": "6a1ecd1efff6b39051ef666e9be808a350946b8b45d189adcd71ea2f710e3bec"
+    },
+    "scope": "source-only, no simulation/optimizer/tests run"
+  }
+}
