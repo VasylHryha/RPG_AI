@@ -29,9 +29,9 @@
 | A2 | Implementation | DONE: `growing_shapes/runner/rev6_*`, `medium/rev6_*`; 47 tests | Codex | — |
 | A3 | Implementation review | DONE: READY_FOR_FIXTURES (`growing_shapes_review_claude/REV6_INTEGRATION_REVIEW.md`, delta at `bba9348`) | Claude | — |
 | A4 | Add 19.9 comparators (input average, K = 0, frozen positions) and review notes D1–D3 | DONE (`855d931`; 71 tests; Claude's short check READY_FOR_FIXTURES) | Codex, then a short Claude check | — |
-| A5 | **Engineering tests F1–F9** (about 2–6 min) | **RUNNING** (approved: decision 0030) | Codex runs, Claude reviews | done |
-| A6 | Read the F results | — | Claude | If F1/F5 show that structure collapses under C4 motion: go to A6b. Otherwise: A7. |
-| A6b | Next revision: an **anchoring decision**, plus the deferred ideas (freeze-not-reset demand timers, empty start, possibly overlap placement); see `docs/reviews/external_web_ai_rev6_recommended_design_assessment.md` | — | Claude drafts, Codex reviews | **[OWNER]** approves the design |
+| A5 | **Engineering tests F1–F9** | DONE: **FIXTURES_FAIL at F1b** (a 3-link path is too slow: 15.4 s; F1c compacts); F2–F4 pass; F5–F9 blocked (`growing_shapes/runner/REV6_FIXTURE_REPORT.md`) | Codex | done |
+| A6 | Read the F results | DONE: a timescale mismatch (phase coupling far slower than the task clock) plus compaction | Claude | — |
+| A6b | **Revision 7** (`DESIGN_0H_REV7.md`): phase-rate scale λ = 8 from the cue clock, pinned ends (output pinned; sites as pinned bodies in motion), freeze-not-reset demand, empty start | **DRAFTED; Codex review running** | Claude drafts, Codex reviews | **[OWNER]** approves the revision-7 fixture run after the review |
 | A7 | Cost projection from the measured F rates | — | Codex | — |
 | A8 | **The development run** (48 trainings, about 16 h or more of serial compute) | — | Codex | **[OWNER] approve the run and its time** |
 | A9 | Review the results, then the owner's recheck | — | Claude, then Codex | — |
