@@ -1,0 +1,930 @@
+{
+  "status": "DESCRIPTIVE_ONLY_NO_VERDICT",
+  "endpoints": {
+    "resonator|novice": {
+      "cells": {
+        "v3": {
+          "S": {
+            "n": 100,
+            "mean": 18.135,
+            "sd": 4.861129581494491,
+            "se": 0.4861129581494491,
+            "descriptive_normal_95": [
+              17.18221860202708,
+              19.087781397972922
+            ]
+          },
+          "fights": 200,
+          "mean_own_guns_alive": 8.94,
+          "mean_enemy_guns_alive": 0,
+          "timeouts": 0,
+          "mean_cross_team_damage_dealt": 5170.26,
+          "mean_cross_team_damage_taken": 5819.835,
+          "mean_terminal_time_seconds": 53.826166666666175,
+          "own_eliminated_fights": 0,
+          "enemy_eliminated_fights": 200,
+          "mean_time_to_own_elimination_seconds": null,
+          "mean_time_to_enemy_elimination_seconds": 53.826166666666175
+        },
+        "H": {
+          "S": {
+            "n": 100,
+            "mean": 7.82,
+            "sd": 6.972717395591755,
+            "se": 0.6972717395591755,
+            "descriptive_normal_95": [
+              6.453347390464016,
+              9.186652609535985
+            ]
+          },
+          "fights": 200,
+          "mean_own_guns_alive": 4.315,
+          "mean_enemy_guns_alive": 0.715,
+          "timeouts": 0,
+          "mean_cross_team_damage_dealt": 5496.75,
+          "mean_cross_team_damage_taken": 6500.245,
+          "mean_terminal_time_seconds": 52.7673333333329,
+          "own_eliminated_fights": 34,
+          "enemy_eliminated_fights": 166,
+          "mean_time_to_own_elimination_seconds": 58.82352941176393,
+          "mean_time_to_enemy_elimination_seconds": 51.52690763052173
+        },
+        "F": {
+          "S": {
+            "n": 100,
+            "mean": 11.42,
+            "sd": 6.418769824554083,
+            "se": 0.6418769824554083,
+            "descriptive_normal_95": [
+              10.1619211143874,
+              12.6780788856126
+            ]
+          },
+          "fights": 200,
+          "mean_own_guns_alive": 5.805,
+          "mean_enemy_guns_alive": 0.6,
+          "timeouts": 0,
+          "mean_cross_team_damage_dealt": 5608.7,
+          "mean_cross_team_damage_taken": 6382.185,
+          "mean_terminal_time_seconds": 53.66333333333285,
+          "own_eliminated_fights": 27,
+          "enemy_eliminated_fights": 174,
+          "mean_time_to_own_elimination_seconds": 58.59012345678936,
+          "mean_time_to_enemy_elimination_seconds": 52.94061302681948
+        },
+        "HF": {
+          "S": {
+            "n": 100,
+            "mean": -2.055,
+            "sd": 10.743072703426662,
+            "se": 1.0743072703426662,
+            "descriptive_normal_95": [
+              -4.160642249871626,
+              0.05064224987162547
+            ]
+          },
+          "fights": 200,
+          "mean_own_guns_alive": 2.66,
+          "mean_enemy_guns_alive": 3.485,
+          "timeouts": 0,
+          "mean_cross_team_damage_dealt": 5496.52,
+          "mean_cross_team_damage_taken": 6438.7,
+          "mean_terminal_time_seconds": 38.42783333333364,
+          "own_eliminated_fights": 109,
+          "enemy_eliminated_fights": 92,
+          "mean_time_to_own_elimination_seconds": 36.817431192660926,
+          "mean_time_to_enemy_elimination_seconds": 40.451086956521955
+        }
+      },
+      "paired_differences": {
+        "H-v3": {
+          "n": 100,
+          "mean": -10.315,
+          "sd": 8.480713413386873,
+          "se": 0.8480713413386873,
+          "descriptive_normal_95": [
+            -11.977219829023827,
+            -8.652780170976172
+          ]
+        },
+        "F-v3": {
+          "n": 100,
+          "mean": -6.715,
+          "sd": 7.214342826913789,
+          "se": 0.7214342826913789,
+          "descriptive_normal_95": [
+            -8.129011194075103,
+            -5.300988805924897
+          ]
+        },
+        "HF-v3": {
+          "n": 100,
+          "mean": -20.19,
+          "sd": 11.820368484574038,
+          "se": 1.1820368484574038,
+          "descriptive_normal_95": [
+            -22.506792222976514,
+            -17.873207777023488
+          ]
+        },
+        "F-H": {
+          "n": 100,
+          "mean": 3.6,
+          "sd": 9.77628546922386,
+          "se": 0.977628546922386,
+          "descriptive_normal_95": [
+            1.6838480480321236,
+            5.516151951967877
+          ]
+        },
+        "HF-H": {
+          "n": 100,
+          "mean": -9.875,
+          "sd": 13.100307460344416,
+          "se": 1.3100307460344416,
+          "descriptive_normal_95": [
+            -12.442660262227506,
+            -7.3073397377724945
+          ]
+        },
+        "HF-F": {
+          "n": 100,
+          "mean": -13.475,
+          "sd": 12.048801231288987,
+          "se": 1.2048801231288988,
+          "descriptive_normal_95": [
+            -15.83656504133264,
+            -11.113434958667359
+          ]
+        }
+      },
+      "interaction_HF-H-F+v3": {
+        "n": 100,
+        "mean": -3.16,
+        "sd": 14.334016897019495,
+        "se": 1.4334016897019495,
+        "descriptive_normal_95": [
+          -5.969467311815821,
+          -0.35053268818417926
+        ]
+      }
+    },
+    "resonator|regular": {
+      "cells": {
+        "v3": {
+          "S": {
+            "n": 100,
+            "mean": -7.62,
+            "sd": 1.4942989302443108,
+            "se": 0.14942989302443108,
+            "descriptive_normal_95": [
+              -7.912882590327885,
+              -7.327117409672115
+            ]
+          },
+          "fights": 200,
+          "mean_own_guns_alive": 0.22,
+          "mean_enemy_guns_alive": 8.025,
+          "timeouts": 17,
+          "mean_cross_team_damage_dealt": 4980.735,
+          "mean_cross_team_damage_taken": 7107.99,
+          "mean_terminal_time_seconds": 103.29833333333004,
+          "own_eliminated_fights": 183,
+          "enemy_eliminated_fights": 0,
+          "mean_time_to_own_elimination_seconds": 98.95683060108985,
+          "mean_time_to_enemy_elimination_seconds": null
+        },
+        "H": {
+          "S": {
+            "n": 100,
+            "mean": -9.015,
+            "sd": 1.9416422810277758,
+            "se": 0.1941642281027776,
+            "descriptive_normal_95": [
+              -9.395561887081445,
+              -8.634438112918556
+            ]
+          },
+          "fights": 200,
+          "mean_own_guns_alive": 0.06,
+          "mean_enemy_guns_alive": 8.575,
+          "timeouts": 17,
+          "mean_cross_team_damage_dealt": 4581.545,
+          "mean_cross_team_damage_taken": 7137.955,
+          "mean_terminal_time_seconds": 97.3311666666637,
+          "own_eliminated_fights": 183,
+          "enemy_eliminated_fights": 0,
+          "mean_time_to_own_elimination_seconds": 92.4353369763179,
+          "mean_time_to_enemy_elimination_seconds": null
+        },
+        "F": {
+          "S": {
+            "n": 100,
+            "mean": -12.585,
+            "sd": 2.961925902264447,
+            "se": 0.29619259022644473,
+            "descriptive_normal_95": [
+              -13.165537476843832,
+              -12.00446252315617
+            ]
+          },
+          "fights": 200,
+          "mean_own_guns_alive": 0,
+          "mean_enemy_guns_alive": 9.975,
+          "timeouts": 0,
+          "mean_cross_team_damage_dealt": 4336.405,
+          "mean_cross_team_damage_taken": 7023.42,
+          "mean_terminal_time_seconds": 74.10666666666502,
+          "own_eliminated_fights": 200,
+          "enemy_eliminated_fights": 0,
+          "mean_time_to_own_elimination_seconds": 74.10666666666502,
+          "mean_time_to_enemy_elimination_seconds": null
+        },
+        "HF": {
+          "S": {
+            "n": 100,
+            "mean": -35.335,
+            "sd": 2.6723944168464207,
+            "se": 0.2672394416846421,
+            "descriptive_normal_95": [
+              -35.8587893057019,
+              -34.811210694298104
+            ]
+          },
+          "fights": 200,
+          "mean_own_guns_alive": 0,
+          "mean_enemy_guns_alive": 9.56,
+          "timeouts": 0,
+          "mean_cross_team_damage_dealt": 2432.53,
+          "mean_cross_team_damage_taken": 6663.19,
+          "mean_terminal_time_seconds": 27.12783333333384,
+          "own_eliminated_fights": 200,
+          "enemy_eliminated_fights": 0,
+          "mean_time_to_own_elimination_seconds": 27.12783333333384,
+          "mean_time_to_enemy_elimination_seconds": null
+        }
+      },
+      "paired_differences": {
+        "H-v3": {
+          "n": 100,
+          "mean": -1.395,
+          "sd": 2.281120360921383,
+          "se": 0.22811203609213832,
+          "descriptive_normal_95": [
+            -1.842099590740591,
+            -0.947900409259409
+          ]
+        },
+        "F-v3": {
+          "n": 100,
+          "mean": -4.965,
+          "sd": 3.356175523034238,
+          "se": 0.3356175523034238,
+          "descriptive_normal_95": [
+            -5.622810402514711,
+            -4.307189597485289
+          ]
+        },
+        "HF-v3": {
+          "n": 100,
+          "mean": -27.715,
+          "sd": 2.9200240416887677,
+          "se": 0.2920024041688768,
+          "descriptive_normal_95": [
+            -28.287324712171,
+            -27.142675287829
+          ]
+        },
+        "F-H": {
+          "n": 100,
+          "mean": -3.57,
+          "sd": 3.529829594994207,
+          "se": 0.3529829594994207,
+          "descriptive_normal_95": [
+            -4.261846600618864,
+            -2.8781533993811355
+          ]
+        },
+        "HF-H": {
+          "n": 100,
+          "mean": -26.32,
+          "sd": 3.2702515888759165,
+          "se": 0.32702515888759165,
+          "descriptive_normal_95": [
+            -26.96096931141968,
+            -25.67903068858032
+          ]
+        },
+        "HF-F": {
+          "n": 100,
+          "mean": -22.75,
+          "sd": 3.86351752639582,
+          "se": 0.386351752639582,
+          "descriptive_normal_95": [
+            -23.50724943517358,
+            -21.99275056482642
+          ]
+        }
+      },
+      "interaction_HF-H-F+v3": {
+        "n": 100,
+        "mean": -21.355,
+        "sd": 4.593745748297352,
+        "se": 0.4593745748297352,
+        "descriptive_normal_95": [
+          -22.255374166666282,
+          -20.45462583333372
+        ]
+      }
+    },
+    "morale|novice": {
+      "cells": {
+        "v3": {
+          "S": {
+            "n": 100,
+            "mean": 25.135,
+            "sd": 7.784293627088284,
+            "se": 0.7784293627088285,
+            "descriptive_normal_95": [
+              23.6092784490907,
+              26.660721550909305
+            ]
+          },
+          "fights": 200,
+          "mean_own_guns_alive": 8.74,
+          "mean_enemy_guns_alive": 0.02,
+          "timeouts": 0,
+          "mean_cross_team_damage_dealt": 5709.885,
+          "mean_cross_team_damage_taken": 4983.985,
+          "mean_terminal_time_seconds": 40.34333333333358,
+          "own_eliminated_fights": 2,
+          "enemy_eliminated_fights": 198,
+          "mean_time_to_own_elimination_seconds": 39.633333333333645,
+          "mean_time_to_enemy_elimination_seconds": 40.350505050505305
+        },
+        "H": {
+          "S": {
+            "n": 100,
+            "mean": 25.865,
+            "sd": 7.423636493517095,
+            "se": 0.7423636493517095,
+            "descriptive_normal_95": [
+              24.409967247270647,
+              27.32003275272935
+            ]
+          },
+          "fights": 200,
+          "mean_own_guns_alive": 8.84,
+          "mean_enemy_guns_alive": 0.02,
+          "timeouts": 0,
+          "mean_cross_team_damage_dealt": 5709.055,
+          "mean_cross_team_damage_taken": 4881.475,
+          "mean_terminal_time_seconds": 40.154333333333604,
+          "own_eliminated_fights": 2,
+          "enemy_eliminated_fights": 198,
+          "mean_time_to_own_elimination_seconds": 41.95000000000018,
+          "mean_time_to_enemy_elimination_seconds": 40.13619528619556
+        },
+        "F": {
+          "S": {
+            "n": 100,
+            "mean": 14.385,
+            "sd": 8.006895702323018,
+            "se": 0.8006895702323018,
+            "descriptive_normal_95": [
+              12.815648442344688,
+              15.954351557655311
+            ]
+          },
+          "fights": 200,
+          "mean_own_guns_alive": 7.92,
+          "mean_enemy_guns_alive": 0.03,
+          "timeouts": 0,
+          "mean_cross_team_damage_dealt": 6599.95,
+          "mean_cross_team_damage_taken": 5341.49,
+          "mean_terminal_time_seconds": 37.28066666666706,
+          "own_eliminated_fights": 2,
+          "enemy_eliminated_fights": 198,
+          "mean_time_to_own_elimination_seconds": 48.56666666666647,
+          "mean_time_to_enemy_elimination_seconds": 37.16666666666706
+        },
+        "HF": {
+          "S": {
+            "n": 100,
+            "mean": 13.76,
+            "sd": 7.778005768664211,
+            "se": 0.7778005768664211,
+            "descriptive_normal_95": [
+              12.235510869341814,
+              15.284489130658185
+            ]
+          },
+          "fights": 200,
+          "mean_own_guns_alive": 7.88,
+          "mean_enemy_guns_alive": 0.045,
+          "timeouts": 0,
+          "mean_cross_team_damage_dealt": 6595.08,
+          "mean_cross_team_damage_taken": 5385.445,
+          "mean_terminal_time_seconds": 37.48533333333371,
+          "own_eliminated_fights": 4,
+          "enemy_eliminated_fights": 196,
+          "mean_time_to_own_elimination_seconds": 41.641666666666865,
+          "mean_time_to_enemy_elimination_seconds": 37.40051020408202
+        }
+      },
+      "paired_differences": {
+        "H-v3": {
+          "n": 100,
+          "mean": 0.73,
+          "sd": 6.058394293386775,
+          "se": 0.6058394293386775,
+          "descriptive_normal_95": [
+            -0.4574452815038079,
+            1.9174452815038079
+          ]
+        },
+        "F-v3": {
+          "n": 100,
+          "mean": -10.75,
+          "sd": 11.019610618430136,
+          "se": 1.1019610618430136,
+          "descriptive_normal_95": [
+            -12.909843681212307,
+            -8.590156318787693
+          ]
+        },
+        "HF-v3": {
+          "n": 100,
+          "mean": -11.375,
+          "sd": 10.905094491043434,
+          "se": 1.0905094491043434,
+          "descriptive_normal_95": [
+            -13.512398520244513,
+            -9.237601479755487
+          ]
+        },
+        "F-H": {
+          "n": 100,
+          "mean": -11.48,
+          "sd": 10.77757679704309,
+          "se": 1.077757679704309,
+          "descriptive_normal_95": [
+            -13.592405052220446,
+            -9.367594947779555
+          ]
+        },
+        "HF-H": {
+          "n": 100,
+          "mean": -12.105,
+          "sd": 10.760546858169832,
+          "se": 1.0760546858169833,
+          "descriptive_normal_95": [
+            -14.214067184201287,
+            -9.995932815798714
+          ]
+        },
+        "HF-F": {
+          "n": 100,
+          "mean": -0.625,
+          "sd": 3.4810997623675703,
+          "se": 0.34810997623675705,
+          "descriptive_normal_95": [
+            -1.3072955534240438,
+            0.0572955534240438
+          ]
+        }
+      },
+      "interaction_HF-H-F+v3": {
+        "n": 100,
+        "mean": -1.355,
+        "sd": 7.139057106063543,
+        "se": 0.7139057106063543,
+        "descriptive_normal_95": [
+          -2.754255192788454,
+          0.04425519278845447
+        ]
+      }
+    },
+    "morale|regular": {
+      "cells": {
+        "v3": {
+          "S": {
+            "n": 100,
+            "mean": 10.155,
+            "sd": 6.257397642193219,
+            "se": 0.6257397642193219,
+            "descriptive_normal_95": [
+              8.928550062130128,
+              11.38144993786987
+            ]
+          },
+          "fights": 200,
+          "mean_own_guns_alive": 7.845,
+          "mean_enemy_guns_alive": 9.055,
+          "timeouts": 197,
+          "mean_cross_team_damage_dealt": 4386.71,
+          "mean_cross_team_damage_taken": 5520.01,
+          "mean_terminal_time_seconds": 148.71783333332746,
+          "own_eliminated_fights": 3,
+          "enemy_eliminated_fights": 0,
+          "mean_time_to_own_elimination_seconds": 62.333333333332355,
+          "mean_time_to_enemy_elimination_seconds": null
+        },
+        "H": {
+          "S": {
+            "n": 100,
+            "mean": 10.2,
+            "sd": 6.850864429715671,
+            "se": 0.6850864429715671,
+            "descriptive_normal_95": [
+              8.857230571775728,
+              11.54276942822427
+            ]
+          },
+          "fights": 200,
+          "mean_own_guns_alive": 7.78,
+          "mean_enemy_guns_alive": 8.895,
+          "timeouts": 196,
+          "mean_cross_team_damage_dealt": 4449.55,
+          "mean_cross_team_damage_taken": 5533.775,
+          "mean_terminal_time_seconds": 148.33266666666083,
+          "own_eliminated_fights": 4,
+          "enemy_eliminated_fights": 0,
+          "mean_time_to_own_elimination_seconds": 64.99999999999888,
+          "mean_time_to_enemy_elimination_seconds": null
+        },
+        "F": {
+          "S": {
+            "n": 100,
+            "mean": 1.265,
+            "sd": 6.706869311355035,
+            "se": 0.6706869311355035,
+            "descriptive_normal_95": [
+              -0.04954638502558684,
+              2.5795463850255866
+            ]
+          },
+          "fights": 200,
+          "mean_own_guns_alive": 5.675,
+          "mean_enemy_guns_alive": 9.785,
+          "timeouts": 171,
+          "mean_cross_team_damage_dealt": 4902.955,
+          "mean_cross_team_damage_taken": 5719.655,
+          "mean_terminal_time_seconds": 137.83933333332809,
+          "own_eliminated_fights": 29,
+          "enemy_eliminated_fights": 0,
+          "mean_time_to_own_elimination_seconds": 65.93678160919423,
+          "mean_time_to_enemy_elimination_seconds": null
+        },
+        "HF": {
+          "S": {
+            "n": 100,
+            "mean": -0.16,
+            "sd": 6.720945700651889,
+            "se": 0.6720945700651889,
+            "descriptive_normal_95": [
+              -1.4773053573277701,
+              1.1573053573277703
+            ]
+          },
+          "fights": 200,
+          "mean_own_guns_alive": 5.225,
+          "mean_enemy_guns_alive": 9.825,
+          "timeouts": 164,
+          "mean_cross_team_damage_dealt": 4885.315,
+          "mean_cross_team_damage_taken": 5848.555,
+          "mean_terminal_time_seconds": 134.4561666666616,
+          "own_eliminated_fights": 36,
+          "enemy_eliminated_fights": 0,
+          "mean_time_to_own_elimination_seconds": 63.493518518517476,
+          "mean_time_to_enemy_elimination_seconds": null
+        }
+      },
+      "paired_differences": {
+        "H-v3": {
+          "n": 100,
+          "mean": 0.045,
+          "sd": 8.068236448812057,
+          "se": 0.8068236448812056,
+          "descriptive_normal_95": [
+            -1.536374343967163,
+            1.626374343967163
+          ]
+        },
+        "F-v3": {
+          "n": 100,
+          "mean": -8.89,
+          "sd": 9.285206002294753,
+          "se": 0.9285206002294754,
+          "descriptive_normal_95": [
+            -10.709900376449772,
+            -7.070099623550229
+          ]
+        },
+        "HF-v3": {
+          "n": 100,
+          "mean": -10.315,
+          "sd": 9.622588901731032,
+          "se": 0.9622588901731032,
+          "descriptive_normal_95": [
+            -12.201027424739282,
+            -8.428972575260717
+          ]
+        },
+        "F-H": {
+          "n": 100,
+          "mean": -8.935,
+          "sd": 9.370773121193837,
+          "se": 0.9370773121193837,
+          "descriptive_normal_95": [
+            -10.771671531753993,
+            -7.098328468246009
+          ]
+        },
+        "HF-H": {
+          "n": 100,
+          "mean": -10.36,
+          "sd": 9.56716818451035,
+          "se": 0.9567168184510351,
+          "descriptive_normal_95": [
+            -12.235164964164028,
+            -8.484835035835971
+          ]
+        },
+        "HF-F": {
+          "n": 100,
+          "mean": -1.425,
+          "sd": 7.678309670359704,
+          "se": 0.7678309670359704,
+          "descriptive_normal_95": [
+            -2.929948695390502,
+            0.07994869539050198
+          ]
+        }
+      },
+      "interaction_HF-H-F+v3": {
+        "n": 100,
+        "mean": -1.47,
+        "sd": 11.017850530073018,
+        "se": 1.1017850530073017,
+        "descriptive_normal_95": [
+          -3.6294987038943116,
+          0.6894987038943114
+        ]
+      }
+    }
+  },
+  "traces": {
+    "resonator|v3": {
+      "head": "regular",
+      "fights": 10,
+      "seed_clusters": 5,
+      "unit_seconds": 28651.96666666581,
+      "counts": {
+        "unit_ticks": 859559,
+        "unit_intent_proxy_changes": 15884,
+        "focus_ticks": 0,
+        "focus_while_escaping_ticks": 0,
+        "focus_with_c_below_minus_point2_ticks": 0,
+        "pair_mode_changes": 425905,
+        "unit_ticks_with_pair_mode_change": 15884,
+        "defined_feasibility_ticks": 857248,
+        "death_released_holds": 0,
+        "holds_expiring_inside_gun_reach": 0,
+        "terminal_censored_living_holds": 0
+      },
+      "feasibility_undefined": {
+        "zero_displacement": 2311
+      },
+      "feasibility_mean": 0.8106064479379659,
+      "changes_per_living_unit_minute": {
+        "unit_intent_proxy_changes": 33.26263816678187,
+        "pair_mode_changes": 891.886420827451,
+        "unit_ticks_with_pair_mode_change": 33.26263816678187
+      }
+    },
+    "resonator|H": {
+      "head": "regular",
+      "fights": 10,
+      "seed_clusters": 5,
+      "unit_seconds": 21787.83333333285,
+      "counts": {
+        "unit_ticks": 653635,
+        "unit_intent_proxy_changes": 12107,
+        "focus_ticks": 0,
+        "focus_while_escaping_ticks": 0,
+        "focus_with_c_below_minus_point2_ticks": 0,
+        "pair_mode_changes": 50563,
+        "unit_ticks_with_pair_mode_change": 3430,
+        "defined_feasibility_ticks": 624212,
+        "holds_started": 50563,
+        "holds_target_band": 4898,
+        "holds_expired": 31948,
+        "holds_expiring_inside_gun_reach": 3932,
+        "holds_disappeared": 13632,
+        "death_released_holds_own_death": 9379,
+        "death_released_holds_enemy_death": 4242,
+        "terminal_released_holds_own_death": 79,
+        "death_released_holds": 13711,
+        "terminal_censored_living_holds": 6,
+        "death_released_holds_both_death": 11
+      },
+      "feasibility_undefined": {
+        "zero_displacement": 29423
+      },
+      "feasibility_mean": 0.548631142998084,
+      "changes_per_living_unit_minute": {
+        "unit_intent_proxy_changes": 33.340625884477554,
+        "pair_mode_changes": 139.24193165910947,
+        "unit_ticks_with_pair_mode_change": 9.445638620943091
+      }
+    },
+    "resonator|F": {
+      "head": "regular",
+      "fights": 10,
+      "seed_clusters": 5,
+      "unit_seconds": 24010.899999999496,
+      "counts": {
+        "unit_ticks": 720327,
+        "unit_intent_proxy_changes": 13201,
+        "focus_ticks": 356060,
+        "focus_while_escaping_ticks": 0,
+        "focus_with_c_below_minus_point2_ticks": 0,
+        "pair_mode_changes": 391974,
+        "unit_ticks_with_pair_mode_change": 13201,
+        "defined_feasibility_ticks": 720179,
+        "death_released_holds": 0,
+        "holds_expiring_inside_gun_reach": 0,
+        "terminal_censored_living_holds": 0
+      },
+      "feasibility_undefined": {
+        "zero_displacement": 148
+      },
+      "feasibility_mean": 0.885945321550835,
+      "changes_per_living_unit_minute": {
+        "unit_intent_proxy_changes": 32.987518168832345,
+        "pair_mode_changes": 979.4901482243687,
+        "unit_ticks_with_pair_mode_change": 32.987518168832345
+      }
+    },
+    "resonator|HF": {
+      "head": "regular",
+      "fights": 10,
+      "seed_clusters": 5,
+      "unit_seconds": 8102.700000000045,
+      "counts": {
+        "unit_ticks": 243081,
+        "unit_intent_proxy_changes": 4343,
+        "focus_ticks": 175754,
+        "focus_while_escaping_ticks": 74143,
+        "focus_with_c_below_minus_point2_ticks": 66055,
+        "pair_mode_changes": 28637,
+        "unit_ticks_with_pair_mode_change": 3679,
+        "defined_feasibility_ticks": 243081,
+        "holds_started": 28637,
+        "holds_target_band": 8995,
+        "holds_expired": 6495,
+        "holds_expiring_inside_gun_reach": 2626,
+        "holds_disappeared": 13022,
+        "death_released_holds_own_death": 12309,
+        "death_released_holds_enemy_death": 703,
+        "terminal_released_holds_own_death": 125,
+        "death_released_holds": 13147,
+        "terminal_censored_living_holds": 0,
+        "death_released_holds_both_death": 10
+      },
+      "feasibility_undefined": {},
+      "feasibility_mean": 0.9130781634325492,
+      "changes_per_living_unit_minute": {
+        "unit_intent_proxy_changes": 32.15965048687457,
+        "pair_mode_changes": 212.05524084564286,
+        "unit_ticks_with_pair_mode_change": 27.242770928208962
+      }
+    },
+    "morale|v3": {
+      "head": "regular",
+      "fights": 10,
+      "seed_clusters": 5,
+      "unit_seconds": 42520.63333333229,
+      "counts": {
+        "unit_ticks": 1275619,
+        "unit_intent_proxy_changes": 457,
+        "focus_ticks": 0,
+        "focus_while_escaping_ticks": 0,
+        "focus_with_c_below_minus_point2_ticks": 0,
+        "pair_mode_changes": 13594,
+        "unit_ticks_with_pair_mode_change": 457,
+        "defined_feasibility_ticks": 1237992,
+        "death_released_holds": 0,
+        "holds_expiring_inside_gun_reach": 0,
+        "terminal_censored_living_holds": 0
+      },
+      "feasibility_undefined": {
+        "zero_displacement": 37627
+      },
+      "feasibility_mean": 0.29340559961162893,
+      "changes_per_living_unit_minute": {
+        "unit_intent_proxy_changes": 0.6448633957318135,
+        "pair_mode_changes": 19.182216633650487,
+        "unit_ticks_with_pair_mode_change": 0.6448633957318135
+      }
+    },
+    "morale|H": {
+      "head": "regular",
+      "fights": 10,
+      "seed_clusters": 5,
+      "unit_seconds": 37516.79999999926,
+      "counts": {
+        "unit_ticks": 1125504,
+        "unit_intent_proxy_changes": 522,
+        "focus_ticks": 0,
+        "focus_while_escaping_ticks": 0,
+        "focus_with_c_below_minus_point2_ticks": 0,
+        "pair_mode_changes": 13257,
+        "unit_ticks_with_pair_mode_change": 603,
+        "defined_feasibility_ticks": 1068571,
+        "holds_started": 13257,
+        "holds_target_band": 1847,
+        "holds_expired": 10157,
+        "holds_expiring_inside_gun_reach": 408,
+        "holds_disappeared": 1253,
+        "death_released_holds_own_death": 1149,
+        "death_released_holds": 1253,
+        "terminal_censored_living_holds": 0,
+        "death_released_holds_enemy_death": 104
+      },
+      "feasibility_undefined": {
+        "zero_displacement": 56933
+      },
+      "feasibility_mean": 0.34617415970884174,
+      "changes_per_living_unit_minute": {
+        "unit_intent_proxy_changes": 0.8348259979529336,
+        "pair_mode_changes": 21.201701637666744,
+        "unit_ticks_with_pair_mode_change": 0.9643679631525267
+      }
+    },
+    "morale|F": {
+      "head": "regular",
+      "fights": 10,
+      "seed_clusters": 5,
+      "unit_seconds": 28330.666666665875,
+      "counts": {
+        "unit_ticks": 849920,
+        "unit_intent_proxy_changes": 362,
+        "focus_ticks": 199538,
+        "focus_while_escaping_ticks": 0,
+        "focus_with_c_below_minus_point2_ticks": 0,
+        "pair_mode_changes": 8877,
+        "unit_ticks_with_pair_mode_change": 362,
+        "defined_feasibility_ticks": 822618,
+        "death_released_holds": 0,
+        "holds_expiring_inside_gun_reach": 0,
+        "terminal_censored_living_holds": 0
+      },
+      "feasibility_undefined": {
+        "zero_displacement": 27302
+      },
+      "feasibility_mean": 0.38222650942498915,
+      "changes_per_living_unit_minute": {
+        "unit_intent_proxy_changes": 0.7666603915662865,
+        "pair_mode_changes": 18.800122364458357,
+        "unit_ticks_with_pair_mode_change": 0.7666603915662865
+      }
+    },
+    "morale|HF": {
+      "head": "regular",
+      "fights": 10,
+      "seed_clusters": 5,
+      "unit_seconds": 21677.499999999804,
+      "counts": {
+        "unit_ticks": 650325,
+        "unit_intent_proxy_changes": 351,
+        "focus_ticks": 199647,
+        "focus_while_escaping_ticks": 1453,
+        "focus_with_c_below_minus_point2_ticks": 1380,
+        "pair_mode_changes": 8225,
+        "unit_ticks_with_pair_mode_change": 472,
+        "defined_feasibility_ticks": 592101,
+        "holds_started": 8225,
+        "holds_target_band": 1650,
+        "holds_disappeared": 986,
+        "death_released_holds_enemy_death": 25,
+        "holds_expired": 5547,
+        "holds_expiring_inside_gun_reach": 266,
+        "death_released_holds_own_death": 961,
+        "death_released_holds": 1028,
+        "terminal_censored_living_holds": 0,
+        "terminal_released_holds_own_death": 42
+      },
+      "feasibility_undefined": {
+        "zero_displacement": 58224
+      },
+      "feasibility_mean": 0.554190089268158,
+      "changes_per_living_unit_minute": {
+        "unit_intent_proxy_changes": 0.9715142428785696,
+        "pair_mode_changes": 22.7655403067699,
+        "unit_ticks_with_pair_mode_change": 1.3064237112213242
+      }
+    }
+  }
+}

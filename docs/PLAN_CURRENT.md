@@ -62,10 +62,13 @@
 | B1 | v4 design (travel-time hold, commit focus, decision traces): `DESIGN_0G.md` section 15 | DONE | Claude | — |
 | B2 | v4 implementation and development run | DONE, **NOT_READY / a negative result**: stage B resonator +9.4 against novice and **−22.2 against regular** (v3 −7.6); morale −15.4 (v3 +8.6); reversals not reduced; stage C stopped by the runtime guard before validation. One restart was caused by Claude editing `DESIGN_0G.md` during the run (a rule violation, owned) | Codex | — |
 | B3 | Review v4, then the owner's recheck | DONE: recheck CHANGES_REQUIRED (`astelia_cpp/S4_V4_RECHECK_REPORT.md`): the focus pulls units into gun range; holds expire in danger; the reversal comparison mixed definitions | Codex, Claude | — |
-| B3b | **2×2 attribution test** | Part 1 DONE (review APPROVE_WITH_NOTES; 30 tests); **the fights RUNNING since 18:57** | Codex | decision 0031 |
+| B3b | **2×2 attribution test** | **DONE**: exactly 3,200 fixed-v3-knob development fights + 80 embedded traces once under caffeinate; 943.418 s elapsed / 943.459 s awake. Report DONE; owner recheck APPROVE_WITH_NOTES, no blocking defect. `astelia_cpp/S4_ATTRIBUTION_REPORT.md` | Codex | decision 0031 |
 | B4 | v5: one coherent intent per unit, progress checks, a damage-risk budget (the recheck's recommendation), informed by the 2×2 test; selection on regular-head S | — | Claude drafts, Codex reviews | — |
 | B5 | Update the replay viewer (`viz_0g/`) with v4/v5 fights | — | Claude | — |
 | B6 | S5 registration (W4: CLOSED) | DECIDED: no registration until a development version beats regular; then register with morale as a labelled comparator | Claude drafts | **[OWNER] approves the registered run** |
+
+
+**B3b owner recheck:** COMPLETE — the owner’s verbatim prompt was sent to independent reviewer `s16_report_recheck`; `evidence/tactical_composition_demo/astelia_cpp/s4_attribution_checks/OWNER_RECHECK.md` records its APPROVE_WITH_NOTES, reviewed report hash and findings. **T1 disposition:** timing bold formatting corrected. **T2 disposition:** Claude CLI returned "Not logged in"; disclose the Codex same-family fallback, not cross-family acceptance. **T3 disposition:** all endpoints, paired contrasts/interactions, source/raw hashes and eight complete representative traces independently matched; retain the eight-of-80 raw-tick recount limit. **T4 disposition:** the normal-hook commit and bundle/fresh-fetch identities are in the adjacent Part 2 delivery sidecar; raw seeds/replays/logs stay out of Git and every committed file is below 50 MB. No tuning, judging, registration, source/knob change or additional fight occurred. This completes development attribution, not v5/S5 or scientific acceptance.
 
 ## Track C: C6 option B (a faster C6 engine)
 
