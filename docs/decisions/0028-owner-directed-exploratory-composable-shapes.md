@@ -98,3 +98,8 @@ Four same-family audits (numbers and verdicts; scientific validity; code and rep
 4. `STATUS.json` c6 still says "independent review outstanding" although the review exists (a status edit, left to the owner).
 
 Done: the 0e design decisions (delegated, item 9; `PROPOSAL_0E.md` section 12) and the approval of the 0e specification (item 10).
+
+
+## Ratification (2026-10-06)
+
+The owner ratified **all [R] items** of this record: "ratify all [R] ok". See decision 0031.

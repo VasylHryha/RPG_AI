@@ -12,7 +12,11 @@
    - being stuck.
 2. **Recheck every serious chunk.** After each finished engine, port, design or run, send the owner's recheck prompt (verbatim, in `memory/recheck-every-serious-chunk.md`) to the other model family, fix the findings, then move on.
 3. **Cross-family review:** Codex implements and Claude reviews, or the reverse. One review per revision.
-4. **Run nothing big without the owner's approval** of that exact run.
+4. **Run approvals (decision 0031):**
+   - **under 1 hour:** just run it;
+   - **over 1 hour, before 22:00:** ask first, with the duration;
+   - **from 22:00:** run what the plan needs, without asking.
+   - **A registered one-shot final-exam run** is still announced first.
    - **Unattended runs** use `caffeinate -i -s`.
    - **Raw logs** stay out of git: every file under 50 MB, listed by hash.
 5. **Change no code while a long run is in progress.** Tests run once per change batch.
@@ -48,7 +52,7 @@
 | B3 | Review the v4 report (`astelia_cpp/S4_V4_DEVELOPMENT_REPORT.md`), then the owner's recheck | — | Claude, then Codex | — |
 | B4 | v5: a progress-aware release of the hold (planned in `DESIGN_0G.md` after section 15), with thresholds from the v4 traces | — | Claude drafts, Codex reviews | — |
 | B5 | Update the replay viewer (`viz_0g/`) with v4/v5 fights | — | Claude | — |
-| B6 | S5 registration | DECIDED: no registration until a development version beats regular; then register with morale as a labelled comparator | Claude drafts | **[OWNER] approves the registered run** |
+| B6 | S5 registration (W4: CLOSED) | DECIDED: no registration until a development version beats regular; then register with morale as a labelled comparator | Claude drafts | **[OWNER] approves the registered run** |
 
 ## Track C: C6 option B (a faster C6 engine)
 
@@ -73,9 +77,7 @@
 
 ## Decisions only the owner can make
 
-- **Decision 0028 [R] items:** my readings of short past replies as approvals. Examples: "C then A"; "isn't those our plan?"; "go ahead then".
-  - Only the owner can ratify them, in one message, for example "ratify all [R]".
-  - This is record-keeping and does not block any work.
+- (none open; the 0028 [R] items were ratified in decision 0031)
 
 ## How to resume after a context loss
 
