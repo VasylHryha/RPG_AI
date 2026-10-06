@@ -1,0 +1,293 @@
+{
+ "rows": {
+  "bools": {
+   "r2": 17278,
+   "r3": 17278,
+   "equal": true
+  },
+  "ints": {
+   "r2": 992981,
+   "r3": 992981,
+   "equal": true
+  },
+  "digests_changed": {
+   "r2": 45592,
+   "r3": 45592,
+   "equal": true
+  },
+  "discrete_changes": {
+   "r2": 0,
+   "r3": 0,
+   "equal": true
+  },
+  "digests": {
+   "r2": 46050,
+   "r3": 46050,
+   "equal": true,
+   "note": "R3 splits 64-hex strings into physical digests (45682) and semantic identities (368)"
+  },
+  "monitor_floats": {
+   "r2": 14085,
+   "r3": 14085,
+   "equal": true
+  },
+  "monitor_changed": {
+   "r2": 10765,
+   "r3": 10765,
+   "equal": true
+  },
+  "monitor_gt_1e10": {
+   "r2": 28,
+   "r3": 28,
+   "equal": true
+  },
+  "monitor_gt_1e8": {
+   "r2": 0,
+   "r3": 0,
+   "equal": true
+  },
+  "monitor_max_abs": {
+   "r2": 3.3404761575145728e-09,
+   "r3": 3.3404761575145728e-09,
+   "equal": true
+  },
+  "monitor_max_rel": {
+   "r2": 0.05055094970607099,
+   "r3": 0.05055094970607099,
+   "equal": true
+  },
+  "other_floats": {
+   "r2": 17399055,
+   "r3": 17399055,
+   "equal": true
+  },
+  "other_changed": {
+   "r2": 8896265,
+   "r3": 8896265,
+   "equal": true
+  },
+  "other_gt_1e10": {
+   "r2": 1,
+   "r3": 1,
+   "equal": true
+  },
+  "other_gt_1e8": {
+   "r2": 0,
+   "r3": 0,
+   "equal": true
+  },
+  "other_max_abs": {
+   "r2": 2.3871038479228446e-10,
+   "r3": 2.3871038479228446e-10,
+   "equal": true
+  },
+  "other_max_rel": {
+   "r2": 2.0,
+   "r3": 2.0,
+   "equal": true
+  },
+  "family membership_jaccard >= 0.95": {
+   "r2": [
+    12069,
+    0
+   ],
+   "r3": [
+    12069,
+    0
+   ],
+   "equal": true
+  },
+  "family shape_cv <= 0.05": {
+   "r2": [
+    12069,
+    0
+   ],
+   "r3": [
+    12069,
+    0
+   ],
+   "equal": true
+  },
+  "family lock_std <= 0.1 (group)": {
+   "r2": [
+    12069,
+    0
+   ],
+   "r3": [
+    12069,
+    0
+   ],
+   "equal": true
+  },
+  "family freq_change <= 0.01": {
+   "r2": [
+    12069,
+    0
+   ],
+   "r3": [
+    12069,
+    0
+   ],
+   "equal": true
+  },
+  "family pattern_change <= 0.1": {
+   "r2": [
+    12069,
+    0
+   ],
+   "r3": [
+    12069,
+    0
+   ],
+   "equal": true
+  },
+  "family recovery_jaccard >= 0.9": {
+   "r2": [
+    558,
+    0
+   ],
+   "r3": [
+    558,
+    0
+   ],
+   "equal": true
+  },
+  "family recovery_pattern_error <= 0.1": {
+   "r2": [
+    558,
+    0
+   ],
+   "r3": [
+    558,
+    0
+   ],
+   "equal": true
+  },
+  "family causal intact > 1e-8 (per grid, strict)": {
+   "r2": [
+    1104,
+    0
+   ],
+   "r3": [
+    1104,
+    0
+   ],
+   "equal": true
+  },
+  "family causal spread <= 0.1*min(intact) (moving)": {
+   "r2": [
+    368,
+    0
+   ],
+   "r3": [
+    368,
+    0
+   ],
+   "equal": true
+  },
+  "family causal ablation <= max(1e-12, 0.2*min(intact)) (moving)": {
+   "r2": [
+    368,
+    0
+   ],
+   "r3": [
+    368,
+    0
+   ],
+   "equal": true
+  },
+  "family descriptor gain refinement <= 0.001": {
+   "r2": [
+    53,
+    0
+   ],
+   "r3": [
+    53,
+    0
+   ],
+   "equal": true
+  },
+  "family grid error position <= 0.05": {
+   "r2": [
+    4656,
+    0
+   ],
+   "r3": [
+    4656,
+    0
+   ],
+   "equal": true
+  },
+  "family grid error phase <= 0.05": {
+   "r2": [
+    4656,
+    0
+   ],
+   "r3": [
+    4656,
+    0
+   ],
+   "equal": true
+  },
+  "family grid error field <= 0.05": {
+   "r2": [
+    4656,
+    0
+   ],
+   "r3": [
+    4656,
+    0
+   ],
+   "equal": true
+  },
+  "family paired gain refinement <= 0.001": {
+   "r2": [
+    20,
+    0
+   ],
+   "r3": [
+    20,
+    0
+   ],
+   "equal": true
+  },
+  "pairs qualification window (grid dt)": {
+   "r2": [
+    200,
+    55200,
+    0,
+    6200,
+    1711200,
+    0
+   ],
+   "r3": [
+    200,
+    55200,
+    0,
+    6200,
+    1711200,
+    0
+   ],
+   "equal": true
+  },
+  "pairs rolling persistence (grid dt, reconstructed)": {
+   "r2": [
+    3939,
+    1087164,
+    0,
+    5109,
+    1410084,
+    0
+   ],
+   "r3": [
+    3939,
+    1087164,
+    0,
+    5109,
+    1410084,
+    0
+   ],
+   "equal": true
+  }
+ }
+}

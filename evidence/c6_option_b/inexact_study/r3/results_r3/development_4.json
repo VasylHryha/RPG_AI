@@ -1,0 +1,1037 @@
+{
+ "world": "development_4",
+ "values": {
+  "bools": 1371,
+  "ints": 94742,
+  "strings": 14564,
+  "digests": 3827,
+  "digests_changed": 3818,
+  "semantic_digests": 34,
+  "discrete": [],
+  "monitor": {
+   "floats": 1170,
+   "changed": 851,
+   "gt_1e10": 0,
+   "gt_1e8": 0,
+   "max_abs": 5.1147404632862186e-11,
+   "max_abs_path": "/checks/362/max_errors/position",
+   "max_abs_values": [
+    5.452637193662801e-07,
+    5.45314866770913e-07
+   ],
+   "max_rel": 0.041666666666666664,
+   "max_rel_path": "/checks/339/max_errors/phase",
+   "max_rel_values": [
+    6.821210263296962e-13,
+    6.536993168992922e-13
+   ],
+   "above_1e10": [],
+   "above_1e10_count": 0
+  },
+  "other": {
+   "floats": 1362186,
+   "changed": 459171,
+   "gt_1e10": 0,
+   "gt_1e8": 0,
+   "max_abs": 1.0170919662044753e-11,
+   "max_abs_path": "/turns/0/episodes/intact/2/qualification_window/21/201",
+   "max_abs_values": [
+    -0.3383120284027154,
+    -0.3383120283925445
+   ],
+   "max_rel": 2.0,
+   "max_rel_path": "/turns/0/response/no_r/raw/34/response_real_imag/21/23/1",
+   "max_rel_values": [
+    -8.673617379884035e-18,
+    8.673617379884035e-18
+   ],
+   "above_1e10": [],
+   "above_1e10_count": 0
+  },
+  "discrete_count": 0
+ },
+ "decision_families": {
+  "membership_jaccard >= 0.95": {
+   "count": 933,
+   "contexts": {
+    "operation source (copy of qualification)": 1,
+    "rolling persistence": 909,
+    "endpoint qualification": 3,
+    "post-operation qualification": 15,
+    "before-formation qualification": 4,
+    "initial source qualification": 1
+   },
+   "flips": [],
+   "failing_both": 292,
+   "closest": {
+    "path": "/turns/0/source/candidates/0/stats/membership_jaccard",
+    "context": "operation source (copy of qualification)",
+    "margin_exact": 0.050000000000000044,
+    "margin_inexact": 0.050000000000000044,
+    "change": 0.0,
+    "passes": true,
+    "ratio": null
+   },
+   "min_ratio": null,
+   "max_change": 0.0,
+   "flip_count": 0
+  },
+  "shape_cv <= 0.05": {
+   "count": 933,
+   "contexts": {
+    "operation source (copy of qualification)": 1,
+    "rolling persistence": 909,
+    "endpoint qualification": 3,
+    "post-operation qualification": 15,
+    "before-formation qualification": 4,
+    "initial source qualification": 1
+   },
+   "flips": [],
+   "failing_both": 90,
+   "closest": {
+    "path": "/turns/0/conditions/no_r/persistence_by_dt/0/31/stats/shape_cv",
+    "context": "rolling persistence",
+    "margin_exact": 0.025269604524285873,
+    "margin_inexact": 0.025269604524285887,
+    "change": 1.3877787807814457e-17,
+    "passes": true,
+    "ratio": 1820866904309978.5
+   },
+   "min_ratio": {
+    "path": "/turns/0/episodes/intact/2/qualification/candidates/0/stats/shape_cv",
+    "context": "post-operation qualification",
+    "margin_exact": 0.04503655496983667,
+    "margin_inexact": 0.04503655496985051,
+    "change": 1.384309333829492e-14,
+    "passes": true,
+    "ratio": 3253359192865.48
+   },
+   "max_change": 1.384309333829492e-14,
+   "flip_count": 0
+  },
+  "lock_std <= 0.1 (group)": {
+   "count": 933,
+   "contexts": {
+    "operation source (copy of qualification)": 1,
+    "rolling persistence": 909,
+    "endpoint qualification": 3,
+    "post-operation qualification": 15,
+    "before-formation qualification": 4,
+    "initial source qualification": 1
+   },
+   "flips": [],
+   "failing_both": 298,
+   "closest": {
+    "path": "/turns/0/conditions/no_r/persistence_by_dt/0/1/stats/lock_std",
+    "context": "rolling persistence",
+    "margin_exact": 0.011791940150871635,
+    "margin_inexact": 0.011791940150871635,
+    "change": 0.0,
+    "passes": true,
+    "ratio": null
+   },
+   "min_ratio": {
+    "path": "/turns/0/conditions/intact/persistence_by_dt/1/99/stats/lock_std",
+    "context": "rolling persistence",
+    "margin_exact": 0.09797864311822943,
+    "margin_inexact": 0.09797864311833927,
+    "change": 1.0984269049885143e-13,
+    "passes": true,
+    "ratio": 891990560985.5209
+   },
+   "max_change": 8.144596108650148e-13,
+   "flip_count": 0
+  },
+  "freq_change <= 0.01": {
+   "count": 933,
+   "contexts": {
+    "operation source (copy of qualification)": 1,
+    "rolling persistence": 909,
+    "endpoint qualification": 3,
+    "post-operation qualification": 15,
+    "before-formation qualification": 4,
+    "initial source qualification": 1
+   },
+   "flips": [],
+   "failing_both": 5,
+   "closest": {
+    "path": "/turns/0/episodes/intact/2/qualification/candidates/0/stats/freq_change",
+    "context": "post-operation qualification",
+    "margin_exact": 0.0016110955468510903,
+    "margin_inexact": 0.0016110955468507295,
+    "change": 3.608224830031759e-16,
+    "passes": true,
+    "ratio": 4465064187358.053
+   },
+   "min_ratio": {
+    "path": "/turns/0/episodes/intact/2/qualification/candidates/0/stats/freq_change",
+    "context": "post-operation qualification",
+    "margin_exact": 0.0016110955468510903,
+    "margin_inexact": 0.0016110955468507295,
+    "change": 3.608224830031759e-16,
+    "passes": true,
+    "ratio": 4465064187358.053
+   },
+   "max_change": 3.608224830031759e-16,
+   "flip_count": 0
+  },
+  "pattern_change <= 0.1": {
+   "count": 933,
+   "contexts": {
+    "operation source (copy of qualification)": 1,
+    "rolling persistence": 909,
+    "endpoint qualification": 3,
+    "post-operation qualification": 15,
+    "before-formation qualification": 4,
+    "initial source qualification": 1
+   },
+   "flips": [],
+   "failing_both": 296,
+   "closest": {
+    "path": "/turns/0/conditions/no_r/persistence_by_dt/0/2/stats/pattern_change",
+    "context": "rolling persistence",
+    "margin_exact": 0.0012641817480964213,
+    "margin_inexact": 0.0012641817480964213,
+    "change": 0.0,
+    "passes": true,
+    "ratio": null
+   },
+   "min_ratio": {
+    "path": "/turns/0/episodes/intact/2/qualification/candidates/0/stats/pattern_change",
+    "context": "post-operation qualification",
+    "margin_exact": -0.010259448656353948,
+    "margin_inexact": -0.010259448656304654,
+    "change": 4.929390229335695e-14,
+    "passes": false,
+    "ratio": 208128149305.32602
+   },
+   "max_change": 1.318944953254686e-13,
+   "flip_count": 0
+  },
+  "recovery_jaccard >= 0.9": {
+   "count": 51,
+   "contexts": {
+    "operation source (copy of qualification)": 3,
+    "endpoint qualification": 6,
+    "post-operation qualification": 27,
+    "before-formation qualification": 12,
+    "initial source qualification": 3
+   },
+   "flips": [],
+   "failing_both": 0,
+   "closest": {
+    "path": "/turns/0/source/candidates/0/recovery_by_dt/0/recovery_jaccard",
+    "context": "operation source (copy of qualification)",
+    "margin_exact": 0.09999999999999998,
+    "margin_inexact": 0.09999999999999998,
+    "change": 0.0,
+    "passes": true,
+    "ratio": null
+   },
+   "min_ratio": null,
+   "max_change": 0.0,
+   "flip_count": 0
+  },
+  "recovery_pattern_error <= 0.1": {
+   "count": 51,
+   "contexts": {
+    "operation source (copy of qualification)": 3,
+    "endpoint qualification": 6,
+    "post-operation qualification": 27,
+    "before-formation qualification": 12,
+    "initial source qualification": 3
+   },
+   "flips": [],
+   "failing_both": 0,
+   "closest": {
+    "path": "/turns/0/episodes/no_backreaction/4/qualification/candidates/0/recovery_by_dt/2/recovery_pattern_error",
+    "context": "post-operation qualification",
+    "margin_exact": 0.059890217626387715,
+    "margin_inexact": 0.05989021762639482,
+    "change": 7.105427357601002e-15,
+    "passes": true,
+    "ratio": 8428798805791.801
+   },
+   "min_ratio": {
+    "path": "/turns/0/episodes/no_r/3/qualification/candidates/0/recovery_by_dt/1/recovery_pattern_error",
+    "context": "post-operation qualification",
+    "margin_exact": 0.06886595196117754,
+    "margin_inexact": 0.06886595195516457,
+    "change": 6.012967901369848e-12,
+    "passes": true,
+    "ratio": 11452905302.469484
+   },
+   "max_change": 6.012967901369848e-12,
+   "flip_count": 0
+  },
+  "causal intact > 1e-8 (per grid, strict)": {
+   "count": 102,
+   "contexts": {
+    "operation source (copy of qualification)": 6,
+    "endpoint qualification": 12,
+    "post-operation qualification": 54,
+    "before-formation qualification": 24,
+    "initial source qualification": 6
+   },
+   "flips": [],
+   "failing_both": 0,
+   "closest": {
+    "path": "/turns/0/episodes/no_backreaction/0/qualification/causal/g_to_m/intact/0",
+    "context": "post-operation qualification",
+    "margin_exact": 0.014456678407023018,
+    "margin_inexact": 0.014456678407023518,
+    "change": 4.996003610813204e-16,
+    "passes": true,
+    "ratio": 28936485105281.76
+   },
+   "min_ratio": {
+    "path": "/turns/0/episodes/no_backreaction/2/qualification/causal/m_to_g/intact/0",
+    "context": "post-operation qualification",
+    "margin_exact": 1.0020927197508793,
+    "margin_inexact": 1.002092719752119,
+    "change": 1.2396750292964498e-12,
+    "passes": true,
+    "ratio": 808351137248.9248
+   },
+   "max_change": 1.2396750292964498e-12,
+   "flip_count": 0
+  },
+  "causal spread <= 0.1*min(intact) (moving)": {
+   "count": 34,
+   "contexts": {
+    "operation source (copy of qualification)": 2,
+    "endpoint qualification": 4,
+    "post-operation qualification": 18,
+    "before-formation qualification": 8,
+    "initial source qualification": 2
+   },
+   "flips": [],
+   "failing_both": 0,
+   "closest": {
+    "path": "/turns/0/episodes/no_backreaction/0/qualification/causal/g_to_m/spread",
+    "context": "post-operation qualification",
+    "margin_exact": 0.0014456688401901108,
+    "margin_inexact": 0.001445668840190782,
+    "change": 6.711211447685272e-16,
+    "passes": true,
+    "ratio": 2154110105841.962
+   },
+   "min_ratio": {
+    "path": "/turns/0/episodes/no_backreaction/2/qualification/causal/m_to_g/spread",
+    "context": "post-operation qualification",
+    "margin_exact": 0.10020925782249362,
+    "margin_inexact": 0.10020925782120045,
+    "change": 1.2931739012955745e-12,
+    "passes": true,
+    "ratio": 77490937392.17776
+   },
+   "max_change": 1.2931739012955745e-12,
+   "flip_count": 0
+  },
+  "causal ablation <= max(1e-12, 0.2*min(intact)) (moving)": {
+   "count": 34,
+   "contexts": {
+    "operation source (copy of qualification)": 2,
+    "endpoint qualification": 4,
+    "post-operation qualification": 18,
+    "before-formation qualification": 8,
+    "initial source qualification": 2
+   },
+   "flips": [],
+   "failing_both": 0,
+   "closest": {
+    "path": "/turns/0/episodes/no_backreaction/0/qualification/causal/g_to_m/ablated",
+    "context": "post-operation qualification",
+    "margin_exact": 0.0028913376814046036,
+    "margin_inexact": 0.002891337681404704,
+    "change": 1.0018028073766061e-16,
+    "passes": true,
+    "ratio": 28861345367718.336
+   },
+   "min_ratio": {
+    "path": "/turns/0/episodes/no_backreaction/1/qualification/causal/g_to_m/ablated",
+    "context": "post-operation qualification",
+    "margin_exact": 0.0072645103589226686,
+    "margin_inexact": 0.007264510358921486,
+    "change": 1.182214048878194e-15,
+    "passes": true,
+    "ratio": 6144835079413.902
+   },
+   "max_change": 9.742207041085749e-15,
+   "flip_count": 0
+  },
+  "descriptor gain refinement <= 0.001": {
+   "count": 4,
+   "contexts": {
+    "operation response descriptor": 3,
+    "before-response descriptor": 1
+   },
+   "flips": [],
+   "failing_both": 0,
+   "closest": {
+    "path": "/turns/0/response/intact/gain_by_dt",
+    "context": "operation response descriptor",
+    "margin_exact": 0.0009999999998861328,
+    "margin_inexact": 0.0009999999998862993,
+    "change": 1.6653345369377348e-16,
+    "passes": true,
+    "ratio": 6004799502476.911
+   },
+   "min_ratio": {
+    "path": "/turns/0/response/intact/gain_by_dt",
+    "context": "operation response descriptor",
+    "margin_exact": 0.0009999999998861328,
+    "margin_inexact": 0.0009999999998862993,
+    "change": 1.6653345369377348e-16,
+    "passes": true,
+    "ratio": 6004799502476.911
+   },
+   "max_change": 1.6653345369377348e-16,
+   "flip_count": 0
+  },
+  "grid error position <= 0.05": {
+   "count": 387,
+   "contexts": {
+    "world check list": 387
+   },
+   "flips": [],
+   "failing_both": 0,
+   "closest": {
+    "path": "/checks/322/max_errors/position",
+    "context": "world check list",
+    "margin_exact": 0.04792948271377716,
+    "margin_inexact": 0.04792948274370074,
+    "change": 2.99235844436474e-11,
+    "passes": true,
+    "ratio": 1601729325.042552
+   },
+   "min_ratio": {
+    "path": "/checks/362/max_errors/position",
+    "context": "world check list",
+    "margin_exact": 0.04999945473628064,
+    "margin_inexact": 0.049999454685133234,
+    "change": 5.114740575518084e-11,
+    "passes": true,
+    "ratio": 977556026.5090488
+   },
+   "max_change": 5.114740575518084e-11,
+   "flip_count": 0
+  },
+  "grid error phase <= 0.05": {
+   "count": 387,
+   "contexts": {
+    "world check list": 387
+   },
+   "flips": [],
+   "failing_both": 0,
+   "closest": {
+    "path": "/checks/322/max_errors/phase",
+    "context": "world check list",
+    "margin_exact": 0.04991992399451135,
+    "margin_inexact": 0.04991992399568375,
+    "change": 1.1723955140041653e-12,
+    "passes": true,
+    "ratio": 42579422556.82667
+   },
+   "min_ratio": {
+    "path": "/checks/364/max_errors/phase",
+    "context": "world check list",
+    "margin_exact": 0.04999972774617652,
+    "margin_inexact": 0.0499997277206556,
+    "change": 2.55209187116634e-11,
+    "passes": true,
+    "ratio": 1959166451.297303
+   },
+   "max_change": 2.55209187116634e-11,
+   "flip_count": 0
+  },
+  "grid error field <= 0.05": {
+   "count": 387,
+   "contexts": {
+    "world check list": 387
+   },
+   "flips": [],
+   "failing_both": 0,
+   "closest": {
+    "path": "/checks/282/max_errors/field",
+    "context": "world check list",
+    "margin_exact": 0.04999999999180424,
+    "margin_inexact": 0.049999999991803996,
+    "change": 2.42861286636753e-16,
+    "passes": true,
+    "ratio": 205878840074618.84
+   },
+   "min_ratio": {
+    "path": "/checks/13/max_errors/field",
+    "context": "world check list",
+    "margin_exact": 0.049999999996523214,
+    "margin_inexact": 0.04999999999653212,
+    "change": 8.902600878712974e-15,
+    "passes": true,
+    "ratio": 5616336245745.702
+   },
+   "max_change": 8.902600878712974e-15,
+   "flip_count": 0
+  },
+  "paired gain refinement <= 0.001": {
+   "count": 2,
+   "contexts": {
+    "operation response descriptor": 2
+   },
+   "flips": [],
+   "failing_both": 0,
+   "closest": {
+    "path": "/turns/0/response/intact-no_r",
+    "context": "operation response descriptor",
+    "margin_exact": 0.0009999999998660377,
+    "margin_inexact": 0.0009999999998662043,
+    "change": 1.6653345369377348e-16,
+    "passes": true,
+    "ratio": 6004799502356.245
+   },
+   "min_ratio": {
+    "path": "/turns/0/response/intact-no_r",
+    "context": "operation response descriptor",
+    "margin_exact": 0.0009999999998660377,
+    "margin_inexact": 0.0009999999998662043,
+    "change": 1.6653345369377348e-16,
+    "passes": true,
+    "ratio": 6004799502356.245
+   },
+   "max_change": 1.6653345369377348e-16,
+   "flip_count": 0
+  }
+ },
+ "guard_families": {
+  "GridSet normalization: cohort radius of gyration > 0 (finite)": {
+   "count": 536,
+   "contexts": {
+    "world check list": 536
+   },
+   "flips": [],
+   "failing_both": 0,
+   "closest": {
+    "path": "/checks/367/normalization_sizes/1",
+    "context": "world check list",
+    "margin_exact": 0.4193535032116055,
+    "margin_inexact": 0.4193535032116053,
+    "change": 2.220446049250313e-16,
+    "passes": true,
+    "ratio": 1888600280800298.8
+   },
+   "min_ratio": {
+    "path": "/checks/356/normalization_sizes/1",
+    "context": "world check list",
+    "margin_exact": 0.4274037615545829,
+    "margin_inexact": 0.4274037615545708,
+    "change": 1.2045919817182948e-14,
+    "passes": true,
+    "ratio": 35481205922100.79
+   },
+   "max_change": 1.2045919817182948e-14,
+   "flip_count": 0
+  },
+  "candidate minimum size: members >= 3 (integer)": {
+   "count": 23,
+   "contexts": {
+    "endpoint qualification": 3,
+    "post-operation qualification": 15,
+    "before-formation qualification": 4,
+    "initial source qualification": 1
+   },
+   "flips": [],
+   "failing_both": 0,
+   "closest": {
+    "path": "/turns/0/episodes/intact/2/qualification/candidates/0/size",
+    "context": "post-operation qualification",
+    "margin_exact": 19,
+    "margin_inexact": 19,
+    "change": 0,
+    "passes": true,
+    "ratio": null
+   },
+   "min_ratio": null,
+   "max_change": 0.0,
+   "flip_count": 0
+  },
+  "candidate geometry: radius of gyration > 0 (final state, each grid, grid-0 members)": {
+   "count": 69,
+   "contexts": {
+    "endpoint qualification": 9,
+    "post-operation qualification": 45,
+    "before-formation qualification": 12,
+    "initial source qualification": 3
+   },
+   "flips": [],
+   "failing_both": 0,
+   "closest": {
+    "path": "/turns/0/episodes/no_backreaction/0/qualification/candidates/0/grid/2/rg",
+    "context": "post-operation qualification",
+    "margin_exact": 0.4199253903040462,
+    "margin_inexact": 0.4199253903040462,
+    "change": 0.0,
+    "passes": true,
+    "ratio": null
+   },
+   "min_ratio": {
+    "path": "/turns/0/episodes/intact/2/qualification/candidates/0/grid/2/rg",
+    "context": "post-operation qualification",
+    "margin_exact": 0.4263320287876256,
+    "margin_inexact": 0.42633202878759874,
+    "change": 2.6867397195928788e-14,
+    "passes": true,
+    "ratio": 15868006330446.762
+   },
+   "max_change": 2.6867397195928788e-14,
+   "flip_count": 0
+  },
+  "candidate geometry: median nearest spacing > 0 (final state, each grid, grid-0 members)": {
+   "count": 69,
+   "contexts": {
+    "endpoint qualification": 9,
+    "post-operation qualification": 45,
+    "before-formation qualification": 12,
+    "initial source qualification": 3
+   },
+   "flips": [],
+   "failing_both": 0,
+   "closest": {
+    "path": "/turns/0/episodes/no_r/4/qualification/candidates/0/grid/0/spacing",
+    "context": "post-operation qualification",
+    "margin_exact": 0.20561938303709482,
+    "margin_inexact": 0.2056193830370552,
+    "change": 3.960720640350246e-14,
+    "passes": true,
+    "ratio": 5191463920538.257
+   },
+   "min_ratio": {
+    "path": "/turns/0/episodes/no_r/3/qualification/candidates/0/grid/1/spacing",
+    "context": "post-operation qualification",
+    "margin_exact": 0.21835775758823195,
+    "margin_inexact": 0.21835775758898593,
+    "change": 7.539802115985594e-13,
+    "passes": true,
+    "ratio": 289606748597.9219
+   },
+   "max_change": 7.539802115985594e-13,
+   "flip_count": 0
+  },
+  "recovery kick: median member spacing > 0 (each grid)": {
+   "count": 48,
+   "contexts": {
+    "endpoint qualification": 6,
+    "post-operation qualification": 27,
+    "before-formation qualification": 12,
+    "initial source qualification": 3
+   },
+   "flips": [],
+   "failing_both": 0,
+   "closest": {
+    "path": "/turns/0/before_formation/3/qualification/candidates/0/grid/2/kick_spacing",
+    "context": "before-formation qualification",
+    "margin_exact": 0.21220125501929535,
+    "margin_inexact": 0.21220125501929513,
+    "change": 2.220446049250313e-16,
+    "passes": true,
+    "ratio": 955669493032450.1
+   },
+   "min_ratio": {
+    "path": "/turns/0/episodes/no_r/3/qualification/candidates/0/grid/1/kick_spacing",
+    "context": "post-operation qualification",
+    "margin_exact": 0.21835775758823195,
+    "margin_inexact": 0.21835775758898593,
+    "change": 7.539802115985594e-13,
+    "passes": true,
+    "ratio": 289606748597.9219
+   },
+   "max_change": 7.539802115985594e-13,
+   "flip_count": 0
+  },
+  "causal grid agreement: per-grid floor decisions identical": {
+   "count": 32,
+   "contexts": {
+    "endpoint qualification": 4,
+    "post-operation qualification": 18,
+    "before-formation qualification": 8,
+    "initial source qualification": 2
+   },
+   "flips": [],
+   "failing_both": 0,
+   "closest": {
+    "path": "/turns/0/episodes/no_backreaction/0/qualification/causal/g_to_m/agreement",
+    "context": "post-operation qualification",
+    "margin_exact": 0.014456678407023018,
+    "margin_inexact": 0.014456678407023518,
+    "change": 4.996003610813204e-16,
+    "passes": true,
+    "ratio": 28936485105281.76
+   },
+   "min_ratio": {
+    "path": "/turns/0/episodes/no_backreaction/1/qualification/causal/g_to_m/agreement",
+    "context": "post-operation qualification",
+    "margin_exact": 0.03632254179461334,
+    "margin_inexact": 0.03632254179460743,
+    "change": 5.9119376061289586e-15,
+    "passes": true,
+    "ratio": 6143931856952.86
+   },
+   "max_change": 4.8627768478581856e-14,
+   "flip_count": 0
+  },
+  "selection: recomputed select_accepted equals stored selected_members": {
+   "count": 23,
+   "contexts": {
+    "endpoint qualification": 3,
+    "post-operation qualification": 15,
+    "before-formation qualification": 4,
+    "initial source qualification": 1
+   },
+   "flips": [],
+   "failing_both": 0,
+   "closest": {
+    "path": "/turns/0/conditions/intact/endpoint_qualification/selection",
+    "context": "endpoint qualification",
+    "margin_exact": 0,
+    "margin_inexact": 0,
+    "change": 0,
+    "passes": true,
+    "ratio": null
+   },
+   "min_ratio": null,
+   "max_change": 0.0,
+   "flip_count": 0
+  },
+  "recovery position-probe norm > 0": {
+   "count": 14,
+   "contexts": {
+    "post-operation qualification": 9,
+    "before-formation qualification": 4,
+    "initial source qualification": 1
+   },
+   "flips": [],
+   "failing_both": 0,
+   "closest": {
+    "path": "/turns/0/episodes/no_r/3/qualification/candidates/0/position_norm",
+    "context": "post-operation qualification",
+    "margin_exact": 1.2589746980624992,
+    "margin_inexact": 1.2589746980624992,
+    "change": 0.0,
+    "passes": true,
+    "ratio": null
+   },
+   "min_ratio": null,
+   "max_change": 0.0,
+   "flip_count": 0
+  },
+  "recovery phase-probe norm > 0 (normalize_phase)": {
+   "count": 14,
+   "contexts": {
+    "post-operation qualification": 9,
+    "before-formation qualification": 4,
+    "initial source qualification": 1
+   },
+   "flips": [],
+   "failing_both": 0,
+   "closest": {
+    "path": "/turns/0/episodes/no_r/1/qualification/candidates/0/phase_norm",
+    "context": "post-operation qualification",
+    "margin_exact": 0.7622432858590144,
+    "margin_inexact": 0.7622432858590144,
+    "change": 0.0,
+    "passes": true,
+    "ratio": null
+   },
+   "min_ratio": null,
+   "max_change": 0.0,
+   "flip_count": 0
+  },
+  "causal phase-probe norm > 0 (normalize_phase)": {
+   "count": 14,
+   "contexts": {
+    "post-operation qualification": 9,
+    "before-formation qualification": 4,
+    "initial source qualification": 1
+   },
+   "flips": [],
+   "failing_both": 0,
+   "closest": {
+    "path": "/initial_source/qualification/causal/probe_norm",
+    "context": "initial source qualification",
+    "margin_exact": 0.6793940915485367,
+    "margin_inexact": 0.6793940915485367,
+    "change": 0.0,
+    "passes": true,
+    "ratio": null
+   },
+   "min_ratio": null,
+   "max_change": 0.0,
+   "flip_count": 0
+  },
+  "recovery grid agreement: per-grid recovered decisions identical": {
+   "count": 16,
+   "contexts": {
+    "endpoint qualification": 2,
+    "post-operation qualification": 9,
+    "before-formation qualification": 4,
+    "initial source qualification": 1
+   },
+   "flips": [],
+   "failing_both": 0,
+   "closest": {
+    "path": "/turns/0/episodes/no_backreaction/4/qualification/candidates/0/recovery_agreement",
+    "context": "post-operation qualification",
+    "margin_exact": 0.059890217626387715,
+    "margin_inexact": 0.05989021762639482,
+    "change": 7.105427357601002e-15,
+    "passes": true,
+    "ratio": 8428798805791.801
+   },
+   "min_ratio": {
+    "path": "/turns/0/episodes/no_r/3/qualification/candidates/0/recovery_agreement",
+    "context": "post-operation qualification",
+    "margin_exact": 0.06885998554679632,
+    "margin_inexact": 0.068859985548578,
+    "change": 1.7816859099184512e-12,
+    "passes": true,
+    "ratio": 38648779318.20658
+   },
+   "max_change": 1.7816859099184512e-12,
+   "flip_count": 0
+  },
+  "persistence grid agreement: per-grid window masks identical": {
+   "count": 3,
+   "contexts": {
+    "other": 3
+   },
+   "flips": [],
+   "failing_both": 0,
+   "closest": {
+    "path": "/turns/0/conditions/no_r/persistence_agreement",
+    "context": "other",
+    "margin_exact": 0.0012641817480964213,
+    "margin_inexact": 0.0012641817480964213,
+    "change": 0.0,
+    "passes": true,
+    "ratio": null
+   },
+   "min_ratio": {
+    "path": "/turns/0/conditions/intact/persistence_agreement",
+    "context": "other",
+    "margin_exact": 0.008762070433132254,
+    "margin_inexact": 0.00876207043313231,
+    "change": 5.551115123125783e-17,
+    "passes": true,
+    "ratio": 157843428550593.84
+   },
+   "max_change": 5.551115123125783e-17,
+   "flip_count": 0
+  }
+ },
+ "guard_contexts_without_stored_perturbations": 4,
+ "stored_record_validation": {
+  "exact": {
+   "validate_world": "PASS",
+   "publication_valid_calls": 20,
+   "publication_valid_true": 20,
+   "chain_checked": false
+  },
+  "inexact": {
+   "validate_world": "PASS",
+   "publication_valid_calls": 20,
+   "publication_valid_true": 20,
+   "chain_checked": false
+  }
+ },
+ "pair_level": {
+  "qualification window (grid dt)": {
+   "windows": 20,
+   "lock_tests": 5520,
+   "lock_flips": [],
+   "frames": 620,
+   "link_tests": 171120,
+   "link_flips": [],
+   "closest_lock": {
+    "path": "/turns/0/episodes/intact/2",
+    "pair_index": 151,
+    "exact": 0.10176387428578686,
+    "inexact": 0.10176387428577809,
+    "margin_exact": -0.0017638742857868511,
+    "margin_inexact": -0.0017638742857780804,
+    "change": 8.770761894538737e-15
+   },
+   "closest_link": {
+    "path": "/turns/0/before_formation/1",
+    "pair_index": 208,
+    "margin_rel_exact": 4.664186786889386e-05,
+    "margin_rel_inexact": 4.66418678816528e-05,
+    "change_rel": 1.2758938599654462e-14
+   },
+   "validation": [],
+   "lock_flip_count": 0,
+   "link_flip_count": 0
+  },
+  "rolling persistence (grid dt, reconstructed)": {
+   "windows": 303,
+   "lock_tests": 83628,
+   "lock_flips": [],
+   "frames": 393,
+   "link_tests": 108468,
+   "link_flips": [],
+   "closest_lock": {
+    "path": "/turns/0/conditions/no_r/window/6",
+    "pair_index": 48,
+    "exact": 0.10003026792176979,
+    "inexact": 0.10003026792176979,
+    "margin_exact": -3.0267921769785988e-05,
+    "margin_inexact": -3.0267921769785988e-05,
+    "change": 0.0
+   },
+   "closest_link": {
+    "path": "/turns/0/conditions/intact/frame/119",
+    "pair_index": 114,
+    "margin_rel_exact": 5.5746691264318916e-05,
+    "margin_rel_inexact": 5.5746691272480485e-05,
+    "change_rel": 8.161569022609866e-15
+   },
+   "validation": [
+    {
+     "cell": "/turns/0/conditions/intact",
+     "exact": {
+      "prefix_mapping": true,
+      "windows": 101,
+      "max_abs_stat_difference": 0.0
+     },
+     "inexact": {
+      "prefix_mapping": true,
+      "windows": 101,
+      "max_abs_stat_difference": 0.0
+     },
+     "windows": 101,
+     "valid": true
+    },
+    {
+     "cell": "/turns/0/conditions/no_r",
+     "exact": {
+      "prefix_mapping": true,
+      "windows": 101,
+      "max_abs_stat_difference": 0.0
+     },
+     "inexact": {
+      "prefix_mapping": true,
+      "windows": 101,
+      "max_abs_stat_difference": 0.0
+     },
+     "windows": 101,
+     "valid": true
+    },
+    {
+     "cell": "/turns/0/conditions/no_backreaction",
+     "exact": {
+      "prefix_mapping": true,
+      "windows": 101,
+      "max_abs_stat_difference": 0.0
+     },
+     "inexact": {
+      "prefix_mapping": true,
+      "windows": 101,
+      "max_abs_stat_difference": 0.0
+     },
+     "windows": 101,
+     "valid": true
+    }
+   ],
+   "lock_flip_count": 0,
+   "link_flip_count": 0
+  }
+ },
+ "outcomes": {
+  "invalid": [
+   null,
+   null
+  ],
+  "chain_complete": [
+   false,
+   false
+  ],
+  "enabled_witness": [
+   false,
+   false
+  ],
+  "link_count": [
+   0,
+   0
+  ],
+  "turns": [
+   {
+    "turn": [
+     1,
+     1
+    ],
+    "operation_eligible": [
+     true,
+     true
+    ],
+    "physical_outcome": [
+     "PERSISTENT_UNIT",
+     "PERSISTENT_UNIT"
+    ],
+    "first_loss_time": [
+     null,
+     null
+    ],
+    "witness_tuple": [
+     [
+      false,
+      true,
+      true
+     ],
+     [
+      false,
+      true,
+      true
+     ]
+    ],
+    "controls_passed": [
+     true,
+     true
+    ]
+   }
+  ],
+  "initial_qualified": [
+   true,
+   true
+  ]
+ },
+ "inputs": {
+  "exact": {
+   "expected": {
+    "path": "evidence/c6_option_b/inexact_study/raw_worlds/exact_development_4.world.json.gz",
+    "sha256": "4e5bba2eeab19991f69c83c89fd318a0e3f86d5489cd8f65301758437870b166",
+    "bytes": 12318829
+   },
+   "observed": {
+    "path": "evidence/c6_option_b/inexact_study/raw_worlds/exact_development_4.world.json.gz",
+    "exists": true,
+    "bytes": 12318829,
+    "sha256": "4e5bba2eeab19991f69c83c89fd318a0e3f86d5489cd8f65301758437870b166",
+    "run_receipt": "evidence/c6_option_b/inexact_study/runs/exact_development_4/COSTS.json",
+    "run_receipt_world_sha256": "4e5bba2eeab19991f69c83c89fd318a0e3f86d5489cd8f65301758437870b166"
+   }
+  },
+  "inexact": {
+   "expected": {
+    "path": "evidence/c6_option_b/inexact_study/raw_worlds/inexact_development_4.world.json.gz",
+    "sha256": "84ec5253d9a4230c127cf66489eed611dfb9bfc7aa466e191098b5dfb74fe541",
+    "bytes": 12318921
+   },
+   "observed": {
+    "path": "evidence/c6_option_b/inexact_study/raw_worlds/inexact_development_4.world.json.gz",
+    "exists": true,
+    "bytes": 12318921,
+    "sha256": "84ec5253d9a4230c127cf66489eed611dfb9bfc7aa466e191098b5dfb74fe541",
+    "run_receipt": "evidence/c6_option_b/inexact_study/runs/inexact_development_4/COSTS.json",
+    "run_receipt_world_sha256": "84ec5253d9a4230c127cf66489eed611dfb9bfc7aa466e191098b5dfb74fe541"
+   }
+  }
+ }
+}
