@@ -1,0 +1,337 @@
+{
+ "world": "development_6",
+ "values": {
+  "bools": 56,
+  "ints": 4051,
+  "digests": 483,
+  "digests_changed": 474,
+  "discrete": [],
+  "monitor": {
+   "floats": 156,
+   "changed": 104,
+   "gt_1e10": 0,
+   "gt_1e8": 0,
+   "max_abs": 2.2480727579330233e-14,
+   "max_abs_path": "/checks/1/max_errors/position",
+   "max_abs_values": [
+    5.984681902749003e-10,
+    5.984906710024797e-10
+   ],
+   "max_rel": 5.599940267303815e-05,
+   "max_rel_path": "/checks/1/max_errors/phase",
+   "max_rel_values": [
+    1.9031531905966403e-10,
+    1.9032597720070044e-10
+   ],
+   "above_1e10": [],
+   "above_1e10_count": 0
+  },
+  "other": {
+   "floats": 263147,
+   "changed": 1938,
+   "gt_1e10": 0,
+   "gt_1e8": 0,
+   "max_abs": 1.2956302697375577e-13,
+   "max_abs_path": "/initial_source/qualified_states/1/cohorts/0/x/11/1",
+   "max_abs_values": [
+    0.6987600473913603,
+    0.6987600473914899
+   ],
+   "max_rel": 4.988697811983626e-12,
+   "max_rel_path": "/initial_source/qualification_window/3/53",
+   "max_rel_values": [
+    -0.00040734480388809587,
+    -0.000407344803890128
+   ],
+   "above_1e10": [],
+   "above_1e10_count": 0
+  },
+  "discrete_count": 0
+ },
+ "decision_families": {
+  "grid error position <= 0.05": {
+   "count": 52,
+   "contexts": {
+    "world check list": 52
+   },
+   "flips": [],
+   "closest": {
+    "path": "/checks/1/max_errors/position",
+    "context": "world check list",
+    "margin_exact": 0.04999999940153181,
+    "margin_inexact": 0.04999999940150933,
+    "change": 2.248201624865942e-14,
+    "passes": true,
+    "ratio": 2223999789365.5674
+   },
+   "min_ratio": {
+    "path": "/checks/1/max_errors/position",
+    "context": "world check list",
+    "margin_exact": 0.04999999940153181,
+    "margin_inexact": 0.04999999940150933,
+    "change": 2.248201624865942e-14,
+    "passes": true,
+    "ratio": 2223999789365.5674
+   },
+   "max_change": 2.248201624865942e-14,
+   "flip_count": 0
+  },
+  "grid error phase <= 0.05": {
+   "count": 52,
+   "contexts": {
+    "world check list": 52
+   },
+   "flips": [],
+   "closest": {
+    "path": "/checks/0/max_errors/phase",
+    "context": "world check list",
+    "margin_exact": 0.049999999726632896,
+    "margin_inexact": 0.04999999972662224,
+    "change": 1.0658141036401503e-14,
+    "passes": true,
+    "ratio": 4691249586195.601
+   },
+   "min_ratio": {
+    "path": "/checks/0/max_errors/phase",
+    "context": "world check list",
+    "margin_exact": 0.049999999726632896,
+    "margin_inexact": 0.04999999972662224,
+    "change": 1.0658141036401503e-14,
+    "passes": true,
+    "ratio": 4691249586195.601
+   },
+   "max_change": 1.0658141036401503e-14,
+   "flip_count": 0
+  },
+  "grid error field <= 0.05": {
+   "count": 52,
+   "contexts": {
+    "world check list": 52
+   },
+   "flips": [],
+   "closest": {
+    "path": "/checks/0/max_errors/field",
+    "context": "world check list",
+    "margin_exact": 0.04999999999983366,
+    "margin_inexact": 0.04999999999983366,
+    "change": 0.0,
+    "passes": true,
+    "ratio": null
+   },
+   "min_ratio": null,
+   "max_change": 0.0,
+   "flip_count": 0
+  },
+  "membership_jaccard >= 0.95": {
+   "count": 1,
+   "contexts": {
+    "initial source qualification": 1
+   },
+   "flips": [],
+   "closest": {
+    "path": "/initial_source/qualification/candidates/0/stats/membership_jaccard",
+    "context": "initial source qualification",
+    "margin_exact": 0.050000000000000044,
+    "margin_inexact": 0.050000000000000044,
+    "change": 0.0,
+    "passes": true,
+    "ratio": null
+   },
+   "min_ratio": null,
+   "max_change": 0.0,
+   "flip_count": 0
+  },
+  "shape_cv <= 0.05": {
+   "count": 1,
+   "contexts": {
+    "initial source qualification": 1
+   },
+   "flips": [],
+   "closest": {
+    "path": "/initial_source/qualification/candidates/0/stats/shape_cv",
+    "context": "initial source qualification",
+    "margin_exact": 0.04431338359720868,
+    "margin_inexact": 0.04431338359720875,
+    "change": 6.938893903907228e-17,
+    "passes": true,
+    "ratio": 638623161138927.6
+   },
+   "min_ratio": {
+    "path": "/initial_source/qualification/candidates/0/stats/shape_cv",
+    "context": "initial source qualification",
+    "margin_exact": 0.04431338359720868,
+    "margin_inexact": 0.04431338359720875,
+    "change": 6.938893903907228e-17,
+    "passes": true,
+    "ratio": 638623161138927.6
+   },
+   "max_change": 6.938893903907228e-17,
+   "flip_count": 0
+  },
+  "lock_std <= 0.1 (group)": {
+   "count": 1,
+   "contexts": {
+    "initial source qualification": 1
+   },
+   "flips": [],
+   "closest": {
+    "path": "/initial_source/qualification/candidates/0/stats/lock_std",
+    "context": "initial source qualification",
+    "margin_exact": 0.03556515708153771,
+    "margin_inexact": 0.03556515708154116,
+    "change": 3.4555691641457997e-15,
+    "passes": true,
+    "ratio": 10292127111954.145
+   },
+   "min_ratio": {
+    "path": "/initial_source/qualification/candidates/0/stats/lock_std",
+    "context": "initial source qualification",
+    "margin_exact": 0.03556515708153771,
+    "margin_inexact": 0.03556515708154116,
+    "change": 3.4555691641457997e-15,
+    "passes": true,
+    "ratio": 10292127111954.145
+   },
+   "max_change": 3.4555691641457997e-15,
+   "flip_count": 0
+  },
+  "freq_change <= 0.01": {
+   "count": 1,
+   "contexts": {
+    "initial source qualification": 1
+   },
+   "flips": [],
+   "closest": {
+    "path": "/initial_source/qualification/candidates/0/stats/freq_change",
+    "context": "initial source qualification",
+    "margin_exact": 0.009649099596718938,
+    "margin_inexact": 0.009649099596719049,
+    "change": 1.1102230246251565e-16,
+    "passes": true,
+    "ratio": 86911362696488.42
+   },
+   "min_ratio": {
+    "path": "/initial_source/qualification/candidates/0/stats/freq_change",
+    "context": "initial source qualification",
+    "margin_exact": 0.009649099596718938,
+    "margin_inexact": 0.009649099596719049,
+    "change": 1.1102230246251565e-16,
+    "passes": true,
+    "ratio": 86911362696488.42
+   },
+   "max_change": 1.1102230246251565e-16,
+   "flip_count": 0
+  },
+  "pattern_change <= 0.1": {
+   "count": 1,
+   "contexts": {
+    "initial source qualification": 1
+   },
+   "flips": [],
+   "closest": {
+    "path": "/initial_source/qualification/candidates/0/stats/pattern_change",
+    "context": "initial source qualification",
+    "margin_exact": -0.011248387160590928,
+    "margin_inexact": -0.011248387160586931,
+    "change": 3.9968028886505635e-15,
+    "passes": false,
+    "ratio": 2814346234719.799
+   },
+   "min_ratio": {
+    "path": "/initial_source/qualification/candidates/0/stats/pattern_change",
+    "context": "initial source qualification",
+    "margin_exact": -0.011248387160590928,
+    "margin_inexact": -0.011248387160586931,
+    "change": 3.9968028886505635e-15,
+    "passes": false,
+    "ratio": 2814346234719.799
+   },
+   "max_change": 3.9968028886505635e-15,
+   "flip_count": 0
+  },
+  "descriptor gain refinement <= 0.001": {
+   "count": 1,
+   "contexts": {
+    "initial source qualification": 1
+   },
+   "flips": [],
+   "closest": {
+    "path": "/initial_source/no_treatment_response/gain_by_dt",
+    "context": "initial source qualification",
+    "margin_exact": 0.0009999999999647227,
+    "margin_inexact": 0.0009999999999647227,
+    "change": 0.0,
+    "passes": true,
+    "ratio": null
+   },
+   "min_ratio": null,
+   "max_change": 0.0,
+   "flip_count": 0
+  }
+ },
+ "decisions_unmatched": 0,
+ "pair_level": {
+  "qualification window (grid dt)": {
+   "windows": 1,
+   "lock_tests": 276,
+   "lock_flips": [],
+   "frames": 31,
+   "link_tests": 8556,
+   "link_flips": [],
+   "closest_lock": {
+    "path": "/initial_source",
+    "pair_index": 270,
+    "exact": 0.06443484291845884,
+    "inexact": 0.06443484291845884,
+    "margin_exact": 0.03556515708154116,
+    "margin_inexact": 0.03556515708154116,
+    "change": 0.0
+   },
+   "closest_link": {
+    "path": "/initial_source",
+    "pair_index": 24,
+    "margin_rel_exact": 0.0003796284290276367,
+    "margin_rel_inexact": 0.00037962842904155035,
+    "change_rel": 1.3913674899723727e-14
+   },
+   "validation": [],
+   "lock_flip_count": 0,
+   "link_flip_count": 0
+  }
+ },
+ "outcomes": {
+  "invalid": [
+   null,
+   null
+  ],
+  "chain_complete": [
+   false,
+   false
+  ],
+  "enabled_witness": [
+   false,
+   false
+  ],
+  "link_count": [
+   0,
+   0
+  ],
+  "turns": [],
+  "initial_qualified": [
+   false,
+   false
+  ]
+ },
+ "inputs": {
+  "exact": {
+   "path": "evidence/c6_option_b/inexact_study/raw_worlds/exact_development_6.world.json.gz",
+   "sha256": "e060093968ba7016c164e4a6b1de831f41001bd88d9d379b96132ccafc0ca921",
+   "bytes": 2579938
+  },
+  "inexact": {
+   "path": "evidence/c6_option_b/inexact_study/raw_worlds/inexact_development_6.world.json.gz",
+   "sha256": "980f5b19b73e4ec2af5f19bcf31dcffbb86c5b529137c08a1b4e19fa64866251",
+   "bytes": 2579976
+  }
+ }
+}

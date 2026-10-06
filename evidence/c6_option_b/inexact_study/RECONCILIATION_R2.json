@@ -1,0 +1,64 @@
+{
+ "rows": {
+  "floats": {
+   "r1": 17413140,
+   "r2": 17413140,
+   "equal": true,
+   "note": null
+  },
+  "changed": {
+   "r1": 8907030,
+   "r2": 8907030,
+   "equal": true,
+   "note": null
+  },
+  "gt_1e10": {
+   "r1": 29,
+   "r2": 29,
+   "equal": true,
+   "note": null
+  },
+  "gt_1e8": {
+   "r1": 0,
+   "r2": 0,
+   "equal": true,
+   "note": null
+  },
+  "max_abs": {
+   "r1": 3.3404761575145728e-09,
+   "r2": 3.3404761575145728e-09,
+   "equal": true,
+   "note": null
+  },
+  "discrete_changes": {
+   "r1": 0,
+   "r2": 0,
+   "equal": true,
+   "note": null
+  },
+  "digests_changed": {
+   "r1": 45592,
+   "r2": 45592,
+   "equal": true,
+   "note": null
+  },
+  "threshold_decision_instances": {
+   "r1": 76703,
+   "r2": 77342,
+   "equal": false,
+   "note": "R2 changes the family definitions: causal floor per grid (3 rows instead of 1), paired gain refinement added, monitor copies under output_check no longer counted, persistence/endpoint rows unchanged"
+  },
+  "pair_lock_tests": {
+   "r1": 55200,
+   "r2": 1142364,
+   "equal": false,
+   "note": "R2 adds reconstructed rolling-persistence windows (grid dt)"
+  },
+  "pair_link_tests": {
+   "r1": 1711200,
+   "r2": 3121284,
+   "equal": false,
+   "note": "R1 counted link tests once per window frame; R2 counts each distinct stored frame once and adds reconstructed persistence frames"
+  }
+ }
+}

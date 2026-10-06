@@ -1,0 +1,681 @@
+{
+ "world": "development_7",
+ "values": {
+  "bools": 1360,
+  "ints": 94721,
+  "digests": 3768,
+  "digests_changed": 3727,
+  "discrete": [],
+  "monitor": {
+   "floats": 1140,
+   "changed": 800,
+   "gt_1e10": 5,
+   "gt_1e8": 0,
+   "max_abs": 1.30595922327747e-09,
+   "max_abs_path": "/checks/250/max_errors/position",
+   "max_abs_values": [
+    9.053452396185064e-06,
+    9.054758355408342e-06
+   ],
+   "max_rel": 0.0013477088948787063,
+   "max_rel_path": "/checks/18/max_errors/phase",
+   "max_rel_values": [
+    5.265121671982342e-12,
+    5.272227099339943e-12
+   ],
+   "above_1e10": [
+    [
+     "/checks/250/max_errors/position",
+     9.053452396185064e-06,
+     9.054758355408342e-06,
+     1.30595922327747e-09,
+     0.00014422905305887373
+    ],
+    [
+     "/checks/257/max_errors/position",
+     6.414118857165184e-06,
+     6.415039243424799e-06,
+     9.203862596142301e-10,
+     0.00014347320798662228
+    ],
+    [
+     "/checks/250/max_errors/phase",
+     1.167536488821952e-06,
+     1.1677049940317374e-06,
+     1.6850520978550776e-10,
+     0.0001443046065973474
+    ],
+    [
+     "/checks/251/max_errors/position",
+     8.680484285040101e-07,
+     8.681728247236398e-07,
+     1.243962196297029e-10,
+     0.00014328508804603644
+    ],
+    [
+     "/checks/257/max_errors/phase",
+     7.588118307033653e-07,
+     7.589207511315976e-07,
+     1.0892042823229531e-10,
+     0.00014352016079398043
+    ]
+   ],
+   "above_1e10_count": 5
+  },
+  "other": {
+   "floats": 1361286,
+   "changed": 446035,
+   "gt_1e10": 1,
+   "gt_1e8": 0,
+   "max_abs": 2.3871038479228446e-10,
+   "max_abs_path": "/turns/0/before_formation/1/qualification/candidates/0/recovery_by_dt/2/recovery_pattern_error",
+   "max_abs_values": [
+    0.029817592666880444,
+    0.02981759290559083
+   ],
+   "max_rel": 1.0,
+   "max_rel_path": "/turns/0/response/intact/raw/0/response_real_imag/0/14/1",
+   "max_rel_values": [
+    0.0,
+    -6.938893903907228e-17
+   ],
+   "above_1e10": [
+    [
+     "/turns/0/before_formation/1/qualification/candidates/0/recovery_by_dt/2/recovery_pattern_error",
+     0.029817592666880444,
+     0.02981759290559083,
+     2.3871038479228446e-10,
+     8.005689310605821e-09
+    ]
+   ],
+   "above_1e10_count": 1
+  },
+  "discrete_count": 0
+ },
+ "decision_families": {
+  "membership_jaccard >= 0.95": {
+   "count": 933,
+   "contexts": {
+    "operation source (copy of qualification)": 1,
+    "rolling persistence": 909,
+    "endpoint qualification": 3,
+    "post-operation qualification": 15,
+    "before-formation qualification": 4,
+    "initial source qualification": 1
+   },
+   "flips": [],
+   "closest": {
+    "path": "/turns/0/source/candidates/0/stats/membership_jaccard",
+    "context": "operation source (copy of qualification)",
+    "margin_exact": 0.050000000000000044,
+    "margin_inexact": 0.050000000000000044,
+    "change": 0.0,
+    "passes": true,
+    "ratio": null
+   },
+   "min_ratio": null,
+   "max_change": 0.0,
+   "flip_count": 0
+  },
+  "shape_cv <= 0.05": {
+   "count": 933,
+   "contexts": {
+    "operation source (copy of qualification)": 1,
+    "rolling persistence": 909,
+    "endpoint qualification": 3,
+    "post-operation qualification": 15,
+    "before-formation qualification": 4,
+    "initial source qualification": 1
+   },
+   "flips": [],
+   "closest": {
+    "path": "/turns/0/conditions/no_r/persistence_by_dt/0/31/stats/shape_cv",
+    "context": "rolling persistence",
+    "margin_exact": 0.024643134446544097,
+    "margin_inexact": 0.024643134446544097,
+    "change": 0.0,
+    "passes": true,
+    "ratio": null
+   },
+   "min_ratio": {
+    "path": "/turns/0/before_formation/1/qualification/candidates/0/stats/shape_cv",
+    "context": "before-formation qualification",
+    "margin_exact": 0.048347209002508655,
+    "margin_inexact": 0.04834720900252236,
+    "change": 1.3704315460216776e-14,
+    "passes": true,
+    "ratio": 3527882085235.062
+   },
+   "max_change": 1.3704315460216776e-14,
+   "flip_count": 0
+  },
+  "lock_std <= 0.1 (group)": {
+   "count": 933,
+   "contexts": {
+    "operation source (copy of qualification)": 1,
+    "rolling persistence": 909,
+    "endpoint qualification": 3,
+    "post-operation qualification": 15,
+    "before-formation qualification": 4,
+    "initial source qualification": 1
+   },
+   "flips": [],
+   "closest": {
+    "path": "/turns/0/conditions/no_r/persistence_by_dt/2/1/stats/lock_std",
+    "context": "rolling persistence",
+    "margin_exact": 0.015197707010461484,
+    "margin_inexact": 0.01519770701045886,
+    "change": 2.6229018956769323e-15,
+    "passes": true,
+    "ratio": 5794233873371.455
+   },
+   "min_ratio": {
+    "path": "/turns/0/before_formation/1/qualification/candidates/0/stats/lock_std",
+    "context": "before-formation qualification",
+    "margin_exact": 0.0577544084532575,
+    "margin_inexact": 0.057754408454901485,
+    "change": 1.6439835603954123e-12,
+    "passes": true,
+    "ratio": 35130770066.43933
+   },
+   "max_change": 1.6439835603954123e-12,
+   "flip_count": 0
+  },
+  "freq_change <= 0.01": {
+   "count": 933,
+   "contexts": {
+    "operation source (copy of qualification)": 1,
+    "rolling persistence": 909,
+    "endpoint qualification": 3,
+    "post-operation qualification": 15,
+    "before-formation qualification": 4,
+    "initial source qualification": 1
+   },
+   "flips": [],
+   "closest": {
+    "path": "/turns/0/episodes/no_r/1/qualification/candidates/0/stats/freq_change",
+    "context": "post-operation qualification",
+    "margin_exact": 0.0003434987873845354,
+    "margin_inexact": 0.0003434987873847297,
+    "change": 1.942890293094024e-16,
+    "passes": true,
+    "ratio": 1767978298133.9553
+   },
+   "min_ratio": {
+    "path": "/turns/0/episodes/no_r/1/qualification/candidates/0/stats/freq_change",
+    "context": "post-operation qualification",
+    "margin_exact": 0.0003434987873845354,
+    "margin_inexact": 0.0003434987873847297,
+    "change": 1.942890293094024e-16,
+    "passes": true,
+    "ratio": 1767978298133.9553
+   },
+   "max_change": 3.885780586188048e-16,
+   "flip_count": 0
+  },
+  "pattern_change <= 0.1": {
+   "count": 933,
+   "contexts": {
+    "operation source (copy of qualification)": 1,
+    "rolling persistence": 909,
+    "endpoint qualification": 3,
+    "post-operation qualification": 15,
+    "before-formation qualification": 4,
+    "initial source qualification": 1
+   },
+   "flips": [],
+   "closest": {
+    "path": "/turns/0/conditions/no_r/persistence_by_dt/2/2/stats/pattern_change",
+    "context": "rolling persistence",
+    "margin_exact": 0.0159308684017673,
+    "margin_inexact": 0.01593086840176597,
+    "change": 1.3322676295501878e-15,
+    "passes": true,
+    "ratio": 11957708832981.271
+   },
+   "min_ratio": {
+    "path": "/turns/0/before_formation/1/qualification/candidates/0/stats/pattern_change",
+    "context": "before-formation qualification",
+    "margin_exact": 0.029375761205872847,
+    "margin_inexact": 0.029375761210001544,
+    "change": 4.128697383976032e-12,
+    "passes": true,
+    "ratio": 7115019211.600173
+   },
+   "max_change": 4.128697383976032e-12,
+   "flip_count": 0
+  },
+  "recovery_jaccard >= 0.9": {
+   "count": 48,
+   "contexts": {
+    "operation source (copy of qualification)": 3,
+    "endpoint qualification": 6,
+    "post-operation qualification": 24,
+    "before-formation qualification": 12,
+    "initial source qualification": 3
+   },
+   "flips": [],
+   "closest": {
+    "path": "/turns/0/source/candidates/0/recovery_by_dt/0/recovery_jaccard",
+    "context": "operation source (copy of qualification)",
+    "margin_exact": 0.09999999999999998,
+    "margin_inexact": 0.09999999999999998,
+    "change": 0.0,
+    "passes": true,
+    "ratio": null
+   },
+   "min_ratio": null,
+   "max_change": 0.0,
+   "flip_count": 0
+  },
+  "recovery_pattern_error <= 0.1": {
+   "count": 48,
+   "contexts": {
+    "operation source (copy of qualification)": 3,
+    "endpoint qualification": 6,
+    "post-operation qualification": 24,
+    "before-formation qualification": 12,
+    "initial source qualification": 3
+   },
+   "flips": [],
+   "closest": {
+    "path": "/turns/0/episodes/no_backreaction/2/qualification/candidates/0/recovery_by_dt/0/recovery_pattern_error",
+    "context": "post-operation qualification",
+    "margin_exact": 0.0277661564667028,
+    "margin_inexact": 0.02776615646671346,
+    "change": 1.0658141036401503e-14,
+    "passes": true,
+    "ratio": 2605159414936.5337
+   },
+   "min_ratio": {
+    "path": "/turns/0/before_formation/1/qualification/candidates/0/recovery_by_dt/2/recovery_pattern_error",
+    "context": "before-formation qualification",
+    "margin_exact": 0.07018240733311956,
+    "margin_inexact": 0.07018240709440918,
+    "change": 2.3871038479228446e-10,
+    "passes": true,
+    "ratio": 294006510.8360882
+   },
+   "max_change": 2.3871038479228446e-10,
+   "flip_count": 0
+  },
+  "causal intact > 1e-8 (per grid, strict)": {
+   "count": 96,
+   "contexts": {
+    "operation source (copy of qualification)": 6,
+    "endpoint qualification": 12,
+    "post-operation qualification": 48,
+    "before-formation qualification": 24,
+    "initial source qualification": 6
+   },
+   "flips": [],
+   "closest": {
+    "path": "/turns/0/episodes/no_backreaction/2/qualification/causal/g_to_m/intact/2",
+    "context": "post-operation qualification",
+    "margin_exact": 0.017654251345667456,
+    "margin_inexact": 0.017654251345667657,
+    "change": 2.0122792321330962e-16,
+    "passes": true,
+    "ratio": 87732612173079.2
+   },
+   "min_ratio": {
+    "path": "/turns/0/before_formation/1/qualification/causal/g_to_m/intact/2",
+    "context": "before-formation qualification",
+    "margin_exact": 0.022799186982462503,
+    "margin_inexact": 0.022799186983008805,
+    "change": 5.46302586501568e-13,
+    "passes": true,
+    "ratio": 41733624452.45729
+   },
+   "max_change": 2.58748578119139e-12,
+   "flip_count": 0
+  },
+  "causal spread <= 0.1*min(intact) (moving)": {
+   "count": 32,
+   "contexts": {
+    "operation source (copy of qualification)": 2,
+    "endpoint qualification": 4,
+    "post-operation qualification": 16,
+    "before-formation qualification": 8,
+    "initial source qualification": 2
+   },
+   "flips": [],
+   "closest": {
+    "path": "/turns/0/episodes/no_backreaction/2/qualification/causal/g_to_m/spread",
+    "context": "post-operation qualification",
+    "margin_exact": 0.0017654261343168797,
+    "margin_inexact": 0.001765426134317292,
+    "change": 4.122136659789888e-16,
+    "passes": true,
+    "ratio": 4282793803364.264
+   },
+   "min_ratio": {
+    "path": "/turns/0/before_formation/1/qualification/causal/g_to_m/spread",
+    "context": "before-formation qualification",
+    "margin_exact": 0.0022799166953317604,
+    "margin_inexact": 0.002279916694952234,
+    "change": 3.795262715211578e-13,
+    "passes": true,
+    "ratio": 6007269763.417839
+   },
+   "max_change": 1.767794244322829e-12,
+   "flip_count": 0
+  },
+  "causal ablation <= max(1e-12, 0.2*min(intact)) (moving)": {
+   "count": 32,
+   "contexts": {
+    "operation source (copy of qualification)": 2,
+    "endpoint qualification": 4,
+    "post-operation qualification": 16,
+    "before-formation qualification": 8,
+    "initial source qualification": 2
+   },
+   "flips": [],
+   "closest": {
+    "path": "/turns/0/episodes/no_backreaction/2/qualification/causal/g_to_m/ablated",
+    "context": "post-operation qualification",
+    "margin_exact": 0.0035308522691334917,
+    "margin_inexact": 0.003530852269133532,
+    "change": 4.0332320816460765e-17,
+    "passes": true,
+    "ratio": 87543989476857.73
+   },
+   "min_ratio": {
+    "path": "/turns/0/before_formation/1/qualification/causal/g_to_m/ablated",
+    "context": "before-formation qualification",
+    "margin_exact": 0.004559838850508049,
+    "margin_inexact": 0.004559838850538372,
+    "change": 3.032296636007459e-14,
+    "passes": true,
+    "ratio": 150375751381.3643
+   },
+   "max_change": 1.4901968548031164e-13,
+   "flip_count": 0
+  },
+  "descriptor gain refinement <= 0.001": {
+   "count": 4,
+   "contexts": {
+    "operation response descriptor": 3,
+    "before-response descriptor": 1
+   },
+   "flips": [],
+   "closest": {
+    "path": "/turns/0/response/intact/gain_by_dt",
+    "context": "operation response descriptor",
+    "margin_exact": 0.0009999999999437256,
+    "margin_inexact": 0.0009999999999438089,
+    "change": 8.326672684688674e-17,
+    "passes": true,
+    "ratio": 12009599005645.49
+   },
+   "min_ratio": {
+    "path": "/turns/0/response/intact/gain_by_dt",
+    "context": "operation response descriptor",
+    "margin_exact": 0.0009999999999437256,
+    "margin_inexact": 0.0009999999999438089,
+    "change": 8.326672684688674e-17,
+    "passes": true,
+    "ratio": 12009599005645.49
+   },
+   "max_change": 8.326672684688674e-17,
+   "flip_count": 0
+  },
+  "grid error position <= 0.05": {
+   "count": 377,
+   "contexts": {
+    "world check list": 377
+   },
+   "flips": [],
+   "closest": {
+    "path": "/checks/250/max_errors/position",
+    "context": "world check list",
+    "margin_exact": 0.04999094654760382,
+    "margin_inexact": 0.049990945241644595,
+    "change": 1.305959222708264e-09,
+    "passes": true,
+    "ratio": 38279102.19427365
+   },
+   "min_ratio": {
+    "path": "/checks/250/max_errors/position",
+    "context": "world check list",
+    "margin_exact": 0.04999094654760382,
+    "margin_inexact": 0.049990945241644595,
+    "change": 1.305959222708264e-09,
+    "passes": true,
+    "ratio": 38279102.19427365
+   },
+   "max_change": 1.305959222708264e-09,
+   "flip_count": 0
+  },
+  "grid error phase <= 0.05": {
+   "count": 377,
+   "contexts": {
+    "world check list": 377
+   },
+   "flips": [],
+   "closest": {
+    "path": "/checks/250/max_errors/phase",
+    "context": "world check list",
+    "margin_exact": 0.04999883246351118,
+    "margin_inexact": 0.04999883229500597,
+    "change": 1.6850520978550776e-10,
+    "passes": true,
+    "ratio": 296719801.8812313
+   },
+   "min_ratio": {
+    "path": "/checks/250/max_errors/phase",
+    "context": "world check list",
+    "margin_exact": 0.04999883246351118,
+    "margin_inexact": 0.04999883229500597,
+    "change": 1.6850520978550776e-10,
+    "passes": true,
+    "ratio": 296719801.8812313
+   },
+   "max_change": 1.6850520978550776e-10,
+   "flip_count": 0
+  },
+  "grid error field <= 0.05": {
+   "count": 377,
+   "contexts": {
+    "world check list": 377
+   },
+   "flips": [],
+   "closest": {
+    "path": "/checks/19/max_errors/field",
+    "context": "world check list",
+    "margin_exact": 0.049999999965282836,
+    "margin_inexact": 0.049999999965284044,
+    "change": 1.2073675392798577e-15,
+    "passes": true,
+    "ratio": 41412410337870.82
+   },
+   "min_ratio": {
+    "path": "/checks/21/max_errors/field",
+    "context": "world check list",
+    "margin_exact": 0.049999999985882365,
+    "margin_inexact": 0.049999999985888006,
+    "change": 5.641320743876577e-15,
+    "passes": true,
+    "ratio": 8863172695889.58
+   },
+   "max_change": 5.641320743876577e-15,
+   "flip_count": 0
+  },
+  "paired gain refinement <= 0.001": {
+   "count": 2,
+   "contexts": {
+    "operation response descriptor": 2
+   },
+   "flips": [],
+   "closest": {
+    "path": "/turns/0/response/intact-no_backreaction",
+    "context": "operation response descriptor",
+    "margin_exact": 0.0009999999999555772,
+    "margin_inexact": 0.0009999999999556605,
+    "change": 8.326672684688674e-17,
+    "passes": true,
+    "ratio": 12009599005787.822
+   },
+   "min_ratio": {
+    "path": "/turns/0/response/intact-no_backreaction",
+    "context": "operation response descriptor",
+    "margin_exact": 0.0009999999999555772,
+    "margin_inexact": 0.0009999999999556605,
+    "change": 8.326672684688674e-17,
+    "passes": true,
+    "ratio": 12009599005787.822
+   },
+   "max_change": 8.326672684688674e-17,
+   "flip_count": 0
+  }
+ },
+ "decisions_unmatched": 0,
+ "pair_level": {
+  "qualification window (grid dt)": {
+   "windows": 20,
+   "lock_tests": 5520,
+   "lock_flips": [],
+   "frames": 620,
+   "link_tests": 171120,
+   "link_flips": [],
+   "closest_lock": {
+    "path": "/turns/0/episodes/no_r/2",
+    "pair_index": 192,
+    "exact": 0.056266893781668395,
+    "inexact": 0.056266893781668395,
+    "margin_exact": 0.04373310621833161,
+    "margin_inexact": 0.04373310621833161,
+    "change": 0.0
+   },
+   "closest_link": {
+    "path": "/turns/0/episodes/no_backreaction/0",
+    "pair_index": 150,
+    "margin_rel_exact": 1.9938098801412035e-06,
+    "margin_rel_inexact": 1.9938098771874696e-06,
+    "change_rel": 2.953733906633149e-15
+   },
+   "validation": [],
+   "lock_flip_count": 0,
+   "link_flip_count": 0
+  },
+  "rolling persistence (grid dt, reconstructed)": {
+   "windows": 303,
+   "lock_tests": 83628,
+   "lock_flips": [],
+   "frames": 393,
+   "link_tests": 108468,
+   "link_flips": [],
+   "closest_lock": {
+    "path": "/turns/0/conditions/no_r/window/3",
+    "pair_index": 200,
+    "exact": 0.10000957033451638,
+    "inexact": 0.10000957033451414,
+    "margin_exact": -9.570334516373347e-06,
+    "margin_inexact": -9.570334514139023e-06,
+    "change": 2.2343238370581275e-15
+   },
+   "closest_link": {
+    "path": "/turns/0/conditions/intact/frame/60",
+    "pair_index": 202,
+    "margin_rel_exact": 4.9308914520340935e-06,
+    "margin_rel_inexact": 4.930891451358595e-06,
+    "change_rel": 6.754986110399375e-16
+   },
+   "validation": [
+    {
+     "cell": "/turns/0/conditions/intact",
+     "prefix_mapping": true,
+     "windows": 101,
+     "max_abs_stat_difference": 0.0,
+     "valid": true
+    },
+    {
+     "cell": "/turns/0/conditions/no_r",
+     "prefix_mapping": true,
+     "windows": 101,
+     "max_abs_stat_difference": 0.0,
+     "valid": true
+    },
+    {
+     "cell": "/turns/0/conditions/no_backreaction",
+     "prefix_mapping": true,
+     "windows": 101,
+     "max_abs_stat_difference": 0.0,
+     "valid": true
+    }
+   ],
+   "lock_flip_count": 0,
+   "link_flip_count": 0
+  }
+ },
+ "outcomes": {
+  "invalid": [
+   null,
+   null
+  ],
+  "chain_complete": [
+   false,
+   false
+  ],
+  "enabled_witness": [
+   false,
+   false
+  ],
+  "link_count": [
+   0,
+   0
+  ],
+  "turns": [
+   {
+    "turn": [
+     1,
+     1
+    ],
+    "operation_eligible": [
+     true,
+     true
+    ],
+    "physical_outcome": [
+     "PERSISTENT_UNIT",
+     "PERSISTENT_UNIT"
+    ],
+    "first_loss_time": [
+     null,
+     null
+    ],
+    "witness_tuple": [
+     [
+      false,
+      false,
+      true
+     ],
+     [
+      false,
+      false,
+      true
+     ]
+    ],
+    "controls_passed": [
+     true,
+     true
+    ]
+   }
+  ],
+  "initial_qualified": [
+   true,
+   true
+  ]
+ },
+ "inputs": {
+  "exact": {
+   "path": "evidence/c6_option_b/inexact_study/raw_worlds/exact_development_7.world.json.gz",
+   "sha256": "e82fba8294be856c415c092a444b0b47c73a6fc3bce2277f9ee3b8cb9bae559c",
+   "bytes": 12315897
+  },
+  "inexact": {
+   "path": "evidence/c6_option_b/inexact_study/raw_worlds/inexact_development_7.world.json.gz",
+   "sha256": "e943e9b9555b4b07df722ab83af856567264de0ec340bbf1c9ee60a4db38d64d",
+   "bytes": 12314464
+  }
+ }
+}

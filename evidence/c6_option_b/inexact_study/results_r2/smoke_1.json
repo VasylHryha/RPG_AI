@@ -1,0 +1,637 @@
+{
+ "world": "smoke_1",
+ "values": {
+  "bools": 1396,
+  "ints": 94788,
+  "digests": 4065,
+  "digests_changed": 4018,
+  "discrete": [],
+  "monitor": {
+   "floats": 1236,
+   "changed": 753,
+   "gt_1e10": 0,
+   "gt_1e8": 0,
+   "max_abs": 4.3069330960397275e-11,
+   "max_abs_path": "/checks/407/max_errors/position",
+   "max_abs_values": [
+    1.3954395807342675e-07,
+    1.3950088874246635e-07
+   ],
+   "max_rel": 0.0019083343950104918,
+   "max_rel_path": "/checks/257/max_errors/position",
+   "max_rel_values": [
+    1.1294596993068397e-10,
+    1.1316192071619213e-10
+   ],
+   "above_1e10": [],
+   "above_1e10_count": 0
+  },
+  "other": {
+   "floats": 1364176,
+   "changed": 483056,
+   "gt_1e10": 0,
+   "gt_1e8": 0,
+   "max_abs": 9.660050537263487e-13,
+   "max_abs_path": "/turns/0/episodes/no_r/4/qualification_window/13/203",
+   "max_abs_values": [
+    -0.7534889514837197,
+    -0.7534889514846858
+   ],
+   "max_rel": 2.0,
+   "max_rel_path": "/turns/0/response/intact/raw/10/response_real_imag/11/4/0",
+   "max_rel_values": [
+    -4.440892098500626e-15,
+    4.440892098500626e-15
+   ],
+   "above_1e10": [],
+   "above_1e10_count": 0
+  },
+  "discrete_count": 0
+ },
+ "decision_families": {
+  "membership_jaccard >= 0.95": {
+   "count": 933,
+   "contexts": {
+    "operation source (copy of qualification)": 1,
+    "rolling persistence": 909,
+    "endpoint qualification": 3,
+    "post-operation qualification": 15,
+    "before-formation qualification": 4,
+    "initial source qualification": 1
+   },
+   "flips": [],
+   "closest": {
+    "path": "/turns/0/conditions/no_r/persistence_by_dt/0/2/stats/membership_jaccard",
+    "context": "rolling persistence",
+    "margin_exact": 0.008333333333333415,
+    "margin_inexact": 0.008333333333333415,
+    "change": 0.0,
+    "passes": true,
+    "ratio": null
+   },
+   "min_ratio": null,
+   "max_change": 0.0,
+   "flip_count": 0
+  },
+  "shape_cv <= 0.05": {
+   "count": 933,
+   "contexts": {
+    "operation source (copy of qualification)": 1,
+    "rolling persistence": 909,
+    "endpoint qualification": 3,
+    "post-operation qualification": 15,
+    "before-formation qualification": 4,
+    "initial source qualification": 1
+   },
+   "flips": [],
+   "closest": {
+    "path": "/turns/0/conditions/no_r/persistence_by_dt/0/31/stats/shape_cv",
+    "context": "rolling persistence",
+    "margin_exact": 0.024942018125149134,
+    "margin_inexact": 0.024942018125149134,
+    "change": 0.0,
+    "passes": true,
+    "ratio": null
+   },
+   "min_ratio": {
+    "path": "/turns/0/episodes/no_r/4/qualification/candidates/0/stats/shape_cv",
+    "context": "post-operation qualification",
+    "margin_exact": 0.049049233164969265,
+    "margin_inexact": 0.049049233164967565,
+    "change": 1.700029006457271e-15,
+    "passes": true,
+    "ratio": 28851997806310.42
+   },
+   "max_change": 1.700029006457271e-15,
+   "flip_count": 0
+  },
+  "lock_std <= 0.1 (group)": {
+   "count": 933,
+   "contexts": {
+    "operation source (copy of qualification)": 1,
+    "rolling persistence": 909,
+    "endpoint qualification": 3,
+    "post-operation qualification": 15,
+    "before-formation qualification": 4,
+    "initial source qualification": 1
+   },
+   "flips": [],
+   "closest": {
+    "path": "/turns/0/conditions/no_r/persistence_by_dt/1/1/stats/lock_std",
+    "context": "rolling persistence",
+    "margin_exact": 0.017432738112407586,
+    "margin_inexact": 0.01743273811241028,
+    "change": 2.6922908347160046e-15,
+    "passes": true,
+    "ratio": 6475057556048.351
+   },
+   "min_ratio": {
+    "path": "/turns/0/episodes/no_r/1/qualification/candidates/0/stats/lock_std",
+    "context": "post-operation qualification",
+    "margin_exact": 0.09778709374666221,
+    "margin_inexact": 0.09778709374676255,
+    "change": 1.0033640585049852e-13,
+    "passes": true,
+    "ratio": 974592351776.734
+   },
+   "max_change": 2.2737367544323206e-13,
+   "flip_count": 0
+  },
+  "freq_change <= 0.01": {
+   "count": 933,
+   "contexts": {
+    "operation source (copy of qualification)": 1,
+    "rolling persistence": 909,
+    "endpoint qualification": 3,
+    "post-operation qualification": 15,
+    "before-formation qualification": 4,
+    "initial source qualification": 1
+   },
+   "flips": [],
+   "closest": {
+    "path": "/turns/0/episodes/intact/2/qualification/candidates/0/stats/freq_change",
+    "context": "post-operation qualification",
+    "margin_exact": 0.0006147258197863794,
+    "margin_inexact": 0.0006147258197863239,
+    "change": 5.551115123125783e-17,
+    "passes": true,
+    "ratio": 11073915891699.844
+   },
+   "min_ratio": {
+    "path": "/turns/0/episodes/intact/2/qualification/candidates/0/stats/freq_change",
+    "context": "post-operation qualification",
+    "margin_exact": 0.0006147258197863794,
+    "margin_inexact": 0.0006147258197863239,
+    "change": 5.551115123125783e-17,
+    "passes": true,
+    "ratio": 11073915891699.844
+   },
+   "max_change": 4.440892098500626e-16,
+   "flip_count": 0
+  },
+  "pattern_change <= 0.1": {
+   "count": 933,
+   "contexts": {
+    "operation source (copy of qualification)": 1,
+    "rolling persistence": 909,
+    "endpoint qualification": 3,
+    "post-operation qualification": 15,
+    "before-formation qualification": 4,
+    "initial source qualification": 1
+   },
+   "flips": [],
+   "closest": {
+    "path": "/turns/0/episodes/intact/4/qualification/candidates/0/stats/pattern_change",
+    "context": "post-operation qualification",
+    "margin_exact": -0.005552224171832515,
+    "margin_inexact": -0.005552224171832071,
+    "change": 4.440892098500626e-16,
+    "passes": false,
+    "ratio": 12502497355671.188
+   },
+   "min_ratio": {
+    "path": "/turns/0/episodes/no_backreaction/4/qualification/candidates/0/stats/pattern_change",
+    "context": "post-operation qualification",
+    "margin_exact": 0.018447416454343474,
+    "margin_inexact": 0.018447416454299953,
+    "change": 4.3520742565306136e-14,
+    "passes": true,
+    "ratio": 423876417702.70215
+   },
+   "max_change": 6.572520305780927e-14,
+   "flip_count": 0
+  },
+  "recovery_jaccard >= 0.9": {
+   "count": 60,
+   "contexts": {
+    "operation source (copy of qualification)": 3,
+    "endpoint qualification": 6,
+    "post-operation qualification": 36,
+    "before-formation qualification": 12,
+    "initial source qualification": 3
+   },
+   "flips": [],
+   "closest": {
+    "path": "/turns/0/source/candidates/0/recovery_by_dt/0/recovery_jaccard",
+    "context": "operation source (copy of qualification)",
+    "margin_exact": 0.09999999999999998,
+    "margin_inexact": 0.09999999999999998,
+    "change": 0.0,
+    "passes": true,
+    "ratio": null
+   },
+   "min_ratio": null,
+   "max_change": 0.0,
+   "flip_count": 0
+  },
+  "recovery_pattern_error <= 0.1": {
+   "count": 60,
+   "contexts": {
+    "operation source (copy of qualification)": 3,
+    "endpoint qualification": 6,
+    "post-operation qualification": 36,
+    "before-formation qualification": 12,
+    "initial source qualification": 3
+   },
+   "flips": [],
+   "closest": {
+    "path": "/turns/0/episodes/no_backreaction/4/qualification/candidates/0/recovery_by_dt/0/recovery_pattern_error",
+    "context": "post-operation qualification",
+    "margin_exact": -0.009056182473356239,
+    "margin_inexact": -0.009056182473505453,
+    "change": 1.4921397450962104e-13,
+    "passes": false,
+    "ratio": 60692589304.176155
+   },
+   "min_ratio": {
+    "path": "/turns/0/episodes/no_backreaction/4/qualification/candidates/0/recovery_by_dt/0/recovery_pattern_error",
+    "context": "post-operation qualification",
+    "margin_exact": -0.009056182473356239,
+    "margin_inexact": -0.009056182473505453,
+    "change": 1.4921397450962104e-13,
+    "passes": false,
+    "ratio": 60692589304.176155
+   },
+   "max_change": 1.4921397450962104e-13,
+   "flip_count": 0
+  },
+  "causal intact > 1e-8 (per grid, strict)": {
+   "count": 114,
+   "contexts": {
+    "operation source (copy of qualification)": 6,
+    "endpoint qualification": 12,
+    "post-operation qualification": 66,
+    "before-formation qualification": 24,
+    "initial source qualification": 6
+   },
+   "flips": [],
+   "closest": {
+    "path": "/turns/0/episodes/intact/2/qualification/causal/g_to_m/intact/2",
+    "context": "post-operation qualification",
+    "margin_exact": 0.017189089805729453,
+    "margin_inexact": 0.017189089805730008,
+    "change": 5.551115123125783e-16,
+    "passes": true,
+    "ratio": 30965111377568.46
+   },
+   "min_ratio": {
+    "path": "/turns/0/before_formation/2/qualification/causal/g_to_m/intact/1",
+    "context": "before-formation qualification",
+    "margin_exact": 0.021657630610039842,
+    "margin_inexact": 0.02165763061003572,
+    "change": 4.121702978920894e-15,
+    "passes": true,
+    "ratio": 5254534526335.53
+   },
+   "max_change": 8.193445921733655e-14,
+   "flip_count": 0
+  },
+  "causal spread <= 0.1*min(intact) (moving)": {
+   "count": 38,
+   "contexts": {
+    "operation source (copy of qualification)": 2,
+    "endpoint qualification": 4,
+    "post-operation qualification": 22,
+    "before-formation qualification": 8,
+    "initial source qualification": 2
+   },
+   "flips": [],
+   "closest": {
+    "path": "/turns/0/episodes/intact/2/qualification/causal/g_to_m/spread",
+    "context": "post-operation qualification",
+    "margin_exact": 0.0017189099788283238,
+    "margin_inexact": 0.001718909978828865,
+    "change": 5.412337245047638e-16,
+    "passes": true,
+    "ratio": 3175910703644.991
+   },
+   "min_ratio": {
+    "path": "/turns/0/episodes/no_backreaction/0/qualification/causal/g_to_m/spread",
+    "context": "post-operation qualification",
+    "margin_exact": 0.0022856528096778525,
+    "margin_inexact": 0.002285652809674453,
+    "change": 3.3996243320455477e-15,
+    "passes": true,
+    "ratio": 672325111963.9385
+   },
+   "max_change": 7.778500066280003e-14,
+   "flip_count": 0
+  },
+  "causal ablation <= max(1e-12, 0.2*min(intact)) (moving)": {
+   "count": 38,
+   "contexts": {
+    "operation source (copy of qualification)": 2,
+    "endpoint qualification": 4,
+    "post-operation qualification": 22,
+    "before-formation qualification": 8,
+    "initial source qualification": 2
+   },
+   "flips": [],
+   "closest": {
+    "path": "/turns/0/episodes/intact/2/qualification/causal/g_to_m/ablated",
+    "context": "post-operation qualification",
+    "margin_exact": 0.003437819961145891,
+    "margin_inexact": 0.003437819961146002,
+    "change": 1.1102230246251565e-16,
+    "passes": true,
+    "ratio": 30965129391966.977
+   },
+   "min_ratio": {
+    "path": "/turns/0/before_formation/2/qualification/causal/g_to_m/ablated",
+    "context": "before-formation qualification",
+    "margin_exact": 0.004331528120719928,
+    "margin_inexact": 0.0043315281207197106,
+    "change": 2.177077962350893e-16,
+    "passes": true,
+    "ratio": 19896063419072.86
+   },
+   "max_change": 5.10702591327572e-15,
+   "flip_count": 0
+  },
+  "descriptor gain refinement <= 0.001": {
+   "count": 4,
+   "contexts": {
+    "operation response descriptor": 3,
+    "before-response descriptor": 1
+   },
+   "flips": [],
+   "closest": {
+    "path": "/turns/0/response/intact/gain_by_dt",
+    "context": "operation response descriptor",
+    "margin_exact": 0.0009999999998812478,
+    "margin_inexact": 0.0009999999998811229,
+    "change": 1.249000902703301e-16,
+    "passes": true,
+    "ratio": 8006399336596.7705
+   },
+   "min_ratio": {
+    "path": "/turns/0/response/intact/gain_by_dt",
+    "context": "operation response descriptor",
+    "margin_exact": 0.0009999999998812478,
+    "margin_inexact": 0.0009999999998811229,
+    "change": 1.249000902703301e-16,
+    "passes": true,
+    "ratio": 8006399336596.7705
+   },
+   "max_change": 1.249000902703301e-16,
+   "flip_count": 0
+  },
+  "grid error position <= 0.05": {
+   "count": 409,
+   "contexts": {
+    "world check list": 409
+   },
+   "flips": [],
+   "closest": {
+    "path": "/checks/315/max_errors/position",
+    "context": "world check list",
+    "margin_exact": 0.049997147683979254,
+    "margin_inexact": 0.04999714768441906,
+    "change": 4.3980791231135186e-13,
+    "passes": true,
+    "ratio": 113679509359.49722
+   },
+   "min_ratio": {
+    "path": "/checks/407/max_errors/position",
+    "context": "world check list",
+    "margin_exact": 0.04999986045604193,
+    "margin_inexact": 0.04999986049911126,
+    "change": 4.306933282238745e-11,
+    "passes": true,
+    "ratio": 1160915602.3436701
+   },
+   "max_change": 4.306933282238745e-11,
+   "flip_count": 0
+  },
+  "grid error phase <= 0.05": {
+   "count": 409,
+   "contexts": {
+    "world check list": 409
+   },
+   "flips": [],
+   "closest": {
+    "path": "/checks/372/max_errors/phase",
+    "context": "world check list",
+    "margin_exact": 0.049999044613638424,
+    "margin_inexact": 0.04999904461144063,
+    "change": 2.19779749954796e-12,
+    "passes": true,
+    "ratio": 22749613931.18436
+   },
+   "min_ratio": {
+    "path": "/checks/407/max_errors/phase",
+    "context": "world check list",
+    "margin_exact": 0.04999995659968377,
+    "margin_inexact": 0.0499999566130704,
+    "change": 1.3386625141720288e-11,
+    "passes": true,
+    "ratio": 3735068104.944215
+   },
+   "max_change": 1.3386625141720288e-11,
+   "flip_count": 0
+  },
+  "grid error field <= 0.05": {
+   "count": 409,
+   "contexts": {
+    "world check list": 409
+   },
+   "flips": [],
+   "closest": {
+    "path": "/checks/22/max_errors/field",
+    "context": "world check list",
+    "margin_exact": 0.049999999826434736,
+    "margin_inexact": 0.0499999998266399,
+    "change": 2.0516227605682502e-13,
+    "passes": true,
+    "ratio": 243709520031.772
+   },
+   "min_ratio": {
+    "path": "/checks/22/max_errors/field",
+    "context": "world check list",
+    "margin_exact": 0.049999999826434736,
+    "margin_inexact": 0.0499999998266399,
+    "change": 2.0516227605682502e-13,
+    "passes": true,
+    "ratio": 243709520031.772
+   },
+   "max_change": 2.0516227605682502e-13,
+   "flip_count": 0
+  },
+  "paired gain refinement <= 0.001": {
+   "count": 2,
+   "contexts": {
+    "operation response descriptor": 2
+   },
+   "flips": [],
+   "closest": {
+    "path": "/turns/0/response/intact-no_backreaction",
+    "context": "operation response descriptor",
+    "margin_exact": 0.0009999999998635952,
+    "margin_inexact": 0.0009999999998634703,
+    "change": 1.249000902703301e-16,
+    "passes": true,
+    "ratio": 8006399336455.4375
+   },
+   "min_ratio": {
+    "path": "/turns/0/response/intact-no_r",
+    "context": "operation response descriptor",
+    "margin_exact": 0.0009999999998643863,
+    "margin_inexact": 0.0009999999998642336,
+    "change": 1.5265566588595902e-16,
+    "passes": true,
+    "ratio": 6550690366195.994
+   },
+   "max_change": 1.5265566588595902e-16,
+   "flip_count": 0
+  }
+ },
+ "decisions_unmatched": 0,
+ "pair_level": {
+  "qualification window (grid dt)": {
+   "windows": 20,
+   "lock_tests": 5520,
+   "lock_flips": [],
+   "frames": 620,
+   "link_tests": 171120,
+   "link_flips": [],
+   "closest_lock": {
+    "path": "/turns/0/before_formation/3",
+    "pair_index": 21,
+    "exact": 0.1001632847400453,
+    "inexact": 0.1001632847400464,
+    "margin_exact": -0.0001632847400452886,
+    "margin_inexact": -0.0001632847400463988,
+    "change": 1.1102230246251565e-15
+   },
+   "closest_link": {
+    "path": "/turns/0/episodes/no_r/2",
+    "pair_index": 61,
+    "margin_rel_exact": -1.3385831623911233e-05,
+    "margin_rel_inexact": -1.3385831444207438e-05,
+    "change_rel": 1.7970379450184346e-13
+   },
+   "validation": [],
+   "lock_flip_count": 0,
+   "link_flip_count": 0
+  },
+  "rolling persistence (grid dt, reconstructed)": {
+   "windows": 303,
+   "lock_tests": 83628,
+   "lock_flips": [],
+   "frames": 393,
+   "link_tests": 108468,
+   "link_flips": [],
+   "closest_lock": {
+    "path": "/turns/0/conditions/no_r/window/94",
+    "pair_index": 150,
+    "exact": 0.10000148720862774,
+    "inexact": 0.10000148720862774,
+    "margin_exact": -1.4872086277345486e-06,
+    "margin_inexact": -1.4872086277345486e-06,
+    "change": 0.0
+   },
+   "closest_link": {
+    "path": "/turns/0/conditions/intact/frame/64",
+    "pair_index": 171,
+    "margin_rel_exact": -5.9340658920501906e-05,
+    "margin_rel_inexact": -5.934065891525203e-05,
+    "change_rel": 5.249876325764263e-15
+   },
+   "validation": [
+    {
+     "cell": "/turns/0/conditions/intact",
+     "prefix_mapping": true,
+     "windows": 101,
+     "max_abs_stat_difference": 0.0,
+     "valid": true
+    },
+    {
+     "cell": "/turns/0/conditions/no_r",
+     "prefix_mapping": true,
+     "windows": 101,
+     "max_abs_stat_difference": 0.0,
+     "valid": true
+    },
+    {
+     "cell": "/turns/0/conditions/no_backreaction",
+     "prefix_mapping": true,
+     "windows": 101,
+     "max_abs_stat_difference": 0.0,
+     "valid": true
+    }
+   ],
+   "lock_flip_count": 0,
+   "link_flip_count": 0
+  }
+ },
+ "outcomes": {
+  "invalid": [
+   null,
+   null
+  ],
+  "chain_complete": [
+   false,
+   false
+  ],
+  "enabled_witness": [
+   false,
+   false
+  ],
+  "link_count": [
+   0,
+   0
+  ],
+  "turns": [
+   {
+    "turn": [
+     1,
+     1
+    ],
+    "operation_eligible": [
+     true,
+     true
+    ],
+    "physical_outcome": [
+     "PERSISTENT_UNIT",
+     "PERSISTENT_UNIT"
+    ],
+    "first_loss_time": [
+     null,
+     null
+    ],
+    "witness_tuple": [
+     [
+      false,
+      true,
+      true
+     ],
+     [
+      false,
+      true,
+      true
+     ]
+    ],
+    "controls_passed": [
+     true,
+     true
+    ]
+   }
+  ],
+  "initial_qualified": [
+   true,
+   true
+  ]
+ },
+ "inputs": {
+  "exact": {
+   "path": "evidence/c6_option_b/inexact_study/raw_worlds/exact_smoke_1.world.json.gz",
+   "sha256": "ec438eefdaa6b22065cd980fc871b58bd53ad8722e784ccd7069da7f5950fd88",
+   "bytes": 12313080
+  },
+  "inexact": {
+   "path": "evidence/c6_option_b/inexact_study/raw_worlds/inexact_smoke_1.world.json.gz",
+   "sha256": "b78f3c37dfa83a538b3b1c3a2145926db84f92376446a03d9196280b317de373",
+   "bytes": 12312502
+  }
+ }
+}
