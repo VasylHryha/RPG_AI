@@ -1,0 +1,202 @@
+<title>Resonator Battle Replays</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a field-map replay in the centre, the fight picker above it, the reading of what happens beside or below it */
+:root {
+  --bg: #eef1ee;
+  --panel: #f8faf8;
+  --ink: #18201c;
+  --muted: #5b6862;
+  --line: #c9d2cc;
+  --field: #dfe6df;
+  --field-grid: #cbd6cc;
+  --enemy: #3d4542;
+  --enemy-art: #8a2d1c;
+  --accent: #1f6f5c;
+  --good: #1f7a46;
+  --bad: #a3332a;
+  --warn: #8a6410;
+  --display: "Barlow Condensed", "Arial Narrow", sans-serif;
+  --body: "IBM Plex Sans", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #121815; --panel: #18201c; --ink: #e3ebe6; --muted: #93a39b; --line: #2c3833;
+  --field: #1b2420; --field-grid: #24302b; --enemy: #c9d1cd; --enemy-art: #e07a5f; --accent: #5cc3a5;
+  --good: #5fca8b; --bad: #ef8578; --warn: #e2b55a; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #121815; --panel: #18201c; --ink: #e3ebe6; --muted: #93a39b; --line: #2c3833;
+  --field: #1b2420; --field-grid: #24302b; --enemy: #c9d1cd; --enemy-art: #e07a5f; --accent: #5cc3a5;
+  --good: #5fca8b; --bad: #ef8578; --warn: #e2b55a; color-scheme: dark }
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); line-height: 1.5; padding-inline: 16px; padding-block: 20px 40px }
+.wrap { max-width: 1180px; margin: 0 auto; display: grid; gap: 18px }
+header { display: grid; gap: 4px }
+h1 { font-family: var(--display); font-weight: 700; font-size: clamp(1.9rem, 4vw, 2.6rem); letter-spacing: .01em; margin: 0; text-wrap: balance }
+.lede { color: var(--muted); max-width: 70ch; margin: 0 }
+.picker { display: flex; flex-wrap: wrap; gap: 8px }
+.picker button { font: 500 .95rem var(--body); color: var(--ink); background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 8px 12px; cursor: pointer; display: flex; gap: 8px; align-items: center }
+.picker button[aria-pressed="true"] { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent) }
+.picker button:focus-visible, .controls button:focus-visible, input[type=range]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
+.chip { font: 600 .72rem var(--mono); letter-spacing: .04em; text-transform: uppercase; padding: 2px 6px; border-radius: 4px; border: 1px solid currentColor }
+.chip.win { color: var(--good) } .chip.loss { color: var(--bad) } .chip.stall { color: var(--warn) }
+.main { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 18px; align-items: start }
+@media (max-width: 900px) { .main { grid-template-columns: minmax(0, 1fr) } }
+.stage { display: grid; gap: 10px; min-width: 0 }
+canvas { width: 100%; height: auto; aspect-ratio: 1400 / 800; max-width: 100%; display: block; border: 1px solid var(--line); border-radius: 6px; background: var(--field) }
+.controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center }
+.controls button { font: 500 .9rem var(--body); background: var(--panel); color: var(--ink); border: 1px solid var(--line); border-radius: 6px; padding: 6px 12px; cursor: pointer }
+.controls button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent) }
+.controls input[type=range] { flex: 1 1 180px; min-width: 0; accent-color: var(--accent) }
+.clock { font: 500 .95rem var(--mono); font-variant-numeric: tabular-nums; min-width: 9ch }
+.counts { display: flex; flex-wrap: wrap; gap: 16px; font: .85rem var(--mono); font-variant-numeric: tabular-nums; color: var(--muted) }
+.counts b { color: var(--ink); font-weight: 500 }
+aside { display: grid; gap: 14px; min-width: 0 }
+section.card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; display: grid; gap: 8px }
+h2 { font-family: var(--display); font-weight: 600; font-size: 1.25rem; margin: 0; letter-spacing: .02em }
+.card p { margin: 0; font-size: .92rem }
+.legend { display: grid; gap: 8px; font-size: .88rem }
+.legend .row { display: flex; gap: 10px; align-items: center }
+.wheel { width: 46px; height: 46px; border-radius: 50%; background: conic-gradient(from 90deg, hsl(0 70% 50%), hsl(60 70% 50%), hsl(120 70% 45%), hsl(180 70% 45%), hsl(240 70% 55%), hsl(300 70% 50%), hsl(360 70% 50%)); flex: none }
+.shape { width: 18px; height: 18px; flex: none; display: grid; place-items: center }
+dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; margin: 0; font-size: .88rem }
+dt { color: var(--muted) } dd { margin: 0; font-family: var(--mono); font-variant-numeric: tabular-nums }
+.note { font-size: .8rem; color: var(--muted) }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto } }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>v5 trace diagnostic replays</h1>
+    <p class="lede">Three predeclared fresh development fights at the unchanged v5 stage-B knobs. Use the full diagnostic report for the 60-fight comparison.</p>
+  </header>
+
+  <div class="picker" role="group" aria-label="Choose a fight" id="picker"></div>
+
+  <div class="main">
+    <div class="stage">
+      <canvas id="field" width="1400" height="800" aria-label="Battle replay"></canvas>
+      <div class="controls">
+        <button id="play" type="button">Play</button>
+        <button type="button" data-speed="1">1×</button>
+        <button type="button" data-speed="4" aria-pressed="true">4×</button>
+        <button type="button" data-speed="10">10×</button>
+        <input id="scrub" type="range" min="0" max="1000" value="0" aria-label="Fight time">
+        <span class="clock" id="clock">0.0 s</span>
+      </div>
+      <div class="counts" id="counts"></div>
+    </div>
+
+    <aside>
+      <section class="card" id="story">
+        <h2 id="story-title"></h2>
+        <p id="story-text"></p>
+        <dl id="story-stats"></dl>
+      </section>
+      <section class="card">
+        <h2>Reading the map</h2>
+        <div class="legend">
+          <div class="row"><div class="wheel" aria-hidden="true"></div><span>Our colours show phase for resonator fights and the scalar morale state for morale fights. Matching colours alone do not establish synchronization.</span></div>
+          <div class="row"><svg class="shape" viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="6" fill="none" stroke="currentColor" stroke-width="2"/></svg><span>Outline brightness shows commitment c. It does not show the stored commit/escape pair mode: morale can retain escape while c is near zero.</span></div>
+          <div class="row"><svg class="shape" viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="5" fill="currentColor"/></svg><span>Melee</span></div>
+          <div class="row"><svg class="shape" viewBox="0 0 18 18" aria-hidden="true"><polygon points="9,3 15,15 3,15" fill="currentColor"/></svg><span>Ranged</span></div>
+          <div class="row"><svg class="shape" viewBox="0 0 18 18" aria-hidden="true"><rect x="4" y="4" width="10" height="10" fill="currentColor"/></svg><span>Artillery (enemy guns in rust)</span></div>
+        </div>
+      </section>
+    </aside>
+  </div>
+  <p class="note">Development only. Frames sampled at 5 Hz; phase is pre-integration and commitment is post-integration. Original viewer and its data remain unchanged.</p>
+</div>
+
+<script>
+const STORIES = {"resonator_vs_regular": {"label": "Resonator vs regular", "chip": ["stall", "Timeout"], "title": "Selected v5 stage-B knobs: p0_c00_o0", "text": "Predeclared cluster 0, orientation 0. Survivor score -4; original recorded fight, not selected for its outcome. Enemy gun removal and phase rotation are descriptive. Killer identities were not exported. Read S4_V5_TRACE_DIAGNOSTIC.md for the full 60-fight comparison."}, "morale_vs_regular": {"label": "Morale vs regular", "chip": ["stall", "Timeout"], "title": "Selected v5 stage-B knobs: p1_c00_o0", "text": "Predeclared cluster 0, orientation 0. Survivor score +5; original recorded fight, not selected for its outcome. Enemy gun removal and phase rotation are descriptive. Killer identities were not exported. Read S4_V5_TRACE_DIAGNOSTIC.md for the full 60-fight comparison."}, "resonator_vs_novice": {"label": "Resonator vs novice", "chip": ["win", "Win"], "title": "Selected v5 stage-B knobs: p2_c00_o0", "text": "Predeclared cluster 0, orientation 0. Survivor score +13; original recorded fight, not selected for its outcome. Enemy gun removal and phase rotation are descriptive. Killer identities were not exported. Read S4_V5_TRACE_DIAGNOSTIC.md for the full 60-fight comparison."}};
+const field = document.getElementById('field'), ctx = field.getContext('2d');
+let data = null, fight = null, t = 0, playing = false, speed = 4, last = null;
+
+function css(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim() }
+
+function frameAt(f, time) {
+  const fr = f.frames; let lo = 0, hi = fr.length - 1;
+  if (time <= fr[0][0]) return [fr[0], fr[0], 0];
+  if (time >= fr[hi][0]) return [fr[hi], fr[hi], 0];
+  while (hi - lo > 1) { const m = (lo + hi) >> 1; if (fr[m][0] <= time) lo = m; else hi = m }
+  const a = fr[lo], b = fr[hi]; return [a, b, (time - a[0]) / (b[0] - a[0])];
+}
+
+function draw() {
+  if (!fight) return;
+  const W = field.width, H = field.height;
+  ctx.fillStyle = css('--field'); ctx.fillRect(0, 0, W, H);
+  ctx.strokeStyle = css('--field-grid'); ctx.lineWidth = 1;
+  for (let x = 0; x <= W; x += 100) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke() }
+  for (let y = 0; y <= H; y += 100) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke() }
+  const [a, b, k] = frameAt(fight, t);
+  const nb = new Map(b[1].map(u => [u[0], u]));
+  const units = a[1].map(u => { const v = nb.get(u[0]); return v ? [...u.slice(0, 3), u[3] + (v[3] - u[3]) * k, u[4] + (v[4] - u[4]) * k, ...u.slice(5)] : u });
+  const pos = new Map(units.map(u => [u[0], u]));
+  ctx.lineWidth = 1; ctx.globalAlpha = 0.18; ctx.strokeStyle = css('--ink');
+  for (const u of units) { const tg = pos.get(u[6]); if (u[1] === 0 && tg) { ctx.beginPath(); ctx.moveTo(u[3], u[4]); ctx.lineTo(tg[3], tg[4]); ctx.stroke() } }
+  ctx.globalAlpha = 1;
+  const counts = { 0: [0, 0, 0], 1: [0, 0, 0] };
+  for (const u of units) {
+    const [id, team, role, x, y, hp, , phase, com] = u; counts[team][role]++;
+    const r = role === 2 ? 9 : 8;
+    let fill;
+    if (team === 0) {
+      const hue = fight.arm === 'resonator' && phase != null ? (phase / (2 * Math.PI)) * 360 : (phase != null ? 200 + phase * 60 : 160);
+      fill = `hsl(${hue} 70% 50%)`;
+    } else fill = role === 2 ? css('--enemy-art') : css('--enemy');
+    ctx.fillStyle = fill; ctx.beginPath();
+    if (role === 0) ctx.arc(x, y, r, 0, 2 * Math.PI);
+    else if (role === 1) { ctx.moveTo(x, y - r); ctx.lineTo(x + r, y + r * 0.8); ctx.lineTo(x - r, y + r * 0.8); ctx.closePath() }
+    else ctx.rect(x - r, y - r, 2 * r, 2 * r);
+    ctx.fill();
+    if (team === 0 && com != null) { ctx.globalAlpha = 0.25 + 0.75 * (com + 1) / 2; ctx.strokeStyle = css('--ink'); ctx.lineWidth = 2; ctx.stroke(); ctx.globalAlpha = 1 }
+    ctx.fillStyle = css('--bad'); ctx.fillRect(x - r, y + r + 3, 2 * r * (1 - hp), 2);
+  }
+  document.getElementById('clock').textContent = t.toFixed(1) + ' s';
+  document.getElementById('scrub').value = Math.round(1000 * t / fight.frames.at(-1)[0]);
+  const fmt = c => `<b>${c[0] + c[1] + c[2]}</b> (${c[0]} melee, ${c[1]} ranged, ${c[2]} guns)`;
+  document.getElementById('counts').innerHTML = `<span>Ours ${fmt(counts[0])}</span><span>Theirs ${fmt(counts[1])}</span>`;
+}
+
+function tick(now) {
+  if (playing && fight) {
+    if (last != null) t = Math.min(fight.frames.at(-1)[0], t + (now - last) / 1000 * speed);
+    if (t >= fight.frames.at(-1)[0]) setPlaying(false);
+  }
+  last = now; draw(); requestAnimationFrame(tick);
+}
+function setPlaying(p) { playing = p; document.getElementById('play').textContent = p ? 'Pause' : 'Play'; last = null }
+
+function choose(name) {
+  fight = data.fights.find(f => f.name === name); t = 0; setPlaying(false);
+  for (const b of document.querySelectorAll('#picker button')) b.setAttribute('aria-pressed', String(b.dataset.name === name));
+  const s = STORIES[name], sm = fight.summary;
+  document.getElementById('story-title').textContent = s.title;
+  document.getElementById('story-text').textContent = s.text;
+  document.getElementById('story-stats').innerHTML =
+    `<dt>Survivors</dt><dd>${sm.survivors} ours · ${sm.enemySurvivors} theirs</dd><dt>Ended at</dt><dd>${sm.t.toFixed(1)} s${sm.t >= 149.9 ? ' (time limit)' : ''}</dd>` +
+    `<dt>Damage</dt><dd>${sm.crossTeamDealt[0]} dealt · ${sm.crossTeamTaken[0]} taken</dd>`;
+  draw();
+}
+
+document.getElementById('play').addEventListener('click', () => { if (fight && t >= fight.frames.at(-1)[0]) t = 0; setPlaying(!playing) });
+for (const b of document.querySelectorAll('[data-speed]')) b.addEventListener('click', () => {
+  speed = +b.dataset.speed; for (const o of document.querySelectorAll('[data-speed]')) o.setAttribute('aria-pressed', String(o === b));
+});
+document.getElementById('scrub').addEventListener('input', e => { if (fight) { t = fight.frames.at(-1)[0] * e.target.value / 1000; draw() } });
+
+fetch('replays_v5.json').then(r => r.json()).then(d => {
+  data = d;
+  const picker = document.getElementById('picker');
+  for (const f of d.fights) {
+    const s = STORIES[f.name], b = document.createElement('button');
+    b.type = 'button'; b.dataset.name = f.name;
+    b.innerHTML = `${s.label} <span class="chip ${s.chip[0]}">${s.chip[1]}</span>`;
+    b.addEventListener('click', () => choose(f.name)); picker.appendChild(b);
+  }
+  choose('resonator_vs_novice'); requestAnimationFrame(tick);
+}).catch(() => { document.getElementById('story-title').textContent = 'The replay data did not load'; document.getElementById('story-text').textContent = 'Reload the page to try again.' });
+</script>
