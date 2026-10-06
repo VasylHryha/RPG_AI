@@ -1,0 +1,18 @@
+{
+  "initial_local_time": "2026-10-06 16:17 Europe/Kiev",
+  "initial_uptime_load_average": [
+    5.34,
+    6.1,
+    18.2
+  ],
+  "process_inspection_command": "ps -axo pid,ppid,%cpu,%mem,etime,command -r",
+  "process_inspection_result": "zsh: operation not permitted: ps",
+  "heavy_job_status": "Owner states 0g and 0h runs finished; no independent global process inspection is possible in this sandbox. Optional follow-up remains unanswered.",
+  "wait_rule": "Observe load every 30 seconds. If 1-minute load remains above 3 for 600 seconds, continue waiting up to 3600 additional seconds, then proceed and record conditions.",
+  "awake_command": [
+    "caffeinate",
+    "-i",
+    "-s"
+  ],
+  "scope": "Unchanged pinned helpers/builds; only queue output prefix and evidence-local Python cache location differ."
+}

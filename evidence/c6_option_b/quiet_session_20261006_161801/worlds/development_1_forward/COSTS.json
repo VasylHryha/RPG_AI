@@ -1,0 +1,173 @@
+{
+  "kind": "OPTION_B_ENGINEERING_ONLY",
+  "backend": "native",
+  "audit": {
+    "calls": 4723,
+    "float64_values_compared": 973922772,
+    "bit_identical_calls": 4723,
+    "maximum_error": 0.0,
+    "component_calls": 58998,
+    "absolute_tolerance": 0.0,
+    "exact_arithmetic_required": true
+  },
+  "parallel": true,
+  "schedule": "forward",
+  "thread_budget": {
+    "world_workers": 2,
+    "threads_per_world": 5,
+    "blas_threads": 1
+  },
+  "entropy": 46036001,
+  "world": 1,
+  "fixture": false,
+  "start_machine": {
+    "utc": "2026-10-06T15:15:21Z",
+    "load_average": [
+      33.9580078125,
+      15.95654296875,
+      12.52197265625
+    ],
+    "cpu_count": 10,
+    "platform": "macOS-26.6.2-arm64-arm-64bit"
+  },
+  "source_pin": {
+    "status": "PASS",
+    "source_files_verified": 25,
+    "owner_identities_verified": 12,
+    "manifest_entries_verified": 23,
+    "checksum_entries_verified": 24,
+    "handoff_sha256": "719781cbd5a302f58f0f57c064b32ca0a49e49546a1f88160582ba6235ca575e",
+    "expected_record_sha256": "37e8249338a95e32de72f4e30091e104697606faebd53b22bda8b90124e3bceb",
+    "import_record_sha256": "3f34717f795415f5ed4b11df060cdfc3c36f0bd8b1d491853141778bbc2d3da2"
+  },
+  "fixture_inputs": null,
+  "reference_build": {
+    "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+    "flags": [
+      "-std=c++17",
+      "-O2",
+      "-fno-fast-math",
+      "-ffp-contract=off",
+      "-dynamiclib"
+    ],
+    "source_sha256": "be46eb613db693d7321070243d0ea3e4e35d8aeda620de62f01aed200d651e14",
+    "binary_sha256": "4830141d5585f6a0e684808ccf339314bc3205f7dd6a30c4a5838b0dce5e01f4"
+  },
+  "option_b_build": {
+    "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+    "compiler_version": "Apple clang version 21.0.0 (clang-2100.3.34.2)\nTarget: arm64-apple-darwin25.6.0\nThread model: posix\nInstalledDir: /Library/Developer/CommandLineTools/usr/bin\n",
+    "platform": "Darwin",
+    "architecture": "arm64",
+    "flags": [
+      "-std=c++17",
+      "-O2",
+      "-fno-fast-math",
+      "-ffp-contract=off",
+      "-dynamiclib"
+    ],
+    "source_hashes": {
+      "native/c6_option_b/field.cpp": "124c038127eacaefbcdab4659d25c753dbb139d4f13c39f10c9e4e4e5902286d",
+      "native/c6_option_b/detection.cpp": "fd2ab679359cb00e857555ee7614adaa4d335464ea242abf0c869e6400b00b52"
+    },
+    "binary_sha256": "6ba390940719dd7b77cd81cee1878faebce296201be728b4c487baf9d43b23a5",
+    "build_seconds": 1.0498465
+  },
+  "python": "3.9.6 (default, Aug 25 2026, 21:26:21) \n[Clang 21.0.0 (clang-2100.3.34.2)]",
+  "numpy": "2.0.2",
+  "helper_hashes": {
+    "tools/c6_option_b_check.py": "79df0a3606cad0cbef9aa4292df544a45c47956d08b4e626dd0bd74c19853e18",
+    "geomind/c6_option_b.py": "5f6ed22883dd15ce4f6475f913b75ad690c1c69cb8afbc569618e9a728acfcd7",
+    "geomind/c6_option_b_parallel.py": "24c89765f79a4fc70996801804f2875f987922abfea65322e20d15f2c5d24a6c",
+    "geomind/c6_r4_field.py": "ee3c775b918f165add8820a253ff87d190b2ec399f56219dcd5030abbf53e4fb",
+    "geomind/c6_r4_field_assay.py": "1a246728e63c304d633c0f6bdb9d625017389953bf7602ecc61025466aceb3dd",
+    "geomind/c6_r4_field_protocol.py": "6a1671be6e810b6666c43b0dc77a71004c0140fc5d7c2113eff1009cc1ecb8f0"
+  },
+  "native_cache_limits_per_thread": {
+    "retired": 268435456,
+    "control": 33554432,
+    "probation": 2097152,
+    "drive": 33554432
+  },
+  "compute_seconds": 360.833899375,
+  "compute_cpu_seconds": 650.242303,
+  "world_seconds": 360.82371983300004,
+  "serialization_write_seconds": 6.575226709000049,
+  "serialization_cpu_seconds": 6.496344000000022,
+  "total_seconds": 367.40912608400004,
+  "raw_bytes": 57465414,
+  "compressed_bytes": 23336494,
+  "world_sha256": "eb4f483137803f201742b3ec3694f6743899554f69b14106a5547fe7d4480c6e",
+  "end_machine": {
+    "utc": "2026-10-06T15:21:28Z",
+    "load_average": [
+      25.96533203125,
+      22.69189453125,
+      16.6298828125
+    ],
+    "cpu_count": 10,
+    "platform": "macOS-26.6.2-arm64-arm-64bit"
+  },
+  "native_cache": {
+    "threads_per_world": 5,
+    "world_workers": 2,
+    "total_thread_budget": 10,
+    "submission_order": "forward",
+    "maximum_inflight_jobs": 4,
+    "worker_threads_used": 4,
+    "native_cache_worker_snapshots": [
+      {
+        "retired_hits": 127,
+        "control_hits": 1,
+        "eligible_misses": 411,
+        "avoided_material_rk_steps": 474000,
+        "retired_bytes": 178370136,
+        "control_bytes": 21554852,
+        "probation_bytes": 839168,
+        "drive_bytes": 25206400
+      },
+      {
+        "retired_hits": 82,
+        "control_hits": 14,
+        "eligible_misses": 390,
+        "avoided_material_rk_steps": 510000,
+        "retired_bytes": 183242604,
+        "control_bytes": 32336044,
+        "probation_bytes": 839168,
+        "drive_bytes": 14406400
+      },
+      {
+        "retired_hits": 78,
+        "control_hits": 25,
+        "eligible_misses": 378,
+        "avoided_material_rk_steps": 620000,
+        "retired_bytes": 155816688,
+        "control_bytes": 29392980,
+        "probation_bytes": 839168,
+        "drive_bytes": 21606400
+      },
+      {
+        "retired_hits": 124,
+        "control_hits": 0,
+        "eligible_misses": 417,
+        "avoided_material_rk_steps": 402000,
+        "retired_bytes": 191095796,
+        "control_bytes": 19595320,
+        "probation_bytes": 839168,
+        "drive_bytes": 26406400
+      }
+    ],
+    "native_cache_worker_totals": {
+      "retired_hits": 411,
+      "control_hits": 40,
+      "eligible_misses": 1596,
+      "avoided_material_rk_steps": 2006000,
+      "retired_bytes": 708525224,
+      "control_bytes": 102879196,
+      "probation_bytes": 3356672,
+      "drive_bytes": 87625600
+    }
+  },
+  "invalid": null,
+  "chain_complete": false,
+  "post_serialization_peak_rss_bytes": 1595768832
+}

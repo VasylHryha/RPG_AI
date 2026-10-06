@@ -1,0 +1,78 @@
+[codex/c6-option-b-quiet c8255ac] C6 option B: record exact queued reruns and observed runtime failure
+ Committer: new <new@MacBook-Pro-new.local>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly. Run the
+following command and follow the instructions in your editor to edit
+your configuration file:
+
+    git config --global --edit
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 64 files changed, 14359 insertions(+), 2 deletions(-)
+ create mode 100644 evidence/c6_option_b/QUIET_REPORT.md
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/.gitignore
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/BASELINE_STOPPED.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/BASELINE_TRACKED.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/EVENTS.jsonl
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/INITIAL_CONDITIONS.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/PAYLOAD.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/PREFLIGHT.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/PRESERVATION_CHECKS.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/RAW_FILES_OUTSIDE_GIT.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/RUN_RECEIPT.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/SUPERVISOR.py
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/VALIDATED_IDENTITIES.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/worlds/development_0_forward/COSTS.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/worlds/development_0_forward/START.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/worlds/development_0_forward_EXACT.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/worlds/development_0_reverse/COSTS.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/worlds/development_0_reverse/START.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/worlds/development_0_reverse_EXACT.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/worlds/development_0_sequential/COSTS.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/worlds/development_0_sequential/START.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/worlds/development_0_sequential_EXACT.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/worlds/development_1_forward/COSTS.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/worlds/development_1_forward/START.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/worlds/development_1_forward_EXACT.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/worlds/development_1_reverse/COSTS.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/worlds/development_1_reverse/START.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/worlds/development_1_reverse_EXACT.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/worlds/development_1_sequential/COSTS.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/worlds/development_1_sequential/START.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/worlds/development_1_sequential_EXACT.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/worlds/quiet_development_0/COSTS.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/worlds/quiet_development_0/START.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/worlds/quiet_development_0_EXACT.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/worlds/quiet_development_1/COSTS.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/worlds/quiet_development_1/START.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/worlds/quiet_development_1_EXACT.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/worlds/quiet_smoke_0/COSTS.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/worlds/quiet_smoke_0/START.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/worlds/quiet_smoke_0_EXACT.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/worlds/quiet_smoke_1/COSTS.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/worlds/quiet_smoke_1/START.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/worlds/quiet_smoke_1_EXACT.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/worlds/reference_development_1/COSTS.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/worlds/reference_development_1/START.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/worlds/smoke_0_forward/COSTS.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/worlds/smoke_0_forward/START.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/worlds/smoke_0_forward_EXACT.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/worlds/smoke_0_reverse/COSTS.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/worlds/smoke_0_reverse/START.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/worlds/smoke_0_reverse_EXACT.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/worlds/smoke_0_sequential/COSTS.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/worlds/smoke_0_sequential/START.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/worlds/smoke_0_sequential_EXACT.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/worlds/smoke_1_forward/COSTS.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/worlds/smoke_1_forward/START.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/worlds/smoke_1_forward_EXACT.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/worlds/smoke_1_reverse/COSTS.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/worlds/smoke_1_reverse/START.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/worlds/smoke_1_reverse_EXACT.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/worlds/smoke_1_sequential/COSTS.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/worlds/smoke_1_sequential/START.json
+ create mode 100644 evidence/c6_option_b/quiet_session_20261006_161801/worlds/smoke_1_sequential_EXACT.json
