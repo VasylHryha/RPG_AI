@@ -743,3 +743,56 @@ No registration, judging seeds or recorded run.
 | F4 the alignment is not morale's form; group semantics | Morale's scale; a complete group contract | A form chosen by analogy, not checked against morale's range |
 | F5 no numerical safety contract | A substep policy, finiteness, failure semantics, an envelope check | I relied on the continuous ODE's saturation |
 | F6 overstated claims; mixed reversal definitions | Narrowed; matched definitions | I compressed the diagnostic report too far |
+
+### 18.2 Amendment answering the Codex round-2 review (`docs/reviews/tactical_0g_s18_design_review_codex_r2.md`, CHANGES_REQUIRED; R1, R2, N1)
+
+**Precedence.** 18.2 overrides 18.1, which overrides 18, wherever they differ. The superseded section-18 sentences no longer apply:
+- one step per tick;
+- the unqualified exponential, limit-cycle and equalization checks;
+- the [0, 1] alignment;
+- "the missing degree of freedom";
+- the ω-necessity wording.
+
+**R1, the pressure envelope, derived.**
+- Adopt the reviewer's conservative bound for the admitted A/B rosters (fixed game mirror B):
+  - enemy starting HP 7,150; minimum own maxhp 92; no healing or spawning; dt = 1/30;
+  - EMA factor q = e^{−dt/2}, b = (1 − q)/dt = 0.495856 /s.
+  - With β ≤ 3 and κ ≤ 50: **|P| ≤ 50·b·(1 + 3·7150/92) = 5,805.3 /s.**
+- This is a bound argument, not a claim about reachable trajectories.
+- **The no-combat envelope becomes |P| ≤ 6,000 /s**, with |z₀| up to Z(6,000) = ∛6000 + √2 + 1 ≈ 20.6.
+- **A pressure outside the envelope** (possible only with a roster outside A/B) is checked **before** integration. It is recorded as a controller failure under the inherited runner semantics, never extrapolated.
+- **Arithmetic feasibility:** at μ = 2, |ω| = 2, K = K_t = 5 and |P| = 6,000:
+  - L ≈ 2 + 2 + 3·20.6² + 10 ≈ 1,287 /s;
+  - n = max(1, ⌈dt·L⌉) = 43 ≤ 64.
+  - This shows only that the policy is feasible, not that it is accurate (R2).
+
+**R2, numerical acceptance, exact.**
+- **Substeps:** n = max(1, ⌈dt · L(Z)⌉). n = 64 is allowed; n > 64 is a failure.
+- **Trial-stage amplitudes are monitored:** every RK4 stage state of every unit must satisfy |z| ≤ Z.
+- **Retry:** if any stage or the endpoint exceeds Z, the tick is recomputed **once**, from the tick-start joint state, with Z doubled (and n recomputed). Pressure, topology, assignments and counters are frozen; counters are consumed once; only an accepted result is published.
+- **Terminal failure:** if the retry also exceeds its Z, or n > 64, or any value is non-finite, the tick fails. The unit retains its last finite states, publishes hold with target none, the failure is counted, and the inherited runner stop applies. A failed tick is never scored as an ordinary outcome.
+- **The no-combat acceptance check,** before any fight:
+  - **isolated units:** a grid over μ ∈ {−2, −1, 0, 1, 2}, |ω| ∈ {0, 1, 2}, |P| ∈ {0, 1, 10, 100, 1,000, 6,000}, |z₀| ∈ {0, 0.5, 2, 20};
+  - **coupled pairs and triples:** K and K_t ∈ {0, 1, 5}, with drives of opposite sign;
+  - **refinement:** each policy tick against the same tick integrated with 4n substeps (the reference).
+  - **Acceptance:** max |Δ Re z| and max |Δ Im z| ≤ 1e-3, and |Δ c| ≤ 0.02 (the inherited section-8 commitment criterion, kept).
+  - Threshold-sensitive decisions are covered by boundary fixtures with explicit margins, not by demanding action equality at discontinuities.
+  - **The inherited section-8 check is also retained:** < 0.02 commitment difference over captured default-knob engineering fights.
+- **Equality with an independent RK4 implementation (1e-9)** remains as an implementation-agreement check only; it is not an accuracy claim.
+
+| Yes/no stop | Action | Role |
+|---|---|---|
+| Does the no-combat acceptance check fail anywhere in the envelope? | Stop implementation; the drafter declares a different integration policy (for example a smaller h·L target, or an implicit step) before any fight | drafter |
+| Does any development fight record a numerical failure? | Preserve the attempt; stop the arm per the inherited runner rule; report | implementer |
+| Is the state ever clipped, or the ODE adjusted, by the implementer? | Not allowed. Any change is a declared drafter revision | implementer → drafter |
+
+**N1, clarified.** The similarity gate uses the amplitude **product**: attenuation applies when |z_i|·|z_j| < δ² = 0.04, not when either amplitude alone is below δ.
+- Aligned amplitudes 0.1 and 1 give s = 1; 0.1 and 0.1 give s = 0.25.
+- This is the intended choice: a continuous similarity that tends to 0 as either amplitude tends to 0.
+- An asymmetric-amplitude fixture is added.
+
+| Finding | Fix | Cause |
+|---|---|---|
+| R1 the 500 /s envelope was unsupported | A derived conservative bound (5,805 /s); the envelope set to 6,000; out-of-envelope pressure recorded as failure | I cited the victim-side HP cap for an outgoing, multi-victim, β-weighted quantity |
+| R2 no accuracy acceptance; trial-stage bounds; retry terminal rule | An acceptance grid with limits; stage monitoring; exact n, retry and failure rules | I specified stability without an accuracy criterion |
+| N1 the product gate was unclear | Clarified; fixture added | — |
