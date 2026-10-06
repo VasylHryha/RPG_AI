@@ -18,6 +18,7 @@
 #include <climits>
 #include <limits>
 #include <memory>
+#include <new>
 #include <mutex>
 #include <condition_variable>
 #include <unordered_map>
@@ -68,6 +69,10 @@ template<class T> struct Value {
  bool retired=false;
  size_t bytes() const {return key.capacity()+data.capacity()*sizeof(T)+sizeof(*this);}
 };
+// Bytes a value with this key and payload would account for (Value::bytes()).
+template<class T> size_t value_bytes(size_t key_bytes,size_t elements){
+ return key_bytes+elements*sizeof(T)+sizeof(Value<T>);
+}
 template<class T> class Store {
 public:
  using Ptr=std::shared_ptr<const Value<T>>;
@@ -111,6 +116,9 @@ public:
   }
  }
  void configure(size_t new_limit){std::lock_guard<std::mutex> lock(mutex);limit=new_limit;drop();}
+ // Whether a value of this many bytes may be allocated for retention at all.
+ // Callers bypass the store (no lease, no optional allocation) otherwise.
+ bool admits(size_t value_bytes){std::lock_guard<std::mutex> lock(mutex);return value_bytes<=limit;}
  void clear(){std::lock_guard<std::mutex> lock(mutex);drop();hits=misses=waits=0;}
  struct Stats {uint64_t hits,misses,waits,bytes,entries,retired_bytes;};
  Stats stats(){
@@ -123,7 +131,12 @@ private:
  void finish(Lease& lease,Ptr value){
   lease.store=nullptr;
   {
+   // Publication and deregistration are one step under the store lock: the
+   // flight is complete before any later requester can miss its entry. Lock
+   // order is store -> flight; followers never hold the flight lock while
+   // taking the store lock.
    std::lock_guard<std::mutex> lock(mutex);
+   {std::lock_guard<std::mutex> wait(lease.flight->m);lease.flight->done=true;lease.flight->value=value;}
    auto pending=inflight.equal_range(lease.hash);
    for(auto it=pending.first;it!=pending.second;++it)
      if(it->second==lease.flight){inflight.erase(it);break;}
@@ -137,7 +150,6 @@ private:
      } catch(...) {}  // Admission is optional; the value is still returned.
    }
   }
-  {std::lock_guard<std::mutex> wait(lease.flight->m);lease.flight->done=true;lease.flight->value=std::move(value);}
   lease.flight->cv.notify_all();
  }
  void erase(typename std::list<Slot>::iterator entry){
@@ -167,14 +179,22 @@ uint64_t computed_material_steps=0,computed_medium_steps=0,computed_uncached_ste
 // The drive depends only on (sites, clock, horizon, amplitude, tone phases).
 static std::shared_ptr<const Value<C>> drive_path(int ns,int steps,double start,double dt,const double* psi,double amplitude){
  if(steps==0)return nullptr;
+ auto& store=drive_store();
+ const size_t key_bytes=2*sizeof(int)+3*sizeof(double)+size_t(ns)*8*sizeof(double);
+ // Disabled or oversized: no precomputed path is allocated; the integrator
+ // streams the identical per-stage drive expression instead.
+ if(!store.admits(value_bytes<C>(key_bytes,size_t(3)*steps*ns)))return nullptr;
  std::vector<unsigned char> key;
- key.reserve(2*sizeof(int)+3*sizeof(double)+size_t(ns)*8*sizeof(double));
+ key.reserve(key_bytes);
  const int dimensions[]={ns,steps};const double clock[]={start,dt,amplitude};
  append(key,dimensions,2);append(key,clock,3);append(key,psi,size_t(ns)*8);
- auto& store=drive_store();Store<C>::Lease lease;
+ Store<C>::Lease lease;
  if(auto found=store.acquire(key,key_hash(key),lease))return found;
- auto path=std::make_shared<Value<C>>();
- path->key=key;path->data.resize(size_t(3)*steps*ns);
+ std::shared_ptr<Value<C>> path;
+ try {
+   path=std::make_shared<Value<C>>();
+   path->key=key;path->data.resize(size_t(3)*steps*ns);
+ } catch(const std::bad_alloc&) {return nullptr;}  // Lease publishes failure; stream instead.
  for(int step=0;step<steps;step++){
    double t=start+step*dt;
    drive(ns,t,psi,amplitude,path->data.data()+size_t(3*step)*ns);
@@ -339,8 +359,9 @@ extern "C" int field_rhs(int ns,int n,int nc,double t,const double* y,const doub
 static int field_run_uncached(int ns,int n,int nc,double start,double dt,int steps,int sample,
  const double* initial,const double* q,const double* omega,const double* psi,const int* adj,
  const double* rates,const double* masks,const int* modes,const double* origins,const double* p,double* frames,
- bool material_only=false){
+ bool material_only=false,size_t out_stride=0){
  const int size=2*ns+nc*(3*n+2*ns), begin=material_only?2*ns:0;
+ if(!out_stride)out_stride=size;  // Frame f starts at frames+f*out_stride.
  std::vector<double> y(initial,initial+size),tmp(size),a(size),b(size),c(size),d(size);
  std::copy(y.begin(),y.end(),frames);int frame=1;
  Workspace work(ns,n,adj,nc);
@@ -361,7 +382,7 @@ static int field_run_uncached(int ns,int n,int nc,double start,double dt,int ste
    for(int i=begin;i<size;i++)tmp[i]=y[i]+dt*c[i];
    err=rhs(step,2,t+dt,tmp.data(),d.data());if(err)return err;
    for(int i=begin;i<size;i++){y[i]+=dt/6.*(a[i]+2*b[i]+2*c[i]+d[i]);if(!std::isfinite(y[i]))return 1;}
-   if((step+1)%sample==0){std::copy(y.begin(),y.end(),frames+size_t(frame)*size);frame++;}
+   if((step+1)%sample==0){std::copy(y.begin(),y.end(),frames+size_t(frame)*out_stride);frame++;}
  }
  return 0;
 }
@@ -401,19 +422,33 @@ std::vector<unsigned char> medium_key(int ns,int n,double start,double dt,int st
 int medium_run(int ns,int n,double start,double dt,int steps,int sample,const double* initial,const double* q,
  const double* omega,const double* psi,const int* adj,const double* p,double* frames,size_t frame_stride) {
  const int count=steps/sample+1;
+ auto& store=medium_store();
+ const size_t key_bytes=(5+size_t(ns)*ns)*sizeof(int)+(2+2*size_t(ns)+2*size_t(ns)+ns+8*size_t(ns)+9)*sizeof(double);
+ auto direct=[&]{
+   // No optional trajectory: integrate straight into the caller's layout.
+   int code=field_run_uncached(ns,n,0,start,dt,steps,sample,initial,q,omega,psi,adj,nullptr,nullptr,nullptr,nullptr,p,frames,false,frame_stride);
+   if(!code){std::lock_guard<std::mutex> lock(counter_mutex);computed_medium_steps+=steps;}
+   return code;
+ };
+ if(!store.admits(value_bytes<double>(key_bytes,size_t(count)*2*ns)))return direct();
  auto key=medium_key(ns,n,start,dt,steps,sample,initial,q,omega,psi,adj,p);
- auto& store=medium_store();Store<double>::Lease lease;
- auto found=store.acquire(key,key_hash(key),lease);
- if(!found){
-   auto value=std::make_shared<Value<double>>();
-   value->data.resize(size_t(count)*2*ns);
-   int code=field_run_uncached(ns,n,0,start,dt,steps,sample,initial,q,omega,psi,adj,nullptr,nullptr,nullptr,nullptr,p,value->data.data());
-   if(code)return code;  // Lease destructor publishes failure.
-   {std::lock_guard<std::mutex> lock(counter_mutex);computed_medium_steps+=steps;}
-   value->key=std::move(key);
-   lease.publish(value);found=value;
- } else {
-   std::lock_guard<std::mutex> lock(counter_mutex);avoided_medium_steps+=steps;
+ std::shared_ptr<const Value<double>> found;
+ {
+   Store<double>::Lease lease;
+   found=store.acquire(key,key_hash(key),lease);
+   if(!found){
+     std::shared_ptr<Value<double>> value;
+     try {value=std::make_shared<Value<double>>();value->data.resize(size_t(count)*2*ns);}
+     catch(const std::bad_alloc&) {value=nullptr;}
+     if(!value){lease.publish(nullptr);return direct();}
+     int code=field_run_uncached(ns,n,0,start,dt,steps,sample,initial,q,omega,psi,adj,nullptr,nullptr,nullptr,nullptr,p,value->data.data());
+     if(code)return code;  // Lease destructor publishes failure.
+     {std::lock_guard<std::mutex> lock(counter_mutex);computed_medium_steps+=steps;}
+     value->key=std::move(key);
+     lease.publish(value);found=value;
+   } else {
+     std::lock_guard<std::mutex> lock(counter_mutex);avoided_medium_steps+=steps;
+   }
  }
  for(int f=0;f<count;f++)std::copy_n(found->data.data()+size_t(f)*2*ns,2*ns,frames+size_t(f)*frame_stride);
  return 0;
@@ -443,7 +478,9 @@ extern "C" int field_run(int ns,int n,int nc,double start,double dt,int steps,in
    auto key=physical_key(ns,n,nc,start,dt,steps,sample,initial,q,omega,psi,adj,rates,masks,modes,origins,p);
    const int count=steps/sample+1, stride=3*n+2*ns, width=2*ns+stride;
    auto& store=material_store();Store<double>::Lease lease;
-   auto found=store.acquire(key,key_hash(key),lease);
+   // Disabled or oversized retention: no lookup, lease or payload copy.
+   const bool cacheable=store.admits(value_bytes<double>(key.size(),size_t(count)*stride));
+   std::shared_ptr<const Value<double>> found=cacheable?store.acquire(key,key_hash(key),lease):nullptr;
    if(found) {
      // The actual medium is never read from the material cache: it is the
      // separate no-cohort run (itself exactly memoized), as before.
@@ -468,7 +505,7 @@ extern "C" int field_run(int ns,int n,int nc,double start,double dt,int steps,in
    else
      code=field_run_uncached(ns,n,nc,start,dt,steps,sample,initial,q,omega,psi,adj,rates,masks,modes,origins,p,frames);
    if(code)return code;  // Lease destructor publishes failure; nothing stored.
-   try {
+   if(cacheable)try {
      auto value=std::make_shared<Value<double>>();
      value->data.resize(size_t(count)*stride);value->retired=retired;
      for(int f=0;f<count;f++)std::copy_n(frames+size_t(f)*width+2*ns,stride,value->data.data()+size_t(f)*stride);

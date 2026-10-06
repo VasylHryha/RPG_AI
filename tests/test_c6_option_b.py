@@ -475,3 +475,139 @@ int main() {
 ''')
     subprocess.run(['clang++','-std=c++17','-O2','-fno-fast-math','-ffp-contract=off',str(source),'-o',str(binary)],check=True,capture_output=True)
     subprocess.run([str(binary)],check=True,capture_output=True)
+
+
+def _native_contract(tmp_path,name,body):
+    import subprocess
+    source=tmp_path/(name+'.cpp');binary=tmp_path/name
+    implementation=Path(__file__).resolve().parents[1]/'native/c6_option_b/field.cpp'
+    source.write_text('''#include <cstdlib>
+#include <new>
+#include <cassert>
+#include <cstdio>
+#include <thread>
+#include <atomic>
+#include <chrono>
+#include <malloc/malloc.h>
+static std::atomic<long long> live{0},peak{0};
+static std::atomic<bool> counting{false};
+static std::atomic<size_t> refuse_above{0};
+void* operator new(std::size_t n) {
+    size_t limit=refuse_above.load();
+    if (limit && n>limit) throw std::bad_alloc();
+    void* p=std::malloc(n); if(!p) throw std::bad_alloc();
+    if (counting) {long long v=live+= (long long)malloc_size(p); long long q=peak; while(v>q&&!peak.compare_exchange_weak(q,v));}
+    return p;
+}
+void operator delete(void* p) noexcept { if(p&&counting) live-= (long long)malloc_size(p); std::free(p); }
+void operator delete(void* p, std::size_t) noexcept { operator delete(p); }
+'''+'#include "'+implementation.as_posix()+'"\n'+body)
+    subprocess.run(['clang++','-std=c++17','-O2','-fno-fast-math','-ffp-contract=off',str(source),'-o',str(binary)],check=True,capture_output=True)
+    result=subprocess.run([str(binary)],capture_output=True,text=True)
+    assert result.returncode==0,result.stdout+result.stderr
+
+
+SYNTHETIC_INPUTS='''
+struct Inputs {
+  int ns=25,n=24;std::vector<double> q,omega,psi,p,rates,masks,origins,initial;std::vector<int> adj,modes;
+  Inputs(int nc,bool selected,bool on){
+    for(int x=-4;x<=4;x+=2)for(int y=-4;y<=4;y+=2){q.push_back(x);q.push_back(y);}
+    adj.assign(ns*ns,0);
+    for(int a=0;a<ns;a++)for(int b=0;b<ns;b++){double dx=q[2*a]-q[2*b],dy=q[2*a+1]-q[2*b+1];if(dx*dx+dy*dy==4.)adj[a*ns+b]=1;}
+    for(int a=0;a<ns;a++){omega.push_back(-.3+.04*a);for(int m=0;m<8;m++)psi.push_back(.1*a-.3*m);}
+    p={-.18,.05,.02,.3,.2,.05,2.,.8,1.};
+    for(int a=0;a<ns;a++){initial.push_back(.05*a/ns);initial.push_back(-.03);}
+    for(int c=0;c<nc;c++){
+      for(int i=0;i<n;i++){initial.push_back(.2*i-2.3+c);initial.push_back(.1*(i%5)-.2);}
+      for(int i=0;i<n;i++)initial.push_back(.37*i);
+      for(int a=0;a<ns;a++){initial.push_back(.04);initial.push_back(.01*a);}
+      for(int i=0;i<n;i++){rates.push_back(.01*i);masks.push_back(selected&&i<3?(on?1.:-1.):0.);}
+      modes.push_back(0);
+      for(int i=0;i<n;i++){origins.push_back(.2*i-2.3+c);origins.push_back(.1*(i%5)-.2);}
+    }
+  }
+};
+static int run(const Inputs& in,int nc,int steps,std::vector<double>& frames){
+  const int width=2*in.ns+nc*(3*in.n+2*in.ns);frames.assign(size_t(steps+1)*width,0.);
+  return field_run(in.ns,in.n,nc,0.,.00125,steps,1,in.initial.data(),in.q.data(),in.omega.data(),in.psi.data(),
+    in.adj.data(),in.rates.data(),in.masks.data(),in.modes.data(),in.origins.data(),in.p.data(),frames.data());
+}
+'''
+
+
+def test_disabled_and_failed_optional_storage_bounds_peak_allocation(tmp_path):
+    """Review F2: no optional allocation when disabled; streaming/direct fallback."""
+    _native_contract(tmp_path,'peak_contract',SYNTHETIC_INPUTS+'''
+int main(){
+  const int steps=2000;
+  struct Case{int nc;bool selected,on;} cases[]={{0,false,false},{1,true,false},{1,false,false},{1,true,true},{2,true,true}};
+  for(auto c:cases){
+    Inputs in(c.nc,c.selected,c.on);std::vector<double> expected,actual;
+    option_b_cache_limits(1ULL<<30,64ULL<<20,128ULL<<20);
+    assert(run(in,c.nc,steps,expected)==0);
+    // Disabled storage: peak live allocation stays far below one drive path
+    // (3*steps*ns complex = 2.4 MB) or one trajectory (>= 0.8 MB).
+    option_b_cache_limits(0,0,0);
+    actual.assign(expected.size(),0.);
+    live=0;peak=0;counting=true;
+    int code=run(in,c.nc,steps,actual);
+    counting=false;
+    assert(code==0&&std::memcmp(actual.data(),expected.data(),expected.size()*8)==0);
+    std::printf("nc=%d peak=%lld\\n",c.nc,(long long)peak);
+    assert(peak<256*1024);
+    // Enabled storage, but every allocation above 256 KiB fails: the drive
+    // streams, the medium integrates directly, admission is skipped.
+    option_b_cache_limits(1ULL<<30,64ULL<<20,128ULL<<20);
+    refuse_above=256*1024;
+    for(int repeat=0;repeat<2;repeat++){
+      actual.assign(expected.size(),0.);
+      code=run(in,c.nc,steps,actual);
+      assert(code==0&&std::memcmp(actual.data(),expected.data(),expected.size()*8)==0);
+    }
+    refuse_above=0;
+    auto stats=material_store().stats();assert(stats.entries==0);
+  }
+  option_b_cache_limits(1ULL<<30,64ULL<<20,128ULL<<20);
+}
+''')
+
+
+def test_single_flight_publishes_before_release_and_rejects_same_index_keys(tmp_path):
+    """Review F3: non-retained publication reaches waiting followers; forced
+    same-hash keys with different bytes never alias."""
+    _native_contract(tmp_path,'flight_contract','''
+std::shared_ptr<Value<double>> value(const std::vector<unsigned char>& key,double fill){
+  auto v=std::make_shared<Value<double>>();v->key=key;v->data.assign(8,fill);return v;
+}
+int main(){
+  Store<double> store;store.configure(0);  // nothing is retained
+  std::vector<unsigned char> key(16,7);const uint64_t h=key_hash(key);
+  std::atomic<bool> leading{false},waiting{false};std::shared_ptr<const Value<double>> seen;
+  Store<double>::Lease* held=nullptr;
+  std::thread follower([&]{
+    while(!leading)std::this_thread::yield();
+    waiting=true;Store<double>::Lease lease;seen=store.acquire(key,h,lease);
+    assert(seen);
+  });
+  {
+    Store<double>::Lease lease;assert(!store.acquire(key,h,lease));leading=true;
+    while(!waiting)std::this_thread::yield();
+    std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    lease.publish(value(key,3.));
+  }
+  follower.join();
+  assert(seen&&seen->data[0]==3.);
+  auto st=store.stats();assert(st.misses==1&&st.waits==1&&st.entries==0);
+  // After publication the value is not retained: the next request leads.
+  {Store<double>::Lease lease;assert(!store.acquire(key,h,lease));}
+  // Forced same index, different full keys: each is distinct.
+  store.configure(1<<20);
+  std::vector<unsigned char> a(16,1),b(16,2);const uint64_t same=42;
+  {Store<double>::Lease lease;assert(!store.acquire(a,same,lease));lease.publish(value(a,1.));}
+  {Store<double>::Lease lease;auto found=store.acquire(b,same,lease);assert(!found);lease.publish(value(b,2.));}
+  {Store<double>::Lease lease;auto found=store.acquire(a,same,lease);assert(found&&found->data[0]==1.);}
+  {Store<double>::Lease lease;auto found=store.acquire(b,same,lease);assert(found&&found->data[0]==2.);}
+  assert(store.stats().entries==2);
+}
+''')
+

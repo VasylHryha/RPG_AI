@@ -1,21 +1,43 @@
-MEETS_360_WITH_MARGIN (engineering observation; not a registered readiness verdict)
+FASTER_AND_EXACT; meets 360 s at the observed normal loads, not under the load-40-to-85 overload of the review-fix pair (engineering observation; not a registered readiness verdict)
 
-# C6 option B: performance deep-dive
+# C6 option B: performance deep-dive (revised after Codex review)
 
 **Date:** 2026-10-06. **Author:** Claude (claude-opus-5-5).
 **Authority:** decision 0029 (engineering and runtime work, exact equivalence; the science is unchanged). Runs under one hour need no approval (decision 0031).
 **Not done:** final entropy, registration, STATUS.json, mutation probe, recorded panel, or any change to C0–C5 or R4 files. C6 stays `BLOCKED / R006 STOP`.
+**Revision:** Codex's cross-family review (`docs/reviews/c6_option_b_perf_review_codex.md`, CHANGES_REQUIRED on commit 8214f39) is answered in §0. Every timing and rule value below is derived from the raw COSTS.json receipts by `performance_deepdive/REPORT_VALUES.py` (output `REPORT_VALUES.json`). Display rounding: seconds and rule values to 0.1 s, ratios to 3 decimals.
+
+## 0. Review disposition (F1–F4)
+
+| Finding | Severity | Fix | Evidence |
+|---|---|---|---|
+| **F1** Batched grid runs (recovery, causal) lost earlier checks and could raise a different first error than the sequential run. | Blocking | `run_many` now only computes; it returns one terminal **Outcome** per request and publishes nothing. Inside a request, a block's three grid results are merged coarse-to-fine only after all three finish, so the first error is the one the sequential run meets first: grid k before k+1, the diagnostic after the three grids, the check after the last block. Set-up statements run in `GridSet.run`'s order. Callers `publish()` outcomes in the original order, interleaved with their own statements: recovery publishes control, then kicked; causal publishes control, treated and its measurement, fork by fork; a single run publishes at once. `publish` raises the request's own error with no check, or appends its check and then raises `NumericalFailure` if the check failed. Every submitted job is drained before a batch returns. The task level (`ordered()`) was already ordered, and is now exact through nested levels. The fork set-up in causal runs first; its only raising statement (`normalize_phase` of the same probe and members) is identical for every fork, so it raises at the first fork, as sequentially. | New tests in `tests/test_c6_option_b_parallel.py`. **(a)** Three named review cases, under both submission orders: passing control with failing kick; earlier numerical failure with later worker failure; earlier worker error with later diagnostic error. **(b)** Fuzzed failures that depend only on a request's inputs (worker, numerical and diagnostic), 14 salts under both orders, landing at many positions in recovery and causal. **(c)** The same fuzzing nested inside the concurrent operation's stage tasks, 8 cases: in descriptors, in a stage-1 exposure, and in before/condition episodes' formation and recovery runs. Sequential and concurrent results compare equal at tolerance 0, including the error type and message. Against the reviewed version (8214f39), 8 of the 11 new recovery/fuzz tests **fail**; all pass now. |
+| **F2** The limits governed retained bytes, not peak allocation; a disabled drive cache lost its streaming fallback. | Medium | Each store now has `admits(bytes)`. A value that would not be retainable (disabled or oversized) is **never allocated**: the drive streams the identical per-stage expression; the medium integrates **directly into the caller's frame layout** (new `out_stride`); material skips lookup, lease and payload copy. An allocation failure in any optional path falls back the same way instead of returning −1, and frames stay exact. | C++ contract with a counting allocator. With storage disabled, the peak live native allocation during a 2,000-step run stays below 256 KiB for all five cases: no cohort; OFF retired; OFF control; ON; two cohorts. The reviewed version peaked at **3,270,992 bytes** on the no-cohort case and fails this test. With storage enabled but every allocation above 256 KiB refused, results are bit-identical, return 0, and nothing is retained. Remaining Python-side and peak-RSS composition: §4. |
+| **F3** Single-flight deregistration happened before publication. | Low | `finish()` now sets the flight's `done`/`value` and removes its registration in one critical section under the store lock (lock order store → flight), and notifies afterwards. A requester can no longer find neither a registration nor a completed flight while followers still wait. | C++ contract: with nothing retained, a waiting follower receives the leader's published value (one miss, one wait, no entry), and the next request leads again. Two different full keys forced onto the **same index hash** stay distinct, each returning its own value. |
+| **F4** Displayed rule values and timing ranges were rounded inconsistently or covered only a subset. | Low | All values come from `REPORT_VALUES.py` on the stored receipts; stage ranges now cover every new run. | `REPORT_VALUES.json`. |
+
+**After the fixes:**
+
+- **Tests:** the option-B suite gives **128 passed** in one final run (53.1 s).
+- **Recheck tool:** `tools/c6_option_b_recheck.py` passes on the final build (`fixes/recheck_tool/`).
+- **Exact world:** one smoke-0 world on the final code matches its reference **exactly**: 3,045,093 numeric and 2,847 Boolean values, max error 0, no digest changes (`fixes/fixed_smoke_0_EXACT.json`).
+- **Identity:** the measured fixed code is identical to the committed final code: `field.cpp` `9ebe2acf…`, `c6_option_b_parallel.py` `6bb6f55d…`, binary `b395c590…`.
 
 ## Summary
 
-On smoke world 0, two back-to-back A/B pairs ran the old and new code at the same time, so both saw the same load. Compared with the code that produced the 392 s quiet-session failure:
+Smoke world 0, old and new code run as two world processes at the same time, so both see the same load:
 
-- **world wall time fell by 56–59%:** 329.5 → 133.5 s and 345.4 → 152.6 s;
-- **compute CPU fell by 33–34%:** 700.8 → 463.3 s and 713.7 → 481.8 s.
+| Pair | Old wall s | New wall s | Wall ratio | Old CPU s | New CPU s | CPU ratio | Load (1 min) start → end |
+|---|---:|---:|---:|---:|---:|---:|---|
+| 1 (new = 8214f39) | 329.5 | 133.5 | 0.405 | 700.8 | 463.3 | 0.661 | 6.8 → 13.5 |
+| 2 (new = 8214f39) | 345.4 | 152.6 | 0.442 | 713.7 | 481.8 | 0.675 | 14.4 → 23.8 |
+| Review fix (new = final) | 663.1 | **396.1** | 0.597 | 743.7 | **493.8** | **0.664** | 13.6 → **84.6** |
 
-All 8 complete worlds produced in this work match their stored original-reference worlds **at zero tolerance**. That covers smoke 0 three times (two schedules), smoke 1 with the full per-call audit, development 0 and development 1. The two old-code outputs also match.
-
-The slowest unaudited new world took **152.6 s**, under a machine load of 14–24 on 10 CPUs. The rule value is 152.6 × 40 / 2 × 1.5 = **4578 s ≤ 10800**, leaving 2.4× headroom against the 360 s limit. The audited smoke world 1 took 166.5 s; its audit re-runs the reference kernel on every call.
+- **CPU:** the new code uses about one third less in every pair (ratios 0.661, 0.675, 0.664). The fixes did not change that.
+- **Wall:** this depends on the cores a world can get.
+  - At the loads of pairs 1–2, and in the other new worlds (loads up to about 60), every new world finished in **≤ 166.5 s**. The slowest unaudited one took 152.6 s, rule value **4578.8 s ≤ 10800**.
+  - In the review-fix pair, the machine reached a 1-minute load of 85 on 10 CPUs. Each world got only about 1.1–1.25 cores. The final code took **396.1 s** (rule value 11884.2 s, above the limit) and the old code 663.1 s.
+- **Requirement:** the new engine stays under 360 s while a world gets on average at least 493.8 / 360 ≈ **1.37 cores**. The old one needs ≥ 743.7 / 360 ≈ 2.07 cores, and its structure cannot use more than about 2.1.
 
 ## 1. Profile: where the time went (old code, smoke world 0)
 
@@ -80,7 +102,7 @@ These are ranked by measured gain. Every change keeps each floating-point operat
 
    A **coordinator compute token** keeps at most 5 threads computing at once: the 4 grid workers plus the one coordinator holding the token. Up to 4 protocol-task threads exist, but they compute only while holding the token and release it around every wait. Nested task batches are refused.
 
-   In the final runs, stage 2 took 53–58 s per turn, and CPU/wall rose from 2.1 to 3.2–3.5.
+   Stage 2 took 53.4–182.7 s per turn over all new runs (§4). CPU/wall rose from 2.1 to 3.2–3.5 at moderate load.
 
 3. **Exact evaluator restructuring** (`evaluate`):
    - pair and site arguments are formed first, `__sincos`/`exp` run back to back, and accumulation then runs in the original ascending order;
@@ -117,36 +139,42 @@ Each would need a declared tolerance under decision 0029 item 3 and the owner's 
 
 ## 4. Before and after (same conditions, back to back)
 
-Each pair ran the **old** code and the **new** code as two world processes at once. The old code was a detached worktree of commit `f7e4a7d`; its option-B sources hash to `124c0381…`, the same as the quiet session. Both processes used the declared 5-thread budget, smoke world 0, forward schedule, no audit. Other heavy jobs ran on the machine throughout.
+**Pairs.** The old arm is a detached worktree of 8214f39^ / f7e4a7d: option-B sources `124c0381…`, the same as the 392 s quiet session, built in place. The pairs are tabled in the Summary. CPU/wall (old → new) was 2.127 → 3.471 in pair 1, 2.066 → 3.157 in pair 2, and 1.122 → 1.247 in the overloaded review-fix pair.
 
-| Pair | Old wall s | New wall s | Wall ratio | Old CPU s | New CPU s | CPU ratio | CPU/wall old → new | Load (1 min) start → end |
-|---|---:|---:|---:|---:|---:|---:|---:|---|
-| 1 (old launched first) | 329.5 | **133.5** | 0.405 | 700.8 | **463.3** | 0.661 | 2.13 → 3.47 | 6.8 → 13.5 |
-| 2 (new launched first) | 345.4 | **152.6** | 0.442 | 713.7 | **481.8** | 0.675 | 2.07 → 3.16 | 14.4 → 23.8 |
+**Other new-code worlds** (8214f39 arithmetic; run two at a time):
 
-Further new-code worlds were run two at a time (each COSTS.json records its load):
+| World | Wall s | CPU s | Rule value s (≤ 10800) | Load (1 min) start → end |
+|---|---:|---:|---:|---|
+| Smoke 0, reverse schedule | 152.2 | 474.3 | 4564.6 | 38.2 → 33.0 |
+| Smoke 1, with full audit | 166.5 | 523.5 | 4994.6 | 10.4 → 42.4 |
+| Development 0 | 96.0 | 260.6 | 2879.3 | 10.4 → 47.9 |
+| Development 1 | 93.9 | 249.6 | 2815.8 | 38.2 → 59.9 |
 
-| World | Wall s | CPU s | Rule value s (≤ 10800) |
-|---|---:|---:|---:|
-| Smoke 0, reverse schedule | 152.2 | 474.3 | 4566 |
-| Smoke 1, with full audit | 166.5 | 523.5 | 4995 |
-| Development 0 | 96.0 | 260.6 | 2880 |
-| Development 1 | 93.9 | 249.6 | 2817 |
+**Concurrent stage walls** (all new runs, every batch):
 
-**Against the 360 s rule.**
+- stage 1 (3 tasks): 8.4–23.5 s;
+- stage 2 (23 tasks): 53.4–182.7 s.
 
-- The slowest unaudited new world is 152.6 s. Every new world, audited included, is ≤ 166.5 s.
-- To stay under 360 s, the new engine needs on average **482/360 ≈ 1.3 cores per world**.
-- The old engine needed 714/360 ≈ 2.0 cores. Its structure could not use more than about 2.1, so it passed only when it got almost all of its structural maximum. That is why it measured 329.5/345.4 s here and 392 s in the quiet session.
-- The new engine can use about 3.5 cores and needs about 1.3, which gives the margin the owner asked for on a normally busy laptop.
+The upper ends come from the overloaded review-fix world.
 
-**Memory.** Post-serialization peak RSS was 2.0–2.55 GB, against the old 1.68–2.04 GB on smoke 0, so about 0.5 GB more per world. The cache envelope is unchanged. The increase comes from:
+**Memory.** Post-serialization peak RSS, in GiB:
 
-- the larger emission cache (+112 MiB);
-- the new medium store (+64 MiB);
-- concurrent tasks' in-flight flows.
+| Code | Peak RSS |
+|---|---:|
+| New, 8214f39 | 1.92–2.49 |
+| Final | 2.23 |
+| Old | 1.45–1.99 |
 
-The machine has 32 GiB. The knobs and their simulated cost are `O.CACHE_LIMITS`, `O.EMISSION_CACHE_BYTES` and `TASK_COORDINATORS`. For example, a 768 MiB material store costs about 2.5% CPU.
+**What bounds memory.** Retained native values are bounded per store: material 1 GiB, medium 64 MiB, drive 128 MiB, the same envelope as before plus the medium store. Beyond that:
+
+- **Native, per in-flight call:** optional allocation is at most one admissible value. Nothing optional is allocated when a store is disabled, and allocation failures fall back (F2).
+- **Python:**
+  - passive and emission caches: 64 + 128 MiB of array payload; keys and containers are extra;
+  - at most 4 submitted grid jobs per coordinator, and at most 4 coordinators, so ≤ 16 jobs submitted (all measured runs reached 16). A result is merged as soon as its block's three grids finish;
+  - the full flows of at most one block per in-flight request;
+  - serialization buffers.
+
+These counters are not an RSS cap. The measured peaks above are the evidence. The machine has 32 GiB. Knobs: `O.CACHE_LIMITS`, `O.EMISSION_CACHE_BYTES`, `TASK_COORDINATORS`.
 
 ## 5. Equivalence
 
@@ -159,6 +187,7 @@ The machine has 32 GiB. The knobs and their simulated cost are `O.CACHE_LIMITS`,
 | new_development_0 | profile_run/reference_world_000 | 2,601,660 | 2,512 | 0 | 0 |
 | new_development_1 | quiet_session…/reference_development_1 | 2,600,554 | 2,501 | 0 | 0 |
 | ab1_old_smoke_0, ab2_old_smoke_0 (control) | reference_smoke_0 | 3,045,093 each | 2,847 | 0 | 0 |
+| fixes/fixed_smoke_0 (final code) | reference_smoke_0 | 3,045,093 | 2,847 | 0 | 0 |
 
 All pass. Smoke 0 completed its chain; the other worlds ended without a chain, as before; `invalid` is null everywhere. So the concurrent operation port ran both its eligible and its non-eligible path.
 
@@ -166,7 +195,7 @@ All pass. Smoke 0 completed its chain; the other worlds ended without a chain, a
 
 **Profiling worlds.** Two more smoke 0 worlds also pass exactly: `profile/shared_caches/prof_v6_EXACT.json` and `profile/concurrent/prof_v7_EXACT.json`.
 
-**Tests.** `tests/test_c6_option_b.py` and `tests/test_c6_option_b_parallel.py` gave **110 passed** in one final run after the last change (25 s). The new contracts are:
+**Tests.** For 8214f39, `tests/test_c6_option_b.py` and `tests/test_c6_option_b_parallel.py` gave **110 passed**. For the final code they give **128 passed**, adding the F1–F3 contracts in §0. The new contracts are:
 
 - concurrent operation equals sequential operation at tolerance 0, for forced-eligible with continuation, non-eligible, NO-R failure, and injected failures in stage 1, stage 2 and the before-episodes;
 - the coordinator token bounds Python to one coordinator; nested task batches are refused;
@@ -216,6 +245,21 @@ The owner's prompt, verbatim: "Recheck what you did please, check if it is the b
   - `-0.` replay guard: the medium derivative adds the forcing last and so is never `-0.`. The guard that replays such entries is therefore expected never to trigger, and it is kept as a safeguard;
   - hits: as before, the actual medium on a material hit comes from the no-cohort law.
 
+### Owner recheck applied to the review fixes
+
+The owner's prompt, verbatim: "Recheck what you did please, check if it is the best we can do, we want 10 out of 10 or above 9 - it's fine to break the things or fully rework. Check for issues, conflicts, gaps."
+
+**Findings and actions:**
+
+- **Do the tests detect the defect?** They were run against the reviewed module. 8 of the 11 new recovery/fuzz tests fail there, and the reviewed native code fails the peak contract (3.27 MB). So they are real regression tests, not tautologies.
+- **Statement order at set-up.** `run_many` evaluated its set-up statements in a different order from `GridSet.run` (scales before `pack`). It now follows `GridSet.run` exactly (`_initial_state`).
+- **Nested coverage.** The first fuzz of the operation landed almost always in the first descriptor. Input-only gates (`only=`) now steer failures into stage-1 runs and into episode formation and recovery runs, and the positions were checked.
+- **Causal fork set-up** still runs before the runs. It is equivalent because its only raising statement is identical for all forks; this is documented in code.
+- **Not changed:**
+  - Python-side memory is still bounded structurally, not by a byte cap (§4);
+  - after a failed task or request, its concurrent siblings run to completion: the work is wasted but has no effect;
+  - the 360 s margin depends on the cores available (§Summary). Under the load 42–85 of the review-fix pair, neither engine met it.
+
 ## 8. Files
 
 **Changed:**
@@ -227,6 +271,14 @@ The owner's prompt, verbatim: "Recheck what you did please, check if it is the b
 - `tools/c6_option_b_recheck.py`
 - `tests/test_c6_option_b.py`
 - `tests/test_c6_option_b_parallel.py`
+
+**Review fixes:**
+
+- `geomind/c6_option_b_parallel.py` (Outcome/publish, ordered merge);
+- `native/c6_option_b/field.cpp` (`admits`, streaming drive, direct strided medium, allocation fallbacks, publication order);
+- both option-B test files;
+- `performance_deepdive/REPORT_VALUES.py` and `.json`;
+- `performance_deepdive/fixes/` (RUN_PAIR.py, EVENTS, START/COSTS, EXACT, recheck_tool).
 
 **New evidence:** `evidence/c6_option_b/performance_deepdive/`, containing:
 

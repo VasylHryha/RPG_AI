@@ -90,9 +90,11 @@ class Scheduler:
             self.workers.add(threading.get_ident())
         return fn(*args)
 
-    def completed(self, fn, jobs, costs=None):
-        # Bound submitted futures as well as workers. Consumers discard outgoing
-        # arrays immediately and retain full flows only for three-grid checks.
+    def completed(self, fn, jobs, costs=None, capture=False):
+        # Bound submitted futures as well as workers. Every submitted job is
+        # drained before this generator ends. capture=True yields
+        # (index, error, result) for every job and never raises job errors;
+        # otherwise results are yielded and the lowest-index error is raised.
         indices = list(range(len(jobs)))
         if costs is not None:
             indices.sort(key=lambda i:(-costs[i],i))
@@ -115,8 +117,12 @@ class Scheduler:
                 i = pending.pop(future)
                 with self.lock: self.submitted -= 1
                 try: result = future.result()
-                except BaseException as error: errors[i] = error
-                else: yield i,result
+                except BaseException as error:
+                    if capture: yield i,error,None
+                    else: errors[i] = error
+                else:
+                    if capture: yield i,None,result
+                    else: yield i,result
             # Release completed futures/results before queuing more full blocks.
             done.clear()
             refill()
@@ -149,71 +155,133 @@ def grid_block(owner, initial, duration, dt):
     return end, flow, outgoing
 
 
+class Outcome:
+    """Terminal outcome of one GridSet.run request, published later in order.
+
+    Exactly one of: error (the first exception the sequential run would
+    raise, with no check made), or a check (made, then NumericalFailure when
+    it did not pass) and the collected frames.
+    """
+    __slots__ = ('grid','error','check','passed','maxima','scope','result')
+    def __init__(self, grid, scope):
+        self.grid, self.scope = grid, scope
+        self.error = self.check = self.maxima = self.result = None
+        self.passed = False
+
+
+def publish(outcome):
+    """Do what the sequential GridSet.run did at its end: raise its first error,
+    or append its check, raise if not passed, and return its frames."""
+    if outcome.error is not None:
+        raise outcome.error
+    outcome.grid.checks.append(outcome.check)
+    if not outcome.passed:
+        raise A.NumericalFailure(outcome.scope, outcome.maxima)
+    return outcome.result
+
+
+def _initial_state(grid, duration, scope, sample_dt):
+    # Same statements, in the same order, as GridSet.run before its loop.
+    dt = grid.s['dt']; sample_dt = grid.s['frame_dt'] if sample_dt is None else sample_dt
+    F.exact_steps(sample_dt, dt); F.exact_steps(duration, sample_dt)
+    initial = [o.clone() for o in grid.owners]
+    collected = [[o.pack()] for o in grid.owners]; maxima = {'position':0., 'phase':0., 'field':0.}
+    trace = [hashlib.sha256() for _ in range(3)]
+    powers = [np.zeros(len(initial[0].z)) for _ in range(3)]; out_max = [0.,0.,0.]; first = [None,None,None]
+    scales = []
+    for c in grid.owners[0].cohorts:
+        scale = A.D.radius_of_gyration(c.x)
+        if not np.isfinite(scale) or scale <= 0:
+            raise ValueError('invalid initial material normalization')
+        scales.append(scale)
+    intervals = F.exact_steps(duration, sample_dt)
+    return dict(grid=grid, duration=duration, scope=scope, sample_dt=sample_dt, dt=dt,
+        initial=initial, scales=scales, collected=collected, maxima=maxima, trace=trace,
+        powers=powers, out_max=out_max, first=first, intervals=intervals,
+        block_intervals=max(1,int(10./sample_dt)), begin=0)
+
+
+def _merge_block(st, block_duration, results):
+    """Coarse-to-fine merge of one block, in GridSet.run statement order."""
+    flows = []
+    for k, (end, flow, outgoing) in enumerate(results):
+        st['grid'].owners[k] = end
+        flows.append(flow)
+        stride = F.exact_steps(st['sample_dt'],st['dt'])
+        st['collected'][k].extend(flow[stride::stride].copy())
+        st['trace'][k].update(flow[1:,2*len(st['initial'][k].z):].tobytes())
+        st['powers'][k] += np.sum(np.abs(outgoing[1:])**2,axis=0)*st['dt']
+        st['out_max'][k] = max(st['out_max'][k],float(np.abs(outgoing).max()))
+        indices = np.flatnonzero(np.max(np.abs(outgoing),axis=1)>0)
+        if st['first'][k] is None and len(indices):
+            st['first'][k] = end.time-block_duration+int(indices[0])*st['dt']
+    errors = A.state_errors(st['initial'][0],flows,st['scales'])
+    for name in st['maxima']:st['maxima'][name] = max(st['maxima'][name],errors[name])
+    st['begin'] += st['block_intervals']
+
+
+def _finish(st, outcome):
+    limits = st['grid'].s['numerics']; maxima = st['maxima']
+    passed = all(maxima[k] <= limits[k] for k in maxima)
+    outcome.check = {'scope':st['scope'],'start':st['initial'][0].time,'duration':st['duration'],
+        'dt_values':[st['dt'],st['dt']/2,st['dt']/4], 'max_errors':maxima,
+        'normalization_sizes':st['scales'],'passed':passed,
+        'initial_ids':[o.identity() for o in st['initial']], 'end_ids':st['grid'].identities(),
+        'source_trace_hash_by_dt':[h.hexdigest() for h in st['trace']], 'output_max_by_dt':st['out_max'],
+        'output_power_by_dt':[p.tolist() for p in st['powers']], 'first_output_time_by_dt':st['first'],
+        'output_check_method':'Full selected-member outgoing channels computed (or reused on identical physical inputs) before masks; bounded temporary arrays and byte-limited immutable cache. Python norms are derived diagnostics. All-off native actual-medium evolution omits cohorts; independent native RHS/channel contracts verify that path.'}
+    outcome.passed, outcome.maxima = passed, maxima
+    outcome.result = [np.array(c) for c in st['collected']]
+
+
 def run_many(scheduler, requests):
-    """Run independent futures together, retain each original GridSet.run order."""
-    states = []
+    """Run independent GridSet.run requests together; return their outcomes.
+
+    Nothing is published here. Each request's outcome is exactly what its
+    sequential run would end with: grid jobs of one block are merged
+    coarse-to-fine after all three finished, so the first error inside a
+    request is the one the sequential run meets first (grid k before k+1,
+    the diagnostic after the three grids, the check after the last block).
+    A failed request stops; others continue. Callers publish() outcomes in
+    the original request order, interleaved with their own statements.
+    """
+    states = []; outcomes = []
     for grid, duration, scope, sample_dt in requests:
-        dt = grid.s['dt']
-        sample_dt = grid.s['frame_dt'] if sample_dt is None else sample_dt
-        F.exact_steps(sample_dt, dt); F.exact_steps(duration, sample_dt)
-        initial = [o.clone() for o in grid.owners]
-        scales = []
-        for c in grid.owners[0].cohorts:
-            scale = A.D.radius_of_gyration(c.x)
-            if not np.isfinite(scale) or scale <= 0:
-                raise ValueError('invalid initial material normalization')
-            scales.append(scale)
-        states.append(dict(grid=grid, duration=duration, scope=scope, sample_dt=sample_dt, dt=dt,
-            initial=initial, scales=scales, collected=[[o.pack()] for o in grid.owners],
-            maxima={'position':0., 'phase':0., 'field':0.}, trace=[hashlib.sha256() for _ in range(3)],
-            powers=[np.zeros(len(initial[0].z)) for _ in range(3)], out_max=[0.,0.,0.], first=[None,None,None],
-            intervals=F.exact_steps(duration, sample_dt), block_intervals=max(1,int(10./sample_dt)), begin=0))
-    while any(st['begin'] < st['intervals'] for st in states):
-        jobs = []; active = []; locations = []; costs = []
-        for st in states:
-            if st['begin'] >= st['intervals']:continue
+        outcome = Outcome(grid, scope); outcomes.append(outcome)
+        try: states.append(_initial_state(grid, duration, scope, sample_dt))
+        except Exception as error:
+            outcome.error = error; states.append(None)
+    def live(j):
+        st = states[j]
+        return st is not None and outcomes[j].error is None and st['begin'] < st['intervals']
+    while any(live(j) for j in range(len(states))):
+        jobs = []; active = {}; locations = []; costs = []
+        for j, st in enumerate(states):
+            if not live(j):continue
             block_duration = min(st['block_intervals'],st['intervals']-st['begin'])*st['sample_dt']
-            active.append((st, block_duration))
+            active[j] = (block_duration, [None]*3)
             for k in range(3):
                 owner = st['grid'].owners[k]
                 jobs.append((owner,st['initial'][k],block_duration,(st['dt']/(2**k),st['dt'])))
-                locations.append((len(active)-1,k))
+                locations.append((j,k))
                 costs.append(block_duration/(st['dt']/(2**k)) * max(1,len(owner.cohorts)))
-        flows = [[None]*3 for _ in active]
-        for index, (end,flow,outgoing) in scheduler.completed(grid_block,jobs,costs):
-            j,k = locations[index]; st,block_duration = active[j]
-            st['grid'].owners[k] = end
-            flows[j][k] = flow
-            stride = F.exact_steps(st['sample_dt'],st['dt'])
-            st['collected'][k].extend(flow[stride::stride].copy())
-            st['trace'][k].update(flow[1:,2*len(st['initial'][k].z):].tobytes())
-            st['powers'][k] += np.sum(np.abs(outgoing[1:])**2,axis=0)*st['dt']
-            st['out_max'][k] = max(st['out_max'][k],float(np.abs(outgoing).max()))
-            indices = np.flatnonzero(np.max(np.abs(outgoing),axis=1)>0)
-            if st['first'][k] is None and len(indices):
-                st['first'][k] = end.time-block_duration+int(indices[0])*st['dt']
-            if all(f is not None for f in flows[j]):
-                # Within each three-grid diagnostic the reduction order stays
-                # coarse-to-fine; states and per-grid sums are independent.
-                errors = A.state_errors(st['initial'][0],flows[j],st['scales'])
-                for name in st['maxima']:st['maxima'][name] = max(st['maxima'][name],errors[name])
-                flows[j] = [None]*3
-                st['begin'] += st['block_intervals']
-            del flow,outgoing
-    results = []
-    for st in states:
-        limits = st['grid'].s['numerics']; maxima = st['maxima']
-        passed = all(maxima[k] <= limits[k] for k in maxima)
-        st['grid'].checks.append({'scope':st['scope'],'start':st['initial'][0].time,'duration':st['duration'],
-            'dt_values':[st['dt'],st['dt']/2,st['dt']/4], 'max_errors':maxima,
-            'normalization_sizes':st['scales'],'passed':passed,
-            'initial_ids':[o.identity() for o in st['initial']], 'end_ids':st['grid'].identities(),
-            'source_trace_hash_by_dt':[h.hexdigest() for h in st['trace']], 'output_max_by_dt':st['out_max'],
-            'output_power_by_dt':[p.tolist() for p in st['powers']], 'first_output_time_by_dt':st['first'],
-            'output_check_method':'Full selected-member outgoing channels computed (or reused on identical physical inputs) before masks; bounded temporary arrays and byte-limited immutable cache. Python norms are derived diagnostics. All-off native actual-medium evolution omits cohorts; independent native RHS/channel contracts verify that path.'})
-        if not passed:raise A.NumericalFailure(st['scope'],maxima)
-        results.append([np.array(c) for c in st['collected']])
-    return results
+        for index, error, result in scheduler.completed(grid_block,jobs,costs,capture=True):
+            j,k = locations[index]; block_duration, slots = active[j]
+            slots[k] = (error, result)
+            if any(slot is None for slot in slots):continue
+            try:
+                for slot_error, _ in slots:
+                    if slot_error is not None:raise slot_error
+                _merge_block(states[j], block_duration, [r for _, r in slots])
+            except Exception as failure:
+                outcomes[j].error = failure
+            del active[j]; del slots, result
+    for j, st in enumerate(states):
+        if outcomes[j].error is not None:continue
+        try: _finish(st, outcomes[j])
+        except Exception as error:
+            outcomes[j].error = error; outcomes[j].check = None
+    return outcomes
 
 
 @contextmanager
@@ -232,7 +300,7 @@ def parallel(order='forward'):
     class ParallelGridSet(previous_grid):
         def clone(self):return ParallelGridSet(self.owners,self.s,self.checks)
         def run(self,duration,scope,sample_dt=None):
-            return run_many(scheduler,[(self,duration,scope,sample_dt)])[0]
+            return publish(run_many(scheduler,[(self,duration,scope,sample_dt)])[0])
     def recovery(grid,members,locks,pert,scope):
         return parallel_recovery(scheduler,grid,members,locks,pert,scope)
     def causal(grid,members,pert,scope):
@@ -372,8 +440,10 @@ def parallel_recovery(scheduler,grid,members,locks,pert,scope):
         if norm<=0:raise ValueError('zero position probe')
         c.x[members]+=dx*d['kick_position']*spacing/norm
         c.theta[members]+=A.normalize_phase(pert['phase'],members,d['kick_phase'])
-    run_many(scheduler,[(base,d['recovery_time'],scope+'/control',None),
-                        (kick,d['recovery_time'],scope+'/kicked',None)])
+    # Sequential order: base.run, then kick.run (each publishes its check).
+    for outcome in run_many(scheduler,[(base,d['recovery_time'],scope+'/control',None),
+                                       (kick,d['recovery_time'],scope+'/kicked',None)]):
+        publish(outcome)
     result=[]
     for a,b,lock in zip(base.owners,kick.owners,locks):
         ac,bc=a.cohorts[-1],b.cohorts[-1]
@@ -404,9 +474,13 @@ def parallel_causal(scheduler,grid,members,pert,scope):
             forks.append((direction,label,control,treated))
             requests.extend([(control,duration,scope+'/'+direction+'/'+label+'/control',s['probe_sample_dt']),
                              (treated,duration,scope+'/'+direction+'/'+label+'/treated',s['probe_sample_dt'])])
-    flows=iter(run_many(scheduler,requests))
+    # Fork set-up runs first here; its only raising statement (normalize_phase
+    # of the same probe and members) is identical for every fork, so it raises
+    # at the first fork exactly as the sequential loop does. Outcomes are then
+    # published fork by fork, interleaved with each fork's measurement.
+    outcomes=iter(run_many(scheduler,requests))
     for direction,label,control,treated in forks:
-        a,b=next(flows),next(flows)
+        a=publish(next(outcomes));b=publish(next(outcomes))
         measured=[]
         for k in range(3):
             ax,at=A.frames(a[k],control.owners[k]);bx,bt=A.frames(b[k],treated.owners[k])

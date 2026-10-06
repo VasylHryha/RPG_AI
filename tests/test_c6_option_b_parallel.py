@@ -191,3 +191,150 @@ def test_coordinator_token_bounds_concurrent_python():
             def nested(checks):return Q.ordered(scheduler,checks,[lambda c:0])
             with pytest.raises(RuntimeError,match='Nested protocol tasks'):
                 Q.ordered(scheduler,shared,[nested])
+
+
+# --- Sequential failure semantics inside batched grid runs (review F1) -------
+
+def _digest(*parts):
+    import hashlib
+    h=hashlib.sha256()
+    for part in parts:h.update(part if isinstance(part,bytes) else repr(part).encode())
+    return h.hexdigest()
+
+
+class Injection:
+    """Failures that are pure functions of a request's own inputs.
+
+    Whether a top-level F.advance raises, or a three-grid diagnostic inflates
+    its errors (a numerical failure) or raises, depends only on the inputs, so
+    the sequential run and every concurrent schedule see the same failing
+    requests. `predicate` cases target named positions explicitly.
+    """
+    def __init__(self,salt=None,worker=0,numeric=0,diagnostic=0,predicate=None,only=None):
+        self.salt,self.worker,self.numeric,self.diagnostic,self.predicate=salt,worker,numeric,diagnostic,predicate
+        self.only=only  # optional input-only gate: owner -> bool
+    def __enter__(self):
+        self.advance,self.errors=F.advance,A.state_errors
+        def advance(owner,duration,dt,sample_dt=None,_factor=True):
+            if _factor:
+                tag=self.classify('advance',owner,(duration,dt))
+                if tag=='worker':raise RuntimeError('injected worker '+_digest(self.salt,owner.pack().tobytes(),dt)[:12])
+            return self.advance(owner,duration,dt,sample_dt,_factor)
+        def state_errors(owner,flows,scales):
+            tag=self.classify('diagnostic',owner,flows[2][-1].tobytes())
+            if tag=='diagnostic':raise A.NumericalFailure('injected diagnostic '+_digest(self.salt,flows[2][-1].tobytes())[:12])
+            if tag=='numeric':return {'position':1.,'phase':1.,'field':1.}
+            return self.errors(owner,flows,scales)
+        F.advance,A.state_errors=advance,state_errors
+        return self
+    def classify(self,where,owner,extra):
+        if self.predicate:return self.predicate(where,owner,extra)
+        if self.only and not self.only(owner):return None
+        value=int(_digest(self.salt,where,owner.pack().tobytes(),extra)[:8],16)
+        if where=='advance':return 'worker' if self.worker and value%self.worker==0 else None
+        if self.diagnostic and value%self.diagnostic==0:return 'diagnostic'
+        if self.numeric and value%self.numeric==0:return 'numeric'
+        return None
+    def __exit__(self,*exc):
+        F.advance,A.state_errors=self.advance,self.errors
+
+
+def failing_experiment(parallel,order,injection_factory):
+    s=copy.deepcopy(P.load_settings())
+    s['detector']['recovery_time']=.1
+    s['causal']['gm_window']=.05;s['causal']['mg_window']=.1
+    s['probe_sample_dt']=.005;s['frame_dt']=.005
+    state=owner();state.cohorts[-1].output=1.
+    checks=[];out={'checks':checks}
+    def run():
+        grid=A.GridSet([state]*3,s,checks)
+        out['flow']=[f.tolist() for f in grid.run(.1,'fixture')]
+        m=np.array([0,1,2]);locks=[np.ones((24,24),bool)]*3
+        pert=A.perturbations(np.random.default_rng(552),24)
+        start={'time':grid.owners[0].time,'packs':[o.pack().tobytes() for o in grid.owners]}
+        with injection_factory(start):
+            out['recovery']=A.recovery(grid,m,locks,pert,'recovery')
+            out['causal']=A.causal(grid,m,pert,'causal')
+    with O.backend('native'):
+        try:
+            if parallel:
+                with Q.parallel(order):run()
+            else:run()
+        except (ValueError,RuntimeError) as error:
+            out['error']=[type(error).__name__,str(error)]
+    return json.loads(json.dumps(out,default=lambda o:o.tolist()))
+
+
+def targeted(case):
+    """Named positions from the review, at the recovery start state."""
+    def factory(start):
+        def unperturbed(owner):return owner.time==start['time'] and owner.pack().tobytes() in start['packs']
+        def at_start(owner):return owner.time==start['time']
+        def predicate(where,owner,extra):
+            if where=='advance':
+                duration,dt=extra;fine=dt<.002;middle=.002<dt<.004
+                if case=='passing_control_failing_kick' and at_start(owner) and not unperturbed(owner) and middle:return 'worker'
+                if case=='numeric_control_failing_kick' and at_start(owner) and not unperturbed(owner) and fine:return 'worker'
+                if case=='worker_control_diagnostic_kick' and unperturbed(owner) and fine:return 'worker'
+                return None
+            if case=='numeric_control_failing_kick' and unperturbed(owner):return 'numeric'
+            if case=='worker_control_diagnostic_kick' and at_start(owner) and not unperturbed(owner):return 'diagnostic'
+            return None
+        return Injection(predicate=predicate)
+    return factory
+
+
+@pytest.mark.parametrize('order',['forward','reverse'])
+@pytest.mark.parametrize('case',['passing_control_failing_kick','numeric_control_failing_kick','worker_control_diagnostic_kick'])
+def test_batched_recovery_failures_keep_sequential_prefix_and_first_error(case,order):
+    sequential=failing_experiment(False,order,targeted(case))
+    concurrent=failing_experiment(True,order,targeted(case))
+    result=compare(sequential,concurrent,0.,False)
+    assert result['passed'],result
+    scopes=[c['scope'] for c in sequential['checks']]
+    if case=='passing_control_failing_kick':
+        assert sequential['error'][0]=='RuntimeError' and scopes[-1]=='recovery/control'
+    if case=='numeric_control_failing_kick':
+        assert sequential['error'][0]=='NumericalFailure' and scopes[-1]=='recovery/control'
+        assert not sequential['checks'][-1]['passed']
+    if case=='worker_control_diagnostic_kick':
+        assert sequential['error'][0]=='RuntimeError' and scopes==['fixture']
+
+
+@pytest.mark.parametrize('order',['forward','reverse'])
+def test_fuzzed_failures_at_every_level_match_sequential(order):
+    """Input-determined worker, numerical and diagnostic failures, many salts."""
+    stages=set()
+    for salt in range(14):
+        factory=lambda start,salt=salt:Injection(salt=salt,worker=23,numeric=11,diagnostic=13)
+        sequential=failing_experiment(False,order,factory)
+        concurrent=failing_experiment(True,order,factory)
+        result=compare(sequential,concurrent,0.,False)
+        assert result['passed'],(salt,result)
+        assert sequential.get('error')==concurrent.get('error')
+        scopes=[c['scope'] for c in sequential['checks']]
+        stages.add(('error' in sequential,scopes[-1].split('/')[0],len(scopes)))
+    # Failures land at several positions: in recovery, in causal at various forks, or none.
+    assert len(stages)>=5 and any(not e for e,_,_ in stages)
+
+
+NESTED={'any':None,
+        # Stage 1: exposure and endpoint recovery/causal runs carry an emitting cohort.
+        'conditions':lambda o:any(c.output==1. for c in o.cohorts),
+        # Stage 2 episodes: the introduced population makes a second cohort.
+        'episodes':lambda o:len(o.cohorts)==2}
+
+
+@pytest.mark.parametrize('target,salt,rate',[('any',1,97),('any',5,97),('conditions',1,13),('conditions',5,29),
+    ('conditions',4,7),('episodes',1,61),('episodes',2,61),('episodes',3,31)])
+def test_fuzzed_nested_failures_in_concurrent_operation_match_sequential(target,salt,rate):
+    """Failures inside stage tasks' recovery/causal/descriptor/episode runs."""
+    def scenario(parallel):
+        with Injection(salt=salt,worker=rate,numeric=rate+2,diagnostic=rate+4,only=NESTED[target]):
+            return operation_scenario(True)
+    with O.backend('native'):
+        sequential=scenario(False)
+        with Q.parallel():concurrent=scenario(True)
+    result=compare(sequential,concurrent,0.,False)
+    assert result['passed'],result
+    assert sequential.get('error')==concurrent.get('error')
