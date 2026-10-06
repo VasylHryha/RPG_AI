@@ -506,3 +506,89 @@ Emergencies take precedence over the hold. The thresholds will come from the v4 
   - Stage A is unchanged (melee-only novice).
 - **F2, the claim narrowed:** section 16 shows that **this pair-level hold reduced pair-mode changes without improving the regular outcome at fixed v3 knobs**. It does **not** rule out instability of the coherent unit intent as a contributor, because physical movement reversals were not measured. v3 stays the baseline.
 - **F3:** the selected ω is a **diagnostic** of what this bounded optimizer chose, not a test of whether rotation is necessary. The values are reported even on a B stop.
+
+## 18. Revision 10 (v6): an amplitude-and-phase resonator (2026-10-07, after the v5 trace diagnostic)
+
+**Logged as an outcome-informed change** (section 10). It comes from `astelia_cpp/S4_V5_DEVELOPMENT_REPORT.md` (v5 B: resonator regular −6.025, morale +9.53) and the trace diagnostic `astelia_cpp/S4_V5_TRACE_DIAGNOSTIC.md` (60 fresh fights, descriptive).
+
+**What the traces show** (descriptive, no causal isolation):
+- **The resonator's ranged phase never settles.**
+  - Locked (|dθ/dt| < 0.1) in under 0.5% of samples; the observed rate stays near ω_ranged ≈ 1.91 rad/s, a half-cycle of 1.64 s.
+  - |P| ≥ |ω| in only about 4% of samples.
+  - Its commit→escape span takes about 8.7 s to cross at base speed.
+  - Its direct and gun units make 24–27 large (1 s) reversals per unit-minute, against morale's 1–2.
+  - Its direct units spend 5.4% of their time inside enemy gun bands, against 1.1% for morale's, and 88% of its direct deaths happen there.
+- **Morale's state is stationary about 92% of the time.** Its m relaxes to about 0, and the ±0.2 hysteresis then **keeps the last mode (escape)**: nearest-gun commit fraction 0 from 40 s on.
+  - Morale's positive score is survival to timeout. It is not gun killing.
+- **Against novice, the same rotating resonator removes 189 of 200 enemy guns and wins.**
+
+**The reading, at the RRG level:**
+- The v5 resonator is a **phase-only rotator**. Its commitment cos θ has unit amplitude whatever the drive, so it re-crosses ±0.2 every half-cycle and overwrites the mode memory.
+- A physical **resonator** has an **amplitude** that grows with matched drive and decays without it. Its response is strong when driven and fades at rest.
+- That is the missing degree of freedom. **Without drive, a resonator's commitment should fall to about 0**, where the hysteresis keeps the last mode as morale's does. **Under sustained pressure, its amplitude should build** in the drive's direction, and its phase rotation stays available for coordinated engagement.
+
+**Change: the resonator's state becomes a complex amplitude z_i** (one per own unit; this replaces θ_i):
+
+    dz_i/dt = (μ + i ω_role) z_i − |z_i|² z_i
+              + K · mean_{N_i} e^{−r²} (z_j − z_i)
+              + K_t · (ζ_i − z_i)
+              − P(i)
+
+- One RK4 step per tick, positions frozen at the snapshot, exactly as section 4.
+  - z starts at 0 (morale starts at 0 too; v5's uniform random phase is dropped because the amplitude now carries the state).
+- **μ** (1/s) is the **damping or gain**:
+  - μ < 0: a damped resonator; z → 0 without drive;
+  - μ > 0: a self-sustained oscillation of radius √μ.
+  - It is a knob in [−2, 2]. The optimizer chooses the regime, and the selected μ is reported.
+- **ω_role** (rad/s): the natural rotation, as before.
+- **The coupling is diffusive** on z: the standard linear coupling of Stuart-Landau oscillators.
+- **ζ_i** is the mean z of the other previous attackers of the unit's current target (section 4's ψ group); the K_t term is 0 when that group is empty.
+- **−P(i)** is the real drive, with the same sign convention as morale. Positive pressure pushes Re z negative (pull back).
+- **Commitment:** c_i = clip(Re z_i, −1, 1).
+- **Target alignment:** a_ij = 1 − min(1, |z_i − ζ_ij| / 2), and 0 when ζ_ij is undefined. This is the same form as morale's 1 − |m − μ|, on the complex state.
+- **Everything else is the v3 skeleton (sections 13–14), unchanged:** range-aware bands, the binary commit/escape mode with ±0.2 hysteresis and its memory, threats and their weighting, targeting, the movement law, pressure, and the stop/failure rules. There is no travel-time hold and no commit focus.
+
+**Knob ledger (resonator; equal count with morale, 11).**
+- Added: **μ**.
+- Removed: **ω_melee**, now fixed at 0.
+  - Reason: v5 melee units die by about 16 s whatever their state (all melee die in every pairing). Their selected ω (−0.36) is a diagnostic of no consequence.
+- Kept: K, K_t, κ, β, ω_ranged (artillery uses it), G, w, f_c, m_k, λ_th.
+- Bounds: μ ∈ [−2, 2] 1/s. Other bounds as sections 5 and 13.
+- Morale (11) and push-pull (3) are unchanged.
+
+**Normalization ledger:**
+- z is dimensionless. Every term of dz/dt is in 1/s: μ, ω, the coupling rates K and K_t, and P (κ · damage rates, already 1/s per section 2).
+- The cubic saturation bounds |z| at about √max(μ, 0), plus the drive response.
+- **The clip to ±1 is the only nonlinearity added at the action level,** exactly as morale's clip.
+
+**What the change can and cannot show (claim boundary):**
+- With ω_ranged = 0 and real coupling, the real axis of z is a morale-like relaxation with cubic instead of hard saturation. **So the resonator family now contains a morale-like special case.**
+- If selection drives ω_ranged → 0, rotation is not helping. If it drives μ ≪ 0, the amplitude dynamics are acting as relaxation.
+- Both are reported as findings. A win at those values would **not** support "oscillation is necessary".
+- **Reported diagnostics:** the selected μ and ω_ranged, the fraction of samples with |z| < 0.2, and the rotation rate of arg z when |z| > 0.2.
+
+**Closest known method:**
+- **Stuart-Landau (Hopf normal form) oscillators** with diffusive coupling and external forcing, as used for coupled-oscillator robot controllers (central pattern generators).
+- **The difference here:** the forcing is the unit's own damage pressure. The amplitude, not the phase alone, sets commitment through the mode hysteresis. And the coupling graph is the army's spatial neighbourhood and target groups.
+
+**Checks** (S3 style, before any fight):
+1. **The free amplitude decays.** With μ < 0 and no drive or coupling, |z| decays as e^{μt}.
+2. **The limit cycle.** With μ > 0, |z| → √μ and arg z rotates at ω.
+3. **Constant drive.** With P constant and μ < 0, ω = 0, z → the real fixed point of μz − z³ = P, and c has the opposite sign to P.
+4. **Coupling.** Diffusive coupling of two units equalizes their z.
+5. **The c interface.** c = clip(Re z) feeds the unchanged section-14 hysteresis; with c ∈ [−0.2, 0.2] the mode never changes.
+6. **The RK4 step** matches an independent implementation of this ODE to 1e-9.
+7. **Unchanged arms.** Morale, push-pull and nearest are byte-identical to v5.
+8. **Clone and isolation** of z, as for θ.
+
+**Development (the v5 protocol, unchanged otherwise):**
+- **Stages A and B only.** CMA-ES with population 16 and 16 generations, the same budgets per arm.
+- **Stage-B selection:** regular-head mean S, with novice eligibility (novice tuning mean ≥ 0).
+- Fresh development seeds in a new ledger. Validation sizes as v5. All four arms are re-run, so the comparisons are on one seed panel.
+- **Gates:**
+  - **Progress** if the v6 resonator's stage-B regular validation mean S is **strictly above −6.025** (the v5 value).
+  - **"Beats regular in development"** if it is **strictly above 0**.
+  - The second is the W4 condition for drafting an S5 registration (section B6 of the plan). It is not itself a registered result.
+- **Cost:** about 65 minutes with 10 workers, at the measured v5 rate (60,996 fights in 64.2 min).
+
+No registration, judging seeds or recorded run.
