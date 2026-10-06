@@ -61,3 +61,20 @@ Any change to these is a new design revision on fresh development seeds. It is n
 **Reading:** growth fills the budget and then churns. Newborns rarely lock to their sites, the read-out never responds to what is learned, and the snapshots that do respond score below abstention.
 
 The engine and the run are faithful. The design does not yet connect structure to action. That is defect D3, and it is now the main one.
+
+## Addendum 2: the owner-requested Codex recheck (`growing_shapes/runner/DEVELOPMENT_RECHECK_REPORT.md`, CHANGES_REQUIRED for the next design; recorded verdicts unchanged)
+
+**Confirmed:**
+- An empty read-out explains the constant. All 16 intact and 14 control final media have no element inside radius 2. The 0.0219 is the mean of the four default-action scores.
+- D1: 7,481 late rejections, all for cost.
+- D2: 775 drops, all for cost. Control additions were 26–71% of intact births.
+
+**Corrections to this review and to the draft (accepted):**
+1. **"Radius up to about 9" was wrong.** Final radii reach 246 (intact) and 420 (control): the law has no confinement, so groups drift away. **9,493 of 11,862 snapshots had no member within drive reach of any sensor** at their check time, and only 500 had a read-out member. This is a new defect, **D5: structures drift out of both sensing and action.**
+2. **"All 20 snapshots of 106065 and 106076 scored the constant" was too strong.** Move and remember_static were constant, but some perceive and choose scores were not. Copies keep moving during evaluation: 13 initially empty templates scored off the floor.
+3. **G1c does not read each structure at its own centre.** It keeps absolute positions and the same origin read-out. D3 therefore applies to G1c as well; a per-structure read-out would be new.
+4. Descriptive only (320 snapshots scored, 11,542 not): 64 perceive, 51 remember_static, 1 choose and 0 move snapshots exceed both the default and random. 208 of the 320 sit on the floor in all four tasks, so G5 passes for silent copies too.
+5. The choose default (the lowest live id) already beats random, so a positive choose score alone credits nothing.
+6. "Wall hours" are awake monotonic time (corrected in the report). The result was written at 08:23 local.
+
+The draft's refinements are recorded in `DESIGN_0H_REV6_DRAFT.md` section 4.

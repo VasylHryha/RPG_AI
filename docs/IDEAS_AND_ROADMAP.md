@@ -52,9 +52,9 @@ Every serious chunk gets the owner's adversarial recheck prompt (verbatim, throu
 | Chunk | Recheck |
 |---|---|
 | 0h C++ speed pass | DONE (four high findings fixed; Claude review `growing_shapes_review_claude/PERF_RECHECK_REVIEW.md`) |
-| C6 option B port and parallel step | DONE (four high and five medium findings fixed; 72 tests pass); full-world zero-tolerance reruns and the official quiet timing **queued automatically after the 0h run** |
+| C6 option B port and parallel step | DONE (four high and five medium findings fixed; 72 tests pass); full-world zero-tolerance reruns and the official quiet timing **stopped 2026-10-06 09:15 before measuring (the machine was busy with other work); rerun when the laptop is idle** |
 | 0g v3 development | DONE (READY; the resonator dithers: its rotation flips commitment every half cycle, about 3.4 s, too fast to reach either safe distance against guns) |
-| 0h development run | QUEUED after the C6 quiet timing (review findings D1-D3 and the constant competence to check first) |
+| 0h development run | DONE (CHANGES_REQUIRED for the next design: the empty read-out confirmed; new D5: no confinement, groups drift up to 246 m.u. away and 9,493/11,862 lose all sensor reach; refinements in `DESIGN_0H_REV6_DRAFT.md` section 4) |
 
 ## 4. Catalogue of ideas and options
 

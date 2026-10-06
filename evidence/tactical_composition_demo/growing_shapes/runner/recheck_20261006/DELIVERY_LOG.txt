@@ -1,0 +1,151 @@
+$ git config core.hooksPath /Users/new/RiderProjects/ai_RPG_test/.githooks
+$ git config user.name hryhavasyl
+$ git config user.email hryhavasyl@gmail.com
+$ git update-ref refs/heads/codex/0h-development-recheck c20f28caea5937d7b0096d7a4be3672990c2a246
+$ git symbolic-ref HEAD refs/heads/codex/0h-development-recheck
+$ git read-tree c20f28caea5937d7b0096d7a4be3672990c2a246
+$ git add -- evidence/tactical_composition_demo/growing_shapes/runner/DEVELOPMENT_REPORT.md evidence/tactical_composition_demo/growing_shapes/runner/DEVELOPMENT_DELIVERY.md evidence/tactical_composition_demo/growing_shapes/runner/DEVELOPMENT_RECHECK_REPORT.md evidence/tactical_composition_demo/growing_shapes/runner/recheck_development.py evidence/tactical_composition_demo/growing_shapes/runner/recheck_validation_chance.py evidence/tactical_composition_demo/growing_shapes/runner/test_recheck_development.py evidence/tactical_composition_demo/growing_shapes/runner/recheck_20261006/ANALYSIS_LOG.txt evidence/tactical_composition_demo/growing_shapes/runner/recheck_20261006/SAME_PANEL_RANDOM.json evidence/tactical_composition_demo/growing_shapes/runner/recheck_20261006/TESTS.json evidence/tactical_composition_demo/growing_shapes/runner/recheck_20261006/TEST_LOG.txt evidence/tactical_composition_demo/growing_shapes/runner/recheck_20261006/full/ANALYSIS.json evidence/tactical_composition_demo/growing_shapes/runner/recheck_20261006/full/LEDGER_CHECKS.json evidence/tactical_composition_demo/growing_shapes/runner/recheck_20261006/full/SNAPSHOTS.csv
+$ git diff --cached --name-only
+evidence/tactical_composition_demo/growing_shapes/runner/DEVELOPMENT_DELIVERY.md
+evidence/tactical_composition_demo/growing_shapes/runner/DEVELOPMENT_RECHECK_REPORT.md
+evidence/tactical_composition_demo/growing_shapes/runner/DEVELOPMENT_REPORT.md
+evidence/tactical_composition_demo/growing_shapes/runner/recheck_20261006/ANALYSIS_LOG.txt
+evidence/tactical_composition_demo/growing_shapes/runner/recheck_20261006/SAME_PANEL_RANDOM.json
+evidence/tactical_composition_demo/growing_shapes/runner/recheck_20261006/TESTS.json
+evidence/tactical_composition_demo/growing_shapes/runner/recheck_20261006/TEST_LOG.txt
+evidence/tactical_composition_demo/growing_shapes/runner/recheck_20261006/full/ANALYSIS.json
+evidence/tactical_composition_demo/growing_shapes/runner/recheck_20261006/full/LEDGER_CHECKS.json
+evidence/tactical_composition_demo/growing_shapes/runner/recheck_20261006/full/SNAPSHOTS.csv
+evidence/tactical_composition_demo/growing_shapes/runner/recheck_development.py
+evidence/tactical_composition_demo/growing_shapes/runner/recheck_validation_chance.py
+evidence/tactical_composition_demo/growing_shapes/runner/test_recheck_development.py
+$ git diff --cached --check
+$ git commit -m Recheck retained 0h development artifacts and correct awake-time accounting
+
+Audit all snapshots and ledger identities without new episodes or verdict changes. Record readout gaps and descriptive task scores, and review the pending revision-6 changes. Keep raw ledgers outside this delivery.
+
+Assisted-by: Codex:GPT-6
+[codex/0h-development-recheck b62fe7a] Recheck retained 0h development artifacts and correct awake-time accounting
+ 13 files changed, 16696 insertions(+), 7 deletions(-)
+ create mode 100644 evidence/tactical_composition_demo/growing_shapes/runner/DEVELOPMENT_RECHECK_REPORT.md
+ create mode 100644 evidence/tactical_composition_demo/growing_shapes/runner/recheck_20261006/ANALYSIS_LOG.txt
+ create mode 100644 evidence/tactical_composition_demo/growing_shapes/runner/recheck_20261006/SAME_PANEL_RANDOM.json
+ create mode 100644 evidence/tactical_composition_demo/growing_shapes/runner/recheck_20261006/TESTS.json
+ create mode 100644 evidence/tactical_composition_demo/growing_shapes/runner/recheck_20261006/TEST_LOG.txt
+ create mode 100644 evidence/tactical_composition_demo/growing_shapes/runner/recheck_20261006/full/ANALYSIS.json
+ create mode 100644 evidence/tactical_composition_demo/growing_shapes/runner/recheck_20261006/full/LEDGER_CHECKS.json
+ create mode 100644 evidence/tactical_composition_demo/growing_shapes/runner/recheck_20261006/full/SNAPSHOTS.csv
+ create mode 100644 evidence/tactical_composition_demo/growing_shapes/runner/recheck_development.py
+ create mode 100644 evidence/tactical_composition_demo/growing_shapes/runner/recheck_validation_chance.py
+ create mode 100644 evidence/tactical_composition_demo/growing_shapes/runner/test_recheck_development.py
+$ git rev-parse HEAD
+b62fe7a0b99fd2699751d2d9f5f09bf2f826fc65
+$ git add -- evidence/tactical_composition_demo/growing_shapes/runner/DEVELOPMENT_RECHECK_DELIVERY.md
+$ git commit -m Document scoped 0h recheck bundle and unchanged execution boundaries
+
+Assisted-by: Codex:GPT-6
+[codex/0h-development-recheck f166aa5] Document scoped 0h recheck bundle and unchanged execution boundaries
+ 1 file changed, 37 insertions(+)
+ create mode 100644 evidence/tactical_composition_demo/growing_shapes/runner/DEVELOPMENT_RECHECK_DELIVERY.md
+$ git rev-parse HEAD
+f166aa5dbf287698b76dec7b7b7f74be26907d45
+$ git bundle create /Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/runner/0h_development_recheck.bundle c20f28caea5937d7b0096d7a4be3672990c2a246..refs/heads/codex/0h-development-recheck
+$ verification git bundle verify /Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/runner/0h_development_recheck.bundle
+The bundle contains this ref:
+f166aa5dbf287698b76dec7b7b7f74be26907d45 refs/heads/codex/0h-development-recheck
+The bundle requires this ref:
+c20f28caea5937d7b0096d7a4be3672990c2a246 
+The bundle uses this hash algorithm: sha1
+/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/runner/0h_development_recheck.bundle is okay
+$ verification git fetch /Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/runner/0h_development_recheck.bundle refs/heads/codex/0h-development-recheck:refs/heads/codex/0h-development-recheck
+From /Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/runner/0h_development_recheck.bundle
+ * [new branch]      codex/0h-development-recheck -> codex/0h-development-recheck
+$ verification git rev-parse refs/heads/codex/0h-development-recheck
+f166aa5dbf287698b76dec7b7b7f74be26907d45
+$ verification git diff --name-only c20f28caea5937d7b0096d7a4be3672990c2a246 f166aa5dbf287698b76dec7b7b7f74be26907d45
+evidence/tactical_composition_demo/growing_shapes/runner/DEVELOPMENT_DELIVERY.md
+evidence/tactical_composition_demo/growing_shapes/runner/DEVELOPMENT_RECHECK_DELIVERY.md
+evidence/tactical_composition_demo/growing_shapes/runner/DEVELOPMENT_RECHECK_REPORT.md
+evidence/tactical_composition_demo/growing_shapes/runner/DEVELOPMENT_REPORT.md
+evidence/tactical_composition_demo/growing_shapes/runner/recheck_20261006/ANALYSIS_LOG.txt
+evidence/tactical_composition_demo/growing_shapes/runner/recheck_20261006/SAME_PANEL_RANDOM.json
+evidence/tactical_composition_demo/growing_shapes/runner/recheck_20261006/TESTS.json
+evidence/tactical_composition_demo/growing_shapes/runner/recheck_20261006/TEST_LOG.txt
+evidence/tactical_composition_demo/growing_shapes/runner/recheck_20261006/full/ANALYSIS.json
+evidence/tactical_composition_demo/growing_shapes/runner/recheck_20261006/full/LEDGER_CHECKS.json
+evidence/tactical_composition_demo/growing_shapes/runner/recheck_20261006/full/SNAPSHOTS.csv
+evidence/tactical_composition_demo/growing_shapes/runner/recheck_development.py
+evidence/tactical_composition_demo/growing_shapes/runner/recheck_validation_chance.py
+evidence/tactical_composition_demo/growing_shapes/runner/test_recheck_development.py
+$ verification git rev-list c20f28caea5937d7b0096d7a4be3672990c2a246..f166aa5dbf287698b76dec7b7b7f74be26907d45
+f166aa5dbf287698b76dec7b7b7f74be26907d45
+b62fe7a0b99fd2699751d2d9f5f09bf2f826fc65
+$ verification git rev-list --objects c20f28caea5937d7b0096d7a4be3672990c2a246..f166aa5dbf287698b76dec7b7b7f74be26907d45
+f166aa5dbf287698b76dec7b7b7f74be26907d45
+b62fe7a0b99fd2699751d2d9f5f09bf2f826fc65
+9d6e18ef481004792093105e18998c5329e0fd1e 
+ed4a3c98436b91b40cb08858cf4e31d00acd3619 evidence
+9412706909ac488a041529ac70f2c21a4f55b78d evidence/tactical_composition_demo
+5fe41e17ceadabe4a6ded77089824456d1037b2b evidence/tactical_composition_demo/growing_shapes
+d7f675173f1cff75b6930e9e621284c19f3eefca evidence/tactical_composition_demo/growing_shapes/runner
+c627a353e4c43940c97391c7619ab838c3fbc220 evidence/tactical_composition_demo/growing_shapes/runner/DEVELOPMENT_DELIVERY.md
+3bd6266216b56c6f1612f707234cd2e890b0dcfa evidence/tactical_composition_demo/growing_shapes/runner/DEVELOPMENT_RECHECK_DELIVERY.md
+6931f5ba99137eb96d3690aeb268eb9934442630 evidence/tactical_composition_demo/growing_shapes/runner/DEVELOPMENT_RECHECK_REPORT.md
+f1910b10d6389b742dea8f7d99f04f0bf94353a0 evidence/tactical_composition_demo/growing_shapes/runner/DEVELOPMENT_REPORT.md
+8d112ac55093d466e777da05f7e63acc14272aa0 evidence/tactical_composition_demo/growing_shapes/runner/recheck_20261006
+94e60259226d033be59dc17fe757d5960289e93f evidence/tactical_composition_demo/growing_shapes/runner/recheck_20261006/ANALYSIS_LOG.txt
+4df003243a8a5cc444cdc48e7e87cbbd7978501f evidence/tactical_composition_demo/growing_shapes/runner/recheck_20261006/SAME_PANEL_RANDOM.json
+3c0dbfa2b943a2049dbfdd43bb0584a52911607c evidence/tactical_composition_demo/growing_shapes/runner/recheck_20261006/TESTS.json
+e9345df535571f881c0e293e6f1fba117c0e6958 evidence/tactical_composition_demo/growing_shapes/runner/recheck_20261006/TEST_LOG.txt
+8a75668c403ed541cbcfadd5bf7e00adc50fefbf evidence/tactical_composition_demo/growing_shapes/runner/recheck_20261006/full
+ce1117b31cf89d337d15c27fd2220f7361555820 evidence/tactical_composition_demo/growing_shapes/runner/recheck_20261006/full/ANALYSIS.json
+988e52dd2fff31b97021ef6e3d61a1e969aa8ae2 evidence/tactical_composition_demo/growing_shapes/runner/recheck_20261006/full/LEDGER_CHECKS.json
+2f6af5a5ffc7ba069a08fac53ac4fd8c12087b83 evidence/tactical_composition_demo/growing_shapes/runner/recheck_20261006/full/SNAPSHOTS.csv
+d15bc86e3d36317396005f45240eef6c7a5ed039 evidence/tactical_composition_demo/growing_shapes/runner/recheck_development.py
+b59a3e6bb19718d28f849aeac97cf441085feacc evidence/tactical_composition_demo/growing_shapes/runner/recheck_validation_chance.py
+d40903ed39a590fccccc873465df4592d3cb6090 evidence/tactical_composition_demo/growing_shapes/runner/test_recheck_development.py
+a27f79474e5b0d3653ac50e347348cb63d02b6c7 
+b5dde887bd1a4108c7b065308c0ccc2eb729f2c5 evidence
+ae242dc652623ed5d33f1999ca469c2c41cb8567 evidence/tactical_composition_demo
+9c6f3118c3b9d7a2babdaf967719665120555335 evidence/tactical_composition_demo/growing_shapes
+3a7d564328c640e2a7b80b93b40588902aa84d6a evidence/tactical_composition_demo/growing_shapes/runner
+$ verification git verify-pack -v /Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/runner/_build/recheck_delivery/verifier_final.git/objects/pack/pack-e0f0d3c35ebed84288c2e53eedb9b02268238c10.idx
+f166aa5dbf287698b76dec7b7b7f74be26907d45 commit 309 215 12
+b62fe7a0b99fd2699751d2d9f5f09bf2f826fc65 commit 532 345 227
+9d6e18ef481004792093105e18998c5329e0fd1e tree   33 64 572 1 52911920f1383926c70fb003ea38dd304d9335a7
+ed4a3c98436b91b40cb08858cf4e31d00acd3619 tree   28 59 636 1 4daeda59bb779bc06517621bf0632fa67e90a702
+9412706909ac488a041529ac70f2c21a4f55b78d tree   33 66 695 1 2fe694858833c8a75742b7847fd92b742790b2ba
+5fe41e17ceadabe4a6ded77089824456d1037b2b tree   30 61 761 1 6c001777cb917b72c76a8948c423a4370d4a4685
+d7f675173f1cff75b6930e9e621284c19f3eefca tree   360 348 822 1 f73d506f3abb4dedd08d41d043eb65f1513aac0b
+c627a353e4c43940c97391c7619ab838c3fbc220 blob   635 460 1170 1 52c9b5201770f41daa8dec1a3cdfab77ab779396
+3bd6266216b56c6f1612f707234cd2e890b0dcfa blob   3358 1578 1630
+6931f5ba99137eb96d3690aeb268eb9934442630 blob   22276 9733 3208
+f1910b10d6389b742dea8f7d99f04f0bf94353a0 blob   1092 724 12941 1 db511d818ada79976a7d26398faa80c2e69401a6
+8d112ac55093d466e777da05f7e63acc14272aa0 tree   203 187 13665
+94e60259226d033be59dc17fe757d5960289e93f blob   6974 989 13852
+4df003243a8a5cc444cdc48e7e87cbbd7978501f blob   1652 632 14841
+3c0dbfa2b943a2049dbfdd43bb0584a52911607c blob   713 444 15473
+e9345df535571f881c0e293e6f1fba117c0e6958 blob   98 41 15917
+8a75668c403ed541cbcfadd5bf7e00adc50fefbf tree   128 127 15958
+ce1117b31cf89d337d15c27fd2220f7361555820 blob   95117 24998 16085
+988e52dd2fff31b97021ef6e3d61a1e969aa8ae2 blob   41830 8521 41083
+2f6af5a5ffc7ba069a08fac53ac4fd8c12087b83 blob   1999610 807087 49604
+d15bc86e3d36317396005f45240eef6c7a5ed039 blob   16802 5457 856691
+b59a3e6bb19718d28f849aeac97cf441085feacc blob   2587 1130 862148
+d40903ed39a590fccccc873465df4592d3cb6090 blob   3693 1337 863278
+a27f79474e5b0d3653ac50e347348cb63d02b6c7 tree   33 66 864615 1 52911920f1383926c70fb003ea38dd304d9335a7
+b5dde887bd1a4108c7b065308c0ccc2eb729f2c5 tree   28 59 864681 1 4daeda59bb779bc06517621bf0632fa67e90a702
+ae242dc652623ed5d33f1999ca469c2c41cb8567 tree   33 66 864740 1 2fe694858833c8a75742b7847fd92b742790b2ba
+9c6f3118c3b9d7a2babdaf967719665120555335 tree   30 61 864806 1 6c001777cb917b72c76a8948c423a4370d4a4685
+3a7d564328c640e2a7b80b93b40588902aa84d6a tree   12 24 864867 2 d7f675173f1cff75b6930e9e621284c19f3eefca
+52911920f1383926c70fb003ea38dd304d9335a7 tree   1079 918 864891
+4daeda59bb779bc06517621bf0632fa67e90a702 tree   2281 1611 865809
+2fe694858833c8a75742b7847fd92b742790b2ba tree   3513 2451 867420
+6c001777cb917b72c76a8948c423a4370d4a4685 tree   141 147 869871
+f73d506f3abb4dedd08d41d043eb65f1513aac0b tree   4748 2794 870018
+52c9b5201770f41daa8dec1a3cdfab77ab779396 blob   3632 1983 872812
+db511d818ada79976a7d26398faa80c2e69401a6 blob   11880 4479 874795
+non delta: 23 objects
+chain length = 1: 11 objects
+chain length = 2: 1 object
+/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/runner/_build/recheck_delivery/verifier_final.git/objects/pack/pack-e0f0d3c35ebed84288c2e53eedb9b02268238c10.pack: ok
