@@ -1,0 +1,177 @@
+{
+  "passed": true,
+  "base": "ad33de908921cd2bed3811139ea86a024b051770",
+  "implementation_commit": "09bbf734015339acfbcfad675231f586799b9d94",
+  "delivery_commit": "b4b2c4cb752d8f41c6aa237207bcfbf17d3a05a3",
+  "bundle": "evidence/c6_option_b/recheck_commits.bundle",
+  "bundle_sha256": "c046bc30a411cfc927f4f24534c8437df1af3ddc358d80c88d108d520236d1de",
+  "bundle_bytes": 2574388,
+  "import_checkout": "/private/tmp/c6_option_b_recheck_import_7jqabdph/checkout",
+  "import_head": "5494c64da8993fec2882a92781e8d5dcf2291c0f",
+  "verified_file_count": 73,
+  "byte_mismatches": [],
+  "scope_mismatches": [],
+  "normal_hooks_executed": true,
+  "hooks_path": ".githooks",
+  "provenance_trailers_verified": 2,
+  "original_head_unchanged": true,
+  "protected_and_unrelated_file_deltas": [],
+  "commands": [
+    {
+      "argv": [
+        "git",
+        "clone",
+        "--shared",
+        "--no-checkout",
+        "/Users/new/RiderProjects/ai_RPG_test",
+        "/private/tmp/c6_option_b_recheck_import_7jqabdph/checkout"
+      ],
+      "cwd": "/Users/new/RiderProjects/ai_RPG_test",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "Cloning into '/private/tmp/c6_option_b_recheck_import_7jqabdph/checkout'...\ndone.\n"
+    },
+    {
+      "argv": [
+        "git",
+        "checkout",
+        "-b",
+        "recheck-import-verification",
+        "ad33de908921cd2bed3811139ea86a024b051770"
+      ],
+      "cwd": "/private/tmp/c6_option_b_recheck_import_7jqabdph/checkout",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "Switched to a new branch 'recheck-import-verification'\n"
+    },
+    {
+      "argv": [
+        "git",
+        "config",
+        "core.hooksPath",
+        ".githooks"
+      ],
+      "cwd": "/private/tmp/c6_option_b_recheck_import_7jqabdph/checkout",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "config",
+        "user.name",
+        "hryhavasyl"
+      ],
+      "cwd": "/private/tmp/c6_option_b_recheck_import_7jqabdph/checkout",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "config",
+        "user.email",
+        "hryhavasyl@gmail.com"
+      ],
+      "cwd": "/private/tmp/c6_option_b_recheck_import_7jqabdph/checkout",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "bundle",
+        "verify",
+        "/Users/new/RiderProjects/ai_RPG_test/evidence/c6_option_b/recheck_commits.bundle"
+      ],
+      "cwd": "/private/tmp/c6_option_b_recheck_import_7jqabdph/checkout",
+      "exit_code": 0,
+      "stdout": "The bundle contains this ref:\nb4b2c4cb752d8f41c6aa237207bcfbf17d3a05a3 refs/heads/codex/c6-option-b-recheck\nThe bundle requires this ref:\nad33de908921cd2bed3811139ea86a024b051770 \nThe bundle uses this hash algorithm: sha1\n",
+      "stderr": "/Users/new/RiderProjects/ai_RPG_test/evidence/c6_option_b/recheck_commits.bundle is okay\n"
+    },
+    {
+      "argv": [
+        "git",
+        "fetch",
+        "/Users/new/RiderProjects/ai_RPG_test/evidence/c6_option_b/recheck_commits.bundle",
+        "refs/heads/codex/c6-option-b-recheck:refs/heads/recheck-bundle-import"
+      ],
+      "cwd": "/private/tmp/c6_option_b_recheck_import_7jqabdph/checkout",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "From /Users/new/RiderProjects/ai_RPG_test/evidence/c6_option_b/recheck_commits.bundle\n * [new branch]      codex/c6-option-b-recheck -> recheck-bundle-import\n"
+    },
+    {
+      "argv": [
+        "git",
+        "cherry-pick",
+        "ad33de908921cd2bed3811139ea86a024b051770..refs/heads/recheck-bundle-import"
+      ],
+      "cwd": "/private/tmp/c6_option_b_recheck_import_7jqabdph/checkout",
+      "exit_code": 0,
+      "stdout": "[recheck-import-verification a24a343] Repair C6 option B cache, identity and bounded scheduling contracts\n Date: Mon Oct 5 23:39:02 2026 +0300\n 71 files changed, 3910 insertions(+), 123 deletions(-)\n create mode 100644 evidence/c6_option_b/RECHECK_REPORT.md\n create mode 100644 evidence/c6_option_b/recheck/CONTENTS.json\n create mode 100644 evidence/c6_option_b/recheck/OPTION_B_BUILD.json\n create mode 100644 evidence/c6_option_b/recheck/PRESERVATION_CHECKS.json\n create mode 100644 evidence/c6_option_b/recheck/QUEUED_CHECKS.json\n create mode 100644 evidence/c6_option_b/recheck/REFERENCE_BUILD.json\n create mode 100644 evidence/c6_option_b/recheck/RUN_0.txt\n create mode 100644 evidence/c6_option_b/recheck/RUN_1.txt\n create mode 100644 evidence/c6_option_b/recheck/RUN_2.txt\n create mode 100644 evidence/c6_option_b/recheck/RUN_3.txt\n create mode 100644 evidence/c6_option_b/recheck/RUN_COMMANDS.json\n create mode 100644 evidence/c6_option_b/recheck/TEST_COMMAND.json\n create mode 100644 evidence/c6_option_b/recheck/TEST_LOG.txt\n create mode 100644 evidence/c6_option_b/recheck/UNCHANGED_ARITHMETIC.json\n create mode 100644 evidence/c6_option_b/recheck/batch_1/OPTION_B_BUILD.json\n create mode 100644 evidence/c6_option_b/recheck/batch_1/REFERENCE_BUILD.json\n create mode 100644 evidence/c6_option_b/recheck/batch_1/RUN_0.txt\n create mode 100644 evidence/c6_option_b/recheck/batch_1/RUN_1.txt\n create mode 100644 evidence/c6_option_b/recheck/batch_1/RUN_2.txt\n create mode 100644 evidence/c6_option_b/recheck/batch_1/RUN_3.txt\n create mode 100644 evidence/c6_option_b/recheck/batch_1/RUN_COMMANDS.json\n create mode 100644 evidence/c6_option_b/recheck/batch_1/TEST_COMMAND.json\n create mode 100644 evidence/c6_option_b/recheck/batch_1/TEST_LOG.txt\n create mode 100644 evidence/c6_option_b/recheck/batch_1/UNCHANGED_ARITHMETIC.json\n create mode 100644 evidence/c6_option_b/recheck/batch_1/contracts.xml\n create mode 100644 evidence/c6_option_b/recheck/batch_1/fixture_forward/COSTS.json\n create mode 100644 evidence/c6_option_b/recheck/batch_1/fixture_forward/START.json\n create mode 100644 evidence/c6_option_b/recheck/batch_1/fixture_forward/world.json.gz\n create mode 100644 evidence/c6_option_b/recheck/batch_1/fixture_forward_REFERENCE_0_EXACT.json\n create mode 100644 evidence/c6_option_b/recheck/batch_1/fixture_forward_REFERENCE_1_EXACT.json\n create mode 100644 evidence/c6_option_b/recheck/batch_1/fixture_reverse/COSTS.json\n create mode 100644 evidence/c6_option_b/recheck/batch_1/fixture_reverse/START.json\n create mode 100644 evidence/c6_option_b/recheck/batch_1/fixture_reverse/world.json.gz\n create mode 100644 evidence/c6_option_b/recheck/batch_1/fixture_reverse_REFERENCE_0_EXACT.json\n create mode 100644 evidence/c6_option_b/recheck/batch_1/fixture_reverse_REFERENCE_1_EXACT.json\n create mode 100644 evidence/c6_option_b/recheck/batch_1/fixture_sequential/COSTS.json\n create mode 100644 evidence/c6_option_b/recheck/batch_1/fixture_sequential/START.json\n create mode 100644 evidence/c6_option_b/recheck/batch_1/fixture_sequential/world.json.gz\n create mode 100644 evidence/c6_option_b/recheck/batch_1/fixture_sequential_REFERENCE_0_EXACT.json\n create mode 100644 evidence/c6_option_b/recheck/batch_1/fixture_sequential_REFERENCE_1_EXACT.json\n create mode 100644 evidence/c6_option_b/recheck/batch_1/option_b.dylib\n create mode 100644 evidence/c6_option_b/recheck/batch_1/reference_field.dylib\n create mode 100644 evidence/c6_option_b/recheck/batch_1/synthetic/CHECKS.json\n create mode 100644 evidence/c6_option_b/recheck/contracts.xml\n create mode 100644 evidence/c6_option_b/recheck/fixture_forward/COSTS.json\n create mode 100644 evidence/c6_option_b/recheck/fixture_forward/START.json\n create mode 100644 evidence/c6_option_b/recheck/fixture_forward/world.json.gz\n create mode 100644 evidence/c6_option_b/recheck/fixture_forward_REFERENCE_0_EXACT.json\n create mode 100644 evidence/c6_option_b/recheck/fixture_forward_REFERENCE_1_EXACT.json\n create mode 100644 evidence/c6_option_b/recheck/fixture_reverse/COSTS.json\n create mode 100644 evidence/c6_option_b/recheck/fixture_reverse/START.json\n create mode 100644 evidence/c6_option_b/recheck/fixture_reverse/world.json.gz\n create mode 100644 evidence/c6_option_b/recheck/fixture_reverse_REFERENCE_0_EXACT.json\n create mode 100644 evidence/c6_option_b/recheck/fixture_reverse_REFERENCE_1_EXACT.json\n create mode 100644 evidence/c6_option_b/recheck/fixture_sequential/COSTS.json\n create mode 100644 evidence/c6_option_b/recheck/fixture_sequential/START.json\n create mode 100644 evidence/c6_option_b/recheck/fixture_sequential/world.json.gz\n create mode 100644 evidence/c6_option_b/recheck/fixture_sequential_REFERENCE_0_EXACT.json\n create mode 100644 evidence/c6_option_b/recheck/fixture_sequential_REFERENCE_1_EXACT.json\n create mode 100644 evidence/c6_option_b/recheck/option_b.dylib\n create mode 100644 evidence/c6_option_b/recheck/reference_field.dylib\n create mode 100644 evidence/c6_option_b/recheck/synthetic/CHECKS.json\n create mode 100644 tools/c6_option_b_recheck.py\n[recheck-import-verification 5494c64] Document scoped C6 option B recheck bundle delivery\n Date: Mon Oct 5 23:40:14 2026 +0300\n 2 files changed, 102 insertions(+)\n create mode 100644 evidence/c6_option_b/RECHECK_DELIVERY.md\n create mode 100644 evidence/c6_option_b/recheck/IMPLEMENTATION_COMMIT_LOG.txt\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--name-only",
+        "ad33de908921cd2bed3811139ea86a024b051770",
+        "HEAD"
+      ],
+      "cwd": "/private/tmp/c6_option_b_recheck_import_7jqabdph/checkout",
+      "exit_code": 0,
+      "stdout": "evidence/c6_option_b/RECHECK_DELIVERY.md\nevidence/c6_option_b/RECHECK_REPORT.md\nevidence/c6_option_b/recheck/CONTENTS.json\nevidence/c6_option_b/recheck/IMPLEMENTATION_COMMIT_LOG.txt\nevidence/c6_option_b/recheck/OPTION_B_BUILD.json\nevidence/c6_option_b/recheck/PRESERVATION_CHECKS.json\nevidence/c6_option_b/recheck/QUEUED_CHECKS.json\nevidence/c6_option_b/recheck/REFERENCE_BUILD.json\nevidence/c6_option_b/recheck/RUN_0.txt\nevidence/c6_option_b/recheck/RUN_1.txt\nevidence/c6_option_b/recheck/RUN_2.txt\nevidence/c6_option_b/recheck/RUN_3.txt\nevidence/c6_option_b/recheck/RUN_COMMANDS.json\nevidence/c6_option_b/recheck/TEST_COMMAND.json\nevidence/c6_option_b/recheck/TEST_LOG.txt\nevidence/c6_option_b/recheck/UNCHANGED_ARITHMETIC.json\nevidence/c6_option_b/recheck/batch_1/OPTION_B_BUILD.json\nevidence/c6_option_b/recheck/batch_1/REFERENCE_BUILD.json\nevidence/c6_option_b/recheck/batch_1/RUN_0.txt\nevidence/c6_option_b/recheck/batch_1/RUN_1.txt\nevidence/c6_option_b/recheck/batch_1/RUN_2.txt\nevidence/c6_option_b/recheck/batch_1/RUN_3.txt\nevidence/c6_option_b/recheck/batch_1/RUN_COMMANDS.json\nevidence/c6_option_b/recheck/batch_1/TEST_COMMAND.json\nevidence/c6_option_b/recheck/batch_1/TEST_LOG.txt\nevidence/c6_option_b/recheck/batch_1/UNCHANGED_ARITHMETIC.json\nevidence/c6_option_b/recheck/batch_1/contracts.xml\nevidence/c6_option_b/recheck/batch_1/fixture_forward/COSTS.json\nevidence/c6_option_b/recheck/batch_1/fixture_forward/START.json\nevidence/c6_option_b/recheck/batch_1/fixture_forward/world.json.gz\nevidence/c6_option_b/recheck/batch_1/fixture_forward_REFERENCE_0_EXACT.json\nevidence/c6_option_b/recheck/batch_1/fixture_forward_REFERENCE_1_EXACT.json\nevidence/c6_option_b/recheck/batch_1/fixture_reverse/COSTS.json\nevidence/c6_option_b/recheck/batch_1/fixture_reverse/START.json\nevidence/c6_option_b/recheck/batch_1/fixture_reverse/world.json.gz\nevidence/c6_option_b/recheck/batch_1/fixture_reverse_REFERENCE_0_EXACT.json\nevidence/c6_option_b/recheck/batch_1/fixture_reverse_REFERENCE_1_EXACT.json\nevidence/c6_option_b/recheck/batch_1/fixture_sequential/COSTS.json\nevidence/c6_option_b/recheck/batch_1/fixture_sequential/START.json\nevidence/c6_option_b/recheck/batch_1/fixture_sequential/world.json.gz\nevidence/c6_option_b/recheck/batch_1/fixture_sequential_REFERENCE_0_EXACT.json\nevidence/c6_option_b/recheck/batch_1/fixture_sequential_REFERENCE_1_EXACT.json\nevidence/c6_option_b/recheck/batch_1/option_b.dylib\nevidence/c6_option_b/recheck/batch_1/reference_field.dylib\nevidence/c6_option_b/recheck/batch_1/synthetic/CHECKS.json\nevidence/c6_option_b/recheck/contracts.xml\nevidence/c6_option_b/recheck/fixture_forward/COSTS.json\nevidence/c6_option_b/recheck/fixture_forward/START.json\nevidence/c6_option_b/recheck/fixture_forward/world.json.gz\nevidence/c6_option_b/recheck/fixture_forward_REFERENCE_0_EXACT.json\nevidence/c6_option_b/recheck/fixture_forward_REFERENCE_1_EXACT.json\nevidence/c6_option_b/recheck/fixture_reverse/COSTS.json\nevidence/c6_option_b/recheck/fixture_reverse/START.json\nevidence/c6_option_b/recheck/fixture_reverse/world.json.gz\nevidence/c6_option_b/recheck/fixture_reverse_REFERENCE_0_EXACT.json\nevidence/c6_option_b/recheck/fixture_reverse_REFERENCE_1_EXACT.json\nevidence/c6_option_b/recheck/fixture_sequential/COSTS.json\nevidence/c6_option_b/recheck/fixture_sequential/START.json\nevidence/c6_option_b/recheck/fixture_sequential/world.json.gz\nevidence/c6_option_b/recheck/fixture_sequential_REFERENCE_0_EXACT.json\nevidence/c6_option_b/recheck/fixture_sequential_REFERENCE_1_EXACT.json\nevidence/c6_option_b/recheck/option_b.dylib\nevidence/c6_option_b/recheck/reference_field.dylib\nevidence/c6_option_b/recheck/synthetic/CHECKS.json\ngeomind/c6_option_b.py\ngeomind/c6_option_b_parallel.py\nnative/c6_option_b/detection.cpp\nnative/c6_option_b/field.cpp\ntests/test_c6_option_b.py\ntests/test_c6_option_b_parallel.py\ntools/build_c6_option_b.py\ntools/c6_option_b_check.py\ntools/c6_option_b_recheck.py\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "log",
+        "--format=%H%n%B",
+        "ad33de908921cd2bed3811139ea86a024b051770..HEAD"
+      ],
+      "cwd": "/private/tmp/c6_option_b_recheck_import_7jqabdph/checkout",
+      "exit_code": 0,
+      "stdout": "5494c64da8993fec2882a92781e8d5dcf2291c0f\nDocument scoped C6 option B recheck bundle delivery\n\nAssisted-by: Codex:GPT-6\n\na24a343edb00bebf8aacda0ebe0f2e6646427514\nRepair C6 option B cache, identity and bounded scheduling contracts\n\nKeep full-world equivalence and quiet timing queued while the shared timed run is active.\n\nAssisted-by: Codex:GPT-6\n\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "status",
+        "--porcelain"
+      ],
+      "cwd": "/private/tmp/c6_option_b_recheck_import_7jqabdph/checkout",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/Users/new/RiderProjects/ai_RPG_test",
+      "exit_code": 0,
+      "stdout": "ad33de908921cd2bed3811139ea86a024b051770\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "/private/tmp/c6_option_b_recheck_import_7jqabdph/checkout",
+      "exit_code": 0,
+      "stdout": "5494c64da8993fec2882a92781e8d5dcf2291c0f\n",
+      "stderr": ""
+    }
+  ]
+}
