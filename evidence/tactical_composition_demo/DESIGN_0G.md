@@ -439,3 +439,32 @@ No registration, judging seeds or recorded run.
 - **an urgent threat:** taking damage above a declared rate while out of reach.
 
 Emergencies take precedence over the hold. The thresholds will come from the v4 decision traces (velocity feasibility, hold durations), and will be frozen before any v5 fight.
+
+## 16. The v4 attribution test (a 2×2 diagnostic; from `astelia_cpp/S4_V4_RECHECK_REPORT.md`)
+
+**The v4 result:** a package regression against regular at stage B. The resonator went from −7.57 (v3) to −22.18; morale from +8.55 to −15.41. The recheck shows that both the hold and the focus are implicated, but their separate effects are not identified.
+
+**The "Planned v5" note above is superseded.** v5 is designed after this test (section 17, to come).
+
+**The test:** four skeleton cells on the v3 skeleton, with every other rule unchanged:
+
+| Cell | Travel-time hold (section 15, change 1) | Commit focus (section 15, change 2) |
+|---|---|---|
+| v3 | off | off |
+| H | on | off |
+| F | off | on |
+| HF (= v4) | on | on |
+
+- **Fixed knobs** (no tuning): the resonator and morale v3 stage-B selected knobs (`astelia_cpp/s4_v3_development`), the same in all four cells. Cell v3 thus reproduces v3 exactly on the new seeds.
+- **Fights:** **fresh** development seeds (a new ledger, never judging): 100 two-orientation clusters on the stage-B full head, against both **novice** and **regular**. That is 4 cells × 2 arms × 2 heads × 200 = 3,200 fights.
+- **Reported, descriptive only, with no verdict:** mean S with 95% intervals; the paired cell differences on common seeds; enemy guns alive; timeouts; and the section-15 decision traces for five predeclared regular trace seeds per cell:
+  - **unit-intent changes and pair-mode changes counted separately** (the recheck's finding 2);
+  - focus-while-escaping ticks;
+  - holds expiring inside gun reach;
+  - deaths that release holds.
+- **Purpose:** attribution only. It answers whether the hold, the focus, or both cause the regression, at fixed knobs. Equal-budget retuning comes later, for whichever v5 package is chosen.
+- **Cost:** about 3,200 fights, roughly 10 minutes at v4's measured rate (under 1 hour, decision 0031).
+
+**The objective** (the drafter's decision, from the owner's goal of beating the scripted AI): **S stays the score**, survivors minus enemy survivors, because it decides who wins the fight.
+- From v5 on, development selection uses the **regular-head S** as the primary target, with novice performance kept as a declared constraint.
+- Guns alive, timeouts, damage and time to elimination are always reported beside S.
