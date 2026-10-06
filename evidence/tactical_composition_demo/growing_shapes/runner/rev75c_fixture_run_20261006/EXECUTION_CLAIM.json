@@ -1,0 +1,32 @@
+{
+  "approval_reference": "docs/decisions/0031-owner-run-approval-policy.md",
+  "estimate_seconds": 5476.771066599999,
+  "execution_once": true,
+  "first_attempt_F5_persisted_or_observed": false,
+  "integration_review": "evidence/tactical_composition_demo/growing_shapes_review_claude/REV75_FIXTURE_READINESS_CONFIRMED.md",
+  "kind": "MEASUREMENT_TOOL_RERUN",
+  "machine_load": {
+    "load_average_1_5_15": [
+      3.92724609375,
+      5.1083984375,
+      6.7939453125
+    ],
+    "logical_cpus": 10,
+    "process_inventory": null,
+    "qualification": "Concurrent C6 timing benchmark reported by owner; shared machine, not isolated timing. Per-process inventory unavailable: sandbox denies ps from Python."
+  },
+  "owner_explicit_approval": {
+    "approval_reference": "docs/decisions/0031-owner-run-approval-policy.md",
+    "approved_over_one_hour": true,
+    "estimated_minutes": 91.27951777666665,
+    "first_attempt_F5_persisted_or_observed": false,
+    "kind": "MEASUREMENT_TOOL_RERUN",
+    "no_training_development_panels_judging_registration": true,
+    "only_one_run_all_call": true,
+    "owner_instruction": "you can run tests now; 2026-10-06 16:4x Europe/Kiev, reiterated explicitly in this task despite ~91-minute estimate",
+    "scheduling_allowance_minutes": 109.535421332
+  },
+  "pin_sha256": "7a63d15064df745bfa63071473e02ffcb327901d6210c8310f5b5f8c3a330bce",
+  "provenance": "Assisted-by: Codex:GPT-6",
+  "scheduling_allowance_seconds": 6572.125279919999
+}

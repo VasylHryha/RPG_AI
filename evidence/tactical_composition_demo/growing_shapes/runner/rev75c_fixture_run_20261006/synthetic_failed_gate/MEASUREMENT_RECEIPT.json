@@ -1,0 +1,69 @@
+{
+  "artifacts": {
+    "F5": {
+      "bytes": 259,
+      "delivery_eligible": true,
+      "path": "F5.json.gz",
+      "sha256": "4c33543b580bc977ab7b6323cd7dc4fe0347159a63b4b0f900f51a477f20845a"
+    }
+  },
+  "harness_receipt": {
+    "bytes": 324,
+    "delivery_eligible": true,
+    "path": "HARNESS_RECEIPT.json.gz",
+    "sha256": "c1d959caf407c624557ad2546786cacb766732f5cd7de34647e6dffa217755fe"
+  },
+  "individual_nested_execution_costs": null,
+  "nested_cost_reason": "Harness returns no individual execution clocks for F1a-c or F5i/ii; enclosing whole calls are timed. F1 includes F1d; do not sum both.",
+  "provenance": "Assisted-by: Codex:GPT-6",
+  "timings": {
+    "F5": {
+      "awake_seconds": 1.1541999999999802e-05,
+      "continuous_seconds": 1.1541999999999802e-05,
+      "elapsed_utc_seconds": 1.2e-05,
+      "end_clock": {
+        "awake": 0.025727583,
+        "continuous": 0.025727625,
+        "utc": "2026-10-06T13:43:57.513637+00:00"
+      },
+      "end_utc": "2026-10-06T13:43:57.513637+00:00",
+      "machine_load_after_call": {
+        "load_average_1_5_15": [
+          4.6279296875,
+          5.58642578125,
+          7.28076171875
+        ],
+        "logical_cpus": 10,
+        "process_inventory": null,
+        "qualification": "Concurrent C6 timing benchmark reported by owner; shared machine, not isolated timing. Per-process inventory unavailable: sandbox denies ps from Python."
+      },
+      "scope": "whole method call; excludes persistence after return",
+      "start_clock": {
+        "awake": 0.025716041,
+        "continuous": 0.025716083,
+        "utc": "2026-10-06T13:43:57.513625+00:00"
+      },
+      "start_utc": "2026-10-06T13:43:57.513625+00:00"
+    }
+  },
+  "total": {
+    "awake_seconds": 0.0005130840000000005,
+    "continuous_seconds": 0.0005130409999999988,
+    "elapsed_utc_seconds": 0.000513,
+    "end_clock": {
+      "awake": 0.026220375,
+      "continuous": 0.026220416,
+      "utc": "2026-10-06T13:43:57.514130+00:00"
+    },
+    "end_utc": "2026-10-06T13:43:57.514130+00:00",
+    "scope": "whole method call; excludes persistence after return",
+    "start_clock": {
+      "awake": 0.025707291,
+      "continuous": 0.025707375,
+      "utc": "2026-10-06T13:43:57.513617+00:00"
+    },
+    "start_utc": "2026-10-06T13:43:57.513617+00:00"
+  },
+  "verdict": "FIXTURES_FAIL",
+  "wrapper_sha256": "d1ba097804ceccbbe4425ee2fb6eca65ee560854a4178c9693dc207add3cad84"
+}

@@ -1,0 +1,3 @@
+Recheck what you did please, check if it is the best we can do, we want 10 out of 10 or above 9 - it's fine to break the things or fully rework. Check for issues, conflicts, gaps.
+
+Track review and disposition here; owner explicitly prohibits editing docs/PLAN_CURRENT.md.

@@ -1,0 +1,13 @@
+VERIFIED_SMALL_EVIDENCE_DELIVERY
+
+Fixture outcome: FIXTURES_FAIL at revision 7.5 pin 7a63d15064df745bfa63071473e02ffcb327901d6210c8310f5b5f8c3a330bce. N1/F1-F4 PASS; both F5 starts FAIL with A=B=all E=0. F6-F9 NOT_RUN under required F5 stop. N1f coarse/fine agree on F1c hold. Owner approved this measurement-tool rerun despite the 91-minute estimate. Prior first-attempt F5 results were never saved or observed.
+
+Report: REV75C_FIXTURE_REPORT.md. Delivery: REV75C_FIXTURE_EVIDENCE_FINAL.tar.gz and REV75C_FIXTURE_EVIDENCE_MANIFEST_FINAL.json, verified by rev75c_fixture_run_20261006/DELIVERY_VERIFICATION_FINAL.json. Every delivered file and archive is strictly below 50 MB. Large complete F5.json.gz (73,117,679 bytes, SHA256 d2c0f1c1d30b98ecaea329f8da06e338c5ff3a416a4e9b31798ccda000b0ba04) and exact HARNESS_RECEIPT.json.gz (74,784,354 bytes, SHA256 ad964ef881225f77dc7754fcd12cc64c89ccf7f514deedb7403171d4ad7f810f) stay local and out of git; manifest lists them by path/hash/size. Small summaries preserve all requested gate values, qualification counts/fractions, clocks, stop rows and complete extracted B-out/B-path events. The bundle is an evidence summary delivery, not a byte-for-byte copy of the large exact receipt.
+
+Harness awake 1229.953592s and elapsed UTC 1229.952956 s (20.499216 min), excluding final receipt serialization. Whole-call F5 awake 1126.171859s and elapsed 1126.171274s. Inline F1a-c/F5i-ii clocks are unavailable; no line hooks or timing inference. Shared-machine C6 load recorded honestly, including intermediate samples.
+
+Pre-execution wrapper recheck and post-run/report recheck had no remaining blocker; findings/disposition are adjacent. Scientific code, earlier evidence and PLAN_CURRENT.md unchanged. Concurrent HEAD advanced e42998fa→070ac6f2 and .gitignore changed outside scope; left in place. Staged diff was empty at both preservation observations before task staging. No training, development, panels, judging entropy or registration.
+
+No commit was created: full scoped staging through subprocess failed with `.git/index.lock: Operation not permitted` (exit 128). The two files staged by an earlier direct probe were restored to the initial empty staged diff, leaving unrelated state untouched. COMMIT_RESULT.json records the refusal and cleanup. No permission or hook bypass was attempted. COMMIT_MESSAGE.txt supplies the intended provenance trailer, Assisted-by: Codex:GPT-6.
+
+The verified FINAL bundle is the delivery fallback requested by the owner. The original independently verified archive/manifest remain historical; the FINAL archive includes this corrected note, recheck disposition and commit refusal. Every final member is reverified. Raw operational logs remain local and outside both bundles.

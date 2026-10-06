@@ -1,0 +1,1 @@
+Synthetic-only first check failed before real execution: sandbox denied optional ps subprocess. Removed that process observation; load averages use os.getloadavg with OSError fallback. Failed synthetic artifacts preserved separately. No real fixture or entropy ran.

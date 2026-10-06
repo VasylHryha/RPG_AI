@@ -1,0 +1,273 @@
+{
+  "artifacts": {
+    "F1": {
+      "bytes": 1070772,
+      "delivery_eligible": true,
+      "path": "F1.json.gz",
+      "sha256": "488aed9c288ac6b7fb0e38373d25e0c0aea279001c6a7fe50a3b2a268c077ca1"
+    },
+    "F1d": {
+      "bytes": 264154,
+      "delivery_eligible": true,
+      "path": "F1d.json.gz",
+      "sha256": "9ccdb8a241915ac1c4001957aa8f3dfb440d1bf384c96f028130c2be7b2fa822"
+    },
+    "F2": {
+      "bytes": 1668,
+      "delivery_eligible": true,
+      "path": "F2.json.gz",
+      "sha256": "f29df0916d354e83b70f03afca2c08421b836d2ee015492bd0f73056f9dad79d"
+    },
+    "F3": {
+      "bytes": 2078,
+      "delivery_eligible": true,
+      "path": "F3.json.gz",
+      "sha256": "bbf9bdbe31f54927bb7dbfcdf72cee94ac452cd304d7184454739a4fd8566eea"
+    },
+    "F4": {
+      "bytes": 258357,
+      "delivery_eligible": true,
+      "path": "F4.json.gz",
+      "sha256": "e44fa98e9206aa53c1d60c5516978203ac89dad28e77ebb5d33b224b1b84718b"
+    },
+    "F5": {
+      "bytes": 73117679,
+      "delivery_eligible": false,
+      "path": "F5.json.gz",
+      "sha256": "d2c0f1c1d30b98ecaea329f8da06e338c5ff3a416a4e9b31798ccda000b0ba04"
+    },
+    "N1": {
+      "bytes": 200539,
+      "delivery_eligible": true,
+      "path": "N1.json.gz",
+      "sha256": "61511b270895a56a32953ed1a53ff134e51f8706f10aec80c85edd6a4d0c97ad"
+    }
+  },
+  "harness_receipt": {
+    "bytes": 74784354,
+    "delivery_eligible": false,
+    "path": "HARNESS_RECEIPT.json.gz",
+    "sha256": "ad964ef881225f77dc7754fcd12cc64c89ccf7f514deedb7403171d4ad7f810f"
+  },
+  "individual_nested_execution_costs": null,
+  "nested_cost_reason": "Harness returns no individual execution clocks for F1a-c or F5i/ii; enclosing whole calls are timed. F1 includes F1d; do not sum both.",
+  "provenance": "Assisted-by: Codex:GPT-6",
+  "timings": {
+    "F1": {
+      "awake_seconds": 7.903859583340818,
+      "continuous_seconds": 7.90385970834177,
+      "elapsed_utc_seconds": 7.903855,
+      "end_clock": {
+        "awake": 167409.206698125,
+        "continuous": 197910.26373125,
+        "utc": "2026-10-06T13:46:55.753338+00:00"
+      },
+      "end_utc": "2026-10-06T13:46:55.753338+00:00",
+      "machine_load_after_call": {
+        "load_average_1_5_15": [
+          4.42919921875,
+          5.16650390625,
+          6.78515625
+        ],
+        "logical_cpus": 10,
+        "process_inventory": null,
+        "qualification": "Concurrent C6 timing benchmark reported by owner; shared machine, not isolated timing. Per-process inventory unavailable: sandbox denies ps from Python."
+      },
+      "scope": "whole method call; excludes persistence after return",
+      "start_clock": {
+        "awake": 167401.30283854165,
+        "continuous": 197902.35987154164,
+        "utc": "2026-10-06T13:46:47.849483+00:00"
+      },
+      "start_utc": "2026-10-06T13:46:47.849483+00:00"
+    },
+    "F1d": {
+      "awake_seconds": 3.3466531666636,
+      "continuous_seconds": 3.3466534999897704,
+      "elapsed_utc_seconds": 3.346652,
+      "end_clock": {
+        "awake": 167408.55450766665,
+        "continuous": 197909.6115405833,
+        "utc": "2026-10-06T13:46:55.101148+00:00"
+      },
+      "end_utc": "2026-10-06T13:46:55.101148+00:00",
+      "machine_load_after_call": {
+        "load_average_1_5_15": [
+          4.42919921875,
+          5.16650390625,
+          6.78515625
+        ],
+        "logical_cpus": 10,
+        "process_inventory": null,
+        "qualification": "Concurrent C6 timing benchmark reported by owner; shared machine, not isolated timing. Per-process inventory unavailable: sandbox denies ps from Python."
+      },
+      "scope": "whole method call; excludes persistence after return",
+      "start_clock": {
+        "awake": 167405.20785449998,
+        "continuous": 197906.26488708332,
+        "utc": "2026-10-06T13:46:51.754496+00:00"
+      },
+      "start_utc": "2026-10-06T13:46:51.754496+00:00"
+    },
+    "F2": {
+      "awake_seconds": 0.2007291666814126,
+      "continuous_seconds": 0.20072866664850153,
+      "elapsed_utc_seconds": 0.200729,
+      "end_clock": {
+        "awake": 167411.52584875,
+        "continuous": 197912.5828813333,
+        "utc": "2026-10-06T13:46:58.072487+00:00"
+      },
+      "end_utc": "2026-10-06T13:46:58.072487+00:00",
+      "machine_load_after_call": {
+        "load_average_1_5_15": [
+          4.42919921875,
+          5.16650390625,
+          6.78515625
+        ],
+        "logical_cpus": 10,
+        "process_inventory": null,
+        "qualification": "Concurrent C6 timing benchmark reported by owner; shared machine, not isolated timing. Per-process inventory unavailable: sandbox denies ps from Python."
+      },
+      "scope": "whole method call; excludes persistence after return",
+      "start_clock": {
+        "awake": 167411.3251195833,
+        "continuous": 197912.38215266666,
+        "utc": "2026-10-06T13:46:57.871758+00:00"
+      },
+      "start_utc": "2026-10-06T13:46:57.871758+00:00"
+    },
+    "F3": {
+      "awake_seconds": 0.0014291249972302467,
+      "continuous_seconds": 0.0014289583486970514,
+      "elapsed_utc_seconds": 0.001429,
+      "end_clock": {
+        "awake": 167411.5287147083,
+        "continuous": 197912.58574695833,
+        "utc": "2026-10-06T13:46:58.075352+00:00"
+      },
+      "end_utc": "2026-10-06T13:46:58.075352+00:00",
+      "machine_load_after_call": {
+        "load_average_1_5_15": [
+          4.42919921875,
+          5.16650390625,
+          6.78515625
+        ],
+        "logical_cpus": 10,
+        "process_inventory": null,
+        "qualification": "Concurrent C6 timing benchmark reported by owner; shared machine, not isolated timing. Per-process inventory unavailable: sandbox denies ps from Python."
+      },
+      "scope": "whole method call; excludes persistence after return",
+      "start_clock": {
+        "awake": 167411.52728558332,
+        "continuous": 197912.58431799998,
+        "utc": "2026-10-06T13:46:58.073923+00:00"
+      },
+      "start_utc": "2026-10-06T13:46:58.073923+00:00"
+    },
+    "F4": {
+      "awake_seconds": 2.9099738333607092,
+      "continuous_seconds": 2.909973500005435,
+      "elapsed_utc_seconds": 2.909972,
+      "end_clock": {
+        "awake": 167414.44053958333,
+        "continuous": 197915.497572,
+        "utc": "2026-10-06T13:47:00.987176+00:00"
+      },
+      "end_utc": "2026-10-06T13:47:00.987176+00:00",
+      "machine_load_after_call": {
+        "load_average_1_5_15": [
+          4.794921875,
+          5.22998046875,
+          6.7978515625
+        ],
+        "logical_cpus": 10,
+        "process_inventory": null,
+        "qualification": "Concurrent C6 timing benchmark reported by owner; shared machine, not isolated timing. Per-process inventory unavailable: sandbox denies ps from Python."
+      },
+      "scope": "whole method call; excludes persistence after return",
+      "start_clock": {
+        "awake": 167411.53056574997,
+        "continuous": 197912.5875985,
+        "utc": "2026-10-06T13:46:58.077204+00:00"
+      },
+      "start_utc": "2026-10-06T13:46:58.077204+00:00"
+    },
+    "F5": {
+      "awake_seconds": 1126.1718592083198,
+      "continuous_seconds": 1126.1718596249993,
+      "elapsed_utc_seconds": 1126.171274,
+      "end_clock": {
+        "awake": 168540.8456667083,
+        "continuous": 199041.90270012498,
+        "utc": "2026-10-06T14:05:47.391718+00:00"
+      },
+      "end_utc": "2026-10-06T14:05:47.391718+00:00",
+      "machine_load_after_call": {
+        "load_average_1_5_15": [
+          11.15087890625,
+          12.34521484375,
+          10.306640625
+        ],
+        "logical_cpus": 10,
+        "process_inventory": null,
+        "qualification": "Concurrent C6 timing benchmark reported by owner; shared machine, not isolated timing. Per-process inventory unavailable: sandbox denies ps from Python."
+      },
+      "scope": "whole method call; excludes persistence after return",
+      "start_clock": {
+        "awake": 167414.6738075,
+        "continuous": 197915.73084049998,
+        "utc": "2026-10-06T13:47:01.220444+00:00"
+      },
+      "start_utc": "2026-10-06T13:47:01.220444+00:00"
+    },
+    "N1": {
+      "awake_seconds": 3.1089962083497085,
+      "continuous_seconds": 3.108995499991579,
+      "elapsed_utc_seconds": 3.108992,
+      "end_clock": {
+        "awake": 167401.02521266666,
+        "continuous": 197902.08224541665,
+        "utc": "2026-10-06T13:46:47.571857+00:00"
+      },
+      "end_utc": "2026-10-06T13:46:47.571857+00:00",
+      "machine_load_after_call": {
+        "load_average_1_5_15": [
+          4.4130859375,
+          5.189453125,
+          6.8125
+        ],
+        "logical_cpus": 10,
+        "process_inventory": null,
+        "qualification": "Concurrent C6 timing benchmark reported by owner; shared machine, not isolated timing. Per-process inventory unavailable: sandbox denies ps from Python."
+      },
+      "scope": "whole method call; excludes persistence after return",
+      "start_clock": {
+        "awake": 167397.9162164583,
+        "continuous": 197898.97324991666,
+        "utc": "2026-10-06T13:46:44.462865+00:00"
+      },
+      "start_utc": "2026-10-06T13:46:44.462865+00:00"
+    }
+  },
+  "total": {
+    "awake_seconds": 1229.9535916666791,
+    "continuous_seconds": 1229.9535914999724,
+    "elapsed_utc_seconds": 1229.952956,
+    "end_clock": {
+      "awake": 168627.66501625,
+      "continuous": 199128.7220492083,
+      "utc": "2026-10-06T14:07:14.211033+00:00"
+    },
+    "end_utc": "2026-10-06T14:07:14.211033+00:00",
+    "scope": "whole method call; excludes persistence after return",
+    "start_clock": {
+      "awake": 167397.7114245833,
+      "continuous": 197898.76845770833,
+      "utc": "2026-10-06T13:46:44.258077+00:00"
+    },
+    "start_utc": "2026-10-06T13:46:44.258077+00:00"
+  },
+  "verdict": "FIXTURES_FAIL",
+  "wrapper_sha256": "d1ba097804ceccbbe4425ee2fb6eca65ee560854a4178c9693dc207add3cad84"
+}

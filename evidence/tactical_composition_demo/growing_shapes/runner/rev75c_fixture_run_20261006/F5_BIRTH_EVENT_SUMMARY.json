@@ -1,0 +1,126 @@
+{
+  "i": {
+    "extracted_events": 454,
+    "rules": {
+      "B-out": {
+        "births": 3,
+        "birth_times_seconds": [
+          20.0,
+          80.0,
+          180.0
+        ],
+        "first_birth_time": 20.0,
+        "last_birth_time": 180.0,
+        "related_rules": {
+          "birth_request": 26,
+          "birth_attempt": 26,
+          "birth_terminal": 26
+        },
+        "terminal_outcomes": {
+          "accepted": 3,
+          "cost": 23
+        }
+      },
+      "B-path": {
+        "births": 24,
+        "birth_times_seconds": [
+          40.0,
+          60.0,
+          60.0,
+          80.0,
+          80.0,
+          100.0,
+          100.0,
+          120.0,
+          120.0,
+          140.0,
+          140.0,
+          160.0,
+          160.0,
+          180.0,
+          180.0,
+          200.0,
+          200.0,
+          220.0,
+          240.0,
+          240.0,
+          280.0,
+          300.0,
+          320.0,
+          340.0
+        ],
+        "first_birth_time": 40.0,
+        "last_birth_time": 340.0,
+        "related_rules": {
+          "birth_request": 162,
+          "birth_terminal": 162,
+          "birth_attempt": 25
+        },
+        "terminal_outcomes": {
+          "no_root": 15,
+          "accepted": 24,
+          "quota": 9,
+          "no_output": 114
+        }
+      }
+    }
+  },
+  "ii": {
+    "extracted_events": 449,
+    "rules": {
+      "B-out": {
+        "births": 0,
+        "birth_times_seconds": [],
+        "first_birth_time": null,
+        "last_birth_time": null,
+        "related_rules": {
+          "birth_request": 26,
+          "birth_attempt": 26,
+          "birth_terminal": 26
+        },
+        "terminal_outcomes": {
+          "cost": 26
+        }
+      },
+      "B-path": {
+        "births": 21,
+        "birth_times_seconds": [
+          20.0,
+          20.0,
+          40.0,
+          40.0,
+          60.0,
+          60.0,
+          100.0,
+          100.0,
+          120.0,
+          120.0,
+          140.0,
+          140.0,
+          160.0,
+          180.0,
+          180.0,
+          200.0,
+          200.0,
+          220.0,
+          240.0,
+          280.0,
+          280.0
+        ],
+        "first_birth_time": 20.0,
+        "last_birth_time": 280.0,
+        "related_rules": {
+          "birth_request": 164,
+          "birth_terminal": 164,
+          "birth_attempt": 22
+        },
+        "terminal_outcomes": {
+          "no_root": 12,
+          "accepted": 21,
+          "quota": 5,
+          "no_output": 126
+        }
+      }
+    }
+  }
+}

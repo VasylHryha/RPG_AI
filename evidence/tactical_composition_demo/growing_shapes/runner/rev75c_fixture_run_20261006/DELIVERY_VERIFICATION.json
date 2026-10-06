@@ -1,0 +1,56 @@
+{
+  "F5_both_starts_persisted": true,
+  "N1f_hold_agrees": true,
+  "archive_bytes": 2871244,
+  "archive_sha256": "f49ce8664c5fdb1c5f2a82e09c66bc9383a46b81831177cd40667dca0947dc6e",
+  "every_delivered_file_strictly_under_50MB": true,
+  "excluded_evidence": [
+    {
+      "bytes": 182,
+      "path": "evidence/tactical_composition_demo/growing_shapes/runner/rev75c_fixture_run_20261006/ANALYSIS_LOG.txt",
+      "reason": "Raw operational log retained locally, omitted from git and bundle",
+      "sha256": "68de7fc56e6a95c35a41da71feaaa53fb6cfc58add207ca5d9b4a3143b1b2f2e"
+    },
+    {
+      "bytes": 576,
+      "path": "evidence/tactical_composition_demo/growing_shapes/runner/rev75c_fixture_run_20261006/EXECUTION_LOG.txt",
+      "reason": "Raw operational log retained locally, omitted from git and bundle",
+      "sha256": "58a3438761673a9c246dda7df79db22c75f9f3c22b18b446e797be2f12202bf8"
+    },
+    {
+      "bytes": 73117679,
+      "path": "evidence/tactical_composition_demo/growing_shapes/runner/rev75c_fixture_run_20261006/F5.json.gz",
+      "reason": "Large raw trace retained locally, omitted from delivery and git",
+      "sha256": "d2c0f1c1d30b98ecaea329f8da06e338c5ff3a416a4e9b31798ccda000b0ba04"
+    },
+    {
+      "bytes": 74784354,
+      "path": "evidence/tactical_composition_demo/growing_shapes/runner/rev75c_fixture_run_20261006/HARNESS_RECEIPT.json.gz",
+      "reason": "Large raw trace retained locally, omitted from delivery and git",
+      "sha256": "ad964ef881225f77dc7754fcd12cc64c89ccf7f514deedb7403171d4ad7f810f"
+    },
+    {
+      "bytes": 0,
+      "path": "evidence/tactical_composition_demo/growing_shapes/runner/rev75c_fixture_run_20261006/PROCESS_LOAD_DURING_F5.txt",
+      "reason": "Raw operational log retained locally, omitted from git and bundle",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "fixture_outcome": "FIXTURES_FAIL",
+  "largest_member_bytes": 2668751,
+  "manifest_policy": "Manifest and final verification are adjacent; omitted as self-references from archive",
+  "members_verified": 56,
+  "no_line_hooks": "PASS",
+  "not_run": [
+    "F6",
+    "F7",
+    "F8",
+    "F9"
+  ],
+  "real_execution_once": true,
+  "review": "OWNER_RECHECK_REPORT.md / OWNER_RECHECK_DISPOSITION.md",
+  "scientific_inputs_checked": 69,
+  "stage_equals_exact_receipt_checked_by": "analyze_saved.py; ANALYSIS_LOG.txt completed successfully",
+  "status": "PASS",
+  "wrapper_synthetic_exact_return_persistence": "PASS"
+}
