@@ -829,3 +829,18 @@ meaning a time scale of **τ_link ≤ 2 s** per edge.
 | Item | Cause |
 |---|---|
 | Parallel bridges and sensor growth exhausted the budget before any output path | The birth rules had no priority between the output path and sensor coverage |
+
+### 18.3 Amendment answering the Codex 7.11 review (`docs/reviews/tactical_0h_rev711_design_review_codex.md`, CHANGES_REQUIRED)
+
+- **R711-1, the bootstrap deadlock (blocking), fixed.** B1 creates the first effective roots, and O can never be one. So **B1 is deferred only once at least one effective root exists in the medium.** The full rule:
+  - **while the medium has no effective root,** B1 runs normally (8.9) and B-path has nothing to grow from (`no_root`);
+  - **once any effective root exists and no active site has a strong path to O,** B1 births are deferred (`deferred_output_first`, timers frozen) and both B-path births go to the smallest-deficit site, as in 18.2;
+  - **once any site has a strong path to O,** B1 and the 17.2 ordering resume.
+
+  **If a root disappears** (death, or loss of drive) and no root remains, B1 resumes. **No deadlock:** B1 can be deferred only while a root exists, which gives B-path a frontier.
+- **R711-2, a correction:** the budget chronology in 18.1 is wrong.
+  - At t = 300 s, N = 42 and cost = 59.3. The N = 45, cost 63.3 state belongs to t = 800 s.
+  - Births by site 0–7 were [2, 8, 7, 7, 5, 0, 1, 2].
+  - The allocation-pressure diagnosis is supported, but it is not a complete causal identification.
+- **R711-3 and R711-4:** the two-birth cap per check, every post-trial condition and clearance are unchanged. Unresolved cases remain failures. One connected site meets max(E) ≥ 0.5 structurally, but cannot waive the A and B gates, the requirement that both starts pass, or coverage and G0.
+- **R711-5:** F5(ii)'s 7.10 FAIL (E = 0.454) is kept as recorded. 7.11 is not claimed to repair it by inference: the re-run measures it.
