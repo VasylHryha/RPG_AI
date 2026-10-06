@@ -120,7 +120,7 @@ def test_native_covariance_and_selection_boundary():
         assert G.equivariance(s)['passed']
 
 def test_exact_native_retired_and_repeated_control_memoization():
-    lib,_=O.load();lib.option_b_cache_clear()
+    lib,_=O.load();lib.option_b_cache_limits(*O.CACHE_LIMITS)
     o=owner(6)
     def raw(state):
         ns,n,nc,arrays=F.arguments(state)
@@ -147,12 +147,14 @@ def test_exact_native_retired_and_repeated_control_memoization():
         if change=='drive':changed.model['drive']+=.01
         hits=O.cache_stats(lib)['retired_hits'];raw(changed)
         assert O.cache_stats(lib)['retired_hits']==hits
+    # Unselected controls are admitted on first computation (shared store).
     o.cohorts[0].selected=()
     first=raw(o);second=raw(o);third=raw(o)
     assert np.array_equal(first,second) and np.array_equal(second,third)
     stats=O.cache_stats(lib)
-    assert stats['control_hits']==1 and stats['retired_bytes']<=256*1024*1024
-    assert stats['control_bytes']<=32*1024*1024 and stats['probation_bytes']<=2*1024*1024
+    assert stats['control_hits']==2 and stats['retired_bytes']+stats['control_bytes']<=O.CACHE_LIMITS[0]
+    assert stats['medium_bytes']<=O.CACHE_LIMITS[1] and stats['drive_bytes']<=O.CACHE_LIMITS[2]
+    assert stats['medium_hits']>=1 and stats['avoided_material_rk_steps']==4*100  # 2 retired + 2 control hits
 
 
 @pytest.mark.parametrize('difference',[1e-15,-0.])
@@ -213,7 +215,7 @@ def test_every_physical_key_input_changes_or_recomputes_exactly(change):
     assert_bits(actual,raw_flow(ref,changed,**options))
 
 
-@pytest.mark.parametrize('limits',[(0,0,0,0),(12000,12000,5000,5000),O.CACHE_LIMITS])
+@pytest.mark.parametrize('limits',[(0,0,0),(12000,12000,5000),O.CACHE_LIMITS])
 def test_cache_pressure_long_churn_and_actual_medium_independence(limits):
     lib,_=O.load();ref,_=O.reference();lib.option_b_cache_limits(*limits)
     try:
@@ -221,11 +223,12 @@ def test_cache_pressure_long_churn_and_actual_medium_independence(limits):
         for i in range(100):
             changed=original.clone();changed.time=(i%13)*.01
             if i%2:changed.cohorts[0].selected=()
+            if i%5==0:changed.cohorts=[]
             expected=raw_flow(ref,changed)
             for _ in range(3):assert_bits(raw_flow(lib,changed),expected)
             stats=O.cache_stats(lib)
-            for key,limit in zip(('retired_bytes','control_bytes','probation_bytes','drive_bytes'),limits):
-                assert stats[key]<=limit
+            assert stats['retired_bytes']+stats['control_bytes']<=limits[0]
+            assert stats['medium_bytes']<=limits[1] and stats['drive_bytes']<=limits[2]
         lib.option_b_cache_clear()
         assert all(v==0 for v in O.cache_stats(lib).values())
         raw_flow(lib,original)
@@ -234,6 +237,68 @@ def test_cache_pressure_long_churn_and_actual_medium_independence(limits):
         assert_bits(raw_flow(lib,altered),raw_flow(ref,altered))
         if limits[0]>=12000:assert O.cache_stats(lib)['retired_hits']==hits+1
     finally:lib.option_b_cache_limits(*O.CACHE_LIMITS)
+
+
+def test_process_wide_single_flight_is_exact_under_concurrency():
+    """Four threads request identical material, medium and ON runs at once."""
+    import threading
+    from concurrent.futures import ThreadPoolExecutor
+    lib,_=O.load();ref,_=O.reference();lib.option_b_cache_limits(*O.CACHE_LIMITS)
+    try:
+        states=[owner(24)]
+        states.append(states[0].clone());states[1].cohorts[0].selected=()
+        states.append(states[0].clone());states[2].cohorts=[]
+        states.append(states[0].clone());states[3].cohorts[0].output=1.
+        for state in states:
+            expected=raw_flow(ref,state,steps=400)
+            barrier=threading.Barrier(4)
+            def request(_):
+                barrier.wait(timeout=10);return raw_flow(lib,state,steps=400)
+            with ThreadPoolExecutor(max_workers=4) as pool:
+                for actual in pool.map(request,range(4)):assert_bits(actual,expected)
+        stats=O.cache_stats(lib)
+        # One computation per distinct key; every other request hit or waited.
+        assert stats['eligible_misses']==2 and stats['retired_hits']==3 and stats['control_hits']==3
+        assert stats['medium_misses']==1 and stats['computed_uncached_rk_steps']==4*400
+        assert stats['drive_misses']==1
+    finally:lib.option_b_cache_limits(*O.CACHE_LIMITS)
+
+
+@pytest.mark.parametrize('failure',['medium_overflow','material_denominator','material_overflow','both'])
+@pytest.mark.parametrize('selected',[(0,1,2),()])
+def test_split_off_material_keeps_failure_codes(failure,selected):
+    """OFF material misses integrate material and actual medium separately."""
+    lib,_=O.load();ref,_=O.reference();lib.option_b_cache_limits(*O.CACHE_LIMITS)
+    o=owner(6);o.cohorts[0].selected=selected
+    ns,n,nc,arrays=F.arguments(o);y=arrays[0]
+    if failure in ('medium_overflow','both'):y[:2*ns]=1e80
+    if failure in ('material_denominator','both'):y[2*ns:2*ns+2]=1e150
+    if failure=='material_overflow':y[2*ns+3*n:2*ns+3*n+2]=1e80
+    pointers=[a.ctypes.data_as(ctypes.POINTER(ctypes.c_int if i in (4,7) else ctypes.c_double)) for i,a in enumerate(arrays)]
+    expected=np.empty((21,len(y)));actual=np.empty((21,len(y)))
+    code=ref.field_run(ns,n,nc,0.,.005,20,1,*pointers,expected.ctypes.data_as(O.PTR))
+    assert code!=0
+    for _ in range(2):assert lib.field_run(ns,n,nc,0.,.005,20,1,*pointers,actual.ctypes.data_as(O.PTR))==code
+
+
+@pytest.mark.parametrize('mode',list(F.MODES))
+@pytest.mark.parametrize('defect',['inf_phase','nan_phase','inf_position','inf_output'])
+def test_skipped_exact_zero_terms_keep_nonfinite_decisions(mode,defect):
+    """Raw-boundary inputs that the R4 path never produces keep codes and bits."""
+    lib,_=O.load();ref,_=O.reference()
+    o=owner(6);c=o.cohorts[0];c.mode=mode;c.output=0.
+    if mode=='no_geometry_to_mode':c.origin=c.x.copy()
+    ns,n,nc,arrays=F.arguments(o)
+    y,p=arrays[0],arrays[9]
+    if defect=='inf_phase':y[2*ns+2*n]=np.inf
+    if defect=='nan_phase':y[2*ns+2*n+1]=np.nan
+    if defect=='inf_position':y[2*ns]=np.inf
+    if defect=='inf_output':p[3]=np.inf
+    pointers=[a.ctypes.data_as(ctypes.POINTER(ctypes.c_int if i in (4,7) else ctypes.c_double)) for i,a in enumerate(arrays)]
+    expected=np.empty_like(y);actual=np.empty_like(y)
+    code=ref.field_rhs(ns,n,nc,0.,*pointers,expected.ctypes.data_as(O.PTR))
+    assert lib.field_rhs(ns,n,nc,0.,*pointers,actual.ctypes.data_as(O.PTR))==code
+    if code==0:assert_bits(actual,expected)
 
 
 def test_drive_key_signed_zero_and_zero_field_arithmetic():
@@ -349,13 +414,16 @@ def test_detector_raw_boundary_rejects_invalid_inventory():
 
 
 def test_native_store_accounting_survives_allocation_failure(tmp_path):
-    """Inject an actual list-node allocation failure without stressing RAM."""
+    """Inject list-node allocation failures and leader failures in the shared store."""
     import subprocess
     source=tmp_path/'allocation_contract.cpp';binary=tmp_path/'allocation_contract'
     implementation=Path(__file__).resolve().parents[1]/'native/c6_option_b/field.cpp'
     source.write_text('''#include <cstdlib>
 #include <new>
 #include <cassert>
+#include <thread>
+#include <atomic>
+#include <chrono>
 static bool fail_next = false;
 void* operator new(std::size_t n) {
     if (fail_next) { fail_next=false; throw std::bad_alloc(); }
@@ -363,17 +431,46 @@ void* operator new(std::size_t n) {
     throw std::bad_alloc();
 }
 void operator delete(void* p) noexcept { std::free(p); }
+void operator delete(void* p, std::size_t) noexcept { std::free(p); }
 '''+'#include "'+implementation.as_posix()+'"\n'+'''
+std::shared_ptr<Value<double>> value(const std::vector<unsigned char>& key){
+    auto v=std::make_shared<Value<double>>();v->key=key;v->data.assign(16,1.);return v;
+}
 int main() {
-    std::list<Trajectory> cache; std::size_t bytes=0;
-    Trajectory entry{std::vector<unsigned char>(16),std::vector<double>(16)};
-    fail_next=true; bool failed=false;
-    try { store(cache,bytes,4096,std::move(entry)); }
-    catch (const std::bad_alloc&) { failed=true; }
-    assert(failed && cache.empty() && bytes==0);
-    Trajectory next{std::vector<unsigned char>(16),std::vector<double>(16)};
-    store(cache,bytes,4096,std::move(next));
-    assert(cache.size()==1 && bytes==cache.front().bytes());
+    Store<double> store; store.configure(1<<20);
+    std::vector<unsigned char> key(16,1); const uint64_t h=key_hash(key);
+    {   // Admission fails at the list node: value returned, nothing retained.
+        Store<double>::Lease lease; assert(!store.acquire(key,h,lease));
+        auto v=value(key); fail_next=true; lease.publish(v);
+    }
+    auto st=store.stats(); assert(st.entries==0 && st.bytes==0);
+    {   Store<double>::Lease lease; assert(!store.acquire(key,h,lease)); lease.publish(value(key)); }
+    st=store.stats(); assert(st.entries==1 && st.bytes>0 && st.misses==2);
+    {   Store<double>::Lease lease; assert(store.acquire(key,h,lease)); }
+    // A failed leader (lease destroyed unpublished) lets one waiter lead again.
+    std::vector<unsigned char> other(16,2); const uint64_t g=key_hash(other);
+    std::atomic<bool> leading{false}; bool retried=false;
+    std::thread leader([&]{
+        Store<double>::Lease lease; assert(!store.acquire(other,g,lease)); leading=true;
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    });
+    while(!leading) std::this_thread::yield();
+    {   Store<double>::Lease lease; retried=!store.acquire(other,g,lease); lease.publish(value(other)); }
+    leader.join(); assert(retried);
+    {   Store<double>::Lease lease; assert(store.acquire(other,g,lease)); }
+    // Single flight: a follower waits for the leader's value.
+    std::vector<unsigned char> third(16,3); const uint64_t t=key_hash(third);
+    leading=false; std::thread first([&]{
+        Store<double>::Lease lease; assert(!store.acquire(third,t,lease)); leading=true;
+        std::this_thread::sleep_for(std::chrono::milliseconds(50)); lease.publish(value(third));
+    });
+    while(!leading) std::this_thread::yield();
+    {   Store<double>::Lease lease; auto found=store.acquire(third,t,lease); assert(found && found->data.size()==16); }
+    first.join(); assert(store.stats().waits==1);
+    // Byte limit: a value larger than the limit is returned but not retained.
+    store.configure(64); std::vector<unsigned char> big(16,4);
+    {   Store<double>::Lease lease; assert(!store.acquire(big,key_hash(big),lease)); lease.publish(value(big)); }
+    st=store.stats(); assert(st.entries==0 && st.bytes==0);
 }
 ''')
     subprocess.run(['clang++','-std=c++17','-O2','-fno-fast-math','-ffp-contract=off',str(source),'-o',str(binary)],check=True,capture_output=True)

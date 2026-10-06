@@ -1,19 +1,29 @@
 """Bounded, ordered engineering parallelism for the unchanged option-B law.
 
-One isolated world process owns one coordinator and four pool threads. Nested
-forks are flattened into grid/block jobs; workers never wait for other workers.
-Only the coordinator writes owners, checks, traces and reduction accumulators.
+One isolated world process owns four grid pool threads and one coordinator
+compute slot. Nested forks are flattened into grid/block jobs; workers never
+wait for other workers. Independent protocol tasks of one operation (the three
+treatment conditions, then the four descriptors and up to nineteen formation
+episodes) may run on a few coordinator threads, but only the thread holding the
+coordinator token executes Python; every coordinator releases it while waiting.
+At most five threads therefore compute at once. Each concurrent task writes its
+own checks list; lists are joined in the original order, and the first failure
+in that order is re-raised after exactly the checks the sequential run had made.
 """
 from concurrent.futures import ThreadPoolExecutor, wait, FIRST_COMPLETED
 from contextlib import contextmanager
 import hashlib
 import threading
+import time
 import numpy as np
 from geomind import c6_r4_field_assay as A, c6_r4_field as F
 from geomind import c6_option_b as O
+from geomind import c6_r4_field_protocol as P
 
 THREADS_PER_WORLD = 5
 WORLD_WORKERS = 2
+# Concurrent protocol tasks (coordinator threads; one holds the compute token).
+TASK_COORDINATORS = 4
 _PARALLEL_LOCK = threading.Lock()
 
 
@@ -23,20 +33,62 @@ class Scheduler:
             raise ValueError('unknown task submission order')
         self.order = order
         self.lib, _ = O.load()
-        self.stats = {}
         self.max_inflight = 0
         self.lock = threading.Lock()
-        self.pool = ThreadPoolExecutor(max_workers=THREADS_PER_WORLD-1,
-            thread_name_prefix='c6-grid', initializer=lambda:self.lib.option_b_cache_limits(*O.CACHE_LIMITS))
+        # Native caches are process-wide and configured once by O.backend;
+        # a per-worker initializer must not reset them.
+        self.pool = ThreadPoolExecutor(max_workers=THREADS_PER_WORLD-1, thread_name_prefix='c6-grid')
+        self.tasks = ThreadPoolExecutor(max_workers=TASK_COORDINATORS, thread_name_prefix='c6-task')
+        self.workers = set()
+        self.submitted = 0
+        self.max_submitted = 0
+        self.task_batches = []
+        # Coordinator compute token: held by the coordinator that runs Python,
+        # released around every wait. Grid workers never take it.
+        self.token = threading.Lock()
+        self.local = threading.local()
+
+    def holding(self):
+        return getattr(self.local, 'holding', False)
+
+    def acquire(self):
+        self.token.acquire(); self.local.holding = True
+
+    def release(self):
+        self.local.holding = False; self.token.release()
+
+    @contextmanager
+    def waiting(self):
+        held = self.holding()
+        if held: self.release()
+        try: yield
+        finally:
+            if held: self.acquire()
+
+    def run_tasks(self, thunks):
+        """Run independent coordinator tasks; results/exceptions by index."""
+        if threading.current_thread().name.startswith('c6-task'):
+            # A task waiting on subtasks could exhaust the bounded task pool.
+            raise RuntimeError('Nested protocol tasks forbidden')
+        def task(thunk):
+            self.acquire()
+            try: return thunk()
+            finally: self.release()
+        started = time.perf_counter()
+        futures = [self.tasks.submit(task, thunk) for thunk in thunks]
+        with self.waiting():
+            wait(futures)
+        self.task_batches.append({'tasks':len(thunks),'wall_seconds':time.perf_counter()-started})
+        outcomes = []
+        for future in futures:
+            try: outcomes.append((None, future.result()))
+            except BaseException as error: outcomes.append((error, None))
+        return outcomes
 
     def invoke(self, fn, args):
-        try:
-            return fn(*args)
-        finally:
-            # These are thread-local cumulative counters and current payload
-            # bytes. Snapshot on the worker itself, never on the coordinator.
-            with self.lock:
-                self.stats[threading.get_ident()] = O.cache_stats(self.lib)
+        with self.lock:
+            self.workers.add(threading.get_ident())
+        return fn(*args)
 
     def completed(self, fn, jobs, costs=None):
         # Bound submitted futures as well as workers. Consumers discard outgoing
@@ -51,12 +103,17 @@ class Scheduler:
                 try: i = next(todo)
                 except StopIteration: break
                 pending[self.pool.submit(self.invoke,fn,jobs[i])] = i
-                self.max_inflight = max(self.max_inflight,len(pending))
+                with self.lock:
+                    self.submitted += 1
+                    self.max_submitted = max(self.max_submitted,self.submitted)
+                    self.max_inflight = max(self.max_inflight,len(pending))
         refill()
         while pending:
-            done, _ = wait(pending,return_when=FIRST_COMPLETED)
+            with self.waiting():
+                done, _ = wait(pending,return_when=FIRST_COMPLETED)
             for future in done:
                 i = pending.pop(future)
+                with self.lock: self.submitted -= 1
                 try: result = future.result()
                 except BaseException as error: errors[i] = error
                 else: yield i,result
@@ -72,15 +129,17 @@ class Scheduler:
         return results
 
     def summary(self):
-        rows = list(self.stats.values())
         return {'threads_per_world':THREADS_PER_WORLD, 'world_workers':WORLD_WORKERS,
                 'total_thread_budget':THREADS_PER_WORLD*WORLD_WORKERS,
-                'submission_order':self.order, 'maximum_inflight_jobs':self.max_inflight, 'worker_threads_used':len(rows),
-                'native_cache_worker_snapshots':rows,
-                'native_cache_worker_totals':{k:sum(row[k] for row in rows) for k in rows[0]} if rows else {}}
+                'submission_order':self.order, 'maximum_inflight_jobs':self.max_inflight,
+                'worker_threads_used':len(self.workers),
+                'task_coordinators':TASK_COORDINATORS, 'maximum_submitted_jobs':self.max_submitted,
+                'concurrent_task_batches':list(self.task_batches),
+                'native_cache_process_totals':O.cache_stats(self.lib)}
 
     def close(self):
-        self.pool.shutdown(wait=True, cancel_futures=True)
+        try: self.tasks.shutdown(wait=True, cancel_futures=True)
+        finally: self.pool.shutdown(wait=True, cancel_futures=True)
 
 
 def grid_block(owner, initial, duration, dt):
@@ -178,16 +237,130 @@ def parallel(order='forward'):
         return parallel_recovery(scheduler,grid,members,locks,pert,scope)
     def causal(grid,members,pert,scope):
         return parallel_causal(scheduler,grid,members,pert,scope)
-    A.GridSet, A.recovery, A.causal = ParallelGridSet, recovery, causal
+    previous_operation = P.operation
+    def operation(grid,qualification,qualification_flows,entropy,world,turn,alpha,scope):
+        return parallel_operation(scheduler,ParallelGridSet,grid,qualification,qualification_flows,
+                                  entropy,world,turn,alpha,scope)
+    A.GridSet, A.recovery, A.causal, P.operation = ParallelGridSet, recovery, causal, operation
+    scheduler.acquire()
     try:
         yield scheduler
     finally:
         # Drain every task before any module/backend restoration, even on errors.
         try:
+            if scheduler.holding():scheduler.release()
             scheduler.close()
         finally:
-            A.GridSet, A.recovery, A.causal = previous_grid, previous_recovery, previous_causal
+            A.GridSet, A.recovery, A.causal, P.operation = previous_grid, previous_recovery, previous_causal, previous_operation
             _PARALLEL_LOCK.release()
+
+
+def ordered(scheduler, shared, thunks):
+    """Run tasks concurrently, each with a private checks list; join in order.
+
+    Returns all results. On the first failure in task order, the checks of the
+    earlier tasks and the failing task's partial checks are appended (exactly
+    what the sequential loop had appended) and that failure is re-raised.
+    """
+    privates = [[] for _ in thunks]
+    outcomes = scheduler.run_tasks([lambda t=t, c=c: t(c) for t, c in zip(thunks, privates)])
+    results = []
+    for private, (error, result) in zip(privates, outcomes):
+        shared.extend(private)
+        if error is not None:
+            raise error
+        results.append(result)
+    return results
+
+
+def parallel_operation(scheduler,GridSet,grid,qualification,qualification_flows,entropy,world,turn,alpha,scope):
+    """P.operation with its independent tasks run concurrently, in two stages.
+
+    Stage 1: the three treatment conditions (exposure, persistence, endpoint
+    qualification). Stage 2: the four response descriptors and, when eligible,
+    the before-formation and condition episodes. Every task computes exactly
+    what the sequential loop computes on identical inputs; results, checks and
+    the first failure are taken in the original order.
+    """
+    s=grid.s;members=qualification['selected_members'];before=grid.identities()
+    branches={};records={};operation_checks={}
+    pert=P.physical_perturbations(P.rng(entropy,world,30,turn),grid.owners[0])
+    shared=grid.checks
+    def condition_task(condition):
+        def run(checks):
+            # grid.clone(), with this task's private checks list.
+            branch=GridSet(grid.owners,grid.s,checks)
+            for o in branch.owners:
+                for c in o.cohorts:c.output=0.
+                c=o.cohorts[-1];c.selected=tuple(members);c.output=0. if condition=='no_backreaction' else 1.
+                c.mode='no_r' if condition=='no_r' else 'intact'
+            branch_start=branch.identities()
+            flows=branch.run(s['exposure'],scope+'/operation/'+condition)
+            op_check=next(c for c in reversed(checks) if c['scope']==scope+'/operation/'+condition)
+            persistent=[P.rolling_persistence(qualification_flows[k],flows[k],branch.owners[k],members,s) for k in range(3)]
+            masks=[[r['passed'] for r in rows] for rows in persistent]
+            if masks[1:]!=[masks[0],masks[0]]:raise A.NumericalFailure('grid-dependent persistence')
+            end=A.qualification(branch,flows,pert,scope+'/operation/'+condition+'/endpoint',forced_members=members)
+            record={'start_ids':branch_start,'operation_end_ids':branch.identities(),'persistence_by_dt':persistent,
+                    'operation_end_states':[P.snapshot(o) for o in branch.owners],'operation_frames':flows[0].tolist(),
+                    'endpoint_qualification':end,'output_check':op_check}
+            for o in branch.owners:
+                for c in o.cohorts:c.output=0.
+            record['after_ids']=branch.identities();record['after_states']=[P.snapshot(o) for o in branch.owners]
+            record['background_diagnostics']={'mean_amplitude_by_dt':[float(np.mean(np.abs(o.z))) for o in branch.owners],
+                'amplitude_weighted_coherence_by_dt':[float(abs(np.sum(o.z))/np.sum(np.abs(o.z))) if np.sum(np.abs(o.z))>0 else None for o in branch.owners]}
+            return branch,record,op_check
+        return run
+    for condition,(branch,record,op_check) in zip(P.CONDITIONS,ordered(scheduler,shared,[condition_task(c) for c in P.CONDITIONS])):
+        branch.checks=shared  # Later descriptors/episodes of the branch append to the shared list.
+        operation_checks[condition]=op_check;branches[condition]=branch;records[condition]=record
+    if (operation_checks['intact']['source_trace_hash_by_dt']!=operation_checks['no_backreaction']['source_trace_hash_by_dt']
+            or any(operation_checks['no_backreaction']['output_max_by_dt'])):
+        raise ValueError('sham source preservation/output failure')
+    if records['no_r']['endpoint_qualification']['qualified']:raise ValueError('NO-R remains qualified')
+    for control in P.CONTROLS:
+        records[control]['background_diagnostics']['state_distance_vs_intact_by_dt']=[float(np.sqrt(np.mean(np.abs(a.z-b.z)**2))) for a,b in zip(branches['intact'].owners,branches[control].owners)]
+    eligible=all(r['passed'] for r in records['intact']['persistence_by_dt'][0]) and records['intact']['endpoint_qualification']['qualified']
+    outcome='PERSISTENT_UNIT' if eligible else 'SOURCE_LOST_DURING_OPERATION'
+    first_loss=next((r['time'] for r in records['intact']['persistence_by_dt'][0] if not r['passed']),
+                    grid.owners[0].time+s['exposure'] if not eligible else None)
+    cell={'turn':turn,'before_ids':before,'source':qualification,'operation_eligible':bool(eligible),
+          'physical_outcome':outcome,'first_loss_time':first_loss,'conditions':records,'controls_passed':True,'response':{},'episodes':{},'before_formation':None,'before_response':None}
+    def descriptor_task(target,name):
+        # A.descriptor reads target and works on target.clone() only.
+        return lambda checks:A.descriptor(GridSet(target.owners,target.s,checks),alpha,name)
+    def episode_task(target,episode,name):
+        # qualify_episode reads background owners/settings and appends checks.
+        return lambda checks:P.qualify_episode(GridSet(target.owners,target.s,checks),entropy,world,turn,episode,name)
+    tasks=[descriptor_task(grid,scope+'/before-response')]
+    tasks+=[descriptor_task(branches[c],scope+'/response/'+c) for c in P.CONDITIONS]
+    episode_keys=[]
+    if eligible:
+        for episode in s['measurement_episodes']:
+            tasks.append(episode_task(grid,episode,scope+f'/before/e{episode}'));episode_keys.append(('before',episode))
+        for condition in P.CONDITIONS:
+            for episode in [0,*s['measurement_episodes']]:
+                tasks.append(episode_task(branches[condition],episode,scope+f'/{condition}/e{episode}'))
+                episode_keys.append((condition,episode))
+    results=iter(ordered(scheduler,shared,tasks))
+    cell['before_response']=next(results)
+    for condition in P.CONDITIONS:
+        cell['response'][condition]=next(results)
+    # Loss removes causal eligibility, never the scheduled diagnostic assay.
+    if not eligible:return cell,None
+    diagnostics=[];continuation=None
+    for (condition,episode),(next_grid,q,record) in zip(episode_keys,results):
+        next_grid.checks=shared  # As introduce() shares the background list.
+        if condition=='before':diagnostics.append(record);continue
+        cell['episodes'].setdefault(condition,[]).append(record)
+        if condition=='intact' and episode==0 and q['qualified']:
+            continuation=(next_grid,q)
+    cell['before_formation']=diagnostics
+    for control in P.CONTROLS:
+        diff=np.array(cell['response']['intact']['gain_by_dt'])-np.array(cell['response'][control]['gain_by_dt'])
+        if np.max(np.abs(diff[:2]-diff[2]))>s['numerics']['response']:raise A.NumericalFailure('paired gain refinement')
+    cell['witness_tuple']=[cell['episodes'][c][0]['qualification']['qualified'] for c in P.CONDITIONS]
+    return cell,continuation
 
 
 def parallel_recovery(scheduler,grid,members,locks,pert,scope):

@@ -62,7 +62,10 @@ def main():
     meta={'kind':'OPTION_B_ENGINEERING_ONLY','backend':args.backend,'audit':args.audit,
           'parallel':args.parallel,'schedule':args.schedule,
           'thread_budget':{'world_workers':2,'threads_per_world':5 if args.parallel else 1,
-                           'blas_threads':1},
+                           'blas_threads':1,
+                           # Parallel: 4 grid workers + 1 coordinator compute token; the
+                           # protocol-task coordinator threads only compute holding it.
+                           'protocol_task_threads':4 if args.parallel else 0},
           'entropy':s[args.entropy+'_entropy'],'world':args.world,'fixture':args.fixture,
           'start_machine':machine(),'source_pin':pin,
           'fixture_inputs':{'population_entropy':882901,'second_population_entropy':552} if args.fixture else None,
@@ -73,7 +76,8 @@ def main():
               for p in (Path(__file__).resolve(),ROOT/'geomind/c6_option_b.py',
                         ROOT/'geomind/c6_option_b_parallel.py',ROOT/'geomind/c6_r4_field.py',
                         ROOT/'geomind/c6_r4_field_assay.py',ROOT/'geomind/c6_r4_field_protocol.py')},
-          'native_cache_limits_per_thread':dict(zip(('retired','control','probation','drive'),O.CACHE_LIMITS))}
+          'native_cache_limits_process':dict(zip(('material','medium','drive'),O.CACHE_LIMITS)),
+          'python_cache_limits_process':{'passive':O.PASSIVE_CACHE_BYTES,'emission':O.EMISSION_CACHE_BYTES}}
 
     write(args.output/'START.json',(json.dumps(meta,indent=2)+'\n').encode())
     started=time.perf_counter();cpu=time.process_time()

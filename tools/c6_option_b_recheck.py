@@ -45,7 +45,7 @@ def main():
         if not np.array_equal(value.view('u8'),reference.view('u8')):
             raise RuntimeError('synthetic full-flow bit mismatch')
         compared+=value.size;calls+=1
-    for label,limits in [('uncached',(0,0,0,0)),('pressure',(128*1024,32*1024,8192,64*1024)),
+    for label,limits in [('uncached',(0,0,0)),('pressure',(128*1024,32*1024,64*1024)),
                          ('default',O.CACHE_LIMITS)]:
         lib.option_b_cache_limits(*limits)
         start=time.perf_counter();cpu=time.process_time()
@@ -54,10 +54,12 @@ def main():
             check(raw(lib,changed),raw(ref,changed))
         rows.append({'case':label,'calls':30,'wall_seconds':time.perf_counter()-start,
                      'process_cpu_seconds':time.process_time()-cpu,'stats':O.cache_stats(lib)})
-    # Native caches belong to workers. Churn clock/drive keys in independent
-    # workers, compare each complete result with the original ABI on that thread.
+    # Native caches are process-wide and shared by workers. Churn clock/drive
+    # keys concurrently under small limits and compare each complete result
+    # with the original ABI on that thread.
+    pressure=(12000,12000,5000)
+    lib.option_b_cache_limits(*pressure)
     def worker(index):
-        lib.option_b_cache_limits(12000,12000,5000,5000)
         values=0
         for i in range(60):
             changed=owner.clone();changed.time=(i%17)*.01
@@ -66,18 +68,20 @@ def main():
             if not np.array_equal(candidate.view('u8'),reference.view('u8')):
                 raise RuntimeError('worker cache-pressure bit mismatch')
             values+=candidate.size
-        stats=O.cache_stats(lib)
-        if any(stats[k]>limit for k,limit in zip(('retired_bytes','control_bytes','probation_bytes','drive_bytes'),(12000,12000,5000,5000))):
-            raise RuntimeError('worker payload bound exceeded')
-        lib.option_b_cache_clear()
-        if any(O.cache_stats(lib).values()):raise RuntimeError('worker cache clear incomplete')
-        return {'worker':index,'calls':60,'float64_values':values,'stats':stats}
+        return {'worker':index,'calls':60,'float64_values':values}
     with ThreadPoolExecutor(max_workers=4) as pool:workers=list(pool.map(worker,range(4)))
+    stats=O.cache_stats(lib)
+    if (stats['retired_bytes']+stats['control_bytes']>pressure[0] or stats['medium_bytes']>pressure[1]
+            or stats['drive_bytes']>pressure[2]):
+        raise RuntimeError('shared payload bound exceeded')
+    workers.append({'shared_stats_after_concurrent_churn':stats})
+    lib.option_b_cache_clear()
+    if any(O.cache_stats(lib).values()):raise RuntimeError('shared cache clear incomplete')
     lib.option_b_cache_limits(*O.CACHE_LIMITS)
     # Unit timing has no reference audit in the measured interval. No hardware
     # or full-world speed claim: short durations and shared-machine noise apply.
     timings=[]
-    for label,kernel,limits in [('reference',ref,None),('disabled',lib,(0,0,0,0)),('warm',lib,O.CACHE_LIMITS)]:
+    for label,kernel,limits in [('reference',ref,None),('disabled',lib,(0,0,0)),('warm',lib,O.CACHE_LIMITS)]:
         if limits is not None:lib.option_b_cache_limits(*limits)
         for _ in range(3):check(raw(kernel,owner),expected)
         start=time.perf_counter();cpu=time.process_time()
@@ -90,8 +94,8 @@ def main():
     result={'passed':True,'kind':'SYNTHETIC_ENGINEERING_ONLY','entropy':882901,
         'source_pin':source_pin,'option_b_build':build,'reference_build':reference_build,
         'python':sys.version,'numpy':np.__version__,'platform':platform.platform(),
-        'load_average':list(os.getloadavg()),'calls_bit_compared':calls+sum(w['calls'] for w in workers),
-        'float64_values_bit_compared':compared+sum(w['float64_values'] for w in workers),
+        'load_average':list(os.getloadavg()),'calls_bit_compared':calls+sum(w.get('calls',0) for w in workers),
+        'float64_values_bit_compared':compared+sum(w.get('float64_values',0) for w in workers),
         'maximum_error':0.,'cache_churn':rows,'workers':workers,'unit_timings':timings,
         'peak_rss_bytes':int(peak if sys.platform=='darwin' else peak*1024),
         'helper_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),

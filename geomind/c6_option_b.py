@@ -21,7 +21,19 @@ _SELECTION_LOCK = threading.Lock()
 _LOAD_LOCK = threading.Lock()
 _LOADED = {}
 _ACTIVE_NATIVE = False
-CACHE_LIMITS = (256*1024*1024,32*1024*1024,2*1024*1024,32*1024*1024)
+# Process-wide native cache budgets in bytes (material, actual medium, drive),
+# shared by all worker threads: about the previous 4 x per-thread envelope.
+CACHE_LIMITS = (1024*1024*1024,64*1024*1024,128*1024*1024)
+CACHE_FIELDS = ('retired_hits','control_hits','eligible_misses','avoided_material_rk_steps',
+                'retired_bytes','control_bytes','material_entries','material_single_flight_waits',
+                'medium_hits','medium_misses','avoided_medium_rk_steps','medium_bytes','medium_single_flight_waits',
+                'drive_hits','drive_misses','drive_bytes','drive_single_flight_waits',
+                'computed_material_rk_steps','computed_medium_rk_steps','computed_uncached_rk_steps','computed_drive_steps')
+# Engineering byte budgets for the existing exact Python caches while the
+# native backend is selected (the reference path keeps the R4 constants).
+PASSIVE_CACHE_BYTES = 64*1024*1024
+# 128 MiB retains every distinct channel of a complete smoke world (measured).
+EMISSION_CACHE_BYTES = 128*1024*1024
 
 
 def verify_build(library=B.LIBRARY):
@@ -77,7 +89,7 @@ def load():
     lib.option_b_components.restype = ct.c_int
     lib.option_b_cache_clear.argtypes = []
     lib.option_b_cache_clear.restype = None
-    lib.option_b_cache_limits.argtypes = [ct.c_uint64]*4
+    lib.option_b_cache_limits.argtypes = [ct.c_uint64]*3
     lib.option_b_cache_limits.restype = None
     lib.option_b_cache_stats.argtypes = [ct.POINTER(ct.c_uint64)]
     lib.option_b_cache_stats.restype = None
@@ -86,10 +98,10 @@ def load():
     return lib, record
 
 def cache_stats(lib):
-    values=(ct.c_uint64*8)()
+    """Process-wide cumulative counters and current retained bytes."""
+    values=(ct.c_uint64*len(CACHE_FIELDS))()
     lib.option_b_cache_stats(values)
-    return dict(zip(('retired_hits','control_hits','eligible_misses','avoided_material_rk_steps',
-                     'retired_bytes','control_bytes','probation_bytes','drive_bytes'),map(int,values)))
+    return dict(zip(CACHE_FIELDS,map(int,values)))
 
 class Audit:
     """Compare every returned full production-step array on identical inputs."""
@@ -146,10 +158,17 @@ def components(lib, X, link_factor, locked):
     if code: raise ValueError('Native detection failed: '+str(code))
     return labels
 
-def single_flight_cache():
-    """Backend-local exact reuse: one concurrent computation per existing key."""
+def single_flight_cache(budgets=None):
+    """Backend-local exact reuse: one concurrent computation per existing key.
+
+    budgets maps id(cache) to an engineering byte budget replacing the caller's
+    limit (values are unaffected). Retained bytes are tracked incrementally.
+    """
     inflight = {}
+    totals = {}
+    budgets = budgets or {}
     def cached(cache,limit,key,compute):
+        limit = budgets.get(id(cache),limit)
         token = (id(cache),key)
         with F._CACHE_LOCK:
             result = cache.get(key)
@@ -168,9 +187,12 @@ def single_flight_cache():
             result.flags.writeable = False
             with F._CACHE_LOCK:
                 if result.nbytes <= limit:
-                    cache[key] = result
-                    while sum(v.nbytes for v in cache.values()) > limit:
-                        cache.popitem(last=False)
+                    total = totals.get(id(cache))
+                    if total is None:total = sum(v.nbytes for v in cache.values())
+                    cache[key] = result;total += result.nbytes
+                    while total > limit:
+                        total -= cache.popitem(last=False)[1].nbytes
+                    totals[id(cache)] = total
             pending.set_result(result)
             return result
         except BaseException as error:
@@ -209,7 +231,8 @@ def backend(name='reference', audit=False):
         F.native = lambda:(checker if checker else lib,record)
         if name == 'native':
             D.components = detected
-            F.cached_array = single_flight_cache()
+            F.cached_array = single_flight_cache({id(F._PASSIVE_CACHE):PASSIVE_CACHE_BYTES,
+                                                  id(F._EMISSION_CACHE):EMISSION_CACHE_BYTES})
             _ACTIVE_NATIVE = True
         yield checker
         if name == 'native' and verify_build() != record:
