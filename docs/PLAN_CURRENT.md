@@ -47,7 +47,8 @@
 | A6h | **Revision 7.6:** O protected (exempt from D1, D3 and D4; outside the budget) | DONE: Codex review APPROVE_WITH_NOTES; implemented (93 tests); Claude check **READY_FOR_FIXTURES** (pin `43b0f578…`) | Claude, Codex | — |
 | A6i | 7.6 fixtures N1–F9 | DONE (the owner's go): N1 and F1–F4 PASS; **F5: paths now form (E 0.8 and 0.7) and the output persists, but the response is too slow** (A 0.22, against 0.3): the last link sits 2.2–2.6 m.u. from O (weight about 0.008) | Codex | — |
 | A6j | **Revision 7.7:** strong links (w ≥ 0.5, r ≤ 0.833) | DONE: Codex APPROVE_WITH_NOTES; implemented (108 tests); Claude check **READY_FOR_FIXTURES** (pin `9628282d…`) | Claude, Codex | — |
-| A6k | **7.7 fixtures N1–F9** (about 91 min) | **SCHEDULED 22:00** (`scratchpad/night_0h77.sh`; `touch scratchpad/GO_0H77` starts it at once on the owner's go) | Codex | decision 0031 |
+| A6k | 7.7 fixtures | DONE (the owner's go): **FAIL at F1b and F1c only on the strong-path fraction**; their responses PASS; the pinned last link sits at 0.87 (> 0.833) | Codex | — |
+| A6l | **Revision 7.8:** w_min = 0.25 (r ≤ 1.177), from the real chain degree (n = 4) | **Codex review + implementation RUNNING**; then a Claude check, then the fixtures (about 91 min: tonight, or on the owner's go) | Claude, Codex | decision 0031 |
 | A7 | Cost projection from the measured F rates | — | Codex | — |
 | A8 | **The development run** (48 trainings, about 16 h or more of serial compute) | — | Codex | **[OWNER] approve the run and its time** |
 | A9 | Review the results, then the owner's recheck | — | Claude, then Codex | — |
@@ -75,7 +76,7 @@
 | # | Step | Status | Gate |
 |---|---|---|---|
 | C1 | Port, parallel and recheck | DONE (`evidence/c6_option_b/`) | — |
-| C2 | Official quiet-machine timing (is each world 360 s or less?) | DONE but NOT_READY: **correctness all PASS** (16 zero-tolerance comparisons); the timing failed (392 s) **under load up to 28** from the owner's concurrent sessions, so it is not a quiet result. **Timing-only re-run queued** after the 0h fixtures and the 0g 2×2 (`scratchpad/c6timing_chain.sh`; it waits for load < 3) | the owner keeps the Astelia sessions idle tonight |
+| C2 | Official quiet-machine timing | Batch DONE (correctness PASS; timing invalid under load). **Timing-only re-run STARTED 19:48** (it waits for load < 3, up to 90 min) | the owner keeps the Astelia sessions idle |
 | C3 | If over 360 s: the owner decides the resource rule | **OWNER DECISION PENDING** after the measured failure; a quiet-machine failure is not established | **[OWNER]** |
 
 **C6 queued-batch owner recheck:** COMPLETE — `evidence/c6_option_b/quiet_session_20261006_161801/OWNER_RECHECK_CODEX.md` records the verbatim owner request, reviewed report SHA256 and findings. No report, arithmetic, identity, preservation or bundle defect found. **Q1 disposition:** retain NOT_READY and observed timings; absence of scheduler confirmation and a renewed quiet gate before timing leaves verified quiet measurement unavailable. The owner decides any future measurement or resource-rule change; no passed jobs are repeated. **Q2 disposition:** record the available Codex reviewer as same-family; Claude addendum 2 and this recheck do not accept the new batch or milestone. Delivery bookkeeping labels the initial PAYLOAD snapshot and the final bundle is verified again after adding this review/disposition. Project code and STATUS.json remain unchanged.
