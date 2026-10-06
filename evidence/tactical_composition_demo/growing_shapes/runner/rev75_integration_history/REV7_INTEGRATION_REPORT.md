@@ -1,31 +1,5 @@
 READY_FOR_REVIEW
 
-## Revision 7.6 integration (§13)
-
-This section governs current integration. Everything below the historical 7.5 heading is retained historical metadata. Authority: DESIGN_0H_REV7.md §13 over earlier sections; design SHA256 95f4c6dda75441712d3b7bf7b237584e63aba10cfef43c8a53768687db7c48e5. Design review docs/reviews/tactical_0h_rev76_design_review_codex.md: APPROVE_WITH_NOTES. Implementation review readiness only; Claude review of the final tested execution pin remains required before fixtures.
-
-O is external receiver infrastructure for growth accounting. The live Rev7Native.cost adapter and geometric admission share budget_counts: charge ordinary element count N and 0.1 per actual undirected ordinary-to-ordinary Ntheta pair. O and its incident pairs are excluded; actual neighbour selection still includes O. The cap is 64 ordinary elements; physical counts/peak and compute measurements still include O. RHS source, neighbour laws, adaptation, graph/path/root masks, qualification and lesions remain unchanged. Native growth is already disabled through the Rev7Native API; the operational growth/cost policy is the Python adapter, so no C++ or ABI change is needed. The explicit revision-7 build is nevertheless required because its manifest binds the Python adapter as well as C++ sources.
-
-Rev7Medium.growth excludes output roles from D1/D4 and D3 eligibility. It still removes/prunes ordinary elements. B-out ignores cap, cost and protected_over_budget, while preserving origin clearance, phase initialization and uniqueness. B-path, B1 and M/U admissions still obey ordinary cap/cost; their protected-budget refusals remain. The output may persist with no path: it has no direct drive, root or coverage privilege. No survival, transmission, or fixture PASS is inferred from this implementation.
-
-Synthetic regressions cover D1/D4 ordinary deaths beside protected O; D3 pruning with lowest-lock O; cost exclusions for O body/incident pairs while retaining ordinary-pair charges and actual nearest-neighbour selection; admission/live agreement at 64 ordinary elements plus O; B-out success with a full cap and with all ordinary elements age-protected over budget; unchanged placement refusal under blocked budget; uniqueness; and isolated immortal O with zero direct drive/root/coverage/path. Existing solver/lesion/template, stop and fixture-receipt gates remain in the affected suite.
-
-Design notes applied: R76-1 raw D1 durations are 50.1/46.6 seconds, and protection guards deletion age rather than pausing the timer. D3 removes later connected O with locks 0.7170814382/0.7325897429; missing partners does not describe its whole life. Event peak costs 65.8/65.0 include temporary over-budget states, unlike later about-62 occupancy. The role-table reference to §12.3 is a prose typo. R76-2 budget definition is pinned explicitly in CONFIG. R76-3 O permanence is supplied infrastructure; F5 gates are unchanged and no-path E cannot meet 0.5. R76-4 F5 entropy WAS consumed and reused results informed §13; this is debugging evidence, not independent confirmation. F7 was NOT_RUN but its targets depend on reused F5. Section 13 supersedes the fresh-entropy stop only for the disclosed fixture chain. Seed inventory and development/evaluation entropy remain unchanged.
-
-Configuration revision is 7.6, binding output/budget and fixture-entropy policy. Source identity now binds the 7.6 design review. An old 7.5 receipt or Claude review cannot authorize this new pin. Prior integration metadata are copied byte-for-byte to rev75_integration_history; all existing fixture FAIL receipts/reports, archives, frozen sources and unrelated work remain unchanged. docs/PLAN_CURRENT.md is untouched as explicitly requested. Owner recheck and disposition are tracked in rev76_delivery.
-
-Validation and delivery: finalized after the once-at-end affected synthetic suite and independent engineering recheck. No N1/F1–F9, training, development or panels run. The verified 7.6 source overlay will be REV76_SOURCE_ONLY.tar.gz with adjacent manifest and rev76_delivery/DELIVERY_NOTE.md. No native products, caches, prior archives or experiment outputs are included; every file and archive is strictly below 50 MB.
-
-Assisted-by: Codex:GPT-6
-
-Final validation: **93 PASS**, pytest **2.18 s**; wrapper awake **2.411175 s**, elapsed UTC **2.410855 s**. One successful affected synthetic invocation after the complete code/test batch and engineering recheck. An earlier invocation stopped at the FIRST test before native construction/integration because the build manifest still bound the old Python adapter; it is retained in rev76_failed_synthetic_attempt. The explicit build refreshed all nine native inputs before repinning and the necessary rerun. No fixture or experiment ran in either invocation. Configuration SHA256: `fb7e52f91eff1175f9f66cd8d7b42e7b79e2c9d6fe34985de00d2f82478439b0`. Tested execution-pin SHA256: `b0d80ccc4f8dfeb23ae741273895af9ca5ea6bf1e1a84dabb233032b29c6108d`. All **69 scientific inputs** match the final receipt. No C++/ABI source change; supported cost policy is the adapter, with its build provenance refreshed. Final artifact preservation and source-only checks are recorded in rev76_delivery/DELIVERY_VERIFICATION.json.
-
-Owner recheck: APPROVE_WITH_NOTES, Codex, independent read-only same-family engineering review. Build correction rechecked; no remaining requested code/test changes. This is separate from pending Claude implementation acceptance and does not open fixture/development execution. Source-only delivery and commit result are documented in rev76_delivery/DELIVERY_NOTE.md.
-
-## Historical revision 7.5 integration report (superseded for current readiness/pin)
-
-READY_FOR_REVIEW
-
 ## Revision 7.5 integration (§12)
 
 This section governs the current integration; the 7.4/7.3 sections below are historical. Authority: DESIGN_0H_REV7.md §12 over §11/11.1 and earlier sections. Design review: docs/reviews/tactical_0h_rev75_design_review_codex.md, APPROVE_WITH_NOTES; reviewed design SHA256 72b51ee1723a0b24c02755be352155c48d3673cc61ec5dec082e35aeed53f696. This is an outcome-informed deterministic recipe revision. The 7.4 N1d FAIL and all recorded fixture receipts remain unchanged; no independent replication or causal proof is claimed.

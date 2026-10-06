@@ -1,0 +1,3 @@
+APPROVE_WITH_NOTES
+
+Independent same-family engineering recheck: OWNER_RECHECK_CODEX.md, Codex. No code/test changes requested. R76-R1: raw C cost remains legacy; the supported Python adapter implements operational growth accounting and is disclosed. R76-R2: final validation, identity, preservation and bundle checks completed below and in adjacent receipts. Reviewer follow-up confirmed the explicit native build corrected the first-test manifest failure without C++/ABI or test changes. Final suite 93 PASS in 2.18 s; first failed invocation retained separately. Claude implementation acceptance binding the final tested execution pin remains pending. No experimental execution authorized or performed.

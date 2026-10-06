@@ -1,4 +1,4 @@
-"""Frozen revision-7.5 configuration identity and numerical recipes; no execution."""
+"""Frozen revision-7.6 configuration identity and numerical recipes; no execution."""
 from copy import deepcopy
 import math
 from .protocol import canonical
@@ -34,7 +34,9 @@ N1_SADDLE_DIAGNOSTIC=dict(member=0,departure_radians=.5,
  time='first 0.1 s endpoint crossing, bracketed by previous endpoint (initial t=0 included)',
  not_observed='null direction/time/bracket, status NOT_OBSERVED; horizon 16 s',used_in_verdict=False)
 
-CONFIG=dict(revision='7.5',versions=['rev7_rhs_v1','rev7_eval_v1','rev7_template_v1','rev7_qual_v1'],phase_scale=PHASE_SCALE,
+CONFIG=dict(revision='7.6',versions=['rev7_rhs_v1','rev7_eval_v1','rev7_template_v1','rev7_qual_v1'],phase_scale=PHASE_SCALE,
+ output_port=dict(death_exempt=['D1','D3','D4'],budget_elements='ordinary only',budget_pairs='actual Ntheta undirected ordinary-to-ordinary pairs; O incident pairs excluded',cap=64,budget=64.,pair_cost=.1,B_out_budget_exempt=True,B_out_placement_required=True,physical_count_includes_output=True),
+ fixture_entropy=dict(F5='reused outcome-informed engineering fixture; not independent',F7='previously NOT_RUN; dependent on reused F5; chain not fresh',exception='section 13 supersedes fresh-entropy stop for these fixtures only',development='unchanged'),
  carrier=math.pi,motion=dict(k=8,radius=3.,strict=True,ties=['distance','element_before_site','id'],mean='own_count',held='four RK4 stages',site_presence='strength > 0',site_weight='unweighted',silent_element_motion=True),
  phase=dict(k=8,radius=3.,strict=True,ties=['distance','element_array_index'],mean='own_count',sites=False),
  pins=PIN_TABLE,site_body_r0=.3,element_clearance=.05,site_clearance=.3,clearance_comparison='distance + 8*max_coordinate_or_limit_ULP >= threshold; roundoff only',

@@ -189,6 +189,96 @@ def test_clearance_every_rule_origin_reservation_and_Bpath_trial():
         assert m.trial(0,1,1,(4,0))['clearance'] is False
 
 
+@pytest.mark.parametrize('rule,timer',[('D1',40.),('D4',120.)])
+def test_rev76_death_rules_preserve_output_and_remove_ordinary(rule,timer,monkeypatch):
+    with medium() as m:
+        out=m.add((0.,0.),0.,role='output');ordinary=m.add((1.,0.),0.)
+        m.step_index=2000
+        monkeypatch.setattr(m,'lock',lambda id:0.)
+        if rule=='D1':m.death={out:timer,ordinary:timer}
+        else:
+            m.native.cut_off(out,timer);m.native.cut_off(ordinary,timer)
+        m.growth(b1=False)
+        assert {e.id for e in m.native.elements}=={out}
+        assert [(e['rule'],e['ids']) for e in m.events if e['rule'] in ('D1','D3','D4')]==[(rule,[ordinary])]
+        assert m.native.pin(out)==(True,(0.,0.))
+
+
+def test_rev76_D3_preserves_lowest_lock_output_and_prunes_ordinary(monkeypatch):
+    with medium() as m:
+        out=m.add((0.,0.),0.,role='output')
+        ordinary=[m.add((1.+.06*j,1.),0.) for j in range(64)]
+        m.step_index=2000
+        monkeypatch.setattr(m,'lock',lambda id:0. if id==out else 1.)
+        assert m.cost()>64
+        m.growth(b1=False)
+        deaths=[e for e in m.events if e['rule']=='D3']
+        assert deaths and all(e['ids'][0] in ordinary for e in deaths)
+        assert out in {e.id for e in m.native.elements} and m.cost()<=64
+        assert not any(e['rule']=='B-out' for e in m.events)
+
+
+def test_rev76_cost_excludes_O_incident_pairs_but_retains_actual_topology():
+    with medium(params=Params(k=1)) as m:
+        out=m.add((0.,0.),0.,role='output')
+        a=m.add((-.5,0.),0.);b=m.add((.5,0.),0.)
+        assert m.phase_topology()[a]==[out] and m.phase_topology()[b]==[out]
+        assert m.native.cost(1.,.1)==dict(elements=2,active_couplings=0,total=2.)
+        m.remove(out,'SYNTHETIC')
+        assert m.phase_topology()=={a:[b],b:[a]}
+        assert m.native.cost(1.,.1)==dict(elements=2,active_couplings=1,total=2.1)
+
+
+def test_rev76_admission_and_live_cost_share_ordinary_cap_and_pairs():
+    with medium() as m:
+        m.add((0.,0.),0.,role='output')
+        for j in range(63):m.add((10.+4*j,10.),0.)
+        assert m.cost()==63.
+        assert m.feasible((.6,0.),0.) is None # incident O pair costs zero
+        m.add((.6,0.),0.)
+        assert len(m.native)==65 and m.cost()==64.
+        assert m.feasible((400.,10.),0.)=='cap'
+    with medium() as m:
+        m.add((0.,0.),0.,role='output')
+        for j in range(63):m.add((1.+.06*j,1.),0.)
+        assert m.feasible((2.,2.),0.)=='cost' # ordinary pairs still charged
+
+
+@pytest.mark.parametrize('over_budget',[False,True])
+def test_rev76_Bout_succeeds_with_full_cap_and_protected_budget(over_budget):
+    with medium() as m:
+        for j in range(64):m.add((1.+.06*j,1.) if over_budget else (10.+4*j,10.),0.)
+        assert m.cost()>64 if over_budget else m.cost()==64
+        m.growth(b1=False) # ordinary elements too young for D3; blocked when over budget
+        outputs=m.influence().outputs
+        assert len(outputs)==1 and len(m.native)==65
+        terminals=[e['values']['outcome'] for e in m.events if e['rule']=='birth_terminal' and e['values']['birth_rule']=='B-out']
+        assert terminals==['accepted']
+        assert bool([e for e in m.events if e['rule']=='protected_over_budget'])==over_budget
+        before=len(m.events);assert m.b_out(blocked=True)==[] and len(m.events)==before
+
+
+def test_rev76_Bout_placement_still_required_when_budget_blocked():
+    with medium() as m:
+        m.add((.01,0.),0.)
+        assert m.b_out(blocked=True)==[] and not m.influence().outputs
+        assert m.events[-1]['values']['outcome']=='placement'
+
+
+def test_rev76_isolated_immortal_output_has_no_drive_root_coverage_or_path(monkeypatch):
+    with medium() as m:
+        out=m.add((0.,0.),.7,role='output')
+        m.drives=[drive(x=.5,y=0.)];m.native.set_drives(m.drives)
+        m.step_index=2000;m.death[out]=1000.;m.native.cut_off(out,1000.)
+        monkeypatch.setattr(m,'lock',lambda id:0.)
+        m.growth(b1=False)
+        assert m.influence().outputs=={out} and not any(m.influence().roots.values())
+        assert not any(m.influence().path(s) for s in range(8))
+        assert not m.covered(0) and m.gain_signal(out) is None
+        assert m.native.rhs()[0][2]==math.pi and m.cost()==0.
+        # Existence alone cannot satisfy F5's unchanged E >= .5 gate.
+
+
 def test_B1_freezes_hidden_defers_check_resumes_and_retains_refusal():
     with medium() as m:
         m.novelty[0]=20.;m.drives=[drive(strength=0)];m.frames.clear();m.record()
@@ -503,7 +593,10 @@ def test_clock_ledger_declared_units_no_rescaled_admission_windows():
 
 def test_rev75_configuration_identity_and_N1f_literal_recipe():
     from evidence.tactical_composition_demo.growing_shapes.runner.rev7_config import F1D_SCALES
-    assert CONFIG['revision']=='7.5' and CONFIG['phase_scale']==32.
+    assert CONFIG['revision']=='7.6' and CONFIG['phase_scale']==32.
+    assert CONFIG['output_port']['death_exempt']==['D1','D3','D4']
+    assert CONFIG['output_port']['B_out_budget_exempt']
+    assert CONFIG['fixture_entropy']['development']=='unchanged'
     assert CONFIG['excursion']['h']==.005 and CONFIG['excursion']['substeps']==20
     assert CONFIG['N1']['h']==[.005,.00125] and CONFIG['N1']['substeps']==[20,80]
     assert F1D_SCALES==(1.,8.,32.) and CONFIG['F1']['F1d']['h']==.005

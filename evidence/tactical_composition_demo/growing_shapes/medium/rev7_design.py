@@ -1,11 +1,11 @@
-"""Revision 7.4 live medium: role masks, fresh graph, D4, ordered birth rules."""
+"""Revision 7.6 live medium: protected output, fresh graph, ordered birth rules."""
 from collections import deque
 from copy import deepcopy
 from dataclasses import dataclass
 import math
 import numpy as np
 from .design_0h import DesignMedium, DT, SITES, kernel, wrap
-from .rev7_native import Rev7Native
+from .rev7_native import Rev7Native,budget_counts
 from ..runner.rev7_config import PRODUCTION_H, REFINEMENT_H
 
 @dataclass(frozen=True)
@@ -335,16 +335,16 @@ class Rev7Medium(DesignMedium):
             k=self.native.params.k,radius=self.native.params.radius)
 
     def feasible(self,position,phase):
-        # The declared cost is N + .1 per undirected pair, with no site term.
+        # O and its incident pairs are external to N + .1 per ordinary pair.
         # Admission also uses geometry only; never clone native histories.
         if not clear_position(position,[(e.x,e.y) for e in self.native.elements]):return 'placement'
-        if len(self.native)+1>64:return 'cap'
         elements,drives=geometry(self.native,self.drives)
+        if sum(e[3]!='output' for e in elements)+1>64:return 'cap'
         new=max((e[0] for e in elements),default=-1)+1
         g=geometric_graph(elements+[(new,*position,'element',1.,False)],drives,
             self.native.params.k,self.native.params.radius)
-        pairs={tuple(sorted((target,source))) for target,sources in g.incoming.items() for source in sources}
-        return 'cost' if len(elements)+1+.1*len(pairs)>64 else None
+        n,pairs=budget_counts({e[0]:e[3] for e in elements}|{new:'element'},g.incoming)
+        return 'cost' if n+.1*pairs>64 else None
 
     def b_out(self,blocked=False):
         if self.influence().outputs:return []
@@ -352,8 +352,8 @@ class Rev7Medium(DesignMedium):
         clear=clear_position(point,[(e.x,e.y) for e in self.native.elements])
         self.emit('birth_attempt',request=request,birth_rule='B-out',candidate=0,position=point,clearance=clear)
         if not clear:point=None
-        reason='placement' if point is None else self.feasible(point,0.)
-        if blocked and reason is None:reason='cost'
+        # A permanent external receiver never competes with growth for budget.
+        reason='placement' if point is None else None
         if reason:self.terminal(request,'B-out',None,reason,attempts);return []
         neighbors=[e.phase for e in self.native.elements if math.hypot(e.x-point[0],e.y-point[1])<3]
         z=np.exp(1j*np.asarray(neighbors)).mean() if neighbors else 0j
@@ -426,12 +426,13 @@ class Rev7Medium(DesignMedium):
         measured={e.id:self.lock(e.id) for e in self.native.elements}
         for rule,threshold,timer in [('D1',40,self.death.get),('D4',120,self.native.cut_off)]:
             for e in self.native.elements:
+                if self.role(e.id)=='output':continue
                 if self.step_index-self.birth_steps[e.id]>=200 and (timer(e.id) or 0)>=threshold-1e-9:
                     duration=timer(e.id)
                     self.remove(e.id,rule,lock=measured[e.id],duration=duration)
         blocked=False
         while self.cost()>64:
-            eligible=[e for e in self.native.elements if self.step_index-self.birth_steps[e.id]>=200]
+            eligible=[e for e in self.native.elements if self.role(e.id)!='output' and self.step_index-self.birth_steps[e.id]>=200]
             if not eligible:blocked=True;self.emit('protected_over_budget');break
             e=min(eligible,key=lambda e:(measured[e.id] or 0.,e.id));self.remove(e.id,'D3',lock=measured[e.id])
         out=self.b_out(blocked);path=self.b_path(blocked)

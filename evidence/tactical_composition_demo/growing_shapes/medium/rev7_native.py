@@ -12,6 +12,14 @@ BUILD = HERE / '_rev7_build'
 IMAGE = BUILD / ('rev7_medium.dylib' if platform.system() == 'Darwin' else 'rev7_medium.so')
 
 
+def budget_counts(roles, incoming):
+    """7.6 external O: keep actual topology, charge ordinary bodies/pairs only."""
+    ordinary={id for id,role in roles.items() if role!='output'}
+    pairs={tuple(sorted((target,source))) for target,sources in incoming.items()
+           for source in sources if target in ordinary and source in ordinary}
+    return len(ordinary),len(pairs)
+
+
 @lru_cache(maxsize=1)
 def library():
     manifest = json.loads((BUILD / 'build.json').read_text())
@@ -55,6 +63,16 @@ class Rev7Native(Medium):
     def role(self,id):
         value=C.c_int();self._call('role',id,C.byref(value))
         return 'output' if value.value else 'element'
+
+    def cost(self,c_e,c_c):
+        import math
+        if not all(math.isfinite(v) and v>=0 for v in (c_e,c_c)):
+            raise ValueError('invalid cost coefficients')
+        es=self.elements;indices,masks,_=self.neighbors()
+        incoming={e.id:{es[j].id for j,on in zip(row,mask) if on}
+                  for e,row,mask in zip(es,indices,masks)}
+        n,pairs=budget_counts({e.id:self.role(e.id) for e in es},incoming)
+        return dict(elements=n,active_couplings=pairs,total=c_e*n+c_c*pairs)
 
     def cut_off(self,id,value=None):
         result=C.c_double(0 if value is None else value)
