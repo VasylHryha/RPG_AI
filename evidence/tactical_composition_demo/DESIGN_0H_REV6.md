@@ -698,3 +698,28 @@ A candidate that passes the geometric conditions but is refused for cap or cost 
 |---|---|---|---|
 | R6-1 (Codex round 6) | The outcome list was ambiguous for resource refusals | One terminal schema with `cap`, `cost` and `quota` | Listed only search outcomes |
 | R6-2 (Codex round 6) | F6's within-episode mean could be undefined | A resultant threshold of 0.05 and a defined-mean count | Missed a degenerate mean |
+
+### 18.6 F6 and F8, specified (answers Codex's integration stop, `growing_shapes/runner/REV6_INTEGRATION_REPORT.md` Q1 and Q2)
+
+**F6, which medium and episodes:**
+- **The same frozen checkpoints as F5:** both starts (i) and (ii), after episodes 40, 45 and 50. That is 6 states.
+- From each state, **fresh frozen copies** are made with growth, adaptation, plasticity and recovery all off, at carrier offset 0, with roles preserved.
+- **Episodes:** remember_static recipients at world validation episodes **788–797**, with donors **798–807**, paired one to one (788 + j ↔ 798 + j).
+- **The pooling unit** is the assay episode: 6 states × 10 episodes = 60 own-input and 60 donor-input episodes. The 14.7 and 18.5 statistic is computed separately for own and for donor input over these pooled episodes.
+- F6 uses no random consumer.
+
+**F8, a live boundary run** (descriptive; reward arm, because it measures e_i and reward updates):
+- **Start:** the F5(i) live state after episode 50, with **histories, timers and clock carried** and no reset. The reward-arm running mean r̄ starts at 0.5, as at a run start.
+- **Sequence:** 20 move episodes, then 20 remember_static episodes, on world dev episodes **2,100,000 + e** (e = 0–39), with normal permuted bindings.
+- **Rules:** full revision-6 rules with the reward update on (the reward arm), and growth, qualification and recovery on.
+- **Keys:** growth `growth/F8/reward`; recovery `recovery/F8/reward`. The medium state is inherited from F5(i), so it has no medium key.
+- **Reported:**
+  - **in the first memory episode (e = 20) against memory episodes 21–39:** the fraction of ordinary elements with defined P_i during the visible window, the mean e_i, the number of elements with a non-zero reward Δg, and the mean |Δg|;
+  - **across all 40 episodes:** the B1 timer demand against accepted B1 births.
+
+  F8 is descriptive and never gates.
+
+| # | Question | Disposition | Cause |
+|---|---|---|---|
+| Codex integration Q1 | F6's state source | F5's six checkpoints, fresh frozen copies, memory panel 788–807, pooled per episode | F6 named a statistic without a state |
+| Codex integration Q2 | F8's construction | A live reward-arm run from the F5(i) checkpoint, a 20 + 20 block sequence, ids and keys | F8 named a diagnostic without a run |
