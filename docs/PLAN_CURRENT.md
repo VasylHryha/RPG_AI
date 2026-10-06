@@ -2,7 +2,7 @@
 
 **Rule:** work follows this file, top to bottom, within each track. After every step, update its status line here and commit. If context is lost, read this file first, then `docs/IDEAS_AND_ROADMAP.md` (the tracker) and the files named in the step.
 
-**Last updated:** 2026-10-06 16:40. The 0h fixtures run now (the owner's go). `scratchpad/g16_chain.sh` runs the 0g 2×2 test after the C6 timing finishes (log `evening_chain.log`).
+**Last updated:** 2026-10-06 19:00. Tonight: the 0g 2×2 (running) → the 0h 7.7 fixtures at 22:00 → the C6 timing-only re-run (waits for load < 3). Older note: The 0h fixtures run now (the owner's go). `scratchpad/g16_chain.sh` runs the 0g 2×2 test after the C6 timing finishes (log `evening_chain.log`).
 
 ## Standing rules (from the owner; never skip)
 
@@ -62,7 +62,7 @@
 | B1 | v4 design (travel-time hold, commit focus, decision traces): `DESIGN_0G.md` section 15 | DONE | Claude | — |
 | B2 | v4 implementation and development run | DONE, **NOT_READY / a negative result**: stage B resonator +9.4 against novice and **−22.2 against regular** (v3 −7.6); morale −15.4 (v3 +8.6); reversals not reduced; stage C stopped by the runtime guard before validation. One restart was caused by Claude editing `DESIGN_0G.md` during the run (a rule violation, owned) | Codex | — |
 | B3 | Review v4, then the owner's recheck | DONE: recheck CHANGES_REQUIRED (`astelia_cpp/S4_V4_RECHECK_REPORT.md`): the focus pulls units into gun range; holds expire in danger; the reversal comparison mixed definitions | Codex, Claude | — |
-| B3b | **2×2 attribution test** (hold × focus, fixed v3 knobs, fresh seeds; `DESIGN_0G.md` section 16) | Codex reviewing and implementing (light, while C6 measures); **the fights (about 10 min) run after C6 finishes** | Codex | decision 0031 |
+| B3b | **2×2 attribution test** | Part 1 DONE (review APPROVE_WITH_NOTES; 30 tests); **the fights RUNNING since 18:57** | Codex | decision 0031 |
 | B4 | v5: one coherent intent per unit, progress checks, a damage-risk budget (the recheck's recommendation), informed by the 2×2 test; selection on regular-head S | — | Claude drafts, Codex reviews | — |
 | B5 | Update the replay viewer (`viz_0g/`) with v4/v5 fights | — | Claude | — |
 | B6 | S5 registration (W4: CLOSED) | DECIDED: no registration until a development version beats regular; then register with morale as a labelled comparator | Claude drafts | **[OWNER] approves the registered run** |
@@ -72,8 +72,10 @@
 | # | Step | Status | Gate |
 |---|---|---|---|
 | C1 | Port, parallel and recheck | DONE (`evidence/c6_option_b/`) | — |
-| C2 | Official quiet-machine timing (is each world 360 s or less?) | **RUNNING since 16:17** (`evidence/c6_option_b/quiet_session_20261006_161801`); the first development world's reference took 355.9 s | the owner keeps the laptop light |
-| C3 | If over 360 s: the owner decides the resource rule | — | **[OWNER]** |
+| C2 | Official quiet-machine timing (is each world 360 s or less?) | DONE but NOT_READY: **correctness all PASS** (16 zero-tolerance comparisons); the timing failed (392 s) **under load up to 28** from the owner's concurrent sessions, so it is not a quiet result. **Timing-only re-run queued** after the 0h fixtures and the 0g 2×2 (`scratchpad/c6timing_chain.sh`; it waits for load < 3) | the owner keeps the Astelia sessions idle tonight |
+| C3 | If over 360 s: the owner decides the resource rule | **OWNER DECISION PENDING** after the measured failure; a quiet-machine failure is not established | **[OWNER]** |
+
+**C6 queued-batch owner recheck:** COMPLETE — `evidence/c6_option_b/quiet_session_20261006_161801/OWNER_RECHECK_CODEX.md` records the verbatim owner request, reviewed report SHA256 and findings. No report, arithmetic, identity, preservation or bundle defect found. **Q1 disposition:** retain NOT_READY and observed timings; absence of scheduler confirmation and a renewed quiet gate before timing leaves verified quiet measurement unavailable. The owner decides any future measurement or resource-rule change; no passed jobs are repeated. **Q2 disposition:** record the available Codex reviewer as same-family; Claude addendum 2 and this recheck do not accept the new batch or milestone. Delivery bookkeeping labels the initial PAYLOAD snapshot and the final bundle is verified again after adding this review/disposition. Project code and STATUS.json remain unchanged.
 
 ## Decisions: taken by the drafter from the goal (the owner may overrule any of them)
 
