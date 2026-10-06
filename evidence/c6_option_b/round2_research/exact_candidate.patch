@@ -1,0 +1,35 @@
+--- /private/tmp/claude-501/-Users-new-RiderProjects-ai-RPG-test/266628b5-c225-443d-b8f6-8f99d66d38db/scratchpad/repo0/native/c6_option_b/field.cpp	2026-10-06 21:43:01
++++ /private/tmp/claude-501/-Users-new-RiderProjects-ai-RPG-test/266628b5-c225-443d-b8f6-8f99d66d38db/scratchpad/repo3/native/c6_option_b/field.cpp	2026-10-06 22:05:04
+@@ -382,8 +382,8 @@
+  // Recompute actual medium separately; key only the independent material input.
+  append(key,initial+2*ns,size_t(nc)*(3*n+2*ns));append(key,q,2*size_t(ns));
+  append(key,omega,ns);append(key,psi,size_t(ns)*8);append(key,adj,size_t(ns)*ns);
+- append(key,rates,size_t(n)*nc);append(key,masks,size_t(n)*nc);append(key,modes,nc);
+- append(key,origins,2*size_t(n)*nc);append(key,p,9);
++ append(key,rates,size_t(n)*nc);append(key,modes,nc);
++ append(key,origins,2*size_t(n)*nc);append(key,p,3);append(key,p+4,5);
+  return key;
+ }
+ // No-cohort run: all inputs of the actual-medium law (q/n kept conservatively).
+@@ -438,7 +438,20 @@
+    }
+    if(!eligible){
+      {std::lock_guard<std::mutex> lock(counter_mutex);computed_uncached_steps+=steps;}
+-     return field_run_uncached(ns,n,nc,start,dt,steps,sample,initial,q,omega,psi,adj,rates,masks,modes,origins,p,frames);
++     int code=field_run_uncached(ns,n,nc,start,dt,steps,sample,initial,q,omega,psi,adj,rates,masks,modes,origins,p,frames);
++     if(code||nc!=1)return code;
++     try {
++       auto key=physical_key(ns,n,nc,start,dt,steps,sample,initial,q,omega,psi,adj,rates,masks,modes,origins,p);
++       const int count=steps/sample+1, stride=3*n+2*ns, width=2*ns+stride;
++       auto& store=material_store();Store<double>::Lease lease;
++       if(!store.acquire(key,key_hash(key),lease)){
++         auto value=std::make_shared<Value<double>>();
++         value->data.resize(size_t(count)*stride);
++         for(int f=0;f<count;f++)std::copy_n(frames+size_t(f)*width+2*ns,stride,value->data.data()+size_t(f)*stride);
++         value->key=std::move(key);lease.publish(value);
++       }
++     } catch(...) {}
++     return 0;
+    }
+    auto key=physical_key(ns,n,nc,start,dt,steps,sample,initial,q,omega,psi,adj,rates,masks,modes,origins,p);
+    const int count=steps/sample+1, stride=3*n+2*ns, width=2*ns+stride;
