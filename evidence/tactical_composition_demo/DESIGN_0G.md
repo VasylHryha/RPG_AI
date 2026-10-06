@@ -495,3 +495,14 @@ Emergencies take precedence over the hold. The thresholds will come from the v4 
 - **Fresh development seeds** (a new ledger). No judging, registration or recorded run.
 
 **Cost:** about 4–6 hours with 10 workers, at the measured v4 rate. **It runs only when the laptop is otherwise free:** after the C6 timing tonight (decision 0031: night runs need no approval).
+
+**Section 17 amendments (answering `docs/reviews/tactical_0g_s17_design_review_codex.md`, CHANGES_REQUIRED):**
+- **F1, scope:** **v5 development is stages A and B only.** Stage C, whose tuning panel is 19 elite doctrines with no novice or regular heads, is **not part of v5**. If the B gate passes, stage C's allocation and objective are declared in a later revision, before any C fight.
+- **The B gate (exact):** after all-arm B validation, v5 is reported as **progress** only if the resonator's regular validation mean S is **strictly greater than −7.62** (the section-16 v3 baseline); equality stops. It is a development resource gate, not statistical superiority, and not "beats regular" (a score above −7.62 may still be negative).
+- **The tuning ranking (exact, stage B):**
+  - Each head's mean comes from its own tuning clusters (ten novice, nine regular), averaged over both orientations.
+  - A **novice mean ≥ 0 is eligible.** Ineligible candidates rank below every eligible one, whatever their regular score. Within each group the ranking is by regular mean S, and exact ties keep the earlier incumbent.
+  - The same ordering feeds the optimizer and the incumbent. If the selected candidate is ineligible, that is reported.
+  - Stage A is unchanged (melee-only novice).
+- **F2, the claim narrowed:** section 16 shows that **this pair-level hold reduced pair-mode changes without improving the regular outcome at fixed v3 knobs**. It does **not** rule out instability of the coherent unit intent as a contributor, because physical movement reversals were not measured. v3 stays the baseline.
+- **F3:** the selected ω is a **diagnostic** of what this bounded optimizer chose, not a test of whether rotation is necessary. The values are reported even on a B stop.
