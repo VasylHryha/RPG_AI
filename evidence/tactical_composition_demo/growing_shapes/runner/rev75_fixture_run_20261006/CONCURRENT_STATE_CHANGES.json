@@ -1,0 +1,25 @@
+{
+  "action": "Leave concurrent current bytes untouched; no restoration, reset or cleanup.",
+  "files": {
+    "docs/PLAN_CURRENT.md": {
+      "post_stop_sha256": "2380c6c4718785a0d2c790d38f8859cfc7d7499c30a1842dbd7eed37d37baee3",
+      "start_sha256": "5be22118d7a0b7d72e465af034cc20b49c59e2c0b631dcbdcbf649d55ef7615b"
+    },
+    "evidence/tactical_composition_demo/astelia_cpp/S4_V4_DEVELOPMENT_REPORT.md": {
+      "post_stop_sha256": "5eeb7ef0fea2df5e7f3accd945d23d1cab8ba244db2f3a9909fce49442fb5918",
+      "start_sha256": "98d146c36755f779b9d1a3226eff70032de03c9025ce58674eadb70a5f04dd85"
+    },
+    "evidence/tactical_composition_demo/astelia_cpp/s4_v4_checks/BUNDLE_VERIFIED.json": {
+      "post_stop_sha256": "b9a54ef8292d4084238c87a1960204c5fdb4edfe39905af376672290cfb50a20",
+      "start_sha256": "5e17f95ab1d442bd5df957e5c06fc5fb0fb1323d731f521b9fa39bcc664b915e"
+    },
+    "evidence/tactical_composition_demo/astelia_cpp/s4_v4_checks/DELIVERY_NOTE.md": {
+      "post_stop_sha256": "5999785cd32833b60742b7e38dfe62b93d79e992fe877f8cf0db893a1ad6d5e4",
+      "start_sha256": "58339081c8745ad8574338b0dd6bacf5c47b08f66b9d467e0829c8282d3673eb"
+    }
+  },
+  "note": "These tracked files changed between start and post-stop observations. This task issued no write to any of them; some concurrent changes are committed in current HEAD.",
+  "scope_preservation": "Scientific pin and growing_shapes historical inputs PASS; repository-wide unchanged assertion FAIL.",
+  "status": "OBSERVED_OUTSIDE_SCOPE_CHANGES",
+  "task_writes_outside_growing_shapes": false
+}

@@ -1,0 +1,18 @@
+{
+  "action": "Stopped process 89340 with SIGINT after static confirmation; exit 130. No code patched and no fixture rerun.",
+  "cause": "Observer selected a structural finally line; Python 3.9 emits no line event there. It was copied from the historical wrapper, whose F5 observer had never been exercised because 7.4 stopped at N1.",
+  "component": "new measurement wrapper, execute_once.py::growth_trace",
+  "evidence": "F5(ii) START without an F5(i) END; target absent from dis.findlinestarts; missing timing/component files.",
+  "missing": [
+    "F5i_TIMING.json",
+    "F5ii_TIMING.json",
+    "F5i_COMPONENT_COSTS.json",
+    "F5ii_COMPONENT_COSTS.json"
+  ],
+  "scientific_engine_defect_established": false,
+  "scientific_sources_changed": false,
+  "status": "CONFIRMED",
+  "target": "rev7_fixtures.py:310",
+  "target_has_executable_bytecode": false,
+  "wrapper_sha256": "f9b58068d0f0f05492f043ce7970d4e1192ddbfea4a9462bac1ef05cac6dfc9d"
+}

@@ -1,0 +1,104 @@
+[
+  {
+    "action": "Block all execution",
+    "outcome": "NO",
+    "question": "integration_not_tested_reviewed",
+    "role": "implementer"
+  },
+  {
+    "action": "Block execution",
+    "outcome": "NO",
+    "question": "source_unit_endpoint_mismatch",
+    "role": "implementer"
+  },
+  {
+    "action": "Block F1 and every later fixture",
+    "outcome": "NO",
+    "question": "N1_failed_or_invalid",
+    "role": "implementer"
+  },
+  {
+    "action": "Block F5 and development; report",
+    "outcome": "NO",
+    "question": "F1_F4_failed",
+    "role": "implementer"
+  },
+  {
+    "action": "Report INVALID; block next stage",
+    "outcome": "YES",
+    "question": "fixture_invalid",
+    "role": "implementer"
+  },
+  {
+    "action": "Block development; write failure report",
+    "outcome": "NOT_EVALUATED",
+    "question": "F5_failed",
+    "role": "drafter"
+  },
+  {
+    "action": "Block development; write failure report",
+    "outcome": "NOT_EVALUATED",
+    "question": "F7_unmatched",
+    "role": "drafter"
+  },
+  {
+    "action": "Draft new revision with fresh entropy",
+    "outcome": "NO",
+    "question": "protocol_changed_after_results",
+    "role": "drafter"
+  },
+  {
+    "action": "Ask owner under decision 0031",
+    "outcome": "NOT_EVALUATED",
+    "question": "development_over_hour_before_22",
+    "role": "implementer"
+  },
+  {
+    "action": "Ask owner",
+    "outcome": "NOT_EVALUATED",
+    "question": "development_stopped_next_needed",
+    "role": "owner"
+  },
+  {
+    "action": "Block all execution",
+    "outcome": "NO",
+    "question": "engines_not_ready_reviewed",
+    "role": "implementer"
+  },
+  {
+    "action": "Report INVALID with raw evidence; never reinterpret as PASS or FAIL",
+    "outcome": "NOT_EVALUATED",
+    "question": "readout_invalid",
+    "role": "implementer"
+  },
+  {
+    "action": "Block G2 and G0; no primary-task substitution",
+    "outcome": "NOT_EVALUATED",
+    "question": "perceive_unusable",
+    "role": "implementer"
+  },
+  {
+    "action": "Keep seed G0-INCONCLUSIVE; never replace",
+    "outcome": "NOT_EVALUATED",
+    "question": "full_seed_M_unmatched",
+    "role": "implementer"
+  },
+  {
+    "action": "Write failure report; stop development",
+    "outcome": "NOT_EVALUATED",
+    "question": "task_blind_G1_fail",
+    "role": "drafter"
+  },
+  {
+    "action": "Write failure report; stop development",
+    "outcome": "NOT_EVALUATED",
+    "question": "G0prime_fail",
+    "role": "drafter"
+  },
+  {
+    "action": "Write failure or diagnosis report; stop development",
+    "outcome": "NOT_EVALUATED",
+    "question": "G2_fail_or_inconclusive",
+    "role": "drafter"
+  }
+]

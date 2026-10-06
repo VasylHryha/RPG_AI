@@ -1,0 +1,38 @@
+2026-10-06T12:49:10.500469+00:00 START N1
+2026-10-06T12:49:19.861342+00:00 END N1 awake 9.360873375000665
+2026-10-06T12:49:19.988643+00:00 START F1
+2026-10-06T12:49:30.588087+00:00 START F1d
+2026-10-06T12:49:41.675580+00:00 END F1d awake 11.087486458331114
+2026-10-06T12:49:41.853837+00:00 END F1 awake 21.865182999987155
+2026-10-06T12:49:42.648949+00:00 START F2
+2026-10-06T12:49:43.175294+00:00 END F2 awake 0.5263449166668579
+2026-10-06T12:49:43.176600+00:00 START F3
+2026-10-06T12:49:43.180736+00:00 END F3 awake 0.004136333329370245
+2026-10-06T12:49:43.181998+00:00 START F4
+2026-10-06T12:49:49.982518+00:00 END F4 awake 6.8005151666584425
+2026-10-06T12:49:50.152870+00:00 START F5
+2026-10-06T12:49:50.154030+00:00 START F5(i)
+2026-10-06T13:13:41.262977+00:00 START F5(ii)
+2026-10-06T13:15:16.343860+00:00 END F5 awake 1526.190334541665
+Traceback (most recent call last):
+  File "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/runner/rev75_fixture_run_20261006/execute_once.py", line 97, in <module>
+    try:receipt=harness.run_all()
+  File "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/runner/rev7_fixtures.py", line 379, in run_all
+    try:self.results[name]=finite_record(getattr(self,name)())
+  File "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/runner/rev75_fixture_run_20261006/execute_once.py", line 37, in measured
+    row=method()
+  File "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/runner/rev7_fixtures.py", line 287, in F5
+    run.episode(e,task='perceive',world_id=12000000+e)
+  File "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/runner/rev7_run.py", line 179, in episode
+    coverage = self.medium.timers()
+  File "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/medium/rev7_design.py", line 298, in timers
+    lock=self.lock(e.id)
+  File "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/medium/design_0h.py", line 152, in lock
+    values = [self.offsets(id, j) for j in partners]
+  File "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/medium/design_0h.py", line 152, in <listcomp>
+    values = [self.offsets(id, j) for j in partners]
+  File "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/medium/rev7_design.py", line 184, in offsets
+    if pair_valid(f,id,partner):values.append(e[2]-f.elements[partner][2])
+  File "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/medium/rev7_design.py", line 23, in pair_valid
+    def pair_valid(frame,a,b):return frame.excursion[a]+frame.excursion[b]<=math.pi/2
+KeyboardInterrupt
