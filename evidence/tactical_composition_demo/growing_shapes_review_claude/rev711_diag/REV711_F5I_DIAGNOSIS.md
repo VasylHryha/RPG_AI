@@ -1,11 +1,14 @@
-DIAGNOSED: the empty-start failure is caused by the motion law, not by the birth rules or the budget
+DIAGNOSED (narrowed, revision 2): in the current empty-start growth trajectory, each closing link is lost because the motion law pulls the bridge tip back; the tested birth-rule, margin, budget, kernel and O-placement interventions did not sustain late connectivity in both starts
 
 # Why F5(i) (growth from an empty start) fails: diagnosis after revision 7.11
 
 **Date:** 2026-10-07 (night). **Author:** Claude (claude-opus-5-5), drafter of revisions 7.x.
+**Revision 2.** It answers Codex's owner recheck `docs/reviews/tactical_0h_rev711_diagnosis_recheck_codex.md` (CHANGES_REQUIRED, R1–R4); see the self-audit in section 7. Revision 1 is in git at `15cda3e` and `fa367a0`.
+
 **Status:** diagnostic and pilot evidence only. No verdict, no fixture result, no pinned file changed.
-- The pilots patch behaviour **in-process only**, or run on a **scratch copy**.
-- Each one writes its own receipt folder (`growing_shapes/runner/rev711_diag_*`, `rev711_pilot_*`), so the 7.11 fixture receipt is untouched.
+- Pilots patch behaviour **in-process only**, or run on a **scratch copy**.
+- Each writes its own receipt folder (`growing_shapes/runner/rev711_diag_*`, `rev711_pilot_*`); the 7.11 fixture receipt is untouched.
+- A receipt's pin identifies the unchanged repository inputs, not the patched behaviour. The patch scripts and the raw-file hashes identify that.
 - Authority: decision 0031 (runs after 22:00).
 
 **Input:** the 7.11 fixtures (`a52ddbd`): N1 and F1–F4 PASS, F5(ii) PASS (A 1.451, B 1.303, max E 0.8), F5(i) FAIL (A 0.19, B 0.21, E 0).
@@ -14,101 +17,114 @@ DIAGNOSED: the empty-start failure is caused by the motion law, not by the birth
 
 A replay of F5(i) with the fixture keys, recording every 0.1 s world step to t = 480 s (`diag_f5i_link_hold.py`, `trace.json.gz`), shows:
 
-- **Paths do form.** A strong site→O path is closed at **12 growth checks** (220–440 s), each time by a new B-path element. Paths are present in 365 of 4,800 steps.
-- **Each path breaks within 0.1–17 s.** In every case the closing element's edge into O stops being strong.
-  - O always holds 8 phase neighbours, so the edge needs r ≤ 1.442; that threshold is 32·exp(−r²)/8 = 0.5.
-  - The closing element is born 0.95–1.37 from O, then **moves away from O** at 0.3–0.6 m.u./s.
-  - It settles 1.5–2.2 m.u. from O. Examples: element 23, 1.30 → 2.20 in 20 s; element 43, 0.95 → 1.49.
-- **It is not a phase problem.** From t ≈ 300 s, O is phase-locked with its weighted neighbourhood (0.06–0.5 rad), and each closing element is in phase with O (0.0–0.3 rad).
-- **Then the budget runs out** (about 440 s), the closings stop, and the tip settles 1.9–2.4 m.u. from O.
+- **Paths do form.** A strong site→O path is closed at **12 growth checks** (220–440 s), each time by a new B-path element. Paths are present in 365 of 4,800 samples (12 observed intervals).
+  - Paths born and lost entirely between 0.1 s samples are not inventoried.
+- **Each observed path breaks within 0.1–17 s, by geometric coefficient loss.** At every interval's first absent sample:
+  - the closing element is still in O's held phase list;
+  - O's phase degree is still 8;
+  - the element's distance has crossed √(ln 8) = 1.442, so its coupling coefficient 32·exp(−r²)/8 is below 0.5 /s;
+  - no D1, D3 or D4 removal occurs in the replay.
+- **How the distance grows.** The closing element is born 0.95–1.37 from O and moves away at 0.3–0.6 m.u./s in its first instant. Examples: element 23, 1.30 → 2.20 in 20 s; element 43, 0.95 → 1.49.
+- **Phase is not the direct cause of the edge loss.** The strong-edge test does not use the phase difference. From t ≈ 300 s, O is phase-aligned with its weighted neighbourhood (0.06–0.5 rad), and each closing element with O (0.0–0.3 rad). Phase still enters the motion through its cosine and the actual transmission.
+- **Then the budget runs out** (about 440 s), the closings stop, and the nearest element settles 1.9–2.4 m.u. from O.
 
-## 2. The mechanism: the motion law makes a one-sided bridge mechanically unstable
+## 2. The mechanism: instantaneous force on the closing element
 
-The motion law (`medium/rev7_medium.cpp`, the `rhs` loop) gives each element the **mean** pull of its ≤ 8 nearest motion neighbours. A neighbour at distance r with phase difference Δφ contributes, along the unit vector toward it, A(1 + J cos Δφ) − B/r (A = B = 1, J = 0.8). For an in-phase pair that is 1.8 − 1/r: attractive beyond 0.556 m.u., up to the 3 m.u. cutoff.
+The motion law (`medium/rev7_medium.cpp`, the `rhs` loop) gives each element the **mean** over its ≤ 8 nearest motion neighbours (elements and active site bodies, r < 3) of
+**(A(1 + J cos Δφ) − B/r)** along the unit vector to the neighbour, with A = B = 1 and J = 0.8. For an in-phase pair this is 1.8 − 1/r: repulsive inside 0.556 m.u., attractive beyond.
 
-**Decomposed from the recorded state, for three closing elements at the step after birth:**
+**Instantaneous RHS projection onto the direction to O,** at the step after birth. These are signed contributions, already divided by |N^x| = 8, and they are velocities, not 0.1 s displacements. The values are Codex's independent reconstruction from unrounded frames; they agree with mine.
 
-| Element, time | Distance to O | Pull toward O by O | Pull from the 7 other neighbours (all behind, in phase) | Net velocity toward O |
-|---|---:|---:|---:|---:|
-| 43, 440.1 s | 0.95 | +0.093 | −0.016 … −0.111 each | **−0.30 m.u./s** |
-| 35, 360.1 s | 1.14 | +0.115 | −0.049 … −0.108 each | **−0.34 m.u./s** |
-| 27, 260.1 s | 1.00 | +0.092 | −0.105 … −0.141 each | **−0.64 m.u./s** |
+| Tip, time | Distance to O | O | Nearest rear element (inside 0.556: repulsive, pushes toward O) | The other six, summed | Sites | **Total toward O** |
+|---|---:|---:|---:|---:|---:|---:|
+| 43, 440.1 s | 0.95 | +0.093 | +0.016 (element 37) | −0.413 | 0 (none in N^x) | **−0.304 m.u./s** |
+| 35, 360.1 s | 1.14 | +0.115 | +0.019 (33) | −0.474 | 0 | **−0.340** |
+| 27, 260.1 s | 1.00 | +0.092 | +0.008 (26) | −0.736 | 0 | **−0.635** |
 
-O is one of 8 neighbours. Everything else lies behind the tip, so the tip is pulled back into its cluster.
-- A grown structure is therefore a **compact blob anchored by the sensor-site bodies**. Its face toward O settles about 1.5–2 m.u. from O.
-- That holds **whatever the blob's size**: each boundary element always has about 7 neighbours behind it.
-- A link to O can hold only if **O is surrounded**, by elements on several sides that balance one another. That is what happens in F5(ii): bridges from 6 angular sectors converge on O, and its four nearest elements end at 0.41–0.48 m.u.
+**Reading:**
+- O is one of 8 motion neighbours of the tip. The other elements at 0.6–1.5 m.u., behind the tip and in phase, attract it back, and their sum outweighs O's pull.
+- **Site bodies are not missing terms here.** The nearest site is ≥ 2.86 m.u. away, farther than every selected element.
+- Dividing by 8 sets the speed, not the sign.
 
-## 3. Pilots: what does not fix it
+**What this does not show** (corrections from revision 1; section 7):
+- **It does not show that a one-sided bridge can never hold, or that O must be surrounded.**
+  - **The passing F5(ii) is one-sided:** at the end, all 44 ordinary elements have x > −0.5, their angles about O span only −17° to +77°, and the nearest four sit at 0.44, 0.54, 0.56 and 0.78 m.u.
+  - **F1c's one-sided scaffold also passes.**
+  - Different local spacing, repulsive contacts and neighbour membership can balance the motion without surrounding O.
+- **The finding is local and trajectory-specific:** in this empty-start growth trajectory, each closing element is born with more attracting mass behind it than O supplies in front.
 
-Every pilot runs the full 50 F5 episodes (800 s). The metric is the late active-path fraction: per step, the fraction of active sites with a strong path to O, over t > 640 s. It is a proxy for E, measured outside the evaluator's assay copies, so it is not E itself.
+## 3. Pilots
 
-| Pilot | What changed | F5(i) late path fraction | F5(ii) late path fraction | Elements at end (i) |
-|---|---|---:|---:|---:|
-| Baseline (7.11 law) | — | **0.000** | 0.323 | 45 |
-| Formation margin in the trial (2×) | new-element edges need ≥ 1.0 /s | 0.000 (no effect: deficit-reducing births are accepted anyway) | 0.323 | 45 |
-| Robust service (2×) | B-path serves a site until every path edge is ≥ 1.0 /s | 0.000 (any path 12% of steps overall, vs 4.6%) | 0.433 | 45 |
-| Budget 96 | cap and cost limit 64 → 96, D3 scaled | 0.003 | — | 67 |
-| Budget 128 | 64 → 128 | 0.015 (no path held 20 s) | — | 81 |
-| Local motion kernel (scratch copy) | each motion pair term × exp(−r²) | 0.003 | **0.000** (worse) | 44 |
+**The metric is a late training-connectivity diagnostic, not E.** Per training step, the number of active sites with a strong path to O, divided by the number of active sites, averaged over t > 640 s.
+- **It differs from E.** F5's E is an unconditional per-site path frequency, measured on fresh growth-frozen assay copies from checkpoints 40/45/50, and the gate uses max over sites.
+- **So the diagnostic must not be compared with E's 0.5 gate.** For example, the baseline seeded run scores 0.323 on it, while its late unconditional site-0 frequency is 0.70 and its fixture max(E) is 0.80.
+- Zero training connectivity also does not prove zero connectivity in assay copies. The pilots do not measure A or B.
 
-Earlier revisions already tested the birth-rule side:
+All pilots run the 50 F5 episodes (800 s) with the fixture keys.
+
+| Pilot (what changed) | (i) late connectivity | (i) longest continuous path | (ii) late connectivity | (ii) longest continuous path | Note |
+|---|---:|---:|---:|---:|---|
+| Baseline (7.11 law) | **0.000** | 16.7 s | 0.323 | (site 0: 0.70 of late steps) | — |
+| **Stricter trial graph** (edges incident to the newborn pruned below 1.0 /s in the trial graph only) | 0.000 | 16.7 s | 0.323 | — | Traces and events identical to the baseline: a deficit-reducing birth is still accepted. **This does not test a rule that requires a robust closing edge.** |
+| **Robust service** (B-path decisions use 1.0 /s; E, B1 and measurement keep 0.5) | 0.000 | 44.2 s (440–484 s) | 0.433 | 288 s | Active and verified. Connectivity rises, but is not sustained late in (i) |
+| **Budget 96** (admission and D3 limits) | 0.003 | 16.7 s | — | — | 67 elements |
+| **Budget 128** | 0.015 | 16.7 s | — | — | 81 elements; zero cost/cap refusals and zero D3. Not sustained **within 800 s with this scheduler**; a larger budget with a different scheduler or horizon is not ruled out |
+| **Local motion kernel** (scratch; every element and site pair term, attraction and repulsion, × exp(−r²)) | 0.003 | — | 0.000 | — | Both lose late training connectivity. Says nothing about bonded or other local laws |
+| **Bidirectional B-path** (every second B-path birth grows from O's side toward the roots) | **0.605** | **677.5 s** (site max 0.8) | **0.000** | 2.7 s | (i) connects and holds. In (ii), each lone output-side birth, about 15 times at (0.05, −0.09), is pulled into the seed structure |
+| **Motion range 1.5 m.u.** (scratch; the N^x cutoff, 3 → 1.5) | 0.337 | path held from 461.5 s | 0.000 | — | — |
+| Motion range 1.5 + bidirectional | 0.323 | held from 272 s | 0.096 | — | — |
+| **O placement swapped** ((i): B-out puts O at (−0.5, 0); (ii): literal O at (0, 0)) | **0.000** | — | **0.409** | held from 272 s (sites 0, 6, 7: 0.7, 0.8, 0.4) | **O's position is not what separates the two starts** |
+
+Earlier revisions changed the birth rules:
 - fairness (7.9);
 - smallest deficit first (7.10);
 - output first (7.11).
 
-**Conclusion:** the birth rules, the margins and up to twice the budget do not make a one-sided bridge hold. Simply making the motion pull local makes both starts fail. The limit is the cohesive mean-field motion law together with the geometry of the empty start, in which the roots sit on the sensor ring about 4 m.u. from O. It is not the growth rules.
+**Conclusions (narrowed):**
+- **These specific interventions did not sustain late connectivity in both starts.**
+  - Bidirectional growth and a shorter motion range each rescue (i) and fail (ii).
+  - Robust service helps (ii) and transiently (i).
+- **O placement is ruled out as the separating factor:** with O swapped, (i) still fails and (ii) still passes.
+- **What separates the starts is therefore the initial scaffold and the growth history:**
+  - (ii) begins with six gain-1, in-phase elements at radius about 3.1, inside the sensor ring next to site 0;
+  - (i) grows from B1 elements placed on the ring at radius about 4.
+- These pilots do not isolate which aspect of the scaffold matters.
 
 ## 4. Options (the next revision is a design decision)
 
 | Option | What it is | Claim | Cost and risk |
 |---|---|---|---|
-| **A. The seeded start becomes the standard start** | Development grows from a small hand-built seed, as F5(ii) does. That is the start that passes today. | **Narrowed:** "a seeded network grows a functional sensor→output path, and responds through it", not "from nothing" | Fast: F6–F9 can run, then the cost projection and the development request. **Owner decision** (it changes the claim). |
-| **B. A motion law in which a resonant chain is mechanically stable** | For example, bonded attraction only between direct chain partners plus repulsion from all, so geometry follows the coupling graph. Needs a new design revision (8.x), new N1/F1–F4 and its own pilots. | Keeps "from nothing" | Long, and uncertain: one local-kernel variant already failed. Science-level change to the medium law. |
-| **C. Growth that surrounds O** | B-path aims bridges at O from several angular directions, as in F5(ii) | Keeps "from nothing" | Uncertain: in (i) the roots sit on one side (sites 1–3, 6–7), and the budget must cover several bridges. Testable with an in-process pilot. |
+| **A. A seeded protocol** (owner decision) | A **new protocol revision**, not a flag. Codex R3 explains why: F6 takes its baseline from checkpoint (i, 40), and F7/F8 use the (i) run, so they cannot simply continue on (ii). It must specify the common initial structure (roles, gains, phases, positions, pin), RNG treatment and cost accounting for intact/M/U; revise F6–F9 targets and stop rows; and pass review before implementation. The present F5 stop is not bypassed. | Narrowed to **seed-assisted growth**. F5(ii) transmission does not establish learning, resonator qualification, recursive background generation or superiority to scripted AI. | A design revision plus implementation; not necessarily the fastest complete route |
+| **B. A mechanically supported medium law** | Codex's sharper version: a locally formed, bounded-degree **bond graph** with reciprocal, phase-dependent spring stiffness and a rest length, plus short-range exclusion; motion follows the gradient of that local energy. An aligned chain between two fixed ends then has balanced interior tensions and positive restoring stiffness. Bond formation, breaking and remodelling come from local state; site anchors and the geometry→mode feedback must be defined. Needs its own design, normalization ledger and N1/F1–F4. | Keeps "from nothing" | A science-level change to the medium; long; untested |
+| **C. Growth-rule variants** | Two-ended growth (tested: (i) yes, (ii) no); a growth order in which the output-side component is supported before the forward bridge arrives (untested); a robust-closing-edge requirement (untested; the tested trial pruning did not require one) | Keeps "from nothing" | Each needs pilots on **both** starts. Rescuing one start is not a fix |
+| ~~D. O placement~~ | Swapping O between the starts did not change either outcome (section 3) | — | Ruled out as the separating factor; no design change proposed |
 
-**Drafter's recommendation, from the goal (a new AI foundation that beats the scripted AI):**
-- **Take A now, as an explicit narrowing**, so that F6–F9 and the development run can measure whether grown shapes learn the task at all.
-- **Keep B and C as a parallel research item**, tested with pilots before any design revision.
-- "From nothing" is a stronger claim, but it is not what the task needs. A is the owner's decision (`docs/PLAN_CURRENT.md`, "Decisions only the owner can make").
+**Drafter's recommendation:**
+- **Next, test the scaffold question directly with cheap pilots**, before any design revision. That identifies which property of (ii)'s start makes growth succeed. Three variants:
+  - (i) given a minimal coherent root group of the same size at site 0 but on the ring;
+  - (ii)'s hexagon moved out onto the ring at radius 4;
+  - (ii) with randomized phases.
+- **If a small, principled initial condition explains the difference, A becomes a well-founded protocol choice** rather than an arbitrary seed.
+- **B stays the long-term root option.**
+- **A and the claim narrowing are the owner's decision** (`docs/PLAN_CURRENT.md`).
 
 ## 5. Files
 
 - `diag_f5i_link_hold.py`, `analyze.py`, `trace.json.gz`: the per-step replay (committed).
-- `pilot_formation_margin.py`, `pilot_service_margin.py`, `pilot_budget.py`, plus their logs: in-process pilots.
-- `kernel_pilot/`: the scratch-copy kernel pilot (`kpilot.py`, logs, `rev7_medium_kernel.patch`).
+- In-process pilots, each with its log: `pilot_formation_margin.py`, `pilot_service_margin.py`, `pilot_budget.py`, `pilot_bidirectional.py`, `pilot_oswap.py`.
+- `kernel_pilot/`: scratch-copy pilots (`kpilot.py`, `kpilot2.py`, logs, `rev7_medium_kernel.patch`, `rev7_medium_motion_range_1p5.patch`).
+  - Provenance limit: no launch receipt cryptographically binds those processes to the scratch builds. The scratch build manifests verify their sources and images.
 - Raw pilot traces (11–12 MB each) stay local, out of git, listed with SHA256 in `RAW_FILES_OUTSIDE_GIT.json`.
-- Receipt folders: `growing_shapes/runner/rev711_diag_link_hold_20261006/`, `rev711_pilot_margin_*`, `rev711_pilot_service_*`, `rev711_pilot_budget_*`.
+- Receipt folders: `growing_shapes/runner/rev711_diag_link_hold_20261006/` and `rev711_pilot_*`.
 
-## 6. Addendum (same night): growth from the output side, and a shorter motion range
+## 6. (Revision 1's addendum is merged into section 3.)
 
-These are further pilots of option C, plus one more medium variant. The metric and the 800 s horizon are the same as in section 3. "Held" means the first path that lasted ≥ 20 s continuously.
+## 7. Self-audit (revision 2, answering the Codex recheck)
 
-| Pilot | (i) late path fraction | (i) first held path | (ii) late path fraction | (ii) first held path |
-|---|---:|---:|---:|---:|
-| Baseline (7.11 law) | 0.000 | none | 0.323 | (held from about 280 s in the fixture) |
-| **Bidirectional B-path** (every second B-path birth grows from O's side toward the roots; `pilot_bidirectional.py`) | **0.605** | **122.5 s** | **0.000** | none |
-| Motion range 1.5 m.u. (scratch copy; N^x cutoff 3 → 1.5; `kernel_pilot/rev7_medium_motion_range_1p5.patch`) | 0.337 | 461.5 s | 0.000 | none |
-| Motion range 1.5 + bidirectional | 0.323 | 272.0 s | 0.096 | 868 s (simulated time, including assay steps) |
-
-**What this shows:**
-- **(i) can connect and hold.**
-  - With bidirectional growth, an output-side cluster forms around O: 13 of 25 B-path births were output-side, and the four nearest elements ended 0.35–0.38 from O.
-  - Forward bridges then meet it, and the path holds from 122 s with 45 elements, including 19 B1 sensor births.
-- **The same rule breaks (ii).**
-  - (ii)'s O at (−0.5, 0) lies within 3 m.u. of the seed blob.
-  - Each lone output-side birth, at (0.05, −0.09) about 15 times, is dragged into the seed blob by the mean pull, so the budget is spent on births that do not stay.
-- **A 1.5 m.u. motion range rescues (i) but not (ii).**
-- **No variant tested passes both starts.**
-  - Growth success depends on the start geometry: whether O's neighbourhood lies beyond the motion cutoff from the root blob.
-  - So the growth rule is not yet robust, and any fix must be judged on both starts. A pilot that rescues one start is not a fix.
-
-**Updated options:**
-- **A**, the seeded start as standard, is unchanged.
-- **C has a working mechanism:** an output-side cluster that is not inside the motion reach of the root blob. Its two candidate implementations:
-  - bidirectional growth, plus a rule that the output-side cluster is grown **before** the forward bridge arrives;
-  - a shorter motion range.
-- Each succeeded on one start only.
-- **B**, a motion law where a resonant chain is mechanically stable, remains the root fix. The 1.5 m.u. range is a crude version of it.
-
-The recommendation is unchanged: A now, with B and C as research, pending the owner and the Codex recheck. Raw traces are local and hashed (`RAW_FILES_OUTSIDE_GIT.json`).
+| Finding | Fix | Cause |
+|---|---|---|
+| **R1 (high):** "a link holds only if O is surrounded" and "whatever its size" are contradicted by the passing one-sided F5(ii) (all elements at x > −0.5, angles −17° to +77°) and by F1c. The six-sector account of F5(ii) was wrong: I read **birth** positions, not the final stored state. The nearest distances mixed two pilots. | Removed. Section 2 now states the local, trajectory-specific force imbalance and describes (ii) from its stored state. C is a hypothesis. | I generalized from three sampled tips to an impossibility claim, and inferred (ii)'s geometry from birth sectors without checking the final frame |
+| **R2 (medium):** the pilots support bounded observations only. The metric is not E. The formation patch prunes the trial graph and does not require a robust edge. The budget result is limited to this scheduler and horizon. The kernel patch also scales repulsion and sites. | Section 3 relabels the metric, adds longest-path durations and per-site values, narrows each conclusion and labels the formation pilot correctly | I wrote the conclusions more broadly than the interventions tested |
+| **R3 (medium):** option A cannot continue F6–F9 on (ii) as the code stands | Option A is now described as a new seeded protocol revision, with the required specification items and the narrowed claim | I treated a protocol change as a flag |
+| **R4 (low):** the force table omitted the positive nearest-rear term | The table now shows signed O, nearest-rear, other-six and site sums, labelled as instantaneous RHS projections | I listed only the rear terms that pulled back |
+| (new) An O-placement confound was raised in the review | Tested by swapping O between the starts: no change in either outcome; ruled out as the separating factor | — |
