@@ -571,3 +571,5 @@ The definitions are hashed with the N1 recipes.
 
 - The growth-rate figure (about 61 /s) is an order-of-magnitude estimate for the saddle's instability, not an exact eigenvalue.
 - **Coverage:** member 0 at (3.7, 0) sits **at** the r₀ = 0.3 boundary in exact arithmetic, not strictly inside. Member 1 at (3.956, 0), 0.044 from the site, is strictly inside. The case therefore still covers the inside-cutoff law. No tolerance is relaxed.
+- **Codex's exact figure** (R75-1): the initial two-member phase Jacobian has an unstable eigenvalue of about **+98 /s**. Round-off of order 10⁻¹⁶ reaches order one in about 0.38 s, which strengthens the diagnosis.
+- **The N1g measurement** (R75-3): member 0's first endpoint departure of at least 0.5 rad from its initial unwrapped phase π. The direction is the sign; the time is the first crossing, bracketed by the preceding endpoint. It is an escape diagnostic only.
