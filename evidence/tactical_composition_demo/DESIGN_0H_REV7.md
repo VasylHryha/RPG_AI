@@ -1,6 +1,6 @@
-# Design 0h, revision 7.5: phase on the task's clock, pinned ends (after the revision-6.5 fixture failure)
+# Design 0h, revision 7.6: phase on the task's clock, pinned ends (after the revision-6.5 fixture failure)
 
-**Status:** revision 7.5 (section 12, an outcome-informed N1d recipe fix after the 7.4 fixtures; under review). Revision 7.4 (section 11) was approved with notes. Revision 7.3 was design-approved by the Codex round-4 review (APPROVE_WITH_NOTES; its three low notes applied in 10.6). This is design review only: integration and execution readiness are separate gates. **Section 8 answers the Codex review** `docs/reviews/tactical_0h_rev7_design_review_codex.md` (R7-1 … R7-12) **and governs over sections 1–7. Section 9 (revision 7.2) answers the round-2 review `…_codex_r2.md` (R2-1 … R2-7) and governs over everything before it. Section 10 (revision 7.3) answers round 3 (`…_codex_r3.md`, R3-1 … R3-4) and governs over everything before it.** Drafted by Claude for Codex review. Not approved, and no execution is authorized. **The base is revision 6.5** (`DESIGN_0H_REV6.md`, with every section through 19.9). Every rule not changed below stays as written there. This is a new revision on **fresh entropy**: every key prefix `0h-rev6/` becomes `0h-rev7/`, and every world-id range moves up by 10,000,000.
+**Status:** revision 7.6 (section 13: the output port protected, after the 7.5 F5 failure; under review). Revision 7.5 (section 12) was approved with notes. Revision 7.4 (section 11) was approved with notes. Revision 7.3 was design-approved by the Codex round-4 review (APPROVE_WITH_NOTES; its three low notes applied in 10.6). This is design review only: integration and execution readiness are separate gates. **Section 8 answers the Codex review** `docs/reviews/tactical_0h_rev7_design_review_codex.md` (R7-1 … R7-12) **and governs over sections 1–7. Section 9 (revision 7.2) answers the round-2 review `…_codex_r2.md` (R2-1 … R2-7) and governs over everything before it. Section 10 (revision 7.3) answers round 3 (`…_codex_r3.md`, R3-1 … R3-4) and governs over everything before it.** Drafted by Claude for Codex review. Not approved, and no execution is authorized. **The base is revision 6.5** (`DESIGN_0H_REV6.md`, with every section through 19.9). Every rule not changed below stays as written there. This is a new revision on **fresh entropy**: every key prefix `0h-rev6/` becomes `0h-rev7/`, and every world-id range moves up by 10,000,000.
 
 ## 1. What the 6.5 fixtures showed (`growing_shapes/runner/REV6_FIXTURE_REPORT.md`, decision 0030)
 
@@ -573,3 +573,41 @@ The definitions are hashed with the N1 recipes.
 - **Coverage:** member 0 at (3.7, 0) sits **at** the r₀ = 0.3 boundary in exact arithmetic, not strictly inside. Member 1 at (3.956, 0), 0.044 from the site, is strictly inside. The case therefore still covers the inside-cutoff law. No tolerance is relaxed.
 - **Codex's exact figure** (R75-1): the initial two-member phase Jacobian has an unstable eigenvalue of about **+98 /s**. Round-off of order 10⁻¹⁶ reaches order one in about 0.38 s, which strengthens the diagnosis.
 - **The N1g measurement** (R75-3): member 0's first endpoint departure of at least 0.5 rad from its initial unwrapped phase π. The direction is the sign; the time is the first crossing, bracketed by the preceding endpoint. It is an escape diagnostic only.
+
+## 13. Revision 7.6: the output port cannot be deleted (the F5 failure report and fix)
+
+### 13.1 Failure report (the stop row F5_failed: the drafter's duty)
+
+**Run:** `growing_shapes/runner/REV75C_FIXTURE_REPORT.md` (`rev75c_fixture_run_20261006`), the measurement-tool re-run of 7.5 at pin `7a63d150…`.
+- **N1 and F1–F4 PASS again.** F1c, the live layout, settles in 2.1 s.
+- **F5 FAILS in both starts: A = B = 0, E = 0** at every checkpoint.
+
+**Cause** (from the run's own events and assay records):
+
+| Start | What happened to O |
+|---|---|
+| (i) | Born by B-out at 20 s. **Killed by D1 at 80 s** (no partners, so L = 0 for 40 s after its 20 s protection). Reborn at 80 s; **killed by D1 at 180 s**. Reborn at 180 s; **removed by D3 at 360 s** (the budget rule removes the lowest-lock elements first). |
+| (ii) | The literal start; **removed by D3 at 300 s.** |
+
+- After the output was removed, the budget was full of B1 and B-path elements: the cost reached about 62 against 64.
+- B-out was then refused for cost: 23 `cost` terminals in start (i), and 114 B-path requests ended `no_output`.
+- **Every assay copy at checkpoints 40–50 had no output** (`has_output: false` in every decision). The assays therefore measured the default action, so A = B = E = 0.
+- **F5 never tested transmission through grown paths.** The failure is a design defect: the output port could be deleted, and its re-creation competed with growth for the budget.
+
+**Responsibility:** the drafter. The role table (12.3) protected the output from drive and from root status, but not from D1 and D3, or from the budget.
+
+### 13.2 The change
+
+- **The output port O is exempt from D1, D3 and D4.** O is a pinned, designated port, like the sites. It is never removed by the death rules.
+- **O does not count in the cost**, and B-out is **never refused for cap or cost**. N counts the elements other than O, against the cap of 64.
+- **B-out still requires the reserved origin to be clear** (`placement`). With O never removed, B-out fires only once in live runs.
+- Every other rule is unchanged: D1, D3 and D4 for ordinary elements; B-path and B1; λ = 32; h; every gate.
+
+**Disclosure:** this is an outcome-informed revision, made after the 7.5 F5 result. The 7.5 FAIL is kept as recorded.
+- F5 consumes the fixture entropy (`0h-rev7/` keys). The re-run under 7.6 **reuses** that inventory, because no F5 result was valid as a transmission test: the output was absent in every assay.
+- This reuse is disclosed. The F5 and F7 seeds are not called fresh.
+- The development inventory (training and evaluation) is untouched and still fresh.
+
+| Item | Cause |
+|---|---|
+| The output port could be deleted, and its re-creation competed for the budget | The role table covered drive and roots, not the death rules or the budget |
