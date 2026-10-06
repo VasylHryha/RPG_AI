@@ -1,6 +1,6 @@
-# Design 0h, revision 7.1: phase on the task's clock, pinned ends (after the revision-6.5 fixture failure)
+# Design 0h, revision 7.2: phase on the task's clock, pinned ends (after the revision-6.5 fixture failure)
 
-**Status:** revision 7.1. **Section 8 answers the Codex review** `docs/reviews/tactical_0h_rev7_design_review_codex.md` (R7-1 … R7-12) **and governs over sections 1–7.** Drafted by Claude for Codex review. Not approved, and no execution is authorized. **The base is revision 6.5** (`DESIGN_0H_REV6.md`, with every section through 19.9). Every rule not changed below stays as written there. This is a new revision on **fresh entropy**: every key prefix `0h-rev6/` becomes `0h-rev7/`, and every world-id range moves up by 10,000,000.
+**Status:** revision 7.1. **Section 8 answers the Codex review** `docs/reviews/tactical_0h_rev7_design_review_codex.md` (R7-1 … R7-12) **and governs over sections 1–7. Section 9 (revision 7.2) answers the round-2 review `…_codex_r2.md` (R2-1 … R2-7) and governs over everything before it.** Drafted by Claude for Codex review. Not approved, and no execution is authorized. **The base is revision 6.5** (`DESIGN_0H_REV6.md`, with every section through 19.9). Every rule not changed below stays as written there. This is a new revision on **fresh entropy**: every key prefix `0h-rev6/` becomes `0h-rev7/`, and every world-id range moves up by 10,000,000.
 
 ## 1. What the 6.5 fixtures showed (`growing_shapes/runner/REV6_FIXTURE_REPORT.md`, decision 0030)
 
@@ -294,3 +294,112 @@ The 10 s and 60 s windows and their cuts are kept as **fixed engineering admissi
 | R7-10 | 8.9: an exact recurrence; B-path removed; the memory limit kept | Under-specified |
 | R7-11 | 8.10: an instantiated inventory | A blanket shift |
 | R7-12 | 8.11: versions and an identity pin | Assumed the 6.5 identity sufficed |
+
+## 9. Revision 7.2 amendments (governs over sections 1–8)
+
+### 9.1 A frame excursion bound (replaces 8.7's transient flag; R2-1)
+
+**The bound:**
+- For every element i and every 0.1 s world frame: **E_i = Σ over the 5 substeps of h · max over the 4 RK4 stages of |θ̇_i − π|**, where h = 0.02 s and θ̇_i is evaluated at each stage.
+- E_i bounds |Δ(θ_i − πt)| over the frame, under the RK4 stage-sampling assumption. The limitation (excursions between stage evaluations) is stated, not hidden.
+- **For a pair (i, j), the bound is E_i + E_j.**
+
+**A frame is flagged `fast_transient`** if E_i > π/2 for any element, or if E_i + E_j > π/2 for any pair of the current candidate or cohort.
+
+**The disposition:**
+- In a flagged frame, the flagged elements' samples are **treated as missing** for the 10 s PLV, gain, coverage and lock estimators. This reduces their active-sample counts under the inherited rules.
+- **A qualification window containing any flagged frame of its cohort is not-qualified.**
+- The screen is a **conservative warning bound**, sufficient only under the stage assumption. Its counts are reported per run.
+
+### 9.2 N1, frozen (replaces 8.7's case list; R2-2)
+
+**Common settings:**
+- The clock runs 0 → 16 s, with growth, adaptation and deaths off and λ = 8.
+- Motion is on for non-pinned members, using the full revision-7 RHS.
+- Runs at h = 0.02 and h = 0.005 are compared at every world endpoint (each 0.1 s).
+
+| Case | Sites (position, k, α) | Members (id: position, θ₀, ω, g, role) | Entry metric |
+|---|---|---|---|
+| N1a, high gain | (4, 0), k = 4, α = 0, then π/2 at t = 8 | 0: (3.2, 0), 0, π, 2, element | defined: tolerance 0.3 to α after t = 8 |
+| N1b, detuned | (4, 0), k = 2, α = 0 constant | 0: (3.2, 0), 0, 1.5π, 1, element | not applicable (declared) |
+| N1c, conflict | (4, 0), k = 2, α = 0; and (2.828, 2.828), k = 2, α = π | 0: (3.0, 1.3), 0, π, 1, element | not applicable |
+| N1d, near the site body | (4, 0), k = 2, α = 0 | 0: (3.7, 0), θ₀ = π (antiphase, the strongest repulsion), π, 1, element; 1: (3.956, 0), 0, π, 1, element (inside the cutoff) | not applicable |
+| N1e, scaffold | as F1b (8.2) | as F1b | defined: as F1b |
+
+**The comparisons:**
+- **Phase:** the maximum over endpoints of |wrap((θ − πt) at h = 0.02 minus the same at h = 0.005)| must be ≤ 0.01 rad, for every member.
+- **Entry** (where defined): both runs enter → the times must differ by ≤ 0.1 s; neither enters → pass for that metric; only one enters → **FAIL**.
+- **Topology:** the fractions of endpoints with identical N^x lists and identical N^θ lists are reported **separately**, and each must be ≥ 99%.
+- **Pins** must be invariant.
+
+The recipes are hashed with the configuration identity.
+
+### 9.3 The output belongs to its snapshot (replaces 8.8's cohort exclusion; R2-3)
+
+- **External sites are excluded from cohorts. The pinned output O may be a candidate member,** so G1c and G5 keep meaning.
+- **Position kicks** act on the candidate's **free** members, with the RMS over that set.
+- **Phase kicks** act on **all** candidate members, O included.
+- O stays fixed in both futures, at every stage.
+- An extracted snapshot keeps O's role and pin.
+
+### 9.4 The site-body vector law (replaces 8.4's regularization; R2-4)
+
+With r = |q_s − x_i| and r₀ = 0.3 m.u.:
+
+    v_site(i, s) = [A(1 + J cos(ψ_s − θ_i)) − B / max(r, r₀)] · (q_s − x_i) / max(r, r₀)
+
+- **At r = 0** the vector is 0, because the displacement is 0.
+- **Bounds:** for r ≤ r₀ the term is linear in the displacement, and its Jacobian norm is ≤ (A(1 + J) + B/r₀)/r₀ ≈ 17 /s, before the N^x mean.
+- **Status:** a **new engineering law**, qualified by N1d. It is not inherited C4. The C4 element-pair code is unchanged.
+
+**Changed starts:**
+- **F5(ii)'s hexagon is recentred at (3.1, 0).** That gives a clearance of 0.344 from site 0 and a nearest-O distance of 3.044, so the route stays initially missing. This is a new fixture table.
+- **The F4 parity scaffold's element at the site moves to (3.7, 0),** 0.3 from it.
+
+Motion inside the cutoff is tested by N1d. Birth clearance (8.4) is a placement rule, not an invariant of motion.
+
+### 9.5 Admissible recovery kicks (completes 8.8; R2-5)
+
+- **Position kicks:** a Gaussian draw from the kick generator, normalized to the inherited RMS (0.1 × the median spacing of the candidate's free members). It is **admissible** if every moved destination is ≥ 0.05 m.u. from every other element and ≥ r₀ from every physical site.
+  - Otherwise the draw is repeated, **up to 8 draws**, in fixed RNG order.
+  - If none is admissible, the candidate is skipped as `inadmissible_kick`.
+  - **No clipping.** The achieved RMS equals the requested RMS, and both are recorded.
+- **Phase kicks** keep the inherited RMS (0.3 rad) over all candidate members.
+- **Reported:** skip counts with their denominators; and absolute and anchor-relative displacement, beside the inherited centroid-relative relaxation.
+
+### 9.6 Locking, exactly (corrects 8.1; R2-6)
+
+For one fixed oscillator driven with unscaled amplitude a and detuning δ = ω − π, the stable locked offset satisfies sin(β − α) = δ/(λa): β − α = arcsin(δ/(λa)), for |δ| < λa. The boundary is marginal.
+- "Shrinks by 1/λ" is the small-offset approximation.
+- Networks with conflicting drives have no such sufficient condition.
+
+### 9.7 The governing revision-7 stop table (replaces the scattered rows; R2-7)
+
+| Yes/no question | Yes → one action | Role |
+|---|---|---|
+| Is the revision-7 integration not implemented, tested and reviewed? | Block all execution | implementer |
+| Is a source identity, configuration or inventory pin missing or mismatched at execution start? | Block execution | implementer |
+| Does N1 FAIL, or is it INVALID? | Block F1 and every later fixture | implementer |
+| Does F1a, F1b, F1c or F2–F4 FAIL? | Block F5 and development; report | implementer |
+| Did a fixture measurement fail (crash, non-finite value, missing record)? | Report INVALID; block the next stage | implementer |
+| Does F5 or F7 FAIL? | Block development; write the failure report | drafter |
+| Has any protocol element changed after results were seen? | Draft a new revision with fresh entropy | drafter |
+| Is the development run longer than 1 hour and due to start before 22:00? | Ask the owner (decision 0031) | implementer |
+| Has development stopped, and is a next step needed? | Ask the owner | owner |
+
+**The execution basis:**
+- fixtures under 1 hour run under decision 0031 once this design passes review and the integration review passes;
+- a formal milestone would still need AGENTS.md registration and the gated pipeline;
+- decision 0030 covered only the 6.5 fixture run.
+
+### 9.8 Self-audit (round 2)
+
+| # | Disposition | Cause |
+|---|---|---|
+| R2-1 | 9.1: a frame excursion bound with pairs; flagged frames treated as missing | A per-substep test was too local |
+| R2-2 | 9.2: a frozen N1 table and comparison rules | Named cases without states |
+| R2-3 | 9.3: O may be a candidate member | Over-broad exclusion |
+| R2-4 | 9.4: the full vector law; F5(ii) recentred; the F4 element moved | A scalar-only clamp |
+| R2-5 | 9.5: admissibility with up to 8 redraws, no clipping | No refusal policy |
+| R2-6 | 9.6: the exact arcsine law | Stated an approximation as exact |
+| R2-7 | 9.7: one stop table | Scattered prose |

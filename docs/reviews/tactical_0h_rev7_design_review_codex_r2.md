@@ -1,0 +1,113 @@
+CHANGES_REQUIRED
+Reviewer family: Codex
+Reviewed DESIGN_0H_REV7.md SHA256: b49bac99987f53063be8286dfe2c3e7c2ab350fde9f869f4d27a6f37d60577d3
+
+## Disposition of round-1 findings R7-1–R7-12
+
+Section 8 of revision 7.1 governs over sections 1–7. Withdrawn prose in those earlier sections is not treated as a live defect.
+
+| Finding | Round-2 disposition | Evidence and remaining work |
+|---|---|---|
+| R7-1, λ derivation | CLOSED | §8.1 replaces the contradictory two-second requirement with a four-second settling margin. The toy delays select 8 among the declared powers of two. This is an explicit engineering policy, not a universal or optimal RRG constant. |
+| R7-2, locking and diagnosis | CLOSED WITH LOW NOTE | §8.1 preserves the carrier, discloses wider locking, and narrows the diagnosis to hypotheses; §8.1 defines F1d's outputs. The exact offset formula needs the correction in finding 6. |
+| R7-3, pin coordinates | CLOSED | §8.2 gives explicit local-fixture exceptions and an origin-output F1c. Live B-out refuses occupied origin placement instead of relocating O. |
+| R7-4, topology and normalization | CLOSED | §8.3 separates motion and phase neighbour lists, counts, tie breaking and graph uses. External sites are accounted separately. The vector regularization issue belongs to R7-5, below. |
+| R7-5, site collisions | PARTIALLY RESOLVED | §8.4 prevents coincident ordinary births, but its scalar repulsion clamp does not specify a bounded full vector law. The retained F5(ii) start is inside the claimed clearance; kick admissibility is unfinished. Findings 4–5. |
+| R7-6, anchoring and extra channel | CLOSED | §8.5 withdraws the string guarantee, discloses activity-gated observation-to-motion input, and adds site-body-off. This supports only the narrowed terminal-response claim. |
+| R7-7, F1c gate | CLOSED; PROCESS NOTE | §8.6 supplies an entry deadline, sustained response, effective-root path and access cuts; pin invariance is correctly separated. Consolidate the stop rows as finding 7 requests. |
+| R7-8, numerical/sampling qualification | PARTIALLY RESOLVED | §8.7 adds a useful refinement gate, but its substep flag can miss excursions across an estimator frame, and the N1 states are not actually declared. Findings 1–2. |
+| R7-9, clocks and recovery | PARTIALLY RESOLVED | §8.8 explicitly retains engineering admission cuts and constrains positional kicks. Excluding O from all cohorts changes G1c/G5, and the perturbation set/admissibility remain ambiguous. Findings 3 and 5. |
+| R7-10, timers and empty start | CLOSED | §8.9 gives an exact B1 recurrence and active-at-check guard, removes the nonexistent B-path timer, applies the empty start to all policies, and preserves the memory eligibility limitation. |
+| R7-11, fresh entropy | CLOSED | §8.10 names new ranges, calibration/reference exceptions and deterministic scaffolds. Instantiation, hashing and actual disjointness checks remain execution prerequisites, not results of this review. |
+| R7-12, identity/readiness | SUBSTANTIALLY CLOSED | §8.11 adds new versions, inherited-design pins and new-file integration. Decision 0031 exists and supplies standing short-run permission; the remaining stop-table/registration distinctions are in finding 7. |
+
+Codex (GPT-6), cross-family design review, round 2, 2026-10-06; within the requested approximately 20-minute cap. Inspected HEAD: `6b2f7ac9f7f70116b33d25fc9db4512519628bd1`. This is a design verdict. Claude, as drafter, owns repairs and their self-audit causes.
+
+Read AGENTS.md, the entire revision-7.1 amendment, the entire revision-6.5 base through 19.9, the inherited revision-5.1 design, round 1, the fixture report, C4 model/detector and relevant existing fixture, qualification and template adapters. Also read current RRG source guidance, R5 and decisions 0030/0031. Executed only the expressly authorized standalone toy, once, with `python3 -B evidence/tactical_composition_demo/growing_shapes_review_claude/rev7_toy/f1b_toy.py`; it imports only `math`. No project code, project imports, tests, native libraries or experiments ran. No recorded verdict was recomputed. Only this review file was written. Git metadata is read-only under this session's filesystem policy; the file is left uncommitted in the workspace.
+
+Evidence notation: **R7** = `evidence/tactical_composition_demo/DESIGN_0H_REV7.md`; **R6** = `.../DESIGN_0H_REV6.md`; **Base** = `.../DESIGN_0H.md`; **Report** = `.../growing_shapes/runner/REV6_FIXTURE_REPORT.md`; **Toy** = `.../growing_shapes_review_claude/rev7_toy/f1b_toy.py`; **C4** = `geomind/c4_model.py`. Adapter paths below are relative to `evidence/tactical_composition_demo/growing_shapes/`. Line references identify the inspected bytes.
+
+Additional identities: R6 `ca9c43362e3eebace889c7306784ffe5dd3095a58eb2095473f745eff31b52c5`; Base `39a630c3f4d440a6634538121773253443dcb15e8166406f36cde3727c119925`; Report `d530ae6236cb63e978d5224c33db693e446c9242884a5a4751295855158f7fc8`; C4 `4fafc161b65914a44dccaca6caefb59a5154079f17f564b4cdc4d44f58c59d33`; Toy `3f0513ac76a1dd03a2ed260a3a88d9927d0b0167f8ab730b383b87fc98b076b9`.
+
+## New and residual numbered findings
+
+### 1. R2-1 — HIGH: the new transient screen still misses estimator-frame aliasing
+
+**Evidence:** R7:192–194 stores each unwrapped 0.02-second relative increment but flags a 0.1-second frame only if an individual increment exceeds π/2. Five increments below that cut can accumulate to a much larger change. For example, five increments of +0.6 rad for one member and −0.6 rad for another give individual substep increments below π/2, but a six-radian change in their pair difference between estimator samples. The inherited wrapped-pair screen sees only about 0.283 rad, also below its cut. This is a screen counterexample, not a simulated trajectory or a claim that these exact increments occur in F1. The individual 30 rad/s corrections in that example are below the declared high-gain drive bound.
+
+The inherited detector measures pairwise phase differences, not only each member against the carrier (Base:170; `runner/rev6_qualification.py`:28–30). A per-member substep test misses both accumulation and opposite-direction pair motion. Substep endpoint net increments also miss an excursion that reverses inside a substep. Marking flagged qualification windows not-qualified does not specify what happens to the 10-second PLV/gain, coverage and lock estimators on the same fast frames.
+
+**Fix:** accumulate a conservative excursion over the entire 0.1-second sampling interval. At minimum retain signed unwrapped increments and their absolute sums per member; use pair differences, or a conservative sum of the two member bounds, for the pairwise screen. Include stage/RHS bounds or an explicit limitation for unresolved within-substep excursions. Freeze the threshold and the propagation of invalid frames into qualification and the 10-second estimators. If the screen remains a warning rather than a sufficient bound, say so; do not claim it certifies sampling validity. Unwrapped endpoint ω̂ avoids wrapping alias in the rate estimate, but it does not validate circular PLV samples.
+
+### 2. R2-2 — HIGH: N1 has named scenarios, not frozen states or fully defined verdicts
+
+**Evidence:** R7:183 says “the same declared states,” but R7:184–188 supplies only gain, detuning, input-conflict and near-pin labels. It supplies no complete member/site coordinates, phases, roles, initial clock, input schedule or adaptation setting for four of the five cases. “Two sites in antiphase” can mean exact cancellation at a symmetric element, which exercises little phase stiffness, or unequal forcing with substantial motion; both satisfy the prose. The near-pin phase difference also controls the force. Entry times are undefined for cases with no declared target/step or no entry. R7:190 does not specify which lists are compared for the topology endpoint.
+
+This gate blocks every fixture, so an implementer must not choose its difficulty or its missing-entry disposition while observing numerical results.
+
+**Fix:** add a deterministic N1 state/schedule table before implementation execution: ids, coordinates, θ, ω, g, roles/pins, sites/strengths, step times, target/tolerance and on/off settings. Declare comparisons at matching world endpoints, the demodulated phase-error convention, and separate N^x/N^θ topology fractions. For entry metrics, specify both-missing and one-missing outcomes and identify cases where entry is legitimately not applicable; record that endpoint disposition. Include activity/radius transitions and the actual exceptional near-site start from finding 4. Hash these recipes with the inventory/configuration. Keep the proposed 0.01-rad and 0.1-second tolerances fixed unless a new revision is declared. No numerical instability or failed convergence is asserted here; neither was run.
+
+### 3. R2-3 — HIGH: excluding pinned O from cohorts makes snapshot competence and G5 vacuous
+
+**Evidence:** R7:217 excludes “pinned elements and sites” from cohorts. All output elements are pinned under §8.2. The inherited snapshot contains only candidate members (Base:183–186,213–219; `runner/rev6_qualification.py`:71–73; `runner/rev6_protocol.py`:36–40). Consequently every extracted revision-7 qualified snapshot lacks O, regardless of where its ordinary members sit. R6:169 declares G1c unchanged and allows output-bearing snapshots; the singleton-role readout now makes that possibility impossible. Every G1c episode therefore receives the default, and both G5 carrier-shift copies receive the same defaults, producing D = 0 without testing output/coupling/pin covariance. G2 on the whole final medium is unaffected; this defect concerns the snapshot endpoints.
+
+R7:215 also says phase kicks “may include O,” although O can no longer be a candidate member. The kick population is therefore ambiguous: candidate-only kicks and a separate boundary-phase kick are different interventions.
+
+**Fix:** preferably exclude external **sites** from cohorts, but permit the internal pinned output as a candidate member. Kick positions only for the candidate's free members, normalize over that explicit set, and kick phases over the explicitly declared candidate set, which can then include O. Keep O fixed in both futures at every RK4 stage. Alternatively deliberately retain O's exclusion, declare G1c structurally forced to defaults, and replace/supplement score-based G5 with a declared trajectory covariance diagnostic. That alternative changes endpoint scope and budgets and must be written into the design. Do not silently attach a new output to an extracted group or count default agreement as evidence that the new readout copies correctly.
+
+### 4. R2-4 — HIGH: clamping scalar repulsion does not establish the claimed stiffness bound
+
+**Evidence:** R7:151–153 regularizes the scalar repulsion as B/max(r,0.3), and infers an approximately 11/s stiffness bound. C4's full force includes a direction factor, implemented with the displacement divided by max(r,ε) (C4:85–91). If only the scalar repulsion is clamped, then for ε < r < 0.3,
+
+    v_site = [A(1 + J cos Δθ) − B/0.3] · (q − x)/r.
+
+Its tangential Jacobian contains the scalar coefficient divided by r; it is not bounded by B/0.3². At coincidence the direction needs a separate definition. If both appearances of r are intended to use 0.3, the design must say so explicitly; that is a different vector regularization.
+
+Birth clearance is not an invariant for subsequent free motion. It also does not describe every inherited fixture state. The retained F5(ii) member id 0 is at (3.956,0), only **0.044 m.u.** from site (4,0), by R6:583,586 and R7:130. It is inside the new cutoff from the start, while N1 only names r = 0.3. The existing F4 parity scaffold even has an ordinary element exactly at the site (`runner/rev6_fixtures.py`:31,35). Initial fixture/copy states and new births need separate explicit validation rules.
+
+**Fix:** publish the complete site-body vector RHS, including its direction, r = 0 convention and normalization. One bounded engineering option is to use displacement/max(r,r0) as well as B/max(r,r0), with r0 = 0.3; qualify that new law rather than borrowing a scalar derivative bound. A smooth full-vector softening is another option. Explicitly exempt and numerically cover the retained exceptional starts, or replace their literal tables. For example, centring the F5(ii) hexagon at (3.1,0) instead of (3.4,0) gives nearest site-0 clearance 0.344 and nearest O distance 3.044, retaining the initially missing route; this is a proposed new fixture, not an edit or a run. Regardless of that choice, test inside-cutoff motion because ordinary evolution is not clearance constrained. Preserve accepted C4 element-pair code unchanged.
+
+### 5. R2-5 — MEDIUM: constrained recovery kicks have no executable clearance/refusal policy
+
+**Evidence:** R7:148 applies placement clearances to recovery kicks, while R7:213–216 defines free-member RMS and a no-free-member skip but no construction/rejection rule. The inherited kick draws a Gaussian displacement and normalizes it to a fixed RMS (Base:179,196; `geomind/c4_detect.py`:130–139). Such a kick can place a member too close to a site or another element. Clipping the displacement, dropping a member, or redrawing until success changes the perturbation distribution/RMS and entropy consumption in different ways. Existing live members can already violate a birth clearance, as finding 4 demonstrates.
+
+**Fix:** declare the position and phase kick sets, spacing estimator and RMS denominators separately. Specify whether clearance applies to moved destinations or to the complete saved state, bounded deterministic rejection/resampling, and an `inadmissible_kick` skip when the prescribed kick cannot be placed. Freeze attempt count and RNG order; report requested and achieved RMS and skipped-candidate denominators. Do not clip a kick and call it the inherited fixed-size perturbation. Keep untouched pins identical, and record absolute/anchor-relative displacement alongside inherited centroid-relative relaxation so a rigid displacement is not mistaken for return to the anchored position. This can be completed in the new adapter without editing frozen functions.
+
+### 6. R2-6 — LOW: the locking-offset statement is an approximation, not an exact λ law
+
+**Evidence:** R7:111 says locked offsets shrink by 1/λ. For a single fixed driven oscillator, letting δ = ω − π and a be its effective unscaled drive amplitude, the stable locked carrier-relative offset from the input satisfies
+
+    sin(β − α) = δ/(λa),
+    β − α = arcsin[δ/(λa)],    |δ| < λa.
+
+The inverse-λ statement is the small-offset approximation. At the locking boundary the equilibrium is marginal, so “locks” and “settles robustly” are not interchangeable. A network with conflicting drives also cannot use that single-site inequality as a sufficient global locking condition.
+
+**Fix:** give the exact single-oscillator formula, label the approximation and marginal boundary, and preserve the narrower network claim. This does not invalidate choosing λ = 8 under the zero-detuning fixture policy.
+
+### 7. R2-7 — LOW: consolidate the new stop conditions and execution boundary into the required table
+
+**Evidence:** R7:179,195,279 adds stop conditions in prose, without the required yes/no row, one action and responsible role (AGENTS.md, Proposal phase). The inherited table names revision-6 readiness and separate fixture permission; §8.11 correctly updates those semantics but leaves the implementer to assemble them. Decision 0031 grants standing short-run permission, while decision 0030 was the specific historical 6.5 run grant. Neither a passing design review nor an under-one-hour projection is milestone registration, scientific acceptance or authorization to bypass a failed numerical/source gate.
+
+**Fix:** publish one governing revision-7 stop table. Include these yes/no rows with the implementer responsible: integration unreviewed → block execution; N1 FAIL or INVALID → block F1 and later fixtures; F1a/b/c or F2–F4 FAIL → block F5/development; measurement failure → block the next stage as INVALID. Retain drafter ownership of design repairs and the fresh-revision rule. State the actual owner/decision basis for an authorized fixture execution; retain later-development budget/approval requirements as applicable under 0031. Formal new milestone execution still requires AGENTS.md registration and the gated pipeline. This review's explicit no-project-code instruction governs this session regardless of standing permission.
+
+## Assessment of the repaired scientific and engineering choices
+
+The **diagnosis is now appropriately bounded**. Report:15–19,44–48 supports eventual but late F1b transmission and F1c compaction/loss of geometric access; it does not isolate one cause. The 1,117 element-seconds is pooled over members, not 1,117 seconds of source inactivity: the report's source-drive-presence bins remain 100%. Drive strength can fall substantially even while strict reach and the named S→O path persist. Keep that distinction when describing the diagnosis. F1d measures a total λ effect in the new pinned system, including changes in phase-dependent motion, not a pure causal isolation of the historical failure.
+
+The **λ choice is now internally derived from its declared policy**. The authorized toy printed absolute first entries 31.04, 19.52, 13.76 and 10.88 s for λ = 1,2,4,8; subtracting the t = 8 step gives delays 23.04, 11.52, 5.76 and 2.88 s. Thus 8 is the first declared power of two below four seconds. The toy is fixed-position, zero-detuning forward Euler at h = 0.002, not the mobile RK4 engine. Its result supplies an engineering candidate and margin, not a general four-second memory-encoding guarantee from arbitrary trained phases. Keeping ω_D = π and the demodulator unscaled is correct. Scaling both coupling and drive retains their instantaneous coefficient ratio but changes detuning tolerance, phase-dependent forces, adaptation signals and the ratio to geometric motion.
+
+The carrier advances only π·0.02 ≈ 0.063 rad per medium substep; **λ does not speed up the carrier**. It speeds corrections. For the N1 single-site k = 4, g = 2 case the drive contribution can be as large as 64 rad/s before adding internal coupling. This is a conservative bound, not measured behavior or a proof of RK4 instability. Stable integration and valid 0.1-second circular sampling are separate issues; findings 1–2 address the latter and the missing qualification recipe.
+
+Keeping the **10/60-second windows and physical-unit cuts** is defensible under §8.8's explicit new engineering-admission interpretation. They should not be divided by eight because geometry, carrier and intrinsic ω were not rescaled. For illustration, the inherited r* link with eight neighbours has local coefficient about 0.092/s, versus 0.734/s at λ = 8: a nominal single-link relaxation changes from about 10.9 to 1.36 s, while the adaptation time remains 20 s. These are local estimates, not whole-network measured relaxation. A π/2 encoding change contributes approximately 0.157 rad/s to the ten-second realized-rate estimator while that change spans its endpoints. That estimator measures realized phase velocity, not an independently identified natural rate. Faster/common-input restoration can make driven qualification easier without establishing autonomous closure. Admission rates and thresholds from accepted C4 or historical 6.5 evidence do not transfer.
+
+The **boundary law has consistent units once fully specified**: A has m.u./s, B has m.u.²/s, J is dimensionless, λ is dimensionless, and coupling/drive have rad/s; motion is the scalar pair coefficient times a dimensionless direction, averaged over N^x. Separate N^θ preserves the phase graph and its normalization. External site bodies remain a new engineering input, not accepted C4 evidence. Fixed output position does not guarantee preservation of ordered chains, distributed tension or ordinary-node span.
+
+There is **no literal site→O phase echo at the live origin**: all sensor sites are four units away, beyond the strict radius-three neighbourhood, and sites have no phase-neighbour term. F1a/b and F3 intentionally use other pin positions for local response/mask checks. The output drive/history mask keeps its meaning as a phase-drive mask. It does not mean observation cannot reach geometry: site activity and ψ enter motion even for g = 0. A driven ordinary oscillator can still relay directly to O after motion creates an element edge; G2 permits that terminal response. The site-body-off comparator should use paired final-medium copies on the same declared panel, with only N^x site bodies removed, and be recorded descriptively with its scope and cost. F1c's repaired gate can validate sustained access and function despite compaction; it cannot certify preservation of the original long chain. Record new direct S→O shortcuts explicitly and keep that stronger claim absent.
+
+The **freeze-not-reset recurrence and empty start are sound attribution choices** under their declared limits. Demand accumulated during cues waits for an active growth check; quota/resource refusals retain it. This creates queued structural demand, not gain/reward eligibility during established four-second memory cues. All three policies start empty with the same clock/check schedule and no initial detuning draw. Mark old medium-initialization keys unused where no initialization draw exists; growth/world entropy still supplies run variation. Preserve F8's carried-history boundary diagnostic.
+
+The **fresh-entropy and identity repairs are sufficient as design contracts** once the complete inventory is actually instantiated and checked before execution. Keep old calibration and historical-reference labels and bytes. Deterministic scaffolds are reused engineering recipes with changed laws/layouts, not independent fresh-seed evidence. Current source readiness is recorded VERIFIED in `research/rrg/CURRENT.md`; this review did not rerun source-package qualification. No full RRG recursion, learned structural transformation, reusable functional library or computation beyond the phasor is established by this design review.
+
+Complete findings 1–5 as one drafter-owned repair batch, with the exact locking statement and governing stop table, before revision-7 integration is declared ready. Preserve the historical F1b FAIL and all NOT_RUN rows. No additional task-score tuning, retrospective threshold adjustment or edits to accepted C4 code are needed to repair these contracts.
+
+Assisted-by: Codex:GPT-6
