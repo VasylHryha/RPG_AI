@@ -49,7 +49,8 @@
 | A6j | **Revision 7.7:** strong links (w ≥ 0.5, r ≤ 0.833) | DONE: Codex APPROVE_WITH_NOTES; implemented (108 tests); Claude check **READY_FOR_FIXTURES** (pin `9628282d…`) | Claude, Codex | — |
 | A6k | 7.7 fixtures | DONE (the owner's go): **FAIL at F1b and F1c only on the strong-path fraction**; their responses PASS; the pinned last link sits at 0.87 (> 0.833) | Codex | — |
 | A6l | Revision 7.8 (a radius 1.177) | **REJECTED** by Codex (F1c degree is 6; F1c's last link sits at 1.41) | — | — |
-| A6m | **Revision 7.9:** strong edge = actual coupling rate λK e^(−r²)/|N_i| ≥ 0.5 /s | **Codex review + implementation RUNNING** | Claude, Codex | decision 0031 |
+| A6m | **Revision 7.9:** strong edge = actual coupling rate ≥ 0.5 /s | DONE: Codex APPROVE_WITH_NOTES (saved F1b and F1c strong paths at 100%; weak links excluded); implemented (122 tests); Claude check **READY_FOR_FIXTURES** (pin `27a3c462…`) | Claude, Codex | — |
+| A6n | **7.9 fixtures N1–F9** | **QUEUED: start after the C6 timing**, alongside the 0g v5 run (`scratchpad/night_0h79.sh`) | Codex | decision 0031 |
 | A7 | Cost projection from the measured F rates | — | Codex | — |
 | A8 | **The development run** (48 trainings, about 16 h or more of serial compute) | — | Codex | **[OWNER] approve the run and its time** |
 | A9 | Review the results, then the owner's recheck | — | Claude, then Codex | — |
