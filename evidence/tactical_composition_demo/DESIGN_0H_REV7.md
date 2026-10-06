@@ -1,6 +1,6 @@
-# Design 0h, revision 7: phase on the task's clock, pinned ends (after the revision-6.5 fixture failure)
+# Design 0h, revision 7.1: phase on the task's clock, pinned ends (after the revision-6.5 fixture failure)
 
-**Status:** drafted by Claude for Codex review. Not approved, and no execution is authorized. **The base is revision 6.5** (`DESIGN_0H_REV6.md`, with every section through 19.9). Every rule not changed below stays as written there. This is a new revision on **fresh entropy**: every key prefix `0h-rev6/` becomes `0h-rev7/`, and every world-id range moves up by 10,000,000.
+**Status:** revision 7.1. **Section 8 answers the Codex review** `docs/reviews/tactical_0h_rev7_design_review_codex.md` (R7-1 … R7-12) **and governs over sections 1–7.** Drafted by Claude for Codex review. Not approved, and no execution is authorized. **The base is revision 6.5** (`DESIGN_0H_REV6.md`, with every section through 19.9). Every rule not changed below stays as written there. This is a new revision on **fresh entropy**: every key prefix `0h-rev6/` becomes `0h-rev7/`, and every world-id range moves up by 10,000,000.
 
 ## 1. What the 6.5 fixtures showed (`growing_shapes/runner/REV6_FIXTURE_REPORT.md`, decision 0030)
 
@@ -90,3 +90,207 @@ Everything else of 6.5 is unchanged:
 | F1c compaction | Relied on D4 and a wall; neither anchors an aggregating law | Pinned ends (section 3) |
 | Memory demand | Reset-on-inactivity timers | Freeze (section 4) |
 | Attribution | A random initial scaffold | Empty start (section 4) |
+
+## 8. Revision 7.1 amendments (each replaces or completes the named clause)
+
+### 8.1 How λ is chosen (replaces the derivation in section 2; R7-1, R7-2)
+
+**The rule:** λ is the smallest power of two for which the dense 3-link scaffold settles within **half the inherited F1 deadline (4 s)** after the input step. Settling means the first entry into the 0.3 rad tolerance, held to the end. The case is zero detuning, positions fixed, and the toy's initial phases (all 0).
+
+| λ | Delay (s) | Meets 4 s? |
+|---|---|---|
+| 4 | 5.76 | no |
+| 8 | **2.88** | **yes** |
+
+So **λ = 8**. The section-2 "2 s" claim is **withdrawn**.
+
+**What λ is:** fixture-calibrated engineering. It is chosen from the task's timing, never from a task score. The real F1 tests it on the engine.
+
+**What λ does** (stated, not hidden):
+- **Fixed geometry, ω = π:** it is a pure time dilation of the relative phases.
+- **With detuning:** the locking range widens to |ω_i − π| ≤ λa, and locked offsets shrink by 1/λ.
+- **With moving geometry, adaptation or changing input:** it is not a rescaling of the whole system.
+
+The carrier ω_D = π stays unscaled, as do the demodulator and the task clock.
+
+**The diagnosis is labelled as supported hypotheses:** a slow phase clock (the F1b delay) plus loss of drive access through compaction (F1c had 1,117 element-seconds without sensor access). Neither alone is claimed as the cause.
+
+**F1d** (descriptive): F1b's pinned scaffold at λ = 1 and λ = 8, reporting delays, deadline errors, effective-root and drive exposure, and topology and geometry histories.
+
+### 8.2 Pin coordinates (replaces section 3's pin sentences and section 5's F1 positions; R7-3)
+
+| Case | O's pin | Note |
+|---|---|---|
+| Live runs (training and controls) | **(0, 0)** | B-out reserves the origin: if any element is within 0.05 of it, the birth is refused `placement` and retried at the next check. It is never relocated. |
+| F1a | (2.644, 0), the inherited literal | A local response fixture; exempt from the origin rule |
+| F1b | (1.532, 0), the inherited literal | Exempt, as F1a |
+| **F1c (new layout)** | **(0, 0)** | S at (3.2, 0); 5 intermediates at x = 3.2 − 0.556·m (m = 1 … 5; the last at 0.42); g = 0; **no initial S → O edge (|S − O| = 3.2 > 3)** |
+| F1d | as F1b | — |
+| F2, F3 | the 6.5 literals | O pinned there |
+| F5(ii) | (−0.5, 0), the 6.5 literal | An explicit exception: it keeps the route missing at the start |
+| Copies and evaluation | the stored coordinate | Checked against the stored value, never against a universal radius |
+
+### 8.3 Two neighbour lists (replaces section 3's "same list" sentence; R7-4)
+
+- **N_i^x (motion):** the k ≤ 8 nearest among **elements plus active pinned sites**, strict r < 3, with its own mean count.
+  - Ties are broken by distance, then type (elements before sites), then id.
+  - Held for all four RK4 stages. ψ_s is advanced on the carrier at each stage.
+- **N_i^θ (phase):** the k ≤ 8 nearest **elements only**, strict r < 3, with its own count. It is the **existing** phase list and influence graph.
+  - Graph reach, lock eligibility, PLV histories, B-path trials and the cost all use N^θ.
+- **Sites are external boundary bodies.** They are excluded from N (the element count), the budget, templates, qualification cohorts and the element-pair cost. Their motion interactions are reported.
+- **The edge cases:**
+  - An empty N^x gives no motion; an empty N^θ gives no coupling.
+  - A silent or lesioned element keeps its N^x role.
+  - An inactive site (k_s = 0) is absent from N^x.
+
+### 8.4 Births clear of the sensor bodies (amends placement; R7-5)
+
+- **Every placement must be ≥ 0.3 m.u. from every physical sensor location (all 8, active or not)** and ≥ 0.05 from every element. This applies to B1, B-out, B-path trials, M, U and recovery kicks.
+  - For B1, that means the first admissible point of the inherited spiral (j ≥ 3).
+  - A refusal keeps the existing codes (`placement`, `exhausted`).
+- **The site-body repulsion is regularized** as B / max(r, 0.3), with 0.3 in m.u.
+  - This bounds the local stiffness B/r² at about 11 /s before normalization.
+  - It applies to site bodies only; element pairs keep C4's ε.
+
+### 8.5 The anchoring claim and the extra input channel (amends section 3; R7-6)
+
+- The "string between pins" sentence is **withdrawn.** Persistence under C4 motion is an **engineering hypothesis**, tested by F1c and F5.
+- **A new observation-to-motion channel is disclosed:**
+  - Site bodies use ψ_s in the motion cosine, so input reaches geometry even for g = 0 elements.
+  - The site bodies are activity-gated (present iff k_s > 0) and unweighted by k_s.
+  - G2's claim stays **input-dependent terminal-channel response**: it does not distinguish phase routing from this geometric route.
+- **A new descriptive intervention, "site-body off":** the same copy with the site bodies removed from N^x, and the drives kept.
+
+### 8.6 F1c as a gate (replaces section 5's F1c criterion; R7-7)
+
+The layout is that of 8.2: the site steps from 0 to π/2 at t = 8 s, over a 160 s run with free motion of non-pinned members.
+
+**PASS needs all of these:**
+1. **Entry:** the first entry into ≤ 0.3 rad by **t = 16 s** (inclusive). No entry means FAIL.
+2. **Hold:** ≤ 0.3 rad at every world step from the entry through t = 24 s (inclusive).
+3. **Path:** a directed path from an **effective driven root** to O in ≥ 80% of the world steps of the 160 s.
+4. **Access:** S within drive reach of the active site in ≥ 80% of the world steps.
+5. **Response persistence:** the error is ≤ 0.3 rad in ≥ 80% of the world steps of [16, 160] s.
+
+**Recorded:** source–site distances, the span and radius of ordinary nodes, the minimum distances, shortcuts and link weights.
+
+**The pin-invariance check** (O at exactly (0, 0) throughout) is an implementation check, not an endpoint.
+
+**Stop rows added:** F1c FAIL blocks F5. An F1c measurement failure is INVALID. F1d is descriptive.
+
+### 8.7 Numerical qualification (new fixture N1; R7-8)
+
+**The cases** (h = 0.02 against h = 0.005, the same declared states):
+- high gain: k = 4, g = 2, one site;
+- detuning: ω = π ± 0.5π;
+- conflicting inputs: two sites in antiphase;
+- near-pin: an element at r = 0.3 from a site body;
+- the F1b scaffold.
+
+**PASS:** the maximum absolute difference of the demodulated phases is ≤ 0.01 rad over 16 s; entry times differ by ≤ 0.1 s; topology is identical in ≥ 99% of the world steps; and the pins are invariant.
+
+**Estimator validity:** the integrator stores the **unwrapped** per-substep relative increment |Δ(θ − πt)| for every element.
+- If any increment exceeds π/2 within a world step, that frame is flagged `fast_transient`.
+- The flag counts are reported, and qualification windows containing them are marked not-qualified. They are never silently used.
+- **N1 failure blocks every other fixture.**
+
+### 8.8 Clocks, adaptation and a constrained recovery adapter (R7-9)
+
+**The ledger of clocks:**
+
+| Clock | Value | Status |
+|---|---|---|
+| Phase relaxation | ×λ | sped up |
+| Geometry (A, B, J) | — | unchanged |
+| Carrier | π | unchanged |
+| ω̂ estimator | 10 s | unchanged |
+| Adaptation | η = 0.05 /s | unchanged |
+| Qualification | 60 s window; 0.005 rad/s and 0.1 rad cuts | unchanged |
+
+The 10 s and 60 s windows and their cuts are kept as **fixed engineering admission rules for new driven, anchored snapshots**. The dimensionless ratios that change (λKw against the geometric and carrier rates) are reported. No horizon is divided by λ.
+
+**The recovery adapter `rev7_qual_v1`:**
+- Pinned elements keep identical positions in both futures, at every stage.
+- **Position kicks act on free members only.** The RMS denominator is the free members. The achieved kick is recorded.
+- Phase kicks may include O.
+- A candidate with no free member is **skipped** (`no_free_member`), not qualified.
+- Pinned elements and sites are never cohort members.
+- Roles and pins are preserved in every live, frozen, recovery and extracted copy. Every mode uses the revision-7 RHS.
+- Frozen C4 functions stay unedited (new adapter files only).
+
+### 8.9 Demand timers and the empty start (replaces section 4's timer sentence; R7-10)
+
+**The B1 timer per site:**
+- active and uncovered: + dt_w;
+- active and covered: reset to 0;
+- an accepted birth: reset to 0;
+- **inactive: frozen** (unchanged);
+- a quota or resource refusal: retained.
+
+**A ready site** (timer ≥ 20 s) **requests a birth only at a growth check where it is active.** Inactive ready sites wait for a visible input, which supplies the phase. Queued demand is reported apart from attempts.
+
+**B-path keeps its immediate rule.** It had no timer, and "B-path" is **removed** from the freeze amendment.
+
+**Memory:** freezing lets demand accumulate across cues, but **P_i and e_i stay undefined** within established memory blocks. The 80/100 eligibility is unchanged, F8 is unchanged, and the memory row stays descriptive.
+
+**The empty start** applies to intact, M and U: t = 0, empty histories and timers, an id counter at 0, and the first growth check at t = 20 s. Newborns have ω = π, and there is no initial detuning draw. F5(ii) keeps its literal table (8.2).
+
+**Required checks:**
+- a threshold reached during a cue, with the check during the hidden interval: the birth is deferred;
+- activity resuming;
+- a refusal retaining the timer.
+
+### 8.10 The instantiated revision-7 inventory (replaces section 0's blanket shift; R7-11)
+
+**Seeds:** every master key prefix `0h-rev6/` becomes `0h-rev7/`. Byte order and the recovery sub-derivation are as in 6.4, section 18.2. The donor ranks use `0h-rev7/donor_perm/` + j.
+
+| Use | Namespace | Ids |
+|---|---|---|
+| Training, slot k | dev | 11,000,000 + 10,000·k + e |
+| Evaluation recipients | validation | 10,000,512–10,000,639 |
+| Evaluation donors | validation | 10,000,640–10,000,767 |
+| F5 assay recipients and donors | validation | 10,000,768–10,000,787 |
+| F6 | validation | 10,000,788–10,000,807 |
+| F5 growth | dev | 12,000,000 + e |
+| F8 | dev | 12,100,000 + e |
+| **Calibration (reused and labelled, unchanged)** | validation | 0–255 |
+| Historical 5.1 reference | dev | 0–1999 (unchanged) |
+
+- Disjointness from every earlier inventory is checked before execution.
+- The F1, F2, F3 and N1 scaffolds are deterministic and have no entropy. This is reported honestly; they are not "fresh-seed" evidence.
+- The complete inventory is instantiated and hashed before any result.
+
+### 8.11 Versions and identity (replaces section 6's "identity scope unchanged"; R7-12)
+
+**New versions:**
+- `rev7_rhs_v1`;
+- `rev7_eval_v1`;
+- `rev7_template_v1`: the role, plus a **pin flag and pin coordinate** per member;
+- `rev7_qual_v1`.
+
+**The configuration identity binds:** λ, the N^x/N^θ policy, the pin table, site-body regularization, placement clearances, the timer and start rules, and the N1 tolerances.
+
+**The execution-start pin includes:** DESIGN_0H_REV7.md, DESIGN_0H_REV6.md, DESIGN_0H.md, the revision-7 sources and native images, the reused calibration, and the instantiated seed inventory.
+
+**Legacy loading:**
+- revision-5.1 and 6.5 templates load under their own versions, with no migration;
+- revision-7 code lives in new files.
+
+**The stop table gains a revision-7 readiness row:** if the revision-7 integration is not implemented, tested and reviewed, no fixture runs. **Decision 0030 does not cover revision 7.** Under decision 0031, the revision-7 fixtures (under 1 hour) need no separate approval once this design passes review and the integration is reviewed.
+
+### 8.12 Self-audit (Codex revision-7 review)
+
+| # | Disposition | Cause |
+|---|---|---|
+| R7-1 | 8.1: the rule restated, so λ = 8 follows from it; the 2 s claim is withdrawn | Mixed two deadlines |
+| R7-2 | 8.1: locking consequences; the diagnosis labelled as hypotheses; F1d outputs defined | Overstated the cause |
+| R7-3 | 8.2: a pin table; a new F1c layout | Contradictory pin sentences |
+| R7-4 | 8.3: separate motion and phase lists | Left the topology implicit |
+| R7-5 | 8.4: a 0.3 m.u. clearance from site bodies; regularization | Missed coincident births |
+| R7-6 | 8.5: the claim withdrawn; the channel disclosed; the site-body-off intervention | Overclaimed |
+| R7-7 | 8.6: a complete gate | A tautological criterion |
+| R7-8 | 8.7: N1 and the transient flags | Relied on carrier sampling |
+| R7-9 | 8.8: a clock ledger; the constrained recovery adapter | Missed pin and kick conflicts |
+| R7-10 | 8.9: an exact recurrence; B-path removed; the memory limit kept | Under-specified |
+| R7-11 | 8.10: an instantiated inventory | A blanket shift |
+| R7-12 | 8.11: versions and an identity pin | Assumed the 6.5 identity sufficed |
