@@ -21,6 +21,21 @@ GeoMind research workspace. Forward guidance: `GEOMIND_GEOMETRIC_AI_QUALITY_STAN
 - **Every proposal has a normalization ledger.** It lists measured quantities, their levels and their normalization. R5 and decision 0007 retain the same procedure without hand-tuning per level as an experimental constraint, not a universal identical-equation definition of RRG. Scale ratios, composition from child summaries and lawful up/down transmission are allowed. State each side's units and keep descendant reads owner/evaluator-side, outside the upper-level prediction API. Direct-part validity can veto promotion; deeper reorganization is diagnostic (0010), and all underlying elements keep evolving.
 - **Every stop condition is a yes/no row** with one action and one responsible role (owner, drafter, implementer or reviewer).
 
+## Owner recheck (mandatory for every complex or important task)
+
+After every complex or important piece of work, send the owner's recheck request **verbatim** to a reviewer, preferably the other model family. Fix what it finds before moving on. Important work includes:
+- a design or design revision;
+- an engine, port or integration;
+- a development or fixture run and its report;
+- a major analysis or result;
+- a delivery that others build on.
+
+The request, verbatim:
+
+> Recheck what you did please, check if it is the best we can do, we want 10 out of 10 or above 9 - it's fine to break the things or fully rework. Check for issues, conflicts, gaps.
+
+The reviewer reports findings, never numeric scores (see **Never**). Each recheck and its disposition are tracked in `docs/PLAN_CURRENT.md`, the step-by-step plan.
+
 ## Verification order (mandatory)
 
 | Stage | Time | How |

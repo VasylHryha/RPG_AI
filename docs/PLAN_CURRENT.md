@@ -10,7 +10,10 @@
    - the owner asks;
    - a hard approval gate (marked **[OWNER]** below);
    - being stuck.
-2. **Recheck every serious chunk.** After each finished engine, port, design or run, send the owner's recheck prompt (verbatim, in `memory/recheck-every-serious-chunk.md`) to the other model family, fix the findings, then move on.
+2. **Owner recheck after every complex or important task** (also in `AGENTS.md`, "Owner recheck"). Send the owner's prompt **verbatim** to a reviewer from the other model family, fix the findings, then move on:
+   > Recheck what you did please, check if it is the best we can do, we want 10 out of 10 or above 9 - it's fine to break the things or fully rework. Check for issues, conflicts, gaps.
+
+   **The checklist for when it applies:** a design or revision; an engine, port or integration; a run and its report; a major analysis; a delivery others build on. Each step below lists its recheck.
 3. **Cross-family review:** Codex implements and Claude reviews, or the reverse. One review per revision.
 4. **Run approvals (decision 0031):**
    - **under 1 hour:** just run it;
