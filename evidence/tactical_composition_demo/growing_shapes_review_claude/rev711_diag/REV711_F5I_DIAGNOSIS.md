@@ -79,3 +79,36 @@ Earlier revisions already tested the birth-rule side:
 - `kernel_pilot/`: the scratch-copy kernel pilot (`kpilot.py`, logs, `rev7_medium_kernel.patch`).
 - Raw pilot traces (11–12 MB each) stay local, out of git, listed with SHA256 in `RAW_FILES_OUTSIDE_GIT.json`.
 - Receipt folders: `growing_shapes/runner/rev711_diag_link_hold_20261006/`, `rev711_pilot_margin_*`, `rev711_pilot_service_*`, `rev711_pilot_budget_*`.
+
+## 6. Addendum (same night): growth from the output side, and a shorter motion range
+
+These are further pilots of option C, plus one more medium variant. The metric and the 800 s horizon are the same as in section 3. "Held" means the first path that lasted ≥ 20 s continuously.
+
+| Pilot | (i) late path fraction | (i) first held path | (ii) late path fraction | (ii) first held path |
+|---|---:|---:|---:|---:|
+| Baseline (7.11 law) | 0.000 | none | 0.323 | (held from about 280 s in the fixture) |
+| **Bidirectional B-path** (every second B-path birth grows from O's side toward the roots; `pilot_bidirectional.py`) | **0.605** | **122.5 s** | **0.000** | none |
+| Motion range 1.5 m.u. (scratch copy; N^x cutoff 3 → 1.5; `kernel_pilot/rev7_medium_motion_range_1p5.patch`) | 0.337 | 461.5 s | 0.000 | none |
+| Motion range 1.5 + bidirectional | 0.323 | 272.0 s | 0.096 | 868 s (simulated time, including assay steps) |
+
+**What this shows:**
+- **(i) can connect and hold.**
+  - With bidirectional growth, an output-side cluster forms around O: 13 of 25 B-path births were output-side, and the four nearest elements ended 0.35–0.38 from O.
+  - Forward bridges then meet it, and the path holds from 122 s with 45 elements, including 19 B1 sensor births.
+- **The same rule breaks (ii).**
+  - (ii)'s O at (−0.5, 0) lies within 3 m.u. of the seed blob.
+  - Each lone output-side birth, at (0.05, −0.09) about 15 times, is dragged into the seed blob by the mean pull, so the budget is spent on births that do not stay.
+- **A 1.5 m.u. motion range rescues (i) but not (ii).**
+- **No variant tested passes both starts.**
+  - Growth success depends on the start geometry: whether O's neighbourhood lies beyond the motion cutoff from the root blob.
+  - So the growth rule is not yet robust, and any fix must be judged on both starts. A pilot that rescues one start is not a fix.
+
+**Updated options:**
+- **A**, the seeded start as standard, is unchanged.
+- **C has a working mechanism:** an output-side cluster that is not inside the motion reach of the root blob. Its two candidate implementations:
+  - bidirectional growth, plus a rule that the output-side cluster is grown **before** the forward bridge arrives;
+  - a shorter motion range.
+- Each succeeded on one start only.
+- **B**, a motion law where a resonant chain is mechanically stable, remains the root fix. The 1.5 m.u. range is a crude version of it.
+
+The recommendation is unchanged: A now, with B and C as research, pending the owner and the Codex recheck. Raw traces are local and hashed (`RAW_FILES_OUTSIDE_GIT.json`).

@@ -1,0 +1,8 @@
+104c104
+<             if(r<p.radius)candidates.emplace_back(r,0,elements[j].v.id,int(j));
+---
+>             if(r<1.5)candidates.emplace_back(r,0,elements[j].v.id,int(j)); /* MOTION RANGE PILOT */
+108c108
+<             if(r<p.radius)candidates.emplace_back(r,1,drives[j].v.id,-int(j)-1);
+---
+>             if(r<1.5)candidates.emplace_back(r,1,drives[j].v.id,-int(j)-1); /* MOTION RANGE PILOT */
