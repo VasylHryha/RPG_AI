@@ -1,6 +1,6 @@
-# Design 0h, revision 7.10: phase on the task's clock, pinned ends (after the revision-6.5 fixture failure)
+# Design 0h, revision 7.11: phase on the task's clock, pinned ends (after the revision-6.5 fixture failure)
 
-**Status:** revision 7.10 (section 17: B-path finishes the nearest bridge first, after the 7.9 F5(i) failure; under review). Revision 7.9 (section 16) was approved with notes; section 15 is superseded. Revision 7.7 (section 14) was approved with notes. Revision 7.6 (section 13) was approved with notes. Revision 7.5 (section 12) was approved with notes. Revision 7.4 (section 11) was approved with notes. Revision 7.3 was design-approved by the Codex round-4 review (APPROVE_WITH_NOTES; its three low notes applied in 10.6). This is design review only: integration and execution readiness are separate gates. **Section 8 answers the Codex review** `docs/reviews/tactical_0h_rev7_design_review_codex.md` (R7-1 … R7-12) **and governs over sections 1–7. Section 9 (revision 7.2) answers the round-2 review `…_codex_r2.md` (R2-1 … R2-7) and governs over everything before it. Section 10 (revision 7.3) answers round 3 (`…_codex_r3.md`, R3-1 … R3-4) and governs over everything before it.** Drafted by Claude for Codex review. Not approved, and no execution is authorized. **The base is revision 6.5** (`DESIGN_0H_REV6.md`, with every section through 19.9). Every rule not changed below stays as written there. This is a new revision on **fresh entropy**: every key prefix `0h-rev6/` becomes `0h-rev7/`, and every world-id range moves up by 10,000,000.
+**Status:** revision 7.11 (section 18: connect the output first, after the 7.10 F5 failure; under review). Revision 7.10 (section 17) was approved with notes. Revision 7.9 (section 16) was approved with notes; section 15 is superseded. Revision 7.7 (section 14) was approved with notes. Revision 7.6 (section 13) was approved with notes. Revision 7.5 (section 12) was approved with notes. Revision 7.4 (section 11) was approved with notes. Revision 7.3 was design-approved by the Codex round-4 review (APPROVE_WITH_NOTES; its three low notes applied in 10.6). This is design review only: integration and execution readiness are separate gates. **Section 8 answers the Codex review** `docs/reviews/tactical_0h_rev7_design_review_codex.md` (R7-1 … R7-12) **and governs over sections 1–7. Section 9 (revision 7.2) answers the round-2 review `…_codex_r2.md` (R2-1 … R2-7) and governs over everything before it. Section 10 (revision 7.3) answers round 3 (`…_codex_r3.md`, R3-1 … R3-4) and governs over everything before it.** Drafted by Claude for Codex review. Not approved, and no execution is authorized. **The base is revision 6.5** (`DESIGN_0H_REV6.md`, with every section through 19.9). Every rule not changed below stays as written there. This is a new revision on **fresh entropy**: every key prefix `0h-rev6/` becomes `0h-rev7/`, and every world-id range moves up by 10,000,000.
 
 ## 1. What the 6.5 fixtures showed (`growing_shapes/runner/REV6_FIXTURE_REPORT.md`, decision 0030)
 
@@ -796,3 +796,36 @@ meaning a time scale of **τ_link ≤ 2 s** per edge.
   - The pointer advances once per check.
 - **R710-5:** **no automatic PASS and no all-site claim.** max(E) ≥ 0.5 permits a single-site success. Concentrating on one bridge can meet it while leaving other sites unconnected; per-site E is reported.
 - **R710-6:** the growth of T and the shrinking of other deficits are opportunities, not invariants: insertions and motion can displace or dilute edges. `paths_kept` protects already-connected sites only.
+
+## 18. Revision 7.11: connect the output first (the 7.10 F5 report and fix)
+
+### 18.1 Failure report
+
+**Run:** `growing_shapes/runner/REV710_FIXTURE_REPORT.md`, pin `ebc58aa2…`. N1 and F1–F4 PASS.
+- **F5(ii) FAILS narrowly:** A = 1.138 and B = 0.975 rad (the response is strong), but max E = 0.454, under 0.5. In 7.9 it was 0.70.
+- **F5(i) FAILS:** A = 0.098, B = 0.12, and E = 0 at every site.
+
+**The F5(i) events show what happened:**
+- B-path made 32 births, spread across sites 1–4 (and 0, 6, 7).
+- The closest bridge (site 1) reached a placement 1.33 m.u. from O at t = 300 s. A strong edge at receiver degree 6 needs about r ≤ 1.5.
+- **At that point the budget was exhausted:** N = 45 and cost 63.3 of 64. The remaining B-path requests were refused (102 for `cost`, 48 for `quota`). B1 had added 15 sensor-side elements.
+
+**Two mechanisms are visible:**
+1. The **2 births per check go to the two smallest-deficit sites**, so two bridges advance in parallel.
+2. **B1 keeps spending the budget on sensor coverage** before any output path exists.
+
+### 18.2 The change: output connectivity has priority
+
+**While no active site has a strong (G_s) path to O:**
+- **Both B-path births of a check go to the single site with the smallest deficit,** with re-trial against the post-birth state; ties follow 17.2. A second birth goes to another site only if the first site connects or exhausts its candidates in that check.
+- **B1 births are deferred.** Requests are kept with their timers frozen (8.9 semantics), and logged as `deferred_output_first`.
+
+**Once any site has a strong path to O,** B1 and the 17.2 ordering resume unchanged.
+
+**Unchanged:** the cap, cost, D-rules, O's protection, the strong-edge rule (16), λ, h, and every gate.
+
+**Disclosure:** this is an outcome-informed revision, made after the 7.10 F5 result. The 7.10 FAIL is kept. The 13.3 fixture-key exception applies, and the development inventory is untouched.
+
+| Item | Cause |
+|---|---|
+| Parallel bridges and sensor growth exhausted the budget before any output path | The birth rules had no priority between the output path and sensor coverage |
