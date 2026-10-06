@@ -661,10 +661,13 @@ No registration, judging seeds or recorded run.
 **F5 (high): numerical safety, without clamping the state.**
 - **Both components of z are persisted, unbounded but finite.** c = clip(Re z, −1, 1) is computed only after the integration result is accepted. The action clip is never a state clip.
 - **The integration policy** (declared before any fight):
-  - each tick's RK4 is split into n equal substeps, where n is the smallest integer with h·L ≤ 1, h = dt/n and L = |μ| + |ω| + 3ν·max_i |z_i|² + K + K_t, evaluated at the tick start;
+  - each tick's RK4 is split into n equal substeps, where n is the smallest integer with h·L ≤ 1, h = dt/n and L = |μ| + |ω| + 3ν·Z² + K + K_t;
+  - Z = max(max_i |z_i|, ∛(max_i |P_i| / ν) + √(max(μ, 0)/ν)) + 1, evaluated at the tick start.
+    - Z bounds the amplitude the tick can reach: the drive's fixed-point scale ∛(|P|/ν), plus the free radius, plus a unit margin.
+    - Z is checked again after the tick, and a tick that ends above its own Z is recomputed once with Z doubled. That recomputation is counted.
   - the cap is n ≤ 64;
   - if the cap is reached, or any stage value is non-finite, the step fails (below).
-  - This bounds h·L inside explicit RK4's real-axis stability interval (about 2.78) with margin. **The pressure P is an additive forcing,** so it does not enter L.
+  - This bounds h·L inside explicit RK4's real-axis stability interval (about 2.78) with margin. **The pressure P enters only through Z;** it is an additive forcing and contributes no Jacobian term of its own.
 - **Finiteness is checked** on both components, norms, cubic products, every RHS stage, group means, alignment and similarity values, scores and raw actions, **before** any clip, min or max can hide a non-finite value.
 - **On failure:**
   - the unit atomically retains its last finite complex state, publishes hold with target none, and the failure is counted;
