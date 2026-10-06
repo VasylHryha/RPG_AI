@@ -1,6 +1,6 @@
-# Design 0h, revision 7.2: phase on the task's clock, pinned ends (after the revision-6.5 fixture failure)
+# Design 0h, revision 7.3: phase on the task's clock, pinned ends (after the revision-6.5 fixture failure)
 
-**Status:** revision 7.1. **Section 8 answers the Codex review** `docs/reviews/tactical_0h_rev7_design_review_codex.md` (R7-1 … R7-12) **and governs over sections 1–7. Section 9 (revision 7.2) answers the round-2 review `…_codex_r2.md` (R2-1 … R2-7) and governs over everything before it.** Drafted by Claude for Codex review. Not approved, and no execution is authorized. **The base is revision 6.5** (`DESIGN_0H_REV6.md`, with every section through 19.9). Every rule not changed below stays as written there. This is a new revision on **fresh entropy**: every key prefix `0h-rev6/` becomes `0h-rev7/`, and every world-id range moves up by 10,000,000.
+**Status:** revision 7.1. **Section 8 answers the Codex review** `docs/reviews/tactical_0h_rev7_design_review_codex.md` (R7-1 … R7-12) **and governs over sections 1–7. Section 9 (revision 7.2) answers the round-2 review `…_codex_r2.md` (R2-1 … R2-7) and governs over everything before it. Section 10 (revision 7.3) answers round 3 (`…_codex_r3.md`, R3-1 … R3-4) and governs over everything before it.** Drafted by Claude for Codex review. Not approved, and no execution is authorized. **The base is revision 6.5** (`DESIGN_0H_REV6.md`, with every section through 19.9). Every rule not changed below stays as written there. This is a new revision on **fresh entropy**: every key prefix `0h-rev6/` becomes `0h-rev7/`, and every world-id range moves up by 10,000,000.
 
 ## 1. What the 6.5 fixtures showed (`growing_shapes/runner/REV6_FIXTURE_REPORT.md`, decision 0030)
 
@@ -403,3 +403,66 @@ For one fixed oscillator driven with unscaled amplitude a and detuning δ = ω �
 | R2-5 | 9.5: admissibility with up to 8 redraws, no clipping | No refusal policy |
 | R2-6 | 9.6: the exact arcsine law | Stated an approximation as exact |
 | R2-7 | 9.7: one stop table | Scattered prose |
+
+## 10. Revision 7.3 amendments (governs over sections 1–9)
+
+### 10.1 The complete stop table (9.7 plus these restored rows; R3-1)
+
+**9.7 stays, and these inherited rows are restored to it:**
+
+| Yes/no question | Yes → one action | Role |
+|---|---|---|
+| Is the world, `remember_static` or the medium's revision-7 dependency integration missing, NOT_READY or unreviewed? | Block all execution | implementer |
+| Is a development read-out INVALID (a non-finite value, zero usable tasks, an incomplete or interrupted run)? | Report INVALID with the raw evidence; never reinterpret it as PASS or FAIL | implementer |
+| Is perceive not usable under the frozen usable-task rule? | Block G2 and G0; do not substitute another primary task | implementer |
+| Does a **development** seed have any unmatched control-M birth? | That seed is G0-INCONCLUSIVE. It is kept and never replaced. This is separate from F7's fixture gate. | implementer |
+| Does G1 FAIL in the task-blind arm? | Write the failure report; stop development | drafter |
+| Does G0' FAIL? | Write the failure report; stop development | drafter |
+| Is G2 FAIL or INCONCLUSIVE? | Write the failure or diagnosis report; stop development | drafter |
+
+The stricter revision-7 rule, that an F7 FAIL blocks development, stays as a deliberate policy.
+
+### 10.2 The validity masks (completes 9.1; R3-2)
+
+Consecutive timestamped records and every E_i are kept. Three validity rules apply:
+- **Individual sample** (element i, frame k): **invalid** if E_i > π/2.
+- **Element pair** (i, j, frame k): **invalid** if E_i + E_j > π/2. The policy is **pair-only**: it invalidates that pair's observation, not the two individual samples.
+- **Site pair** (i, s, frame k): **invalid** if E_i > π/2. The site's phase is known exactly, from the carrier and the held angle.
+
+**Scope:** every pair actually used by a live estimator (lock and PLV for D1, sensor PLV for P_i and coverage), whatever its qualification membership.
+
+**The inherited counts:**
+- **Records stay consecutive.** Invalid observations count as **inactive** for that pair: they are excluded from the PLV sum and its denominator.
+- The unchanged 80-of-100 active requirement then counts **valid active** observations.
+- The 100/101-record history prerequisite counts records, which are never dropped.
+
+**P_i** is undefined in a frame whose own sample is invalid: g is unchanged that step (the inherited no-drive rule).
+
+**ω̂** keeps using unwrapped endpoints, which are exact. It is suspended (ω unchanged) only if an endpoint sample is itself invalid.
+
+**Qualification:** the saved bounds are evaluated on the actual cohort's pairs before any circular criterion. A window with any invalid cohort pair is not-qualified. The stage-sampling limitation is stated.
+
+### 10.3 N1 also compares positions and unwrapped phases (completes 9.2; R3-3)
+
+These are added to N1's PASS conditions (new engineering admission; not inherited C4 evidence):
+- **free-member positions:** the maximum matched-endpoint Euclidean difference between h = 0.02 and h = 0.005 is ≤ 0.01 m.u.;
+- **unwrapped carrier-relative phases:** the maximum |(θ − πt) at h = 0.02 minus the same at h = 0.005|, unwrapped, is ≤ 0.01 rad. This complements the wrapped comparison;
+- **recorded in both integrations:** the minimum element–element and element–site distances.
+
+The definitions are hashed with the N1 recipes.
+
+### 10.4 Where the site-body-off comparator runs (completes 8.5; R3-4)
+
+- It runs on fresh paired copies of the **final whole medium** of each intact training, on the revision-7 **perceive** recipient panel (validation 10,000,512–10,000,639), with the same carrier and decoder as intact.
+- Only the sites are removed from N^x; drives and element motion are kept.
+- It is reported descriptively, as paired differences beside G2, with no verdict cut.
+- Its 128 episodes per training are included in A7's cost projection.
+
+### 10.5 Self-audit (round 3)
+
+| # | Disposition | Cause |
+|---|---|---|
+| R3-1 | 10.1: the inherited development and INVALID rows restored | A "replacement" table dropped rows |
+| R3-2 | 10.2: three validity rules, pair-only, consecutive records kept | Under-specified the mask |
+| R3-3 | 10.3: position and unwrapped comparisons | Checked only phases and topology |
+| R3-4 | 10.4: the panel, copies and cost of the new comparator | Left the scope open |
