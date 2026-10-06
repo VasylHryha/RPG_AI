@@ -1,0 +1,44 @@
+{
+  "F5_both_starts_persisted": false,
+  "N1f_hold_agrees": true,
+  "archive": {
+    "bytes": 3840895,
+    "path": "evidence/tactical_composition_demo/growing_shapes/runner/REV77_FIXTURE_EVIDENCE.tar.gz",
+    "sha256": "71ab2a3a1d58b8277f12dcce95ea970aea18410edfbbe64942a1b606f79c85c9"
+  },
+  "artifact_hashes_verified": true,
+  "every_delivered_file_strictly_under_50MB": true,
+  "exact_stage_receipt_equality": "PASS: analyze_saved.py",
+  "excluded_evidence": [
+    {
+      "bytes": 494,
+      "path": "evidence/tactical_composition_demo/growing_shapes/runner/rev77_fixture_run_20261006/EXECUTION_LOG.txt",
+      "reason": "Raw operational log stays local; omitted from git and bundle",
+      "sha256": "1b5657f56d577c6d2774037ca120950ef41e4bfd7b83af03871f585ed1809a8b"
+    }
+  ],
+  "fixture_outcome": "FIXTURES_FAIL",
+  "largest_member_bytes": 1668374,
+  "manifest": {
+    "bytes": 20454,
+    "path": "evidence/tactical_composition_demo/growing_shapes/runner/REV77_FIXTURE_EVIDENCE_MANIFEST.json",
+    "sha256": "aa94062e6e1299ef09c0222ad5ab440be14c5945bafc717b5681379960c7e958"
+  },
+  "manifest_policy": "Manifest and final verification are adjacent, excluded from archive to avoid self-reference",
+  "members_verified": 56,
+  "no_line_hooks": true,
+  "owner_recheck": "OWNER_RECHECK_REPORT.md / OWNER_RECHECK_DISPOSITION.md",
+  "pooled_A_B_E_reconstruction": "NOT_RUN: no F5 results",
+  "preservation": {
+    "changed": [],
+    "files_checked": 1101,
+    "git_status": "?? docs/reviews/tactical_0g_s17_design_review_codex.md\n?? evidence/tactical_composition_demo/astelia_cpp/s4_v5_checks/\n?? evidence/tactical_composition_demo/growing_shapes/runner/REV77_FIXTURE_REPORT.md\n?? evidence/tactical_composition_demo/growing_shapes/runner/rev77_fixture_run_20261006/\n",
+    "head_unchanged": true,
+    "plan_unchanged": true,
+    "status": "PASS"
+  },
+  "real_execution_once": true,
+  "scientific_inputs_checked": 69,
+  "status": "PASS",
+  "wrapper_double": "PASS"
+}

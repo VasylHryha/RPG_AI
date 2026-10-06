@@ -1,0 +1,56 @@
+{
+  "carried_from": "rev75c conservative planning scenario, carried through rev76; no arbitrary speedup discount",
+  "estimate_seconds": 5476.771066599999,
+  "exceeds_one_hour": true,
+  "first_start_boundary_elapsed_seconds": 1431.108947,
+  "first_start_component_rates": null,
+  "first_start_utc": "2026-10-06T12:49:50.154030+00:00",
+  "first_start_workload": {
+    "frozen_assay_episodes": 90,
+    "live_frames": 8000,
+    "qualification_starts": 12
+  },
+  "limitations": [
+    "Old boundary includes line tracing and transition/cleanup; it is not an isolated method cost.",
+    "No measured no-tracing speedup exists; no arbitrary speedup discount applied.",
+    "Equal per-component rates across starts/tasks/populations are assumptions, not observations.",
+    "Assay allocation includes donor-capture overhead implicitly; no independent donor rate.",
+    "Sensitivity scenarios are neither lower/upper bounds nor statistical confidence intervals.",
+    "Stops may shorten execution; this estimate covers the complete sequence requested."
+  ],
+  "margin_fraction": 0.2,
+  "measured_early_fixture_elapsed_seconds": 38.557068,
+  "method": "Allocate the historical composite to an unknown live/assay/qualification mix. Scale by the largest full-sequence workload ratio, then add measured early-fixture costs once. F4 is in the early prefix, so late assays total 320, not 330. No sum of alternative allocations. 20% scheduling allowance is an explicit assumption for setup/persistence/task/population uncertainty.",
+  "next_start_boundary_utc": "2026-10-06T13:13:41.262977+00:00",
+  "qualification": "CONSERVATIVE_PLANNING_SCENARIO_NOT_A_MEASURED_TOTAL_OR_BOUND",
+  "ratios": {
+    "frozen_assay_dominant": 3.5555555555555554,
+    "live_frame_dominant": 3.8,
+    "qualification_recovery_dominant": 2.8333333333333335
+  },
+  "revision": "7.7",
+  "scheduling_allowance_seconds": 6572.125279919999,
+  "sensitivity_scenario_seconds": {
+    "frozen_assay_dominant": 5126.944435111111,
+    "live_frame_dominant": 5476.771066599999,
+    "qualification_recovery_dominant": 4093.365751166667
+  },
+  "sources": {
+    "evidence/tactical_composition_demo/growing_shapes/runner/rev75c_fixture_run_20261006/DURATION_ESTIMATE.json": "c252a58bd44175b003e5e5a8f52151115ac15aed2ec821dd6648271dccf20fff"
+  },
+  "workload": {
+    "F1_RK4_substeps": 192000,
+    "F2_world_frames": 320,
+    "F3_F4_diagnostic_substeps": 40,
+    "F4_assay_episodes": 10,
+    "F5_assay_episodes": 180,
+    "F5_growth_frames": 16000,
+    "F5_qualification_starts": 24,
+    "F6_assay_episodes": 140,
+    "F7_growth_frames": 8000,
+    "F8_growth_frames": 6400,
+    "F8_qualification_starts": 10,
+    "F9_decoder_observations": 4,
+    "N1_RK4_substeps": 120000
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "definition": "Member 0 first endpoint departure >=0.5 rad from initial unwrapped carrier-relative pi; sign, first crossing time, preceding endpoint bracket; escape not a completed 2pi winding.",
+  "execution_pin_sha256": "9628282d3407038a6b6947e86cb8ae1b7e7b2ef82fcdd3f9ecd540895c82e42e",
+  "interpretation": "SENSITIVITY_NOT_ACCURACY",
+  "measurements": [
+    {
+      "departure_radians": 0.5,
+      "direction": -1,
+      "displacement_at_departure": -1.1878948637829978,
+      "final_unwrapped_displacement": -3.141592653589772,
+      "final_unwrapped_phase": 2.1316282072803006e-14,
+      "h": 0.005,
+      "horizon_seconds": 16.0,
+      "initial_phase": 3.141592653589793,
+      "member": 0,
+      "status": "OBSERVED",
+      "time_bracket_seconds": [
+        0.5,
+        0.6000000000000001
+      ],
+      "time_seconds": 0.6000000000000001,
+      "used_in_verdict": false
+    },
+    {
+      "departure_radians": 0.5,
+      "direction": 1,
+      "displacement_at_departure": 2.9199489025560945,
+      "final_unwrapped_displacement": 3.141592653589644,
+      "final_unwrapped_phase": 6.283185307179437,
+      "h": 0.00125,
+      "horizon_seconds": 16.0,
+      "initial_phase": 3.141592653589793,
+      "member": 0,
+      "status": "OBSERVED",
+      "time_bracket_seconds": [
+        0.5,
+        0.6000000000000001
+      ],
+      "time_seconds": 0.6000000000000001,
+      "used_in_verdict": false
+    }
+  ],
+  "status": "DESCRIPTIVE",
+  "used_in_verdict": false
+}

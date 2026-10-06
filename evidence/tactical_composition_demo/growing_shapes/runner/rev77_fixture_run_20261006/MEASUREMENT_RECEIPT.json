@@ -1,0 +1,299 @@
+{
+  "artifacts": {
+    "F1": {
+      "bytes": 1071094,
+      "delivery_eligible": true,
+      "path": "F1.json.gz",
+      "sha256": "e5049842d6b9e0e8b0006d67a717c83b109a686ef5b38a75affbdf8585dccb63"
+    },
+    "F1d": {
+      "bytes": 264381,
+      "delivery_eligible": true,
+      "path": "F1d.json.gz",
+      "sha256": "9bf635c9426f07a824b5ec71abd96142f48681f07bf838c5cec4862e642cf2e6"
+    },
+    "F2": {
+      "bytes": 1668,
+      "delivery_eligible": true,
+      "path": "F2.json.gz",
+      "sha256": "965a7f9a839fe2a52b94a6f5bea37d99e7dda77238b0c42bd5d72906a1bcd9c9"
+    },
+    "F3": {
+      "bytes": 2078,
+      "delivery_eligible": true,
+      "path": "F3.json.gz",
+      "sha256": "343dce9e42f80c3d59853e3da0e2fc36b653f58f89df456d3d17c4fe99d1a8c5"
+    },
+    "F4": {
+      "bytes": 258390,
+      "delivery_eligible": true,
+      "path": "F4.json.gz",
+      "sha256": "be55e5d9260b139962f42afe35f0dd7c0ccf0f25dfdcffbfa9cb620262e123ae"
+    },
+    "N1": {
+      "bytes": 200541,
+      "delivery_eligible": true,
+      "path": "N1.json.gz",
+      "sha256": "b99817281649783d9e65cb2166aeafa75a8953ec921debfb5318e8d92b855258"
+    }
+  },
+  "harness_receipt": {
+    "bytes": 1668374,
+    "delivery_eligible": true,
+    "path": "HARNESS_RECEIPT.json.gz",
+    "sha256": "b57bed928571b553e4eb5481596cbdff910514480f95bb22f7bf2810ea2e5d9b"
+  },
+  "individual_nested_execution_costs": null,
+  "nested_cost_reason": "Harness returns no individual execution clocks for F1a-c or F5i/ii; enclosing whole calls are timed. F1 includes F1d; do not sum both.",
+  "provenance": "Assisted-by: Codex:GPT-6",
+  "timings": {
+    "F1": {
+      "awake_seconds": 8.672952374996385,
+      "continuous_seconds": 8.6729523333197,
+      "elapsed_utc_seconds": 8.672888,
+      "end_clock": {
+        "awake": 177535.04044329165,
+        "continuous": 208036.09747641665,
+        "utc": "2026-10-06T16:35:41.524761+00:00"
+      },
+      "end_utc": "2026-10-06T16:35:41.524761+00:00",
+      "machine_load_after_call": {
+        "load_average_1_5_15": [
+          11.18798828125,
+          11.34228515625,
+          12.54638671875
+        ],
+        "logical_cpus": 10,
+        "process_inventory": null,
+        "qualification": "Shared machine, not isolated timing. C6 session directories existed at preflight; active workload is not inferred from their existence. Load averages are observed; process inventory unavailable."
+      },
+      "machine_load_before_call": {
+        "load_average_1_5_15": [
+          11.83935546875,
+          11.47314453125,
+          12.6064453125
+        ],
+        "logical_cpus": 10,
+        "process_inventory": null,
+        "qualification": "Shared machine, not isolated timing. C6 session directories existed at preflight; active workload is not inferred from their existence. Load averages are observed; process inventory unavailable."
+      },
+      "scope": "whole method call; excludes persistence after return",
+      "start_clock": {
+        "awake": 177526.36749091666,
+        "continuous": 208027.42452408333,
+        "utc": "2026-10-06T16:35:32.851873+00:00"
+      },
+      "start_utc": "2026-10-06T16:35:32.851873+00:00"
+    },
+    "F1d": {
+      "awake_seconds": 3.8282435000000987,
+      "continuous_seconds": 3.828243374999147,
+      "elapsed_utc_seconds": 3.828216,
+      "end_clock": {
+        "awake": 177534.35426816664,
+        "continuous": 208035.4113009583,
+        "utc": "2026-10-06T16:35:40.838592+00:00"
+      },
+      "end_utc": "2026-10-06T16:35:40.838592+00:00",
+      "machine_load_after_call": {
+        "load_average_1_5_15": [
+          11.18798828125,
+          11.34228515625,
+          12.54638671875
+        ],
+        "logical_cpus": 10,
+        "process_inventory": null,
+        "qualification": "Shared machine, not isolated timing. C6 session directories existed at preflight; active workload is not inferred from their existence. Load averages are observed; process inventory unavailable."
+      },
+      "machine_load_before_call": {
+        "load_average_1_5_15": [
+          11.29150390625,
+          11.365234375,
+          12.5615234375
+        ],
+        "logical_cpus": 10,
+        "process_inventory": null,
+        "qualification": "Shared machine, not isolated timing. C6 session directories existed at preflight; active workload is not inferred from their existence. Load averages are observed; process inventory unavailable."
+      },
+      "scope": "whole method call; excludes persistence after return",
+      "start_clock": {
+        "awake": 177530.52602466664,
+        "continuous": 208031.5830575833,
+        "utc": "2026-10-06T16:35:37.010376+00:00"
+      },
+      "start_utc": "2026-10-06T16:35:37.010376+00:00"
+    },
+    "F2": {
+      "awake_seconds": 0.2775249583355617,
+      "continuous_seconds": 0.27752437500748783,
+      "elapsed_utc_seconds": 0.277522,
+      "end_clock": {
+        "awake": 177537.45637058333,
+        "continuous": 208038.51340320832,
+        "utc": "2026-10-06T16:35:43.940670+00:00"
+      },
+      "end_utc": "2026-10-06T16:35:43.940670+00:00",
+      "machine_load_after_call": {
+        "load_average_1_5_15": [
+          11.0126953125,
+          11.30322265625,
+          12.525390625
+        ],
+        "logical_cpus": 10,
+        "process_inventory": null,
+        "qualification": "Shared machine, not isolated timing. C6 session directories existed at preflight; active workload is not inferred from their existence. Load averages are observed; process inventory unavailable."
+      },
+      "machine_load_before_call": {
+        "load_average_1_5_15": [
+          11.0126953125,
+          11.30322265625,
+          12.525390625
+        ],
+        "logical_cpus": 10,
+        "process_inventory": null,
+        "qualification": "Shared machine, not isolated timing. C6 session directories existed at preflight; active workload is not inferred from their existence. Load averages are observed; process inventory unavailable."
+      },
+      "scope": "whole method call; excludes persistence after return",
+      "start_clock": {
+        "awake": 177537.178845625,
+        "continuous": 208038.2358788333,
+        "utc": "2026-10-06T16:35:43.663148+00:00"
+      },
+      "start_utc": "2026-10-06T16:35:43.663148+00:00"
+    },
+    "F3": {
+      "awake_seconds": 0.0015397499955724925,
+      "continuous_seconds": 0.0015402916760649532,
+      "elapsed_utc_seconds": 0.00154,
+      "end_clock": {
+        "awake": 177537.4591842083,
+        "continuous": 208038.51621704164,
+        "utc": "2026-10-06T16:35:43.943483+00:00"
+      },
+      "end_utc": "2026-10-06T16:35:43.943483+00:00",
+      "machine_load_after_call": {
+        "load_average_1_5_15": [
+          11.0126953125,
+          11.30322265625,
+          12.525390625
+        ],
+        "logical_cpus": 10,
+        "process_inventory": null,
+        "qualification": "Shared machine, not isolated timing. C6 session directories existed at preflight; active workload is not inferred from their existence. Load averages are observed; process inventory unavailable."
+      },
+      "machine_load_before_call": {
+        "load_average_1_5_15": [
+          11.0126953125,
+          11.30322265625,
+          12.525390625
+        ],
+        "logical_cpus": 10,
+        "process_inventory": null,
+        "qualification": "Shared machine, not isolated timing. C6 session directories existed at preflight; active workload is not inferred from their existence. Load averages are observed; process inventory unavailable."
+      },
+      "scope": "whole method call; excludes persistence after return",
+      "start_clock": {
+        "awake": 177537.4576444583,
+        "continuous": 208038.51467674997,
+        "utc": "2026-10-06T16:35:43.941943+00:00"
+      },
+      "start_utc": "2026-10-06T16:35:43.941943+00:00"
+    },
+    "F4": {
+      "awake_seconds": 2.8366341666551307,
+      "continuous_seconds": 2.8366342916851863,
+      "elapsed_utc_seconds": 2.836614,
+      "end_clock": {
+        "awake": 177540.29753774998,
+        "continuous": 208041.35457033332,
+        "utc": "2026-10-06T16:35:46.781816+00:00"
+      },
+      "end_utc": "2026-10-06T16:35:46.781816+00:00",
+      "machine_load_after_call": {
+        "load_average_1_5_15": [
+          11.0126953125,
+          11.30322265625,
+          12.525390625
+        ],
+        "logical_cpus": 10,
+        "process_inventory": null,
+        "qualification": "Shared machine, not isolated timing. C6 session directories existed at preflight; active workload is not inferred from their existence. Load averages are observed; process inventory unavailable."
+      },
+      "machine_load_before_call": {
+        "load_average_1_5_15": [
+          11.0126953125,
+          11.30322265625,
+          12.525390625
+        ],
+        "logical_cpus": 10,
+        "process_inventory": null,
+        "qualification": "Shared machine, not isolated timing. C6 session directories existed at preflight; active workload is not inferred from their existence. Load averages are observed; process inventory unavailable."
+      },
+      "scope": "whole method call; excludes persistence after return",
+      "start_clock": {
+        "awake": 177537.46090358333,
+        "continuous": 208038.51793604164,
+        "utc": "2026-10-06T16:35:43.945202+00:00"
+      },
+      "start_utc": "2026-10-06T16:35:43.945202+00:00"
+    },
+    "N1": {
+      "awake_seconds": 3.0041317499999423,
+      "continuous_seconds": 3.0041314583504573,
+      "elapsed_utc_seconds": 3.004108,
+      "end_clock": {
+        "awake": 177526.0688014583,
+        "continuous": 208027.12583454166,
+        "utc": "2026-10-06T16:35:32.553185+00:00"
+      },
+      "end_utc": "2026-10-06T16:35:32.553185+00:00",
+      "machine_load_after_call": {
+        "load_average_1_5_15": [
+          11.83935546875,
+          11.47314453125,
+          12.6064453125
+        ],
+        "logical_cpus": 10,
+        "process_inventory": null,
+        "qualification": "Shared machine, not isolated timing. C6 session directories existed at preflight; active workload is not inferred from their existence. Load averages are observed; process inventory unavailable."
+      },
+      "machine_load_before_call": {
+        "load_average_1_5_15": [
+          11.83935546875,
+          11.47314453125,
+          12.6064453125
+        ],
+        "logical_cpus": 10,
+        "process_inventory": null,
+        "qualification": "Shared machine, not isolated timing. C6 session directories existed at preflight; active workload is not inferred from their existence. Load averages are observed; process inventory unavailable."
+      },
+      "scope": "whole method call; excludes persistence after return",
+      "start_clock": {
+        "awake": 177523.0646697083,
+        "continuous": 208024.1217030833,
+        "utc": "2026-10-06T16:35:29.549077+00:00"
+      },
+      "start_utc": "2026-10-06T16:35:29.549077+00:00"
+    }
+  },
+  "total": {
+    "awake_seconds": 17.719215124991024,
+    "continuous_seconds": 17.719215041666757,
+    "elapsed_utc_seconds": 17.719077,
+    "end_clock": {
+      "awake": 177540.53589779165,
+      "continuous": 208041.5929308333,
+      "utc": "2026-10-06T16:35:47.020176+00:00"
+    },
+    "end_utc": "2026-10-06T16:35:47.020176+00:00",
+    "scope": "whole method call; excludes persistence after return",
+    "start_clock": {
+      "awake": 177522.81668266666,
+      "continuous": 208023.87371579165,
+      "utc": "2026-10-06T16:35:29.301099+00:00"
+    },
+    "start_utc": "2026-10-06T16:35:29.301099+00:00"
+  },
+  "verdict": "FIXTURES_FAIL",
+  "wrapper_sha256": "8f5da0a7790fb498030abef692a72985969a51338f002415afb5b19a315996eb"
+}

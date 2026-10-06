@@ -1,0 +1,28 @@
+{
+  "approval_reference": "docs/decisions/0031-owner-run-approval-policy.md",
+  "estimate_seconds": 5476.771066599999,
+  "execution_once": true,
+  "first_attempt_F5_persisted_or_observed": false,
+  "integration_review": "evidence/tactical_composition_demo/growing_shapes_review_claude/REV77_FIXTURE_READINESS.md",
+  "kind": "MEASUREMENT_TOOL_RERUN",
+  "machine_load": {
+    "load_average_1_5_15": [
+      11.83935546875,
+      11.47314453125,
+      12.6064453125
+    ],
+    "logical_cpus": 10,
+    "process_inventory": null,
+    "qualification": "Shared machine, not isolated timing. C6 session directories existed at preflight; active workload is not inferred from their existence. Load averages are observed; process inventory unavailable."
+  },
+  "owner_explicit_approval": {
+    "approval_reference": "docs/decisions/0031-owner-run-approval-policy.md",
+    "approved_over_one_hour": true,
+    "estimate_minutes": 91.27951777666665,
+    "owner_instruction": "run test for 1.5 now then; 2026-10-06 ~19:45 Europe/Kiev, explicitly approved in this task despite ~91-minute estimate",
+    "source": "current explicit owner task"
+  },
+  "pin_sha256": "9628282d3407038a6b6947e86cb8ae1b7e7b2ef82fcdd3f9ecd540895c82e42e",
+  "provenance": "Assisted-by: Codex:GPT-6",
+  "scheduling_allowance_seconds": 6572.125279919999
+}
