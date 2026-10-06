@@ -44,6 +44,7 @@ The test of "real" is that the AI wins against Astelia's scripted AI in a game r
 | W2 | Approve 0h as the direction | **read as approved 2026-10-05 [R]** (decision 0028 item 17): its engine parts are being built | confirm the [R] reading |
 | W3 | Confirm the reading of "go ahead" (improve before registering) | confirm, correct | marked [R] in decision 0028 item 16 |
 | W4 | What to register for 0g after v3 (S5): (a) the design as written (P1-P3 on the resonator; P1 expected to fail on regular, P2 indeterminate), or (b) add a separately labelled, outcome-informed endpoint for the morale controller's head-to-head result | after the v3 recheck | (a) plus (b), declared as such, judged on fresh seeds |
+| W5 | 0h R6-2 control decision | **DECIDED 2026-10-06: both controls**; matched births (ii) registered, as-is (i) descriptive (`DESIGN_0H_REV6_DRAFT.md` section 5) | none |
 
 ## 3b. Recheck rule (owner, 2026-10-05: "don't forget to run recheck script for each serious chunk of work")
 
