@@ -1,4 +1,4 @@
-"""Frozen revision-7.9 configuration identity and numerical recipes; no execution."""
+"""Frozen revision-7.10 configuration identity and numerical recipes; no execution."""
 from copy import deepcopy
 import math
 from .protocol import canonical
@@ -35,7 +35,14 @@ N1_SADDLE_DIAGNOSTIC=dict(member=0,departure_radians=.5,
  time='first 0.1 s endpoint crossing, bracketed by previous endpoint (initial t=0 included)',
  not_observed='null direction/time/bracket, status NOT_OBSERVED; horizon 16 s',used_in_verdict=False)
 
-CONFIG=dict(revision='7.9',versions=['rev7_rhs_v1','rev7_eval_v1','rev7_template_v1','rev7_qual_v1'],phase_scale=PHASE_SCALE,
+CONFIG=dict(revision='7.10',versions=['rev7_rhs_v1','rev7_eval_v1','rev7_template_v1','rev7_qual_v1'],phase_scale=PHASE_SCALE,
+ B_path=dict(order='active sites without G_s path; current deficit ascending; ties (site-pointer) mod 8',
+     snapshot='once at check start; recompute strong graph/front/back before each site trial',
+     deficit='minimum Euclidean distance from site forward set to output backward set; empty sets infinity',
+     pointer='advance by one modulo eight at every check, including empty/blocked',
+     maximum_births_per_check=2,waiting='all eight sites; eligible/unserved/current/max checks, accepted births and outcomes',
+     waiting_units='B-path checks; inactivity pauses, acceptance or observed active connection resets',
+     service_guarantee=False,claim='budget-aware outcome-informed heuristic; no guaranteed fixture cure, minimum insertion cost or all-site coverage'),
  strong_links=dict(rate_min_per_second=STRONG_LINK_RATE,formula='lambda * K * exp(-r*r) / full held receiver phase-neighbor count',comparison='computed coefficient >= 0.5 /s; inclusive, no tolerance',selection='filter actual directed phase edges after full k-nearest selection',uses=['B-path site test','B-path front/back sets','B-path graph trial conditions','transmission path exposure E','effective-root-to-output paths'],full_graph_uses=['RHS and mean normalization','D4 liveness','qualification','budget'],root_eligibility='unchanged gain > 0, active strict site reach, ordinary unsilenced member',clock=dict(degree='actual full held receiver row; recomputed after trial insertion',K='live signed coupling K; weighted experiment K=1',tau_link_seconds=2.,status='provisional aligned single-edge scale; no end-to-end settling guarantee or serial bound'),placement='unchanged r_star=0.556; progress conditional on admissible trial, clearance and budget'),
  output_port=dict(death_exempt=['D1','D3','D4'],budget_elements='ordinary only',budget_pairs='actual Ntheta undirected ordinary-to-ordinary pairs; O incident pairs excluded',cap=64,budget=64.,pair_cost=.1,B_out_budget_exempt=True,B_out_placement_required=True,physical_count_includes_output=True),
  fixture_entropy=dict(F5='reused outcome-informed engineering fixture; not independent',F7='previously NOT_RUN; dependent on reused F5; chain not fresh',exception='section 13 supersedes fresh-entropy stop for these fixtures only',development='unchanged'),

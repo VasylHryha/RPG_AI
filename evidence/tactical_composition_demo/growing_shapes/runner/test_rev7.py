@@ -216,6 +216,128 @@ def test_rev79_weak_connected_scaffold_grows_until_strong_path_reaches_O(backend
         assert all(all(attempts[e['values']['request']]['values']['checks'].values()) for e in accepted)
 
 
+@pytest.mark.parametrize('backend',['native','reference'])
+def test_rev710_empty_start_multiple_sites_completes_bridge_before_budget(backend):
+    from evidence.tactical_composition_demo.growing_shapes.medium.design_0h import SITES
+    from evidence.tactical_composition_demo.growing_shapes.runner.rev7_reporting import b_path_waiting
+    with medium(backend=backend) as m:
+        assert not m.native.elements
+        m.drives=[drive(id=s,x=SITES[s][0],y=SITES[s][1]) for s in (0,2,4)]
+        for s in (0,2,4):m.novelty[s]=20.
+        out=m.b_out()[0]
+        assert m.b_path()==[] and len(m.b1())==2
+        for check in range(1,16):
+            m.step_index=check*200
+            before=len(m.native);births=m.b_path();assert len(births)<=2
+            assert len(m.native)==before+len(births)
+            m.b1()
+            if any(m.strong_influence().path(s) for s in (0,2,4)):break
+        else:pytest.fail('no bridge completed in the bounded static synthetic construction')
+        assert m.cost()<64 and len(m.native)<64
+        assert m.native.pin(out)==(True,(0.,0.))
+        rows=b_path_waiting(m.events)['sites']
+        assert all(rows[s]['lifetime_counters']['eligible_checks']>0 for s in (0,2,4))
+        assert any(rows[s]['lifetime_counters']['unserved_checks']>0 for s in (0,2,4))
+        assert rows[7]['lifetime_counters']['accepted_births']==0
+        assert rows[7]['last_outcome']=='inactive'
+
+
+def test_rev710_native_reference_multisite_order_events_and_geometry_identical():
+    with medium(backend='native') as native,medium(backend='reference') as reference:
+        for m in (native,reference):
+            m.b_out();m.add((3.3,0.),.2);m.add((-3.8,0.),.2)
+            m.drives=[drive(id=0),drive(id=4,x=-4.)];m.pointer=4
+        for _ in range(5):
+            assert native.b_path()==reference.b_path()
+            assert native.pointer==reference.pointer
+            assert native.events==reference.events
+            assert [(e.id,e.x,e.y,e.phase) for e in native.native.elements]==[(e.id,e.x,e.y,e.phase) for e in reference.native.elements]
+            assert native.strong_influence()==reference.strong_influence()
+
+
+@pytest.mark.parametrize('backend',['native','reference'])
+def test_rev710_shortest_deficit_overrides_pointer_and_exact_ties_rotate(backend):
+    with medium(backend=backend) as m:
+        m.b_out();m.add((3.2,0.),0.);m.add((-3.8,0.),0.)
+        m.drives=[drive(id=0),drive(id=4,x=-4.)];m.pointer=4
+        m.b_path(blocked=True)
+        requests=[e['values']['site'] for e in m.events if e['rule']=='birth_request' and e['values']['birth_rule']=='B-path']
+        assert requests==[0,4] and m.pointer==5
+    with medium(backend=backend) as m:
+        m.b_out();m.add((3.2,0.),0.);m.add((-3.2,0.),0.)
+        m.drives=[drive(id=0),drive(id=4,x=-4.)];m.pointer=4
+        for expected in ([4,0],[0,4]):
+            begin=len(m.events);m.b_path(blocked=True)
+            requests=[e['values']['site'] for e in m.events[begin:] if e['rule']=='birth_request' and e['values']['birth_rule']=='B-path']
+            assert requests==expected
+        assert m.pointer==6
+
+
+@pytest.mark.parametrize('backend',['native','reference'])
+def test_rev710_no_root_infinite_ties_empty_checks_and_wait_pause_reset(backend):
+    from evidence.tactical_composition_demo.growing_shapes.runner.rev7_reporting import b_path_waiting,descriptive
+    with medium(backend=backend) as m:
+        assert m.b_path()==[] and m.pointer==1
+        m.drives=[drive(id=0),drive(id=2,x=0.,y=4.)]
+        for _ in range(2):m.b_path()
+        rows=b_path_waiting(m.events)['sites']
+        assert rows[0]['lifetime_counters']['current_wait_checks']==2
+        assert rows[0]['outcomes_in_window']['no_output']==2
+        m.drives=[];m.b_path()
+        assert m.path_waiting[0]['current_wait_checks']==2
+        m.b_out();m.drives=[drive(id=0)]
+        m.b_path();assert m.events[-8]['values']['outcome']=='no_root'
+        assert m.path_waiting[0]['current_wait_checks']==3
+        m.add((3.2,0.),0.);assert len(m.b_path())==1
+        assert m.path_waiting[0]['current_wait_checks']==0
+        assert m.path_waiting[0]['maximum_wait_checks']==3
+        report=descriptive(m.events,[],[],end=1.)['B_path_waiting']
+        assert report['finite_wait_bound'] is False and len(report['sites'])==8
+        assert report['sites'][0]['lifetime_counters']['accepted_births']==1
+        assert report['sites'][2]['lifetime_counters']['current_wait_checks']==2
+        assert all(r['lifetime_counters'] is None for r in b_path_waiting([])['sites'].values())
+        # Connection resets active wait even without an insertion for this site.
+        m.path_waiting[0]['current_wait_checks']=7
+        m.native.set_gain(0,0.) # O remains ineligible as a root.
+        m.add((1.5,0.),0.)
+        assert m.strong_influence().path(0)
+        m.b_path();assert m.path_waiting[0]['current_wait_checks']==0
+
+
+def test_rev710_reporting_works_with_append_only_chunk_events(tmp_path):
+    from evidence.tactical_composition_demo.growing_shapes.runner.rev6_trace import Chunks
+    from evidence.tactical_composition_demo.growing_shapes.runner.rev7_reporting import b_path_waiting
+    with medium() as m:
+        m.events=Chunks(tmp_path/'events')
+        m.drives=[drive()];m.b_path();m.b_out();m.b_path()
+        rows=b_path_waiting(m.events)['sites']
+        assert rows[0]['lifetime_counters']['current_wait_checks']==2
+        assert rows[0]['outcomes_in_window']=={'no_output':1,'no_root':1}
+        m.events.close()
+
+
+@pytest.mark.parametrize('backend',['native','reference'])
+def test_rev710_far_site_quota_wait_is_reported_and_shared_connection_rechecked(backend):
+    with medium(backend=backend) as m:
+        m.b_out()
+        for point in ((3.2,0.),(0.,3.3),(-3.8,0.)):m.add(point,0.)
+        m.drives=[drive(id=0),drive(id=2,x=0.,y=4.),drive(id=4,x=-4.)]
+        m.pointer=4
+        assert len(m.b_path())==2
+        checks={e['values']['site']:e['values'] for e in m.events if e['rule']=='B_path_check'}
+        assert [checks[s]['rank'] for s in (0,2,4)]==[0,1,2]
+        assert checks[4]['outcome']=='quota' and checks[4]['current_wait_checks']==1
+        assert not checks[4]['path_after']
+    with medium(backend=backend) as m:
+        m.b_out();m.add((3.2,0.),0.);m.add((2.644,0.),0.,gain=0.)
+        m.drives=[drive(id=s,x=4.,y=.01*s) for s in range(3)]
+        assert len(m.b_path())==2
+        checks={e['values']['site']:e['values'] for e in m.events if e['rule']=='B_path_check'}
+        assert all(checks[s]['path_after'] for s in range(3))
+        assert checks[2]['outcome']=='connected_by_earlier_birth'
+        assert checks[2]['current_wait_checks']==0 and checks[2]['accepted_births']==0
+
+
 @pytest.mark.parametrize('distance',[
     math.nextafter(math.sqrt(math.log(64)),0.),
     math.sqrt(math.log(64)),
@@ -360,7 +482,8 @@ def test_rev77_weak_connectivity_does_not_bypass_budget_refusal():
         m.drives=[drive()];before=len(m.native)
         assert m.influence().path(0) and not m.strong_influence().path(0)
         assert m.b_path(blocked=True)==[] and len(m.native)==before
-        assert m.events[-1]['values']['outcome']=='cost'
+        terminal=next(e for e in reversed(m.events) if e['rule']=='birth_terminal')
+        assert terminal['values']['outcome']=='cost'
 
 
 @pytest.mark.parametrize('backend',['native','reference'])
@@ -385,8 +508,12 @@ def test_rev79_configuration_pins_screen_and_preserves_clock_and_entropy():
     assert policy['clock']['tau_link_seconds']==2.
     assert 'no end-to-end' in policy['clock']['status']
     previous=json.loads((HERE/'rev79_delivery/PRIOR_REV7_SOURCE_IDENTITY.json').read_text())['configuration']
-    assert {k:v for k,v in CONFIG.items() if k not in ('revision','strong_links')}=={
+    assert {k:v for k,v in CONFIG.items() if k not in ('revision','strong_links','B_path')}=={
         k:v for k,v in previous.items() if k not in ('revision','strong_links')}
+    current_previous=json.loads((HERE/'rev710_delivery/PRIOR_REV7_SOURCE_IDENTITY.json').read_text())['configuration']
+    assert {k:v for k,v in CONFIG.items() if k not in ('revision','B_path')}=={
+        k:v for k,v in current_previous.items() if k!='revision'}
+    assert not CONFIG['B_path']['service_guarantee'] and CONFIG['B_path']['maximum_births_per_check']==2
 
 
 def test_rev79_qualification_keeps_coherent_weak_link_cohort_synthetic():
@@ -809,7 +936,7 @@ def test_clock_ledger_declared_units_no_rescaled_admission_windows():
 
 def test_rev75_configuration_identity_and_N1f_literal_recipe():
     from evidence.tactical_composition_demo.growing_shapes.runner.rev7_config import F1D_SCALES
-    assert CONFIG['revision']=='7.9' and CONFIG['phase_scale']==32.
+    assert CONFIG['revision']=='7.10' and CONFIG['phase_scale']==32.
     assert CONFIG['output_port']['death_exempt']==['D1','D3','D4']
     assert CONFIG['output_port']['B_out_budget_exempt']
     assert CONFIG['fixture_entropy']['development']=='unchanged'

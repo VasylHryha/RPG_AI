@@ -4,6 +4,10 @@ import math
 from ..medium.design_0h import wrap
 
 INTERPRETATION={
+    'revision_710_B_path':dict(status='ENGINEERING_HEURISTIC',
+        order='active missing-path sites: current deficit ascending; rotating exact ties',
+        claim='no finite service or waiting bound; max-site F5 exposure is not all-site coverage',
+        geometry='shared paths can reduce later deficits; degree changes and motion need not preserve T or shrink deficits'),
     'revision_7_motion':dict(status='DESCRIPTIVE',observation_channel='active input sites act as external motion bodies in addition to phase drives',
         claim='anchoring is an engineering hypothesis, not established by adding the site-body law',
         site_body_off='total effect of removing site bodies, including motion-neighbour selection and normalization changes'),
@@ -23,6 +27,29 @@ INTERPRETATION={
     'snapshots':'nested dependent evidence; not independent functional modules',
     'coverage':'F5/F7 perceive-only; F9 move only; secondary rows on the fixed evaluation panel',
 }
+
+
+def b_path_waiting(events):
+    """All sites, including never served; counters are lifetime as of last check."""
+    rows=[e['values'] for e in events if e['rule']=='B_path_check']
+    sites={}
+    counters=('eligible_checks','unserved_checks','current_wait_checks',
+              'maximum_wait_checks','accepted_births')
+    for site in range(8):
+        selected=[r for r in rows if r['site']==site]
+        last=selected[-1] if selected else None
+        sites[site]=dict(observed_checks=len(selected),
+            lifetime_counters=None if last is None else {key:last[key] for key in counters},
+            last_outcome=None if last is None else last['outcome'],
+            last_active=None if last is None else last['active'],
+            last_path=None if last is None else last['path_after'],
+            outcomes_in_window=dict(Counter(r['outcome'] for r in selected)))
+    return dict(status='DESCRIPTIVE',used_in_verdict=False,units='B-path checks',
+        eligibility='active site without strong path at check start; no root/output still eligible',
+        wait='eligible unserved checks since last accepted insertion or observed active connection; inactivity pauses',
+        reset='accepted insertion or strong connection; active connected check resets; inactive check pauses',
+        counters='lifetime through last observed check; outcomes and observed checks cover selected reporting window',
+        no_observations='null counters/outcomes, never inferred as zero wait',finite_wait_bound=False,sites=sites)
 
 
 def f5_qualification_summary(events,diagnostics,checkpoints):
@@ -136,7 +163,7 @@ def descriptive(events,diagnostics,counts,*,start=0.,end=32000.):
         item['penetration_seconds']=item['wall_samples']*.1
         item['no_sensor_access_seconds']=item['no_sensor_access_samples']*.1
     deaths=Counter(r['rule'] for r in events if r['rule'] in ('D1','D3','D4'))
-    return dict(window_seconds=[start,end],birth_roles=roles,
+    return dict(window_seconds=[start,end],birth_roles=roles,B_path_waiting=b_path_waiting(events),
         cap_limited=any(v['outcomes'].get('cap',0) for v in roles.values()),cost_limited=any(v['outcomes'].get('cost',0) for v in roles.values()),
         unmet_output_or_path_demand=any(v['outcomes'].get(code,0) for role,v in roles.items() if role in ('B-out','B-path') for code in ('cap','cost','placement','exhausted','no_output','no_root','quota')),
         turnover=dict(births=sum(v['accepted'] for v in roles.values()),deaths=sum(deaths.values()),death_rules=dict(deaths),growth_checks=sum(r['rule']=='growth_check' for r in events)),

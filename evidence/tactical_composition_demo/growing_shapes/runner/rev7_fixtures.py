@@ -303,7 +303,8 @@ class Harness:
                 meanA,meanB=float(np.mean(A)),float(np.mean(B));meanE=np.mean(E,axis=0).tolist()
                 specific=out_birth if start=='i' else path_birth
                 result[start]=dict(identity_snapshot=run.identity_snapshot,verdict='PASS' if specific and max(meanE)>=.5 and meanA>=.3 and meanB>=.3 else 'FAIL',A=meanA,B=meanB,E=meanE,B_out=out_birth,B_path=path_birth,episodes=episodes,events=events,active_site0_steps=sum(any(d[0]==0 and d[5]>0 for d in row['sites']) for row in run.drive_log))
-                from .rev7_reporting import f5_qualification_summary
+                from .rev7_reporting import f5_qualification_summary,b_path_waiting
+                result[start]['B_path_waiting']=b_path_waiting(events)
                 result[start]['qualification_validity']=f5_qualification_summary(events,run.medium.diagnostics,CHECKPOINTS)
                 result[start]['estimator_validity']=run.medium.estimator_validity()
                 if start=='i':self.intact=run;self.live=run.medium.clone(events=False)

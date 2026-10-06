@@ -1,4 +1,4 @@
-"""Revision 7.9: full structural graph and coefficient-screened transmission."""
+"""Revision 7.10: coefficient-screened transmission, smallest deficit first."""
 from collections import deque
 from copy import deepcopy
 from dataclasses import dataclass
@@ -141,6 +141,8 @@ class Rev7Medium(DesignMedium):
         self.events=[];self.drives=[];self.peak=0
         self.growth_rng=growth_rng
         self.frozen=frozen;self.pointer=0;self.request_counter=0
+        self.path_waiting={s:dict(eligible_checks=0,unserved_checks=0,current_wait_checks=0,
+                                 maximum_wait_checks=0,accepted_births=0) for s in range(8)}
         self.diagnostics=[];self.record()
 
     def clone(self,*,events=True,frames=True):
@@ -382,16 +384,25 @@ class Rev7Medium(DesignMedium):
 
     def b_path(self,blocked=False):
         added=[];p=self.pointer;self.pointer=(p+1)%8
-        for site in [(p+j)%8 for j in range(8)]:
-            d=next((d for d in self.drives if d.id==site and d.strength>0),None)
-            if d is None:continue
+        # Snapshot the order once per check; re-evaluate topology at each trial.
+        # Infinite deficits (no root/output) join the rotating tie order.
+        initial=self.strong_influence()
+        active={d.id for d in self.drives if d.strength>0}
+        gaps={s:deficit(self.native,initial.forward(s),initial.backward())
+              for s in range(8) if s in active and not initial.path(s)}
+        order=sorted(gaps,key=lambda s:(gaps[s],(s-p)%8))
+        outcomes={}
+        def finish(request,rule,site,outcome,attempts=0,**extra):
+            outcomes[site]=outcome
+            self.terminal(request,rule,site,outcome,attempts,**extra)
+        for site in order:
             g=self.strong_influence()
             if g.path(site):continue
             request=self.request('B-path',site)
-            if len(added)>=2:self.terminal(request,'B-path',site,'quota');continue
+            if len(added)>=2:finish(request,'B-path',site,'quota');continue
             front,back=g.forward(site),g.backward()
-            if not back:self.terminal(request,'B-path',site,'no_output');continue
-            if not front:self.terminal(request,'B-path',site,'no_root');continue
+            if not back:finish(request,'B-path',site,'no_output');continue
+            if not front:finish(request,'B-path',site,'no_root');continue
             es={e.id:e for e in self.native.elements}
             elements,drives=geometry(self.native,self.drives)
             new=max(es,default=-1)+1
@@ -411,13 +422,33 @@ class Rev7Medium(DesignMedium):
                     if not all(checks.values()):continue
                     reason=self.feasible(point,es[a].phase)
                     if blocked and reason is None:reason='cost'
-                    if reason:self.terminal(request,'B-path',site,reason,attempts,failures=failures)
+                    if reason:finish(request,'B-path',site,reason,attempts,failures=failures)
                     else:
                         id=self.add(point,es[a].phase,rule='B-path',site=site,request=request)
-                        added.append(id);self.terminal(request,'B-path',site,'accepted',attempts,id=id,failures=failures)
+                        added.append(id);finish(request,'B-path',site,'accepted',attempts,id=id,failures=failures)
                     done=True;break
                 if done:break
-            if not done:self.terminal(request,'B-path',site,'exhausted',attempts,failures=failures)
+            if not done:finish(request,'B-path',site,'exhausted',attempts,failures=failures)
+        final=self.strong_influence()
+        for site in range(8):
+            waiting=self.path_waiting[site]
+            outcome=outcomes.get(site,'connected_by_earlier_birth' if site in gaps else
+                                 'connected' if site in active else 'inactive')
+            if site in gaps:
+                waiting['eligible_checks']+=1
+                accepted=outcome=='accepted'
+                waiting['accepted_births']+=int(accepted)
+                if accepted or final.path(site):waiting['current_wait_checks']=0
+                else:
+                    waiting['unserved_checks']+=1;waiting['current_wait_checks']+=1
+                    waiting['maximum_wait_checks']=max(waiting['maximum_wait_checks'],waiting['current_wait_checks'])
+            elif site in active:waiting['current_wait_checks']=0
+            self.emit('B_path_check',site=site,active=site in active,
+                      missing_path_before=site in gaps,path_after=final.path(site),
+                      deficit=None if site not in gaps or not math.isfinite(gaps[site]) else gaps[site],
+                      infinite_deficit=site in gaps and not math.isfinite(gaps[site]),
+                      rank=order.index(site) if site in gaps else None,pointer_before=p,
+                      outcome=outcome,**waiting)
         return added
 
     def b1(self,blocked=False):
