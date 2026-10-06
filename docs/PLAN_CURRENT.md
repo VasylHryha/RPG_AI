@@ -51,7 +51,7 @@
 | A6l | Revision 7.8 (a radius 1.177) | **REJECTED** by Codex (F1c degree is 6; F1c's last link sits at 1.41) | — | — |
 | A6m | **Revision 7.9:** strong edge = actual coupling rate ≥ 0.5 /s | DONE: Codex APPROVE_WITH_NOTES (saved F1b and F1c strong paths at 100%; weak links excluded); implemented (122 tests); Claude check **READY_FOR_FIXTURES** (pin `27a3c462…`) | Claude, Codex | — |
 | A6n | 7.9 fixtures | DONE: N1 and F1–F4 PASS; **F5(ii) PASS (A 1.21, B 1.18 rad, E 0.7): the first grown network responding through its grown path**; F5(i), the empty start, FAILS (8 half-bridges filled the budget) | Codex | — |
-| A6o | **Revision 7.10:** B-path serves the smallest deficit first | **Codex review + implementation RUNNING**; then a Claude check and the fixtures | Claude, Codex | decision 0031 |
+| A6o | **Revision 7.10:** B-path serves the smallest deficit first | DONE: Codex APPROVE_WITH_NOTES; implemented (132 tests); Claude check READY_FOR_FIXTURES (pin `ebc58aa2…`). **Fixtures RUNNING** | Claude, Codex | decision 0031 |
 | A7 | Cost projection from the measured F rates | — | Codex | — |
 | A8 | **The development run** (48 trainings, about 16 h or more of serial compute) | — | Codex | **[OWNER] approve the run and its time** |
 | A9 | Review the results, then the owner's recheck | — | Claude, then Codex | — |
@@ -80,7 +80,7 @@
 |---|---|---|---|
 | C1 | Port, parallel and recheck | DONE (`evidence/c6_option_b/`) | — |
 | C2 | Readiness timing | **The quiet-machine requirement is dropped** (the owner: the engine must work on the normal, busy laptop). The batch already shows the engine itself is too slow: the slowest world is 392 s wall, about 380 s per thread on CPU, against 360 s | — |
-| C3 | **Speed up the C6 engine:** a target of at least 30% less compute (the slowest world ≤ about 250–270 s on a busy machine), with exact equivalence | **Claude performance agent RUNNING** (profile → safe optimizations → exact-match check → owner recheck; report `evidence/c6_option_b/PERFORMANCE_DEEPDIVE_REPORT.md`) | Claude (then a Codex review) | decision 0031 |
+| C3 | **Speed up the C6 engine** | **DONE (Claude, `8214f39`)**: bit-exact (8 full worlds, 796M values audited); the **slowest world 392 s → 152.6 s on a busy machine** (rule 4578 ≤ 10800, 2.4× headroom); CPU −33%; memory about +0.5 GB per world. **Codex cross-family review RUNNING** | Claude, then Codex | — |
 | C3 | If over 360 s: the owner decides the resource rule | **OWNER DECISION PENDING** after the measured failure; a quiet-machine failure is not established | **[OWNER]** |
 
 **C6 queued-batch owner recheck:** COMPLETE — `evidence/c6_option_b/quiet_session_20261006_161801/OWNER_RECHECK_CODEX.md` records the verbatim owner request, reviewed report SHA256 and findings. No report, arithmetic, identity, preservation or bundle defect found. **Q1 disposition:** retain NOT_READY and observed timings; absence of scheduler confirmation and a renewed quiet gate before timing leaves verified quiet measurement unavailable. The owner decides any future measurement or resource-rule change; no passed jobs are repeated. **Q2 disposition:** record the available Codex reviewer as same-family; Claude addendum 2 and this recheck do not accept the new batch or milestone. Delivery bookkeeping labels the initial PAYLOAD snapshot and the final bundle is verified again after adding this review/disposition. Project code and STATUS.json remain unchanged.
