@@ -1,4 +1,4 @@
-# Design 0h, revision 6.4 (Codex round 6: APPROVE_WITH_NOTES; its two low notes applied in 18.5): an input-to-output path grown on purpose (consolidated; supersedes `DESIGN_0H_REV6_DRAFT.md` sections 2–6)
+# Design 0h, revision 6.5 (6.4 approved by Codex round 6 with notes; 6.5 adds section 19 from the owner's external research recheck): an input-to-output path grown on purpose (consolidated; supersedes `DESIGN_0H_REV6_DRAFT.md` sections 2–6)
 
 **Revision 6.1** answers the second Codex review (`docs/reviews/tactical_0h_rev6_design_review_codex_r2.md`, R2-1 … R2-11). **Section 12 replaces the clauses it names and governs wherever it conflicts with sections 1–11.** Section 13 is its self-audit. **Revision 6.2** answers the third review (`…_r3.md`, R3-1 … R3-6). **Section 14 governs over section 12 and over sections 1–11 wherever they conflict.** Section 15 is its self-audit. **Revision 6.3** answers the fourth review (`…_r4.md`, R4-1, R4-2): **section 16 governs over everything before it**, and section 17 is its self-audit. **Revision 6.4** answers the fifth review (`…_r5.md`, R5-1): section 18 governs over everything before it.
 
@@ -723,3 +723,54 @@ A candidate that passes the geometric conditions but is refused for cap or cost 
 |---|---|---|---|
 | Codex integration Q1 | F6's state source | F5's six checkpoints, fresh frozen copies, memory panel 788–807, pooled per episode | F6 named a statistic without a state |
 | Codex integration Q2 | F8's construction | A live reward-arm run from the F5(i) checkpoint, a 20 + 20 block sequence, ids and keys | F8 named a diagnostic without a run |
+
+## 19. Revision 6.5: findings adopted from the owner's external research recheck (`docs/reviews/external_web_ai_recheck_r2_2026-10-06.md`)
+
+That recheck reviewed `fba4332`, before revision 6 was consolidated. Its issue-by-issue disposition is in `docs/reviews/external_web_ai_recheck_r2_response.md`. The clauses below are **additive**: they narrow claims, add descriptive baselines and add fixtures. They change no rule of sections 1–18.
+
+### 19.1 The choose interface has a declared information ceiling (its A02, P0)
+
+The choose drive merges distance, health and range into one strength k(d, h). Two legal scenes can give **identical drives, bearings and ids** but require different targets (its check C01).
+
+So **exact general target selection is impossible through this interface**, whatever the medium does.
+- choose stays a **secondary, descriptive** row: an improvement over its baselines through a lossy interface, with the ceiling disclosed.
+- No claim of target selection is made.
+- A future stronger choose task needs a separable representation: distance, health and range distinguishable at the physical input, with collision tests at the input. That is a later revision.
+
+### 19.2 Move cannot stop (its A10 and C09)
+
+With one output, C = 1, so the inherited move decoder always gives magnitude 1: full speed, even at zero error.
+- move stays a **secondary, descriptive** row. No stopping or braking ability is claimed.
+- **New fixture F9 (descriptive):** zero-demand, approach, retreat-inside-range and stop cases, recording the decoded action. It documents the decoder's limit before any future decoder change.
+
+### 19.3 Memory baselines (its A11 and C08)
+
+A single carrier-matched oscillator keeps an encoded phase through the hidden interval. The memory row (secondary) therefore also reports:
+- a **lawful single-oscillator baseline**: one driven oscillator at a fixed site, ω = π, the same decoder;
+- an **explicit sample-and-hold reference**: the last visible angle, held.
+
+Memory success over default and random alone is never read as multi-oscillator computation. Encoding (the visible 4 s) and retention (the hidden 12 s) are reported separately.
+
+### 19.4 Clocks (its A01)
+
+Section 4 and 12.10 already declare that memory gives no B1 demand or reward eligibility within a block. The recheck's three-clock separation (cue encoding, retention and structural demand, each with its own window) is **recorded as the design direction for the revision that will add a memory claim**. Revision 6 makes no memory claim.
+
+### 19.5 Coverage manifest (its A03)
+
+F5 and F7 are perceive-only **by design**. The secondary rows (move, memory and choose) are evaluated on the fixed evaluation panel. No fixture claims coverage of all four tasks. F9 adds move.
+
+### 19.6 Interpretation limits made explicit (its A08, A18, A20 and A21)
+
+- The **output-channel lesion** tests terminal readout dependence: the necessity of the coupling into O. It does not identify which internal path or mechanism computed the response, and it does not block geometry-mediated routes inside the medium.
+- **Path exposure and locking** are descriptive. They are not causal proof.
+- The **"≥ 6 of 8" rule** is a development continuation rule. Six positive signs out of eight have a one-sided fair-sign tail of 0.145. It is not significance and not confirmation.
+- **Snapshots** are nested, dependent evidence. They are not counts of independent functional modules.
+
+| # (external) | Adopted as | Cause |
+|---|---|---|
+| A02 | 19.1, the choose ceiling | Never checked whether the encoding is injective |
+| A10 | 19.2, F9 | Treated coherence as task error |
+| A11 | 19.3, the baselines | Assumed memory needs many oscillators |
+| A01 | 19.4 | Already declared; direction recorded |
+| A03 | 19.5 | Coverage not stated |
+| A08, A18, A20, A21 | 19.6 | Interpretation limits implicit |

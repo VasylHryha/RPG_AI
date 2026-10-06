@@ -431,3 +431,11 @@ No registration, judging seeds or recorded run.
    - `no_reference`.
 
    Their counts are reported per reason, beside the mean and the distribution of the defined cosines.
+
+**Planned v5 (not part of the v4 run; from the owner's external recheck, `docs/reviews/external_web_ai_recheck_r2_response.md`, A24):** the travel-time hold gets a **bounded, progress-aware release**. The hold ends early on:
+- **no projected radial progress** over a declared window;
+- **an infeasible retreat:** wall contact, or blocking;
+- **loss or death of the reference;**
+- **an urgent threat:** taking damage above a declared rate while out of reach.
+
+Emergencies take precedence over the hold. The thresholds will come from the v4 decision traces (velocity feasibility, hold durations), and will be frozen before any v5 fight.
