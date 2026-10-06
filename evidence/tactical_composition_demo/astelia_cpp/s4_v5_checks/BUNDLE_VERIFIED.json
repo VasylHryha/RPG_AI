@@ -1,0 +1,32 @@
+{
+  "status": "VERIFIED",
+  "verdict": "CHANGES_REQUIRED",
+  "base": "273dd1d589dda754089e9cdb0aadde2de86cdf12",
+  "commit": "6a753febf74d3e52a5475b7fb2a07ada9fd08a10",
+  "bundle": "evidence/tactical_composition_demo/astelia_cpp/s4_v5_checks/S4_V5_DESIGN_REVIEW.bundle",
+  "bundle_sha256": "c78059f5e7f2913ed3a18f6d565bd404920274da1dfab0073f1534fbc1ebcc3a",
+  "bundle_bytes": 6948,
+  "normal_hooks": true,
+  "hooks_path": ".githooks",
+  "hook_output": "[detached HEAD 6a753fe] Review 0g v5 design: stop on undefined stage-C selection\n Committer: new <new@MacBook-Pro-new.local>\nYour name and email address were configured automatically based\non your username and hostname. Please check that they are accurate.\nYou can suppress this message by setting them explicitly. Run the\nfollowing command and follow the instructions in your editor to edit\nyour configuration file:\n\n    git config --global --edit\n\nAfter doing this, you may fix the identity used for this commit with:\n\n    git commit --amend --reset-author\n\n 3 files changed, 90 insertions(+)\n create mode 100644 docs/reviews/tactical_0g_s17_design_review_codex.md\n create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_v5_checks/DELIVERY_NOTE.md\n create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_v5_checks/PLAN_AND_REVIEW.md\n",
+  "provenance": "Assisted-by: Codex:GPT-6",
+  "independent_fresh_import": true,
+  "changed_files": {
+    "docs/reviews/tactical_0g_s17_design_review_codex.md": {
+      "sha256": "18646620c99518140c647429132fe9c46c6364a4709b8334257c4d9d160ef277",
+      "bytes": 7387
+    },
+    "evidence/tactical_composition_demo/astelia_cpp/s4_v5_checks/DELIVERY_NOTE.md": {
+      "sha256": "ca50469f67af359eecdd0f3770c6d67cb48cfc46bfe89194b738ff24e28b4460",
+      "bytes": 1820
+    },
+    "evidence/tactical_composition_demo/astelia_cpp/s4_v5_checks/PLAN_AND_REVIEW.md": {
+      "sha256": "ae00ea3ab426511bbd2910512f51669df3f32fa3b16697482db42c9d735d828f",
+      "bytes": 2943
+    }
+  },
+  "all_files_under_50_MB": true,
+  "implementation": "not_started_per_conditional_authorization",
+  "development": "not_run",
+  "bundle_verification": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_v5_checks/S4_V5_DESIGN_REVIEW.bundle is okay\nThe bundle contains this ref:\n6a753febf74d3e52a5475b7fb2a07ada9fd08a10 HEAD\nThe bundle requires this ref:\n273dd1d589dda754089e9cdb0aadde2de86cdf12 \nThe bundle uses this hash algorithm: sha1"
+}
