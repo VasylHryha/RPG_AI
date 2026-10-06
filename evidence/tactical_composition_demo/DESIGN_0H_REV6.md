@@ -783,3 +783,14 @@ F5 and F7 are perceive-only **by design**. The secondary rows (move, memory and 
   - It is checked **once at the start** of each fixture or development execution and recorded in every seed receipt. Later unrelated edits to other files cannot invalidate running seeds.
   - Editing any covered file during an execution is forbidden (AGENTS.md: no edits during long runs).
 - **The B-path trial is evaluated on positions only.** The post-trial graph, reach, deficit and clearance are computed from a copy of the **positions, roles, gains and current drives**. The medium, with its histories and frames, is never deep-copied. Only an accepted placement mutates the medium. The restore requirement is satisfied trivially, because a rejected trial never touches the medium.
+
+### 19.8 The single-oscillator memory baseline, exactly (answers `growing_shapes/runner/REV65_SPECIFICATION_QUESTION.md`)
+
+- **The oscillator is an ordinary element, not an output,** so its drive is not masked.
+- It is alone in an otherwise empty medium, placed **exactly at the cue's physical site for that episode** (q at π_e(0), the episode's permuted site; the distance is 0, so K_d = 1). It is fixed in position for the episode, with motion off.
+- g = 1, ω = π, and the initial phase θ = φ(t_0): relative phase 0.
+- No growth, adaptation or recovery. It is a fresh copy per episode.
+- **Decoding** is direct and uses the same action table: β = wrap(θ − φ(t)), with C = 1.
+- It is evaluated on the same panel, with the same paired estimator, as a descriptive comparator.
+
+A globally fixed site is **not** used: it would deny the baseline the cue in most episodes, making it artificially weak.

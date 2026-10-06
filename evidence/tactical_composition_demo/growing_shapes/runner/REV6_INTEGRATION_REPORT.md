@@ -1,5 +1,24 @@
 NOT_READY
 
+Current repair status, 2026-10-06, inspected HEAD `915dc32`: **stopped for the section 19.3 specification question**, under the owner's explicit ambiguity-stop instruction. See [REV65_SPECIFICATION_QUESTION.md](REV65_SPECIFICATION_QUESTION.md) for the concrete proposed single-oscillator baseline contract. No implementation fixes, native builds, tests, tiny timings, fixtures, training, development or evaluation were run in this session. No execution readiness or review acceptance is asserted. The design identity remains stale pending clarification and completion of the repair batch.
+
+| Claude finding | Current disposition |
+|---|---|
+| 1: section 19 obligations and stale design pin | Pending; 19.3 baseline site, initialization and direct singleton readout require clarification |
+| 2: full-medium B-path trial copies and cost estimates | Pending; no timing performed |
+| 3: native assay/reference parity | Pending; no tests performed |
+| 4: F1 continuous-from-first-entry criterion | Pending; section 19.7 resolves its design rule |
+| 5: identity scope and execution-start snapshot | Pending; section 19.7 resolves its design rule |
+| 6: deterministic descriptive summarizers | Pending |
+| 7: F3 coincident placement | Pending |
+| 8: tracked-file rewrite during tests | Pending; suite not run |
+| 9: silenced-root parity | Pending |
+| 10: committed approval-record execution grant | Pending |
+
+Everything below is the **historical imported revision-6.4 implementation report**, retained for provenance. Its test results, source pins, completeness claims and cost projections do not describe the current 6.5 repair status. Claude's review supersedes its readiness claims.
+
+---
+
 Revision-6.4 implementation delivered; the section 14.9 **implementation-review gate remains open**. Codex:GPT-6, 2026-10-06, input HEAD `2bd6965`. The complete requested integration and F1–F8 harness are present, and the final tiny contract batch passed. No specification question remains after section 18.6. This report does not supply the separate integration review or owner approval for fixtures. Neither F1–F8, training, development, nor an evaluation panel was run.
 
 The original Q1/Q2 stop report is retained byte-for-byte in `rev6_history/SPECIFICATION_STOP_REPORT.md`, together with its original seed inventory. The existing `REV6_SPECIFICATION_STOP_PACKET.tar.gz`, documentary checks and stop-packet manifest remain untouched. This final report replaces the active report. The scope is exclusively `growing_shapes/`; other-session `astelia_cpp/` and C6 work were preserved. All **202 pre-existing tracked growing_shapes files** match the initial SHA256 inventory. Original 5.1 source, native images, receipts and loaders were retained; an old template was actually loaded under its own version in a synthetic identity regression.
