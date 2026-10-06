@@ -198,9 +198,9 @@ def test_rev79_weak_connected_scaffold_grows_until_strong_path_reaches_O(backend
         m.drives=[drive()]
         assert m.influence().path(0) and not m.strong_influence().path(0)
         births=[]
-        for _ in range(2):
+        for _ in range(1):
             assert not m.strong_influence().path(0)
-            added=m.b_path();assert len(added)==1
+            added=m.b_path();assert len(added)==2
             births+=added
             assert m.influence().path(0)
             assert m.native.pin(out)==(True,(0.,0.))
@@ -225,7 +225,7 @@ def test_rev710_empty_start_multiple_sites_completes_bridge_before_budget(backen
         m.drives=[drive(id=s,x=SITES[s][0],y=SITES[s][1]) for s in (0,2,4)]
         for s in (0,2,4):m.novelty[s]=20.
         out=m.b_out()[0]
-        assert m.b_path()==[] and len(m.b1())==2
+        assert m.b_path()==[] and len(m.b1())==1
         for check in range(1,16):
             m.step_index=check*200
             before=len(m.native);births=m.b_path();assert len(births)<=2
@@ -240,6 +240,178 @@ def test_rev710_empty_start_multiple_sites_completes_bridge_before_budget(backen
         assert any(rows[s]['lifetime_counters']['unserved_checks']>0 for s in (0,2,4))
         assert rows[7]['lifetime_counters']['accepted_births']==0
         assert rows[7]['last_outcome']=='inactive'
+
+
+@pytest.mark.parametrize('backend',['native','reference'])
+def test_rev711_both_births_advance_nearest_site_against_updated_graph(backend):
+    with medium(backend=backend) as m:
+        m.b_out();m.add((3.8,0.),.2);m.add((-3.9,0.),.2)
+        m.drives=[drive(id=0),drive(id=4,x=-4.)];m.pointer=4
+        births=m.b_path();assert len(births)==2
+        terminals=[e['values'] for e in m.events if e['rule']=='birth_terminal'
+                   and e['values']['birth_rule']=='B-path']
+        assert [e['site'] for e in terminals if e['outcome']=='accepted']==[0,0]
+        attempts=[e['values'] for e in m.events if e['rule']=='birth_attempt'
+                  and e['values']['birth_rule']=='B-path']
+        assert any(e['a']==births[0] for e in attempts if e['request']==terminals[1]['request'])
+        checks={e['values']['site']:e['values'] for e in m.events if e['rule']=='B_path_check'}
+        assert checks[0]['accepted_births']==checks[0]['accepted_births_in_check']==2
+        assert checks[4]['outcome']=='quota' and checks[4]['current_wait_checks']==1
+        assert not m.strong_influence().path(0)
+
+
+@pytest.mark.parametrize('backend',['native','reference'])
+def test_rev711_empty_start_bootstraps_one_root_then_completes_static_bridge(backend):
+    from evidence.tactical_composition_demo.growing_shapes.medium.design_0h import SITES
+    with medium(backend=backend) as m:
+        m.drives=[drive(id=s,x=x,y=y) for s,(x,y) in enumerate(SITES)]
+        for _ in range(200):m.timers()
+        assert all(t==pytest.approx(20.) for t in m.novelty.values())
+        m.step_index=200;out=m.b_out()[0]
+        assert not m.output_first() and not any(m.strong_influence().roots.values())
+        assert m.b_path()==[] and len(m.b1())==1
+        assert m.output_first() and m.novelty[0]==0.
+        deferred=[e['values'] for e in m.events if e['rule']=='birth_terminal'
+                  and e['values']['outcome']=='deferred_output_first']
+        assert [v['site'] for v in deferred]==list(range(1,8))
+        assert all(v['attempts']==v['accepted']==0 for v in deferred)
+        held=dict(m.novelty)
+        for check in range(1,11):
+            for _ in range(20):m.timers()
+            assert m.novelty==held
+            m.step_index+=200
+            assert len(m.b_path())<=2
+            if any(m.strong_influence().path(s) for s in range(8)):break
+            assert m.b1()==[] and m.novelty==held
+        else:pytest.fail('static empty-start scheduling never completed a bridge')
+        assert not m.output_first() and m.cost()<64 and len(m.native)<64
+        assert m.native.pin(out)==(True,(0.,0.))
+        # No physics/assay claim: this only proves static scheduling feasibility.
+        assert any(m.strong_influence().path(s) for s in range(8))
+
+
+@pytest.mark.parametrize('backend',['native','reference'])
+def test_rev711_timer_freeze_root_loss_connection_and_path_loss(backend,monkeypatch):
+    with medium(backend=backend) as m:
+        out=m.b_out()[0];root=m.add((3.8,0.),.2)
+        m.drives=[drive()];m.novelty[0]=22.;m.novelty[1]=7.
+        monkeypatch.setattr(m,'covered',lambda s:True)
+        m.timers();assert m.novelty[0]==22. and m.novelty[1]==7.
+        assert m.b1()==[] and m.events[-1]['values']['outcome']=='deferred_output_first'
+        for loss in ('gain','silence','inactive','removed'):
+            m.native.set_gain(root,1.);m.native.silence(root,False);m.drives=[drive()]
+            if loss=='gain':m.native.set_gain(root,0.)
+            elif loss=='silence':m.native.silence(root)
+            elif loss=='inactive':m.drives=[drive(strength=0.)]
+            else:m.remove(root,'SYNTHETIC')
+            assert not m.output_first()
+        # O has no root role; normal demand accumulation and bootstrap resume.
+        m.drives=[drive()];monkeypatch.setattr(m,'covered',lambda s:False)
+        m.novelty[0]=20.;m.timers();assert m.novelty[0]==20.1
+        assert len(m.b1())==1 and m.output_first()
+        m.add((1.5,0.),0.) # active ordinary direct root with a strong path
+        assert not m.output_first()
+        m.novelty[0]=7.;m.timers();assert m.novelty[0]==7.1
+        m.native.silence(out);assert m.output_first()
+        m.timers();assert m.novelty[0]==7.1
+
+
+@pytest.mark.parametrize('backend',['native','reference'])
+@pytest.mark.parametrize('loss',['gain','silence','death','inactive_drive'])
+def test_rev711_active_preready_freeze_and_immediate_bootstrap_after_root_loss(backend,loss):
+    with medium(backend=backend) as m:
+        m.b_out();root=m.add((3.8,0.),0.)
+        m.drives=[drive(id=0),drive(id=4,x=-4.)]
+        m.novelty[0]=20.;m.novelty[4]=7.
+        m.timers();assert m.novelty[0]==20. and m.novelty[4]==7.
+        if loss=='gain':m.native.set_gain(root,0.)
+        elif loss=='silence':m.native.silence(root)
+        elif loss=='death':m.remove(root,'SYNTHETIC')
+        else:
+            m.drives=[drive(id=0,strength=0.),drive(id=4,x=-4.)]
+            m.novelty[4]=20.
+        assert not m.output_first()
+        births=m.b1();assert len(births)==1 and m.output_first()
+        birth=next(e for e in reversed(m.events) if e['rule']=='B1')
+        assert birth['values']['site']==(4 if loss=='inactive_drive' else 0)
+
+
+@pytest.mark.parametrize('backend',['native','reference'])
+def test_rev711_blocked_bridge_exhausts_finitely_and_retains_failure(backend):
+    with medium(params=Params(K=0.),backend=backend) as m:
+        m.b_out();m.add((3.8,0.),0.);m.add((-3.9,0.),0.)
+        m.drives=[drive(id=0),drive(id=4,x=-4.)];m.novelty[0]=20.
+        for _ in range(3):
+            begin=len(m.events);assert m.b_path()==[] and m.b1()==[]
+            terminals=[e['values'] for e in m.events[begin:] if e['rule']=='birth_terminal']
+            paths=[v for v in terminals if v['birth_rule']=='B-path']
+            assert [v['site'] for v in paths]==[0,4]
+            assert all(v['outcome']=='exhausted' and 0<v['attempts']<=104 for v in paths)
+            assert terminals[-1]['outcome']=='deferred_output_first'
+            m.timers();assert m.novelty[0]==20.
+        assert not any(m.strong_influence().path(s) for s in range(8))
+        assert m.path_waiting[0]['current_wait_checks']==3
+
+
+@pytest.mark.parametrize('refusal',['cap','cost'])
+def test_rev711_resource_refusal_stops_other_site_trials(refusal,monkeypatch):
+    with medium() as m:
+        m.b_out();m.add((3.8,0.),0.);m.add((-3.9,0.),0.)
+        m.drives=[drive(id=0),drive(id=4,x=-4.)]
+        monkeypatch.setattr(m,'feasible',lambda *args:refusal)
+        assert m.b_path()==[]
+        rows=[e['values'] for e in m.events if e['rule']=='birth_terminal'
+              and e['values']['birth_rule']=='B-path']
+        assert [v['site'] for v in rows]==[0,4]
+        assert all(v['outcome']==refusal for v in rows)
+        assert rows[0]['attempts']>0 and rows[1]['attempts']==0
+
+
+def test_rev711_partial_acceptance_then_exhaustion_preserves_birth_count(monkeypatch):
+    from evidence.tactical_composition_demo.growing_shapes.medium import rev7_design as design
+    actual=design.geometric_trial
+    def trial(elements,*args,**kw):
+        return actual(elements,*args,**kw) if len(elements)==3 else dict.fromkeys(design.TRIAL_NAMES,False)
+    monkeypatch.setattr(design,'geometric_trial',trial)
+    with medium() as m:
+        m.b_out();m.add((3.8,0.),0.);m.add((-3.9,0.),0.)
+        m.drives=[drive(id=0),drive(id=4,x=-4.)]
+        assert len(m.b_path())==1
+        checks={e['values']['site']:e['values'] for e in m.events if e['rule']=='B_path_check'}
+        assert checks[0]['outcome']=='accepted' and checks[0]['last_terminal_outcome']=='exhausted'
+        assert checks[0]['accepted_births']==1 and checks[0]['current_wait_checks']==0
+        rows=[e['values'] for e in m.events if e['rule']=='birth_terminal'
+              and e['values']['birth_rule']=='B-path']
+        assert [(v['site'],v['outcome']) for v in rows]==[(0,'accepted'),(0,'exhausted'),(4,'exhausted')]
+
+
+def test_rev711_matched_control_bypasses_own_deferral():
+    with medium() as m:
+        m.b_out();m.add((3.8,0.),0.);m.drives=[drive()]
+        assert m.output_first()
+        control=Matched('synthetic/rev711/matching')
+        births=control.check(m,[101,102])
+        assert len(births)==2 and control.unmatched==[]
+        assert [r['source_id'] for r in control.slots]==[101,102]
+        assert all(r['check']==m.step_index for r in control.slots)
+
+
+@pytest.mark.parametrize('backend',['native','reference'])
+def test_rev711_connection_releases_next_site_and_prior_path_keeps_710_order(backend):
+    with medium(backend=backend) as m:
+        m.b_out();m.add((2.3,0.),0.);m.add((-3.9,0.),0.)
+        m.drives=[drive(id=0),drive(id=4,x=-4.)]
+        assert not any(m.strong_influence().path(s) for s in (0,4))
+        assert len(m.b_path())==2
+        births=[e['values']['site'] for e in m.events if e['rule']=='B-path']
+        assert births==[0,4] and m.strong_influence().path(0)
+    with medium(backend=backend) as m:
+        m.b_out();m.add((1.5,0.),0.);m.add((-3.8,0.),0.);m.add((0.,3.9),0.)
+        m.drives=[drive(id=0),drive(id=4,x=-4.),drive(id=2,x=0.,y=4.)]
+        assert m.strong_influence().path(0)
+        assert len(m.b_path())==2
+        assert [e['values']['site'] for e in m.events if e['rule']=='B-path']==[4,2]
+        assert all(not e['values']['output_first'] for e in m.events if e['rule']=='B_path_check')
 
 
 def test_rev710_native_reference_multisite_order_events_and_geometry_identical():
@@ -288,12 +460,12 @@ def test_rev710_no_root_infinite_ties_empty_checks_and_wait_pause_reset(backend)
         m.b_out();m.drives=[drive(id=0)]
         m.b_path();assert m.events[-8]['values']['outcome']=='no_root'
         assert m.path_waiting[0]['current_wait_checks']==3
-        m.add((3.2,0.),0.);assert len(m.b_path())==1
+        m.add((3.2,0.),0.);assert len(m.b_path())==2
         assert m.path_waiting[0]['current_wait_checks']==0
         assert m.path_waiting[0]['maximum_wait_checks']==3
         report=descriptive(m.events,[],[],end=1.)['B_path_waiting']
         assert report['finite_wait_bound'] is False and len(report['sites'])==8
-        assert report['sites'][0]['lifetime_counters']['accepted_births']==1
+        assert report['sites'][0]['lifetime_counters']['accepted_births']==2
         assert report['sites'][2]['lifetime_counters']['current_wait_checks']==2
         assert all(r['lifetime_counters'] is None for r in b_path_waiting([])['sites'].values())
         # Connection resets active wait even without an insertion for this site.
@@ -508,11 +680,12 @@ def test_rev79_configuration_pins_screen_and_preserves_clock_and_entropy():
     assert policy['clock']['tau_link_seconds']==2.
     assert 'no end-to-end' in policy['clock']['status']
     previous=json.loads((HERE/'rev79_delivery/PRIOR_REV7_SOURCE_IDENTITY.json').read_text())['configuration']
-    assert {k:v for k,v in CONFIG.items() if k not in ('revision','strong_links','B_path')}=={
-        k:v for k,v in previous.items() if k not in ('revision','strong_links')}
+    assert {k:v for k,v in CONFIG.items() if k not in ('revision','strong_links','B_path','timers')}=={
+        k:v for k,v in previous.items() if k not in ('revision','strong_links','timers')}
     current_previous=json.loads((HERE/'rev710_delivery/PRIOR_REV7_SOURCE_IDENTITY.json').read_text())['configuration']
-    assert {k:v for k,v in CONFIG.items() if k not in ('revision','B_path')}=={
-        k:v for k,v in current_previous.items() if k!='revision'}
+    assert {k:v for k,v in CONFIG.items() if k not in ('revision','B_path','timers')}=={
+        k:v for k,v in current_previous.items() if k not in ('revision','timers')}
+    assert {k:v for k,v in CONFIG['timers'].items() if k!='output_first'}==current_previous['timers']
     assert not CONFIG['B_path']['service_guarantee'] and CONFIG['B_path']['maximum_births_per_check']==2
 
 
@@ -636,7 +809,7 @@ def test_B1_freezes_hidden_defers_check_resumes_and_retains_refusal():
 
 def test_coverage_resets_only_active_timer_and_quota_retains():
     with medium() as m:
-        m.add((3.4,.1),0.);history(m);m.drives=[drive()]
+        m.add((3.4,.1),0.);m.add((3.,0.),0.,role="output");history(m);m.drives=[drive()]
         m.novelty[0]=22.;m.timers();assert m.novelty[0]==0.
         m.novelty={s:20. for s in range(8)}
         m.drives=[drive(id=s,x=4*math.cos(s*math.pi/4),y=4*math.sin(s*math.pi/4)) for s in range(8)]
@@ -936,7 +1109,7 @@ def test_clock_ledger_declared_units_no_rescaled_admission_windows():
 
 def test_rev75_configuration_identity_and_N1f_literal_recipe():
     from evidence.tactical_composition_demo.growing_shapes.runner.rev7_config import F1D_SCALES
-    assert CONFIG['revision']=='7.10' and CONFIG['phase_scale']==32.
+    assert CONFIG['revision']=='7.11' and CONFIG['phase_scale']==32.
     assert CONFIG['output_port']['death_exempt']==['D1','D3','D4']
     assert CONFIG['output_port']['B_out_budget_exempt']
     assert CONFIG['fixture_entropy']['development']=='unchanged'

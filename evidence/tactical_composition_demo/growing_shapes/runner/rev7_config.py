@@ -1,4 +1,4 @@
-"""Frozen revision-7.10 configuration identity and numerical recipes; no execution."""
+"""Frozen revision-7.11 configuration identity and numerical recipes; no execution."""
 from copy import deepcopy
 import math
 from .protocol import canonical
@@ -35,13 +35,18 @@ N1_SADDLE_DIAGNOSTIC=dict(member=0,departure_radians=.5,
  time='first 0.1 s endpoint crossing, bracketed by previous endpoint (initial t=0 included)',
  not_observed='null direction/time/bracket, status NOT_OBSERVED; horizon 16 s',used_in_verdict=False)
 
-CONFIG=dict(revision='7.10',versions=['rev7_rhs_v1','rev7_eval_v1','rev7_template_v1','rev7_qual_v1'],phase_scale=PHASE_SCALE,
+CONFIG=dict(revision='7.11',versions=['rev7_rhs_v1','rev7_eval_v1','rev7_template_v1','rev7_qual_v1'],phase_scale=PHASE_SCALE,
  B_path=dict(order='active sites without G_s path; current deficit ascending; ties (site-pointer) mod 8',
-     snapshot='once at check start; recompute strong graph/front/back before each site trial',
+     snapshot='order and output-first mode once at check start; recompute strong graph/front/back before every request',
+     output_first='no active strong output path: retry smallest-deficit site after acceptance; next site only on connection or finite candidate exhaustion',
+     search='eight nearest frontier pairs x thirteen rotations per request; two accepted births total',
+     resource_stop='cap/cost ends output-first service for check; later unconnected requests log same refusal with zero attempts',
+     connected_mode='17.2 unchanged: one request per missing-path site',
      deficit='minimum Euclidean distance from site forward set to output backward set; empty sets infinity',
      pointer='advance by one modulo eight at every check, including empty/blocked',
      maximum_births_per_check=2,waiting='all eight sites; eligible/unserved/current/max checks, accepted births and outcomes',
      waiting_units='B-path checks; inactivity pauses, acceptance or observed active connection resets',
+     accepted_accounting='actual per-site birth count; retain accepted service if a later request exhausts',
      service_guarantee=False,claim='budget-aware outcome-informed heuristic; no guaranteed fixture cure, minimum insertion cost or all-site coverage'),
  strong_links=dict(rate_min_per_second=STRONG_LINK_RATE,formula='lambda * K * exp(-r*r) / full held receiver phase-neighbor count',comparison='computed coefficient >= 0.5 /s; inclusive, no tolerance',selection='filter actual directed phase edges after full k-nearest selection',uses=['B-path site test','B-path front/back sets','B-path graph trial conditions','transmission path exposure E','effective-root-to-output paths'],full_graph_uses=['RHS and mean normalization','D4 liveness','qualification','budget'],root_eligibility='unchanged gain > 0, active strict site reach, ordinary unsilenced member',clock=dict(degree='actual full held receiver row; recomputed after trial insertion',K='live signed coupling K; weighted experiment K=1',tau_link_seconds=2.,status='provisional aligned single-edge scale; no end-to-end settling guarantee or serial bound'),placement='unchanged r_star=0.556; progress conditional on admissible trial, clearance and budget'),
  output_port=dict(death_exempt=['D1','D3','D4'],budget_elements='ordinary only',budget_pairs='actual Ntheta undirected ordinary-to-ordinary pairs; O incident pairs excluded',cap=64,budget=64.,pair_cost=.1,B_out_budget_exempt=True,B_out_placement_required=True,physical_count_includes_output=True),
@@ -49,7 +54,14 @@ CONFIG=dict(revision='7.10',versions=['rev7_rhs_v1','rev7_eval_v1','rev7_templat
  carrier=math.pi,motion=dict(k=8,radius=3.,strict=True,ties=['distance','element_before_site','id'],mean='own_count',held='four RK4 stages',site_presence='strength > 0',site_weight='unweighted',silent_element_motion=True),
  phase=dict(k=8,radius=3.,strict=True,ties=['distance','element_array_index'],mean='own_count',sites=False),
  pins=PIN_TABLE,site_body_r0=.3,element_clearance=.05,site_clearance=.3,clearance_comparison='distance + 8*max_coordinate_or_limit_ULP >= threshold; roundoff only',
- timers=dict(inactive_B1='freeze',active_covered='reset',birth='reset',refusal='retain',ready_check='active only',B_path='immediate'),
+ timers=dict(inactive_B1='freeze',active_covered='reset',birth='reset',refusal='retain',ready_check='active only',B_path='immediate',
+     output_first=dict(predicate='CURRENT ordinary unsilenced gain-positive effective root exists and no active site has strong path to O',
+         frame='freeze all novelty values under predicate, including covered or pre-ready; outside predicate 8.9 unchanged',
+         request='live predicate before each B1 site request; ready active deferred_output_first terminal, zero attempts, timer retained',
+         bootstrap='no effective root: normal demand and B1; first accepted root can defer later sites within same check; root loss resumes',
+         controls='M exact intact accepted-B1 count/timing bypasses its own predicate; U queue unchanged',
+         escape='none while root persists without a path; finite horizon and unchanged failure gates',
+         output_role='O never effective root')),
  start=dict(policies=['intact','M','U'],elements=0,time=0.,timers=0.,id_counter=0,first_growth=20.,initial_detuning=False),
  excursion=dict(h=PRODUCTION_H,substeps=20,bound='sum h * max_stage abs(theta_dot - pi)',individual_cut=math.pi/2,pair_cut=math.pi/2,policy='pair-only; invalid means inactive; records retained',qualification='screen actual cohort before circular criteria',limitation='stage-sampling assumption'),
  recovery=dict(position_rms_factor=.1,phase_rms=.3,redraws=8,position_denominator='candidate free members',clipping=False,sites_excluded=True,output_included=True),

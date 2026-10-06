@@ -4,6 +4,10 @@ import math
 from ..medium.design_0h import wrap
 
 INTERPRETATION={
+    'revision_711_output_first':dict(status='ENGINEERING_HEURISTIC',
+        B_path='both accepted insertions to nearest missing-path site; retrial after insertion; next site only after connection/exhaustion; cap/cost stops service',
+        B1='live root exists and no active strong output path: freeze demand and log ready requests deferred_output_first; no roots resumes bootstrap',
+        claim='no guaranteed completion or starvation bound; instantaneous connection does not meet time-averaged E; coverage and control-M exact matching unchanged'),
     'revision_710_B_path':dict(status='ENGINEERING_HEURISTIC',
         order='active missing-path sites: current deficit ascending; rotating exact ties',
         claim='no finite service or waiting bound; max-site F5 exposure is not all-site coverage',

@@ -1,4 +1,4 @@
-"""Revision 7.10: coefficient-screened transmission, smallest deficit first."""
+"""Revision 7.11: output-first growth with live-root bootstrap."""
 from collections import deque
 from copy import deepcopy
 from dataclasses import dataclass
@@ -35,7 +35,7 @@ def clear_position(point,positions):
 
 R_STAR=.556
 TRIAL_NAMES=('edge_a_to_new','new_reached','a_reached','paths_kept','deficit_or_connect','clearance')
-OUTCOMES=('accepted','cap','cost','placement','exhausted','no_output','no_root','quota')
+OUTCOMES=('accepted','cap','cost','placement','exhausted','no_output','no_root','quota','deferred_output_first')
 ROLE_BY_MEASUREMENT={
     'element':dict(drive='gain * strength * kernel',sensor_partners=True,P_i='base',e_i='episode mean',lock='sensor and C4',coverage=True,effective_root='gain > 0 and active strict reach',geometric_exposure='recorded'),
     'output':dict(drive=0,sensor_partners=False,P_i=None,e_i=0,lock='C4 only',coverage=False,effective_root=False,geometric_exposure='recorded'),
@@ -162,6 +162,11 @@ class Rev7Medium(DesignMedium):
         return geometric_graph(elements,drives,self.native.params.k,
                                self.native.params.radius,strong=True,
                                phase_scale=self.native.policy()[0],K=self.native.params.K)
+
+    def output_first(self):
+        """Live predicate; O alone cannot defer demand or bootstrap a root."""
+        g=self.strong_influence()
+        return any(g.roots.values()) and not any(g.path(s) for s in g.roots)
 
     def add(self,position,phase,rate=math.pi,gain=1.,rule='B1',role='element',**values):
         id=self.native.add(*position,phase,rate,role=role)
@@ -314,11 +319,11 @@ class Rev7Medium(DesignMedium):
         for e in self.native.elements:
             lock=self.lock(e.id)
             self.death[e.id]=self.death.get(e.id,0.)+DT if lock is not None and lock<.5 else 0.
-        covered=[]
+        covered=[];deferred=self.output_first()
         for site in range(8):
             active=any(d.id==site and d.strength>0 for d in self.drives)
             yes=self.covered(site) if active else False;covered.append(yes)
-            if active:self.novelty[site]=0. if yes else self.novelty[site]+DT
+            if active and not deferred:self.novelty[site]=0. if yes else self.novelty[site]+DT
         g=self.influence();live=g.forward()|g.backward()
         for e in self.native.elements:
             self.native.cut_off(e.id,0. if e.id in live else self.native.cut_off(e.id)+DT)
@@ -382,63 +387,72 @@ class Rev7Medium(DesignMedium):
         id=self.add(point,phase,rule='B-out',role='output',request=request)
         self.terminal(request,'B-out',None,'accepted',attempts,id=id);return [id]
 
+    def _b_path_attempt(self,site,blocked):
+        # Each request has a finite 8-pair x 13-rotation search. Rebuild all
+        # geometry/receiver degrees after any earlier accepted insertion.
+        g=self.strong_influence();request=self.request('B-path',site)
+        front,back=g.forward(site),g.backward()
+        if not back:self.terminal(request,'B-path',site,'no_output');return 'no_output',None
+        if not front:self.terminal(request,'B-path',site,'no_root');return 'no_root',None
+        es={e.id:e for e in self.native.elements}
+        elements,drives=geometry(self.native,self.drives);new=max(es,default=-1)+1
+        pairs=sorted((math.hypot(es[a].x-es[b].x,es[a].y-es[b].y),a,b)
+                     for a in front for b in back)[:8]
+        attempts=0;failures={name:0 for name in TRIAL_NAMES}
+        for _,a,b in pairs:
+            direction=math.atan2(es[b].y-es[a].y,es[b].x-es[a].x)
+            for rotation in [0]+[sign*angle for angle in range(15,91,15) for sign in (1,-1)]:
+                angle=direction+math.radians(rotation)
+                point=(es[a].x+R_STAR*math.cos(angle),es[a].y+R_STAR*math.sin(angle))
+                checks=geometric_trial(elements,drives,site,a,b,point,new,
+                    k=self.native.params.k,radius=self.native.params.radius,before=g,
+                    phase_scale=self.native.policy()[0],K=self.native.params.K);attempts+=1
+                for name,yes in checks.items():failures[name]+=int(not yes)
+                self.emit('birth_attempt',request=request,birth_rule='B-path',site=site,
+                          a=a,b=b,position=point,checks=checks)
+                if not all(checks.values()):continue
+                reason=self.feasible(point,es[a].phase)
+                if blocked and reason is None:reason='cost'
+                if reason:
+                    self.terminal(request,'B-path',site,reason,attempts,failures=failures)
+                    return reason,None
+                id=self.add(point,es[a].phase,rule='B-path',site=site,request=request)
+                self.terminal(request,'B-path',site,'accepted',attempts,id=id,failures=failures)
+                return 'accepted',id
+        self.terminal(request,'B-path',site,'exhausted',attempts,failures=failures)
+        return 'exhausted',None
+
     def b_path(self,blocked=False):
         added=[];p=self.pointer;self.pointer=(p+1)%8
-        # Snapshot the order once per check; re-evaluate topology at each trial.
-        # Infinite deficits (no root/output) join the rotating tie order.
         initial=self.strong_influence()
         active={d.id for d in self.drives if d.strength>0}
+        output_first=not any(initial.path(s) for s in active)
         gaps={s:deficit(self.native,initial.forward(s),initial.backward())
               for s in range(8) if s in active and not initial.path(s)}
         order=sorted(gaps,key=lambda s:(gaps[s],(s-p)%8))
-        outcomes={}
-        def finish(request,rule,site,outcome,attempts=0,**extra):
-            outcomes[site]=outcome
-            self.terminal(request,rule,site,outcome,attempts,**extra)
+        outcomes={};counts={s:0 for s in order};resource_stop=None
         for site in order:
-            g=self.strong_influence()
-            if g.path(site):continue
-            request=self.request('B-path',site)
-            if len(added)>=2:finish(request,'B-path',site,'quota');continue
-            front,back=g.forward(site),g.backward()
-            if not back:finish(request,'B-path',site,'no_output');continue
-            if not front:finish(request,'B-path',site,'no_root');continue
-            es={e.id:e for e in self.native.elements}
-            elements,drives=geometry(self.native,self.drives)
-            new=max(es,default=-1)+1
-            pairs=sorted((math.hypot(es[a].x-es[b].x,es[a].y-es[b].y),a,b) for a in front for b in back)[:8]
-            attempts=0;done=False;failures={name:0 for name in TRIAL_NAMES}
-            for _,a,b in pairs:
-                direction=math.atan2(es[b].y-es[a].y,es[b].x-es[a].x)
-                for rotation in [0]+[sign*angle for angle in range(15,91,15) for sign in (1,-1)]:
-                    angle=direction+math.radians(rotation)
-                    point=(es[a].x+R_STAR*math.cos(angle),es[a].y+R_STAR*math.sin(angle))
-                    checks=geometric_trial(elements,drives,site,a,b,point,new,
-                        k=self.native.params.k,radius=self.native.params.radius,before=g,
-                        phase_scale=self.native.policy()[0],K=self.native.params.K);attempts+=1
-                    for name,yes in checks.items():failures[name]+=int(not yes)
-                    self.emit('birth_attempt',request=request,birth_rule='B-path',site=site,
-                              a=a,b=b,position=point,checks=checks)
-                    if not all(checks.values()):continue
-                    reason=self.feasible(point,es[a].phase)
-                    if blocked and reason is None:reason='cost'
-                    if reason:finish(request,'B-path',site,reason,attempts,failures=failures)
-                    else:
-                        id=self.add(point,es[a].phase,rule='B-path',site=site,request=request)
-                        added.append(id);finish(request,'B-path',site,'accepted',attempts,id=id,failures=failures)
-                    done=True;break
-                if done:break
-            if not done:finish(request,'B-path',site,'exhausted',attempts,failures=failures)
+            while not self.strong_influence().path(site):
+                refusal='quota' if len(added)>=2 else resource_stop
+                if refusal:
+                    request=self.request('B-path',site)
+                    self.terminal(request,'B-path',site,refusal)
+                    outcomes[site]=refusal;break
+                outcome,id=self._b_path_attempt(site,blocked);outcomes[site]=outcome
+                if id is not None:added.append(id);counts[site]+=1
+                if output_first and outcome in ('cap','cost'):resource_stop=outcome
+                # Repeat only after acceptance, in output-first mode. The
+                # accepted quota bounds retries; all other terminals advance.
+                if not output_first or outcome!='accepted' or len(added)>=2:break
         final=self.strong_influence()
         for site in range(8):
-            waiting=self.path_waiting[site]
-            outcome=outcomes.get(site,'connected_by_earlier_birth' if site in gaps else
-                                 'connected' if site in active else 'inactive')
+            waiting=self.path_waiting[site];count=counts.get(site,0)
+            last=outcomes.get(site,'connected_by_earlier_birth' if site in gaps else
+                              'connected' if site in active else 'inactive')
+            outcome='accepted' if count else last
             if site in gaps:
-                waiting['eligible_checks']+=1
-                accepted=outcome=='accepted'
-                waiting['accepted_births']+=int(accepted)
-                if accepted or final.path(site):waiting['current_wait_checks']=0
+                waiting['eligible_checks']+=1;waiting['accepted_births']+=count
+                if count or final.path(site):waiting['current_wait_checks']=0
                 else:
                     waiting['unserved_checks']+=1;waiting['current_wait_checks']+=1
                     waiting['maximum_wait_checks']=max(waiting['maximum_wait_checks'],waiting['current_wait_checks'])
@@ -448,7 +462,8 @@ class Rev7Medium(DesignMedium):
                       deficit=None if site not in gaps or not math.isfinite(gaps[site]) else gaps[site],
                       infinite_deficit=site in gaps and not math.isfinite(gaps[site]),
                       rank=order.index(site) if site in gaps else None,pointer_before=p,
-                      outcome=outcome,**waiting)
+                      output_first=output_first,accepted_births_in_check=count,
+                      last_terminal_outcome=last,outcome=outcome,**waiting)
         return added
 
     def b1(self,blocked=False):
@@ -458,6 +473,8 @@ class Rev7Medium(DesignMedium):
             if not any(d.id==site and d.strength>0 for d in self.drives):
                 self.emit('queued_demand',site=site,timer=self.novelty[site]);continue
             request=self.request('B1',site)
+            if self.output_first():
+                self.terminal(request,'B1',site,'deferred_output_first',timer=self.novelty[site]);continue
             if len(added)>=2:self.terminal(request,'B1',site,'quota');continue
             d=next(d for d in self.drives if d.id==site)
             point,attempts=self.spiral_candidate((d.x,d.y),request,'B1')
