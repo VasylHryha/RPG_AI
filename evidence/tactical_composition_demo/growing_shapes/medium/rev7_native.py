@@ -36,7 +36,7 @@ def library():
         'add_role':[h,d,d,d,d,i,P(u)], 'role':[h,u,P(i)],
         'cut':[h,u,P(d),i], 'lesions':[h,P(u),i], 'output':[h,P(d)],
         'stage_terms':[h,P(d),i], 'comparator':[h,i],
-        'phase_scale':[h,d], 'excursion':[h,P(d),i], 'motion_neighbors':[h,P(C.c_int32),P(C.c_int32),i], 'pin':[h,u,P(d)],
+        'phase_scale':[h,d], 'excursion':[h,P(d),i], 'motion_neighbors':[h,P(C.c_int32),P(C.c_int32),i], 'strong_neighbors':[h,P(C.c_int32),P(C.c_int32),i], 'pin':[h,u,P(d)],
         'policy':[h,P(d)], 'reference_drives':[h,P(Drive),i], 'reference_drive_count':[h],
         'reference_lesions':[h,P(u),i], 'reference_lesion_count':[h],
         'reference_commit':[h,P(d),P(d),P(d),i,d],
@@ -119,6 +119,13 @@ class Rev7Native(Medium):
 
     def policy(self):
         values=(C.c_double*3)();self._call('policy',values);return values[0],bool(values[1]),bool(values[2])
+
+    def strong_neighbors(self):
+        """Selected phase edges filtered by strength; never the RHS neighbor list."""
+        n,k=len(self),self.params.k
+        indices=(C.c_int32*(n*k))();counts=(C.c_int32*n)()
+        self._call('strong_neighbors',indices,counts,n*k)
+        return [list(indices[i*k:i*k+counts[i]]) for i in range(n)]
 
     def reference_drives(self):
         n=self._lib.gm_reference_drive_count(self._handle);values=(Drive*n)()

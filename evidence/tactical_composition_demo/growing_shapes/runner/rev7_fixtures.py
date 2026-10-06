@@ -196,7 +196,7 @@ class Harness:
             try:
                 for step in range(1600):
                     diag=m.integrate(self.driven(m,0. if step<80 else math.pi/2));g=m.influence()
-                    records.append(dict(time=m.time,beta=float(wrap(m.native.output()[1]-math.pi*m.time)),effective_roots={s:sorted(v) for s,v in g.roots.items()},paths=diag['paths'],exposure=diag['exposure'],phase_topology=m.phase_topology(),motion_topology=diag['motion_neighbors'],positions={e.id:[e.x,e.y] for e in m.native.elements},excursion=diag['excursion']))
+                    records.append(dict(time=m.time,beta=float(wrap(m.native.output()[1]-math.pi*m.time)),effective_roots={s:sorted(v) for s,v in m.strong_influence().roots.items()},paths=diag['paths'],exposure=diag['exposure'],phase_topology=m.phase_topology(),motion_topology=diag['motion_neighbors'],positions={e.id:[e.x,e.y] for e in m.native.elements},excursion=diag['excursion']))
                 response=step_response(records)
                 runs[str(scale)]=dict(phase_scale=scale,h=m.h,substeps=round(WORLD_DT/m.h),records=records,**response,deadline_error=abs(float(wrap(records[159]['beta']-math.pi/2))))
             finally:m.close()
@@ -213,7 +213,7 @@ class Harness:
                     beta=float(wrap(m.native.output()[1]-math.pi*m.time))
                     elements={e.id:e for e in m.native.elements}
                     weights={id:{j:math.exp(-math.hypot(elements[id].x-elements[j].x,elements[id].y-elements[j].y)**2)/max(1,len(sources)) for j in sources} for id,sources in g.incoming.items()}
-                    records.append(dict(time=m.time,beta=beta,path=bool(g.forward()&outputs),neighbors=m.phase_topology(),weights=weights,exposure=diag['exposure'],excursion=diag['excursion'],motion_neighbors=diag['motion_neighbors'],positions={id:[e.x,e.y] for id,e in elements.items()},source_site_distance=math.hypot(elements[0].x-4,elements[0].y),drive_access=any(d.strength>0 and math.hypot(elements[0].x-d.x,elements[0].y-d.y)<d.reach for d in ds),pin_invariant=all(e.x==m.native.pin(e.id)[1][0] and e.y==m.native.pin(e.id)[1][1] for e in elements.values() if m.role(e.id)=='output'),minimum_distances=minimum_distances(m),ordinary_span=span(m)))
+                    records.append(dict(time=m.time,beta=beta,path=bool(m.strong_influence().forward()&outputs),neighbors=m.phase_topology(),weights=weights,exposure=diag['exposure'],excursion=diag['excursion'],motion_neighbors=diag['motion_neighbors'],positions={id:[e.x,e.y] for id,e in elements.items()},source_site_distance=math.hypot(elements[0].x-4,elements[0].y),drive_access=any(d.strength>0 and math.hypot(elements[0].x-d.x,elements[0].y-d.y)<d.reach for d in ds),pin_invariant=all(e.x==m.native.pin(e.id)[1][0] and e.y==m.native.pin(e.id)[1][1] for e in elements.values() if m.role(e.id)=='output'),minimum_distances=minimum_distances(m),ordinary_span=span(m)))
                 if not all(r['pin_invariant'] for r in records):raise ValueError('INVALID: fixture pin moved')
                 response=step_response(records)
                 persistence=sum(r['path'] for r in records)/1600

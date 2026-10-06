@@ -32,6 +32,7 @@ public:
     void remove(uint64_t id,const std::string& rule="REMOVE",std::map<std::string,double> why={});
     std::vector<uint64_t> split(uint64_t id,double a,double b,double offset,const std::string& rule="SPLIT",std::map<std::string,double> why={});
     Neighbors neighbors(bool padded=false) const;
+    Neighbors strong_neighbors() const; // Transmission graph only; RHS/D4 keep neighbors().
     Neighbors motion_neighbors() const;
     std::vector<double> rhs(const std::vector<gm_element>& state,const Neighbors& held, const Neighbors& motion) const;
     void step(double dt); void observe();

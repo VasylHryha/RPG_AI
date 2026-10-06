@@ -1,35 +1,5 @@
 READY_FOR_REVIEW
 
-## Revision 7.7 integration (section 14)
-
-Current implementation readiness; the 7.6 text below is historical. Authority is DESIGN_0H_REV7.md section 14 with the binding implementation interpretations in docs/reviews/tactical_0h_rev77_design_review_codex.md (APPROVE_WITH_NOTES, Codex). Reviewed design SHA256: 4924cde5a8353214707d23b934fdb628deadfa548421662e2a8514c4419ecd7d. The design file was not edited. A Claude implementation review of this final tested pin remains required; this report is not fixture acceptance, execution authorization, or scientific qualification.
-
-G_s filters the existing directed full phase graph G after its k-nearest selection, using distance <= sqrt(log(2)) = 0.8325546111576977 (inclusive, no tolerance). This resolves the design's >= weight versus < distance inconsistency in favor of w >= 0.5. Native Medium::strong_neighbors and gm_strong_neighbors expose the filter; Rev7Native binds it. The independent Python geometric_graph(..., strong=True) applies the same distance and selection rules, including array-order ties, silence masks and the original strict coupling radius. Rev7Medium.influence remains G; strong_influence selects the native or Python implementation by backend.
-
-B-path's early site test, frontier F_s, output-backward set T, deficit and graph-dependent trial conditions all use G_s, including edge_a_to_new. All six trial conditions and existing admission/refusal rules remain mandatory. Endpoint transmission paths use G_s, so F5 E, G2 copy decisions and live descriptive path reporting follow effective roots to O through strong edges. F1/F1d transmission path exposure uses G_s too; F1's weights and neighbor diagnostics remain full and its cuts, recipes and response criterion are unchanged. F2 retains the full graph for its structural isolation negative control. Root eligibility itself is unchanged: ordinary, unsilenced, positive gain, active site and strict site reach.
-
-D4 forward/backward liveness, qualification cohorts/geometry/recorded full neighbors, RHS neighbor lists and their mean denominators, motion, adaptation, full-graph ordinary budget accounting, output protection and pins remain unchanged. The native snapshot format and RHS versions remain unchanged; the newly added native graph API requires the explicit final-source rebuild and new binary/build identity. The configuration revision is 7.7 and pins the graph consumers, inclusive boundary, root definition and provisional clock interpretation. Source identity binds this revision's design review. Old reviews/receipts cannot authorize the new pin.
-
-Review notes applied without editing the design: 0.5 is a provisional aligned single-edge screen, not a proven six-link three-second settling guarantee. Standalone saved-record and math audit is rev77_delivery/DESIGN_AUDIT.json, reproducible with audit_saved_and_math.py; it is not engine execution or causal identification. Late weak-link positions and slowly rising contrasts support a bottleneck hypothesis, not an identified >10-second first-order response. All accepted birth distances to the actual O were 2.43556–3.93672 in (i) and 2.44254–3.99899 in (ii), with its off-origin literal pin accounted for. Strong element edges do not establish strong sensor drive, locking, timing adequacy or exclusive causal mediation. Growth toward O is geometrically feasible but remains subject to clearance, neighbor displacement, quota, cap, budget and path preservation. Every response/numerical gate remains necessary. Reused F5/F7 fixture entropy stays explicitly outcome-informed; development inventory is unchanged. Historical FAIL receipts were preserved.
-
-Synthetic regressions cover native/Python exact-boundary and subset parity, original full mean/RHS/cost, directed selection/ties/silence/deletion refresh, weak-edge rejection, displaced frontier reach, preserved strong paths, non-progress trials, clearance and cost refusal. In both backends, a full-graph connected but strong-graph disconnected scaffold accepts four B-path births, connects strongly to O at x approximately 0.420, preserves its origin pin, and stops further B-path growth. A fabricated coherent weak-link triangle still qualifies structurally; a weak element-to-O full backward path still clears D4's cutoff timer, and full histories remain recorded. Existing numerical/lesion/copy/pin, port budget, execution stop and receipt contracts remain covered.
-
-Mandatory owner recheck request, verbatim:
-
-> Recheck what you did please, check if it is the best we can do, we want 10 out of 10 or above 9 - it's fine to break the things or fully rework. Check for issues, conflicts, gaps.
-
-Independent read-only Codex engineering recheck: APPROVE_WITH_NOTES. One synthetic trial accidentally made its new member a directly driven root; corrected to a narrow root-only drive before testing. No remaining implementation defect found in the bounded follow-up. Findings and dispositions are in rev77_delivery/OWNER_RECHECK_DISPOSITION.md. This is separate from pending Claude implementation acceptance. docs/PLAN_CURRENT.md was not edited, following the owner's explicit scope.
-
-Final validation: explicit native rebuild from final code, then configuration/source regeneration LAST, then the affected synthetic suite ONCE. **108 PASS**, pytest **2.43 s**, wrapper awake **2.698471 s**, elapsed UTC **2.698115 s**. No failed or preliminary synthetic invocation. No N1/F1–F9, training, development or panels ran. Tested configuration SHA256: `5f5ee90723165d89e528ba57e7f162d669db39025c5e9c1bf7b25a81eaff5d34`. Tested execution-pin SHA256: `71f876f61921641bea41e36d873a336a2c2d1ae0e642d8ff851226e55fecaa60`. The receipt binds all **69 scientific inputs** and the final test log. Prior integration report, source identity, synthetic receipt and log are preserved byte-for-byte in rev77_delivery/PRIOR_*; all historical experimental receipts and unrelated work remain unchanged.
-
-Delivery: workspace plus verified REV77_SOURCE_ONLY.tar.gz source overlay and REV77_SOURCE_ONLY_MANIFEST.json, with rev77_delivery/DELIVERY_NOTE.md and DELIVERY_VERIFICATION.json. Native products and caches are excluded; every file/member and the archive are strictly below 50 MB. The overlay requires the stated base checkout and its existing inherited dependencies; it is not a standalone experiment release. Commit result is recorded in rev77_delivery/COMMIT_ATTEMPT.json.
-
-Assisted-by: Codex:GPT-6
-
-## Historical revision 7.6 integration report
-
-READY_FOR_REVIEW
-
 ## Revision 7.6 integration (§13)
 
 This section governs current integration. Everything below the historical 7.5 heading is retained historical metadata. Authority: DESIGN_0H_REV7.md §13 over earlier sections; design SHA256 95f4c6dda75441712d3b7bf7b237584e63aba10cfef43c8a53768687db7c48e5. Design review docs/reviews/tactical_0h_rev76_design_review_codex.md: APPROVE_WITH_NOTES. Implementation review readiness only; Claude review of the final tested execution pin remains required before fixtures.

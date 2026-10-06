@@ -66,6 +66,7 @@ extern "C" {
 int gm_phase_scale(void* h,double value){return call(h,[&](Medium& m){rev7::require(value==1||value==8||value==32,"only fixture lambda 1/8 or protocol lambda 32");m.phase_scale=value;});}
 int gm_excursion(void* h,double* values,int n){return call(h,[&](Medium& m){buffer(values,n,m.excursion.size());std::copy(m.excursion.begin(),m.excursion.end(),values);});}
 int gm_motion_neighbors(void* h,int32_t* indices,int32_t* counts,int n){return call(h,[&](Medium& m){buffer(indices,n,m.elements.size()*m.p.k);rev7::require(counts||m.elements.empty(),"null counts");auto held=m.motion_neighbors();for(size_t i=0;i<held.size();++i){counts[i]=int(held[i].size());for(int j=0;j<m.p.k;++j)indices[i*m.p.k+j]=j<counts[i]?held[i][j]:INT32_MIN;}});}
+int gm_strong_neighbors(void* h,int32_t* indices,int32_t* counts,int n){return call(h,[&](Medium& m){buffer(indices,n,m.elements.size()*m.p.k);rev7::require(counts||m.elements.empty(),"null counts");auto held=m.strong_neighbors();for(size_t i=0;i<held.size();++i){counts[i]=int(held[i].size());for(int j=0;j<m.p.k;++j)indices[i*m.p.k+j]=j<counts[i]?held[i][j]:INT32_MIN;}});}
 int gm_pin(void* h,uint64_t id,double* result){return call(h,[&](Medium& m){rev7::require(result,"null pin result");auto e=m.elements[m.index(id)];result[0]=e.output;result[1]=e.pin_x;result[2]=e.pin_y;});}
 }
 extern "C" {

@@ -1,0 +1,510 @@
+{
+  "configuration": {
+    "F1": {
+      "F1c": {
+        "deadline_seconds": 8.0,
+        "hold_until": 24.0,
+        "margin_seconds": 4.0,
+        "margin_time": 12.0,
+        "margin_verdict_cut": null,
+        "persistence_until": 160.0
+      },
+      "F1d": {
+        "h": 0.005,
+        "phase_scales": [
+          1.0,
+          8.0,
+          32.0
+        ],
+        "scaffold": "F1b",
+        "verdict_cut": null
+      }
+    },
+    "N1": {
+      "Ntheta_match": 0.99,
+      "Nx_match": 0.99,
+      "entry": 0.1,
+      "free_position": 0.01,
+      "h": [
+        0.005,
+        0.00125
+      ],
+      "minimum_distances": "both integrations",
+      "phase_scale": 32.0,
+      "pins": "exact",
+      "recipes": {
+        "N1a": {
+          "entry": true,
+          "entry_member": 0,
+          "members": [
+            [
+              3.2,
+              0.0,
+              0.0,
+              3.141592653589793,
+              2.0,
+              "element"
+            ]
+          ],
+          "seconds": 16.0,
+          "sites": [
+            [
+              4.0,
+              0.0,
+              4.0,
+              0.0
+            ]
+          ],
+          "step": true,
+          "used_in_verdict": true
+        },
+        "N1b": {
+          "entry": false,
+          "entry_member": 0,
+          "members": [
+            [
+              3.2,
+              0.0,
+              0.0,
+              4.71238898038469,
+              1.0,
+              "element"
+            ]
+          ],
+          "seconds": 16.0,
+          "sites": [
+            [
+              4.0,
+              0.0,
+              2.0,
+              0.0
+            ]
+          ],
+          "step": false,
+          "used_in_verdict": true
+        },
+        "N1c": {
+          "entry": false,
+          "entry_member": 0,
+          "members": [
+            [
+              3.0,
+              1.3,
+              0.0,
+              3.141592653589793,
+              1.0,
+              "element"
+            ]
+          ],
+          "seconds": 16.0,
+          "sites": [
+            [
+              4.0,
+              0.0,
+              2.0,
+              0.0
+            ],
+            [
+              2.828,
+              2.828,
+              2.0,
+              3.141592653589793
+            ]
+          ],
+          "step": false,
+          "used_in_verdict": true
+        },
+        "N1d": {
+          "entry": false,
+          "entry_member": 0,
+          "members": [
+            [
+              3.7,
+              0.0,
+              2.641592653589793,
+              3.141592653589793,
+              1.0,
+              "element"
+            ],
+            [
+              3.956,
+              0.0,
+              0.0,
+              3.141592653589793,
+              1.0,
+              "element"
+            ]
+          ],
+          "seconds": 16.0,
+          "sites": [
+            [
+              4.0,
+              0.0,
+              2.0,
+              0.0
+            ]
+          ],
+          "step": false,
+          "used_in_verdict": true
+        },
+        "N1e": {
+          "entry": true,
+          "entry_member": 3,
+          "members": [
+            [
+              3.2,
+              0.0,
+              0.0,
+              3.141592653589793,
+              1.0,
+              "element"
+            ],
+            [
+              2.644,
+              0.0,
+              0.0,
+              3.141592653589793,
+              0.0,
+              "element"
+            ],
+            [
+              2.088,
+              0.0,
+              0.0,
+              3.141592653589793,
+              0.0,
+              "element"
+            ],
+            [
+              1.532,
+              0.0,
+              0.0,
+              3.141592653589793,
+              1.0,
+              "output"
+            ]
+          ],
+          "seconds": 16.0,
+          "sites": [
+            [
+              4.0,
+              0.0,
+              2.0,
+              0.0
+            ]
+          ],
+          "step": true,
+          "used_in_verdict": true
+        },
+        "N1f": {
+          "entry": true,
+          "entry_member": 6,
+          "members": [
+            [
+              3.2,
+              0.0,
+              0.0,
+              3.141592653589793,
+              1.0,
+              "element"
+            ],
+            [
+              2.644,
+              0.0,
+              0.0,
+              3.141592653589793,
+              0.0,
+              "element"
+            ],
+            [
+              2.088,
+              0.0,
+              0.0,
+              3.141592653589793,
+              0.0,
+              "element"
+            ],
+            [
+              1.532,
+              0.0,
+              0.0,
+              3.141592653589793,
+              0.0,
+              "element"
+            ],
+            [
+              0.976,
+              0.0,
+              0.0,
+              3.141592653589793,
+              0.0,
+              "element"
+            ],
+            [
+              0.41999999999999993,
+              0.0,
+              0.0,
+              3.141592653589793,
+              0.0,
+              "element"
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              3.141592653589793,
+              1.0,
+              "output"
+            ]
+          ],
+          "seconds": 24.0,
+          "sites": [
+            [
+              4.0,
+              0.0,
+              2.0,
+              0.0
+            ]
+          ],
+          "step": true,
+          "used_in_verdict": true
+        },
+        "N1g": {
+          "entry": false,
+          "entry_member": 0,
+          "members": [
+            [
+              3.7,
+              0.0,
+              3.141592653589793,
+              3.141592653589793,
+              1.0,
+              "element"
+            ],
+            [
+              3.956,
+              0.0,
+              0.0,
+              3.141592653589793,
+              1.0,
+              "element"
+            ]
+          ],
+          "seconds": 16.0,
+          "sites": [
+            [
+              4.0,
+              0.0,
+              2.0,
+              0.0
+            ]
+          ],
+          "step": false,
+          "used_in_verdict": false
+        }
+      },
+      "saddle_diagnostic": {
+        "definition": "first world endpoint with abs(unwrapped carrier-relative phase - initial phase) >= departure_radians",
+        "departure_radians": 0.5,
+        "direction": "sign of unwrapped displacement at first departure; not a completed 2pi winding",
+        "member": 0,
+        "not_observed": "null direction/time/bracket, status NOT_OBSERVED; horizon 16 s",
+        "time": "first 0.1 s endpoint crossing, bracketed by previous endpoint (initial t=0 included)",
+        "used_in_verdict": false
+      },
+      "substeps": [
+        20,
+        80
+      ],
+      "unwrapped_phase": 0.01,
+      "world_dt": 0.1,
+      "wrapped_phase": 0.01
+    },
+    "carrier": 3.141592653589793,
+    "clearance_comparison": "distance + 8*max_coordinate_or_limit_ULP >= threshold; roundoff only",
+    "clocks": {
+      "adaptation": 0.05,
+      "estimator": 10.0,
+      "freq_cut": 0.005,
+      "pattern_cut": 0.1,
+      "qualification": 60.0
+    },
+    "comparator": {
+      "count_changes": true,
+      "effect": "total effect of removing site bodies, including neighbour selection and normalization",
+      "recipients": [
+        10000512,
+        10000639
+      ],
+      "scope": "fresh final whole medium copy per episode",
+      "task": "perceive",
+      "verdict_cut": null
+    },
+    "element_clearance": 0.05,
+    "excursion": {
+      "bound": "sum h * max_stage abs(theta_dot - pi)",
+      "h": 0.005,
+      "individual_cut": 1.5707963267948966,
+      "limitation": "stage-sampling assumption",
+      "pair_cut": 1.5707963267948966,
+      "policy": "pair-only; invalid means inactive; records retained",
+      "qualification": "screen actual cohort before circular criteria",
+      "substeps": 20
+    },
+    "fixture_entropy": {
+      "F5": "reused outcome-informed engineering fixture; not independent",
+      "F7": "previously NOT_RUN; dependent on reused F5; chain not fresh",
+      "development": "unchanged",
+      "exception": "section 13 supersedes fresh-entropy stop for these fixtures only"
+    },
+    "motion": {
+      "held": "four RK4 stages",
+      "k": 8,
+      "mean": "own_count",
+      "radius": 3.0,
+      "silent_element_motion": true,
+      "site_presence": "strength > 0",
+      "site_weight": "unweighted",
+      "strict": true,
+      "ties": [
+        "distance",
+        "element_before_site",
+        "id"
+      ]
+    },
+    "output_port": {
+      "B_out_budget_exempt": true,
+      "B_out_placement_required": true,
+      "budget": 64.0,
+      "budget_elements": "ordinary only",
+      "budget_pairs": "actual Ntheta undirected ordinary-to-ordinary pairs; O incident pairs excluded",
+      "cap": 64,
+      "death_exempt": [
+        "D1",
+        "D3",
+        "D4"
+      ],
+      "pair_cost": 0.1,
+      "physical_count_includes_output": true
+    },
+    "phase": {
+      "k": 8,
+      "mean": "own_count",
+      "radius": 3.0,
+      "sites": false,
+      "strict": true,
+      "ties": [
+        "distance",
+        "element_array_index"
+      ]
+    },
+    "phase_scale": 32.0,
+    "pins": {
+      "F1a": [
+        2.644,
+        0.0
+      ],
+      "F1b": [
+        1.532,
+        0.0
+      ],
+      "F1c": [
+        0.0,
+        0.0
+      ],
+      "F1d": [
+        1.532,
+        0.0
+      ],
+      "F2b": [
+        -3.0,
+        0.0
+      ],
+      "F3": [
+        4.0,
+        0.0
+      ],
+      "F4": [
+        3.444,
+        0.0
+      ],
+      "F5ii": [
+        -0.5,
+        0.0
+      ],
+      "copies": "stored coordinate",
+      "live": [
+        0.0,
+        0.0
+      ]
+    },
+    "recovery": {
+      "clipping": false,
+      "output_included": true,
+      "phase_rms": 0.3,
+      "position_denominator": "candidate free members",
+      "position_rms_factor": 0.1,
+      "redraws": 8,
+      "sites_excluded": true
+    },
+    "revision": "7.7",
+    "site_body_r0": 0.3,
+    "site_clearance": 0.3,
+    "start": {
+      "elements": 0,
+      "first_growth": 20.0,
+      "id_counter": 0,
+      "initial_detuning": false,
+      "policies": [
+        "intact",
+        "M",
+        "U"
+      ],
+      "time": 0.0,
+      "timers": 0.0
+    },
+    "strong_links": {
+      "clock": {
+        "K": 1.0,
+        "neighbor_cap": 8,
+        "status": "provisional aligned single-edge scale; no end-to-end settling guarantee",
+        "tau_link_seconds": 0.5
+      },
+      "comparison": "distance <= computed radius; inclusive, no tolerance",
+      "full_graph_uses": [
+        "RHS and mean normalization",
+        "D4 liveness",
+        "qualification",
+        "budget"
+      ],
+      "placement": "unchanged r_star=0.556; progress conditional on admissible trial, clearance and budget",
+      "radius": 0.8325546111576977,
+      "root_eligibility": "unchanged gain > 0, active strict site reach, ordinary unsilenced member",
+      "selection": "filter actual directed phase edges after full k-nearest selection",
+      "uses": [
+        "B-path site test",
+        "B-path front/back sets",
+        "B-path graph trial conditions",
+        "transmission path exposure E",
+        "effective-root-to-output paths"
+      ],
+      "weight_min": 0.5
+    },
+    "timers": {
+      "B_path": "immediate",
+      "active_covered": "reset",
+      "birth": "reset",
+      "inactive_B1": "freeze",
+      "ready_check": "active only",
+      "refusal": "retain"
+    },
+    "versions": [
+      "rev7_rhs_v1",
+      "rev7_eval_v1",
+      "rev7_template_v1",
+      "rev7_qual_v1"
+    ]
+  },
+  "configuration_sha256": "5f5ee90723165d89e528ba57e7f162d669db39025c5e9c1bf7b25a81eaff5d34",
+  "execution_pin_sha256": "71f876f61921641bea41e36d873a336a2c2d1ae0e642d8ff851226e55fecaa60"
+}

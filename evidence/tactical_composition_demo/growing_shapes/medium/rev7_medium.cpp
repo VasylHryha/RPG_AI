@@ -82,6 +82,17 @@ Neighbors Medium::neighbors(bool padded) const {
     }
     return out;
 }
+Neighbors Medium::strong_neighbors() const {
+    auto out=neighbors();
+    const double radius=std::sqrt(std::log(2.0)); // exp(-r*r) >= 0.5, inclusive.
+    for(size_t i=0;i<out.size();++i) {
+        auto& row=out[i];
+        row.erase(std::remove_if(row.begin(),row.end(),[&](int j) {
+            return distance(elements[i].v,elements[j].v)>radius;
+        }),row.end());
+    }
+    return out;
+}
 Neighbors Medium::motion_neighbors() const {
     Neighbors out(elements.size());
     for(size_t i=0;i<elements.size();++i) {
