@@ -1,0 +1,3 @@
+Recheck what you did please, check if it is the best we can do, we want 10 out of 10 or above 9 - it's fine to break the things or fully rework. Check for issues, conflicts, gaps.
+
+Independent read-only Codex reviewer: /root/rev74_fixture_recheck. Available collaboration model families are Codex; other-family review is preferred, not required. Read-only run/report/delivery review, capped at 15 minutes. No execution, scientific source changes, evidence-verdict changes or reruns. Scope is growing_shapes; do not edit docs/PLAN_CURRENT.md. Parent records disposition here under the owner's explicit restriction.

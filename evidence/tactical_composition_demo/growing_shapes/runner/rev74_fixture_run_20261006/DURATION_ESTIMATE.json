@@ -1,0 +1,35 @@
+{
+  "estimate_seconds": 2300.1607308383695,
+  "scheduling_allowance_seconds": 2453.5047795609275,
+  "exceeds_one_hour": false,
+  "qualified": false,
+  "components_seconds": {
+    "growth_30400_steps_dispatch_sensitivity_8x_5_1": 680.8322588048009,
+    "assays_330_mixed_episodes_substep_sensitivity_4x_rev73_F4": 371.9989184977021,
+    "qualification_recovery_34_starts_sensitivity_8x_5_1": 185.52959177907675,
+    "Bpath_152_checks_8_exhausted_sites_N64": 205.07971814399994,
+    "N1_F1_F2_F3_F9_setup_allowance": 90
+  },
+  "workload": {
+    "N1_RK4_substeps": 104000,
+    "F1_world_frames": 9600,
+    "F1_RK4_substeps": 192000,
+    "F2_world_frames": 320,
+    "F3_F4_diagnostic_substeps": 40,
+    "F4_assay_episodes": 10,
+    "F5_growth_frames": 16000,
+    "F5_qualification_starts": 24,
+    "F5_assay_episodes": 180,
+    "F6_assay_episodes": 140,
+    "F7_growth_frames": 8000,
+    "F8_growth_frames": 6400,
+    "F8_qualification_starts": 10,
+    "F9_decoder_observations": 4
+  },
+  "method": "Static harness counts; deliberately generous dispatch/substep sensitivity scenarios on recorded rates plus 50-60 percent scheduling contingency. Multipliers are assumptions, not measured runtime scaling or bounds. No rehearsal or benchmark. Stops shorten work. Candidate/population mix and recovery remain unknown.",
+  "sources": {
+    "evidence/tactical_composition_demo/growing_shapes/runner/REV6_COST_ESTIMATE.json": "d4afc9401bc9f5ccb4bba4bf5791377ae8b6532d1bee8c5dd22ca5e1f1daccc8",
+    "evidence/tactical_composition_demo/growing_shapes/runner/rev7_fixture_run_20261006/F4_TIMING.json": "5b563b9905bd439891141cb3bb2dbfe14441003aa5c18389bc1a88c9b75e0032",
+    "evidence/tactical_composition_demo/growing_shapes/runner/rev7_fixtures.py": "fe1a88d61102aa218e1f4185d49ad347ecd60ff76890f7182177e8e90764a832"
+  }
+}
