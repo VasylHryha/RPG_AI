@@ -1,6 +1,6 @@
-# Design 0h, revision 7.8: phase on the task's clock, pinned ends (after the revision-6.5 fixture failure)
+# Design 0h, revision 7.9: phase on the task's clock, pinned ends (after the revision-6.5 fixture failure)
 
-**Status:** revision 7.8 (section 15: the strong-link threshold re-derived for real chain degree, after the 7.7 F1 result; under review). Revision 7.7 (section 14) was approved with notes. Revision 7.6 (section 13) was approved with notes. Revision 7.5 (section 12) was approved with notes. Revision 7.4 (section 11) was approved with notes. Revision 7.3 was design-approved by the Codex round-4 review (APPROVE_WITH_NOTES; its three low notes applied in 10.6). This is design review only: integration and execution readiness are separate gates. **Section 8 answers the Codex review** `docs/reviews/tactical_0h_rev7_design_review_codex.md` (R7-1 … R7-12) **and governs over sections 1–7. Section 9 (revision 7.2) answers the round-2 review `…_codex_r2.md` (R2-1 … R2-7) and governs over everything before it. Section 10 (revision 7.3) answers round 3 (`…_codex_r3.md`, R3-1 … R3-4) and governs over everything before it.** Drafted by Claude for Codex review. Not approved, and no execution is authorized. **The base is revision 6.5** (`DESIGN_0H_REV6.md`, with every section through 19.9). Every rule not changed below stays as written there. This is a new revision on **fresh entropy**: every key prefix `0h-rev6/` becomes `0h-rev7/`, and every world-id range moves up by 10,000,000.
+**Status:** revision 7.9 (section 16: strong links defined by their actual coupling rate; section 15 was rejected by the Codex review and is superseded; under review). Revision 7.7 (section 14) was approved with notes. Revision 7.6 (section 13) was approved with notes. Revision 7.5 (section 12) was approved with notes. Revision 7.4 (section 11) was approved with notes. Revision 7.3 was design-approved by the Codex round-4 review (APPROVE_WITH_NOTES; its three low notes applied in 10.6). This is design review only: integration and execution readiness are separate gates. **Section 8 answers the Codex review** `docs/reviews/tactical_0h_rev7_design_review_codex.md` (R7-1 … R7-12) **and governs over sections 1–7. Section 9 (revision 7.2) answers the round-2 review `…_codex_r2.md` (R2-1 … R2-7) and governs over everything before it. Section 10 (revision 7.3) answers round 3 (`…_codex_r3.md`, R3-1 … R3-4) and governs over everything before it.** Drafted by Claude for Codex review. Not approved, and no execution is authorized. **The base is revision 6.5** (`DESIGN_0H_REV6.md`, with every section through 19.9). Every rule not changed below stays as written there. This is a new revision on **fresh entropy**: every key prefix `0h-rev6/` becomes `0h-rev7/`, and every world-id range moves up by 10,000,000.
 
 ## 1. What the 6.5 fixtures showed (`growing_shapes/runner/REV6_FIXTURE_REPORT.md`, decision 0030)
 
@@ -702,3 +702,38 @@ The definitions are hashed with the N1 recipes.
 | Item | Cause |
 |---|---|
 | w_min was too strict for a pinned end | The derivation used the neighbour cap (8) instead of the actual chain degree, and was not checked against a pinned-end equilibrium |
+
+## 16. Revision 7.9: a strong link is defined by its actual coupling rate (supersedes section 15)
+
+**Section 15 is superseded.** The Codex review `docs/reviews/tactical_0h_rev78_design_review_codex.md` found it CHANGES_REQUIRED:
+- F1c's chain elements have **6** phase neighbours, not 4 (R78-1).
+- F1c's last link to O ends at **1.413 m.u.**, so a radius cutoff of 1.18 still gives about a 1% strong-path fraction (R78-2).
+- **Yet F1c's response passes** (7.5: entry 2.1 s after the step).
+
+**Distance is the wrong yardstick.** The quantity that sets how fast a link passes phase is the coefficient in the right-hand side itself.
+
+**The definition:** a directed edge j → i of G (j in i's held N^θ list) is **strong** if its **actual coupling rate**
+
+    c_ji = λ · K · exp(−r_ij²) / |N_i^θ|   ≥   c_min = 0.5 /s
+
+meaning a time scale of **τ_link ≤ 2 s** per edge.
+- **The denominator** is the receiver's actual held neighbour count, exactly as in the right-hand side. **No assumed degree** is used.
+- **The comparison is inclusive.** Native and Python compute c_ji identically.
+
+**Check against every stored case:**
+
+| Link | r (m.u.) | w = e^(−r²) | n_i | c (/s) | Strong? |
+|---|---|---|---|---|---|
+| F1b last link | 0.87 | 0.47 | 3 | ≈ 5.0 | yes |
+| F1c last link | 1.413 | 0.136 | 6 | ≈ 0.72 | yes |
+| 7.6 F5 weak last links | 2.2–2.6 | 0.008–0.001 | ≥ 1 | ≤ 0.26 (even at n = 1) | **no**: still excluded, by 2–4× at best and about 10–60× at typical n |
+
+- **c_min = 0.5 /s** is the clock ledger's per-link scale. A path of k links has a serial bound of about 2k s; F1c's measured settling (2.1 s for 6 links) shows that dense parallel links settle far faster than that bound. Every F gate stays the arbiter.
+- **The uses of G_s are those of 14.2** (B-path's site test, frontier sets and trial conditions; path exposure E; effective-root paths; F1's path fraction as implemented). D4, qualification and the budget keep G.
+- **Unchanged:** λ, h, every gate, and every other rule.
+
+**Disclosure:** this is an outcome-informed revision, made after the 7.7 F1 result and the rejected 7.8. The 7.7 FAIL is kept. The F1 scaffolds are deterministic, and the 13.3 fixture-key exception applies as before.
+
+| Item | Cause |
+|---|---|
+| 7.7 and 7.8 used a geometric proxy (a radius) for a dynamical quantity (the coupling rate), with an assumed degree | The drafter derived from an assumed neighbourhood instead of the right-hand side's own coefficient |
