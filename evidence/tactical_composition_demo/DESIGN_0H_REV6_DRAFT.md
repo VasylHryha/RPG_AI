@@ -2,6 +2,8 @@
 
 **Status:** DRAFT by the drafter (Claude). Not reviewed, not approved, and no run is authorized. Any change below is a new design revision on **fresh development seeds** (section 12's stop row); the recorded run keeps its verdicts.
 
+**Superseded (2026-10-06):** sections 2–6 below are replaced by the consolidated `DESIGN_0H_REV6.md`, which answers the Codex review `docs/reviews/tactical_0h_rev6_design_review_codex.md`. Section 1 (the failure report) stays, with the corrections in `DESIGN_0H_REV6.md` section 9.
+
 ## 1. Failure report (the stop row "Does G0' FAIL? → write the failure report", the drafter's duty)
 
 **Run:** `growing_shapes/runner/DEVELOPMENT_REPORT.md`, imported at `a9cbe83` (`7e5f6b0` before the history cleanup); Claude review `growing_shapes_review_claude/DEVELOPMENT_REVIEW.md` with addendum 1.
