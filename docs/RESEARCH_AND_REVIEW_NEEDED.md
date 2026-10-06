@@ -54,8 +54,8 @@ For each question we need:
    - central pattern generators.
 2. What read-outs work **without** a large trained output layer? Examples: phase of a designated output oscillator, synchrony between groups, winner-take-all by first-to-lock, order parameters per cluster.
 3. How do they avoid the **trivial echo**? A read-out next to a sensor just copies the input phase; we need read-outs that score only when the structure transforms the input (for example remembering, choosing, or combining two inputs).
-5. How do self-organizing oscillator or particle media keep structures **anchored** to their inputs and outputs, rather than drifting away? Cover anchoring forces, boundaries, chemotaxis-like attraction to active sites, and death on losing contact. Which of these preserve the free self-organization?
 4. In growing systems, how does the structure **reach the output**? Is there known work where growth is driven by output demand: growth cones, axon guidance analogies, activity-dependent wiring toward targets, developmental neural networks?
+5. How do self-organizing oscillator or particle media keep structures **anchored** to their inputs and outputs, rather than drifting away? Cover anchoring forces, boundaries, chemotaxis-like attraction to active sites, and death on losing contact. Which of these preserve the free self-organization?
 
 ### B2. Networks that grow and prune units
 
