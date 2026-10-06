@@ -1,0 +1,272 @@
+{
+  "seed": 106074,
+  "invalid": null,
+  "complete": true,
+  "usable": [
+    "perceive",
+    "move",
+    "remember_static",
+    "choose"
+  ],
+  "eligible": 52001,
+  "coverage": 0.13852718949543674,
+  "control_coverage": 0.07912748472785917,
+  "competence": 0.021918826832967767,
+  "control_competence": 0.021918826832967767,
+  "slope": -0.1362976722586629,
+  "rejected": true,
+  "protected_over_budget": false,
+  "snapshots": 409,
+  "g5": [
+    0.0,
+    5.689893001203927e-16,
+    1.1102230246251565e-15,
+    5.672545766444159e-16,
+    6.661338147750939e-16,
+    1.7763568394002505e-15,
+    2.4424906541753444e-15,
+    8.881784197001252e-16,
+    5.773159728050814e-15,
+    3.3306690738754696e-15,
+    2.8362728832220796e-16,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "dropped": 65,
+  "control_additions": 54,
+  "control_retries": 71,
+  "intact_additions": 119,
+  "intact_deaths": 99,
+  "control_deaths": 35,
+  "D3_removals": 47,
+  "late_turnover": 30,
+  "G1c": [
+    {
+      "type_id": "cad11b8edccbfb6352440b2c12ec919ed608ddb1ca4ed19b3319b3fbbb1c6211",
+      "per_task": {
+        "perceive": 0.004953791662960241,
+        "move": -0.0329161871079006,
+        "remember_static": -0.1074982787726681,
+        "choose": 0.22313598154947953
+      },
+      "best_task": "choose",
+      "G5_D": 0.0
+    },
+    {
+      "type_id": "a469b11055131f63905458f9bbb4c8d4954ebc9a37811720d769242804970d04",
+      "per_task": {
+        "perceive": 0.05002146242665416,
+        "move": -1.1399832687050662,
+        "remember_static": 0.07609726078895719,
+        "choose": 0.050040967438473
+      },
+      "best_task": "remember_static",
+      "G5_D": 5.689893001203927e-16
+    },
+    {
+      "type_id": "cda6c85abaf374aa00151c2175b490ca98a2fb091cab41896a0bc8b745643cbf",
+      "per_task": {
+        "perceive": 0.026771821181179906,
+        "move": -1.130327807227962,
+        "remember_static": -0.07934761756144904,
+        "choose": -0.03480714957666974
+      },
+      "best_task": "perceive",
+      "G5_D": 1.1102230246251565e-15
+    },
+    {
+      "type_id": "5398b084169a79f21fdaae2d71122c638ec76632c6e411fda4a17a222248dd4b",
+      "per_task": {
+        "perceive": -0.011990399492491031,
+        "move": -1.1280562266866452,
+        "remember_static": -0.030608059126092237,
+        "choose": 0.016538706642794214
+      },
+      "best_task": "choose",
+      "G5_D": 5.672545766444159e-16
+    },
+    {
+      "type_id": "d099dae6a384ce5ace51b69d359d8d7babc4cc732dafce15b4b28fdcfdec9f31",
+      "per_task": {
+        "perceive": 0.01829633359693995,
+        "move": -1.6909602250955686,
+        "remember_static": 0.12075042660147318,
+        "choose": 0.04136193973234609
+      },
+      "best_task": "remember_static",
+      "G5_D": 6.661338147750939e-16
+    },
+    {
+      "type_id": "bc81a1cdc5cac1e89a40fd228d1ef6400df3de6e676369ba761c61ea74b759b5",
+      "per_task": {
+        "perceive": 0.02395610358222122,
+        "move": -1.3574985998218736,
+        "remember_static": 0.097145522927609,
+        "choose": 0.03316845203775072
+      },
+      "best_task": "remember_static",
+      "G5_D": 1.7763568394002505e-15
+    },
+    {
+      "type_id": "1033e22305651502dc468989aa5b68d295f8633cceed9673fe1a0b08c610c52b",
+      "per_task": {
+        "perceive": -0.01492112962127004,
+        "move": -1.3911685922883392,
+        "remember_static": 0.053057186976855755,
+        "choose": 0.02606742936910144
+      },
+      "best_task": "remember_static",
+      "G5_D": 2.4424906541753444e-15
+    },
+    {
+      "type_id": "96fd407662f1c0efabea5f0f263a0b6c673d41469539d0e6b29bbe6713913643",
+      "per_task": {
+        "perceive": -0.017986582033046702,
+        "move": -1.3860256309214178,
+        "remember_static": -0.08971362799349573,
+        "choose": -0.0033684338300004482
+      },
+      "best_task": "choose",
+      "G5_D": 8.881784197001252e-16
+    },
+    {
+      "type_id": "1fe808eb80caa7d7d86836003a648fc8719a4e7dc08fc96c8491672791059438",
+      "per_task": {
+        "perceive": 0.02437590171182583,
+        "move": -1.4268162112210256,
+        "remember_static": 0.06253453351847585,
+        "choose": 0.04366825478712101
+      },
+      "best_task": "remember_static",
+      "G5_D": 5.773159728050814e-15
+    },
+    {
+      "type_id": "f3719daa36ea73a91a64dca4fa33f85d6b4fc93d39705a9465dd685d94031d87",
+      "per_task": {
+        "perceive": -0.015138894636885013,
+        "move": -1.4429481570823794,
+        "remember_static": 0.025595910263499423,
+        "choose": 0.022061724273965896
+      },
+      "best_task": "remember_static",
+      "G5_D": 3.3306690738754696e-15
+    },
+    {
+      "type_id": "57dc06c5ac3b290bdaa3d5666bf40a2fa94aca2796cac849c8331c583cf1004a",
+      "per_task": {
+        "perceive": 0.003499833374014315,
+        "move": -0.0329161871079006,
+        "remember_static": -0.1074982787726681,
+        "choose": 0.22313598154947953
+      },
+      "best_task": "choose",
+      "G5_D": 2.8362728832220796e-16
+    },
+    {
+      "type_id": "8b16c19b071c57ef19485537d482894427ef37ed07113abf7c4169645a242c5c",
+      "per_task": {
+        "perceive": 0.004953791662960241,
+        "move": -0.0329161871079006,
+        "remember_static": -0.1074982787726681,
+        "choose": 0.22313598154947953
+      },
+      "best_task": "choose",
+      "G5_D": 0.0
+    },
+    {
+      "type_id": "93540fe778edd995b3bf9e7b47fc7092936293fcbcdf381bff33f9e2351cdb68",
+      "per_task": {
+        "perceive": 0.004953791662960241,
+        "move": -0.0329161871079006,
+        "remember_static": -0.1074982787726681,
+        "choose": 0.22313598154947953
+      },
+      "best_task": "choose",
+      "G5_D": 0.0
+    },
+    {
+      "type_id": "e12814f89e49550afaf42725051d2f38b45ba3c2a26fcc818f83001a81bd46bd",
+      "per_task": {
+        "perceive": 0.004953791662960241,
+        "move": -0.0329161871079006,
+        "remember_static": -0.1074982787726681,
+        "choose": 0.22313598154947953
+      },
+      "best_task": "choose",
+      "G5_D": 0.0
+    },
+    {
+      "type_id": "e04af005ed042fec7e56f370473b965b97ff5109f9221e271dd3b600eba81212",
+      "per_task": {
+        "perceive": 0.004953791662960241,
+        "move": -0.0329161871079006,
+        "remember_static": -0.1074982787726681,
+        "choose": 0.22313598154947953
+      },
+      "best_task": "choose",
+      "G5_D": 0.0
+    },
+    {
+      "type_id": "b9a87768796268fc214f093aaa01cfc94867f5437323821a4cf27c1ad23e4d82",
+      "per_task": {
+        "perceive": 0.004953791662960241,
+        "move": -0.0329161871079006,
+        "remember_static": -0.1074982787726681,
+        "choose": 0.22313598154947953
+      },
+      "best_task": "choose",
+      "G5_D": 0.0
+    },
+    {
+      "type_id": "811778e8f18d1dbd552883922ebf0f8a66baeafd78d64ed830a991fc8f887502",
+      "per_task": {
+        "perceive": 0.004953791662960241,
+        "move": -0.0329161871079006,
+        "remember_static": -0.1074982787726681,
+        "choose": 0.22313598154947953
+      },
+      "best_task": "choose",
+      "G5_D": 0.0
+    },
+    {
+      "type_id": "e39f0cb2f61d5c333780bfd567276fd366dd3d4ad9341bb3cb716de4a11436ff",
+      "per_task": {
+        "perceive": 0.004953791662960241,
+        "move": -0.0329161871079006,
+        "remember_static": -0.1074982787726681,
+        "choose": 0.22313598154947953
+      },
+      "best_task": "choose",
+      "G5_D": 0.0
+    },
+    {
+      "type_id": "06bd1029da88a8320082691d1f5d1cee76dafb4c00e577ada6045a8ba7fbd39b",
+      "per_task": {
+        "perceive": 0.004953791662960241,
+        "move": -0.0329161871079006,
+        "remember_static": -0.1074982787726681,
+        "choose": 0.22313598154947953
+      },
+      "best_task": "choose",
+      "G5_D": 0.0
+    },
+    {
+      "type_id": "c2b4a1610da5dcf26c64f3ee064644d5d06377295545ab39fe6e7fd4b5893318",
+      "per_task": {
+        "perceive": 0.004953791662960241,
+        "move": -0.0329161871079006,
+        "remember_static": -0.1074982787726681,
+        "choose": 0.22313598154947953
+      },
+      "best_task": "choose",
+      "G5_D": 0.0
+    }
+  ]
+}

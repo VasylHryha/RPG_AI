@@ -1,0 +1,32 @@
+{
+  "status": "PASS",
+  "source_and_build_unchanged": true,
+  "seed_pairs": 16,
+  "training_runs": 32,
+  "horizon_seconds_per_run": 32000,
+  "exposure_totals": {
+    "training_steps": 10240000,
+    "training_episodes": 64000,
+    "qualification_frames": 5115712,
+    "recovery_simulated_seconds": 1440960.0,
+    "evaluator_episodes": 344064,
+    "reward_episodes": 32000
+  },
+  "cost_seed_exposure": {
+    "training_steps": 32000,
+    "training_episodes": 200,
+    "qualification_frames": 31252,
+    "recovery_simulated_seconds": 1680.0,
+    "evaluator_episodes": 14848,
+    "reward_episodes": 0
+  },
+  "additional_replay_evaluator_episodes": 2,
+  "registered_readouts_match_reviewed_aggregator": true,
+  "judging_used": false,
+  "snapshot_template_hashes_verified": 11862,
+  "receipt_count": 66,
+  "details": [
+    "task_blind: G0 both-superior unflagged seeds 0/8; both-\u2264 seeds 1/8; dropped-request flags 8/8. G0' settled and unrejected seeds 0/8; late rejection seeds 8/8. G1 bearing seeds 8/8; admitted snapshots 5780; evaluated snapshots 160. G5 fractions D\u22640.1: 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000.",
+    "reward: G0 both-superior unflagged seeds 0/8; both-\u2264 seeds 4/8; dropped-request flags 8/8. G0' settled and unrejected seeds 0/8; late rejection seeds 8/8. G1 bearing seeds 8/8; admitted snapshots 6082; evaluated snapshots 160. G5 fractions D\u22640.1: 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000."
+  ]
+}
