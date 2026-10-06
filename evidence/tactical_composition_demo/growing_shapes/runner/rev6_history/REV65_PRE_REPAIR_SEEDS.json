@@ -45,17 +45,10 @@
     "growth/F8/reward",
     "recovery/F8/reward"
   ],
-  "F9_cases": [
-    "zero_demand",
-    "approach",
-    "retreat_inside_range",
-    "stop"
-  ],
   "assisted_by": "Codex:GPT-6",
   "consumer_contracts": {
     "F6": "Frozen F5 i/ii checkpoints 40/45/50; 788+j/798+j memory pairs; no random consumer",
     "F8": "Live F5(i) after episode 50; persistent growth PCG64 growth/F8/reward; recovery/F8/reward via exact little-endian per-check recipe; no medium key",
-    "F9": "Four literal synthetic decoder cases; medium/F9/<case>, rev6_fixture; no world rollout or stochastic draw; validation ids 808-811 reserved as scenario identifiers",
     "control_u": "PCG64 once per U run",
     "donor_perm": "rank full 256-bit hash; uint64 value is inventory only, never the sorting key",
     "fixture_assays": "growth/matched/recovery disabled; random and descriptive receiver lesion not used",
@@ -65,7 +58,6 @@
     "medium": "PCG64 once; recreated separately with identical seed/state for intact/M/U",
     "random_policy": "fresh native Policy(task, seed, random, validation) per episode; shared seed/arm/checkpoint"
   },
-  "design_commit": "702d9aaae5e5476c1cce1639054facf2dc99db2a",
   "development_execution": "NOT_RUN",
   "donor_permutation": [
     {
@@ -1010,12 +1002,11 @@
   ],
   "fixture_execution": "NOT_RUN",
   "head": "2bd6965beb07495bd7b757e48f0e9700a09cd903",
-  "identity_scope": "19.7: design, rev6 sources, native images and seed inventory; once at execution start",
-  "integration_status": "REV65_IMPLEMENTED_REVIEW_PENDING_NO_EXECUTION_GRANT",
-  "memory_baselines": {
-    "random_consumers": [],
-    "sample_and_hold": "last visible angle held; explicit reference, not a medium computation",
-    "single_oscillator": "19.8 cue-site ordinary singleton, geometry_rate=0, gain=1, omega=pi, initial relative phase=0, direct decoder"
+  "integration_status": "IMPLEMENTED_UNIT_CONTRACTS_PASS_REVIEW_PENDING_NO_FIXTURE_APPROVAL",
+  "integration_tests": {
+    "passed": 29,
+    "pytest_seconds": 1.09,
+    "scope": "synthetic units/contracts and construct-only; no fixture results"
   },
   "preservation_sha256": {
     "evidence/tactical_composition_demo/growing_shapes/medium/.gitignore": "7856e06136649c448bb1374c9005a55d4820042e320d8cbbdf133a5eddeabd22",
@@ -3496,10 +3487,6 @@
     "matched/task_blind/6": 14925217708751362361,
     "matched/task_blind/7": 11060605390909023973,
     "medium/F5/i": 12254727508974442990,
-    "medium/F9/approach": 11079158698617396347,
-    "medium/F9/retreat_inside_range": 10611127325569694787,
-    "medium/F9/stop": 13069966183774124013,
-    "medium/F9/zero_demand": 17289904200301223618,
     "medium/reward/0": 16717731904233036567,
     "medium/reward/1": 4794774389257934658,
     "medium/reward/2": 11781911966796572234,
@@ -4083,7 +4070,15 @@
   },
   "seed_recipe": "uint64(first 8 bytes big-endian SHA256(ASCII(\"0h-rev6/\" + key)))",
   "source_sha256": {
-    "evidence/tactical_composition_demo/DESIGN_0H_REV6.md": "0f62e13246bbfc02ee79d785dff1659d7ea7d0b021e47f57d5ec46bea926794b"
+    "AGENTS.md": "265e16b5f1a93191d92296916b8c49703e0db6a9146e43a1734a9afeddd6f9ea",
+    "docs/HISTORY_CLEANUP_2026-10-06_MAP.tsv": "d55446140176c0fd29a9278a87f8bc39879b01e9ea21033b4958c8292c7198b6",
+    "docs/decisions/0028-owner-directed-exploratory-composable-shapes.md": "11b282c4598ef7d75be7ec6b56c150259de77248910382e3e4b36e2777d0b0b1",
+    "docs/reviews/tactical_0h_rev6_design_review_codex_r6.md": "740a9f5c68359a09063bec7a343c75bfa700921ddf9c4e7840f69024d5d01256",
+    "evidence/tactical_composition_demo/DESIGN_0H.md": "39a630c3f4d440a6634538121773253443dcb15e8166406f36cde3727c119925",
+    "evidence/tactical_composition_demo/DESIGN_0H_REV6.md": "2abda7e2409920fee3ad71779f224e75cce272c547ad2c4c87cfc87fb91b408b",
+    "evidence/tactical_composition_demo/growing_shapes/runner/PERF_RECHECK_PROJECTION.json": "ef6d76b1574eb8bbbef9a587eed45975ec607c74b0a95d6881187b98e29b234a",
+    "evidence/tactical_composition_demo/growing_shapes/runner/development_20261006/CALIBRATION.json": "93bf6bae768bfdd9fdbce7891eed8e6e36183f601322d5333fa7adbe42f03f42",
+    "evidence/tactical_composition_demo/growing_shapes/runner/development_20261006/COST.json": "94abcb6b40b397342b6fb806358b6f61664cbfb925405554cb7be643fe02cde7"
   },
   "status": "PRE_EXECUTION_INVENTORY_ONLY",
   "training_slots": [
@@ -4238,14 +4233,6 @@
         2100000,
         2100039
       ]
-    },
-    "F9": {
-      "namespace": "validation",
-      "range": [
-        808,
-        811
-      ],
-      "use": "reserved scenario identifiers for literal synthetic observations; no native world rollout"
     },
     "calibration": {
       "namespace": "validation",

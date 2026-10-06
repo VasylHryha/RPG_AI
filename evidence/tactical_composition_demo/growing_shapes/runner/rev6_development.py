@@ -15,11 +15,11 @@ def seed_unit(intact,control):
         matching_slots=control.queue.slots,
         g0=paired_bounds(panel['perceive']['intact'],control.final_panel['perceive']['intact']),
         bounds={t:v['bounds'] for t,v in panel.items()},late=intact.report()['late'],
-        snapshots=len(intact.snapshots),g5=[v['G5_D'] for v in intact.evaluations])
+        identity_snapshot=intact.identity_snapshot,snapshots=len(intact.snapshots),g5=[v['G5_D'] for v in intact.evaluations])
 
 
 def run_development(execution,*,output,rows=None,backend='native',on_seed=None):
-    execution.require('development')
+    identity_snapshot=execution.start('development')
     from pathlib import Path
     output=Path(output).resolve()
     if Path(__file__).resolve().parents[1] not in output.parents:raise ValueError('development ledgers must stay in growing_shapes')
@@ -47,6 +47,6 @@ def run_development(execution,*,output,rows=None,backend='native',on_seed=None):
         outcomes=aggregate(units)
         stop=stops(dict(readout_invalid=any(v=='INVALID' for v in outcomes.values()),
                         task_blind_G1_fail=arm=='task_blind' and outcomes['G1']=='FAIL',G0prime_fail=outcomes["G0'"]=='FAIL',G2_fail_or_inconclusive=outcomes['G2'] in ('FAIL','INCONCLUSIVE')))
-        arms[arm]=dict(units=units,readouts=outcomes,reports=reports,stops=stop)
+        arms[arm]=dict(identity_snapshot=identity_snapshot,units=units,readouts=outcomes,reports=reports,stops=stop)
         if stop:return dict(status='STOP',arms=arms)
     return dict(status='COMPLETE_DEVELOPMENT_ONLY',arms=arms)

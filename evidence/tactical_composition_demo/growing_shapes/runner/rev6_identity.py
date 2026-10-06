@@ -1,17 +1,22 @@
-"""Read-only guards for the approved inputs and reused calibration."""
+"""Section 19.7: verify scientific identities once at execution start."""
 import hashlib
 import json
 from pathlib import Path
 
 HERE=Path(__file__).parent
 ROOT=HERE.parents[3]
-DESIGN_SHA256='2abda7e2409920fee3ad71779f224e75cce272c547ad2c4c87cfc87fb91b408b'
-BASE_SHA256='39a630c3f4d440a6634538121773253443dcb15e8166406f36cde3727c119925'
+DESIGN_SHA256='0f62e13246bbfc02ee79d785dff1659d7ea7d0b021e47f57d5ec46bea926794b'
 
 
 def assert_inputs():
-    for name,digest in [('DESIGN_0H_REV6.md',DESIGN_SHA256),('DESIGN_0H.md',BASE_SHA256)]:
-        if hashlib.sha256((HERE.parents[1]/name).read_bytes()).hexdigest()!=digest:raise ValueError(f'INVALID: source identity {name}')
-    inventory=json.loads((HERE/'REV6_SEED_INVENTORY.json').read_text())
-    for name,digest in inventory['source_sha256'].items():
-        if hashlib.sha256((ROOT/name).read_bytes()).hexdigest()!=digest:raise ValueError(f'INVALID: registered source {name}')
+    pin=json.loads((HERE/'REV65_SOURCE_IDENTITY.json').read_text())
+    hashes=pin['sha256']
+    design='evidence/tactical_composition_demo/DESIGN_0H_REV6.md'
+    if hashes.get(design)!=DESIGN_SHA256:raise ValueError('INVALID: design registration mismatch')
+    for name,digest in hashes.items():
+        path=ROOT/name
+        if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest()!=digest:
+            raise ValueError(f'INVALID: scientific input identity {name}')
+    return dict(scope='design, rev6 sources, native images, seed inventory',
+                checked='execution_start_once',sha256=dict(hashes),
+                identity_record_sha256=hashlib.sha256((HERE/'REV65_SOURCE_IDENTITY.json').read_bytes()).hexdigest())

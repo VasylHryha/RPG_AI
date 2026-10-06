@@ -150,13 +150,16 @@ struct Engine {
         std::set<uint64_t> outputs,allroots;std::array<std::set<uint64_t>,8> roots;
         for(size_t i=0;i<m.elements.size();++i){auto e=m.elements[i];forward[e.v.id];backward[e.v.id];if(e.output)outputs.insert(e.v.id);
             for(int j:held[i]){forward[m.elements[j].v.id].insert(e.v.id);backward[e.v.id].insert(m.elements[j].v.id);}
-            if(!e.output&&e.gain>0)for(auto d:m.drives)if(d.v.id<8&&d.v.strength>0&&std::hypot(e.v.x-d.v.x,e.v.y-d.v.y)<d.v.reach){roots[d.v.id].insert(e.v.id);allroots.insert(e.v.id);}}
+            if(!e.output&&!e.v.silent&&e.gain>0)for(auto d:m.drives)if(d.v.id<8&&d.v.strength>0&&std::hypot(e.v.x-d.v.x,e.v.y-d.v.y)<d.v.reach){roots[d.v.id].insert(e.v.id);allroots.insert(e.v.id);}}
+        out<<",\"active_sites\":[";bool comma=false;for(auto d:m.drives)if(d.v.strength>0){if(comma)out<<',';comma=true;out<<d.v.id;}out<<"],\"covered_sites\":{";
+        for(int site=0;site<8;++site){if(site)out<<',';out<<'"'<<site<<"\":";if(frames.size()<101)out<<"null";else out<<(covered(site)?"true":"false");}out<<'}';
         auto f=reach(allroots,forward),b=reach(outputs,backward);
         if(timers)for(auto& e:m.elements)e.cut_off=f.count(e.v.id)||b.count(e.v.id)?0:e.cut_off+dt;
         out<<",\"paths\":[";for(int s=0;s<8;++s){if(s)out<<',';auto reached=reach(roots[s],forward);bool yes=false;for(auto o:outputs)yes|=reached.count(o)>0;out<<(yes?"true":"false");}out<<"],\"cut_off\":{";
         bool first=true;for(auto e:m.elements){if(!first)out<<',';first=false;out<<'"'<<e.v.id<<"\":"<<e.cut_off;}out<<"},\"exposure\":{";
         first=true;for(auto e:m.elements){if(!first)out<<',';first=false;bool geometric=false,actual=false;for(auto d:m.drives)if(d.v.strength>0&&std::hypot(e.v.x-d.v.x,e.v.y-d.v.y)<d.v.reach){geometric=true;actual|=!e.output&&e.gain>0;}
-            double radius=std::hypot(e.v.x,e.v.y);out<<'"'<<e.v.id<<"\":{\"radius\":"<<radius<<",\"wall\":"<<(radius>6?"true":"false")<<",\"geometric\":"<<(geometric?"true":"false")<<",\"drive\":"<<(actual?"true":"false")<<'}';}out<<'}';
+            bool access=false;for(int site=0;site<8;++site)access|=std::hypot(e.v.x-4*std::cos(pi*site/4),e.v.y-4*std::sin(pi*site/4))<3;
+            double radius=std::hypot(e.v.x,e.v.y);out<<'"'<<e.v.id<<"\":{\"radius\":"<<radius<<",\"wall\":"<<(radius>6?"true":"false")<<",\"sensor_access\":"<<(access?"true":"false")<<",\"geometric\":"<<(geometric?"true":"false")<<",\"drive\":"<<(actual?"true":"false")<<'}';}out<<'}';
     }
     std::vector<gm_drive> bindings(const GSObservation& o,const int32_t* assignment,const double* sites){
         require(o.enemy_count>=0 && o.enemy_count<=8,"invalid enemy count");
@@ -242,11 +245,11 @@ extern "C" const char* gp_future(void* medium,const PerfDrives* schedule,int ste
         return std::string("{}");});
 }
 
-extern "C" const char* gp_assay(void* medium,GSWorld* world,const PerfFrame* frames,int count,int index,const uint64_t* ids,const double* death,int n,const double* novelty,const int32_t* assignment,const double* sites,const PerfDrives* schedule,int scheduled,int relay){
-    return guarded([&]{require(medium&&world&&scheduled>=0&&scheduled<=160&&relay>=0&&relay<=2,"invalid assay");validate_binding(assignment,sites);
-        for(int i=0;i<scheduled;++i)validate_drives(schedule[i].drives,schedule[i].count);
+namespace {
+template<class Observe,class Step>std::string assay_run(void* medium,const PerfFrame* frames,int count,int index,const uint64_t* ids,const double* death,int n,const double* novelty,const int32_t* assignment,const double* sites,const PerfDrives* schedule,int scheduled,int relay,Observe observe,Step step){
+    require(medium&&scheduled>=0&&scheduled<=160&&relay>=0&&relay<=2&&(!scheduled||schedule),"invalid assay");validate_binding(assignment,sites);for(int i=0;i<scheduled;++i)validate_drives(schedule[i].drives,schedule[i].count);
         Engine e(medium,frames,count,index,ids,death,n,novelty);e.out<<"{\"decisions\":[";GSObservation obs{};int steps=0;
-        for(;steps<160;++steps){require(gs_observe(world,&obs)==GS_OK,"world observation failed");if(obs.done)break;
+        for(;steps<160;++steps){require(observe(&obs)==GS_OK,"world observation failed");if(obs.done)break;
             auto ds=e.bindings(obs,assignment,sites);if(scheduled){require(steps<scheduled,"short donor schedule");auto& src=schedule[steps];ds.assign(src.drives,src.drives+src.count);}
             if(steps)e.out<<',';e.out<<"{\"drives\":";e.drives_json(ds);e.m.set_drives(ds.data(),int(ds.size()));for(int j=0;j<5;++j)e.m.step(.02);++e.index;
             auto a=e.action(obs);if(relay){const gm_drive* selected=nullptr;for(const auto& d:ds)if(d.strength>0&&((relay==1&&d.id==0)||(relay==2&&(!selected||d.strength>selected->strength||(d.strength==selected->strength&&d.id<selected->id)))))selected=&d;
@@ -254,8 +257,22 @@ extern "C" const char* gp_assay(void* medium,GSWorld* world,const PerfFrame* fra
                 // Reuse the exact decoder by a virtual singleton phase (no medium mutation).
                 if(obs.task==GS_CHOOSE){double best=std::numeric_limits<double>::infinity();int chosen=INT32_MAX;for(int j=0;j<obs.enemy_count;++j){auto v=obs.enemies[j];if(!v.visible||v.hp<=0)continue;double z=std::fmod(beta-v.angle+pi,2*pi);if(z<0)z+=2*pi;z=std::abs(z-pi);if(z<best||(z==best&&v.id<chosen)){best=z;chosen=v.id;}}a={0,0,chosen};}
                 else a={beta,obs.task==GS_MOVE?1.:0.,-1};}
-            e.out<<",\"angle\":"<<a.angle<<",\"has_output\":"<<(std::any_of(e.m.elements.begin(),e.m.elements.end(),[](auto z){return z.output!=0;})?"true":"false");
+            e.out<<",\"angle\":"<<a.angle<<",\"magnitude\":"<<a.magnitude<<",\"choice\":"<<a.choice<<",\"has_output\":"<<((relay||std::any_of(e.m.elements.begin(),e.m.elements.end(),[](auto z){return z.output!=0&&!z.v.silent;}))?"true":"false");
             // Site angles at the decision endpoint are advanced on the same carrier.
-            e.diagnostics(false);e.out<<'}';require(gs_step(world,&a)==GS_OK,"assay action failed");}
-        require(gs_observe(world,&obs)==GS_OK&&obs.done,"assay horizon mismatch");require(!scheduled||steps==scheduled,"donor horizon mismatch");e.out<<"],\"index\":"<<e.index<<'}';return e.out.str();});
+            e.diagnostics(false);e.out<<'}';require(step(&a)==GS_OK,"assay action failed");}
+        require(observe(&obs)==GS_OK&&obs.done,"assay horizon mismatch");require(!scheduled||steps==scheduled,"donor horizon mismatch");e.out<<"],\"index\":"<<e.index<<'}';return e.out.str();
+}
+
+}
+extern "C" const char* gp_assay(void* medium,GSWorld* world,const PerfFrame* frames,int count,int index,const uint64_t* ids,const double* death,int n,const double* novelty,const int32_t* assignment,const double* sites,const PerfDrives* schedule,int scheduled,int relay){
+    return guarded([&]{require(world,"missing assay world");return assay_run(medium,frames,count,index,ids,death,n,novelty,assignment,sites,schedule,scheduled,relay,
+        [&](GSObservation* o){return gs_observe(world,o);},[&](const GSAction* a){return gs_step(world,a);});});
+}
+// Bounded synthetic observation seam uses the identical assay loop and decoder.
+extern "C" const char* gp_assay_synthetic(void* medium,const PerfFrame* frames,int count,int index,const uint64_t* ids,const double* death,int n,const double* novelty,const int32_t* assignment,const double* sites,const PerfDrives* schedule,int scheduled,int relay,const GSObservation* observations,int steps){
+    return guarded([&]{require(observations&&steps>0&&steps<=4,"synthetic assay requires 1..4 observations");
+        for(int i=0;i<steps;++i)require(!observations[i].done&&observations[i].task>=0&&observations[i].task<GS_TASK_COUNT,"invalid synthetic observation");
+        int cursor=0;return assay_run(medium,frames,count,index,ids,death,n,novelty,assignment,sites,schedule,scheduled,relay,
+            [&](GSObservation* o){if(cursor==steps){*o={};o->done=1;}else *o=observations[cursor];return GS_OK;},
+            [&](const GSAction*){++cursor;return GS_OK;});});
 }

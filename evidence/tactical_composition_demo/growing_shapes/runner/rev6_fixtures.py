@@ -1,4 +1,4 @@
-"""Owner-gated F1–F8 harness. Default CLI is construct-only and cannot integrate."""
+"""Owner-gated F1–F9 harness. Default CLI is construct-only and cannot integrate."""
 from contextlib import ExitStack
 import argparse
 import json
@@ -27,7 +27,8 @@ def scaffold(kind,alpha=1.):
     elif kind=='F1c':positions=[3.2-R_STAR*j for j in range(10)]
     elif kind=='F2b':positions=[3.2-R_STAR*j for j in range(3)]+[-3.]
     elif kind=='F2a':positions=[]
-    elif kind in ('F3','F4'):positions=[4.,4.-R_STAR]
+    elif kind=='F3':positions=[4.-R_STAR,4.]
+    elif kind=='F4':positions=[4.,4.-R_STAR]
     else:m.close();raise ValueError('unknown scaffold')
     for j,x in enumerate(positions):
         output=j==len(positions)-1
@@ -62,7 +63,8 @@ def construct_only():
         run=Run(0,rows,episodes=50,policy=policy,keys=keys(start,policy),initial=initial,scope='fixtures')
         try:out[name]=dict(members=template(run.medium.native,[e.id for e in run.medium.native.elements],0)['members'],world_steps=run.medium.step_index,keys=run.keys)
         finally:run.close();initial.close() if initial else None
-    out['F6']=dict(dependency='six F5 checkpoints; no substitute checkpoint constructed',starts=['i','ii'],checkpoints=CHECKPOINTS,pairs=F6_PAIRS,copies=120,growth=False,adaptation=False,recovery=False)
+    out['F6']=dict(dependency='six F5 checkpoints; no substitute checkpoint constructed',starts=['i','ii'],checkpoints=CHECKPOINTS,pairs=F6_PAIRS,copies=240,baseline_modes=['single_oscillator','sample_and_hold'],growth=False,adaptation=False,recovery=False)
+    out['F9']=dict(cases=list(F9_CASES),seeds={name:seed(f'medium/F9/{name}') for name in F9_CASES},world_ids=list(range(808,812)),world_steps=0,status='DESCRIPTIVE_DECODER_ONLY_SYNTHETIC_OBSERVATIONS')
     out['F8']=dict(dependency='live F5(i) after episode 50; histories/timers/clock retained',episodes=F8_WORLD_IDS,tasks=['move']*20+['remember_static']*20,keys=['growth/F8/reward','recovery/F8/reward'],reward_baseline=.5)
     return dict(status='CONSTRUCT_ONLY',integrated_world_steps=0,fixture_execution='NOT_RUN',recipes=out)
 
@@ -95,14 +97,42 @@ def memory_summary(encoded,episodes):
     return dict(correlation=float(np.sum(x*y)/den),reason=None,defined_pairs=len(pairs),episodes=records)
 
 
+F9_CASES={'zero_demand':(0.,2.,2.),'approach':(.4,4.,2.),'retreat_inside_range':(.4,1.,2.),'stop':(.4,2.,2.)}
+
+
+def step_response(records):
+    window=[r for r in records if 8<r['time']<=16+1e-9]
+    good=[abs(float(wrap(r['beta']-math.pi/2)))<=.3 for r in window]
+    first=next((j for j,yes in enumerate(good) if yes),None)
+    complete=len(window)==80 and abs(window[-1]['time']-16)<1e-9
+    sustained=complete and first is not None and all(good[first:])
+    return dict(response_pass=bool(sustained),first_entry_time=None if first is None else window[first]['time'],
+        delay=None if first is None else window[first]['time']-8,deadline_sample_present=complete,
+        continuous_from_first_entry=bool(sustained),criterion='all world steps from first entry through t=16 inclusive within 0.3 rad')
+
+
+def assay_parity(native,reference):
+    if native['status']!='evaluated' or reference['status']!='evaluated':raise ValueError('INVALID: assay parity missing result')
+    a,b=native['decisions'],reference['decisions']
+    if len(a)!=len(b):raise ValueError('INVALID: assay parity missing decisions')
+    maximum=0.
+    for x,y in zip(a,b):
+        error=abs(float(wrap(x['angle']-y['angle'])));maximum=max(maximum,error)
+        if not math.isfinite(error) or error>1e-12 or x['magnitude']!=y['magnitude'] or x['choice']!=y['choice'] or x['paths']!=y['paths'] or x['has_output']!=y['has_output']:
+            raise ValueError('INVALID: native/reference assay parity mismatch')
+    return dict(status='MATCH',decisions=len(a),maximum_wrapped_angle_error=maximum,tolerance=1e-12)
+
+
 class Harness:
     def __init__(self,execution=None,backend='native'):
         self.execution=execution or Execution();self.backend=backend
         self.rows,self.calibration=reused_calibration()
         self.checkpoints={};self.live=None;self.intact=None
-        self.results={};self.evaluator=None
+        self.results={};self.evaluator=None;self.identity_snapshot=None
 
-    def require(self):self.execution.require('fixtures')
+    def require(self):
+        self.execution.require('fixtures')
+        if self.identity_snapshot is None:self.identity_snapshot=self.execution.snapshot('fixtures')
 
     def close(self):
         if self.intact:self.intact.close();self.intact=None
@@ -125,9 +155,9 @@ class Harness:
                     elements={e.id:e for e in m.native.elements}
                     weights={id:{j:math.exp(-math.hypot(elements[id].x-elements[j].x,elements[id].y-elements[j].y)**2)/max(1,len(sources)) for j in sources} for id,sources in g.incoming.items()}
                     records.append(dict(time=m.time,beta=beta,path=bool(reach({0},g.outgoing)&outputs),neighbors={id:sorted(v) for id,v in g.incoming.items()},weights=weights,exposure=m.endpoint_diagnostics()['exposure']))
-                reached=[r['time'] for r in records if 8<r['time']<=16 and abs(float(wrap(r['beta']-math.pi/2)))<=.3]
+                response=step_response(records)
                 persistence=sum(r['path'] for r in records)/1600
-                result[name]=dict(verdict='DESCRIPTIVE' if name=='F1c' else 'PASS' if reached and persistence>=.8 else 'FAIL',delay=None if not reached else reached[0]-8,path_exposure=persistence,records=records)
+                result[name]=dict(verdict='DESCRIPTIVE' if name=='F1c' else 'PASS' if response['response_pass'] and persistence>=.8 else 'FAIL',**response,path_exposure=persistence,records=records)
             finally:m.close()
         return dict(verdict='PASS' if all(result[n]['verdict']=='PASS' for n in ('F1a','F1b')) else 'FAIL',configurations=result)
 
@@ -171,7 +201,15 @@ class Harness:
             ds=[Drive(0,4,0,.4,math.pi,1.,1,3),Drive(2,0,4,1.1,math.pi,2.,1,3)]
             site=relay('perceive',None,ds,0,'site0');oracle=relay('perceive',None,ds,0,'oracle')
             relays=site.angle==float(wrap(.4)) and oracle.angle==float(wrap(1.1))
-            return dict(verdict='PASS' if zero and relays else 'FAIL',stages=traces,site0=site.angle,oracle=oracle.angle)
+            value=template(m.native,ids,0.)
+            native=Evaluator(self.rows,backend='native',execution=self.execution,scope='fixtures')
+            reference=Evaluator(self.rows,backend='reference',execution=self.execution,scope='fixtures')
+            parity={}
+            for mode in ('intact','donor','output_channel','site0','oracle'):
+                options=dict(mode=mode,donor=778) if mode=='donor' else dict(mode=mode)
+                a=native.episode(value,'perceive',768,**options);b=reference.episode(value,'perceive',768,**options)
+                parity[mode]=dict(**assay_parity(a,b),native=a,reference=b)
+            return dict(verdict='PASS' if zero and relays else 'FAIL',stages=traces,site0=site.angle,oracle=oracle.angle,assay_parity=parity)
         finally:m.close()
 
     def F5(self):
@@ -201,33 +239,34 @@ class Harness:
                 events=list(run.medium.events);out_birth=any(e['rule']=='B-out' for e in events);path_birth=any(e['rule']=='B-path' for e in events)
                 meanA,meanB=float(np.mean(A)),float(np.mean(B));meanE=np.mean(E,axis=0).tolist()
                 specific=out_birth if start=='i' else path_birth
-                result[start]=dict(verdict='PASS' if specific and max(meanE)>=.5 and meanA>=.3 and meanB>=.3 else 'FAIL',A=meanA,B=meanB,E=meanE,B_out=out_birth,B_path=path_birth,episodes=episodes,events=events,active_site0_steps=sum(any(d[0]==0 and d[5]>0 for d in row['sites']) for row in run.drive_log))
+                result[start]=dict(identity_snapshot=run.identity_snapshot,verdict='PASS' if specific and max(meanE)>=.5 and meanA>=.3 and meanB>=.3 else 'FAIL',A=meanA,B=meanB,E=meanE,B_out=out_birth,B_path=path_birth,episodes=episodes,events=events,active_site0_steps=sum(any(d[0]==0 and d[5]>0 for d in row['sites']) for row in run.drive_log))
                 if start=='i':self.intact=run;self.live=run.medium.clone(events=False)
             finally:
                 if start!='i' or self.intact is not run:run.close()
         return dict(verdict='PASS' if all(r['verdict']=='PASS' for r in result.values()) else 'FAIL',starts=result)
 
     def F6(self):
-        self.require();own=[];donor_rows=[];encoded=[];donor_encoded=[]
+        self.require();own=[];donor_rows=[];encoded=[];donor_encoded=[];baselines={mode:[] for mode in ('single_oscillator','sample_and_hold')}
         for start in ('i','ii'):
             for checkpoint in CHECKPOINTS:
                 m=self.checkpoints[start,checkpoint];value=template(m.native,[e.id for e in m.native.elements],m.time)
                 for recipient,donor in F6_PAIRS:
                     a=self.evaluator.episode(value,'remember_static',recipient)
                     b=self.evaluator.episode(value,'remember_static',recipient,mode='donor',donor=donor)
+                    for mode in baselines:baselines[mode].append(self.evaluator.episode(value,'remember_static',recipient,mode=mode))
                     if len(a['decisions'])!=160 or len(b['decisions'])!=160:raise ValueError('missing F6 records')
                     def last_angle(row):
                         ds=row['decisions'][39]['drives'];drive=next(d for d in ds if d[5]>0)
                         return float(wrap(drive[3]-math.pi*3.9))
                     encoded.append(last_angle(a));donor_encoded.append(last_angle(b));own.append(a);donor_rows.append(b)
-        return dict(verdict='DESCRIPTIVE',own=memory_summary(encoded,own),donor=memory_summary(encoded,donor_rows),donor_encoded=donor_encoded,encoded_reference='recipient last-visible angle for both comparisons',records=dict(own=own,donor=donor_rows))
+        return dict(verdict='DESCRIPTIVE',baselines={mode:memory_summary(encoded,rows) for mode,rows in baselines.items()},encoding_retention={mode:[r['memory_windows'] for r in rows] for mode,rows in dict(own=own,donor=donor_rows,**baselines).items()},own=memory_summary(encoded,own),donor=memory_summary(encoded,donor_rows),donor_encoded=donor_encoded,encoded_reference='recipient last-visible angle for both comparisons',records=dict(own=own,donor=donor_rows))
 
     def F7(self):
         self.require();run=Run(0,self.rows,episodes=50,policy='M',keys=keys('i','M'),backend=self.backend,execution=self.execution,scope='fixtures')
         try:
             for e in range(50):run.episode(e,self.intact,task='perceive',world_id=2000000+e)
             slots=run.queue.slots;matched=len(slots)-len(run.queue.unmatched)
-            return dict(verdict='PASS' if not run.queue.unmatched else 'FAIL',requested=len(slots),matched=matched,matched_fraction=matched/len(slots) if slots else None,unmatched=run.queue.unmatched,slots=slots,zero_B1_exposure=len(slots)==0,events=list(run.medium.events))
+            return dict(identity_snapshot=run.identity_snapshot,verdict='PASS' if not run.queue.unmatched else 'FAIL',requested=len(slots),matched=matched,matched_fraction=matched/len(slots) if slots else None,unmatched=run.queue.unmatched,slots=slots,zero_B1_exposure=len(slots)==0,events=list(run.medium.events))
         finally:run.close()
 
     def F8(self):
@@ -242,21 +281,44 @@ class Harness:
                     nonzero_reward_delta=sum(v['delta']!=0 for v in updates),mean_abs_delta=float(np.mean([abs(v['delta']) for v in updates])) if updates else None,
                     reward_updates=updates))
             events=list(run.medium.events);b1=[e for e in events if e['rule']=='birth_terminal' and e['values']['birth_rule']=='B1']
-            return dict(verdict='DESCRIPTIVE',first_memory=summaries[0],within_memory=summaries[1:],rbar_start=.5,rbar_final=run.rbar,
+            return dict(identity_snapshot=run.identity_snapshot,verdict='DESCRIPTIVE',first_memory=summaries[0],within_memory=summaries[1:],rbar_start=.5,rbar_final=run.rbar,
                         B1_demand=len(b1),B1_accepted=sum(e['values']['outcome']=='accepted' for e in b1),events=events,episodes=run.episode_log)
         finally:run.close()
 
-    def run_all(self):
+    def F9(self):
         self.require()
+        from ..world.world import Observation
+        from .rev6_protocol import decode
+        from .rev6_reporting import INTERPRETATION
+        cases={}
+        for j,(name,(bearing,distance,desired)) in enumerate(F9_CASES.items()):
+            obs=Observation(task=1,target_angle=bearing,target_distance=distance,desired_range=desired)
+            ds=bindings('move',obs,permutation(808+j),0.)
+            active=[d for d in ds if d.strength>0]
+            beta=active[0].phase if active else 0.
+            m=Rev6Medium(seed(f'medium/F9/{name}'),frozen=True)
+            try:
+                m.add((0,0),beta,role='output',rule='F9_DECODER_SETUP')
+                chosen=decode('move',obs,*m.native.output(),0.)
+                cases[name]=dict(identity_snapshot=self.identity_snapshot,namespace='rev6_fixture',seed=seed(f'medium/F9/{name}'),
+                    reserved_world_id=808+j,observation_type='literal synthetic, no native world rollout',
+                    observation=dict(target_angle=bearing,target_distance=distance,desired_range=desired),
+                    demand_strength=sum(d.strength for d in ds),action=dict(angle=chosen.angle,magnitude=chosen.magnitude,choice=chosen.choice))
+            finally:m.close()
+        return dict(verdict='DESCRIPTIVE',interpretation=INTERPRETATION['move'],cases=cases)
+
+    def run_all(self):
+        self.identity_snapshot=self.execution.start('fixtures')
         try:
-            for name in ('F1','F2','F3','F4','F5','F6','F7','F8'):
+            for name in ('F1','F2','F3','F4','F5','F6','F7','F8','F9'):
                 try:self.results[name]=finite_record(getattr(self,name)())
                 except Exception as error:
                     self.results[name]=dict(verdict='INVALID',reason=f'{type(error).__name__}: {error}');break
                 if name in ('F1','F2','F3','F4') and self.results[name]['verdict']=='FAIL':break
             from .rev6_protocol import stops
             gates=stops(dict(fixture_invalid=any(r['verdict']=='INVALID' for r in self.results.values()),F1_F4_failed=any(self.results.get(n,{}).get('verdict')=='FAIL' for n in ('F1','F2','F3','F4')),F5_failed=self.results.get('F5',{}).get('verdict')=='FAIL',F7_unmatched=self.results.get('F7',{}).get('verdict')=='FAIL'))
-            return dict(results=self.results,stops=gates,not_run=[n for n in ('F1','F2','F3','F4','F5','F6','F7','F8') if n not in self.results],calibration=self.calibration)
+            from .rev6_reporting import INTERPRETATION
+            return dict(identity_snapshot=self.identity_snapshot,interpretation=INTERPRETATION,results=self.results,stops=gates,not_run=[n for n in ('F1','F2','F3','F4','F5','F6','F7','F8','F9') if n not in self.results],calibration=self.calibration)
         finally:self.close()
 
 

@@ -1,0 +1,21 @@
+{
+  "command": [
+    ".venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "evidence/tactical_composition_demo/growing_shapes/runner/test_rev6.py",
+    "--basetemp=evidence/tactical_composition_demo/growing_shapes/runner/_rev6_build/pytest-rev65-tmp",
+    "-o",
+    "cache_dir=evidence/tactical_composition_demo/growing_shapes/runner/_rev6_build/pytest-rev65-cache"
+  ],
+  "seconds": 1.184521958,
+  "exit_code": 1,
+  "scope": "affected synthetic contracts only; shared gp_assay loop uses <=4 supplied observations; no World episode",
+  "fixture_execution": "NOT_RUN",
+  "training_execution": "NOT_RUN",
+  "development_execution": "NOT_RUN",
+  "evaluation_execution": "NOT_RUN",
+  "assisted_by": "Codex:GPT-6"
+}

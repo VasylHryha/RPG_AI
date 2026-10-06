@@ -20,8 +20,7 @@ class Run:
     def __init__(self, seed, rows, reward=False, *, episodes=2000, control=False, library=None,
                  backend='native', batch_size=200, audit=False, audit_dir=None, policy='intact', arm=None, initial=None, keys=None, execution=None, scope='development'):
         qualification.assert_frozen_source()
-        from .rev6_identity import assert_inputs
-        assert_inputs()
+        self.identity_snapshot=None
         self.execution,self.scope=execution,scope
         self.policy=policy;self.arm=arm or ('reward' if reward else 'task_blind')
         if policy not in ('intact','M','U') or self.arm not in ('task_blind','reward') or reward!=(self.arm=='reward') or type(seed) is not int or not 0<=seed<8:
@@ -157,6 +156,7 @@ class Run:
     def episode(self, episode, intact=None, *, task=None, world_id=None):
         if self.execution is None:raise PermissionError('run execution has no owner grant')
         self.execution.require(self.scope)
+        if self.identity_snapshot is None:self.identity_snapshot=self.execution.snapshot(self.scope)
         if self.complete or episode != self.exposure['training_episodes']:raise ValueError('episodes must execute once in order')
         started = wallclock.perf_counter()
         nested_before = self.timing['qualification']+self.timing['recovery']
@@ -287,7 +287,10 @@ class Run:
                     'recorded_future_steps': len(item['schedule']),
                     'candidates': [{'ids': c['ids'], 'stats': c['stats'], 'template': c['template']}
                                    for c in item['check']['candidates']]} for item in self.pending]
-        return {'pending_qualification': pending, 'final_template': final, 'final_type_id': template_hash(final), 'seed': self.seed, 'arm': 'reward' if self.reward else 'task_blind', 'control': self.control,
+        from .rev6_reporting import descriptive,INTERPRETATION
+        summaries={label:descriptive(self.medium.events,self.medium.diagnostics,self.growth_counts,start=start) for label,start in [('whole',0.),('late',25600.)]}
+        late_result['interpretation_label']='flat count with unmet output/path demand' if summaries['late']['unmet_output_or_path_demand'] and slope is not None and abs(slope)<=.5 else 'count trend under declared budget only'
+        return {'identity_snapshot':self.identity_snapshot,'interpretation':INTERPRETATION,'descriptive':summaries,'pending_qualification': pending, 'final_template': final, 'final_type_id': template_hash(final), 'seed': self.seed, 'arm': 'reward' if self.reward else 'task_blind', 'control': self.control,
                 'complete': self.complete, 'invalid': self.invalid, 'usable': self.usable,
                 'clock': self.medium.time, 'exposure': self.exposure, 'timing': self.timing,
                 'coverage': sum(self.coverage_samples)/len(self.coverage_samples) if self.coverage_samples else None,

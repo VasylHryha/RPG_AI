@@ -34,7 +34,7 @@ def drive(site=0,x=4,y=0,phase=1.,strength=2):return Drive(site,x,y,phase,math.p
 
 def test_seed_inventory_and_F8_keys():
     inventory=json.loads((HERE/'REV6_SEED_INVENTORY.json').read_text())
-    assert len(inventory['seed_inventory'])==2842
+    assert len(inventory['seed_inventory'])==2846
     for key,value in inventory['seed_inventory'].items():assert value==seed(key)
     assert set(inventory['F8_consumer_keys'])=={'growth/F8/reward','recovery/F8/reward'}
     assert inventory['evaluation_result_exists'] is False
@@ -387,7 +387,7 @@ def test_no_execution_grant_and_all_stop_rows():
     finally:run.close()
 
 
-def test_construct_only_dry_check_never_integrates(monkeypatch):
+def test_construct_only_dry_check_never_integrates(monkeypatch,tmp_path):
     def forbidden(*args,**kwargs):raise AssertionError('construct-only may not integrate')
     monkeypatch.setattr(Rev6Medium,'integrate',forbidden)
     monkeypatch.setattr(Rev6Native,'step',forbidden)
@@ -398,7 +398,11 @@ def test_construct_only_dry_check_never_integrates(monkeypatch):
     assert result['recipes']['F5i']['members']==result['recipes']['F7']['members']
     assert len(result['recipes']['F5ii']['members'])==7
     assert result['recipes']['F8']['episodes']==tuple(range(2100000,2100040))
-    (HERE/'REV6_CONSTRUCT_ONLY.json').write_text(json.dumps(result,indent=2,allow_nan=False)+'\n')
+    (tmp_path/'construct.json').write_text(json.dumps(result,indent=2,allow_nan=False)+'\n')
+    committed=json.loads((HERE/'REV6_CONSTRUCT_ONLY.json').read_text())
+    assert all(json.loads(json.dumps(result['recipes'][name]))==recipe for name,recipe in committed['recipes'].items() if name not in ('F3','F6'))
+    assert result['recipes']['F3']['members'][0][0]!=result['recipes']['F3']['members'][1][0]
+    assert 'F9' in result['recipes']
 
 
 def test_all_preexisting_tracked_growing_shapes_bytes_preserved():
@@ -448,3 +452,241 @@ def test_secondary_donor_capture_uses_valid_default_choose_synthetic_world(monke
     monkeypatch.setattr(evaluator,'require',lambda:None)
     schedule=evaluator.capture('choose',640)
     assert len(schedule)==2 and all(any(d[5]>0 for d in row) for row in schedule)
+
+
+def test_geometric_trial_matches_native_clone_random_states(monkeypatch):
+    from evidence.tactical_composition_demo.growing_shapes.medium.rev6_design import geometry,geometric_graph,deficit
+    rng=np.random.default_rng(57302)
+    for n in (3,12,24):
+        with medium() as m:
+            for j in range(n):
+                x,y=rng.uniform(-4,4,2)
+                m.add((x,y),rng.uniform(-1,1),gain=float(rng.choice([0.,1.])),role='output' if j==n-1 else 'element')
+            m.native.remove(1);m.death.pop(1);m.birth_steps.pop(1) # array/id tie order after a deletion
+            m.native.silence(0,True)
+            m.drives=[drive(s,4*math.cos(s*math.pi/4),4*math.sin(s*math.pi/4)) for s in range(8)]
+            es,ds=geometry(m.native,m.drives);g=geometric_graph(es,ds)
+            assert g==m.influence()
+            for _ in range(4):
+                a=es[0][0];b=es[-1][0];point=tuple(rng.uniform(-3,3,2));site=int(rng.integers(8))
+                before=m.influence();old_gap=deficit(m.native,before.forward(site),before.backward())
+                branch=m.native.clone()
+                try:
+                    new=branch.add(*point,0.,math.pi);branch.set_gain(new,1.)
+                    from evidence.tactical_composition_demo.growing_shapes.medium.rev6_design import graph
+                    after=graph(branch,m.drives);reached=after.forward(site)
+                    expected=dict(edge_a_to_new=a in after.incoming[new],new_reached=new in reached,a_reached=a in reached,
+                        paths_kept=all(not before.path(s) or after.path(s) for s in before.roots),
+                        deficit_or_connect=after.path(site) or deficit(branch,reached,after.backward())<old_gap,
+                        clearance=all(math.hypot(e.x-point[0],e.y-point[1])>=.05 for e in m.native.elements))
+                finally:branch.close()
+                monkeypatch.setattr(m,'clone',lambda **kwargs:pytest.fail('trial cloned medium'))
+                assert m.trial(site,a,b,point)==expected
+    # Exact equal-distance ties and strict boundary, with array order preserved.
+    with medium() as m:
+        for j in range(10):m.add((1 if j%2 else -1,0),0,gain=0.)
+        m.add((0,0),0,role='output');m.add((3,0),0)
+        es,ds=geometry(m.native,[]);assert geometric_graph(es,ds)==m.influence()
+
+
+@pytest.mark.parametrize('mode',['intact','donor','output_channel','receiver','site0','oracle','empty'])
+def test_gp_assay_native_reference_tiny_synthetic(mode):
+    from evidence.tactical_composition_demo.growing_shapes.world.world import Observation,Enemy
+    with medium() as reference:
+        reference.frozen=True
+        reference.native.start_clock(1.);reference.step_index=10
+        if mode!='empty':
+            reference.add((3.2,0),.1,gain=1.);reference.add((2.65,0),-.2,role='output')
+        # Nonzero carrier catches start/end clock and donor off-by-one errors.
+        reference.frames.clear();reference.record()
+        if mode=='output_channel':reference.native.lesions([1])
+        if mode=='receiver':reference.native.lesions([0])
+        native=reference.clone();observations=[];assignment=list(range(8));schedule=None
+        for j in range(3):
+            obs=Observation(task=0,step=j,horizon=3,enemy_count=2)
+            obs.enemies[0]=Enemy(id=8,visible=int(j!=2),angle=.4,distance=1,hp=100)
+            obs.enemies[1]=Enemy(id=3,visible=int(j!=2),angle=-.7,distance=1,hp=100)
+            observations.append(obs)
+        if mode=='donor':schedule=[replay_on_clock([[2,0,4,1.1,math.pi,2,1,3]],1+j*.1) for j in range(3)]
+        try:
+            got=bridge.assay_synthetic(native,observations,assignment,schedule=schedule,relay={'site0':1,'oracle':2}.get(mode,0))
+            for j,(obs,row) in enumerate(zip(observations,got['decisions'])):
+                from evidence.tactical_composition_demo.growing_shapes.runner.rev6_protocol import bindings,action
+                ds=bindings('perceive',obs,assignment,reference.time) if schedule is None else schedule[j]
+                diag=reference.integrate(ds)
+                chosen=relay('perceive',obs,reference.drives,reference.time,mode) if mode in ('site0','oracle') else action('perceive',obs,reference.native,reference.time)
+                assert row['angle']==pytest.approx(chosen.angle,abs=1e-12)
+                assert row['magnitude']==chosen.magnitude and row['choice']==chosen.choice
+                assert row['paths']==diag['paths']
+                assert row['has_output']==(mode in ('site0','oracle') or mode!='empty')
+                np.testing.assert_allclose(row['drives'],[[getattr(d,f) for f,_ in d._fields_] for d in ds],atol=1e-14,rtol=0)
+            np.testing.assert_array_equal([[e.x,e.y,e.phase] for e in native.native.elements],[[e.x,e.y,e.phase] for e in reference.native.elements])
+            assert native.step_index==reference.step_index
+        finally:native.close()
+
+
+def test_F1_rejects_transient_crossing_and_requires_deadline():
+    from evidence.tactical_composition_demo.growing_shapes.runner.rev6_fixtures import step_response
+    records=[dict(time=8+(j+1)*.1,beta=math.pi/2 if j>=20 else 0.) for j in range(80)]
+    result=step_response(records);assert result['response_pass'] and result['delay']==pytest.approx(2.1)
+    records[21]['beta']=0.;assert not step_response(records)['response_pass']
+    records[21]['beta']=math.pi/2;records[-1]['beta']=0.;assert not step_response(records)['response_pass']
+    assert not step_response(records[:-1])['response_pass']
+
+
+def test_memory_singleton_contract_and_window_split():
+    from evidence.tactical_composition_demo.growing_shapes.runner.rev6_evaluator import single_oscillator,evaluation_modes
+    from evidence.tactical_composition_demo.growing_shapes.runner.rev6_reporting import memory_windows
+    from evidence.tactical_composition_demo.growing_shapes.medium.design_0h import SITES
+    m=single_oscillator(719,math.pi)
+    try:
+        e=m.native.elements[0];q=SITES[__import__('evidence.tactical_composition_demo.growing_shapes.runner.rev6_protocol',fromlist=['permutation']).permutation(719)[0]]
+        assert (e.x,e.y)==tuple(q) and m.role(e.id)=='element' and m.native.gain(e.id)==1 and e.rate==math.pi and e.phase==math.pi
+        site=Drive(0,e.x,e.y,e.phase+.8,math.pi,2,1,3)
+        m.integrate([site]);encoded=m.native.elements[0].phase-math.pi*m.time
+        assert encoded>0
+        m.integrate([Drive(0,e.x,e.y,math.pi*m.time,math.pi,0,1,3)])
+        assert m.native.elements[0].phase-math.pi*m.time==pytest.approx(encoded,abs=1e-14)
+        assert (m.native.elements[0].x,m.native.elements[0].y)==(e.x,e.y)
+    finally:m.close()
+    assert {'single_oscillator','sample_and_hold'}<=set(evaluation_modes('remember_static'))
+    assert 'single_oscillator' not in evaluation_modes('perceive')
+    decisions=[dict(angle=.2 if j<40 else .3,has_output=True,drives=[[0,4,0,math.pi*j*.1+.8,math.pi,2 if j<40 else 0,1,3]]) for j in range(160)]
+    summary=memory_windows(decisions)
+    assert summary['encoding']['mean_abs_error']==pytest.approx(.6)
+    assert summary['retention']['mean_abs_error']==pytest.approx(.5)
+    assert summary['retention']['mean_abs_drift_from_encoded_output']==pytest.approx(.1)
+
+
+def test_silenced_root_native_reference():
+    with medium() as m:
+        id=m.add((4,0),0.);m.native.silence(id,True);m.add((3.4,0),0.,role='output')
+        branch=m.clone()
+        try:
+            ds=[drive()];m.integrate(ds);m.timers();got=bridge.contract(branch,ds)['steps'][0]
+            assert not m.influence().roots[0] and not any(got['paths'])
+            assert got['cut_off'][str(id)]==m.native.cut_off(id)==.1
+        finally:branch.close()
+
+
+def test_descriptive_synthetic_ledgers():
+    from evidence.tactical_composition_demo.growing_shapes.runner.rev6_reporting import descriptive
+    def event(rule,**v):return dict(time=25600,rule=rule,values=v)
+    events=[event('birth_request',birth_rule='B-path'),event('birth_request',birth_rule='B-path'),
+        event('birth_terminal',birth_rule='B-path',outcome='cap',attempts=3,failures={'new_reached':2}),
+        event('birth_terminal',birth_rule='B-path',outcome='accepted',attempts=2),event('D4'),event('growth_check')]
+    diag=[dict(index=256001,paths=[True]+[False]*7,active_sites=[0,1],covered_sites={0:False,1:None},
+        exposure={5:dict(radius=7.1,wall=True,sensor_access=False)})]
+    summary=descriptive(events,diag,[(25600,8),(32000,9)],start=25600)
+    role=summary['birth_roles']['B-path'];assert (role['opportunities'],role['attempts'],role['accepted'])==(2,5,1)
+    assert role['resource_rejections']['cap']['per_opportunity']==.5 and summary['cap_limited']
+    assert summary['turnover']['deaths']==1 and summary['count_range']==[8,9]
+    assert summary['wall']['penetration_element_seconds']==.1 and summary['wall']['maximum_radius']==7.1
+    assert summary['uncovered_sensor_exposure']['fraction']==1. and summary['uncovered_sensor_exposure']['undefined_warmup_site_steps']==1
+    assert summary['unmet_output_or_path_demand'] and summary['path_exposure']['fractions'][0]==1
+
+
+def test_committed_approval_record_and_start_snapshot(monkeypatch,tmp_path):
+    from evidence.tactical_composition_demo.growing_shapes.runner import rev6_identity
+    with pytest.raises(PermissionError):Execution(approval_reference='made up')
+    with pytest.raises(PermissionError):Execution(approval_reference=str(tmp_path/'record.md'))
+    grant=Execution(approval_reference='docs/decisions/0028-owner-directed-exploratory-composable-shapes.md')
+    assert len(grant._approval['sha256'])==64
+    with pytest.raises(PermissionError):grant.require('fixtures') # identity is no authorization
+    # All authority booleans are synthetic here; no fixture method or world is called.
+    grant=Execution(owner_revision=True,owner_fixtures=True,engines_ready_reviewed=True,integration_tested_reviewed=True,
+        source_units_endpoints_ready=True,approval_reference=grant.approval_reference)
+    calls=[]
+    monkeypatch.setattr(rev6_identity,'assert_inputs',lambda:calls.append(1) or dict(sha256={'design':'snapshot'}))
+    receipt=grant.start('fixtures');assert len(calls)==1
+    for _ in range(3):assert grant.snapshot('fixtures')['sha256']==receipt['sha256']
+    assert len(calls)==1
+    monkeypatch.setattr(rev6_identity,'assert_inputs',lambda:pytest.fail('unexpected recheck'))
+    assert grant.snapshot('fixtures')['sha256']=={'design':'snapshot'}
+
+
+def test_F9_denied_and_move_decoder_limit():
+    from evidence.tactical_composition_demo.growing_shapes.runner.rev6_fixtures import Harness,F9_CASES
+    from evidence.tactical_composition_demo.growing_shapes.world.world import Observation
+    from evidence.tactical_composition_demo.growing_shapes.runner.rev6_protocol import bindings
+    with pytest.raises(PermissionError):Harness().F9()
+    for bearing,distance,desired in F9_CASES.values():
+        obs=Observation(task=1,target_angle=bearing,target_distance=distance,desired_range=desired)
+        ds=bindings('move',obs,list(range(8)),0.)
+        active=[d for d in ds if d.strength>0];phase=active[0].phase if active else 0.
+        assert decode('move',obs,1.,phase,0.).magnitude==1.
+
+
+def test_exhausted_site_104_trials_never_clones_medium_or_native(monkeypatch):
+    from evidence.tactical_composition_demo.growing_shapes.runner.rev65_timing import exhausted_state
+    m=exhausted_state(26)
+    try:
+        before=m.native.save()
+        monkeypatch.setattr(m,'clone',lambda **kwargs:pytest.fail('medium cloned in B-path'))
+        monkeypatch.setattr(m.native,'clone',lambda **kwargs:pytest.fail('native cloned in rejected B-path'))
+        assert m.b_path()==[]
+        result=[e['values'] for e in m.events if e['rule']=='birth_terminal'][-1]
+        assert result['outcome']=='exhausted' and result['attempts']==104
+        assert m.native.save()==before
+    finally:m.close()
+
+
+def test_memory_comparator_episode_uses_cue_and_hold_with_fake_world(monkeypatch):
+    from types import SimpleNamespace
+    from evidence.tactical_composition_demo.growing_shapes.runner import rev6_evaluator as module
+    from evidence.tactical_composition_demo.growing_shapes.world.world import Observation,Enemy
+    class SyntheticWorld:
+        def __init__(self,*a,**kw):self.index=0
+        def __enter__(self):return self
+        def __exit__(self,*a):pass
+        def observe(self):
+            o=Observation(task=7,done=self.index==2,enemy_count=1)
+            o.enemies[0]=Enemy(id=0,visible=self.index==0,angle=.8,distance=0,hp=100)
+            return o
+        def step(self,a):assert a.magnitude==0;self.index+=1
+        def score(self):return SimpleNamespace(angular_error=0.,distance_error=0.)
+    monkeypatch.setattr(module,'World',SyntheticWorld)
+    rows,_=reused_calibration();e=Evaluator(rows,backend='reference');monkeypatch.setattr(e,'require',lambda:None)
+    with medium() as m:
+        value=template(m.native,[],0.)
+        hold=e.episode(value,'remember_static',713,mode='sample_and_hold')
+        oscillator=e.episode(value,'remember_static',713,mode='single_oscillator')
+    assert [r['angle'] for r in hold['decisions']]==pytest.approx([.8,.8])
+    assert 0<oscillator['decisions'][0]['angle']<.8
+    assert oscillator['decisions'][1]['angle']==pytest.approx(oscillator['decisions'][0]['angle'],abs=1e-14)
+    assert hold['memory_windows']['encoding']['mean_abs_error']==pytest.approx(0.)
+
+
+def test_scientific_identity_scope_and_drift_detection(monkeypatch,tmp_path):
+    from evidence.tactical_composition_demo.growing_shapes.runner import rev6_identity as identity
+    snapshot=identity.assert_inputs()
+    assert snapshot['checked']=='execution_start_once'
+    assert 'AGENTS.md' not in snapshot['sha256']
+    assert not any('/reviews/' in name for name in snapshot['sha256'])
+    assert 'evidence/tactical_composition_demo/growing_shapes/runner/REV6_SEED_INVENTORY.json' in snapshot['sha256']
+    design='evidence/tactical_composition_demo/DESIGN_0H_REV6.md'
+    (tmp_path/design).parent.mkdir(parents=True);(tmp_path/design).write_text('design')
+    digest=hashlib.sha256(b'design').hexdigest()
+    pin=tmp_path/'pin';pin.mkdir();(pin/'REV65_SOURCE_IDENTITY.json').write_text(json.dumps({'sha256':{design:digest}}))
+    monkeypatch.setattr(identity,'HERE',pin);monkeypatch.setattr(identity,'ROOT',tmp_path);monkeypatch.setattr(identity,'DESIGN_SHA256',digest)
+    identity.assert_inputs()
+    (tmp_path/'AGENTS.md').write_text('unrelated process change');identity.assert_inputs()
+    (tmp_path/design).write_text('changed')
+    with pytest.raises(ValueError,match='scientific input identity'):identity.assert_inputs()
+
+
+def test_geometric_admission_cost_matches_native_clone():
+    rng=np.random.default_rng(1860)
+    for n in (4,24,50,64):
+        with medium() as m:
+            for _ in range(n):m.add(tuple(rng.uniform(-1,1,2)),0.)
+            for _ in range(3):
+                point=tuple(rng.uniform(-2,2,2))
+                if n==64:expected='cap'
+                else:
+                    branch=m.native.clone()
+                    try:
+                        branch.add(*point,0.,math.pi)
+                        expected='cost' if branch.cost(1.,.1)['total']>64 else None
+                    finally:branch.close()
+                assert m.feasible(point,0.)==expected

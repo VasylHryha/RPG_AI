@@ -54,9 +54,48 @@ def deficit(native,front,back):
     return min((math.hypot(es[a].x-es[b].x,es[a].y-es[b].y) for a in front for b in back),default=math.inf)
 
 
+def geometry(native,drives):
+    """Only immutable geometry/role/gain records; no histories, frames or RNG."""
+    return ([(e.id,e.x,e.y,native.role(e.id),native.gain(e.id),bool(e.silent))
+             for e in native.elements],
+            [(d.id,d.x,d.y,d.strength,d.reach) for d in drives])
+
+
+def geometric_graph(elements,drives,k=8,radius=3.):
+    # Medium::neighbors ties by element array index, including after deletions.
+    incoming={}
+    for i,(id,x,y,role,gain,silent) in enumerate(elements):
+        candidates=[] if silent else [(math.hypot(x-e[1],y-e[2]),j,e[0])
+            for j,e in enumerate(elements) if i!=j and not e[5]]
+        incoming[id]={id2 for r,j,id2 in sorted(candidates)[:k] if r<radius}
+    outgoing={e[0]:set() for e in elements}
+    for target,sources in incoming.items():
+        for source in sources:outgoing[source].add(target)
+    outputs={e[0] for e in elements if e[3]=='output'}
+    roots={id:{e[0] for e in elements if e[3]!='output' and not e[5] and e[4]>0
+               and strength>0 and math.hypot(e[1]-x,e[2]-y)<reach}
+           for id,x,y,strength,reach in drives}
+    return Influence(incoming,outgoing,roots,outputs)
+
+
+def geometric_trial(elements,drives,site,a,b,position,new,*,k=8,radius=3.,before=None):
+    before=before or geometric_graph(elements,drives,k,radius)
+    positions={e[0]:(e[1],e[2]) for e in elements}
+    def gap(g,positions):
+        return min((math.hypot(positions[u][0]-positions[v][0],positions[u][1]-positions[v][1])
+            for u in g.forward(site) for v in g.backward()),default=math.inf)
+    old_gap=gap(before,positions)
+    after=geometric_graph(elements+[(new,*position,'element',1.,False)],drives,k,radius)
+    reached=after.forward(site);positions[new]=position
+    return dict(edge_a_to_new=a in after.incoming[new],new_reached=new in reached,
+        a_reached=a in reached,paths_kept=all(not before.path(s) or after.path(s) for s in before.roots),
+        deficit_or_connect=after.path(site) or gap(after,positions)<old_gap,
+        clearance=all(math.hypot(e[1]-position[0],e[2]-position[1])>=.05 for e in elements))
+
+
 class Rev6Medium(DesignMedium):
-    def __init__(self,seed=0,*,growth_rng=None,frozen=False):
-        self.native=Rev6Native(seed)
+    def __init__(self,seed=0,*,growth_rng=None,frozen=False,params=None):
+        self.native=Rev6Native(seed,params=params)
         self.native.options(automatic_samples=False,carried_sites=True,undirected_cost=True)
         self.native.first_id(0)
         self.step_index=0;self.frames=deque(maxlen=601)
@@ -82,7 +121,6 @@ class Rev6Medium(DesignMedium):
         self.native.set_gain(id,gain);self.death[id]=0.;self.birth_steps[id]=self.step_index
         self.peak=max(self.peak,len(self.native));self.emit(rule,[id],role=role,**values)
         # Native topology is always computed from positions, never cached through mutations.
-        self.influence()
         return id
 
     def remove(self,id,rule,**values):
@@ -121,12 +159,15 @@ class Rev6Medium(DesignMedium):
             radius=math.hypot(e.x,e.y)
             geometric=any(d.strength>0 and math.hypot(e.x-d.x,e.y-d.y)<d.reach for d in self.drives)
             exposure[e.id]=dict(radius=radius,wall=radius>6,geometric=geometric,
+                sensor_access=any(math.hypot(e.x-x,e.y-y)<3 for x,y in SITES),
                 drive=geometric and self.role(e.id)!='output' and self.native.gain(e.id)>0)
-        return dict(index=self.step_index,paths=[g.path(s) for s in range(8)],
+        return dict(index=self.step_index,active_sites=[d.id for d in self.drives if d.strength>0],paths=[g.path(s) for s in range(8)],
                     cut_off={e.id:self.native.cut_off(e.id) for e in self.native.elements},exposure=exposure)
 
     def observe_diagnostics(self,row):
         self.diagnostics.append(dict(index=row.get('step',row.get('index',self.step_index)),
+            active_sites=row.get('active_sites',[d.id for d in self.drives if d.strength>0]),
+            covered_sites=row.get('covered_sites',{}),
             paths=row['paths'],cut_off=row['cut_off'],exposure=row['exposure']))
 
     def timers(self):
@@ -134,7 +175,7 @@ class Rev6Medium(DesignMedium):
         covered=super().timers();g=self.influence();live=g.forward()|g.backward()
         for e in self.native.elements:
             self.native.cut_off(e.id,0. if e.id in live else self.native.cut_off(e.id)+DT)
-        self.observe_diagnostics(self.endpoint_diagnostics())
+        self.observe_diagnostics(dict(self.endpoint_diagnostics(),covered_sites={s:covered[s] if len(self.frames)>=101 else None for s in range(8)}))
         return covered
 
     def request(self,rule,site=None):
@@ -157,20 +198,22 @@ class Rev6Medium(DesignMedium):
         return None,50
 
     def trial(self,site,a,b,position):
-        """No mutation of the live state or RNG. Post-trial roots include the newborn."""
-        before=self.influence();old_gap=deficit(self.native,before.forward(site),before.backward())
-        source=next(e for e in self.native.elements if e.id==a)
-        branch=self.clone(events=False)
-        try:
-            new=branch.add(position,source.phase,rule='TRIAL')
-            after=branch.influence();reached=after.forward(site)
-            clearance=all(math.hypot(e.x-position[0],e.y-position[1])>=.05 for e in self.native.elements)
-            checks=dict(edge_a_to_new=a in after.incoming[new],new_reached=new in reached,
-                a_reached=a in reached,paths_kept=all(not before.path(s) or after.path(s) for s in before.roots),
-                deficit_or_connect=after.path(site) or deficit(branch.native,reached,after.backward())<old_gap,
-                clearance=clearance)
-            return checks
-        finally:branch.close()
+        elements,drives=geometry(self.native,self.drives)
+        # The trial id only needs to be unique; tie order is insertion order.
+        new=max((e[0] for e in elements),default=-1)+1
+        return geometric_trial(elements,drives,site,a,b,position,new,
+            k=self.native.params.k,radius=self.native.params.radius)
+
+    def feasible(self,position,phase):
+        # The declared cost is N + .1 per undirected pair, with no site term.
+        # Admission also uses geometry only; never clone native histories.
+        if len(self.native)+1>64:return 'cap'
+        elements,drives=geometry(self.native,self.drives)
+        new=max((e[0] for e in elements),default=-1)+1
+        g=geometric_graph(elements+[(new,*position,'element',1.,False)],drives,
+            self.native.params.k,self.native.params.radius)
+        pairs={tuple(sorted((target,source))) for target,sources in g.incoming.items() for source in sources}
+        return 'cost' if len(elements)+1+.1*len(pairs)>64 else None
 
     def b_out(self,blocked=False):
         if self.influence().outputs:return []
@@ -200,6 +243,8 @@ class Rev6Medium(DesignMedium):
             if not back:self.terminal(request,'B-path',site,'no_output');continue
             if not front:self.terminal(request,'B-path',site,'no_root');continue
             es={e.id:e for e in self.native.elements}
+            elements,drives=geometry(self.native,self.drives)
+            new=max(es,default=-1)+1
             pairs=sorted((math.hypot(es[a].x-es[b].x,es[a].y-es[b].y),a,b) for a in front for b in back)[:8]
             attempts=0;done=False;failures={name:0 for name in TRIAL_NAMES}
             for _,a,b in pairs:
@@ -207,7 +252,8 @@ class Rev6Medium(DesignMedium):
                 for rotation in [0]+[sign*angle for angle in range(15,91,15) for sign in (1,-1)]:
                     angle=direction+math.radians(rotation)
                     point=(es[a].x+R_STAR*math.cos(angle),es[a].y+R_STAR*math.sin(angle))
-                    checks=self.trial(site,a,b,point);attempts+=1
+                    checks=geometric_trial(elements,drives,site,a,b,point,new,
+                        k=self.native.params.k,radius=self.native.params.radius,before=g);attempts+=1
                     for name,yes in checks.items():failures[name]+=int(not yes)
                     self.emit('birth_attempt',request=request,birth_rule='B-path',site=site,
                               a=a,b=b,position=point,checks=checks)

@@ -1,0 +1,23 @@
+{
+  "command": [
+    ".venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "evidence/tactical_composition_demo/growing_shapes/runner/test_rev6.py",
+    "--basetemp=evidence/tactical_composition_demo/growing_shapes/runner/_rev6_build/pytest-rev65-final-tmp",
+    "-o",
+    "cache_dir=evidence/tactical_composition_demo/growing_shapes/runner/_rev6_build/pytest-rev65-final-cache"
+  ],
+  "seconds": 1.1004478340000001,
+  "exit_code": 0,
+  "scope": "affected synthetic contracts only; shared gp_assay loop uses <=4 supplied observations; no World episode",
+  "prior_failed_attempt": "REV65_TEST_SETUP_FAILURE_CHECKS.json",
+  "rerun_reason": "correct pristine-medium clock initialization in synthetic parity setup",
+  "fixture_execution": "NOT_RUN",
+  "training_execution": "NOT_RUN",
+  "development_execution": "NOT_RUN",
+  "evaluation_execution": "NOT_RUN",
+  "assisted_by": "Codex:GPT-6"
+}

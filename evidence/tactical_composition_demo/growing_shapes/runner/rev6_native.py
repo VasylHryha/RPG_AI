@@ -5,6 +5,7 @@ next protocol boundary. No native handle or history is retained across calls,
 so growth, reward, clones and synthetic history edits remain authoritative.
 """
 import ctypes as C
+from functools import lru_cache
 import hashlib
 import json
 import platform
@@ -33,6 +34,7 @@ class Schedule(C.Structure):
     _fields_ = [('count',C.c_int32),('drives',Drive*8)]
 
 
+@lru_cache(maxsize=1)
 def library():
     path = HERE/'_rev6_build'/('rev6_perf.dylib' if platform.system() == 'Darwin' else 'rev6_perf.so')
     manifest = json.loads((path.parent/'build.json').read_text())
@@ -65,6 +67,9 @@ def library():
         raise RuntimeError('native orchestration ABI layout mismatch')
     lib.gp_assay.restype=C.c_char_p
     lib.gp_assay.argtypes=lib.gp_batch.argtypes[:-2]+[C.POINTER(Schedule),C.c_int,C.c_int]
+    from ..world.world import Observation
+    lib.gp_assay_synthetic.restype=C.c_char_p
+    lib.gp_assay_synthetic.argtypes=common+[C.POINTER(C.c_int32),C.POINTER(C.c_double),C.POINTER(Schedule),C.c_int,C.c_int,C.POINTER(Observation),C.c_int]
     lib._dependency_paths = {str((ROOT/n).resolve()) for n in manifest['dependencies']}
     return lib
 
@@ -232,5 +237,25 @@ def assay(medium,world,assignment,*,schedule=None,relay=0,lib=None):
     with locked(medium,lib,world):
         data=decode(medium,lib.gp_assay(medium.native._handle,world._handle,*pack(medium),
             (C.c_int32*8)(*assignment),(C.c_double*16)(*(v for s in SITES for v in s)),values,0 if schedule is None else len(schedule),relay))
+        medium.step_index=data['index']
+        return data
+
+
+def assay_synthetic(medium,observations,assignment,*,schedule=None,relay=0,lib=None):
+    """At most four supplied observations; identical gp_assay loop, no World."""
+    from ..world.world import Observation
+    if not 1<=len(observations)<=4:raise ValueError('synthetic assay requires 1..4 observations')
+    if schedule is not None and (len(schedule)!=len(observations) or any(len(ds)>8 for ds in schedule)):
+        raise ValueError('synthetic donor schedule must match observations')
+    lib=lib or library();values=None
+    if schedule is not None:
+        values=(Schedule*len(schedule))()
+        for dst,ds in zip(values,schedule):
+            dst.count=len(ds)
+            for j,d in enumerate(ds):dst.drives[j]=d
+    with locked(medium,lib):
+        data=decode(medium,lib.gp_assay_synthetic(medium.native._handle,*pack(medium),
+            (C.c_int32*8)(*assignment),(C.c_double*16)(*(v for s in SITES for v in s)),
+            values,0 if schedule is None else len(schedule),relay,(Observation*len(observations))(*observations),len(observations)))
         medium.step_index=data['index']
         return data

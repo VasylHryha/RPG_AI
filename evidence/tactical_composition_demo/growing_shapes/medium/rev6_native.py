@@ -1,5 +1,6 @@
 """Versioned native rev6 RHS. Never loads or rebuilds a 5.1 image implicitly."""
 import ctypes as C
+from functools import lru_cache
 import hashlib
 import json
 from pathlib import Path
@@ -11,6 +12,7 @@ BUILD = HERE / '_rev6_build'
 IMAGE = BUILD / ('rev6_medium.dylib' if platform.system() == 'Darwin' else 'rev6_medium.so')
 
 
+@lru_cache(maxsize=1)
 def library():
     manifest = json.loads((BUILD / 'build.json').read_text())
     if manifest['version'] != 'rev6_rhs_v1':
