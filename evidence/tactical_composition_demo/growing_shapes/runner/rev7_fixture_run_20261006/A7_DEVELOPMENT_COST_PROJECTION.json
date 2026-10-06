@@ -1,0 +1,41 @@
+{
+  "F4_composite_seconds_per_episode": 0.28181736249825917,
+  "F4_proxy_limitation": "Five native and five reference perceive assays on a two-member scaffold, plus setup, stage diagnostics, donor capture, relays, finite serialization and instrumentation. Not a native grown-population rate.",
+  "N1_seconds_per_RK4_substep": 0.00010073086250049528,
+  "development": "BLOCKED_F1c_NOT_RUN",
+  "instrumentation": "Passive F1a-c line timestamps and per-method wrappers; observed rates include observer overhead. No benchmark, development or panel executed.",
+  "lower_or_upper_bound": false,
+  "measured_frozen_seconds_per_world_step": {
+    "F1a": 0.000817518906260375,
+    "F1b": 0.0013185541145867318,
+    "F1c": 0.0017357844791695244,
+    "F1d_two_scales": 0.0009989917057282582,
+    "F2": 0.0010590251301437093
+  },
+  "qualified_total_hours": null,
+  "reason": "F1c blocks F5-F9: growth, qualification, recovery and grown-population assay rates unmeasured",
+  "status": "A7_PARTIAL_TOTAL_NOT_QUALIFIED_FROM_MEASURED_FIXTURES",
+  "unqualified_arithmetic_proxies": {
+    "assay_hours_using_F4_composite_rate": 33.98842643890116,
+    "frozen_training_hours_by_fixture": {
+      "F1a": 3.488080666710933,
+      "F1b": 5.62583088890339,
+      "F1c": 7.40601377778997,
+      "F1d_two_scales": 4.262364611107235,
+      "F2": 4.518507221946493
+    },
+    "site_body_off_added_seconds_using_F4_composite_rate": 577.1619583964348
+  },
+  "workload": {
+    "donor_capture_episodes": 8192,
+    "growth_checks": 76800,
+    "intact_trainings": 16,
+    "qualification_starts": 8512,
+    "site_body_off_added_episodes": 2048,
+    "site_body_off_episodes_per_intact_training": 128,
+    "snapshot_assay_episodes_max": 327680,
+    "total_assay_episodes_max_all_four_tasks": 434176,
+    "training_world_steps": 15360000,
+    "trainings": 48
+  }
+}

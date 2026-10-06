@@ -1,0 +1,67 @@
+{
+  "archive": "evidence/tactical_composition_demo/growing_shapes/runner/REV7_FIXTURE_EVIDENCE.tar.gz",
+  "archive_bytes": 2359868,
+  "archive_sha256": "70cb48b5aa42558b0b24725345773f0dbe23ffd842c42f9475e8f755a6662de4",
+  "development_panels_training": "NOT_RUN",
+  "excluded_large_files": {
+    "evidence/tactical_composition_demo/growing_shapes/runner/rev7_fixture_run_20261006/EXECUTION_LOG.txt": {
+      "bytes": 1021,
+      "reason": "local-only raw stdout (decision 0031)",
+      "sha256": "fc4a74af28cec72d46af3143841ecb7052438feddcd5c640746ac3d2f9a44dee"
+    },
+    "evidence/tactical_composition_demo/growing_shapes/runner/rev7_fixture_run_20261006/RUN_RECEIPT.json": {
+      "bytes": 55592745,
+      "reason": "over 50 MB; local original retained, never staged or packed",
+      "sha256": "59c1387018bf17e152eb83a1cd38e125111d175321ddbd0e5dcaffd3cb6e06ee"
+    }
+  },
+  "included_files": 37,
+  "max_member_bytes": 1106238,
+  "original_receipt_bytes": 55592745,
+  "original_receipt_sha256": "59c1387018bf17e152eb83a1cd38e125111d175321ddbd0e5dcaffd3cb6e06ee",
+  "outside_scope_changed": [],
+  "outside_scope_checked": 6631,
+  "pinned_files_checked": 68,
+  "provenance": "Assisted-by: Codex:GPT-6",
+  "report_sha256": "1cfeff818bb525d0e63192b2ed33a99fb09b430f70b211b62dc7837c0f48f1ce",
+  "status": "PASS",
+  "traces": [
+    {
+      "bytes": 1106238,
+      "fixture": "F1",
+      "sha256": "fbb737cebe10940641ee551b38bfc263867e8a4e944eef012e96d14293a83a33",
+      "status": "PASS"
+    },
+    {
+      "bytes": 215518,
+      "fixture": "F1d",
+      "sha256": "2b2f5599eb88c0c435eaf9b70b6d4efbfa39372be544042c704ea90f0a79f1ac",
+      "status": "PASS"
+    },
+    {
+      "bytes": 1642,
+      "fixture": "F2",
+      "sha256": "a66cd79f6e8a2bf36075d92c0b3a29d43bf4fe5bf04e7cf10964b97eac1ba7d5",
+      "status": "PASS"
+    },
+    {
+      "bytes": 571,
+      "fixture": "F3",
+      "sha256": "ca5af5a8813fa0e836996d4b2ebfd0e63bb5f9d68debcd019c50418c936f69d5",
+      "status": "PASS"
+    },
+    {
+      "bytes": 256832,
+      "fixture": "F4",
+      "sha256": "ee698f85772d967835753cbecbfb0a34e661b866a0cbe4e398bba526201f3dc4",
+      "status": "PASS"
+    },
+    {
+      "bytes": 85813,
+      "fixture": "N1",
+      "sha256": "fedec8b3c9b9391b5f0a7bd947a7ebf424ea6da5017ec7535e0ba1785784e0e4",
+      "status": "PASS"
+    }
+  ],
+  "verification": "artifact hashes, gzip decoded equality to receipt, timings, sequence, stop and unchanged source bytes; no fixture rerun"
+}
