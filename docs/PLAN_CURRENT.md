@@ -45,7 +45,8 @@
 | A6f | Revision 7.5 fixtures | **N1 and F1–F4 PASS** (F1c, the live layout: 2.1 s, persistence 100%); F5 INVALID (Codex's measurement wrapper defect, not science) | Claude, Codex | decision 0031 |
 | A6g | Revision 7.5 complete re-run (rev75c) | DONE: N1 and F1–F4 PASS; **F5 FAIL**: the output port was deleted (D1 and D3) and could not be reborn (budget), so no assay had an output | Codex | — |
 | A6h | **Revision 7.6:** O protected (exempt from D1, D3 and D4; outside the budget) | DONE: Codex review APPROVE_WITH_NOTES; implemented (93 tests); Claude check **READY_FOR_FIXTURES** (pin `43b0f578…`) | Claude, Codex | — |
-| A6i | **7.6 fixtures N1–F9** (about 91 min) | **SCHEDULED 22:00** (`scratchpad/night_0h.sh`; `touch scratchpad/GO_0H` starts it at once on the owner's go) | Codex | decision 0031 |
+| A6i | 7.6 fixtures N1–F9 | DONE (the owner's go): N1 and F1–F4 PASS; **F5: paths now form (E 0.8 and 0.7) and the output persists, but the response is too slow** (A 0.22, against 0.3): the last link sits 2.2–2.6 m.u. from O (weight about 0.008) | Codex | — |
+| A6j | **Revision 7.7:** paths count only through strong links (w ≥ 0.5, r ≤ 0.833, from the clock budget) | **Codex review + implementation RUNNING**; then a Claude check and the fixtures (about 91 min) | Claude, Codex | decision 0031 |
 | A7 | Cost projection from the measured F rates | — | Codex | — |
 | A8 | **The development run** (48 trainings, about 16 h or more of serial compute) | — | Codex | **[OWNER] approve the run and its time** |
 | A9 | Review the results, then the owner's recheck | — | Claude, then Codex | — |
