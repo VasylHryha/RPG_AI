@@ -1,0 +1,32 @@
+{
+  "version": "rev7_rhs_v1",
+  "source_sha256": {
+    "rev7_medium.cpp": "a11db267a05b028c86775cbd2118deeb1694a7b83e1ca01992c39ca9dd1d39ac",
+    "rev7_medium_c.cpp": "e11d3308caea83eb6bb82b91ff9de4cb7277e95925cb96e5d1377cab09dba9c2",
+    "rev7_medium.hpp": "ace50f05e66259c4d78782c0a143d90b2b001ef71aa3de6c350eea24d531bfa7",
+    "medium_c.h": "7838d1f6a8085b36a9d84a929b1635526c519505e8b1eac1e47cebb78066ee43",
+    "rev7_native.py": "a048e17ef3c4feed2f8a52742fea8232e5d6ea16569db40de2a766562a1e46ed",
+    "rev7_rhs.py": "dd825e9c871dbefe34ccec7ba0dbdc50cf78787b9e0a6105065621df6f0e3ad4",
+    "medium.py": "c4e034f3708a424d63da571f083f0d3e44699fd5ba77694258a7c8988ef17fc4",
+    "build_rev7.py": "a39243e1807bc26f3a1505a1412dfe62070dd2c36f9132fcd43af880fbc76289",
+    "../native_guard.py": "d2b023e1dbc296feef3adb0840c2fd2ad4c2eda6fd396d2c5103ea5e6f815a7b"
+  },
+  "binary_sha256": "b4e586f770a7cb18d8396d23240349787aef75178e43227cb631f6f1232548da",
+  "command": [
+    "/usr/bin/clang++",
+    "-std=c++17",
+    "-O3",
+    "-Wall",
+    "-Wextra",
+    "-Wpedantic",
+    "-fno-fast-math",
+    "-ffp-contract=off",
+    "-fPIC",
+    "-dynamiclib",
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/medium/rev7_medium.cpp",
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/medium/rev7_medium_c.cpp",
+    "-o",
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes/medium/_rev7_build/rev7_medium.dylib"
+  ],
+  "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)"
+}

@@ -1,0 +1,173 @@
+"""Fresh-copy evaluation and interventions; there is no automatic panel execution."""
+from contextlib import ExitStack
+import json
+import math
+from pathlib import Path
+import numpy as np
+from ..world.world import World, Policy, Library, Action
+from ..medium.medium import Drive
+from .rev7_protocol import TASKS, Calibration, copy_template, template_hash, seed, generator, permutation, bindings, oriented, action, relay, input_phasor, paired_bounds, donor_entries, replay_on_clock
+
+
+
+def reused_calibration():
+    path=Path(__file__).parent/'development_20261006/CALIBRATION.json'
+    receipt=json.loads(path.read_text())
+    rows={t:Calibration(**v) for t,v in receipt['calibration'].items()}
+    return rows,dict(label='REUSED_5_1_CALIBRATION',source=str(path),namespace='validation',episodes=[0,255])
+
+
+def evaluation_modes(task):
+    return ('intact','default','random','donor','output_channel','receiver','site0','oracle')+descriptive_modes(task)+(('single_oscillator','sample_and_hold') if task=='remember_static' else ())
+
+
+def descriptive_modes(task):
+    return ('k_zero','fixed_structure')+(('input_phasor','site_body_off') if task=='perceive' else ())
+
+
+def descriptive_comparisons(task,scores):
+    """Same paired estimator, but no verdict/positive/negative fields or gate cuts."""
+    result={}
+    for mode in descriptive_modes(task):
+        bounds=paired_bounds(scores['intact'],scores[mode],secondary=task!='perceive')
+        estimate={k:v for k,v in bounds.items() if k not in ('verdict','positive','negative')}
+        result[mode]=dict(status='DESCRIPTIVE',estimate_status=bounds['verdict'],
+                         estimate=estimate,episodes=len(scores[mode]),used_in_verdict=False)
+    return result
+
+
+def single_oscillator(episode,carrier_offset=0.,backend="native"):
+    from ..medium.rev7_design import Rev7Medium
+    from ..medium.medium import Params
+    from ..medium.design_0h import SITES
+    m=Rev7Medium(frozen=True,backend=backend,params=Params(geometry_rate=0.))
+    m.native.start_clock(carrier_offset/math.pi);m.step_index=round(carrier_offset/math.pi/.1)
+    m.add(SITES[permutation(episode)[0]],carrier_offset,math.pi,1.,rule='MEMORY_BASELINE')
+    m.frames.clear();m.record()
+    return m
+
+
+class Evaluator:
+    def __init__(self,rows,library=None,backend='native',*,execution=None,scope='development',arm='task_blind',k=0,trace_dir=None):
+        if backend not in ('native','reference'):raise ValueError('unknown backend')
+        self.identity_snapshot=None
+        self.trace_dir=Path(trace_dir) if trace_dir else None
+        self.rows=dict(rows);self.usable=tuple(t for t in TASKS if self.rows[t].usable)
+        if not self.usable:raise ValueError('INVALID: zero usable tasks')
+        self.library=library or Library();self.backend=backend
+        self.execution,self.scope,self.arm,self.k=execution,scope,arm,k
+        self.episodes=self.copies=0;self.instances=[]
+        self.lib=None
+        self.donors={r['recipient']:r['donor'] for r in donor_entries()}
+        self.donor_cache={}
+
+    def require(self):
+        if self.execution is None:raise PermissionError('evaluator has no execution grant')
+        self.execution.require(self.scope)
+        if self.identity_snapshot is None:self.identity_snapshot=self.execution.snapshot(self.scope)
+
+    def capture(self,task,episode):
+        """Capture open-loop donor drives on its own bindings; recipient truth is unused."""
+        self.require();key=(task,episode)
+        if key not in self.donor_cache:
+            schedule=[]
+            with World(task,episode,'validation',library=self.library) as world:
+                while not world.observe().done:
+                    obs=world.observe();step=len(schedule);ds=bindings(task,obs,permutation(episode),step*.1)
+                    schedule.append([[d.id,d.x,d.y,d.phase-math.pi*step*.1,d.rate,d.strength,d.width,d.reach] for d in ds])
+                    from .rev7_protocol import decode
+                    world.step(decode(task,obs,0.,0.,step*.1))
+            if self.scope=='fixtures':self.donor_cache[key]=schedule
+            else:return schedule
+        return self.donor_cache[key]
+
+    def episode(self,value,task,episode,*,mode='intact',donor=None,carrier_offset=0.):
+        self.require()
+        if mode not in ('intact','donor','output_channel','receiver','default','random','site0','oracle','single_oscillator','sample_and_hold','input_phasor','k_zero','fixed_structure','site_body_off'):raise ValueError('unknown intervention')
+        comparator=mode in ('default','random','site0','oracle','single_oscillator','sample_and_hold','input_phasor')
+        if mode in ('input_phasor','site_body_off') and task!='perceive':raise ValueError('perceive-only comparator')
+        if mode in ('single_oscillator','sample_and_hold') and task!='remember_static':raise ValueError('memory-only comparator')
+        state=dict(value,members=[]) if comparator else value
+        medium=single_oscillator(episode,carrier_offset,self.backend) if mode=='single_oscillator' else copy_template(state,carrier_offset,backend=self.backend)
+        if mode in ('k_zero','fixed_structure','site_body_off'):medium.native.comparator(mode)
+        instance=dict(instance_id=self.copies,type_id=template_hash(value),task=task,world_episode=episode,carrier_offset=carrier_offset,mode=mode)
+        self.instances.append(instance);self.copies+=1
+        try:
+            outputs=[e.id for e in medium.native.elements if medium.role(e.id)=='output']
+            if mode=='output_channel':medium.native.lesions(outputs)
+            if mode=='receiver':
+                ordinary=[e.id for e in medium.native.elements if medium.role(e.id)=='element']
+                if len(ordinary)<len(outputs):
+                    instance['not_run']='insufficient non-output receiver candidates'
+                    return dict(status='not_run',reason=instance['not_run'],score=None,decisions=[])
+                rng=generator(f'lesion/{self.arm}/{self.k}/{episode}')
+                selected=[int(v) for v in rng.choice(ordinary,size=len(outputs),replace=False)]
+                medium.native.lesions(selected);instance['receivers']=selected
+            schedule=None
+            if mode=='donor':
+                donor=self.donors.get(episode) if donor is None else donor
+                if donor is None:raise ValueError('missing registered donor')
+                schedule=[replay_on_clock(row,carrier_offset/math.pi+j*.1) for j,row in enumerate(self.capture(task,donor))]
+                instance['donor_episode']=donor
+            decisions=[]
+            with ExitStack() as stack:
+                world=stack.enter_context(World(task,episode,'validation',library=self.library))
+                policy=stack.enter_context(Policy(task,seed(f'random_policy/{task}/{episode}'),'random','validation',library=self.library)) if mode=='random' else None
+                held=0.;oscillator=None
+                if mode=='single_oscillator':oscillator=medium.native.elements[0].id
+                while not world.observe().done:
+                    obs=world.observe();j=len(decisions)
+                    ds=bindings(task,obs,permutation(episode),medium.time) if schedule is None else schedule[j]
+                    diag=medium.integrate(ds)
+                    if mode in ('single_oscillator','sample_and_hold'):
+                        from .rev7_protocol import decode
+                        active=[d for d in ds if d.strength>0]
+                        if active:held=active[0].phase-math.pi*(medium.time-.1)
+                        phase=medium.native.elements[0].phase if oscillator is not None else math.pi*medium.time+held
+                        baseline_action=decode(task,obs,1.,phase,medium.time)
+                    chosen=input_phasor(obs,medium.drives,medium.time) if mode=='input_phasor' else baseline_action if mode in ('single_oscillator','sample_and_hold') else policy.action(obs) if policy else Action() if mode=='default' else relay(task,obs,medium.drives,medium.time,mode) if mode in ('site0','oracle') else action(task,obs,medium.native,medium.time)
+                    # Default choose uses the lowest live id (same abstention decoder).
+                    if mode=='default' and task=='choose':
+                        from .rev7_protocol import decode
+                        chosen=decode(task,obs,0,0,medium.time)
+                    decisions.append(dict(angle=chosen.angle,magnitude=chosen.magnitude,choice=chosen.choice,has_output=bool(medium.influence().outputs) or mode in ('single_oscillator','sample_and_hold','site0','oracle','input_phasor'),paths=diag['paths'],exposure=diag['exposure'],drives=[[getattr(d,f) for f,_ in d._fields_] for d in ds],motion_counts=diag['motion_counts'],motion_neighbors=diag['motion_neighbors'],excursion=diag['excursion']))
+                    world.step(chosen)
+                score=world.score();raw=oriented(task,score)
+                self.episodes+=1
+                from .rev7_reporting import memory_windows,INTERPRETATION
+                return dict(memory_windows=memory_windows(decisions,carrier_offset) if task=='remember_static' else None,interpretation=INTERPRETATION,status='evaluated',score=self.rows[task].normalize(raw),raw_score=raw,
+                            distance_error=score.distance_error,decisions=decisions,instance=instance)
+        finally:medium.close()
+
+    def evaluate(self,value,carrier_offset=0.):
+        # Snapshot G1c/G5 use the same fresh revision-6 panel with no interventions.
+        return {t:float(np.mean([self.episode(value,t,e,carrier_offset=carrier_offset)['score'] for e in range(10000512,10000640)])) for t in self.usable}
+
+    def panel(self,value):
+        result={}
+        for task in self.usable:
+            modes=evaluation_modes(task)
+            scores={mode:[] for mode in modes}
+            if self.trace_dir:
+                from .rev6_trace import Chunks
+                records={mode:Chunks(self.trace_dir/task/mode) for mode in scores}
+            else:records={mode:[] for mode in scores}
+            for e in range(10000512,10000640):
+                for mode in scores:
+                    row=self.episode(value,task,e,mode=mode)
+                    records[mode].append(row)
+                    if row['status']=='evaluated':scores[mode].append(row['score'])
+            intact=scores['intact'];bounds={mode:paired_bounds(intact,scores[mode],secondary=task!='perceive') for mode in ('default','random','donor','output_channel','site0','oracle')+(('single_oscillator','sample_and_hold') if task=='remember_static' else ())}
+            # Receiver lesion is descriptive; reasoned not-run never silently enters a contrast.
+            bounds['receiver']=paired_bounds(intact,scores['receiver'],secondary=task!='perceive') if len(scores['receiver'])==128 else dict(status='not_run',reason='insufficient receivers in recorded episodes')
+            stored={mode:rows.receipt() if hasattr(rows,'receipt') else rows for mode,rows in records.items()}
+            from .rev7_reporting import INTERPRETATION
+            if task=='perceive':
+                paired=[]
+                for own,off in zip(records['intact'],records['site_body_off']):
+                    paired.append(dict(episode=own['instance']['world_episode'],count_changes=[{id:off_step['motion_counts'][id]-n for id,n in own_step['motion_counts'].items()} for own_step,off_step in zip(own['decisions'],off['decisions'])]))
+                comparisons=descriptive_comparisons(task,scores);comparisons['site_body_off']['motion_count_changes']=paired
+                comparisons['site_body_off']['effect']='total removal effect, including neighbour selection and normalization'
+            else:comparisons=descriptive_comparisons(task,scores)
+            result[task]=dict(descriptive_comparators=comparisons,interpretation=INTERPRETATION,**scores,bounds=bounds,records=stored,G2_sel_label='superiority to the site-0 relay')
+        return result
