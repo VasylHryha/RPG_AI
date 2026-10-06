@@ -1,4 +1,6 @@
-# Design 0h, revision 6: an input-to-output path grown on purpose (consolidated; supersedes `DESIGN_0H_REV6_DRAFT.md` sections 2–6)
+# Design 0h, revision 6.1: an input-to-output path grown on purpose (consolidated; supersedes `DESIGN_0H_REV6_DRAFT.md` sections 2–6)
+
+**Revision 6.1** answers the second Codex review (`docs/reviews/tactical_0h_rev6_design_review_codex_r2.md`, R2-1 … R2-11). **Section 12 replaces the clauses it names and governs wherever it conflicts with sections 1–11.** Section 13 is its self-audit.
 
 **Status:** drafted by Claude for the second Codex review. Not approved, and no execution is authorized. The base is `DESIGN_0H.md` revision 5.1: every rule not changed below stays as written there. The failure report of the 5.1 run is `DESIGN_0H_REV6_DRAFT.md` section 1, as corrected by section 4 there and by section 9 here. The 5.1 verdicts and evidence are unchanged.
 
@@ -229,3 +231,201 @@ The potentially distinctive contribution is **causal, reusable geometry ↔ mode
 | C12 | No normalization ledger, step order or versioning | Sections 2 and 5; new RHS versioned (`rev6_rhs_v1`) and used in every mode | Omitted |
 | C13 | No stop rows or fixtures; entropy reuse | Section 8; fresh namespaces and a fresh evaluation panel | Omitted |
 | C14 | Prose corrections; novelty | Sections 9 and 10 | Overstated |
+
+## 12. Revision 6.1 amendments (each replaces the named clause)
+
+### 12.1 B-path acceptance by directed progress (replaces section 4 "B-path", R2-1)
+
+**Fair order.** The site order at a check starts at a pointer p and wraps around. p advances by 1 at every check, whatever happens. No site waits more than 8 checks for first access.
+
+**For each active site s** without a directed path from its effective roots (12.3) to O:
+- F_s = the set forward-reachable from s's effective roots;
+- T = the set of elements that reach O, O included.
+
+**Skip codes** (logged; no birth):
+- `no_output`: T is empty (O is empty);
+- `no_root`: F_s is empty.
+
+**The deficit** δ_s = min over u ∈ F_s and v ∈ T of |x_u − x_v|: the Euclidean gap between what the site reaches and what reaches the output.
+
+**Candidates:**
+- The (a, b) pairs, a ∈ F_s and b ∈ T, are tried in increasing |a − b|, ties by lowest ids, up to 8 pairs.
+- For each pair, up to 13 placements are tried: on the segment from a to b at distance r* from a, then rotated ±15°, ±30° … ±90°.
+
+**Trial.** Each placement is tested on the **post-insertion state**: the newborn is added, and every neighbour list (k ≤ 8, r < 3) is recomputed from current positions. It is accepted only if **all four** hold:
+1. a is in the newborn's neighbour list, so a → newborn is a real edge and the newborn is in F_s;
+2. no site that had a directed path to O before the trial loses it;
+3. δ_s strictly decreases, **or** s now has a directed path to O;
+4. the clearance is ≥ 0.05 m.u.
+
+**Outcome:**
+- The first accepted placement is born, with phase θ_a and the normal newborn contract.
+- If every candidate fails, the site is logged `exhausted`, with the failure counts per condition.
+- Pairs closer than r* are not skipped; they are tried like any other (the old `saturated` stop is removed).
+
+At most 2 B-path births happen per check.
+
+### 12.2 Bandwidth is a hypothesis (replaces the "answers C3" sentence in section 4, R2-2)
+
+- r* = 0.556 m.u. is the in-phase **pair** equilibrium of C4. Its link weight is 0.73 before division by the receiver's neighbour count: about 0.09 rad/s with 8 neighbours, a local time scale of about 11 s.
+- Whether a chain carries a changing input within a task interval is **a hypothesis tested by F1** (12.7), not a property claimed.
+- A weak but connected path triggers no growth. It shows up as an F1/F5 failure or a G2 failure.
+
+### 12.3 Roles, measurements and the template (replaces base section 7's member schema and section 3's role sentences, R2-3, R2-4)
+
+**Role by measurement:**
+
+| Measurement | Ordinary element | Output member |
+|---|---|---|
+| Site phase drive | g_i · k_s · K_d (base) | **0** (the mask) |
+| Sensor partners: eligibility, PLV, P_i, e_i | base | **none**: the mask applies to these histories too; P_i is undefined and e_i = 0 |
+| Lock L(i) and D1 | base, over sensor and C4 partners | C4 neighbours only |
+| Coverage of a site | base | **never** counts |
+| Effective root | k_s > 0, K_d > 0 **and g_i > 0** | never |
+| Geometric exposure (diagnostic) | recorded | recorded: the time within any site's reach, kept apart from the mask |
+
+**Template schema `rev6_template_v1`:**
+- per member [rel x, rel y, phase offset, ω, g, **role**], with role ∈ {"element", "output"};
+- the binding rule;
+- the version identifiers `rev6_rhs_v1`, `rev6_eval_v1` and `rev6_template_v1`.
+
+The content hash covers all of these, so two media that differ only in roles hash differently.
+
+**Role preservation.**
+- Roles are copied through extraction, reindexing, carrier shifts, recovery clones and evaluation copies. They are **never inferred from position.**
+- Frozen evaluation copies keep the base rule: histories and timers are inactive, and growth and plasticity are off. Live clones (recovery futures) copy histories and timers.
+
+**Implementation checks (later, authorized batch):**
+- a round trip;
+- a role-only hash difference;
+- an old-template identity regression, with 5.1 templates loading unchanged under their own version.
+
+### 12.4 The output is one oscillator (replaces section 3's output sentences and section 4's B-out timer, R2-5)
+
+- **O is intentionally a single output oscillator,** as in oscillatory-network read-outs. B-out fires at a check exactly when O is empty, with no timer. The cap is 1.
+- C = 1 whenever O exists. So the perceive magnitude is 0 and move's magnitude is 1 by the inherited action table.
+- **Perceive's primary score is angular** (base). The distance error is reported, and no distance perception is claimed.
+
+### 12.5 Donor inference and bounds (replaces section 7's donor map and estimator details, R2-6)
+
+**Panels:**
+- recipients: world validation episodes 512–639 (local j = 0 … 127);
+- **donors: a disjoint panel, episodes 640–767.** Recipient j gets donor 640 + π(j), with π a fixed permutation drawn now from the `rev6_donor` entropy.
+
+Every donor is used once and is independent of the recipients, so the 128 differences are independent paired draws and the 127 df paired t applies.
+
+**The donor drive** is replayed relative to the recipient's carrier clock: ψ = φ(t) + α_donor(t), with the donor's k_s(t) and slot permutation.
+
+**Bounds**, with d̄ and s_d over the 128 differences:
+- lower = d̄ − t_{0.95,127} · s_d / √128;
+- upper = d̄ + t_{0.95,127} · s_d / √128.
+
+**Dispositions:**
+- zero variance: a positive constant counts as above 0, a negative constant as below 0, and zero as neither;
+- any non-finite value makes the seed unit INVALID.
+
+The episode bounds are conditional on a trained seed. The ≥ 6 of 8 seed rule is a development rule.
+
+### 12.6 G2: the output-channel necessity test, without a selection claim (replaces section 7's G2 and its scope sentence, R2-7, R2-8)
+
+**The claim:** input-dependent angular response through the grown output channel. **Selection among inputs is not claimed.**
+
+**Task use in a seed (perceive) requires all four** lower bounds > 0:
+1. intact − default;
+2. intact − random;
+3. intact − donor input;
+4. **intact − output-channel lesion**, where all C4 coupling into O is zeroed at every RK4 stage for the whole episode.
+
+Plasticity and growth are off in evaluation (base), and roles are preserved, so this lesion removes the only route by which input can reach the output.
+
+**G2:** PASS if task use holds in ≥ 6 of 8 seeds, FAIL if ≤ 2, otherwise INCONCLUSIVE. INVALID comes first.
+
+**Reported, descriptive only:**
+- **G2-sel:** intact − the fixed-site relay of physical site 0, which outputs that site's phase while it is active and the default angle 0 otherwise. It is evaluated on the same panel, not assumed. A seed whose lower bound > 0 here is reported as showing selection beyond a fixed relay.
+- The strongest-site oracle relay.
+- A destructive receiver lesion: the incoming coupling of an equal number of random non-output nodes, chosen without replacement at episode start from `rev6_eval` and held for the episode.
+
+### 12.7 Fixtures, frozen now (replaces section 8's fixture list; all run under `rev6_fixture`, all owner-gated)
+
+**F1, chains:**
+- Pure chains of 1, 3 and 5 links at r*, from a site to O. Each receiver has only its predecessor as a neighbour. ω = π for all members, with zero detuning, plus a descriptive ±0.1π detuning case.
+- The site angle steps by π/2 at t = 8 s.
+- **PASS:** for 1 and 3 links, the output angle error is ≤ 0.3 rad within 8 s of the step, and the chain's directed path persists in ≥ 80% of samples over 160 s of free C4 motion. The 5-link case is descriptive.
+
+**F2, negatives:**
+- (a) Empty O gives exactly the default.
+- (b) A disconnected singleton O with θ(0) = α is run twice from the same state under two different input streams. The output phase sequences must be **bitwise identical**, with zero path exposure. A non-default constant angle is expected and allowed.
+
+**F3, mask:** the drive term of an output member at a sensor is exactly 0, bitwise, at every RK4 stage.
+
+**F4, relays and lesions:**
+- the fixed-site and oracle relays emit their declared outputs exactly;
+- the channel lesion zeroes the coupling into O at every stage.
+
+**F5, growth from the initial state:** 50 perceive episodes under the full rules. Episodes 1–40 are warm-up; 41–50 are measured. Two starts:
+- (i) the base initial state;
+- (ii) a controlled start with O present and no path, which exercises B-path.
+
+**PASS needs all of:**
+- B-out fired in (i);
+- ≥ 1 accepted B-path birth in (ii);
+- in episodes 41–50 of both, at least one site has path exposure ≥ 0.5;
+- the mean absolute wrapped difference between the own-input and donor-input output angles is ≥ 0.3 rad (input dependence).
+
+**F6, memory (descriptive):** the circular correlation between the encoded angle and the hidden-interval output angle, own input against donor input.
+
+**F7, control-M feasibility:** control M paired with F5 (i). **PASS:** zero unmatched B1 births.
+
+**F8, the memory block boundary (descriptive):** P_i, e_i and reward updates in the first memory episode after a move block, against within-block episodes (R2-11).
+
+### 12.8 The complete stop table (replaces base section 12 and section 8's table)
+
+| Yes/no question | Yes → one action | Role |
+|---|---|---|
+| Is owner approval of this revision or of its fixture run missing? | Do not execute it | implementer |
+| Does F1, F2, F3 or F4 fail its criterion? | Block F5 and the development run; report | implementer |
+| Does F5 fail its criterion? | Block the development run; write the failure report | drafter |
+| Does F7 show any unmatched birth? | Block G0 as registered; report the feasibility failure | implementer |
+| Is a source identity, unit or endpoint definition missing or mismatched? | Block execution | implementer |
+| Is a read-out INVALID? | Report it with raw evidence; do not reinterpret it | implementer |
+| Does G1 FAIL in the task-blind arm? | Write the failure report; stop development | drafter |
+| Does G0' FAIL? | Write the failure report; stop development | drafter |
+| Is G2 FAIL or INCONCLUSIVE? | Write the failure or diagnosis report; stop development | drafter |
+| Has any protocol element changed after results were seen? | Draft a new revision with fresh development seeds, and identify any reused evidence | drafter |
+| Has development stopped, and is a next step needed? | Ask the owner | owner |
+
+### 12.9 G0' window and taxonomy (refines section 7's G0', R2-10)
+
+- **The late window** is the growth checks with t ≥ 25,600 s (the last 20%), inclusive. The slope, placement rejections and protected-over-budget states are all evaluated on it.
+- **Placement-type rejections (they count against G0'):** `placement` (B1 and B-out spiral) and `exhausted` (B-path).
+- **Functional demand codes (reported, never counted):** `no_output`, `no_root` and the B-path conditions 1–3.
+- **Cost and cap rejections** are reported per role, with denominators:
+  - **opportunities:** checks where the rule's condition held;
+  - **attempts;**
+  - **accepted.**
+
+  A flat count with unmet B-out or B-path demand is reported as such. It is never called settling.
+- Statistics undefined during warm-up are reported as undefined, and excluded.
+
+### 12.10 Smaller clarifications
+
+- **Graph timestamp.** At a growth check, G_t is recomputed **fresh** from the current positions, not from the last held substep topology. It is recomputed again after every removal and birth.
+- **Memory (R2-11).** Zero memory eligibility is an **established-block** limitation. The first memory episode after a move block can inherit eligibility through carried histories; it is reported separately (F8). Histories are not reset.
+- **Control U** enqueues the intact run's **accepted B1** events.
+- **The wall** is a soft restoring term, not a hard bound. The maximum radius, penetration time and loss of sensor access are reported.
+
+## 13. Self-audit: Codex round-2 findings
+
+| # | Finding | Disposition | Cause |
+|---|---|---|---|
+| R2-1 | B-path accepted births that need not extend the directed frontier | 12.1: a post-insertion trial (a real a → newborn edge, no lost paths, δ_s decreases or the site connects), alternate pairs and directions, empty-set codes, a fair round-robin | Used a Euclidean proxy again |
+| R2-2 | r* does not answer bandwidth | 12.2: labelled a hypothesis; F1 tests it with a step input, a deadline and a tolerance | Overclaimed from a pair equilibrium |
+| R2-3 | The template lost the output role | 12.3: `rev6_template_v1` with role and version ids in the hash; role preservation everywhere | Forgot the inherited schema |
+| R2-4 | The mask was missing from eligibility and coverage | 12.3: a role-by-measurement table; effective roots need g > 0 | Under-specified |
+| R2-5 | The B-out estimator was ambiguous, and singletons cannot grow O | 12.4: O is one output oscillator, born when O is empty | Under-specified |
+| R2-6 | Reciprocal donors break 127 df | 12.5: a disjoint donor panel 640–767 with a fixed permutation; bounds and dispositions | Did not check the dependence |
+| R2-7 | Sham − lesion is not a decrement from intact | 12.6: intact − channel lesion > 0; the sham becomes descriptive | Wrong contrast |
+| R2-8 | Selection was overclaimed | 12.6: the claim is narrowed to input-dependent response; G2-sel against a fixed relay is descriptive | Overclaimed |
+| R2-9 | F2 contradicted the law; criteria were missing | 12.7: F2(b) bitwise input independence; numeric F1/F5 criteria; F7 and F8 added; 12.8 a complete stop table | Under-specified |
+| R2-10 | G0' window and new codes | 12.9 | Under-specified |
+| R2-11 | Memory eligibility at a block boundary | 12.10 and F8: a limitation, reported separately | Missed carried histories |
