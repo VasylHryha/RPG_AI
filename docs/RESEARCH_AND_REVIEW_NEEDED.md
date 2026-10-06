@@ -29,6 +29,8 @@ There are two test beds:
 - **0h:** the growth machinery works. 11,862 structures formed and qualified over 16 runs of 2,000 episodes, and their copies reproduce exactly.
 
   But **the medium never acted**. All growth happens at the sensor ring (radius 4), while the read-out looks only within radius 2 of the centre. No rule ever grows a path from the sensors to the read-out, so every episode abstains. The population also fills its cost budget (about 44 elements) and then just churns, covering only 6–22% of the sensor sites.
+
+  A later recheck found that nothing keeps structures in place. Locked groups drift away freely, up to 246 units from the centre, and 80% of the qualified structures (9,493 of 11,862) end up out of reach of every sensor. Only 64 perceive, 51 memory and 1 choose structure, out of the 320 scored, did better than both doing nothing and random. None did for move.
 - **0g:**
   - The oscillator controller beats the weaker ("novice") script by a wide margin, but loses to the stronger ("regular") one.
   - A simpler non-oscillating "morale" variable beats both scripts.
@@ -52,6 +54,7 @@ For each question we need:
    - central pattern generators.
 2. What read-outs work **without** a large trained output layer? Examples: phase of a designated output oscillator, synchrony between groups, winner-take-all by first-to-lock, order parameters per cluster.
 3. How do they avoid the **trivial echo**? A read-out next to a sensor just copies the input phase; we need read-outs that score only when the structure transforms the input (for example remembering, choosing, or combining two inputs).
+5. How do self-organizing oscillator or particle media keep structures **anchored** to their inputs and outputs, rather than drifting away? Cover anchoring forces, boundaries, chemotaxis-like attraction to active sites, and death on losing contact. Which of these preserve the free self-organization?
 4. In growing systems, how does the structure **reach the output**? Is there known work where growth is driven by output demand: growth cones, axon guidance analogies, activity-dependent wiring toward targets, developmental neural networks?
 
 ### B2. Networks that grow and prune units
