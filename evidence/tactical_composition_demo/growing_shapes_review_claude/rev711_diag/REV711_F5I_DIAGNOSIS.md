@@ -1,4 +1,4 @@
-DIAGNOSED (narrowed, revision 3): in the empty-start trajectory each closing link is lost because the motion law pulls the bridge tip back; no tested intervention sustained late training connectivity in both starts; the seeded trajectory is sensitive to its scaffold, but no minimal embryo is identified
+DIAGNOSED (revision 3, section 8 added): the empty start fails because the motion law pulls the bridge tip back; under C2 (a root-relative O pin, placed once 1 m.u. toward the first root) BOTH starts meet the F5 gate shape on the validated pilot assay (i: A 1.04, B 1.27, max E 0.8; ii: A 1.52, B 1.25, max E 0.7); pilot, no verdict
 
 # Why F5(i) (growth from an empty start) fails: diagnosis after revision 7.11
 
@@ -184,3 +184,51 @@ Earlier revisions changed the birth rules:
 | **R2-F2 (medium):** the root-group pilot was misreported ((ii) has 5 groups, not 1) and it bypasses feasibility for the centre and the quota | Correct counts; the admission bypass and partial groups disclosed; the causal "budget split" phrase replaced | I read event counts as groups and did not audit my wrapper's admission path |
 | **R2-F3 (medium):** the scaffold and O-swap claims were overbroad ("identified", "phase is free", "O placement ruled out") | Narrowed to tested realizations; the untested confounds listed; O placement rules kept as C2 | I generalized single realizations into necessity and exclusion claims, the round-1 error again |
 | **R2-F4 (medium):** the durations mixed first appearance, recurrence and exposure | One definition, recomputed from the stored data for every trace (`durations.txt`) | I wrote the durations from different quick queries |
+
+## 8. Separated comparison of C2 and C3, with fixed instrumentation and the F5 assay (2026-10-07, about 03:30)
+
+**Instrumentation (R2-F1 fix), `pilot_common.py`:**
+- **The recorder** is a class-level `integrate` wrapper that records only for the live medium. Clones made by qualification or recovery call the original on their own state and record nothing.
+- **Clone-isolation check:** a clone advanced by one step leaves the live clock, step index and sink unchanged. It passed in every run.
+- **Exact step count:** 160 per episode, asserted after each episode.
+- **The F5 assay:** with `PILOT_ASSAY=1`, checkpoints 40/45/50 are assayed exactly as `Harness.F5` does: the same recipient/donor pairs and the own, donor and output-channel modes. This yields A, B and E. **Descriptive, no verdict.**
+
+**Validation of the pilot assay.** The unchanged 7.11 law through `pilot_common` (`pilot_baseline.py`) reproduces the recorded fixture **exactly**:
+- (i): A 0.190, B 0.209, E 0;
+- (ii): A 1.451, B 1.303, E [0.5, 0.7, 0.8, 0, …].
+
+| Variant | Start | A | B | max E (E by site) | Late connectivity | Gate shape A ≥ 0.3, B ≥ 0.3, max E ≥ 0.5 |
+|---|---|---:|---:|---|---:|---|
+| Baseline (7.11) | (i) | 0.190 | 0.209 | 0.00 | 0.000 | no |
+| Baseline (7.11) | (ii) | 1.451 | 1.303 | 0.80 ([0.5, 0.7, 0.8, 0, 0, 0, 0, 0]) | 0.323 | yes |
+| **C2: root-relative O pin** (`pilot_c2_opin.py`) | **(i)** | **1.042** | **1.271** | **0.80** ([0, 0.7, 0.8, 0.6, 0, 0, 0, 0]) | 0.308 | **yes** |
+| **C2: root-relative O pin** | **(ii)** | **1.519** | **1.252** | **0.70** ([0.5, 0.7, 0, 0, 0, 0, 0, 0.7]) | 0.342 | **yes** |
+| C3: a single B1 root group (atomic feasibility) (`pilot_c3_rootgroup.py`) | (i) | — (not assayed) | — | — | 0.000 | — |
+| C3: a single B1 root group | (ii) | — (not assayed) | — | — | 0.453 | — |
+
+**C2's rule, as piloted:**
+- O is placed **once**, at the first growth check where an effective root exists, at **1.0 m.u. from the origin toward the lowest-id effective root**, and is then frozen.
+- B-out keeps its placement and uniqueness checks. There is no relocation.
+- In (ii) the same rule replaces the literal O: the seed is built without O, and B-out places it.
+- **Where O went:**
+  - (i): at t = 40 s, at (0.07, 1.00), toward the first root at site 2;
+  - (ii): at t = 20 s, at (0.82, −0.57), toward the lowest-id root, which was a seed element counted under an active site's reach.
+- Everything else is the 7.11 law.
+
+**What this shows (pilot evidence, no verdict):**
+- **Under C2, both starts meet the F5 gate shape on the validated pilot assay.** It is the first variant to do so.
+  - The empty start grows a strong path that the assay uses: A 1.04 and B 1.27, against 0.19 and 0.21 at baseline.
+  - The seeded start stays above the gate.
+- **C3 (a single root group) rescues neither start's empty-start problem.** It improves (ii)'s training connectivity (0.453) but leaves (i) at 0.
+
+**Limits:**
+- These are single-key pilots, with no verdict. F6–F9, control M/U and the development run are unmeasured.
+- **C2 changes the origin-pin contract** (DESIGN_0H_REV7 8.2: live runs pin O at (0, 0)) and introduces a **disclosed positional prior**: O starts 1 m.u. toward the first root, a 3-m.u. bridge instead of about 4.
+- **The comparison policies need the same rule:**
+  - control M and U must place O by the same causal rule, cost and RNG treatment;
+  - assays copy the stored pin.
+- It needs a design revision (7.12), Codex review, the owner's approval of the contract change, implementation and the registered fixtures.
+
+**Recommendation (updated):** **C2 as revision 7.12**, pending the owner's approval of the O-pin change.
+- It keeps the empty start ("from nothing"), with one disclosed positional prior.
+- A (a seeded protocol) is no longer needed for F5.
