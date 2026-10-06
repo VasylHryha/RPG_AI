@@ -1,6 +1,6 @@
-# Design 0h, revision 6.3: an input-to-output path grown on purpose (consolidated; supersedes `DESIGN_0H_REV6_DRAFT.md` sections 2–6)
+# Design 0h, revision 6.4: an input-to-output path grown on purpose (consolidated; supersedes `DESIGN_0H_REV6_DRAFT.md` sections 2–6)
 
-**Revision 6.1** answers the second Codex review (`docs/reviews/tactical_0h_rev6_design_review_codex_r2.md`, R2-1 … R2-11). **Section 12 replaces the clauses it names and governs wherever it conflicts with sections 1–11.** Section 13 is its self-audit. **Revision 6.2** answers the third review (`…_r3.md`, R3-1 … R3-6). **Section 14 governs over section 12 and over sections 1–11 wherever they conflict.** Section 15 is its self-audit. **Revision 6.3** answers the fourth review (`…_r4.md`, R4-1, R4-2): **section 16 governs over everything before it**, and section 17 is its self-audit.
+**Revision 6.1** answers the second Codex review (`docs/reviews/tactical_0h_rev6_design_review_codex_r2.md`, R2-1 … R2-11). **Section 12 replaces the clauses it names and governs wherever it conflicts with sections 1–11.** Section 13 is its self-audit. **Revision 6.2** answers the third review (`…_r3.md`, R3-1 … R3-6). **Section 14 governs over section 12 and over sections 1–11 wherever they conflict.** Section 15 is its self-audit. **Revision 6.3** answers the fourth review (`…_r4.md`, R4-1, R4-2): **section 16 governs over everything before it**, and section 17 is its self-audit. **Revision 6.4** answers the fifth review (`…_r5.md`, R5-1): section 18 governs over everything before it.
 
 **Status:** drafted by Claude for the second Codex review. Not approved, and no execution is authorized. The base is `DESIGN_0H.md` revision 5.1: every rule not changed below stays as written there. The failure report of the 5.1 run is `DESIGN_0H_REV6_DRAFT.md` section 1, as corrected by section 4 there and by section 9 here. The 5.1 verdicts and evidence are unchanged.
 
@@ -624,3 +624,51 @@ The base's stop row stays in force alongside section 14.9's integration row: the
 |---|---|---|---|
 | R4-1 | F5 and F7 arm and start state not frozen | 16.1: task-blind only; a literal (ii) table; the (i) seed key; logging; exact F1c coordinates; restore scope | Left the fixture recipe partly implicit |
 | R4-2 | Seed consumers incomplete | 16.2: a slot mapping and a consumer table with keys, APIs, lifetimes and sharing | Gave a hash formula without its consumers |
+
+## 18. Revision 6.4 amendments (R5-1 and the carried notes)
+
+### 18.1 Fixture consumers (replaces the "Fixtures F5 and F7" row of 16.2)
+
+| Fixture run | Medium initial state | Growth stream | Matched stream | Recovery master | Notes |
+|---|---|---|---|---|---|
+| F5(i), intact | `medium/F5/i` (PCG64, once) | `growth/F5/i/intact` (PCG64, once per run, in event order) | not used | `recovery/F5/i/intact` | task-blind |
+| F5(ii), intact | not used (literal start, 16.1) | `growth/F5/ii/intact` | not used | `recovery/F5/ii/intact` | task-blind |
+| F7, control M | **the same initial state as F5(i)**, drawn again from `medium/F5/i` in a separate generator instance | `growth/F5/i/M` (its own seed) | `matched/F5/i` (PCG64, once) | `recovery/F5/i/M` | paired with the F5(i) intact run, which it mirrors; task-blind |
+
+- **The assay copies** (own, donor, lesion) have growth off and consume no growth, matched or recovery stream.
+- **Random comparators** are not used in the fixtures.
+- **The descriptive receiver lesion** is not used in the fixtures.
+
+### 18.2 The recovery derivation (corrects 16.2's "Recovery kicks" API cell)
+
+The inherited recipe is kept **exactly**, as `runner/run.py` and `runner/protocol.py` implement it:
+- the generator is `numpy.random.default_rng(entropy(master, "kick:<world-step index>"))`;
+- entropy(seed, domain) = the first 8 bytes, **little-endian**, of SHA-256 of the string `"<seed>:<domain>"`, with seed in decimal;
+- the master is seed(`recovery/<…>`) from 16.2 (big-endian, as defined there).
+
+The sub-derivation is **not** "seed + check index"; that parenthetical in 16.2 is withdrawn.
+
+### 18.3 Stable names and counter units (Codex's carried notes)
+
+**B-path trial conditions** have stable names, used in every log and report:
+- `edge_a_to_new`;
+- `new_reached`;
+- `a_reached`;
+- `paths_kept`;
+- `deficit_or_connect`;
+- `clearance`.
+
+**Terminal outcomes:** `accepted`, `exhausted`, `no_output` and `no_root`.
+
+**Counter units:**
+- a **request** is one rule-and-site opportunity at a check: a B-out need, one B-path site, or one B1 site;
+- an **attempt** is one candidate placement tried;
+- an **acceptance** is one birth.
+
+G0' counts terminal requests (`placement`, `exhausted`), never attempts.
+
+### 18.4 Self-audit
+
+| # | Finding | Disposition | Cause |
+|---|---|---|---|
+| R5-1 | The fixture consumer row omitted F7-M growth and the fixture recovery masters; the recovery recipe was misdescribed | 18.1: an explicit per-fixture table; 18.2: the exact inherited call, byte order and domain string | Summarized the inherited code instead of reading it |
