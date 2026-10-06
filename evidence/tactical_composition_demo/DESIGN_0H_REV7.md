@@ -781,3 +781,18 @@ meaning a time scale of **τ_link ≤ 2 s** per edge.
 | Item | Cause |
 |---|---|
 | The fair round-robin divided the budget across unfinished bridges | Starvation was prevented without checking the budget's arithmetic for eight parallel bridges from an empty start |
+
+### 17.3 Codex 7.10 review notes (APPROVE_WITH_NOTES; applied)
+
+- **R710-1:** the allocation failure is supported, but it is not a complete causal identification.
+  - Accepted B-path births by site 0–7 were [1, 4, 3, 3, 5, 3, 4, 3].
+  - B-path terminals: 125 refused for `cost`, 37 for `quota`, 11 `no_root`.
+- **R710-2, a correction:** the quoted "1.5–2.4 m.u. short" figures are **birth placements, not final geometry.** The last accepted insertion radii by site are [2.81, 2.61, 2.05, 2.50, 2.49, 2.30, 1.75, 2.04] m.u.
+- **R710-3:** **there is no finite starvation bound.** Rotating ties prevents fixed priority among equal deficits only. A far site can be deferred indefinitely; its waiting time is reported.
+- **R710-4, the exact order:**
+  - At the start of each check, snapshot the active sites without a G_s path.
+  - Sort them by current deficit, ascending, then by (site − pointer) mod 8.
+  - Empty frontier or target sets give an infinite deficit; those sites join the rotating tie order.
+  - The pointer advances once per check.
+- **R710-5:** **no automatic PASS and no all-site claim.** max(E) ≥ 0.5 permits a single-site success. Concentrating on one bridge can meet it while leaving other sites unconnected; per-site E is reported.
+- **R710-6:** the growth of T and the shrinking of other deficits are opportunities, not invariants: insertions and motion can displace or dilute edges. `paths_kept` protects already-connected sites only.
