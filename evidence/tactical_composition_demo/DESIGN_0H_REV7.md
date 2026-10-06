@@ -955,3 +955,43 @@ meaning a time scale of **τ_link ≤ 2 s** per edge.
 | Does a check in 19.4 fail? | Fix before the fixtures; no fixture run | implementer |
 | Does F5 fail in either start under 7.12? | Block development; write a failure report | drafter |
 | Does the pin rule ever read task, score or assay information? | INVALID; fix the implementation | implementer |
+
+### 19.6 Codex 7.12 review notes (APPROVE_WITH_NOTES, `docs/reviews/tactical_0h_rev712_design_review_codex.md`; applied)
+
+19.6 overrides 19.1–19.5 where they differ.
+
+- **N1, the initially missing route, at the actual degree.**
+  - **19.2's degree-8 argument is withdrawn.** An inserted O holds at most six phase neighbours at construction.
+  - **Correct justification for the frozen literal hexagon:**
+    - the minimum seed-to-unit-circle distance is exactly 3.1 − 0.556 − 1 = 1.544 m.u.;
+    - with all six seeds held, the strong radius is √(ln(64/6)) = 1.5385, which is below 1.544;
+    - with fewer held seeds, the nearest seed is farther away, so the case is weaker (the review's analytic proof);
+    - the maximum incoming coefficient anywhere on the unit circle is 0.4917 /s, below 0.5 /s.
+  - **This concerns the construction only.** The implementer records the graph, O's held degree and the incoming coefficients **immediately after the first B-out and before B-path** in the seeded fixture.
+    - In the C2 pilot, all active sites had `missing_path_before = true` at that check.
+- **N2, the information prior and the estimand.**
+  - The pin is chosen by **the same state-dependent rule for all tasks, with no direct task-label, score or assay lookup**.
+  - **Disclosed indirect channels:** effective roots depend on active drives, gains and B1 placement, which depend on task observations; reward-arm gains can depend on earlier scores. So the pin is selected from task-conditioned medium state. It is an adaptive infrastructure prior, and not an autonomous choice of a useful output site.
+  - The rule was chosen using engineering outcomes (§19.3 already discloses this).
+  - **Intact, M and U pins are downstream outcomes of the same rule.** They are mediators, not confounds.
+  - **G0 estimates the total policy effect,** including the induced output initialization. It does not identify an effect at fixed output geometry.
+  - The selected root, the pin, the output timing and the phase/RNG branch are reported per run.
+  - **19.5's last stop row now reads:** "Does the pin rule read direct task labels, scores, assay results or any undeclared input? → INVALID; fix (implementer)."
+- **N3, the pilot assay.**
+  - It is "the same A/B/E estimator, with exact baseline metric reproduction" at the stored floats (for example (ii): A 1.4505015648748454). It is not complete Harness.F5 equivalence.
+  - It lacked F5's 160-decision assertion per stream. Future pilot instrumentation adds it, and keeps per-pair and per-checkpoint summaries.
+  - **The formal fixtures use Harness.F5.**
+- **N4, implementation checks and scheduling.**
+  - **19.4 adds:**
+    - a populated-state clone check with native-byte and Python/RNG fingerprints;
+    - lowest-id versus nearest root;
+    - inactive, silent, zero-gain and O exclusions;
+    - a rejected candidate followed by a changed root selection;
+    - root death after placement;
+    - a pin-copy mismatch;
+    - the cap/cost exemption;
+    - recording the selected root and the unrounded pin at insertion, and the rejected candidate on a refusal.
+  - **19.2's development wording is corrected:** O is placed at **"the first admissible growth check with an effective root"**, not "in the first training episode where a root exists". In the empty start, B1 creates the first root after that check's B-out, so O is born at the next check.
+- **N5, earlier dispositions.**
+  - 19.1's "passed two Codex owner rechecks" is corrected to: both rechecks returned **CHANGES_REQUIRED**, and revision 3 records the fixes. Neither approved revision 3.
+  - **C3** is reported only as training connectivity, not as an F5 failure or an exclusion of every group policy.
