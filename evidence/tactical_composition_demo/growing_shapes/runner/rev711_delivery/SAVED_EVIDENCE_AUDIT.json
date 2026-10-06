@@ -1,0 +1,95 @@
+{
+  "F5i": {
+    "A": 0.09795187509712983,
+    "B": 0.11960091748162212,
+    "B1_births": 15,
+    "B_path_births_by_site": [
+      2,
+      8,
+      7,
+      7,
+      5,
+      0,
+      1,
+      2
+    ],
+    "B_path_terminals": {
+      "accepted": 32,
+      "cost": 102,
+      "no_root": 16,
+      "quota": 48
+    },
+    "E": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "first_B_path_cost_refusal_time": 340.0,
+    "growth_snapshots": [
+      {
+        "cost": 59.3,
+        "count": 42,
+        "time": 300.0
+      },
+      {
+        "cost": 63.400000000000006,
+        "count": 45,
+        "time": 320.0
+      },
+      {
+        "cost": 63.1,
+        "count": 45,
+        "time": 340.0
+      },
+      {
+        "cost": 63.3,
+        "count": 45,
+        "time": 800.0
+      }
+    ],
+    "later_B_path_birth_times": [
+      320.0,
+      320.0,
+      580.0,
+      600.0
+    ],
+    "nearest_accepted_insertion": {
+      "post_birth_cost": 59.3,
+      "radius": 1.3271390591441024,
+      "site": 1,
+      "time": 300.0
+    },
+    "verdict": "FAIL"
+  },
+  "F5ii": {
+    "A": 1.1382729819631165,
+    "B": 0.9752452351518366,
+    "E": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.454375,
+      0.32104166666666667,
+      0.3877083333333333,
+      0.0
+    ],
+    "verdict": "FAIL"
+  },
+  "design_sha256": "2295770f92927db97c3ce52994a4c8cd664bd2490df351c9708d4856313cc33b",
+  "execution": "NOT_RUN",
+  "method": "Read-only saved JSON arithmetic and text inspection; no project modules imported or executed",
+  "no_verdict_reanalysis": true,
+  "stored_inputs_sha256": {
+    "evidence/tactical_composition_demo/growing_shapes/runner/rev710_fixture_run_20261006/F5.json.gz": "9c9483195aa9a54eb9229bdf0a6de9be82f7e9c60f6c6b9dff980d5e4ea833b5",
+    "evidence/tactical_composition_demo/growing_shapes/runner/rev710_fixture_run_20261006/F5i_BIRTH_EVENTS.json": "d51f546abb7d4db036d7b0aed0396bf7e14340ce0c3850c11edc3beb707064d0",
+    "evidence/tactical_composition_demo/growing_shapes/runner/rev710_fixture_run_20261006/F5ii_BIRTH_EVENTS.json": "f36c2dd790e65761750e5904a97046f905f4ca14e21694e9b0af70394f7da5b7",
+    "evidence/tactical_composition_demo/growing_shapes/runner/rev710_fixture_run_20261006/MEASURED_SUMMARY.json": "0469d6e9e0002a4e21f2aaf1ab8d199138dc1a188d40ee5044270a4c927e6955",
+    "evidence/tactical_composition_demo/growing_shapes/runner/rev710_fixture_run_20261006/MEASUREMENT_RECEIPT.json": "5ea3dbecd601d1ef2a4fc179bce66445b4525070f74a906d2b234bbf03eb012a"
+  }
+}
