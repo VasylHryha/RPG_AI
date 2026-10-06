@@ -55,7 +55,7 @@
 | # | Step | Status | Gate |
 |---|---|---|---|
 | C1 | Port, parallel and recheck | DONE (`evidence/c6_option_b/`) | — |
-| C2 | Official quiet-machine timing (is each world 360 s or less?) | SCHEDULED 2026-10-07 01:30 (`scratchpad/c6night.sh`; the stopped attempt is kept in `evidence/c6_option_b/quiet_session_stopped_20261006_0915/`) | the owner may cancel |
+| C2 | Official quiet-machine timing (is each world 360 s or less?) | SCHEDULED: starts automatically **as soon as the 0g v4 development run finishes** (01:30 at the latest; `scratchpad/c6soon.sh`; the owner asked for earlier; the stopped attempt is kept in `evidence/c6_option_b/quiet_session_stopped_20261006_0915/`) | the owner may cancel |
 | C3 | If over 360 s: the owner decides the resource rule | — | **[OWNER]** |
 
 ## Decisions: taken by the drafter from the goal (the owner may overrule any of them)
@@ -65,8 +65,8 @@
    - Register only after a development version beats regular (v4 or v5).
    - The registration will then include **morale as a separately labelled comparator**, since it is the strongest simple controller. The resonator must be honest about it, not hide it.
    - The registered run itself still needs the owner's approval (AGENTS.md).
-2. **C6 timing: scheduled automatically for tonight, 01:30 (2026-10-07),** under `caffeinate`. The batch waits up to 60 minutes for low load and records the conditions honestly. To cancel, say "no C6 tonight". Script: `scratchpad/c6night.sh`.
-3. **Backup of the raw files outside git: not needed for progress.**
+2. **C6 timing: starts automatically as soon as the 0g v4 run finishes** (01:30 at the latest), under `caffeinate`. The laptop should be kept light for the hour or two it takes. The batch waits up to 60 minutes for low load and records the conditions honestly. To cancel, say "no C6 tonight". Script: `scratchpad/c6night.sh`.
+3. **Backup of the raw files outside git: not needed for progress (the owner agreed: keep them on the laptop for now).**
    - Almost all of them can be regenerated: deterministic code plus recorded seeds.
    - Their hashes and every report are in git.
    - They stay on the laptop. Deleting them later needs the owner's OK.
