@@ -403,6 +403,11 @@ def test_construct_only_dry_check_never_integrates(monkeypatch,tmp_path):
     assert all(json.loads(json.dumps(result['recipes'][name]))==recipe for name,recipe in committed['recipes'].items() if name not in ('F3','F6'))
     assert result['recipes']['F3']['members'][0][0]!=result['recipes']['F3']['members'][1][0]
     assert 'F9' in result['recipes']
+    current=json.loads((HERE/'REV65_19_9_CONSTRUCT_ONLY.json').read_text())
+    assert current['label']=='19.9 and D1-D3 integration; construction only'
+    assert json.loads(json.dumps(result))=={k:current[k] for k in result}
+    assert result['recipes']['F6']['copies']==140
+    assert result['recipes']['F6']['baseline_unique_recipient_episodes']==10
 
 
 def test_all_preexisting_tracked_growing_shapes_bytes_preserved():
@@ -489,18 +494,19 @@ def test_geometric_trial_matches_native_clone_random_states(monkeypatch):
         es,ds=geometry(m.native,[]);assert geometric_graph(es,ds)==m.influence()
 
 
-@pytest.mark.parametrize('mode',['intact','donor','output_channel','receiver','site0','oracle','empty'])
+@pytest.mark.parametrize('mode',['intact','donor','output_channel','receiver','site0','oracle','empty','input_phasor','k_zero','fixed_structure'])
 def test_gp_assay_native_reference_tiny_synthetic(mode):
     from evidence.tactical_composition_demo.growing_shapes.world.world import Observation,Enemy
     with medium() as reference:
         reference.frozen=True
         reference.native.start_clock(1.);reference.step_index=10
-        if mode!='empty':
+        if mode not in ('empty','input_phasor'):
             reference.add((3.2,0),.1,gain=1.);reference.add((2.65,0),-.2,role='output')
         # Nonzero carrier catches start/end clock and donor off-by-one errors.
         reference.frames.clear();reference.record()
         if mode=='output_channel':reference.native.lesions([1])
         if mode=='receiver':reference.native.lesions([0])
+        if mode in ('k_zero','fixed_structure'):reference.native.comparator(mode)
         native=reference.clone();observations=[];assignment=list(range(8));schedule=None
         for j in range(3):
             obs=Observation(task=0,step=j,horizon=3,enemy_count=2)
@@ -509,12 +515,13 @@ def test_gp_assay_native_reference_tiny_synthetic(mode):
             observations.append(obs)
         if mode=='donor':schedule=[replay_on_clock([[2,0,4,1.1,math.pi,2,1,3]],1+j*.1) for j in range(3)]
         try:
-            got=bridge.assay_synthetic(native,observations,assignment,schedule=schedule,relay={'site0':1,'oracle':2}.get(mode,0))
+            got=bridge.assay_synthetic(native,observations,assignment,schedule=schedule,relay={'site0':1,'oracle':2,'input_phasor':3}.get(mode,0))
             for j,(obs,row) in enumerate(zip(observations,got['decisions'])):
                 from evidence.tactical_composition_demo.growing_shapes.runner.rev6_protocol import bindings,action
                 ds=bindings('perceive',obs,assignment,reference.time) if schedule is None else schedule[j]
                 diag=reference.integrate(ds)
-                chosen=relay('perceive',obs,reference.drives,reference.time,mode) if mode in ('site0','oracle') else action('perceive',obs,reference.native,reference.time)
+                from evidence.tactical_composition_demo.growing_shapes.runner.rev6_protocol import input_phasor
+                chosen=input_phasor(obs,reference.drives,reference.time) if mode=='input_phasor' else relay('perceive',obs,reference.drives,reference.time,mode) if mode in ('site0','oracle') else action('perceive',obs,reference.native,reference.time)
                 assert row['angle']==pytest.approx(chosen.angle,abs=1e-12)
                 assert row['magnitude']==chosen.magnitude and row['choice']==chosen.choice
                 assert row['paths']==diag['paths']
@@ -690,3 +697,166 @@ def test_geometric_admission_cost_matches_native_clone():
                         expected='cost' if branch.cost(1.,.1)['total']>64 else None
                     finally:branch.close()
                 assert m.feasible(point,0.)==expected
+
+
+def test_19_9_K_zero_all_RK_stages_drive_motion_and_output_retained():
+    with medium() as original:
+        original.frozen=True
+        original.add((3.2,0),.1,gain=.8)
+        original.add((2.65,.1),1.2,gain=.4,role='output')
+        ablated=original.clone()
+        try:
+            ablated.native.comparator('k_zero')
+            before=[e.as_dict() for e in ablated.native.elements]
+            ds=[drive(phase=1.7)]
+            for _ in range(5):
+                for m in (original,ablated):m.native.set_drives(ds);m.native.step(.02)
+                assert all(row[1]==0. for stage in ablated.native.stage_terms() for row in stage)
+                assert any(row[0]!=0. for stage in ablated.native.stage_terms() for row in stage)
+                assert any(row[1]!=0. for stage in original.native.stage_terms() for row in stage)
+            after=ablated.native.elements
+            assert len(after)==len(before)==2 and not any(e.silent for e in after)
+            assert after[0].x!=before[0]['x'] # motion remains on
+            assert after[1].phase==pytest.approx(before[1]['phase']+math.pi*.1,abs=1e-14)
+            assert original.native.elements[1].phase!=pytest.approx(after[1].phase,abs=1e-6)
+            assert ablated.native.output()[0]==1. and ablated.role(after[1].id)=='output'
+            assert ablated.native.gain(after[0].id)==.8
+        finally:ablated.close()
+
+
+def test_19_9_fixed_structure_freezes_wall_and_pair_motion_but_keeps_transfer():
+    with medium() as original:
+        original.frozen=True
+        original.add((6.2,0),.1,gain=.8)
+        original.add((5.65,.1),1.2,gain=.4,role='output')
+        fixed=original.clone()
+        try:
+            fixed.native.comparator('fixed_structure')
+            before=[(e.x,e.y,e.phase) for e in fixed.native.elements]
+            for _ in range(3):
+                for m in (original,fixed):m.integrate([drive(x=6.2,phase=1.7)])
+                assert [(e.x,e.y) for e in fixed.native.elements]==[row[:2] for row in before]
+                assert any(row[1]!=0. for stage in fixed.native.stage_terms() for row in stage)
+            assert len(fixed.native)==2 and fixed.frozen
+            assert fixed.native.elements[1].phase!=pytest.approx(before[1][2]+math.pi*.3,abs=1e-6)
+            assert original.native.elements[0].x!=before[0][0]
+            assert fixed.native.output()[0]==1.
+        finally:fixed.close()
+
+
+def test_19_9_phasor_weighted_inputs_no_medium_and_inactive_sites():
+    from evidence.tactical_composition_demo.growing_shapes.runner.rev6_protocol import input_phasor
+    from evidence.tactical_composition_demo.growing_shapes.world.world import Observation
+    obs=Observation(task=0);time=1.1
+    ds=[Drive(0,4,0,math.pi*time,math.pi,1,1,3),
+        Drive(2,0,4,math.pi*time+math.pi/2,math.pi,2,1,3),
+        Drive(3,0,-4,math.pi*time-1,math.pi,0,1,3)]
+    assert input_phasor(obs,ds,time).angle==pytest.approx(math.atan2(2.,1.),abs=1e-14)
+    assert input_phasor(obs,[],time).angle==pytest.approx(0.)
+    # Relative input angles are invariant under the pi carrier-offset branch.
+    for d in ds:d.phase+=math.pi
+    assert input_phasor(obs,ds,time+1).angle==pytest.approx(math.atan2(2.,1.),abs=1e-14)
+
+
+@pytest.mark.parametrize('mode,task',[('input_phasor','perceive')]+[(m,t) for m in ('k_zero','fixed_structure') for t in ('perceive','move','choose','remember_static')])
+def test_19_9_evaluator_native_reference_with_fake_world(monkeypatch,mode,task):
+    from types import SimpleNamespace
+    from evidence.tactical_composition_demo.growing_shapes.runner import rev6_evaluator as module
+    from evidence.tactical_composition_demo.growing_shapes.world.world import Observation,Enemy
+    task_id={'perceive':0,'move':1,'choose':3,'remember_static':7}[task]
+    observations=[]
+    for j in range(3):
+        o=Observation(task=task_id,step=j,horizon=3,enemy_count=2,target_angle=.4,target_distance=4.,desired_range=2.)
+        o.enemies[0]=Enemy(id=0,visible=task=='choose' or j!=2,angle=.3,distance=1,hp=100)
+        o.enemies[1]=Enemy(id=1,visible=task=='choose' or j!=2,angle=-.8,distance=2,hp=100)
+        observations.append(o)
+    class FakeWorld:
+        def __init__(self,*a,**kw):self.index=0
+        def __enter__(self):return self
+        def __exit__(self,*a):pass
+        def observe(self):return observations[self.index] if self.index<3 else Observation(task=task_id,done=1)
+        def step(self,a):self.index+=1
+        def score(self):return SimpleNamespace(angular_error=0.,distance_error=0.,goal_error=0.,correct_choice_rate=1.)
+    def synthetic(m,w,assignment,**kw):
+        if mode=='input_phasor':assert len(m.native)==0
+        return bridge.assay_synthetic(m,observations,assignment,**kw)
+    monkeypatch.setattr(module,'World',FakeWorld);monkeypatch.setattr(bridge,'assay',synthetic)
+    rows,_=reused_calibration()
+    with medium() as m:
+        m.add((3.2,0),.1,gain=.8);m.add((2.65,0),1.2,role='output')
+        value=template(m.native,[e.id for e in m.native.elements],0.)
+    result=[]
+    for backend in ('native','reference'):
+        evaluator=Evaluator(rows,backend=backend);monkeypatch.setattr(evaluator,'require',lambda:None)
+        result.append(evaluator.episode(value,task,713,mode=mode,carrier_offset=math.pi))
+    from evidence.tactical_composition_demo.growing_shapes.runner.rev6_fixtures import assay_parity
+    assert assay_parity(*result)['status']=='MATCH'
+    assert result[0]['score']==result[1]['score']
+    assert value['members'][0][0]==3.2 # disposable copies did not change the input
+
+
+def test_19_9_reporting_same_estimator_and_verdict_isolation():
+    from evidence.tactical_composition_demo.growing_shapes.runner.rev6_evaluator import descriptive_comparisons,descriptive_modes,evaluation_modes
+    for task in ('perceive','move','choose','remember_static'):
+        scores={'intact':np.linspace(.5,1.,128)}
+        scores.update({mode:np.linspace(0.,.6,128) for mode in descriptive_modes(task)})
+        rows=descriptive_comparisons(task,scores)
+        assert set(rows)==set(descriptive_modes(task))<=set(evaluation_modes(task))
+        for mode,row in rows.items():
+            expected=paired_bounds(scores['intact'],scores[mode],secondary=task!='perceive')
+            assert row['estimate']['lower']==expected['lower'] and row['estimate']['upper']==expected['upper']
+            assert row['status']=='DESCRIPTIVE' and not row['used_in_verdict']
+            assert not {'verdict','positive','negative'}&set(row['estimate'])
+        assert ('input_phasor' in rows)==(task=='perceive')
+    units=[passing_unit() for _ in range(8)];before=aggregate(units)
+    for unit in units:unit['descriptive_comparators']={'input_phasor':{'estimate_status':'INVALID'}}
+    assert aggregate(units)==before
+
+
+def test_D2_F6_baselines_once_per_unique_episode_and_minimum_five():
+    from evidence.tactical_composition_demo.growing_shapes.runner.rev6_fixtures import f6_baselines,F6_PAIRS
+    class FakeEvaluator:
+        def __init__(self):self.calls=[]
+        def episode(self,value,task,episode,*,mode):
+            self.calls.append((episode,mode))
+            return dict(status='evaluated',instance=dict(world_episode=episode),decisions=[dict(angle=.1,has_output=True)]*160)
+    fake=FakeEvaluator();rows=f6_baselines(fake,{})
+    assert len(fake.calls)==20 and len(set(fake.calls))==20
+    assert {e for e,_ in fake.calls}=={e for e,_ in F6_PAIRS}
+    repeated=[rows['single_oscillator'][0]]*6
+    result=memory_summary([.1]*6,repeated,unique_episodes=True)
+    assert result['defined_pairs']==result['unique_episode_count']==1
+    assert result['correlation'] is None and result['reason']=='fewer_than_five_defined_pairs'
+    angles=[.1,.2,.3,.4,.5]
+    unique=[dict(instance=dict(world_episode=i),decisions=[dict(angle=a,has_output=True)]*160) for i,a in enumerate(angles)]
+    result=memory_summary(angles,unique,unique_episodes=True)
+    assert result['defined_pairs']==result['unique_episode_count']==5 and result['correlation']==pytest.approx(1.)
+    unique[-1]['decisions']=[dict(angle=.5,has_output=False)]*160
+    assert memory_summary(angles,unique,unique_episodes=True)['defined_pairs']==4
+    assert memory_summary(angles,unique,unique_episodes=True)['correlation'] is None
+
+
+D1_INPUTS=(
+ 'evidence/tactical_composition_demo/DESIGN_0H.md',
+ 'evidence/tactical_composition_demo/growing_shapes/runner/development_20261006/CALIBRATION.json',
+ 'evidence/tactical_composition_demo/growing_shapes/medium/design_0h.py',
+ 'evidence/tactical_composition_demo/growing_shapes/medium/medium.py',
+ 'evidence/tactical_composition_demo/growing_shapes/runner/protocol.py',
+ 'evidence/tactical_composition_demo/growing_shapes/runner/control.py',
+ 'evidence/tactical_composition_demo/growing_shapes/world/world.py',
+)
+
+
+@pytest.mark.parametrize('changed',D1_INPUTS)
+def test_D1_execution_identity_inherited_input_or_calibration_drift(monkeypatch,tmp_path,changed):
+    from evidence.tactical_composition_demo.growing_shapes.runner import rev6_identity as identity
+    snapshot=identity.assert_inputs();assert set(D1_INPUTS)<=set(snapshot['sha256'])
+    design='evidence/tactical_composition_demo/DESIGN_0H_REV6.md';names=(*D1_INPUTS,design)
+    hashes={}
+    for name in names:
+        source=identity.ROOT/name;dest=tmp_path/name;dest.parent.mkdir(parents=True,exist_ok=True)
+        dest.write_bytes(source.read_bytes());hashes[name]=hashlib.sha256(dest.read_bytes()).hexdigest()
+    pin=tmp_path/'pin';pin.mkdir();(pin/'REV65_SOURCE_IDENTITY.json').write_text(json.dumps({'sha256':hashes}))
+    monkeypatch.setattr(identity,'HERE',pin);monkeypatch.setattr(identity,'ROOT',tmp_path)
+    identity.assert_inputs();(tmp_path/changed).write_text('drift')
+    with pytest.raises(ValueError,match='scientific input identity'):identity.assert_inputs()

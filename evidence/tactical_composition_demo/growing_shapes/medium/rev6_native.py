@@ -27,7 +27,7 @@ def library():
     for name, args in {
         'add_role':[h,d,d,d,d,i,P(u)], 'role':[h,u,P(i)],
         'cut':[h,u,P(d),i], 'lesions':[h,P(u),i], 'output':[h,P(d)],
-        'stage_terms':[h,P(d),i],
+        'stage_terms':[h,P(d),i], 'comparator':[h,i],
     }.items():
         fn=getattr(lib,'gm_'+name);fn.restype=i;fn.argtypes=args
     return lib
@@ -61,6 +61,11 @@ class Rev6Native(Medium):
 
     def output(self):
         result=(C.c_double*2)();self._call('output',result);return tuple(result)
+
+    def comparator(self,mode):
+        if mode not in ('k_zero','fixed_structure'):raise ValueError('unknown evaluator comparator')
+        self._call('comparator',1 if mode=='k_zero' else 2)
+        if mode=='k_zero':self.params.K=0.
 
     def stage_terms(self):
         # Four RHS stages, one [drive,coupling,wall_x,wall_y] per element.

@@ -4,6 +4,10 @@ import math
 from ..medium.design_0h import wrap
 
 INTERPRETATION={
+    'section_19_9':dict(status='DESCRIPTIVE',used_in_verdict=False,
+        input_phasor='perceive: weighted input angle, C=1; failure to beat it shows no computation beyond averaging inputs',
+        k_zero='internal C4 phase coupling zero at every RK4 stage; drives, motion and readout retained',
+        fixed_structure='final copy with frozen positions and growth off; compare with normal mobile copy'),
     'choose':dict(status='SECONDARY_DESCRIPTIVE',ceiling='lossy strength encoding; identical drives can require different targets; exact general target selection impossible',claim='no target selection claim'),
     'move':dict(status='SECONDARY_DESCRIPTIVE',ceiling='singleton C=1 gives magnitude=1, including zero demand',claim='no stopping or braking claim'),
     'remember_static':dict(status='SECONDARY_DESCRIPTIVE',claim='no memory or multi-oscillator computation claim from superiority to default/random alone',clocks='visible encoding 4 s; hidden retention 12 s; no established-block B1 demand or reward eligibility'),

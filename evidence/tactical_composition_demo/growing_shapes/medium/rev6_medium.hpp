@@ -21,6 +21,7 @@ public:
     mutable std::vector<double> stage_terms; std::set<uint64_t> lesions;
     gm_params p; gm_growth growth{}; bool configured=false;
     bool automatic_samples=true, carried_sites=false, undirected_cost=false;
+    bool fixed_positions=false; // Disposable evaluator copies only; never a growth rule.
     double time=0, last_growth=0; uint64_t next_id=1, rng;
     std::vector<Element> elements; std::vector<Drive> drives; std::vector<Need> needs;
     std::deque<Sample> history; std::vector<Event> events; std::string error;

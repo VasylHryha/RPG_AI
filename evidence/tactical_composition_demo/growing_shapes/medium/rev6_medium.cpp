@@ -106,6 +106,7 @@ std::vector<double> Medium::rhs(const std::vector<gm_element>& s,const Neighbors
             if(!elements[i].output && r<d.v.reach) terms[4*i]+=elements[i].gain*d.v.strength*kernel(r,d.v.width)*std::sin(d.v.phase-e.phase);
         }
         out[3*i+2]+=terms[4*i];
+        if(fixed_positions) { out[3*i]=0.; out[3*i+1]=0.; }
     }
     stage_terms.insert(stage_terms.end(),terms.begin(),terms.end());
     return out;

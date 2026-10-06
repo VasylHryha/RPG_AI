@@ -14,6 +14,7 @@ def seed_unit(intact,control):
         matched=not control.queue.unmatched,
         matching_slots=control.queue.slots,
         g0=paired_bounds(panel['perceive']['intact'],control.final_panel['perceive']['intact']),
+        descriptive_comparators={t:v.get('descriptive_comparators',{}) for t,v in panel.items()},
         bounds={t:v['bounds'] for t,v in panel.items()},late=intact.report()['late'],
         identity_snapshot=intact.identity_snapshot,snapshots=len(intact.snapshots),g5=[v['G5_D'] for v in intact.evaluations])
 

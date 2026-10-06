@@ -247,13 +247,15 @@ extern "C" const char* gp_future(void* medium,const PerfDrives* schedule,int ste
 
 namespace {
 template<class Observe,class Step>std::string assay_run(void* medium,const PerfFrame* frames,int count,int index,const uint64_t* ids,const double* death,int n,const double* novelty,const int32_t* assignment,const double* sites,const PerfDrives* schedule,int scheduled,int relay,Observe observe,Step step){
-    require(medium&&scheduled>=0&&scheduled<=160&&relay>=0&&relay<=2&&(!scheduled||schedule),"invalid assay");validate_binding(assignment,sites);for(int i=0;i<scheduled;++i)validate_drives(schedule[i].drives,schedule[i].count);
+    require(medium&&scheduled>=0&&scheduled<=160&&relay>=0&&relay<=3&&(!scheduled||schedule),"invalid assay");validate_binding(assignment,sites);for(int i=0;i<scheduled;++i)validate_drives(schedule[i].drives,schedule[i].count);
         Engine e(medium,frames,count,index,ids,death,n,novelty);e.out<<"{\"decisions\":[";GSObservation obs{};int steps=0;
         for(;steps<160;++steps){require(observe(&obs)==GS_OK,"world observation failed");if(obs.done)break;
             auto ds=e.bindings(obs,assignment,sites);if(scheduled){require(steps<scheduled,"short donor schedule");auto& src=schedule[steps];ds.assign(src.drives,src.drives+src.count);}
             if(steps)e.out<<',';e.out<<"{\"drives\":";e.drives_json(ds);e.m.set_drives(ds.data(),int(ds.size()));for(int j=0;j<5;++j)e.m.step(.02);++e.index;
             auto a=e.action(obs);if(relay){const gm_drive* selected=nullptr;for(const auto& d:ds)if(d.strength>0&&((relay==1&&d.id==0)||(relay==2&&(!selected||d.strength>selected->strength||(d.strength==selected->strength&&d.id<selected->id)))))selected=&d;
-                double beta=selected?selected->phase+dt*selected->rate-pi*(e.index*dt):0;beta=std::fmod(beta+pi,2*pi);if(beta<0)beta+=2*pi;beta-=pi;
+                double beta=selected?selected->phase+dt*selected->rate-pi*(e.index*dt):0;
+                if(relay==3){double x=0,y=0;for(const auto& d:ds)if(d.strength>0){double alpha=d.phase+dt*d.rate-pi*(e.index*dt);x+=d.strength*std::cos(alpha);y+=d.strength*std::sin(alpha);}beta=std::atan2(y,x);}
+                beta=std::fmod(beta+pi,2*pi);if(beta<0)beta+=2*pi;beta-=pi;
                 // Reuse the exact decoder by a virtual singleton phase (no medium mutation).
                 if(obs.task==GS_CHOOSE){double best=std::numeric_limits<double>::infinity();int chosen=INT32_MAX;for(int j=0;j<obs.enemy_count;++j){auto v=obs.enemies[j];if(!v.visible||v.hp<=0)continue;double z=std::fmod(beta-v.angle+pi,2*pi);if(z<0)z+=2*pi;z=std::abs(z-pi);if(z<best||(z==best&&v.id<chosen)){best=z;chosen=v.id;}}a={0,0,chosen};}
                 else a={beta,obs.task==GS_MOVE?1.:0.,-1};}

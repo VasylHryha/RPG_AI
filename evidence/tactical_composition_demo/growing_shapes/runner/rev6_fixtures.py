@@ -63,7 +63,7 @@ def construct_only():
         run=Run(0,rows,episodes=50,policy=policy,keys=keys(start,policy),initial=initial,scope='fixtures')
         try:out[name]=dict(members=template(run.medium.native,[e.id for e in run.medium.native.elements],0)['members'],world_steps=run.medium.step_index,keys=run.keys)
         finally:run.close();initial.close() if initial else None
-    out['F6']=dict(dependency='six F5 checkpoints; no substitute checkpoint constructed',starts=['i','ii'],checkpoints=CHECKPOINTS,pairs=F6_PAIRS,copies=240,baseline_modes=['single_oscillator','sample_and_hold'],growth=False,adaptation=False,recovery=False)
+    out['F6']=dict(dependency='six F5 checkpoints; no substitute checkpoint constructed',starts=['i','ii'],checkpoints=CHECKPOINTS,pairs=F6_PAIRS,copies=140,checkpoint_copies=120,baseline_copies=20,baseline_unique_recipient_episodes=10,baseline_minimum_defined_unique_episodes=5,baseline_modes=['single_oscillator','sample_and_hold'],growth=False,adaptation=False,recovery=False)
     out['F9']=dict(cases=list(F9_CASES),seeds={name:seed(f'medium/F9/{name}') for name in F9_CASES},world_ids=list(range(808,812)),world_steps=0,status='DESCRIPTIVE_DECODER_ONLY_SYNTHETIC_OBSERVATIONS')
     out['F8']=dict(dependency='live F5(i) after episode 50; histories/timers/clock retained',episodes=F8_WORLD_IDS,tasks=['move']*20+['remember_static']*20,keys=['growth/F8/reward','recovery/F8/reward'],reward_baseline=.5)
     return dict(status='CONSTRUCT_ONLY',integrated_world_steps=0,fixture_execution='NOT_RUN',recipes=out)
@@ -75,10 +75,31 @@ def finite_record(value):
     return value
 
 
-def memory_summary(encoded,episodes):
+def f6_baselines(evaluator,value):
+    """Checkpoint-independent baselines, one fresh copy per unique recipient."""
+    rows={mode:[] for mode in ('single_oscillator','sample_and_hold')}
+    for recipient in sorted({recipient for recipient,_ in F6_PAIRS}):
+        for mode in rows:
+            row=evaluator.episode(value,'remember_static',recipient,mode=mode)
+            if row['status']!='evaluated' or len(row['decisions'])!=160:raise ValueError('INVALID: missing F6 baseline records')
+            rows[mode].append(row)
+    return rows
+
+
+def last_visible_angle(row):
+    ds=row['decisions'][39]['drives'];drive=next(d for d in ds if d[5]>0)
+    return float(wrap(drive[3]-math.pi*3.9))
+
+
+def memory_summary(encoded,episodes,*,unique_episodes=False):
     """JS circular correlation, 18.5 mean/R disposition, with raw beta/R retained."""
-    records=[];pairs=[]
+    records=[];pairs=[];seen=set()
+    if len(encoded)!=len(episodes):raise ValueError('memory summary length mismatch')
     for angle,row in zip(encoded,episodes):
+        if unique_episodes:
+            episode=row['instance']['world_episode']
+            if episode in seen:continue
+            seen.add(episode)
         hidden=row['decisions'][40:160]
         beta=[d['angle'] for d in hidden]
         present=bool(hidden) and all(d['has_output'] for d in hidden)
@@ -86,15 +107,16 @@ def memory_summary(encoded,episodes):
         mean=float(np.angle(z)) if present and resultant>=.05 else None
         records.append(dict(encoded=angle,beta=beta,resultant=resultant,resultant_trace=[float(abs(np.exp(1j*np.asarray(beta[:j])).mean())) for j in range(1,len(beta)+1)],mean=mean,
                             reason=None if mean is not None else 'no_output' if not present else 'degenerate_resultant'))
+        if unique_episodes:records[-1]['world_episode']=episode
         if mean is not None and math.isfinite(angle) and math.isfinite(mean):pairs.append((angle,mean))
-    if len(pairs)<5:return dict(correlation=None,reason='fewer_than_five_defined_pairs',defined_pairs=len(pairs),episodes=records)
+    if len(pairs)<5:return dict(correlation=None,reason='fewer_than_five_defined_pairs',defined_pairs=len(pairs),unique_episode_count=len(seen) if unique_episodes else None,minimum_unit='unique_recipient_episode' if unique_episodes else 'checkpoint_episode',episodes=records)
     a,b=np.asarray(pairs).T
     # JS requires defined marginal directions as well as nonzero sine variance.
     za,zb=np.exp(1j*a).mean(),np.exp(1j*b).mean()
-    if abs(za)<1e-12 or abs(zb)<1e-12:return dict(correlation=None,reason='undefined_marginal_mean',defined_pairs=len(pairs),episodes=records)
+    if abs(za)<1e-12 or abs(zb)<1e-12:return dict(correlation=None,reason='undefined_marginal_mean',defined_pairs=len(pairs),unique_episode_count=len(seen) if unique_episodes else None,minimum_unit='unique_recipient_episode' if unique_episodes else 'checkpoint_episode',episodes=records)
     x=np.sin(a-np.angle(za));y=np.sin(b-np.angle(zb));den=math.sqrt(float(np.sum(x*x)*np.sum(y*y)))
-    if den<=1e-14:return dict(correlation=None,reason='zero_circular_variance',defined_pairs=len(pairs),episodes=records)
-    return dict(correlation=float(np.sum(x*y)/den),reason=None,defined_pairs=len(pairs),episodes=records)
+    if den<=1e-14:return dict(correlation=None,reason='zero_circular_variance',defined_pairs=len(pairs),unique_episode_count=len(seen) if unique_episodes else None,minimum_unit='unique_recipient_episode' if unique_episodes else 'checkpoint_episode',episodes=records)
+    return dict(correlation=float(np.sum(x*y)/den),reason=None,defined_pairs=len(pairs),unique_episode_count=len(seen) if unique_episodes else None,minimum_unit='unique_recipient_episode' if unique_episodes else 'checkpoint_episode',episodes=records)
 
 
 F9_CASES={'zero_demand':(0.,2.,2.),'approach':(.4,4.,2.),'retreat_inside_range':(.4,1.,2.),'stop':(.4,2.,2.)}
@@ -246,20 +268,18 @@ class Harness:
         return dict(verdict='PASS' if all(r['verdict']=='PASS' for r in result.values()) else 'FAIL',starts=result)
 
     def F6(self):
-        self.require();own=[];donor_rows=[];encoded=[];donor_encoded=[];baselines={mode:[] for mode in ('single_oscillator','sample_and_hold')}
+        self.require();own=[];donor_rows=[];encoded=[];donor_encoded=[]
+        first=self.checkpoints['i',CHECKPOINTS[0]]
+        baselines=f6_baselines(self.evaluator,template(first.native,[e.id for e in first.native.elements],first.time))
         for start in ('i','ii'):
             for checkpoint in CHECKPOINTS:
                 m=self.checkpoints[start,checkpoint];value=template(m.native,[e.id for e in m.native.elements],m.time)
                 for recipient,donor in F6_PAIRS:
                     a=self.evaluator.episode(value,'remember_static',recipient)
                     b=self.evaluator.episode(value,'remember_static',recipient,mode='donor',donor=donor)
-                    for mode in baselines:baselines[mode].append(self.evaluator.episode(value,'remember_static',recipient,mode=mode))
                     if len(a['decisions'])!=160 or len(b['decisions'])!=160:raise ValueError('missing F6 records')
-                    def last_angle(row):
-                        ds=row['decisions'][39]['drives'];drive=next(d for d in ds if d[5]>0)
-                        return float(wrap(drive[3]-math.pi*3.9))
-                    encoded.append(last_angle(a));donor_encoded.append(last_angle(b));own.append(a);donor_rows.append(b)
-        return dict(verdict='DESCRIPTIVE',baselines={mode:memory_summary(encoded,rows) for mode,rows in baselines.items()},encoding_retention={mode:[r['memory_windows'] for r in rows] for mode,rows in dict(own=own,donor=donor_rows,**baselines).items()},own=memory_summary(encoded,own),donor=memory_summary(encoded,donor_rows),donor_encoded=donor_encoded,encoded_reference='recipient last-visible angle for both comparisons',records=dict(own=own,donor=donor_rows))
+                    encoded.append(last_visible_angle(a));donor_encoded.append(last_visible_angle(b));own.append(a);donor_rows.append(b)
+        return dict(verdict='DESCRIPTIVE',baselines={mode:memory_summary([last_visible_angle(r) for r in rows],rows,unique_episodes=True) for mode,rows in baselines.items()},encoding_retention={mode:[r['memory_windows'] for r in rows] for mode,rows in dict(own=own,donor=donor_rows,**baselines).items()},own=memory_summary(encoded,own),donor=memory_summary(encoded,donor_rows),donor_encoded=donor_encoded,encoded_reference='recipient last-visible angle for both comparisons',records=dict(own=own,donor=donor_rows,baselines=baselines))
 
     def F7(self):
         self.require();run=Run(0,self.rows,episodes=50,policy='M',keys=keys('i','M'),backend=self.backend,execution=self.execution,scope='fixtures')

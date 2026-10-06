@@ -55,3 +55,9 @@ int gm_lesions(void* h,const uint64_t* ids,int n){return call(h,[&](Medium& m){r
 int gm_output(void* h,double* values){return call(h,[&](Medium& m){rev6::require(values,"null output");values[0]=values[1]=0;for(auto e:m.elements)if(e.output&&!e.v.silent){values[0]=1;values[1]=e.v.phase;}});}
 int gm_stage_terms(void* h,double* values,int n){return call(h,[&](Medium& m){buffer(values,n,m.stage_terms.size());std::copy(m.stage_terms.begin(),m.stage_terms.end(),values);});}
 }
+
+// Evaluator-side ablations on fresh copies only. K is read by every RK4 RHS.
+extern "C" int gm_comparator(void* h,int mode){return call(h,[&](Medium& m){
+    rev6::require(mode==1||mode==2,"unknown evaluator comparator");
+    if(mode==1)m.p.K=0.;else m.fixed_positions=true;
+});}

@@ -95,6 +95,18 @@ def relay(task,observation,drives,time,kind):
     return decode(task,observation,1.,math.pi*time if selected is None else selected.phase,time)
 
 
+def input_phasor(observation,drives,time):
+    """19.9 input-only perceive decoder; drives carry endpoint carrier phases.
+
+    No elements, gain, geometry or oscillator transfer enters this sum.
+    An empty (zero) sum uses arg(0)=0 via atan2, with C=1 as specified.
+    """
+    active=[d for d in drives if d.strength>0]
+    x=sum(d.strength*math.cos(d.phase-math.pi*time) for d in active)
+    y=sum(d.strength*math.sin(d.phase-math.pi*time) for d in active)
+    return decode('perceive',observation,1.,math.pi*time+math.atan2(y,x),time)
+
+
 def replay_on_clock(schedule,time):
     """Schedule rows store relative donor angle, not the donor's absolute carrier."""
     from ..medium.medium import Drive
