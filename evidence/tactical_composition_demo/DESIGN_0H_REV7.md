@@ -851,3 +851,107 @@ meaning a time scale of **τ_link ≤ 2 s** per edge.
 - **The same-site retrial is finite.** The total per check is still 2. Exhausting the candidates or connecting allows service of the next site. A resource refusal ends service for that check, and is logged.
 - **Instantaneous connection does not meet E ≥ 0.5, which is time-averaged.** A, B, both starts, coverage, the positive-task gates and exact control-M B1 matching are all unchanged. (Control M mirrors the intact run's **accepted** B1 births, deferred ones included in their timing.)
 - **F5(ii)'s 7.10 FAIL (E = 0.454) stays unrepaired by claim.** Only the 7.11 run measures it.
+
+## 19. Revision 7.12: a root-relative output pin (the 7.11 F5 report and fix; **pending the owner's approval of the pin change**)
+
+### 19.1 Failure report and diagnosis
+
+**Run:** `growing_shapes/runner/REV711_FIXTURE_REPORT.md` (`a52ddbd`), FIXTURES_FAIL.
+- N1 and F1–F4 PASS.
+- **F5(ii) PASS:** A 1.451, B 1.303, max E 0.8.
+- **F5(i) FAIL:** A 0.190, B 0.209, E 0.
+
+**Diagnosis:** `growing_shapes_review_claude/rev711_diag/REV711_F5I_DIAGNOSIS.md`, revision 3. It passed two Codex owner rechecks, whose findings are all fixed.
+- **Mechanism.** In the empty start, a strong site→O path closes at 12 growth checks (220–440 s) and each time breaks within 0.1–17 s. The break is geometric coefficient loss: r > √(ln 8) at receiver degree 8.
+  - The motion law pulls each closing element back toward the attracting mass behind it.
+  - The instantaneous net velocity toward O is −0.30 to −0.64 m.u./s (signed decomposition, independently reproduced).
+- **What did not sustain late connectivity in both starts:**
+  - a stricter trial graph;
+  - robust service;
+  - budget 96/128;
+  - a local motion kernel;
+  - unconditional bidirectional growth;
+  - a 1.5 m.u. motion range;
+  - B1 root groups.
+- An x-axis O swap did not separate the starts.
+
+### 19.2 The change: O is pinned once, relative to the first root (C2)
+
+**The rule (live runs: intact training and controls M and U alike):**
+- **B-out fires only when at least one effective root exists** in the medium (7.11's live root predicate; O never qualifies). Before that, a B-out request ends `no_root` and retries at the next growth check.
+- **The pin:** p_O = 1.0 · û, where û is the unit vector from the origin toward the **lowest-id effective root** at that check. O is placed there **once** and is never relocated.
+  - Ties cannot occur: ids are unique.
+  - A root exactly at the origin is impossible: placement keeps B1 births ≥ 0.3 m.u. from the sensors on the radius-4 ring, and roots lie within a site's reach.
+- **Placement:**
+  - B-out keeps its placement check: no element within 0.05 of p_O, and the 8.4 sensor clearances. A refusal is `placement`, retried at the next check under the same rule, **with the root re-selected at that check**.
+  - Output uniqueness is unchanged.
+  - B-out remains outside cap and cost (7.6).
+- **O's phase:** the inherited B-out rule (the mean phase of elements within 3 m.u., otherwise drawn from the growth RNG).
+- **Everything else of 7.11 is unchanged:**
+  - output first;
+  - the strong-edge rule (16);
+  - B-path, B1 and its deferral;
+  - O's protection (7.6);
+  - λ = 32 and h;
+  - every gate and cut.
+
+**F5(ii) (the literal start):** the six-element hexagon at (3.1, 0) is kept, but **the literal O is removed.** B-out places O by the same rule at the first check where a root exists.
+- **The route stays initially missing:** the nearest seed element is ≥ 1.5 m.u. from any admissible p_O, beyond the strong radius 1.442 at receiver degree 8. Recorded at construction.
+- This retires 8.2's (−0.5, 0) exception.
+
+**F1–F4 and N1:** unchanged. Their scaffolds keep their declared O positions.
+
+**Assays and copies:** the stored O coordinate is copied, as 8.2 already requires for copies and evaluation, and checked against the stored value.
+
+**Controls M and U:**
+- Same B-out rule.
+- The root predicate and the "lowest-id effective root" are evaluated in **each run's own medium**. M's and U's roots arise from their own births, so their p_O can differ from the intact run's.
+- This is the same causal rule, applied identically.
+- **Exact M matching of B1 births (section 6) is unchanged.** O is outside the matched birth set; its timing and position are reported per run.
+
+**Development:** unchanged. O is placed once per run, in the first training episode where a root exists, and frozen for the whole run.
+
+### 19.3 Claim, prior and ledger
+
+- **The disclosed positional prior:** O starts 1.0 m.u. from the centre toward the first driven root. A bridge from that root is about 3 m.u. instead of about 4.
+  - This uses only the medium's own state at that check (where its first root is), not the task, the score or any assay result.
+- **Why 1.0:** the pin stays in the central disk (radius 1) and inside the sensor ring. It shortens the bridge while keeping O 3 m.u. or more from every site.
+  - O has no direct drive (its role) and is pinned, so site bodies exert no force on it.
+  - Phase lists contain elements only.
+- **The claim stays "growth from an empty start"**, with the pin rule stated.
+  - It is **not** "O at a fixed universal location". 8.2's live-run row changes from (0, 0) to this rule.
+- **Normalization ledger:** p_O is in m.u., at a fixed distance of 1.0 (a declared constant, not tuned). It enters no other equation.
+- **Outcome-informed and disclosed:**
+  - the rule was chosen after the 7.11 F5 result and the pilots in the diagnosis report (§8);
+  - the 7.11 FAIL is kept;
+  - the 13.3 fixture-key exception applies;
+  - the development inventory is untouched.
+- **Pilot evidence (no verdict):** on the validated pilot assay, which reproduces the 7.11 fixture exactly:
+  - (i): A 1.042, B 1.271, max E 0.8;
+  - (ii): A 1.519, B 1.252, max E 0.7.
+- **The pilots do not establish:**
+  - F6–F9;
+  - control-M equivalence;
+  - learning;
+  - qualification;
+  - any superiority.
+  The registered fixtures measure F5–F9.
+
+### 19.4 Checks before the fixtures
+
+1. **B-out with no root:** `no_root`, no output, retried next check. With a root: O at exactly 1.0·û toward the lowest-id root, placed once, never moved, including after that root dies.
+2. **Placement refusal:** retried next check, the root re-selected.
+3. **F5(ii)'s construction** has no O. The first B-out follows the rule. The initial strong route is missing (recorded).
+4. **Assays** copy the stored pin; a mismatch is INVALID.
+5. **M and U** use the same rule on their own media. Exact M B1 matching is unchanged.
+6. **F1–F4 and N1** are byte-identical to 7.11.
+7. **The 7.11 synthetic tests** pass, except the explicitly superseded pin expectations, which are updated with this section cited.
+
+### 19.5 Stop rows
+
+| Yes/no | Action | Role |
+|---|---|---|
+| Has the owner approved changing the live-run pin from (0, 0) to the root-relative rule? | If no: no implementation; option A (a seeded protocol) or B remain | owner |
+| Does a check in 19.4 fail? | Fix before the fixtures; no fixture run | implementer |
+| Does F5 fail in either start under 7.12? | Block development; write a failure report | drafter |
+| Does the pin rule ever read task, score or assay information? | INVALID; fix the implementation | implementer |
