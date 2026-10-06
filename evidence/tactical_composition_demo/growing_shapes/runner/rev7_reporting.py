@@ -25,6 +25,29 @@ INTERPRETATION={
 }
 
 
+def f5_qualification_summary(events,diagnostics,checkpoints):
+    """Descriptive only: assign windows by their check endpoint, not recovery time."""
+    events=list(events);diagnostics=list(diagnostics)
+    def interval(first,last):
+        windows=[e for e in events if e['rule']=='qualification' and first<e['time']<=last]
+        invalid=sum(e['values'].get('reason')=='fast_transient_cohort' for e in windows)
+        frames=[r for r in diagnostics if first<r['index']*.1<=last]
+        individual=sum(any(v>math.pi/2 for v in r['excursion'].values()) for r in frames)
+        pair=sum(bool(r['invalid_pairs']) for r in frames)
+        fast=sum(bool(r['invalid_pairs']) or any(v>math.pi/2 for v in r['excursion'].values()) for r in frames)
+        return dict(interval_seconds=[first,last],qualification_windows=len(windows),
+            not_qualified_invalid_pairs=invalid,
+            not_qualified_invalid_pair_fraction=invalid/len(windows) if windows else None,
+            world_frames=len(frames),fast_transient_frames=fast,
+            individual_invalid_frames=individual,pair_invalid_frames=pair)
+    boundaries=[0]+list(checkpoints)
+    return dict(status='DESCRIPTIVE',used_in_verdict=False,qualification_window_seconds=60.,
+        interval_policy='left-open, right-closed; qualification windows assigned by check endpoint; all starts including small cohorts in denominator',
+        fast_transient_policy='a world frame with any own-invalid sample or invalid element pair; each frame counted once',
+        whole=interval(0.,checkpoints[-1]*16.),
+        checkpoint_intervals=[dict(checkpoint_episodes=[a,b],**interval(a*16.,b*16.)) for a,b in zip(boundaries,boundaries[1:])])
+
+
 def clock_ledger(native):
     """Endpoint coupling coefficients and dimensionless comparisons, not new cuts."""
     es=native.elements;ds=native.reference_drives();p=native.params

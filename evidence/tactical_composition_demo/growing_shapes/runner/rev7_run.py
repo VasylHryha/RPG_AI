@@ -101,6 +101,7 @@ class Run:
         self.exposure['qualification_frames'] += 601
         self.medium.emit('qualification', cohort=check['cohort'], candidates=[c['ids'] for c in check['candidates']],
                          alias_max=check['alias_max'], possibly_aliased=check['possibly_aliased'],
+                         reason=check.get('reason'),
                          claim='driven/cohort-restricted', warning='screen does not certify absence of aliasing')
         # Immutable complete native state is preserved for audit, alongside clone.
         saved = self.medium.clone(events=False)

@@ -159,6 +159,17 @@ def test_individual_invalid_suspends_P_and_rate_only_at_endpoint():
         assert len(m.frames)==101
 
 
+def test_rate_start_endpoint_invalid_suspends_but_interior_invalid_does_not():
+    for invalid_index in (0,50):
+        with medium() as m:
+            a=m.add((3.4,.1),0.,rate=2.)
+            history(m,bounds=lambda k,id:2. if k==invalid_index else 0.)
+            assert individual_valid(m.frames[-1],a) and m.gain_signal(a)==1.
+            m.adapt()
+            assert m.native.elements[0].rate==pytest.approx(2. if invalid_index==0 else 2.+.005*(math.pi-2.))
+            assert len(m.frames)==101
+
+
 def test_clearance_every_rule_origin_reservation_and_Bpath_trial():
     assert not clear_position((4.,0.),[]) and clear_position((3.7,0.),[])
     assert not clear_position((3.700001,0.),[]) and clear_position((3.699999,0.),[])
@@ -330,6 +341,56 @@ def test_qualification_screens_cohort_before_circular_criteria(monkeypatch):
         assert result['invalid_pair_frames']==601
 
 
+@pytest.mark.parametrize('invalid_ids',[(3,),(0,1)])
+def test_recovery_validity_uses_candidate_pairs_only(monkeypatch,invalid_ids):
+    # Both replays are stubs: no integration, fixture, world or recovery run.
+    with medium() as m:
+        for point in ((0.,0.),(.6,0.),(.3,.5),(5.,5.)):m.add(point,0.)
+        candidate=dict(ids=[0,1,2],indices=np.array([0,1,2]),stats=dict(size=3,membership_jaccard=1.,shape_cv=0.,lock_std=0.,freq_change=0.,pattern_change=0.),template={})
+        check=dict(cohort=[0,1,2,3],candidates=[candidate],possibly_aliased=False,locked=np.ones((4,4),dtype=bool))
+        calls=[]
+        def replay(branch,drives):
+            calls.append(branch)
+            return dict(excursion={id:2. if id==3 and id in invalid_ids else .8 if id in invalid_ids else 0. for id in range(4)})
+        monkeypatch.setattr(Rev7Medium,'integrate',replay)
+        monkeypatch.setattr(q,'admissible_kick',lambda *args:((np.array([[e.x,e.y] for e in m.native.elements]),np.array([e.phase for e in m.native.elements])),dict(reason=None)))
+        admitted,seconds=q.finish(m,check,[[]]*600,p.generator('synthetic/replay'))
+        assert len(calls)==1200 and seconds==120.
+        if invalid_ids==(3,):
+            assert admitted==[candidate] and check['recovery_accounting']['skips']['fast_transient_cohort']==0
+        else:
+            assert not admitted and candidate['skip']=='fast_transient_cohort'
+            assert check['recovery_accounting']['skips']['fast_transient_cohort']==1
+
+
+def test_f5_descriptive_qualification_fraction_boundaries_and_empty_denominator(monkeypatch):
+    from evidence.tactical_composition_demo.growing_shapes.runner.rev7_reporting import f5_qualification_summary
+    events=[dict(time=t,rule='qualification',values=dict(reason=reason)) for t,reason in ((60.,'small_cohort'),(640.,'fast_transient_cohort'),(660.,None),(720.,'fast_transient_cohort'))]
+    # Recovery skips must not count as not-qualified qualification windows.
+    events.append(dict(time=700.,rule='recovery_complete',values=dict(reason='fast_transient_cohort')))
+    frames=[dict(index=k,excursion={0:e,1:e},invalid_pairs=[(0,1)] if pair else []) for k,e,pair in ((6400,.8,True),(6401,0.,False),(7200,2.,True),(7201,0.,False))]
+    result=f5_qualification_summary(events,frames,(40,45,50))
+    assert result['used_in_verdict'] is False and 'verdict' not in result
+    assert result['whole']['qualification_windows']==4
+    assert result['whole']['not_qualified_invalid_pair_fraction']==.5
+    assert result['whole']['fast_transient_frames']==2 # pair-only + individual, no double count
+    a,b,c=result['checkpoint_intervals']
+    assert a['qualification_windows']==b['qualification_windows']==2
+    assert a['fast_transient_frames']==b['fast_transient_frames']==1
+    assert c['qualification_windows']==0 and c['not_qualified_invalid_pair_fraction'] is None
+    # Ensure the event feeding the summary carries the screen's actual reason.
+    run=Run.__new__(Run);run.medium=type('FakeMedium',(),{})()
+    run.medium.step_index=600;run.medium.time=60.;run.medium.birth_steps={}
+    run.medium.native=type('FakeNative',(),{'save':lambda self:b'','elements':[]})()
+    run.medium.death={};run.medium.novelty={};run.medium.frames=[]
+    run.medium.clone=lambda **kwargs:run.medium
+    emitted=[];run.medium.emit=lambda rule,**values:emitted.append((rule,values))
+    run.exposure={'qualification_frames':0};run.pending=[];run.timing={'qualification':0.}
+    monkeypatch.setattr(q,'start',lambda m:dict(cohort=[0,1,2],candidates=[],alias_max=2.,possibly_aliased=True,reason='fast_transient_cohort'))
+    run.qualify()
+    assert emitted[0][1]['reason']=='fast_transient_cohort'
+
+
 def test_site_off_total_effect_recomputes_counts_keeps_drive_phase_graph():
     with medium() as m:
         m.add((3.2,.1),.2);m.add((2.6,.1),.4,role='output');m.native.set_drives([drive()])
@@ -362,6 +423,29 @@ def test_fixture_sequence_stub_stops_N1_F5_F7_without_executing(monkeypatch):
             def stub(name=name):calls.append(name);return dict(verdict='FAIL' if name==stop else 'PASS')
             setattr(h,name,stub)
         result=h.run_all();assert calls[-1]==stop and result['not_run']
+
+
+@pytest.mark.parametrize('failed',['F1','F2','F3','F4'])
+def test_fixture_sequence_early_fail_runs_independent_checks_then_blocks_F5(failed):
+    h=Harness.__new__(Harness);h.execution=type('FakeExecution',(),{'start':lambda self,scope:{'synthetic':True}})()
+    h.results={};h.calibration={};h.close=lambda:None;calls=[]
+    for name in ('N1','F1','F2','F3','F4','F5','F6','F7','F8','F9'):
+        def stub(name=name):calls.append(name);return dict(verdict='FAIL' if name==failed else 'PASS')
+        setattr(h,name,stub)
+    result=h.run_all()
+    assert calls==['N1','F1','F2','F3','F4']
+    assert result['not_run']==['F5','F6','F7','F8','F9']
+
+
+@pytest.mark.parametrize('invalid',['N1','F1','F2','F3','F4'])
+def test_fixture_sequence_any_invalid_blocks_next_stage(invalid):
+    h=Harness.__new__(Harness);h.execution=type('FakeExecution',(),{'start':lambda self,scope:{'synthetic':True}})()
+    h.results={};h.calibration={};h.close=lambda:None;calls=[]
+    for name in ('N1','F1','F2','F3','F4','F5','F6','F7','F8','F9'):
+        def stub(name=name):calls.append(name);return dict(verdict='INVALID' if name==invalid else 'PASS')
+        setattr(h,name,stub)
+    result=h.run_all()
+    assert calls[-1]==invalid and result['results'][invalid]['verdict']=='INVALID'
 
 
 def test_preservation_baseline():

@@ -182,7 +182,7 @@ class Rev7Medium(DesignMedium):
         signals={}
         for e in self.native.elements:
             frames=self.samples(e.id,101)
-            if frames is not None and individual_valid(frames[-1],e.id):
+            if frames is not None and individual_valid(frames[0],e.id) and individual_valid(frames[-1],e.id):
                 estimate=(frames[-1].elements[e.id][2]-frames[0].elements[e.id][2])/10
                 rate=float(np.clip(e.rate+.005*(estimate-e.rate),.5*math.pi,1.5*math.pi))
                 self.native.set_element(e.id,e.x,e.y,e.phase,rate)

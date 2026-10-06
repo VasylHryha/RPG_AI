@@ -161,7 +161,9 @@ def finish(saved,check,schedule,rng,*,backend='native',lib=None):
             initial=deviations(control,kicked,candidate['ids']);taus=[None,None];valid=True;displacements=[]
             for step,drives in enumerate(schedule,1):
                 ca=control.integrate(drives);kb=kicked.integrate(drives)
-                valid &= cohort_frame_valid(ca,check['cohort']) and cohort_frame_valid(kb,check['cohort'])
+                # Future phase criteria read this candidate's members only.
+                # Non-members still affect motion and membership comparisons.
+                valid &= cohort_frame_valid(ca,candidate['ids']) and cohort_frame_valid(kb,candidate['ids'])
                 dev=deviations(control,kicked,candidate['ids'])
                 displacements.append(dict(time=step*.1,**anchored_displacement(control,kicked,candidate['ids'])))
                 for j in range(2):

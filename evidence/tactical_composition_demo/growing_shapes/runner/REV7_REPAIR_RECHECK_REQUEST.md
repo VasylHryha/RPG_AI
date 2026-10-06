@@ -1,0 +1,3 @@
+Read-only owner recheck of the five drafter dispositions correcting the revision-7.3 integration imported at 55a9f7a. Scope: growing_shapes only; no docs/PLAN_CURRENT.md edit. Review source, synthetic contracts and delivery tooling against DESIGN_0H_REV7.md 7.3 and Claude REV7_INTEGRATION_REVIEW.md. No project code, tests, N1/F1–F9, training, panels or development. Findings only, no numeric scores. The final synthetic run and source repin follow completion of the code/test batch. This Codex owner recheck does not replace the required Claude review of the final tested pin.
+
+Recheck what you did please, check if it is the best we can do, we want 10 out of 10 or above 9 - it's fine to break the things or fully rework. Check for issues, conflicts, gaps.

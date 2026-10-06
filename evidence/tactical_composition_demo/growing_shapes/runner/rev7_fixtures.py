@@ -303,6 +303,8 @@ class Harness:
                 meanA,meanB=float(np.mean(A)),float(np.mean(B));meanE=np.mean(E,axis=0).tolist()
                 specific=out_birth if start=='i' else path_birth
                 result[start]=dict(identity_snapshot=run.identity_snapshot,verdict='PASS' if specific and max(meanE)>=.5 and meanA>=.3 and meanB>=.3 else 'FAIL',A=meanA,B=meanB,E=meanE,B_out=out_birth,B_path=path_birth,episodes=episodes,events=events,active_site0_steps=sum(any(d[0]==0 and d[5]>0 for d in row['sites']) for row in run.drive_log))
+                from .rev7_reporting import f5_qualification_summary
+                result[start]['qualification_validity']=f5_qualification_summary(events,run.medium.diagnostics,CHECKPOINTS)
                 if start=='i':self.intact=run;self.live=run.medium.clone(events=False)
             finally:
                 if start!='i' or self.intact is not run:run.close()
@@ -372,10 +374,12 @@ class Harness:
         self.identity_snapshot=self.execution.start('fixtures')
         try:
             for name in ('N1','F1','F2','F3','F4','F5','F6','F7','F8','F9'):
+                if name=='F5' and any(self.results.get(n,{}).get('verdict')=='FAIL' for n in ('F1','F2','F3','F4')):break
                 try:self.results[name]=finite_record(getattr(self,name)())
                 except Exception as error:
                     self.results[name]=dict(verdict='INVALID',reason=f'{type(error).__name__}: {error}');break
-                if name in ('N1','F1','F2','F3','F4','F5','F7') and self.results[name]['verdict']=='FAIL':break
+                if self.results[name]['verdict']=='INVALID':break
+                if name in ('N1','F5','F7') and self.results[name]['verdict']=='FAIL':break
             from .rev7_protocol import stops
             gates=stops(dict(N1_failed_or_invalid=self.results.get('N1',{}).get('verdict') in ('FAIL','INVALID'),fixture_invalid=any(r['verdict']=='INVALID' for r in self.results.values()),F1_F4_failed=any(self.results.get(n,{}).get('verdict')=='FAIL' for n in ('F1','F2','F3','F4')),F5_failed=self.results.get('F5',{}).get('verdict')=='FAIL',F7_unmatched=self.results.get('F7',{}).get('verdict')=='FAIL'))
             from .rev7_reporting import INTERPRETATION

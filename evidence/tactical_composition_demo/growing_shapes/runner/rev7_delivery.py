@@ -15,7 +15,7 @@ def package():
     base=HERE.parent
     paths=list(base.glob('medium/rev7_*.*'))+[base/'medium/build_rev7.py']
     paths+=list(HERE.glob('rev7_*.py'))+[HERE/'test_rev7.py']
-    paths+=[p for p in HERE.glob('REV7_*') if p.is_file() and p not in (ARCHIVE,MANIFEST,HERE/'REV7_DELIVERY_NOTE.md')]
+    paths+=[p for p in HERE.glob('REV7_*') if p.is_file() and p not in (ARCHIVE,MANIFEST,HERE/'REV7_DELIVERY_NOTE.md',HERE/'REV7_DELIVERY_VERIFICATION.json')]
     forbidden={'.dylib','.so','.dll','.o','.obj','.a','.lib','.pyc'}
     entries={}
     for p in sorted(set(paths)):

@@ -22,7 +22,7 @@ def clocks():
 
 def main():
     identity=assert_inputs();start=clocks()
-    cmd=[sys.executable,'-m','pytest','-q','-x',str(HERE/'test_rev7.py'),'--basetemp',str(HERE/'_rev7_test_tmp')]
+    cmd=[sys.executable,'-m','pytest','-q','-x',str(HERE/'test_rev7.py'),'--basetemp',str(HERE/'_rev7_test_tmp'),'-o','cache_dir='+str(HERE/'_rev7_pytest_cache')]
     path=HERE/'REV7_SYNTHETIC_TEST_LOG.txt'
     with path.open('w') as output:result=subprocess.run(cmd,cwd=ROOT,stdout=output,stderr=subprocess.STDOUT)
     end=clocks()
