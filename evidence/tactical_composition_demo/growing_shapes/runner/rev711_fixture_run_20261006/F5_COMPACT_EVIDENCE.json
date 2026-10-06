@@ -1,0 +1,657 @@
+{
+  "harness_stops": [
+    {
+      "action": "Block development; write failure report",
+      "question": "F5_failed",
+      "role": "drafter"
+    }
+  ],
+  "interpretation": "Compact extraction only; complete exact fixture returns remain in local gzip traces, listed by hash when excluded from bundle",
+  "not_run": [
+    "F6",
+    "F7",
+    "F8",
+    "F9"
+  ],
+  "pin_sha256": "e66c8969d434f475c4289b6d09b048940d148055567c7c1acfc8bd2652fde357",
+  "revision": "7.11",
+  "starts": {
+    "i": {
+      "A": 0.19031953755626294,
+      "B": 0.2090518472328278,
+      "B_out": true,
+      "B_path": true,
+      "B_path_waiting": {
+        "counters": "lifetime through last observed check; outcomes and observed checks cover selected reporting window",
+        "eligibility": "active site without strong path at check start; no root/output still eligible",
+        "finite_wait_bound": false,
+        "no_observations": "null counters/outcomes, never inferred as zero wait",
+        "reset": "accepted insertion or strong connection; active connected check resets; inactive check pauses",
+        "sites": {
+          "0": {
+            "last_active": false,
+            "last_outcome": "inactive",
+            "last_path": false,
+            "lifetime_counters": {
+              "accepted_births": 0,
+              "current_wait_checks": 21,
+              "eligible_checks": 21,
+              "maximum_wait_checks": 21,
+              "unserved_checks": 21
+            },
+            "observed_checks": 40,
+            "outcomes_in_window": {
+              "cost": 11,
+              "inactive": 19,
+              "quota": 10
+            }
+          },
+          "1": {
+            "last_active": true,
+            "last_outcome": "cost",
+            "last_path": false,
+            "lifetime_counters": {
+              "accepted_births": 16,
+              "current_wait_checks": 10,
+              "eligible_checks": 22,
+              "maximum_wait_checks": 10,
+              "unserved_checks": 11
+            },
+            "observed_checks": 40,
+            "outcomes_in_window": {
+              "accepted": 10,
+              "connected_by_earlier_birth": 1,
+              "cost": 10,
+              "inactive": 18,
+              "quota": 1
+            }
+          },
+          "2": {
+            "last_active": false,
+            "last_outcome": "inactive",
+            "last_path": false,
+            "lifetime_counters": {
+              "accepted_births": 8,
+              "current_wait_checks": 11,
+              "eligible_checks": 24,
+              "maximum_wait_checks": 11,
+              "unserved_checks": 14
+            },
+            "observed_checks": 40,
+            "outcomes_in_window": {
+              "accepted": 5,
+              "connected_by_earlier_birth": 5,
+              "cost": 11,
+              "inactive": 16,
+              "no_root": 1,
+              "quota": 2
+            }
+          },
+          "3": {
+            "last_active": true,
+            "last_outcome": "cost",
+            "last_path": false,
+            "lifetime_counters": {
+              "accepted_births": 9,
+              "current_wait_checks": 14,
+              "eligible_checks": 32,
+              "maximum_wait_checks": 14,
+              "unserved_checks": 19
+            },
+            "observed_checks": 40,
+            "outcomes_in_window": {
+              "accepted": 6,
+              "connected_by_earlier_birth": 7,
+              "cost": 14,
+              "inactive": 8,
+              "quota": 5
+            }
+          },
+          "4": {
+            "last_active": false,
+            "last_outcome": "inactive",
+            "last_path": false,
+            "lifetime_counters": {
+              "accepted_births": 0,
+              "current_wait_checks": 28,
+              "eligible_checks": 28,
+              "maximum_wait_checks": 28,
+              "unserved_checks": 28
+            },
+            "observed_checks": 40,
+            "outcomes_in_window": {
+              "cost": 14,
+              "inactive": 12,
+              "no_root": 1,
+              "quota": 13
+            }
+          },
+          "5": {
+            "last_active": true,
+            "last_outcome": "cost",
+            "last_path": false,
+            "lifetime_counters": {
+              "accepted_births": 0,
+              "current_wait_checks": 26,
+              "eligible_checks": 26,
+              "maximum_wait_checks": 26,
+              "unserved_checks": 26
+            },
+            "observed_checks": 40,
+            "outcomes_in_window": {
+              "cost": 12,
+              "inactive": 14,
+              "no_root": 1,
+              "quota": 13
+            }
+          },
+          "6": {
+            "last_active": false,
+            "last_outcome": "inactive",
+            "last_path": false,
+            "lifetime_counters": {
+              "accepted_births": 4,
+              "current_wait_checks": 13,
+              "eligible_checks": 25,
+              "maximum_wait_checks": 13,
+              "unserved_checks": 21
+            },
+            "observed_checks": 40,
+            "outcomes_in_window": {
+              "accepted": 4,
+              "cost": 13,
+              "inactive": 15,
+              "no_root": 1,
+              "quota": 7
+            }
+          },
+          "7": {
+            "last_active": true,
+            "last_outcome": "cost",
+            "last_path": false,
+            "lifetime_counters": {
+              "accepted_births": 3,
+              "current_wait_checks": 9,
+              "eligible_checks": 21,
+              "maximum_wait_checks": 9,
+              "unserved_checks": 18
+            },
+            "observed_checks": 40,
+            "outcomes_in_window": {
+              "accepted": 3,
+              "cost": 9,
+              "inactive": 19,
+              "no_root": 1,
+              "quota": 8
+            }
+          }
+        },
+        "status": "DESCRIPTIVE",
+        "units": "B-path checks",
+        "used_in_verdict": false,
+        "wait": "eligible unserved checks since last accepted insertion or observed active connection; inactivity pauses"
+      },
+      "E": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "birth_counts": {
+        "B-out": 1,
+        "B-path": 40
+      },
+      "birth_times": {
+        "B-out": [
+          20.0
+        ],
+        "B-path": [
+          40.0,
+          40.0,
+          60.0,
+          60.0,
+          80.0,
+          80.0,
+          100.0,
+          100.0,
+          120.0,
+          120.0,
+          140.0,
+          140.0,
+          160.0,
+          160.0,
+          180.0,
+          180.0,
+          200.0,
+          200.0,
+          220.0,
+          220.0,
+          240.0,
+          240.0,
+          260.0,
+          260.0,
+          280.0,
+          280.0,
+          300.0,
+          300.0,
+          320.0,
+          340.0,
+          340.0,
+          360.0,
+          360.0,
+          380.0,
+          380.0,
+          400.0,
+          400.0,
+          420.0,
+          420.0,
+          440.0
+        ]
+      },
+      "deferred_output_first": {
+        "per_site": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 0,
+          "4": 0,
+          "5": 0,
+          "6": 4,
+          "7": 3
+        },
+        "total": 7
+      },
+      "qualification_validity": {
+        "checkpoint_intervals": [
+          {
+            "checkpoint_episodes": [
+              0,
+              40
+            ],
+            "fast_transient_frames": 43,
+            "individual_invalid_frames": 30,
+            "interval_seconds": [
+              0.0,
+              640.0
+            ],
+            "not_qualified_invalid_pair_fraction": 0.9,
+            "not_qualified_invalid_pairs": 9,
+            "pair_invalid_frames": 43,
+            "qualification_windows": 10,
+            "world_frames": 6400
+          },
+          {
+            "checkpoint_episodes": [
+              40,
+              45
+            ],
+            "fast_transient_frames": 5,
+            "individual_invalid_frames": 3,
+            "interval_seconds": [
+              640.0,
+              720.0
+            ],
+            "not_qualified_invalid_pair_fraction": 1.0,
+            "not_qualified_invalid_pairs": 2,
+            "pair_invalid_frames": 5,
+            "qualification_windows": 2,
+            "world_frames": 800
+          },
+          {
+            "checkpoint_episodes": [
+              45,
+              50
+            ],
+            "fast_transient_frames": 4,
+            "individual_invalid_frames": 0,
+            "interval_seconds": [
+              720.0,
+              800.0
+            ],
+            "not_qualified_invalid_pair_fraction": null,
+            "not_qualified_invalid_pairs": 0,
+            "pair_invalid_frames": 4,
+            "qualification_windows": 0,
+            "world_frames": 800
+          }
+        ],
+        "fast_transient_policy": "a world frame with any own-invalid sample or invalid element pair; each frame counted once",
+        "interval_policy": "left-open, right-closed; qualification windows assigned by check endpoint; all starts including small cohorts in denominator",
+        "qualification_window_seconds": 60.0,
+        "status": "DESCRIPTIVE",
+        "used_in_verdict": false,
+        "whole": {
+          "fast_transient_frames": 52,
+          "individual_invalid_frames": 33,
+          "interval_seconds": [
+            0.0,
+            800.0
+          ],
+          "not_qualified_invalid_pair_fraction": 0.9166666666666666,
+          "not_qualified_invalid_pairs": 11,
+          "pair_invalid_frames": 52,
+          "qualification_windows": 12,
+          "world_frames": 8000
+        }
+      },
+      "verdict": "FAIL"
+    },
+    "ii": {
+      "A": 1.4505015648748454,
+      "B": 1.3031787239861423,
+      "B_out": false,
+      "B_path": true,
+      "B_path_waiting": {
+        "counters": "lifetime through last observed check; outcomes and observed checks cover selected reporting window",
+        "eligibility": "active site without strong path at check start; no root/output still eligible",
+        "finite_wait_bound": false,
+        "no_observations": "null counters/outcomes, never inferred as zero wait",
+        "reset": "accepted insertion or strong connection; active connected check resets; inactive check pauses",
+        "sites": {
+          "0": {
+            "last_active": false,
+            "last_outcome": "inactive",
+            "last_path": false,
+            "lifetime_counters": {
+              "accepted_births": 6,
+              "current_wait_checks": 0,
+              "eligible_checks": 6,
+              "maximum_wait_checks": 1,
+              "unserved_checks": 1
+            },
+            "observed_checks": 40,
+            "outcomes_in_window": {
+              "accepted": 3,
+              "connected": 15,
+              "connected_by_earlier_birth": 2,
+              "inactive": 19,
+              "quota": 1
+            }
+          },
+          "1": {
+            "last_active": true,
+            "last_outcome": "connected",
+            "last_path": true,
+            "lifetime_counters": {
+              "accepted_births": 5,
+              "current_wait_checks": 0,
+              "eligible_checks": 7,
+              "maximum_wait_checks": 3,
+              "unserved_checks": 3
+            },
+            "observed_checks": 40,
+            "outcomes_in_window": {
+              "accepted": 3,
+              "connected": 15,
+              "connected_by_earlier_birth": 1,
+              "inactive": 18,
+              "quota": 3
+            }
+          },
+          "2": {
+            "last_active": false,
+            "last_outcome": "inactive",
+            "last_path": false,
+            "lifetime_counters": {
+              "accepted_births": 1,
+              "current_wait_checks": 0,
+              "eligible_checks": 9,
+              "maximum_wait_checks": 8,
+              "unserved_checks": 8
+            },
+            "observed_checks": 40,
+            "outcomes_in_window": {
+              "accepted": 1,
+              "connected": 15,
+              "inactive": 16,
+              "no_root": 3,
+              "quota": 5
+            }
+          },
+          "3": {
+            "last_active": true,
+            "last_outcome": "no_root",
+            "last_path": false,
+            "lifetime_counters": {
+              "accepted_births": 5,
+              "current_wait_checks": 15,
+              "eligible_checks": 31,
+              "maximum_wait_checks": 15,
+              "unserved_checks": 26
+            },
+            "observed_checks": 40,
+            "outcomes_in_window": {
+              "accepted": 5,
+              "connected": 1,
+              "inactive": 8,
+              "no_root": 19,
+              "quota": 7
+            }
+          },
+          "4": {
+            "last_active": false,
+            "last_outcome": "inactive",
+            "last_path": false,
+            "lifetime_counters": {
+              "accepted_births": 1,
+              "current_wait_checks": 15,
+              "eligible_checks": 28,
+              "maximum_wait_checks": 15,
+              "unserved_checks": 27
+            },
+            "observed_checks": 40,
+            "outcomes_in_window": {
+              "accepted": 1,
+              "inactive": 12,
+              "no_root": 19,
+              "quota": 8
+            }
+          },
+          "5": {
+            "last_active": true,
+            "last_outcome": "no_root",
+            "last_path": false,
+            "lifetime_counters": {
+              "accepted_births": 2,
+              "current_wait_checks": 14,
+              "eligible_checks": 26,
+              "maximum_wait_checks": 14,
+              "unserved_checks": 24
+            },
+            "observed_checks": 40,
+            "outcomes_in_window": {
+              "accepted": 2,
+              "inactive": 14,
+              "no_root": 17,
+              "quota": 7
+            }
+          },
+          "6": {
+            "last_active": false,
+            "last_outcome": "inactive",
+            "last_path": false,
+            "lifetime_counters": {
+              "accepted_births": 4,
+              "current_wait_checks": 13,
+              "eligible_checks": 25,
+              "maximum_wait_checks": 13,
+              "unserved_checks": 22
+            },
+            "observed_checks": 40,
+            "outcomes_in_window": {
+              "accepted": 3,
+              "inactive": 15,
+              "no_root": 18,
+              "quota": 4
+            }
+          },
+          "7": {
+            "last_active": true,
+            "last_outcome": "no_root",
+            "last_path": false,
+            "lifetime_counters": {
+              "accepted_births": 5,
+              "current_wait_checks": 7,
+              "eligible_checks": 13,
+              "maximum_wait_checks": 7,
+              "unserved_checks": 8
+            },
+            "observed_checks": 40,
+            "outcomes_in_window": {
+              "accepted": 3,
+              "connected": 8,
+              "connected_by_earlier_birth": 2,
+              "inactive": 19,
+              "no_root": 7,
+              "quota": 1
+            }
+          }
+        },
+        "status": "DESCRIPTIVE",
+        "units": "B-path checks",
+        "used_in_verdict": false,
+        "wait": "eligible unserved checks since last accepted insertion or observed active connection; inactivity pauses"
+      },
+      "E": [
+        0.5,
+        0.7,
+        0.8,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "birth_counts": {
+        "B-out": 0,
+        "B-path": 29
+      },
+      "birth_times": {
+        "B-out": [],
+        "B-path": [
+          20.0,
+          20.0,
+          40.0,
+          40.0,
+          60.0,
+          60.0,
+          100.0,
+          100.0,
+          120.0,
+          120.0,
+          140.0,
+          140.0,
+          160.0,
+          160.0,
+          180.0,
+          180.0,
+          200.0,
+          220.0,
+          280.0,
+          280.0,
+          300.0,
+          300.0,
+          320.0,
+          320.0,
+          340.0,
+          340.0,
+          360.0,
+          380.0,
+          420.0
+        ]
+      },
+      "deferred_output_first": {
+        "per_site": {
+          "0": 0,
+          "1": 0,
+          "2": 0,
+          "3": 1,
+          "4": 1,
+          "5": 1,
+          "6": 1,
+          "7": 0
+        },
+        "total": 4
+      },
+      "qualification_validity": {
+        "checkpoint_intervals": [
+          {
+            "checkpoint_episodes": [
+              0,
+              40
+            ],
+            "fast_transient_frames": 25,
+            "individual_invalid_frames": 9,
+            "interval_seconds": [
+              0.0,
+              640.0
+            ],
+            "not_qualified_invalid_pair_fraction": 0.8,
+            "not_qualified_invalid_pairs": 8,
+            "pair_invalid_frames": 25,
+            "qualification_windows": 10,
+            "world_frames": 6400
+          },
+          {
+            "checkpoint_episodes": [
+              40,
+              45
+            ],
+            "fast_transient_frames": 4,
+            "individual_invalid_frames": 0,
+            "interval_seconds": [
+              640.0,
+              720.0
+            ],
+            "not_qualified_invalid_pair_fraction": 1.0,
+            "not_qualified_invalid_pairs": 2,
+            "pair_invalid_frames": 4,
+            "qualification_windows": 2,
+            "world_frames": 800
+          },
+          {
+            "checkpoint_episodes": [
+              45,
+              50
+            ],
+            "fast_transient_frames": 4,
+            "individual_invalid_frames": 0,
+            "interval_seconds": [
+              720.0,
+              800.0
+            ],
+            "not_qualified_invalid_pair_fraction": null,
+            "not_qualified_invalid_pairs": 0,
+            "pair_invalid_frames": 4,
+            "qualification_windows": 0,
+            "world_frames": 800
+          }
+        ],
+        "fast_transient_policy": "a world frame with any own-invalid sample or invalid element pair; each frame counted once",
+        "interval_policy": "left-open, right-closed; qualification windows assigned by check endpoint; all starts including small cohorts in denominator",
+        "qualification_window_seconds": 60.0,
+        "status": "DESCRIPTIVE",
+        "used_in_verdict": false,
+        "whole": {
+          "fast_transient_frames": 33,
+          "individual_invalid_frames": 9,
+          "interval_seconds": [
+            0.0,
+            800.0
+          ],
+          "not_qualified_invalid_pair_fraction": 0.8333333333333334,
+          "not_qualified_invalid_pairs": 10,
+          "pair_invalid_frames": 33,
+          "qualification_windows": 12,
+          "world_frames": 8000
+        }
+      },
+      "verdict": "PASS"
+    }
+  },
+  "verdict": "FIXTURES_FAIL"
+}

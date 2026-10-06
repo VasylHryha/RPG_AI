@@ -1,0 +1,7538 @@
+[
+  {
+    "cost": 0.0,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 20.0,
+    "values": {
+      "birth_rule": "B-out",
+      "request": 0,
+      "site": null
+    }
+  },
+  {
+    "cost": 0.0,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 20.0,
+    "values": {
+      "birth_rule": "B-out",
+      "candidate": 0,
+      "clearance": true,
+      "position": [
+        0.0,
+        0.0
+      ],
+      "request": 0
+    }
+  },
+  {
+    "cost": 0.0,
+    "ids": [
+      0
+    ],
+    "rule": "B-out",
+    "time": 20.0,
+    "values": {
+      "request": 0,
+      "role": "output"
+    }
+  },
+  {
+    "cost": 0.0,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 20.0,
+    "values": {
+      "accepted": 1,
+      "attempts": 1,
+      "birth_rule": "B-out",
+      "id": 0,
+      "outcome": "accepted",
+      "request": 0,
+      "site": null
+    }
+  },
+  {
+    "cost": 0.0,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 20.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 1,
+      "site": 2
+    }
+  },
+  {
+    "cost": 0.0,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 20.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "no_root",
+      "request": 1,
+      "site": 2
+    }
+  },
+  {
+    "cost": 0.0,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 20.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 2,
+      "site": 6
+    }
+  },
+  {
+    "cost": 0.0,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 20.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "no_root",
+      "request": 2,
+      "site": 6
+    }
+  },
+  {
+    "cost": 0.0,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 20.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 3,
+      "site": 7
+    }
+  },
+  {
+    "cost": 0.0,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 20.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "no_root",
+      "request": 3,
+      "site": 7
+    }
+  },
+  {
+    "cost": 1.0,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 40.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 7,
+      "site": 2
+    }
+  },
+  {
+    "cost": 1.0,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 40.0,
+    "values": {
+      "a": 1,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": false,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        0.27237772211478084,
+        3.9056573029234776
+      ],
+      "request": 7,
+      "site": 2
+    }
+  },
+  {
+    "cost": 1.0,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 40.0,
+    "values": {
+      "a": 1,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        0.4172504667720144,
+        3.914545237671504
+      ],
+      "request": 7,
+      "site": 2
+    }
+  },
+  {
+    "cost": 2.1,
+    "ids": [
+      2
+    ],
+    "rule": "B-path",
+    "time": 40.0,
+    "values": {
+      "request": 7,
+      "role": "element",
+      "site": 2
+    }
+  },
+  {
+    "cost": 2.1,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 40.0,
+    "values": {
+      "accepted": 1,
+      "attempts": 2,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 1,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "id": 2,
+      "outcome": "accepted",
+      "request": 7,
+      "site": 2
+    }
+  },
+  {
+    "cost": 2.1,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 40.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 8,
+      "site": 2
+    }
+  },
+  {
+    "cost": 2.1,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 40.0,
+    "values": {
+      "a": 2,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        0.35832037410368456,
+        3.3616770398357976
+      ],
+      "request": 8,
+      "site": 2
+    }
+  },
+  {
+    "cost": 3.3,
+    "ids": [
+      3
+    ],
+    "rule": "B-path",
+    "time": 40.0,
+    "values": {
+      "request": 8,
+      "role": "element",
+      "site": 2
+    }
+  },
+  {
+    "cost": 3.3,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 40.0,
+    "values": {
+      "accepted": 1,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "id": 3,
+      "outcome": "accepted",
+      "request": 8,
+      "site": 2
+    }
+  },
+  {
+    "cost": 3.3,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 40.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 9,
+      "site": 1
+    }
+  },
+  {
+    "cost": 3.3,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 40.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 9,
+      "site": 1
+    }
+  },
+  {
+    "cost": 3.3,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 40.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 10,
+      "site": 3
+    }
+  },
+  {
+    "cost": 3.3,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 40.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 10,
+      "site": 3
+    }
+  },
+  {
+    "cost": 3.3,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 40.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 11,
+      "site": 4
+    }
+  },
+  {
+    "cost": 3.3,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 40.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 11,
+      "site": 4
+    }
+  },
+  {
+    "cost": 3.3,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 40.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 12,
+      "site": 5
+    }
+  },
+  {
+    "cost": 3.3,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 40.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 12,
+      "site": 5
+    }
+  },
+  {
+    "cost": 3.3,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 40.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 13,
+      "site": 0
+    }
+  },
+  {
+    "cost": 3.3,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 40.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 13,
+      "site": 0
+    }
+  },
+  {
+    "cost": 3.3,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 60.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 14,
+      "site": 1
+    }
+  },
+  {
+    "cost": 3.3,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 60.0,
+    "values": {
+      "a": 3,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        1.9807901104469359,
+        2.312281612228121
+      ],
+      "request": 14,
+      "site": 1
+    }
+  },
+  {
+    "cost": 4.6,
+    "ids": [
+      4
+    ],
+    "rule": "B-path",
+    "time": 60.0,
+    "values": {
+      "request": 14,
+      "role": "element",
+      "site": 1
+    }
+  },
+  {
+    "cost": 4.6,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 60.0,
+    "values": {
+      "accepted": 1,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "id": 4,
+      "outcome": "accepted",
+      "request": 14,
+      "site": 1
+    }
+  },
+  {
+    "cost": 4.6,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 60.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 15,
+      "site": 1
+    }
+  },
+  {
+    "cost": 4.6,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 60.0,
+    "values": {
+      "a": 4,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        1.619072821237249,
+        1.8900297884466297
+      ],
+      "request": 15,
+      "site": 1
+    }
+  },
+  {
+    "cost": 6.0,
+    "ids": [
+      5
+    ],
+    "rule": "B-path",
+    "time": 60.0,
+    "values": {
+      "request": 15,
+      "role": "element",
+      "site": 1
+    }
+  },
+  {
+    "cost": 6.0,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 60.0,
+    "values": {
+      "accepted": 1,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "id": 5,
+      "outcome": "accepted",
+      "request": 15,
+      "site": 1
+    }
+  },
+  {
+    "cost": 6.0,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 60.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 16,
+      "site": 4
+    }
+  },
+  {
+    "cost": 6.0,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 60.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 16,
+      "site": 4
+    }
+  },
+  {
+    "cost": 6.0,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 60.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 17,
+      "site": 0
+    }
+  },
+  {
+    "cost": 6.0,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 60.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 17,
+      "site": 0
+    }
+  },
+  {
+    "cost": 6.0,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 80.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 18,
+      "site": 2
+    }
+  },
+  {
+    "cost": 6.0,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 80.0,
+    "values": {
+      "a": 5,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        0.13110429409003838,
+        2.933865639120482
+      ],
+      "request": 18,
+      "site": 2
+    }
+  },
+  {
+    "cost": 7.5,
+    "ids": [
+      6
+    ],
+    "rule": "B-path",
+    "time": 80.0,
+    "values": {
+      "request": 18,
+      "role": "element",
+      "site": 2
+    }
+  },
+  {
+    "cost": 7.5,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 80.0,
+    "values": {
+      "accepted": 1,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "id": 6,
+      "outcome": "accepted",
+      "request": 18,
+      "site": 2
+    }
+  },
+  {
+    "cost": 7.5,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 80.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 19,
+      "site": 2
+    }
+  },
+  {
+    "cost": 7.5,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 80.0,
+    "values": {
+      "a": 6,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        0.10628334971847186,
+        2.3784199435565467
+      ],
+      "request": 19,
+      "site": 2
+    }
+  },
+  {
+    "cost": 9.1,
+    "ids": [
+      7
+    ],
+    "rule": "B-path",
+    "time": 80.0,
+    "values": {
+      "request": 19,
+      "role": "element",
+      "site": 2
+    }
+  },
+  {
+    "cost": 9.1,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 80.0,
+    "values": {
+      "accepted": 1,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "id": 7,
+      "outcome": "accepted",
+      "request": 19,
+      "site": 2
+    }
+  },
+  {
+    "cost": 9.1,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 80.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 20,
+      "site": 4
+    }
+  },
+  {
+    "cost": 9.1,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 80.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 20,
+      "site": 4
+    }
+  },
+  {
+    "cost": 9.1,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 80.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 21,
+      "site": 5
+    }
+  },
+  {
+    "cost": 9.1,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 80.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 21,
+      "site": 5
+    }
+  },
+  {
+    "cost": 9.1,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 80.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 22,
+      "site": 6
+    }
+  },
+  {
+    "cost": 9.1,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 80.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 22,
+      "site": 6
+    }
+  },
+  {
+    "cost": 9.1,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 100.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 24,
+      "site": 2
+    }
+  },
+  {
+    "cost": 9.1,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 100.0,
+    "values": {
+      "a": 7,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        0.4319564405792898,
+        2.7785520413433313
+      ],
+      "request": 24,
+      "site": 2
+    }
+  },
+  {
+    "cost": 10.8,
+    "ids": [
+      8
+    ],
+    "rule": "B-path",
+    "time": 100.0,
+    "values": {
+      "request": 24,
+      "role": "element",
+      "site": 2
+    }
+  },
+  {
+    "cost": 10.8,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 100.0,
+    "values": {
+      "accepted": 1,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "id": 8,
+      "outcome": "accepted",
+      "request": 24,
+      "site": 2
+    }
+  },
+  {
+    "cost": 10.8,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 100.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 25,
+      "site": 2
+    }
+  },
+  {
+    "cost": 10.8,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 100.0,
+    "values": {
+      "a": 8,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        0.3465460743959189,
+        2.229151395777254
+      ],
+      "request": 25,
+      "site": 2
+    }
+  },
+  {
+    "cost": 12.6,
+    "ids": [
+      9
+    ],
+    "rule": "B-path",
+    "time": 100.0,
+    "values": {
+      "request": 25,
+      "role": "element",
+      "site": 2
+    }
+  },
+  {
+    "cost": 12.6,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 100.0,
+    "values": {
+      "accepted": 1,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "id": 9,
+      "outcome": "accepted",
+      "request": 25,
+      "site": 2
+    }
+  },
+  {
+    "cost": 12.6,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 100.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 26,
+      "site": 4
+    }
+  },
+  {
+    "cost": 12.6,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 100.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 26,
+      "site": 4
+    }
+  },
+  {
+    "cost": 12.6,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 100.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 27,
+      "site": 5
+    }
+  },
+  {
+    "cost": 12.6,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 100.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 27,
+      "site": 5
+    }
+  },
+  {
+    "cost": 12.6,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 100.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 28,
+      "site": 7
+    }
+  },
+  {
+    "cost": 12.6,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 100.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 28,
+      "site": 7
+    }
+  },
+  {
+    "cost": 12.6,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 100.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 29,
+      "site": 0
+    }
+  },
+  {
+    "cost": 12.6,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 100.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 29,
+      "site": 0
+    }
+  },
+  {
+    "cost": 12.6,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 100.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 30,
+      "site": 3
+    }
+  },
+  {
+    "cost": 12.6,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 100.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 30,
+      "site": 3
+    }
+  },
+  {
+    "cost": 12.6,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 120.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 32,
+      "site": 1
+    }
+  },
+  {
+    "cost": 12.6,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 120.0,
+    "values": {
+      "a": 9,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        0.48004538052436796,
+        2.610300418043673
+      ],
+      "request": 32,
+      "site": 1
+    }
+  },
+  {
+    "cost": 14.4,
+    "ids": [
+      10
+    ],
+    "rule": "B-path",
+    "time": 120.0,
+    "values": {
+      "request": 32,
+      "role": "element",
+      "site": 1
+    }
+  },
+  {
+    "cost": 14.4,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 120.0,
+    "values": {
+      "accepted": 1,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "id": 10,
+      "outcome": "accepted",
+      "request": 32,
+      "site": 1
+    }
+  },
+  {
+    "cost": 14.4,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 120.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 33,
+      "site": 1
+    }
+  },
+  {
+    "cost": 14.4,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 120.0,
+    "values": {
+      "a": 10,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        0.37948105039120184,
+        2.0634706314511106
+      ],
+      "request": 33,
+      "site": 1
+    }
+  },
+  {
+    "cost": 16.1,
+    "ids": [
+      11
+    ],
+    "rule": "B-path",
+    "time": 120.0,
+    "values": {
+      "request": 33,
+      "role": "element",
+      "site": 1
+    }
+  },
+  {
+    "cost": 16.1,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 120.0,
+    "values": {
+      "accepted": 1,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "id": 11,
+      "outcome": "accepted",
+      "request": 33,
+      "site": 1
+    }
+  },
+  {
+    "cost": 16.1,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 120.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 34,
+      "site": 5
+    }
+  },
+  {
+    "cost": 16.1,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 120.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 34,
+      "site": 5
+    }
+  },
+  {
+    "cost": 16.1,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 120.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 35,
+      "site": 6
+    }
+  },
+  {
+    "cost": 16.1,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 120.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 35,
+      "site": 6
+    }
+  },
+  {
+    "cost": 16.1,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 120.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 36,
+      "site": 0
+    }
+  },
+  {
+    "cost": 16.1,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 120.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 36,
+      "site": 0
+    }
+  },
+  {
+    "cost": 16.1,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 120.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 37,
+      "site": 3
+    }
+  },
+  {
+    "cost": 16.1,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 120.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 37,
+      "site": 3
+    }
+  },
+  {
+    "cost": 16.1,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 120.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 38,
+      "site": 4
+    }
+  },
+  {
+    "cost": 16.1,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 120.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 38,
+      "site": 4
+    }
+  },
+  {
+    "cost": 15.9,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 140.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 40,
+      "site": 1
+    }
+  },
+  {
+    "cost": 15.9,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 140.0,
+    "values": {
+      "a": 11,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        0.4844439706823713,
+        2.4266615143042136
+      ],
+      "request": 40,
+      "site": 1
+    }
+  },
+  {
+    "cost": 17.6,
+    "ids": [
+      12
+    ],
+    "rule": "B-path",
+    "time": 140.0,
+    "values": {
+      "request": 40,
+      "role": "element",
+      "site": 1
+    }
+  },
+  {
+    "cost": 17.6,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 140.0,
+    "values": {
+      "accepted": 1,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "id": 12,
+      "outcome": "accepted",
+      "request": 40,
+      "site": 1
+    }
+  },
+  {
+    "cost": 17.6,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 140.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 41,
+      "site": 1
+    }
+  },
+  {
+    "cost": 17.6,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 140.0,
+    "values": {
+      "a": 12,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        0.3755953268702281,
+        1.881420308285944
+      ],
+      "request": 41,
+      "site": 1
+    }
+  },
+  {
+    "cost": 19.3,
+    "ids": [
+      13
+    ],
+    "rule": "B-path",
+    "time": 140.0,
+    "values": {
+      "request": 41,
+      "role": "element",
+      "site": 1
+    }
+  },
+  {
+    "cost": 19.3,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 140.0,
+    "values": {
+      "accepted": 1,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "id": 13,
+      "outcome": "accepted",
+      "request": 41,
+      "site": 1
+    }
+  },
+  {
+    "cost": 19.3,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 140.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 42,
+      "site": 2
+    }
+  },
+  {
+    "cost": 19.3,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 140.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 42,
+      "site": 2
+    }
+  },
+  {
+    "cost": 19.3,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 140.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 43,
+      "site": 3
+    }
+  },
+  {
+    "cost": 19.3,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 140.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 43,
+      "site": 3
+    }
+  },
+  {
+    "cost": 19.3,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 140.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 44,
+      "site": 6
+    }
+  },
+  {
+    "cost": 19.3,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 140.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 44,
+      "site": 6
+    }
+  },
+  {
+    "cost": 19.3,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 140.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 45,
+      "site": 7
+    }
+  },
+  {
+    "cost": 19.3,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 140.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 45,
+      "site": 7
+    }
+  },
+  {
+    "cost": 19.3,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 140.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 46,
+      "site": 0
+    }
+  },
+  {
+    "cost": 19.3,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 140.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 46,
+      "site": 0
+    }
+  },
+  {
+    "cost": 19.3,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 140.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 47,
+      "site": 4
+    }
+  },
+  {
+    "cost": 19.3,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 140.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 47,
+      "site": 4
+    }
+  },
+  {
+    "cost": 19.3,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 140.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 48,
+      "site": 5
+    }
+  },
+  {
+    "cost": 19.3,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 140.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 48,
+      "site": 5
+    }
+  },
+  {
+    "cost": 19.0,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 160.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 51,
+      "site": 1
+    }
+  },
+  {
+    "cost": 19.0,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 160.0,
+    "values": {
+      "a": 13,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        0.4339492798023375,
+        2.3106587742846614
+      ],
+      "request": 51,
+      "site": 1
+    }
+  },
+  {
+    "cost": 20.6,
+    "ids": [
+      14
+    ],
+    "rule": "B-path",
+    "time": 160.0,
+    "values": {
+      "request": 51,
+      "role": "element",
+      "site": 1
+    }
+  },
+  {
+    "cost": 20.6,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 160.0,
+    "values": {
+      "accepted": 1,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "id": 14,
+      "outcome": "accepted",
+      "request": 51,
+      "site": 1
+    }
+  },
+  {
+    "cost": 20.6,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 160.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 52,
+      "site": 1
+    }
+  },
+  {
+    "cost": 20.6,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 160.0,
+    "values": {
+      "a": 14,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        0.3313247646180858,
+        1.7642118794419903
+      ],
+      "request": 52,
+      "site": 1
+    }
+  },
+  {
+    "cost": 22.3,
+    "ids": [
+      15
+    ],
+    "rule": "B-path",
+    "time": 160.0,
+    "values": {
+      "request": 52,
+      "role": "element",
+      "site": 1
+    }
+  },
+  {
+    "cost": 22.3,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 160.0,
+    "values": {
+      "accepted": 1,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "id": 15,
+      "outcome": "accepted",
+      "request": 52,
+      "site": 1
+    }
+  },
+  {
+    "cost": 22.3,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 160.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 53,
+      "site": 2
+    }
+  },
+  {
+    "cost": 22.3,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 160.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 53,
+      "site": 2
+    }
+  },
+  {
+    "cost": 22.3,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 160.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 54,
+      "site": 3
+    }
+  },
+  {
+    "cost": 22.3,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 160.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 54,
+      "site": 3
+    }
+  },
+  {
+    "cost": 22.3,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 160.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 55,
+      "site": 4
+    }
+  },
+  {
+    "cost": 22.3,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 160.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 55,
+      "site": 4
+    }
+  },
+  {
+    "cost": 22.3,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 160.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 56,
+      "site": 5
+    }
+  },
+  {
+    "cost": 22.3,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 160.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 56,
+      "site": 5
+    }
+  },
+  {
+    "cost": 22.0,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 180.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 57,
+      "site": 1
+    }
+  },
+  {
+    "cost": 22.0,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 180.0,
+    "values": {
+      "a": 15,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        0.22475546232363985,
+        2.1397796507882143
+      ],
+      "request": 57,
+      "site": 1
+    }
+  },
+  {
+    "cost": 23.5,
+    "ids": [
+      16
+    ],
+    "rule": "B-path",
+    "time": 180.0,
+    "values": {
+      "request": 57,
+      "role": "element",
+      "site": 1
+    }
+  },
+  {
+    "cost": 23.5,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 180.0,
+    "values": {
+      "accepted": 1,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "id": 16,
+      "outcome": "accepted",
+      "request": 57,
+      "site": 1
+    }
+  },
+  {
+    "cost": 23.5,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 180.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 58,
+      "site": 1
+    }
+  },
+  {
+    "cost": 23.5,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 180.0,
+    "values": {
+      "a": 16,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        0.16667455535963177,
+        1.5868215979069507
+      ],
+      "request": 58,
+      "site": 1
+    }
+  },
+  {
+    "cost": 25.1,
+    "ids": [
+      17
+    ],
+    "rule": "B-path",
+    "time": 180.0,
+    "values": {
+      "request": 58,
+      "role": "element",
+      "site": 1
+    }
+  },
+  {
+    "cost": 25.1,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 180.0,
+    "values": {
+      "accepted": 1,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "id": 17,
+      "outcome": "accepted",
+      "request": 58,
+      "site": 1
+    }
+  },
+  {
+    "cost": 25.1,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 180.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 59,
+      "site": 4
+    }
+  },
+  {
+    "cost": 25.1,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 180.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 59,
+      "site": 4
+    }
+  },
+  {
+    "cost": 25.1,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 180.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 60,
+      "site": 5
+    }
+  },
+  {
+    "cost": 25.1,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 180.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 60,
+      "site": 5
+    }
+  },
+  {
+    "cost": 25.1,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 180.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 61,
+      "site": 6
+    }
+  },
+  {
+    "cost": 25.1,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 180.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 61,
+      "site": 6
+    }
+  },
+  {
+    "cost": 25.1,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 180.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 62,
+      "site": 7
+    }
+  },
+  {
+    "cost": 25.1,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 180.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 62,
+      "site": 7
+    }
+  },
+  {
+    "cost": 27.0,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 200.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 65,
+      "site": 1
+    }
+  },
+  {
+    "cost": 27.0,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 200.0,
+    "values": {
+      "a": 17,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        0.3786600477214065,
+        1.954419754708868
+      ],
+      "request": 65,
+      "site": 1
+    }
+  },
+  {
+    "cost": 28.700000000000003,
+    "ids": [
+      20
+    ],
+    "rule": "B-path",
+    "time": 200.0,
+    "values": {
+      "request": 65,
+      "role": "element",
+      "site": 1
+    }
+  },
+  {
+    "cost": 28.700000000000003,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 200.0,
+    "values": {
+      "accepted": 1,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "id": 20,
+      "outcome": "accepted",
+      "request": 65,
+      "site": 1
+    }
+  },
+  {
+    "cost": 28.700000000000003,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 200.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 66,
+      "site": 1
+    }
+  },
+  {
+    "cost": 28.700000000000003,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 200.0,
+    "values": {
+      "a": 20,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        0.27290415655931755,
+        1.4085702411206333
+      ],
+      "request": 66,
+      "site": 1
+    }
+  },
+  {
+    "cost": 30.3,
+    "ids": [
+      21
+    ],
+    "rule": "B-path",
+    "time": 200.0,
+    "values": {
+      "request": 66,
+      "role": "element",
+      "site": 1
+    }
+  },
+  {
+    "cost": 30.3,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 200.0,
+    "values": {
+      "accepted": 1,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "id": 21,
+      "outcome": "accepted",
+      "request": 66,
+      "site": 1
+    }
+  },
+  {
+    "cost": 30.3,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 200.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 67,
+      "site": 6
+    }
+  },
+  {
+    "cost": 30.3,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 200.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 67,
+      "site": 6
+    }
+  },
+  {
+    "cost": 30.3,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 200.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 68,
+      "site": 7
+    }
+  },
+  {
+    "cost": 30.3,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 200.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 68,
+      "site": 7
+    }
+  },
+  {
+    "cost": 30.3,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 200.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 69,
+      "site": 4
+    }
+  },
+  {
+    "cost": 30.3,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 200.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 69,
+      "site": 4
+    }
+  },
+  {
+    "cost": 30.3,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 200.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 70,
+      "site": 5
+    }
+  },
+  {
+    "cost": 30.3,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 200.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 70,
+      "site": 5
+    }
+  },
+  {
+    "cost": 30.3,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 200.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 71,
+      "site": 0
+    }
+  },
+  {
+    "cost": 30.3,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 200.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 71,
+      "site": 0
+    }
+  },
+  {
+    "cost": 29.9,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 220.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 72,
+      "site": 3
+    }
+  },
+  {
+    "cost": 29.9,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 220.0,
+    "values": {
+      "a": 21,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        0.24719235580523308,
+        1.7656684757264292
+      ],
+      "request": 72,
+      "site": 3
+    }
+  },
+  {
+    "cost": 31.4,
+    "ids": [
+      22
+    ],
+    "rule": "B-path",
+    "time": 220.0,
+    "values": {
+      "request": 72,
+      "role": "element",
+      "site": 3
+    }
+  },
+  {
+    "cost": 31.4,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 220.0,
+    "values": {
+      "accepted": 1,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "id": 22,
+      "outcome": "accepted",
+      "request": 72,
+      "site": 3
+    }
+  },
+  {
+    "cost": 31.4,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 220.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 73,
+      "site": 3
+    }
+  },
+  {
+    "cost": 31.4,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 220.0,
+    "values": {
+      "a": 22,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        0.17010453069400788,
+        1.215038411872646
+      ],
+      "request": 73,
+      "site": 3
+    }
+  },
+  {
+    "cost": 33.0,
+    "ids": [
+      23
+    ],
+    "rule": "B-path",
+    "time": 220.0,
+    "values": {
+      "request": 73,
+      "role": "element",
+      "site": 3
+    }
+  },
+  {
+    "cost": 33.0,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 220.0,
+    "values": {
+      "accepted": 1,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "id": 23,
+      "outcome": "accepted",
+      "request": 73,
+      "site": 3
+    }
+  },
+  {
+    "cost": 33.0,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 220.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 74,
+      "site": 6
+    }
+  },
+  {
+    "cost": 33.0,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 220.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 74,
+      "site": 6
+    }
+  },
+  {
+    "cost": 33.0,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 220.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 75,
+      "site": 7
+    }
+  },
+  {
+    "cost": 33.0,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 220.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 75,
+      "site": 7
+    }
+  },
+  {
+    "cost": 33.0,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 220.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 76,
+      "site": 4
+    }
+  },
+  {
+    "cost": 33.0,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 220.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 76,
+      "site": 4
+    }
+  },
+  {
+    "cost": 32.7,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 240.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 77,
+      "site": 3
+    }
+  },
+  {
+    "cost": 32.7,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 240.0,
+    "values": {
+      "a": 23,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        0.3491024370956611,
+        1.6108699842943768
+      ],
+      "request": 77,
+      "site": 3
+    }
+  },
+  {
+    "cost": 34.3,
+    "ids": [
+      24
+    ],
+    "rule": "B-path",
+    "time": 240.0,
+    "values": {
+      "request": 77,
+      "role": "element",
+      "site": 3
+    }
+  },
+  {
+    "cost": 34.3,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 240.0,
+    "values": {
+      "accepted": 1,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "id": 24,
+      "outcome": "accepted",
+      "request": 77,
+      "site": 3
+    }
+  },
+  {
+    "cost": 34.3,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 240.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 78,
+      "site": 3
+    }
+  },
+  {
+    "cost": 34.3,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 240.0,
+    "values": {
+      "a": 24,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        0.23134160473724574,
+        1.0674839462309635
+      ],
+      "request": 78,
+      "site": 3
+    }
+  },
+  {
+    "cost": 35.9,
+    "ids": [
+      25
+    ],
+    "rule": "B-path",
+    "time": 240.0,
+    "values": {
+      "request": 78,
+      "role": "element",
+      "site": 3
+    }
+  },
+  {
+    "cost": 35.9,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 240.0,
+    "values": {
+      "accepted": 1,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "id": 25,
+      "outcome": "accepted",
+      "request": 78,
+      "site": 3
+    }
+  },
+  {
+    "cost": 35.9,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 240.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 79,
+      "site": 6
+    }
+  },
+  {
+    "cost": 35.9,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 240.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 79,
+      "site": 6
+    }
+  },
+  {
+    "cost": 35.6,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 260.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 80,
+      "site": 3
+    }
+  },
+  {
+    "cost": 35.6,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 260.0,
+    "values": {
+      "a": 25,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        0.13430803865046248,
+        1.4878864659605702
+      ],
+      "request": 80,
+      "site": 3
+    }
+  },
+  {
+    "cost": 37.1,
+    "ids": [
+      26
+    ],
+    "rule": "B-path",
+    "time": 260.0,
+    "values": {
+      "request": 80,
+      "role": "element",
+      "site": 3
+    }
+  },
+  {
+    "cost": 37.1,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 260.0,
+    "values": {
+      "accepted": 1,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "id": 26,
+      "outcome": "accepted",
+      "request": 80,
+      "site": 3
+    }
+  },
+  {
+    "cost": 37.1,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 260.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 81,
+      "site": 3
+    }
+  },
+  {
+    "cost": 37.1,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 260.0,
+    "values": {
+      "a": 26,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        0.08432245072933069,
+        0.9341379300706963
+      ],
+      "request": 81,
+      "site": 3
+    }
+  },
+  {
+    "cost": 38.7,
+    "ids": [
+      27
+    ],
+    "rule": "B-path",
+    "time": 260.0,
+    "values": {
+      "request": 81,
+      "role": "element",
+      "site": 3
+    }
+  },
+  {
+    "cost": 38.7,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 260.0,
+    "values": {
+      "accepted": 1,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "id": 27,
+      "outcome": "accepted",
+      "request": 81,
+      "site": 3
+    }
+  },
+  {
+    "cost": 38.7,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 260.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 82,
+      "site": 4
+    }
+  },
+  {
+    "cost": 38.7,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 260.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 82,
+      "site": 4
+    }
+  },
+  {
+    "cost": 38.7,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 260.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 83,
+      "site": 5
+    }
+  },
+  {
+    "cost": 38.7,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 260.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 83,
+      "site": 5
+    }
+  },
+  {
+    "cost": 38.7,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 280.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 84,
+      "site": 1
+    }
+  },
+  {
+    "cost": 38.7,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 280.0,
+    "values": {
+      "a": 27,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        0.19195501488126654,
+        1.29587546478279
+      ],
+      "request": 84,
+      "site": 1
+    }
+  },
+  {
+    "cost": 40.3,
+    "ids": [
+      28
+    ],
+    "rule": "B-path",
+    "time": 280.0,
+    "values": {
+      "request": 84,
+      "role": "element",
+      "site": 1
+    }
+  },
+  {
+    "cost": 40.3,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 280.0,
+    "values": {
+      "accepted": 1,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "id": 28,
+      "outcome": "accepted",
+      "request": 84,
+      "site": 1
+    }
+  },
+  {
+    "cost": 40.3,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 280.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 85,
+      "site": 6
+    }
+  },
+  {
+    "cost": 40.3,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 280.0,
+    "values": {
+      "a": 19,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        1.1916683630427032,
+        -2.6527748304238994
+      ],
+      "request": 85,
+      "site": 6
+    }
+  },
+  {
+    "cost": 41.5,
+    "ids": [
+      29
+    ],
+    "rule": "B-path",
+    "time": 280.0,
+    "values": {
+      "request": 85,
+      "role": "element",
+      "site": 6
+    }
+  },
+  {
+    "cost": 41.5,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 280.0,
+    "values": {
+      "accepted": 1,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "id": 29,
+      "outcome": "accepted",
+      "request": 85,
+      "site": 6
+    }
+  },
+  {
+    "cost": 41.5,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 280.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 86,
+      "site": 7
+    }
+  },
+  {
+    "cost": 41.5,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 280.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 86,
+      "site": 7
+    }
+  },
+  {
+    "cost": 41.5,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 280.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 87,
+      "site": 5
+    }
+  },
+  {
+    "cost": 41.5,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 280.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 87,
+      "site": 5
+    }
+  },
+  {
+    "cost": 41.5,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 280.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 88,
+      "site": 0
+    }
+  },
+  {
+    "cost": 41.5,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 280.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 88,
+      "site": 0
+    }
+  },
+  {
+    "cost": 41.5,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 280.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 89,
+      "site": 4
+    }
+  },
+  {
+    "cost": 41.5,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 280.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 89,
+      "site": 4
+    }
+  },
+  {
+    "cost": 41.1,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 300.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 90,
+      "site": 1
+    }
+  },
+  {
+    "cost": 41.1,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 300.0,
+    "values": {
+      "a": 28,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        0.10974419288548423,
+        1.2944418627632608
+      ],
+      "request": 90,
+      "site": 1
+    }
+  },
+  {
+    "cost": 42.7,
+    "ids": [
+      30
+    ],
+    "rule": "B-path",
+    "time": 300.0,
+    "values": {
+      "request": 90,
+      "role": "element",
+      "site": 1
+    }
+  },
+  {
+    "cost": 42.7,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 300.0,
+    "values": {
+      "accepted": 1,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "id": 30,
+      "outcome": "accepted",
+      "request": 90,
+      "site": 1
+    }
+  },
+  {
+    "cost": 42.7,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 300.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 91,
+      "site": 7
+    }
+  },
+  {
+    "cost": 42.7,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 300.0,
+    "values": {
+      "a": 29,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        1.986548277247109,
+        -2.2929971503383024
+      ],
+      "request": 91,
+      "site": 7
+    }
+  },
+  {
+    "cost": 44.0,
+    "ids": [
+      31
+    ],
+    "rule": "B-path",
+    "time": 300.0,
+    "values": {
+      "request": 91,
+      "role": "element",
+      "site": 7
+    }
+  },
+  {
+    "cost": 44.0,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 300.0,
+    "values": {
+      "accepted": 1,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "id": 31,
+      "outcome": "accepted",
+      "request": 91,
+      "site": 7
+    }
+  },
+  {
+    "cost": 44.0,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 300.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 92,
+      "site": 0
+    }
+  },
+  {
+    "cost": 44.0,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 300.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 92,
+      "site": 0
+    }
+  },
+  {
+    "cost": 44.0,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 300.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 93,
+      "site": 5
+    }
+  },
+  {
+    "cost": 44.0,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 300.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 93,
+      "site": 5
+    }
+  },
+  {
+    "cost": 44.3,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 320.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 94,
+      "site": 2
+    }
+  },
+  {
+    "cost": 44.3,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 320.0,
+    "values": {
+      "a": 30,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        0.027715450343799762,
+        1.1838212991306725
+      ],
+      "request": 94,
+      "site": 2
+    }
+  },
+  {
+    "cost": 45.9,
+    "ids": [
+      32
+    ],
+    "rule": "B-path",
+    "time": 320.0,
+    "values": {
+      "request": 94,
+      "role": "element",
+      "site": 2
+    }
+  },
+  {
+    "cost": 45.9,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 320.0,
+    "values": {
+      "accepted": 1,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "id": 32,
+      "outcome": "accepted",
+      "request": 94,
+      "site": 2
+    }
+  },
+  {
+    "cost": 45.9,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 320.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 95,
+      "site": 4
+    }
+  },
+  {
+    "cost": 45.9,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 320.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "no_root",
+      "request": 95,
+      "site": 4
+    }
+  },
+  {
+    "cost": 45.9,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 320.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 96,
+      "site": 5
+    }
+  },
+  {
+    "cost": 45.9,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 320.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "no_root",
+      "request": 96,
+      "site": 5
+    }
+  },
+  {
+    "cost": 45.6,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 340.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 97,
+      "site": 3
+    }
+  },
+  {
+    "cost": 45.6,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 340.0,
+    "values": {
+      "a": 32,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        0.14882372973537472,
+        1.2053027841719457
+      ],
+      "request": 97,
+      "site": 3
+    }
+  },
+  {
+    "cost": 47.2,
+    "ids": [
+      33
+    ],
+    "rule": "B-path",
+    "time": 340.0,
+    "values": {
+      "request": 97,
+      "role": "element",
+      "site": 3
+    }
+  },
+  {
+    "cost": 47.2,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 340.0,
+    "values": {
+      "accepted": 1,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "id": 33,
+      "outcome": "accepted",
+      "request": 97,
+      "site": 3
+    }
+  },
+  {
+    "cost": 47.2,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 340.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 98,
+      "site": 6
+    }
+  },
+  {
+    "cost": 47.2,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 340.0,
+    "values": {
+      "a": 18,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        1.8017601152483598,
+        -2.0992734883927953
+      ],
+      "request": 98,
+      "site": 6
+    }
+  },
+  {
+    "cost": 48.6,
+    "ids": [
+      34
+    ],
+    "rule": "B-path",
+    "time": 340.0,
+    "values": {
+      "request": 98,
+      "role": "element",
+      "site": 6
+    }
+  },
+  {
+    "cost": 48.6,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 340.0,
+    "values": {
+      "accepted": 1,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "id": 34,
+      "outcome": "accepted",
+      "request": 98,
+      "site": 6
+    }
+  },
+  {
+    "cost": 48.6,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 340.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 99,
+      "site": 7
+    }
+  },
+  {
+    "cost": 48.6,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 340.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 99,
+      "site": 7
+    }
+  },
+  {
+    "cost": 48.3,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 360.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 100,
+      "site": 3
+    }
+  },
+  {
+    "cost": 48.3,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 360.0,
+    "values": {
+      "a": 33,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        0.08043404409065694,
+        1.1015021340498086
+      ],
+      "request": 100,
+      "site": 3
+    }
+  },
+  {
+    "cost": 49.8,
+    "ids": [
+      35
+    ],
+    "rule": "B-path",
+    "time": 360.0,
+    "values": {
+      "request": 100,
+      "role": "element",
+      "site": 3
+    }
+  },
+  {
+    "cost": 49.8,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 360.0,
+    "values": {
+      "accepted": 1,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "id": 35,
+      "outcome": "accepted",
+      "request": 100,
+      "site": 3
+    }
+  },
+  {
+    "cost": 49.8,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 360.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 101,
+      "site": 7
+    }
+  },
+  {
+    "cost": 49.8,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 360.0,
+    "values": {
+      "a": 34,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        1.7126556652705367,
+        -2.2508021260752704
+      ],
+      "request": 101,
+      "site": 7
+    }
+  },
+  {
+    "cost": 51.3,
+    "ids": [
+      36
+    ],
+    "rule": "B-path",
+    "time": 360.0,
+    "values": {
+      "request": 101,
+      "role": "element",
+      "site": 7
+    }
+  },
+  {
+    "cost": 51.3,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 360.0,
+    "values": {
+      "accepted": 1,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "id": 36,
+      "outcome": "accepted",
+      "request": 101,
+      "site": 7
+    }
+  },
+  {
+    "cost": 51.3,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 360.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 102,
+      "site": 0
+    }
+  },
+  {
+    "cost": 51.3,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 360.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 102,
+      "site": 0
+    }
+  },
+  {
+    "cost": 51.3,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 360.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 103,
+      "site": 5
+    }
+  },
+  {
+    "cost": 51.3,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 360.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 103,
+      "site": 5
+    }
+  },
+  {
+    "cost": 51.3,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 380.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 104,
+      "site": 2
+    }
+  },
+  {
+    "cost": 51.3,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 380.0,
+    "values": {
+      "a": 35,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        0.05158313081134443,
+        1.0025759652712103
+      ],
+      "request": 104,
+      "site": 2
+    }
+  },
+  {
+    "cost": 52.8,
+    "ids": [
+      37
+    ],
+    "rule": "B-path",
+    "time": 380.0,
+    "values": {
+      "request": 104,
+      "role": "element",
+      "site": 2
+    }
+  },
+  {
+    "cost": 52.8,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 380.0,
+    "values": {
+      "accepted": 1,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "id": 37,
+      "outcome": "accepted",
+      "request": 104,
+      "site": 2
+    }
+  },
+  {
+    "cost": 52.8,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 380.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 105,
+      "site": 6
+    }
+  },
+  {
+    "cost": 52.8,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 380.0,
+    "values": {
+      "a": 36,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        1.2578945062181002,
+        -2.428325706417433
+      ],
+      "request": 105,
+      "site": 6
+    }
+  },
+  {
+    "cost": 54.400000000000006,
+    "ids": [
+      38
+    ],
+    "rule": "B-path",
+    "time": 380.0,
+    "values": {
+      "request": 105,
+      "role": "element",
+      "site": 6
+    }
+  },
+  {
+    "cost": 54.400000000000006,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 380.0,
+    "values": {
+      "accepted": 1,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "id": 38,
+      "outcome": "accepted",
+      "request": 105,
+      "site": 6
+    }
+  },
+  {
+    "cost": 54.400000000000006,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 380.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 106,
+      "site": 7
+    }
+  },
+  {
+    "cost": 54.400000000000006,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 380.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 106,
+      "site": 7
+    }
+  },
+  {
+    "cost": 54.400000000000006,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 380.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 107,
+      "site": 0
+    }
+  },
+  {
+    "cost": 54.400000000000006,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 380.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 107,
+      "site": 0
+    }
+  },
+  {
+    "cost": 54.400000000000006,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 400.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 108,
+      "site": 3
+    }
+  },
+  {
+    "cost": 54.400000000000006,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 400.0,
+    "values": {
+      "a": 37,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        -0.02046966433652364,
+        1.0054150233392463
+      ],
+      "request": 108,
+      "site": 3
+    }
+  },
+  {
+    "cost": 55.900000000000006,
+    "ids": [
+      39
+    ],
+    "rule": "B-path",
+    "time": 400.0,
+    "values": {
+      "request": 108,
+      "role": "element",
+      "site": 3
+    }
+  },
+  {
+    "cost": 55.900000000000006,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 400.0,
+    "values": {
+      "accepted": 1,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "id": 39,
+      "outcome": "accepted",
+      "request": 108,
+      "site": 3
+    }
+  },
+  {
+    "cost": 55.900000000000006,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 400.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 109,
+      "site": 7
+    }
+  },
+  {
+    "cost": 55.900000000000006,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 400.0,
+    "values": {
+      "a": 38,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        1.714752742355763,
+        -2.2569956133228635
+      ],
+      "request": 109,
+      "site": 7
+    }
+  },
+  {
+    "cost": 57.6,
+    "ids": [
+      40
+    ],
+    "rule": "B-path",
+    "time": 400.0,
+    "values": {
+      "request": 109,
+      "role": "element",
+      "site": 7
+    }
+  },
+  {
+    "cost": 57.6,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 400.0,
+    "values": {
+      "accepted": 1,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "id": 40,
+      "outcome": "accepted",
+      "request": 109,
+      "site": 7
+    }
+  },
+  {
+    "cost": 57.6,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 400.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 110,
+      "site": 4
+    }
+  },
+  {
+    "cost": 57.6,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 400.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 110,
+      "site": 4
+    }
+  },
+  {
+    "cost": 57.6,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 400.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 111,
+      "site": 5
+    }
+  },
+  {
+    "cost": 57.6,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 400.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "quota",
+      "request": 111,
+      "site": 5
+    }
+  },
+  {
+    "cost": 57.6,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 420.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 112,
+      "site": 1
+    }
+  },
+  {
+    "cost": 57.6,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 420.0,
+    "values": {
+      "a": 39,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        0.15053850431921423,
+        1.0040094441914746
+      ],
+      "request": 112,
+      "site": 1
+    }
+  },
+  {
+    "cost": 59.1,
+    "ids": [
+      41
+    ],
+    "rule": "B-path",
+    "time": 420.0,
+    "values": {
+      "request": 112,
+      "role": "element",
+      "site": 1
+    }
+  },
+  {
+    "cost": 59.1,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 420.0,
+    "values": {
+      "accepted": 1,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "id": 41,
+      "outcome": "accepted",
+      "request": 112,
+      "site": 1
+    }
+  },
+  {
+    "cost": 59.1,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 420.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 113,
+      "site": 6
+    }
+  },
+  {
+    "cost": 59.1,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 420.0,
+    "values": {
+      "a": 40,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        1.3541503045079417,
+        -2.3260751709961713
+      ],
+      "request": 113,
+      "site": 6
+    }
+  },
+  {
+    "cost": 60.900000000000006,
+    "ids": [
+      42
+    ],
+    "rule": "B-path",
+    "time": 420.0,
+    "values": {
+      "request": 113,
+      "role": "element",
+      "site": 6
+    }
+  },
+  {
+    "cost": 60.900000000000006,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 420.0,
+    "values": {
+      "accepted": 1,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "id": 42,
+      "outcome": "accepted",
+      "request": 113,
+      "site": 6
+    }
+  },
+  {
+    "cost": 60.8,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 440.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 114,
+      "site": 1
+    }
+  },
+  {
+    "cost": 60.8,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 440.0,
+    "values": {
+      "a": 37,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        -0.0695577785304041,
+        0.9146899169411437
+      ],
+      "request": 114,
+      "site": 1
+    }
+  },
+  {
+    "cost": 62.400000000000006,
+    "ids": [
+      43
+    ],
+    "rule": "B-path",
+    "time": 440.0,
+    "values": {
+      "request": 114,
+      "role": "element",
+      "site": 1
+    }
+  },
+  {
+    "cost": 62.400000000000006,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 440.0,
+    "values": {
+      "accepted": 1,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "id": 43,
+      "outcome": "accepted",
+      "request": 114,
+      "site": 1
+    }
+  },
+  {
+    "cost": 62.400000000000006,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 440.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 115,
+      "site": 6
+    }
+  },
+  {
+    "cost": 62.400000000000006,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 440.0,
+    "values": {
+      "a": 42,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        1.232865619236958,
+        -2.1840309685905637
+      ],
+      "request": 115,
+      "site": 6
+    }
+  },
+  {
+    "cost": 62.400000000000006,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 440.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "outcome": "cost",
+      "request": 115,
+      "site": 6
+    }
+  },
+  {
+    "cost": 62.400000000000006,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 440.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 116,
+      "site": 4
+    }
+  },
+  {
+    "cost": 62.400000000000006,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 440.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 116,
+      "site": 4
+    }
+  },
+  {
+    "cost": 63.1,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 460.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 118,
+      "site": 2
+    }
+  },
+  {
+    "cost": 63.1,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 460.0,
+    "values": {
+      "a": 43,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        0.18078435191235762,
+        0.9159020189772374
+      ],
+      "request": 118,
+      "site": 2
+    }
+  },
+  {
+    "cost": 63.1,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 460.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "outcome": "cost",
+      "request": 118,
+      "site": 2
+    }
+  },
+  {
+    "cost": 63.1,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 460.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 119,
+      "site": 3
+    }
+  },
+  {
+    "cost": 63.1,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 460.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 119,
+      "site": 3
+    }
+  },
+  {
+    "cost": 63.1,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 460.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 120,
+      "site": 6
+    }
+  },
+  {
+    "cost": 63.1,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 460.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 120,
+      "site": 6
+    }
+  },
+  {
+    "cost": 63.1,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 460.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 121,
+      "site": 7
+    }
+  },
+  {
+    "cost": 63.1,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 460.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 121,
+      "site": 7
+    }
+  },
+  {
+    "cost": 63.1,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 460.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 122,
+      "site": 4
+    }
+  },
+  {
+    "cost": 63.1,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 460.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 122,
+      "site": 4
+    }
+  },
+  {
+    "cost": 63.1,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 460.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 123,
+      "site": 0
+    }
+  },
+  {
+    "cost": 63.1,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 460.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 123,
+      "site": 0
+    }
+  },
+  {
+    "cost": 63.1,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 460.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 124,
+      "site": 5
+    }
+  },
+  {
+    "cost": 63.1,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 460.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 124,
+      "site": 5
+    }
+  },
+  {
+    "cost": 63.7,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 480.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 125,
+      "site": 1
+    }
+  },
+  {
+    "cost": 63.7,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 480.0,
+    "values": {
+      "a": 37,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        -0.02862231066149075,
+        1.1008055624585813
+      ],
+      "request": 125,
+      "site": 1
+    }
+  },
+  {
+    "cost": 63.7,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 480.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "outcome": "cost",
+      "request": 125,
+      "site": 1
+    }
+  },
+  {
+    "cost": 63.7,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 480.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 126,
+      "site": 2
+    }
+  },
+  {
+    "cost": 63.7,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 480.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 126,
+      "site": 2
+    }
+  },
+  {
+    "cost": 63.7,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 480.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 127,
+      "site": 3
+    }
+  },
+  {
+    "cost": 63.7,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 480.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 127,
+      "site": 3
+    }
+  },
+  {
+    "cost": 63.7,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 480.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 128,
+      "site": 7
+    }
+  },
+  {
+    "cost": 63.7,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 480.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 128,
+      "site": 7
+    }
+  },
+  {
+    "cost": 63.7,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 480.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 129,
+      "site": 0
+    }
+  },
+  {
+    "cost": 63.7,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 480.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 129,
+      "site": 0
+    }
+  },
+  {
+    "cost": 63.7,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 480.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 130,
+      "site": 6
+    }
+  },
+  {
+    "cost": 63.7,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 480.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 130,
+      "site": 6
+    }
+  },
+  {
+    "cost": 63.7,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 480.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 131,
+      "site": 5
+    }
+  },
+  {
+    "cost": 63.7,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 480.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 131,
+      "site": 5
+    }
+  },
+  {
+    "cost": 63.400000000000006,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 500.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 132,
+      "site": 1
+    }
+  },
+  {
+    "cost": 63.400000000000006,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 500.0,
+    "values": {
+      "a": 37,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        0.06819315120361111,
+        1.210505836350758
+      ],
+      "request": 132,
+      "site": 1
+    }
+  },
+  {
+    "cost": 63.400000000000006,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 500.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "outcome": "cost",
+      "request": 132,
+      "site": 1
+    }
+  },
+  {
+    "cost": 63.400000000000006,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 500.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 133,
+      "site": 3
+    }
+  },
+  {
+    "cost": 63.400000000000006,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 500.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 133,
+      "site": 3
+    }
+  },
+  {
+    "cost": 63.400000000000006,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 500.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 134,
+      "site": 4
+    }
+  },
+  {
+    "cost": 63.400000000000006,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 500.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 134,
+      "site": 4
+    }
+  },
+  {
+    "cost": 63.400000000000006,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 500.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 135,
+      "site": 5
+    }
+  },
+  {
+    "cost": 63.400000000000006,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 500.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 135,
+      "site": 5
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 520.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 136,
+      "site": 1
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 520.0,
+    "values": {
+      "a": 30,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        -0.12612783542290748,
+        1.2680661655345002
+      ],
+      "request": 136,
+      "site": 1
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 520.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "outcome": "cost",
+      "request": 136,
+      "site": 1
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 520.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 137,
+      "site": 2
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 520.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 137,
+      "site": 2
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 520.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 138,
+      "site": 6
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 520.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 138,
+      "site": 6
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 520.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 139,
+      "site": 7
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 520.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 139,
+      "site": 7
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 520.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 140,
+      "site": 4
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 520.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 140,
+      "site": 4
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 520.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 141,
+      "site": 5
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 520.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 141,
+      "site": 5
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 520.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 142,
+      "site": 0
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 520.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 142,
+      "site": 0
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 540.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 143,
+      "site": 2
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 540.0,
+    "values": {
+      "a": 30,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        -0.13554061519530874,
+        1.3300878789602826
+      ],
+      "request": 143,
+      "site": 2
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 540.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "outcome": "cost",
+      "request": 143,
+      "site": 2
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 540.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 144,
+      "site": 3
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 540.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 144,
+      "site": 3
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 540.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 145,
+      "site": 1
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 540.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 145,
+      "site": 1
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 540.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 146,
+      "site": 7
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 540.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 146,
+      "site": 7
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 540.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 147,
+      "site": 5
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 540.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 147,
+      "site": 5
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 540.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 148,
+      "site": 0
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 540.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 148,
+      "site": 0
+    }
+  },
+  {
+    "cost": 63.6,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 560.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 149,
+      "site": 3
+    }
+  },
+  {
+    "cost": 63.6,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 560.0,
+    "values": {
+      "a": 30,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        -0.1192286916720331,
+        1.37981589558456
+      ],
+      "request": 149,
+      "site": 3
+    }
+  },
+  {
+    "cost": 63.6,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 560.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "outcome": "cost",
+      "request": 149,
+      "site": 3
+    }
+  },
+  {
+    "cost": 63.6,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 560.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 150,
+      "site": 2
+    }
+  },
+  {
+    "cost": 63.6,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 560.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 150,
+      "site": 2
+    }
+  },
+  {
+    "cost": 63.6,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 560.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 151,
+      "site": 6
+    }
+  },
+  {
+    "cost": 63.6,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 560.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 151,
+      "site": 6
+    }
+  },
+  {
+    "cost": 63.6,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 560.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 152,
+      "site": 4
+    }
+  },
+  {
+    "cost": 63.6,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 560.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 152,
+      "site": 4
+    }
+  },
+  {
+    "cost": 63.6,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 560.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 153,
+      "site": 0
+    }
+  },
+  {
+    "cost": 63.6,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 560.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 153,
+      "site": 0
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 580.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 154,
+      "site": 1
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 580.0,
+    "values": {
+      "a": 30,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        -0.1604608450302082,
+        1.4447581730783874
+      ],
+      "request": 154,
+      "site": 1
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 580.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "outcome": "cost",
+      "request": 154,
+      "site": 1
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 580.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 155,
+      "site": 2
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 580.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 155,
+      "site": 2
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 580.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 156,
+      "site": 3
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 580.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 156,
+      "site": 3
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 580.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 157,
+      "site": 7
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 580.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 157,
+      "site": 7
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 580.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 158,
+      "site": 4
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 580.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 158,
+      "site": 4
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 580.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 159,
+      "site": 5
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 580.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 159,
+      "site": 5
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 600.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 160,
+      "site": 2
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 600.0,
+    "values": {
+      "a": 37,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        0.012400017717037156,
+        1.5104800276203132
+      ],
+      "request": 160,
+      "site": 2
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 600.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "outcome": "cost",
+      "request": 160,
+      "site": 2
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 600.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 161,
+      "site": 3
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 600.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 161,
+      "site": 3
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 600.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 162,
+      "site": 6
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 600.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 162,
+      "site": 6
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 600.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 163,
+      "site": 7
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 600.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 163,
+      "site": 7
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 600.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 164,
+      "site": 5
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 600.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 164,
+      "site": 5
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 600.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 165,
+      "site": 0
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 600.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 165,
+      "site": 0
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 600.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 166,
+      "site": 4
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 600.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 166,
+      "site": 4
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 620.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 167,
+      "site": 3
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 620.0,
+    "values": {
+      "a": 43,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        0.18056378145764182,
+        1.55963192699628
+      ],
+      "request": 167,
+      "site": 3
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 620.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "outcome": "cost",
+      "request": 167,
+      "site": 3
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 620.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 168,
+      "site": 6
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 620.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 168,
+      "site": 6
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 620.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 169,
+      "site": 5
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 620.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 169,
+      "site": 5
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 640.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 170,
+      "site": 1
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 640.0,
+    "values": {
+      "a": 43,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        0.03728741809833265,
+        1.62459575220517
+      ],
+      "request": 170,
+      "site": 1
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 640.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "outcome": "cost",
+      "request": 170,
+      "site": 1
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 640.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 171,
+      "site": 2
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 640.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 171,
+      "site": 2
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 640.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 172,
+      "site": 3
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 640.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 172,
+      "site": 3
+    }
+  },
+  {
+    "cost": 63.6,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 660.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 173,
+      "site": 1
+    }
+  },
+  {
+    "cost": 63.6,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 660.0,
+    "values": {
+      "a": 43,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        -0.03715275332420864,
+        1.7191113462622074
+      ],
+      "request": 173,
+      "site": 1
+    }
+  },
+  {
+    "cost": 63.6,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 660.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "outcome": "cost",
+      "request": 173,
+      "site": 1
+    }
+  },
+  {
+    "cost": 63.6,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 660.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 174,
+      "site": 2
+    }
+  },
+  {
+    "cost": 63.6,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 660.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 174,
+      "site": 2
+    }
+  },
+  {
+    "cost": 63.6,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 660.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 175,
+      "site": 3
+    }
+  },
+  {
+    "cost": 63.6,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 660.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 175,
+      "site": 3
+    }
+  },
+  {
+    "cost": 63.6,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 660.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 176,
+      "site": 0
+    }
+  },
+  {
+    "cost": 63.6,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 660.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 176,
+      "site": 0
+    }
+  },
+  {
+    "cost": 63.6,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 660.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 177,
+      "site": 4
+    }
+  },
+  {
+    "cost": 63.6,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 660.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 177,
+      "site": 4
+    }
+  },
+  {
+    "cost": 63.400000000000006,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 680.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 178,
+      "site": 1
+    }
+  },
+  {
+    "cost": 63.400000000000006,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 680.0,
+    "values": {
+      "a": 43,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        -0.11210176240875042,
+        1.8196080612360914
+      ],
+      "request": 178,
+      "site": 1
+    }
+  },
+  {
+    "cost": 63.400000000000006,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 680.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "outcome": "cost",
+      "request": 178,
+      "site": 1
+    }
+  },
+  {
+    "cost": 63.400000000000006,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 680.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 179,
+      "site": 6
+    }
+  },
+  {
+    "cost": 63.400000000000006,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 680.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 179,
+      "site": 6
+    }
+  },
+  {
+    "cost": 63.400000000000006,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 680.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 180,
+      "site": 7
+    }
+  },
+  {
+    "cost": 63.400000000000006,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 680.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 180,
+      "site": 7
+    }
+  },
+  {
+    "cost": 63.400000000000006,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 680.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 181,
+      "site": 4
+    }
+  },
+  {
+    "cost": 63.400000000000006,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 680.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 181,
+      "site": 4
+    }
+  },
+  {
+    "cost": 63.400000000000006,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 680.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 182,
+      "site": 0
+    }
+  },
+  {
+    "cost": 63.400000000000006,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 680.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 182,
+      "site": 0
+    }
+  },
+  {
+    "cost": 63.400000000000006,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 700.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 183,
+      "site": 3
+    }
+  },
+  {
+    "cost": 63.400000000000006,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 700.0,
+    "values": {
+      "a": 43,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        -0.09491968771445067,
+        1.8631041659619747
+      ],
+      "request": 183,
+      "site": 3
+    }
+  },
+  {
+    "cost": 63.400000000000006,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 700.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "outcome": "cost",
+      "request": 183,
+      "site": 3
+    }
+  },
+  {
+    "cost": 63.400000000000006,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 700.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 184,
+      "site": 6
+    }
+  },
+  {
+    "cost": 63.400000000000006,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 700.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 184,
+      "site": 6
+    }
+  },
+  {
+    "cost": 63.400000000000006,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 700.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 185,
+      "site": 4
+    }
+  },
+  {
+    "cost": 63.400000000000006,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 700.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 185,
+      "site": 4
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 720.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 186,
+      "site": 6
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 720.0,
+    "values": {
+      "a": 42,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        1.6576971703958603,
+        -2.4224925818814067
+      ],
+      "request": 186,
+      "site": 6
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 720.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "outcome": "cost",
+      "request": 186,
+      "site": 6
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 720.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 187,
+      "site": 4
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 720.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 187,
+      "site": 4
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 720.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 188,
+      "site": 5
+    }
+  },
+  {
+    "cost": 63.5,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 720.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 188,
+      "site": 5
+    }
+  },
+  {
+    "cost": 63.3,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 740.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 189,
+      "site": 2
+    }
+  },
+  {
+    "cost": 63.3,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 740.0,
+    "values": {
+      "a": 43,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        -0.09976871087589842,
+        1.8517602592467437
+      ],
+      "request": 189,
+      "site": 2
+    }
+  },
+  {
+    "cost": 63.3,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 740.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "outcome": "cost",
+      "request": 189,
+      "site": 2
+    }
+  },
+  {
+    "cost": 63.3,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 740.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 190,
+      "site": 6
+    }
+  },
+  {
+    "cost": 63.3,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 740.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 190,
+      "site": 6
+    }
+  },
+  {
+    "cost": 63.3,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 740.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 191,
+      "site": 4
+    }
+  },
+  {
+    "cost": 63.3,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 740.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 191,
+      "site": 4
+    }
+  },
+  {
+    "cost": 63.3,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 740.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 192,
+      "site": 5
+    }
+  },
+  {
+    "cost": 63.3,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 740.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 192,
+      "site": 5
+    }
+  },
+  {
+    "cost": 63.3,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 740.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 193,
+      "site": 0
+    }
+  },
+  {
+    "cost": 63.3,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 740.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 193,
+      "site": 0
+    }
+  },
+  {
+    "cost": 63.3,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 760.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 194,
+      "site": 1
+    }
+  },
+  {
+    "cost": 63.3,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 760.0,
+    "values": {
+      "a": 43,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        -0.13947743710620192,
+        1.8955989128302957
+      ],
+      "request": 194,
+      "site": 1
+    }
+  },
+  {
+    "cost": 63.3,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 760.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "outcome": "cost",
+      "request": 194,
+      "site": 1
+    }
+  },
+  {
+    "cost": 63.3,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 760.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 195,
+      "site": 2
+    }
+  },
+  {
+    "cost": 63.3,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 760.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 195,
+      "site": 2
+    }
+  },
+  {
+    "cost": 63.3,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 760.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 196,
+      "site": 3
+    }
+  },
+  {
+    "cost": 63.3,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 760.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 196,
+      "site": 3
+    }
+  },
+  {
+    "cost": 63.3,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 760.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 197,
+      "site": 6
+    }
+  },
+  {
+    "cost": 63.3,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 760.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 197,
+      "site": 6
+    }
+  },
+  {
+    "cost": 63.3,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 760.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 198,
+      "site": 7
+    }
+  },
+  {
+    "cost": 63.3,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 760.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 198,
+      "site": 7
+    }
+  },
+  {
+    "cost": 63.3,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 760.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 199,
+      "site": 5
+    }
+  },
+  {
+    "cost": 63.3,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 760.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 199,
+      "site": 5
+    }
+  },
+  {
+    "cost": 63.3,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 760.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 200,
+      "site": 0
+    }
+  },
+  {
+    "cost": 63.3,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 760.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 200,
+      "site": 0
+    }
+  },
+  {
+    "cost": 63.3,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 760.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 201,
+      "site": 4
+    }
+  },
+  {
+    "cost": 63.3,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 760.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 201,
+      "site": 4
+    }
+  },
+  {
+    "cost": 63.400000000000006,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 780.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 202,
+      "site": 3
+    }
+  },
+  {
+    "cost": 63.400000000000006,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 780.0,
+    "values": {
+      "a": 43,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        -0.1527603093542363,
+        1.9086562205934028
+      ],
+      "request": 202,
+      "site": 3
+    }
+  },
+  {
+    "cost": 63.400000000000006,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 780.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "outcome": "cost",
+      "request": 202,
+      "site": 3
+    }
+  },
+  {
+    "cost": 63.400000000000006,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 780.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 203,
+      "site": 6
+    }
+  },
+  {
+    "cost": 63.400000000000006,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 780.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 203,
+      "site": 6
+    }
+  },
+  {
+    "cost": 63.400000000000006,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 780.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 204,
+      "site": 0
+    }
+  },
+  {
+    "cost": 63.400000000000006,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 780.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 204,
+      "site": 0
+    }
+  },
+  {
+    "cost": 63.400000000000006,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 780.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 205,
+      "site": 4
+    }
+  },
+  {
+    "cost": 63.400000000000006,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 780.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 205,
+      "site": 4
+    }
+  },
+  {
+    "cost": 63.400000000000006,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 800.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 206,
+      "site": 1
+    }
+  },
+  {
+    "cost": 63.400000000000006,
+    "ids": [],
+    "rule": "birth_attempt",
+    "time": 800.0,
+    "values": {
+      "a": 43,
+      "b": 0,
+      "birth_rule": "B-path",
+      "checks": {
+        "a_reached": true,
+        "clearance": true,
+        "deficit_or_connect": true,
+        "edge_a_to_new": true,
+        "new_reached": true,
+        "paths_kept": true
+      },
+      "position": [
+        -0.15959721393306514,
+        1.885911736585908
+      ],
+      "request": 206,
+      "site": 1
+    }
+  },
+  {
+    "cost": 63.400000000000006,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 800.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 1,
+      "birth_rule": "B-path",
+      "failures": {
+        "a_reached": 0,
+        "clearance": 0,
+        "deficit_or_connect": 0,
+        "edge_a_to_new": 0,
+        "new_reached": 0,
+        "paths_kept": 0
+      },
+      "outcome": "cost",
+      "request": 206,
+      "site": 1
+    }
+  },
+  {
+    "cost": 63.400000000000006,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 800.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 207,
+      "site": 3
+    }
+  },
+  {
+    "cost": 63.400000000000006,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 800.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 207,
+      "site": 3
+    }
+  },
+  {
+    "cost": 63.400000000000006,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 800.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 208,
+      "site": 7
+    }
+  },
+  {
+    "cost": 63.400000000000006,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 800.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 208,
+      "site": 7
+    }
+  },
+  {
+    "cost": 63.400000000000006,
+    "ids": [],
+    "rule": "birth_request",
+    "time": 800.0,
+    "values": {
+      "birth_rule": "B-path",
+      "request": 209,
+      "site": 5
+    }
+  },
+  {
+    "cost": 63.400000000000006,
+    "ids": [],
+    "rule": "birth_terminal",
+    "time": 800.0,
+    "values": {
+      "accepted": 0,
+      "attempts": 0,
+      "birth_rule": "B-path",
+      "outcome": "cost",
+      "request": 209,
+      "site": 5
+    }
+  }
+]
