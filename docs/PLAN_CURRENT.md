@@ -29,7 +29,7 @@
 | A2 | Implementation | DONE: `growing_shapes/runner/rev6_*`, `medium/rev6_*`; 47 tests | Codex | — |
 | A3 | Implementation review | DONE: READY_FOR_FIXTURES (`growing_shapes_review_claude/REV6_INTEGRATION_REVIEW.md`, delta at `bba9348`) | Claude | — |
 | A4 | Add 19.9 comparators (input average, K = 0, frozen positions) and review notes D1–D3 | DONE (`855d931`; 71 tests; Claude's short check READY_FOR_FIXTURES) | Codex, then a short Claude check | — |
-| A5 | **Engineering tests F1–F9** (about 2–6 min) | WAITING | Codex runs, Claude reviews | **[OWNER] approve the F1–F9 run** |
+| A5 | **Engineering tests F1–F9** (about 2–6 min) | **RUNNING** (approved: decision 0030) | Codex runs, Claude reviews | done |
 | A6 | Read the F results | — | Claude | If F1/F5 show that structure collapses under C4 motion: go to A6b. Otherwise: A7. |
 | A6b | Next revision: an **anchoring decision**, plus the deferred ideas (freeze-not-reset demand timers, empty start, possibly overlap placement); see `docs/reviews/external_web_ai_rev6_recommended_design_assessment.md` | — | Claude drafts, Codex reviews | **[OWNER]** approves the design |
 | A7 | Cost projection from the measured F rates | — | Codex | — |
@@ -60,7 +60,6 @@
 
 ## Decisions waiting for the owner (one line each)
 
-1. **Approve the 0h engineering tests F1–F9** (about 2–6 min). (A5)
 2. **W4:** register 0g S5 as written, or plus a morale endpoint. (B6)
 3. **When is the laptop idle** for the C6 timing? (C2)
 4. Confirm the [R] readings in decision 0028, items 16–18.
