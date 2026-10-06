@@ -69,7 +69,7 @@ def validate_fixture_receipt(reference,pin_digest):
     path=Path(reference)
     if not path.is_file():raise PermissionError('fixture receipt missing')
     value=json.loads(path.read_text())
-    if value.get('revision')!='7.3' or value.get('identity_snapshot',{}).get('pin_sha256')!=pin_digest:raise PermissionError('fixture receipt revision/execution pin mismatch')
+    if value.get('revision')!='7.4' or value.get('identity_snapshot',{}).get('pin_sha256')!=pin_digest:raise PermissionError('fixture receipt revision/execution pin mismatch')
     results=value.get('results',{})
     if set(results)!=set(('N1','F1','F2','F3','F4','F5','F6','F7','F8','F9')) or value.get('not_run') or value.get('stops'):raise PermissionError('fixture sequence incomplete or stopped')
     expected={name:'DESCRIPTIVE' if name in ('F6','F8','F9') else 'PASS' for name in results}

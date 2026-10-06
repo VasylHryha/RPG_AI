@@ -48,9 +48,10 @@ def test_lambda_coupling_drive_only_and_carrier():
     with medium() as m:
         m.add((3.,.2),.3,2.8,gain=.7);m.add((2.4,.4),1.,3.3,role='output')
         m.native.set_drives([drive()]);m.native.phase_scale(1);one=np.array(m.native.rhs())
-        m.native.phase_scale(8);eight=np.array(m.native.rhs())
-        np.testing.assert_array_equal(one[:,:2],eight[:,:2])
-        np.testing.assert_allclose(eight[:,2]-[2.8,3.3],8*(one[:,2]-[2.8,3.3]),atol=2e-15)
+        for scale in (8.,32.):
+            m.native.phase_scale(scale);scaled=np.array(m.native.rhs())
+            np.testing.assert_array_equal(one[:,:2],scaled[:,:2])
+            np.testing.assert_allclose(scaled[:,2]-[2.8,3.3],scale*(one[:,2]-[2.8,3.3]),atol=1e-14)
         assert CONFIG['carrier']==math.pi and CONFIG['clocks']==dict(estimator=10.,qualification=60.,adaptation=.05,freq_cut=.005,pattern_cut=.1)
 
 
@@ -94,7 +95,7 @@ def test_stage_mask_pins_lesion_save_load_and_policy():
     with medium() as m:
         m.add((3.3,.2),1.,gain=1.);out=m.add((2.7,.1),0.,role='output')
         m.native.lesions([out]);m.native.set_drives([drive(phase=1.4)])
-        m.native.step(.02)
+        m.native.step(.005)
         assert all(stage[1][:2]==[0.,0.] for stage in m.native.stage_terms())
         assert m.native.pin(out)==(True,(2.7,.1))
         with pytest.raises(ValueError,match='pinned'):m.native.set_element(out,0,0,0,math.pi)
@@ -102,15 +103,16 @@ def test_stage_mask_pins_lesion_save_load_and_policy():
         loaded=Rev7Native.load(m.native.save());clone=m.native.clone()
         try:
             assert loaded.save()==m.native.save()==clone.save()
-            assert loaded.policy()==(8.,True,False)
+            assert loaded.policy()==(32.,True,False)
             assert loaded.excursion()==m.native.excursion()
         finally:loaded.close();clone.close()
 
 
-@pytest.mark.parametrize('scale',[1.,8.])
+@pytest.mark.parametrize('scale',[1.,8.,32.])
+@pytest.mark.parametrize('h',[.005,.00125])
 @pytest.mark.parametrize('mode',[None,'site_body_off','k_zero','fixed_structure'])
-def test_native_independent_python_step_parity(scale,mode):
-    with medium() as native:
+def test_native_independent_python_step_parity(scale,mode,h):
+    with medium(h=h) as native:
         native.add((3.25,.27),.7,3.4,.8);native.add((2.5,-.2),-.2,2.9,role='output');native.add((3.6,.5),1.5,3.1,0.)
         native.native.phase_scale(scale)
         if mode:native.native.comparator(mode)
@@ -125,15 +127,16 @@ def test_native_independent_python_step_parity(scale,mode):
         finally:reference.close()
 
 
-def test_frame_bound_sums_stages_and_recorded_endpoints():
-    with medium() as m:
+@pytest.mark.parametrize('h',[.005,.00125])
+def test_frame_bound_sums_stages_and_recorded_endpoints(h):
+    with medium(h=h) as m:
         m.add((3.4,.1),1.,gain=2.)
         m.integrate([drive(phase=-1.,strength=4)])
-        with medium(frozen=True) as manual:
+        with medium(frozen=True,h=h) as manual:
             manual.add((3.4,.1),1.,gain=2.);manual.native.set_drives([drive(phase=-1.,strength=4)])
             expected=0.
-            for j in range(5):
-                manual.native.step(.02);expected+=.02*max(abs(math.pi+stage[0][0]+stage[0][1]-math.pi) for stage in manual.native.stage_terms())
+            for j in range(round(.1/h)):
+                manual.native.step(h);expected+=h*max(abs(math.pi+stage[0][0]+stage[0][1]-math.pi) for stage in manual.native.stage_terms())
             assert m.frame_excursion[0]==pytest.approx(expected,abs=1e-14)
             assert m.frames[-1].excursion[0]==m.frame_excursion[0]
             assert [f.index for f in m.frames]==[0,1]
@@ -215,6 +218,7 @@ def test_empty_start_all_policies_no_world_or_rng_initial_draw(monkeypatch):
     for policy in ('intact','M','U'):
         run=Run(0,rows,episodes=1,policy=policy)
         try:
+            assert run.medium.h==.005 and run.medium.native.policy()[0]==32.
             assert not len(run.medium.native) and run.medium.step_index==0 and len(run.medium.frames)==1
             assert run.medium.novelty=={s:0. for s in range(8)} and not run.medium.birth_steps
             assert run.medium.native.add(0,0,0,math.pi)==0
@@ -282,7 +286,10 @@ def test_N1_estimator_synthetic_unwrapped_turn_position_and_entry_failures():
     rows=[dict(time=(j+1)*.1,phases=[0.],positions=[[0.,0.]],free=[True],phase_topology={0:[]},motion_topology={0:[]},pin_invariant=True,minimum_distances=dict(element_element=None,element_site=None),excursion={0:0.}) for j in range(160)]
     assert compare_n1(rows,deepcopy(rows),True)['verdict']=='PASS' # neither enters
     ordered=deepcopy(rows)
-    for row in ordered:row['phase_topology']={0:[1,2]}
+    for row in ordered:
+        row['phase_topology']={0:[1,2]}
+        row['excursion']={0:0.,1:0.,2:0.}
+        row['phases']=[0.,0.,0.];row['positions']=[[0.,0.],[.5,0.],[1.,0.]];row['free']=[True,True,True]
     shuffled=deepcopy(ordered)
     for row in shuffled[:2]:row['phase_topology']={0:[2,1]}
     assert compare_n1(ordered,shuffled,False)['Ntheta_agreement']==158/160
@@ -350,6 +357,7 @@ def test_recovery_validity_uses_candidate_pairs_only(monkeypatch,invalid_ids):
         check=dict(cohort=[0,1,2,3],candidates=[candidate],possibly_aliased=False,locked=np.ones((4,4),dtype=bool))
         calls=[]
         def replay(branch,drives):
+            assert branch.h==.005 and branch.native.policy()[0]==32.
             calls.append(branch)
             return dict(excursion={id:2. if id==3 and id in invalid_ids else .8 if id in invalid_ids else 0. for id in range(4)})
         monkeypatch.setattr(Rev7Medium,'integrate',replay)
@@ -380,8 +388,8 @@ def test_f5_descriptive_qualification_fraction_boundaries_and_empty_denominator(
     assert c['qualification_windows']==0 and c['not_qualified_invalid_pair_fraction'] is None
     # Ensure the event feeding the summary carries the screen's actual reason.
     run=Run.__new__(Run);run.medium=type('FakeMedium',(),{})()
-    run.medium.step_index=600;run.medium.time=60.;run.medium.birth_steps={}
-    run.medium.native=type('FakeNative',(),{'save':lambda self:b'','elements':[]})()
+    run.medium.step_index=600;run.medium.time=60.;run.medium.birth_steps={};run.medium.h=.005
+    run.medium.native=type('FakeNative',(),{'save':lambda self:b'','policy':lambda self:(32.,False,True),'elements':[]})()
     run.medium.death={};run.medium.novelty={};run.medium.frames=[]
     run.medium.clone=lambda **kwargs:run.medium
     emitted=[];run.medium.emit=lambda rule,**values:emitted.append((rule,values))
@@ -457,7 +465,7 @@ def test_development_fixture_receipt_requires_all_gates_and_current_pin(tmp_path
     from evidence.tactical_composition_demo.growing_shapes.runner.rev7_execution import validate_fixture_receipt
     with pytest.raises(PermissionError,match='required'):validate_fixture_receipt('', 'pin')
     path=tmp_path/'synthetic_fixture.json'
-    value=dict(revision='7.3',identity_snapshot=dict(pin_sha256='pin'),results={name:dict(verdict='DESCRIPTIVE' if name in ('F6','F8','F9') else 'PASS') for name in ('N1','F1','F2','F3','F4','F5','F6','F7','F8','F9')},not_run=[],stops=[])
+    value=dict(revision='7.4',identity_snapshot=dict(pin_sha256='pin'),results={name:dict(verdict='DESCRIPTIVE' if name in ('F6','F8','F9') else 'PASS') for name in ('N1','F1','F2','F3','F4','F5','F6','F7','F8','F9')},not_run=[],stops=[])
     path.write_text(json.dumps(value));assert validate_fixture_receipt(path,'pin')['sha256']
     with pytest.raises(PermissionError,match='mismatch'):validate_fixture_receipt(path,'stale-pin')
     for name in ('N1','F1','F2','F3','F4','F5','F7'):
@@ -481,11 +489,130 @@ def test_clock_ledger_declared_units_no_rescaled_admission_windows():
         m.add((3.,0),0.);m.add((2.5,0),.2,role='output')
         m.native.set_drives([drive()])
         ledger=clock_ledger(m.native)
-        assert ledger['lambda_value']==8. and ledger['ratio_units']=='dimensionless'
+        assert ledger['lambda_value']==32. and ledger['ratio_units']=='dimensionless'
         assert ledger['estimator_seconds']==10. and ledger['qualification_seconds']==60.
         assert ledger['geometric_length_reference']==pytest.approx(1/1.8)
         element=next(r for r in ledger['rows'] if r['kind']=='element')
-        assert element['scaled_coefficient']==pytest.approx(8*math.exp(-.25))
+        assert element['scaled_coefficient']==pytest.approx(32*math.exp(-.25))
         assert element['against_carrier']==pytest.approx(element['scaled_coefficient']/math.pi)
         assert element['against_geometric_reference']==pytest.approx(element['scaled_coefficient']/1.8)
         assert INTERPRETATION['revision_7_motion']['status']=='DESCRIPTIVE'
+
+
+def test_rev74_configuration_identity_and_N1f_literal_recipe():
+    from evidence.tactical_composition_demo.growing_shapes.runner.rev7_config import F1D_SCALES
+    assert CONFIG['revision']=='7.4' and CONFIG['phase_scale']==32.
+    assert CONFIG['excursion']['h']==.005 and CONFIG['excursion']['substeps']==20
+    assert CONFIG['N1']['h']==[.005,.00125] and CONFIG['N1']['substeps']==[20,80]
+    assert F1D_SCALES==(1.,8.,32.) and CONFIG['F1']['F1d']['h']==.005
+    assert set(N1_RECIPES)=={'N1a','N1b','N1c','N1d','N1e','N1f'}
+    m=scaffold('F1c')
+    try:
+        assert N1_RECIPES['N1f']['members']==[[e.x,e.y,e.phase,e.rate,m.native.gain(e.id),m.role(e.id)] for e in m.native.elements]
+    finally:m.close()
+    assert N1_RECIPES['N1f']['seconds']==24. and N1_RECIPES['N1f']['entry_member']==6
+    for key,value in [('phase_scale',8.),('excursion',dict(CONFIG['excursion'],h=.02))]:
+        altered=deepcopy(CONFIG);altered[key]=value
+        assert hashlib.sha256(p.canonical(altered)).hexdigest()!=CONFIG_SHA256
+    with pytest.raises(ValueError,match='solver'):Rev7Medium(h=.02)
+
+
+@pytest.mark.parametrize('h',[.005,.00125])
+def test_substep_lists_held_stage_carrier_and_single_frame(monkeypatch,h):
+    from evidence.tactical_composition_demo.growing_shapes.medium import rev7_rhs
+    original_lists,original_rhs=rev7_rhs.lists,rev7_rhs.rhs
+    selections=[];stages=[]
+    def select(*args,**kwargs):
+        value=original_lists(*args,**kwargs);selections.append(value);return value
+    def stage(state,elements,drives,phase,motion,*args,**kwargs):
+        stages.append((phase,motion,drives[0].phase));return original_rhs(state,elements,drives,phase,motion,*args,**kwargs)
+    monkeypatch.setattr(rev7_rhs,'lists',select);monkeypatch.setattr(rev7_rhs,'rhs',stage)
+    with medium(backend='reference',h=h) as m:
+        m.add((3.4,.1),.2);m.add((2.9,.1),.3,role='output')
+        # Once-per-world-step adaptation/timers/growth are owned by Run,
+        # never by integration; catch any accidental call within the loop.
+        for name in ('adapt','timers','growth'):
+            monkeypatch.setattr(m,name,lambda:pytest.fail('substep clock update'))
+        m.integrate([drive()])
+        count=round(.1/h)
+        assert len(selections)==count and len(stages)==4*count
+        for j,(phase,motion) in enumerate(selections):
+            for k,offset in enumerate((0.,h/2,h/2,h)):
+                assert stages[4*j+k][0] is phase and stages[4*j+k][1] is motion
+                assert stages[4*j+k][2]==pytest.approx(.4+math.pi*(j*h+offset),abs=1e-14)
+        assert m.step_index==1 and len(m.frames)==2 and m.time==.1
+        assert m.drives[0].phase==pytest.approx(.4+math.pi*.1)
+
+
+@pytest.mark.parametrize('scale',[1.,8.,32.])
+@pytest.mark.parametrize('h',[.005,.00125])
+def test_solver_policy_clone_template_and_native_snapshot(scale,h):
+    with medium(h=h) as m:
+        m.add((3.1,.2),.4);m.add((0.,0.),.2,role='output')
+        m.native.phase_scale(scale);m.native.comparator('site_body_off');m.native.comparator('fixed_structure')
+        value=p.template(m.native,[0,1],m.time,h=m.h)
+        clone=m.clone();copy=p.copy_template(value,backend='reference');loaded=Rev7Native.load(m.native.save())
+        try:
+            assert clone.h==copy.h==h and clone.native.policy()==copy.native.policy()==loaded.policy()==(scale,True,False)
+            assert p.template(copy.native,[0,1],copy.time,h=copy.h)==value
+            altered=deepcopy(value);altered['solver_policy']['h']=.02
+            with pytest.raises(ValueError,match='solver'):p.copy_template(altered)
+            altered=deepcopy(value);altered['configuration_sha256']='old revision 7.3'
+            with pytest.raises(ValueError,match='schema'):p.copy_template(altered)
+        finally:clone.close();copy.close();loaded.close()
+
+
+def test_N1f_synthetic_24_seconds_masks_disagree_without_new_gate():
+    rows=[dict(time=(j+1)*.1,phases=[0.,math.pi/2 if j>=110 else 0.],positions=[[0.,0.],[.6,0.]],free=[True,False],phase_topology={0:[1],1:[0]},motion_topology={0:[1],1:[0]},pin_invariant=True,excursion={0:0.,1:0.}) for j in range(240)]
+    fine=deepcopy(rows);rows[200]['excursion']={0:.8,1:.8}
+    fine[201]['excursion'][0]=2.
+    result=compare_n1(rows,fine,True,1,seconds=24.)
+    assert result['verdict']=='PASS' and result['entry_times']==pytest.approx([11.1,11.1],abs=1e-12,rel=0)
+    assert result['entry_hold_through_24']==[True,True] and result['hold_used_in_verdict'] is False
+    validity=result['validity']
+    assert validity['individual_invalid_frames']==[0,1]
+    assert validity['used_pair_invalid_frames']==[1,1]
+    assert validity['individual_disagreement_frames']==1 and validity['used_pair_disagreement_frames']==2
+    assert validity['used_in_verdict'] is False
+    with pytest.raises(ValueError,match='unmatched'):compare_n1(rows[:-1],fine,True,1,seconds=24.)
+    missing=deepcopy(rows);del missing[0]['excursion'][1]
+    with pytest.raises(ValueError,match='INVALID'):compare_n1(missing,fine,True,1,seconds=24.)
+
+
+def test_F1c_four_second_margin_descriptive_sustained_entry_not_first_touch():
+    def records(entry):return [dict(time=(j+1)*.1,beta=math.pi/2 if (j+1)*.1>=entry else 0.,drive_access=True,pin_invariant=True) for j in range(1600)]
+    early=f1c_response(records(11.))
+    assert early['response_pass'] and early['four_second_margin_met'] and early['error_at_12']==0.
+    late=f1c_response(records(15.))
+    assert late['response_pass'] and not late['four_second_margin_met'] and late['sustained_entry_delay']==7.
+    assert late['error_at_12']==pytest.approx(math.pi/2) and late['margin_used_in_verdict'] is False
+    touches=records(15.);touches[99]['beta']=math.pi/2
+    response=f1c_response(touches)
+    assert response['first_entry_time']==10. and response['sustained_entry_delay']==7.
+    assert not response['response_pass'] and not response['four_second_margin_met']
+
+
+@pytest.mark.parametrize('invalid_count',[20,21])
+def test_estimator_window_denominators_pair_only_and_site_exclusions(invalid_count):
+    with medium() as m:
+        a=m.add((3.4,.1),0.);b=m.add((3.1,.1),0.)
+        assert m.estimator_validity()['site'] is None and m.estimator_validity()['element'] is None
+        history(m,bounds=lambda k,id:.8 if k>100-invalid_count else 0.)
+        values=m.offsets(a,b)
+        assert (values is not None)==(invalid_count==20)
+        m.offsets(a,b) # repeated consumption of the same directed window counts once
+        assert m.offsets(a,0,True) is not None # individual valid despite pair-only failures
+        summary=m.estimator_validity();counts=summary['element']
+        assert summary['used_in_verdict'] is False
+        assert counts['windows']==1 and counts['eligible_observations']==100
+        assert counts['valid_observations']==100-invalid_count and counts['transient_exclusions']==invalid_count
+        assert counts['rejected_below_80']==int(invalid_count==21)
+        assert counts['active_histogram']=={100-invalid_count:1}
+        assert summary['site']['valid_observations']==100 and summary['site']['transient_exclusions']==0
+    with medium() as m:
+        a=m.add((3.4,.1),0.)
+        history(m,bounds=lambda k,id:2. if k>100-invalid_count else 0.)
+        assert (m.offsets(a,0,True) is not None)==(invalid_count==20)
+        counts=m.estimator_validity()['site']
+        assert counts['eligible_observations']==100 and counts['transient_exclusions']==invalid_count
+        assert counts['active_histogram']=={100-invalid_count:1}

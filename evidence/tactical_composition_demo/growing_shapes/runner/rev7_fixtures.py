@@ -12,7 +12,7 @@ from .rev7_protocol import generator, seed, template, copy_template, bindings, p
 from .rev7_run import Run
 from .rev7_evaluator import Evaluator, reused_calibration
 from .rev7_execution import Execution
-from .rev7_config import N1_RECIPES,CONFIG_SHA256
+from .rev7_config import N1_RECIPES,CONFIG_SHA256,PRODUCTION_H,REFINEMENT_H,WORLD_DT,F1D_SCALES
 
 CHECKPOINTS=(40,45,50)
 F6_PAIRS=tuple((10000788+j,10000798+j) for j in range(10))
@@ -20,7 +20,7 @@ F5_PAIRS=tuple((10000768+j,10000778+j) for j in range(10))
 F8_WORLD_IDS=tuple(12100000+e for e in range(40))
 
 
-def scaffold(kind,alpha=1.,*,backend="native",h=.02):
+def scaffold(kind,alpha=1.,*,backend="native",h=PRODUCTION_H):
     """Construction only. No world object, integration, or fixture statistic."""
     m=Rev7Medium(frozen=True,backend=backend,h=h)
     if kind=='F1a':positions=[3.2,2.644]
@@ -57,15 +57,15 @@ def construct_only():
     rows,_=reused_calibration();out={}
     for name in ('F1a','F1b','F1c','F2a','F2b','F3','F4'):
         m=scaffold(name)
-        try:out[name]=dict(members=template(m.native,[e.id for e in m.native.elements],0)['members'],world_steps=0)
+        try:out[name]=dict(members=template(m.native,[e.id for e in m.native.elements],0,h=m.h)['members'],world_steps=0)
         finally:m.close()
     for name,start,policy in [('F5i','i','intact'),('F5ii','ii','intact'),('F7','i','M')]:
         initial=literal_start() if start=='ii' else None
         run=Run(0,rows,episodes=50,policy=policy,keys=keys(start,policy),initial=initial,scope='fixtures')
-        try:out[name]=dict(members=template(run.medium.native,[e.id for e in run.medium.native.elements],0)['members'],world_steps=run.medium.step_index,keys=run.keys)
+        try:out[name]=dict(members=template(run.medium.native,[e.id for e in run.medium.native.elements],0,h=run.medium.h)['members'],world_steps=run.medium.step_index,keys=run.keys)
         finally:run.close();initial.close() if initial else None
     out['N1']=dict(recipes=N1_RECIPES,configuration_sha256=CONFIG_SHA256,world_steps=0,deterministic_no_entropy=True)
-    out['F1d']=dict(scaffold='F1b',phase_scales=[1.,8.],world_steps=0,deterministic_no_entropy=True)
+    out['F1d']=dict(scaffold='F1b',phase_scales=list(F1D_SCALES),h=PRODUCTION_H,world_steps=0,deterministic_no_entropy=True)
     out['F6']=dict(dependency='six F5 checkpoints; no substitute checkpoint constructed',starts=['i','ii'],checkpoints=CHECKPOINTS,pairs=F6_PAIRS,copies=140,checkpoint_copies=120,baseline_copies=20,baseline_unique_recipient_episodes=10,baseline_minimum_defined_unique_episodes=5,baseline_modes=['single_oscillator','sample_and_hold'],growth=False,adaptation=False,recovery=False)
     out['F9']=dict(cases=list(F9_CASES),seeds={name:seed(f'medium/F9/{name}') for name in F9_CASES},world_ids=list(range(10000808,10000812)),world_steps=0,status='DESCRIPTIVE_DECODER_ONLY_SYNTHETIC_OBSERVATIONS')
     out['F8']=dict(dependency='live F5(i) after episode 50; histories/timers/clock retained',episodes=F8_WORLD_IDS,tasks=['move']*20+['remember_static']*20,keys=['growth/F8/reward','recovery/F8/reward'],reward_baseline=.5)
@@ -176,29 +176,29 @@ class Harness:
         self.require('N1');cases={}
         for name,recipe in N1_RECIPES.items():
             runs=[]
-            for h in (.02,.005):
+            for h in (PRODUCTION_H,REFINEMENT_H):
                 m=Rev7Medium(frozen=True,h=h,backend=self.backend);records=[]
                 try:
                     for x,y,phase,rate,gain,role in recipe['members']:m.add((x,y),phase,rate,gain,role=role,rule='N1_INITIAL')
-                    for step in range(160):
+                    for step in range(round(recipe['seconds']/WORLD_DT)):
                         drives=[Drive(id,x,y,math.pi*m.time+(math.pi/2 if recipe['step'] and step>=80 else angle),math.pi,k,1,3) for id,(x,y,k,angle) in enumerate(recipe['sites'])]
                         diag=m.integrate(drives);g=m.influence();es=m.native.elements
-                        records.append(dict(time=m.time,phases=[e.phase-math.pi*m.time for e in es],positions=[[e.x,e.y] for e in es],free=[m.role(e.id)!='output' for e in es],phase_topology=m.phase_topology(),motion_topology=diag['motion_neighbors'],excursion=diag['excursion'],pin_invariant=all((e.x,e.y)==m.native.pin(e.id)[1] for e in es if m.role(e.id)=='output'),minimum_distances=minimum_distances(m)))
+                        records.append(dict(time=m.time,phases=[e.phase-math.pi*m.time for e in es],positions=[[e.x,e.y] for e in es],free=[m.role(e.id)!='output' for e in es],phase_topology=m.phase_topology(),motion_topology=diag['motion_neighbors'],excursion=diag['excursion'],used_pairs=sorted({tuple(sorted((target,source))) for target,sources in m.phase_topology().items() for source in sources}),pin_invariant=all((e.x,e.y)==m.native.pin(e.id)[1] for e in es if m.role(e.id)=='output'),minimum_distances=minimum_distances(m)))
                     runs.append(records)
                 finally:m.close()
-            cases[name]=compare_n1(runs[0],runs[1],recipe['entry'],len(recipe['members'])-1 if name=='N1e' else 0)
+            cases[name]=compare_n1(runs[0],runs[1],recipe['entry'],recipe['entry_member'],seconds=recipe['seconds'])
         return dict(verdict='PASS' if all(c['verdict']=='PASS' for c in cases.values()) else 'FAIL',cases=cases,configuration_sha256=CONFIG_SHA256,deterministic_no_entropy=True)
 
     def F1d(self):
         self.require('F1');runs={}
-        for scale in (1.,8.):
+        for scale in F1D_SCALES:
             m=scaffold('F1d',backend=self.backend);m.native.phase_scale(scale);records=[]
             try:
                 for step in range(1600):
                     diag=m.integrate(self.driven(m,0. if step<80 else math.pi/2));g=m.influence()
                     records.append(dict(time=m.time,beta=float(wrap(m.native.output()[1]-math.pi*m.time)),effective_roots={s:sorted(v) for s,v in g.roots.items()},paths=diag['paths'],exposure=diag['exposure'],phase_topology=m.phase_topology(),motion_topology=diag['motion_neighbors'],positions={e.id:[e.x,e.y] for e in m.native.elements},excursion=diag['excursion']))
                 response=step_response(records)
-                runs[str(scale)]=dict(records=records,**response,deadline_error=abs(float(wrap(records[159]['beta']-math.pi/2))))
+                runs[str(scale)]=dict(phase_scale=scale,h=m.h,substeps=round(WORLD_DT/m.h),records=records,**response,deadline_error=abs(float(wrap(records[159]['beta']-math.pi/2))))
             finally:m.close()
         return dict(verdict='DESCRIPTIVE',runs=runs,deterministic_no_entropy=True)
 
@@ -247,7 +247,7 @@ class Harness:
             output=next(e for e in m.native.elements if m.role(e.id)=='output')
             m.native.set_element(output.id,4,0,output.phase,output.rate)
             m.native.set_drives(self.driven(m,math.pi/2));traces=[]
-            for _ in range(5):m.native.step(.02);traces.append(m.native.stage_terms())
+            for _ in range(round(WORLD_DT/m.h)):m.native.step(m.h);traces.append(m.native.stage_terms())
             ix=[e.id for e in m.native.elements].index(output.id)
             ok=all(float(stage[ix][0]).hex()==float(0).hex() for trace in traces for stage in trace)
             return dict(verdict='PASS' if ok else 'FAIL',stages=traces)
@@ -259,12 +259,12 @@ class Harness:
             ids=[e.id for e in m.native.elements];out=next(e.id for e in m.native.elements if m.role(e.id)=='output')
             m.native.set_element(ids[0],3.7,0,1.,math.pi)
             m.native.lesions([out]);m.native.set_drives(self.driven(m,1.2));traces=[]
-            for _ in range(5):m.native.step(.02);traces.append(m.native.stage_terms())
+            for _ in range(round(WORLD_DT/m.h)):m.native.step(m.h);traces.append(m.native.stage_terms())
             ix=ids.index(out);zero=all(stage[ix][1]==0 for trace in traces for stage in trace)
             ds=[Drive(0,4,0,.4,math.pi,1.,1,3),Drive(2,0,4,1.1,math.pi,2.,1,3)]
             site=relay('perceive',None,ds,0,'site0');oracle=relay('perceive',None,ds,0,'oracle')
             relays=site.angle==float(wrap(.4)) and oracle.angle==float(wrap(1.1))
-            value=template(m.native,ids,0.)
+            value=template(m.native,ids,0.,h=m.h)
             native=Evaluator(self.rows,backend='native',execution=self.execution,scope='fixtures')
             reference=Evaluator(self.rows,backend='reference',execution=self.execution,scope='fixtures')
             parity={}
@@ -288,7 +288,7 @@ class Harness:
                     if e+1 in CHECKPOINTS:self.checkpoints[start,e+1]=run.medium.clone(events=False)
                 episodes=[];A=[];B=[];E=[]
                 for checkpoint in CHECKPOINTS:
-                    m=self.checkpoints[start,checkpoint];value=template(m.native,[e.id for e in m.native.elements],m.time)
+                    m=self.checkpoints[start,checkpoint];value=template(m.native,[e.id for e in m.native.elements],m.time,h=m.h)
                     for recipient,donor in F5_PAIRS:
                         own=self.evaluator.episode(value,'perceive',recipient)
                         other=self.evaluator.episode(value,'perceive',recipient,mode='donor',donor=donor)
@@ -305,6 +305,7 @@ class Harness:
                 result[start]=dict(identity_snapshot=run.identity_snapshot,verdict='PASS' if specific and max(meanE)>=.5 and meanA>=.3 and meanB>=.3 else 'FAIL',A=meanA,B=meanB,E=meanE,B_out=out_birth,B_path=path_birth,episodes=episodes,events=events,active_site0_steps=sum(any(d[0]==0 and d[5]>0 for d in row['sites']) for row in run.drive_log))
                 from .rev7_reporting import f5_qualification_summary
                 result[start]['qualification_validity']=f5_qualification_summary(events,run.medium.diagnostics,CHECKPOINTS)
+                result[start]['estimator_validity']=run.medium.estimator_validity()
                 if start=='i':self.intact=run;self.live=run.medium.clone(events=False)
             finally:
                 if start!='i' or self.intact is not run:run.close()
@@ -313,10 +314,10 @@ class Harness:
     def F6(self):
         self.require("F6");own=[];donor_rows=[];encoded=[];donor_encoded=[]
         first=self.checkpoints['i',CHECKPOINTS[0]]
-        baselines=f6_baselines(self.evaluator,template(first.native,[e.id for e in first.native.elements],first.time))
+        baselines=f6_baselines(self.evaluator,template(first.native,[e.id for e in first.native.elements],first.time,h=first.h))
         for start in ('i','ii'):
             for checkpoint in CHECKPOINTS:
-                m=self.checkpoints[start,checkpoint];value=template(m.native,[e.id for e in m.native.elements],m.time)
+                m=self.checkpoints[start,checkpoint];value=template(m.native,[e.id for e in m.native.elements],m.time,h=m.h)
                 for recipient,donor in F6_PAIRS:
                     a=self.evaluator.episode(value,'remember_static',recipient)
                     b=self.evaluator.episode(value,'remember_static',recipient,mode='donor',donor=donor)
@@ -383,7 +384,7 @@ class Harness:
             from .rev7_protocol import stops
             gates=stops(dict(N1_failed_or_invalid=self.results.get('N1',{}).get('verdict') in ('FAIL','INVALID'),fixture_invalid=any(r['verdict']=='INVALID' for r in self.results.values()),F1_F4_failed=any(self.results.get(n,{}).get('verdict')=='FAIL' for n in ('F1','F2','F3','F4')),F5_failed=self.results.get('F5',{}).get('verdict')=='FAIL',F7_unmatched=self.results.get('F7',{}).get('verdict')=='FAIL'))
             from .rev7_reporting import INTERPRETATION
-            return dict(revision='7.3',identity_snapshot=self.identity_snapshot,interpretation=INTERPRETATION,results=self.results,stops=gates,not_run=[n for n in ('N1','F1','F2','F3','F4','F5','F6','F7','F8','F9') if n not in self.results],calibration=self.calibration)
+            return dict(revision='7.4',identity_snapshot=self.identity_snapshot,interpretation=INTERPRETATION,results=self.results,stops=gates,not_run=[n for n in ('N1','F1','F2','F3','F4','F5','F6','F7','F8','F9') if n not in self.results],calibration=self.calibration)
         finally:self.close()
 
 
@@ -416,11 +417,21 @@ def f1c_response(records):
     if not pin:raise ValueError('INVALID: pin-invariance implementation check')
     complete=len(records)==1600 and len(later)==1441
     if not complete:raise ValueError('INVALID: incomplete F1c record')
-    return dict(response_pass=first is not None and hold and access>=.8 and response>=.8,first_entry_time=first,delay=None if first is None else first-8,continuous_to_24=hold,source_access=access,response_persistence=response,pin_invariant=pin)
+    # The extra prediction uses sustained entry through the required hold,
+    # including entries after the gate deadline. It cannot change that gate.
+    hold_window=[r for r in records if 8<r['time']<=24+1e-9]
+    last_bad=max((j for j,r in enumerate(hold_window) if abs(float(wrap(r['beta']-math.pi/2)))>.3),default=-1)
+    sustained=hold_window[last_bad+1]['time'] if last_bad+1<len(hold_window) else None
+    margin=next((r for r in records if abs(r['time']-12.)<1e-9),None)
+    if margin is None:raise ValueError('INVALID: missing F1c margin sample')
+    return dict(response_pass=first is not None and hold and access>=.8 and response>=.8,first_entry_time=first,delay=None if first is None else first-8,continuous_to_24=hold,source_access=access,response_persistence=response,pin_invariant=pin,
+        sustained_entry_delay=None if sustained is None else sustained-8,error_at_12=abs(float(wrap(margin['beta']-math.pi/2))),
+        four_second_margin_met=sustained is not None and sustained<=12+1e-9,margin_used_in_verdict=False,sustained_entry_hold_until=24.)
 
 
-def compare_n1(a,b,entry,entry_member=0):
-    if len(a)!=160 or len(b)!=160 or any(x['time']!=y['time'] for x,y in zip(a,b)):raise ValueError('INVALID: unmatched N1 endpoints')
+def compare_n1(a,b,entry,entry_member=0,*,seconds=16.):
+    count=round(seconds/WORLD_DT)
+    if len(a)!=count or len(b)!=count or any(abs(row['time']-(j+1)*WORLD_DT)>1e-9 for rows in (a,b) for j,row in enumerate(rows)):raise ValueError('INVALID: unmatched N1 endpoints')
     # Missing/non-finite measurements cannot become FAIL or a topology agreement.
     for rows in (a,b):
         for row in rows:
@@ -429,12 +440,37 @@ def compare_n1(a,b,entry,entry_member=0):
     xa,xb=np.array([r['positions'] for r in a]),np.array([r['positions'] for r in b])
     free=np.array(a[0]['free']);wrapped=float(np.max(np.abs(wrap(pa-pb))));unwrapped=float(np.max(np.abs(pa-pb)))
     position=float(np.max(np.linalg.norm(xa[:,free]-xb[:,free],axis=2))) if free.any() else 0.
-    phase_top=sum(x['phase_topology']==y['phase_topology'] for x,y in zip(a,b))/160
-    motion_top=sum(x['motion_topology']==y['motion_topology'] for x,y in zip(a,b))/160
+    phase_top=sum(x['phase_topology']==y['phase_topology'] for x,y in zip(a,b))/count
+    motion_top=sum(x['motion_topology']==y['motion_topology'] for x,y in zip(a,b))/count
     pins=all(r['pin_invariant'] for r in a+b)
     def first(rows):return next((r['time'] for r in rows if r['time']>8 and abs(float(wrap(r['phases'][entry_member]-math.pi/2)))<=.3),None)
     times=[first(a),first(b)] if entry else [None,None]
     entry_pass=not entry or (times==[None,None]) or all(t is not None for t in times) and abs(times[0]-times[1])<=.1+1e-12
-    return dict(verdict='PASS' if wrapped<=.01 and unwrapped<=.01 and position<=.01 and phase_top>=.99 and motion_top>=.99 and pins and entry_pass else 'FAIL',maximum_wrapped_phase=wrapped,maximum_unwrapped_phase=unwrapped,maximum_free_position=position,Ntheta_agreement=phase_top,Nx_agreement=motion_top,pins_invariant=pins,entry_applicable=entry,entry_times=times,entry_pass=entry_pass,records=[a,b],fast_transient_frames=[sum(any(v>math.pi/2 for v in r['excursion'].values()) for r in rows) for rows in (a,b)])
+    validity=n1_validity(a,b)
+    holds=[t is not None and all(abs(float(wrap(r['phases'][entry_member]-math.pi/2)))<=.3 for r in rows if t<=r['time']<=24+1e-9) for t,rows in zip(times,(a,b))] if entry and seconds>=24 else None
+    return dict(verdict='PASS' if wrapped<=.01 and unwrapped<=.01 and position<=.01 and phase_top>=.99 and motion_top>=.99 and pins and entry_pass else 'FAIL',maximum_wrapped_phase=wrapped,maximum_unwrapped_phase=unwrapped,maximum_free_position=position,Ntheta_agreement=phase_top,Nx_agreement=motion_top,pins_invariant=pins,entry_applicable=entry,entry_times=times,entry_pass=entry_pass,entry_hold_through_24=holds,hold_used_in_verdict=False,records=[a,b],seconds=seconds,h=[PRODUCTION_H,REFINEMENT_H],substeps=[20,80],phase_scale=32.,validity=validity,fast_transient_frames=validity['individual_invalid_frames'])
+
+
+def n1_validity(a,b):
+    """Descriptive masks: individual IDs and undirected endpoint Ntheta pairs.
+
+    Compare pairs used in either run at the matched endpoint. Missing use is
+    distinct from invalid use; changing topology is also reported by N1.
+    """
+    def masks(row):
+        bounds=row['excursion']
+        pairs={tuple(sorted((target,source))) for target,sources in row['phase_topology'].items() for source in sources}
+        if any(not math.isfinite(v) or v<0 for v in bounds.values()) or any(a not in bounds or b not in bounds for a,b in pairs):raise ValueError('INVALID: missing or invalid used-pair excursion')
+        return {id for id,v in bounds.items() if v>math.pi/2},{(a,b) for a,b in pairs if bounds[a]+bounds[b]>math.pi/2}
+    masks_a=[masks(r) for r in a];masks_b=[masks(r) for r in b]
+    return dict(used_in_verdict=False,pair_policy='undirected union of endpoint Ntheta links per run; site validity uses individual E_i',
+        individual_invalid_frames=[sum(bool(m[0]) for m in rows) for rows in (masks_a,masks_b)],
+        used_pair_invalid_frames=[sum(bool(m[1]) for m in rows) for rows in (masks_a,masks_b)],
+        individual_invalid_observations=[sum(len(m[0]) for m in rows) for rows in (masks_a,masks_b)],
+        used_pair_invalid_observations=[sum(len(m[1]) for m in rows) for rows in (masks_a,masks_b)],
+        individual_disagreement_frames=sum(x[0]!=y[0] for x,y in zip(masks_a,masks_b)),
+        used_pair_disagreement_frames=sum(x[1]!=y[1] for x,y in zip(masks_a,masks_b)),
+        individual_disagreement_observations=sum(len(x[0]^y[0]) for x,y in zip(masks_a,masks_b)),
+        used_pair_disagreement_observations=sum(len(x[1]^y[1]) for x,y in zip(masks_a,masks_b)))
 
 if __name__=='__main__':main()

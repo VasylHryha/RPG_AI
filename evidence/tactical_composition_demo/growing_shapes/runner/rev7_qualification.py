@@ -77,7 +77,7 @@ def start(medium):
         if all(c4.criteria_checks(check, THRESHOLDS).values()):
             ids = [cohort[i] for i in members]
             candidates.append({'indices': members, 'ids': ids, 'stats': stats,
-                               'template': template(medium.native, ids, medium.time)})
+                               'template': template(medium.native, ids, medium.time,h=medium.h)})
     return {'cohort': cohort, 'candidates': candidates, 'locked': locked,
             'alias_max': maximum, 'possibly_aliased': maximum > math.pi/2,
             'warning': 'excursion screen is sufficient only under the RK4 stage-sampling assumption'}

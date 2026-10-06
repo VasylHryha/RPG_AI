@@ -1,4 +1,4 @@
-"""Versioned revision-7.3 live orchestration; execution requires an explicit grant."""
+"""Versioned revision-7.4 live orchestration; execution requires an explicit grant."""
 import argparse
 from collections import defaultdict
 from copy import deepcopy
@@ -106,6 +106,7 @@ class Run:
         # Immutable complete native state is preserved for audit, alongside clone.
         saved = self.medium.clone(events=False)
         self.pending.append({'check': check, 'saved': saved, 'state': {'native': saved.native.save().hex(),
+                             'solver_policy': dict(h=saved.h,phase_scale=saved.native.policy()[0],fixed_positions=saved.native.policy()[1],site_bodies=saved.native.policy()[2]),
                              'world_step': saved.step_index, 'birth_steps': dict(saved.birth_steps),
                              'roles':{e.id:saved.role(e.id) for e in saved.native.elements},'D4':{e.id:saved.native.cut_off(e.id) for e in saved.native.elements},'death_timers': dict(saved.death), 'novelty_timers': dict(saved.novelty),
                              'frames': [{'index': f.index, 'time': f.time, 'elements': f.elements,
@@ -226,7 +227,7 @@ class Run:
             first, second = evaluator.evaluate(snapshot['template']), evaluator.evaluate(snapshot['template'], math.pi)
             self.evaluations.append({'type_id': snapshot['type_id'], 'per_task': first,
                                      'best_task': max(first, key=first.get), 'G5_D': covariance(first, second)})
-        whole = template(self.medium.native, [e.id for e in self.medium.native.elements], self.medium.time)
+        whole = template(self.medium.native, [e.id for e in self.medium.native.elements], self.medium.time,h=self.medium.h)
         self.final_panel=evaluator.panel(whole) if self.policy=='intact' else {t:{'intact':[evaluator.episode(whole,t,e)['score'] for e in range(10000512,10000640)]} for t in evaluator.usable}
         self.final_competence={t:float(np.mean(v['intact'])) for t,v in self.final_panel.items()}
         self.exposure['evaluator_episodes'] = evaluator.episodes
@@ -238,7 +239,7 @@ class Run:
         slope=late_result['slope'];rejected=late_result.get('rejected',False)
         protected=late_result.get('protected_over_budget',False)
         unique = {s['type_id']: s['template'] for s in self.snapshots}
-        final = template(self.medium.native, [e.id for e in self.medium.native.elements], self.medium.time)
+        final = template(self.medium.native, [e.id for e in self.medium.native.elements], self.medium.time,h=self.medium.h)
         pending = [{'check_time': item['index']*.1, 'state': item['state'],
                     'recorded_future_steps': len(item['schedule']),
                     'candidates': [{'ids': c['ids'], 'stats': c['stats'], 'template': c['template']}
@@ -248,7 +249,7 @@ class Run:
         late_result['interpretation_label']='flat count with unmet output/path demand' if summaries['late']['unmet_output_or_path_demand'] and slope is not None and abs(slope)<=.5 else 'count trend under declared budget only'
         return {'identity_snapshot':self.identity_snapshot,'interpretation':INTERPRETATION,'descriptive':summaries,'pending_qualification': pending, 'final_template': final, 'final_type_id': template_hash(final), 'seed': self.seed, 'arm': 'reward' if self.reward else 'task_blind', 'control': self.control,
                 'complete': self.complete, 'invalid': self.invalid, 'usable': self.usable,
-                'clock': self.medium.time, 'clock_ledger':clock_ledger(self.medium.native), 'validity':dict(individual_fast_frames=self.medium.fast_transient_count,invalid_pair_observations=self.medium.invalid_pair_count,limitation='RK4 stage-sampling assumption'), 'exposure': self.exposure, 'timing': self.timing,
+                'clock': self.medium.time, 'clock_ledger':clock_ledger(self.medium.native), 'validity':dict(individual_fast_frames=self.medium.fast_transient_count,invalid_pair_observations=self.medium.invalid_pair_count,estimator_windows=self.medium.estimator_validity(),limitation='RK4 stage-sampling assumption'), 'exposure': self.exposure, 'timing': self.timing,
                 'coverage': sum(self.coverage_samples)/len(self.coverage_samples) if self.coverage_samples else None,
                 'eligible': len(self.coverage_samples), 'coverage_samples': self.coverage_samples,
                 'growth_counts': self.growth_counts, 'slope': slope,

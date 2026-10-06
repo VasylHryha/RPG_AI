@@ -1,0 +1,23 @@
+........................................................................ [ 93%]
+.F
+=================================== FAILURES ===================================
+________ test_N1f_synthetic_24_seconds_masks_disagree_without_new_gate _________
+
+    def test_N1f_synthetic_24_seconds_masks_disagree_without_new_gate():
+        rows=[dict(time=(j+1)*.1,phases=[0.,math.pi/2 if j>=110 else 0.],positions=[[0.,0.],[.6,0.]],free=[True,False],phase_topology={0:[1],1:[0]},motion_topology={0:[1],1:[0]},pin_invariant=True,excursion={0:0.,1:0.}) for j in range(240)]
+        fine=deepcopy(rows);rows[200]['excursion']={0:.8,1:.8}
+        fine[201]['excursion'][0]=2.
+        result=compare_n1(rows,fine,True,1,seconds=24.)
+>       assert result['verdict']=='PASS' and result['entry_times']==[11.1,11.1]
+E       AssertionError: assert ('PASS' == 'PASS'
+E         
+E           PASS and [11.100000000...0000000000001] == [11.1, 11.1]
+E         
+E         At index 0 diff: 11.100000000000001 != 11.1
+E         Use -v to get more diff)
+
+evidence/tactical_composition_demo/growing_shapes/runner/test_rev7.py:570: AssertionError
+=========================== short test summary info ============================
+FAILED evidence/tactical_composition_demo/growing_shapes/runner/test_rev7.py::test_N1f_synthetic_24_seconds_masks_disagree_without_new_gate
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 73 passed in 2.44s

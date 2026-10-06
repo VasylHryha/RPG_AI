@@ -1,4 +1,4 @@
-"""Revision-7.3 identity, entropy, decoder, inference and registered stop rules."""
+"""Revision-7.4 identity, entropy, decoder, inference and registered stop rules."""
 import hashlib
 import math
 import numpy as np
@@ -10,7 +10,7 @@ RHS_VERSION='rev7_rhs_v1'
 EVAL_VERSION='rev7_eval_v1'
 TEMPLATE_VERSION='rev7_template_v1'
 QUAL_VERSION='rev7_qual_v1'
-from .rev7_config import CONFIG_SHA256
+from .rev7_config import CONFIG_SHA256,PRODUCTION_H,REFINEMENT_H,F1D_SCALES
 
 
 def seed(key):
@@ -35,17 +35,21 @@ def donor_entries():
     return [dict(j=j,recipient=10000512+j,donor=10000640+ranks[j],rank_pi_j=ranks[j],rank_digest_sha256=digests[j].hex()) for j in range(128)]
 
 
-def template(native,ids,time):
+def template(native,ids,time,*,h=PRODUCTION_H):
     es={e.id:e for e in native.elements}
     value=dict(members=[[float(es[id].x),float(es[id].y),float(es[id].phase-math.pi*time),float(es[id].rate),float(native.gain(id)),native.role(id),native.pin(id)[0],list(native.pin(id)[1]) if native.pin(id)[0] else None] for id in sorted(ids)],
-        binding=dict(BINDING),rhs_version=RHS_VERSION,eval_version=EVAL_VERSION,template_version=TEMPLATE_VERSION,qual_version=QUAL_VERSION,configuration_sha256=CONFIG_SHA256)
+        binding=dict(BINDING),rhs_version=RHS_VERSION,eval_version=EVAL_VERSION,template_version=TEMPLATE_VERSION,qual_version=QUAL_VERSION,configuration_sha256=CONFIG_SHA256,
+        solver_policy=dict(h=h,phase_scale=native.policy()[0],fixed_positions=native.policy()[1],site_bodies=native.policy()[2]))
     validate_template(value)
     return value
 
 
 def validate_template(value):
-    if set(value)!={'members','binding','rhs_version','eval_version','template_version','qual_version','configuration_sha256'} or value['binding']!=BINDING or value['qual_version']!=QUAL_VERSION or value['configuration_sha256']!=CONFIG_SHA256 or (value['rhs_version'],value['eval_version'],value['template_version'])!=(RHS_VERSION,EVAL_VERSION,TEMPLATE_VERSION):
+    if set(value)!={'members','binding','rhs_version','eval_version','template_version','qual_version','configuration_sha256','solver_policy'} or value['binding']!=BINDING or value['qual_version']!=QUAL_VERSION or value['configuration_sha256']!=CONFIG_SHA256 or (value['rhs_version'],value['eval_version'],value['template_version'])!=(RHS_VERSION,EVAL_VERSION,TEMPLATE_VERSION):
         raise ValueError('rev7 template version/binding/schema mismatch')
+    solver=value['solver_policy']
+    if set(solver)!={'h','phase_scale','fixed_positions','site_bodies'} or solver['h'] not in (PRODUCTION_H,REFINEMENT_H) or solver['phase_scale'] not in F1D_SCALES or any(type(solver[k]) is not bool for k in ('fixed_positions','site_bodies')):
+        raise ValueError('invalid rev7 solver policy')
     canonical(value)
     outputs=0
     for row in value['members']:
@@ -70,8 +74,12 @@ def copy_template(value,carrier_offset=0.,*,backend="native"):
     validate_template(value)
     if carrier_offset not in (0.,math.pi):raise ValueError('carrier offsets are 0 and pi')
     from ..medium.rev7_design import Rev7Medium
-    medium=Rev7Medium(frozen=True,backend=backend)
+    solver=value['solver_policy']
+    medium=Rev7Medium(frozen=True,backend=backend,h=solver['h'])
     try:
+        medium.native.phase_scale(solver['phase_scale'])
+        if solver['fixed_positions']:medium.native.comparator('fixed_structure')
+        if not solver['site_bodies']:medium.native.comparator('site_body_off')
         medium.native.start_clock(carrier_offset/math.pi)
         medium.step_index=round(carrier_offset/math.pi/.1)
         for x,y,offset,rate,gain,role,pinned,pin in value['members']:

@@ -22,7 +22,7 @@ def lists(elements,drives,k=8,radius=3.,site_bodies=True):
     return phase,motion
 
 
-def rhs(state,elements,drives,phase,motion,params,gains,outputs,lesions,*,scale=8.,fixed=False):
+def rhs(state,elements,drives,phase,motion,params,gains,outputs,lesions,*,scale=32.,fixed=False):
     result=np.zeros((len(elements),3));terms=np.zeros((len(elements),4))
     for i,e in enumerate(elements):
         x,y,theta=state[i];vx=vy=coupling=drive=0.

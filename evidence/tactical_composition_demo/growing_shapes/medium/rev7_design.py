@@ -1,4 +1,4 @@
-"""Revision 7.3 live medium: role masks, fresh graph, D4, ordered birth rules."""
+"""Revision 7.4 live medium: role masks, fresh graph, D4, ordered birth rules."""
 from collections import deque
 from copy import deepcopy
 from dataclasses import dataclass
@@ -6,6 +6,7 @@ import math
 import numpy as np
 from .design_0h import DesignMedium, DT, SITES, kernel, wrap
 from .rev7_native import Rev7Native
+from ..runner.rev7_config import PRODUCTION_H, REFINEMENT_H
 
 @dataclass(frozen=True)
 class Frame:
@@ -119,10 +120,11 @@ def geometric_trial(elements,drives,site,a,b,position,new,*,k=8,radius=3.,before
 
 
 class Rev7Medium(DesignMedium):
-    def __init__(self,seed=0,*,growth_rng=None,frozen=False,params=None,backend="native",h=.02):
+    def __init__(self,seed=0,*,growth_rng=None,frozen=False,params=None,backend="native",h=PRODUCTION_H):
         self.backend=backend;self.h=h
-        if backend not in ("native","reference") or h not in (.02,.005):raise ValueError("invalid solver configuration")
+        if backend not in ("native","reference") or h not in (PRODUCTION_H,REFINEMENT_H):raise ValueError("invalid solver configuration")
         self.frame_excursion={};self.fast_transient_count=0;self.invalid_pair_count=0
+        self.estimator_counts={};self.estimator_seen=set();self.estimator_index=None
         self.native=Rev7Native(seed,params=params)
         self.native.options(automatic_samples=False,carried_sites=True,undirected_cost=True)
         self.native.first_id(0)
@@ -168,15 +170,34 @@ class Rev7Medium(DesignMedium):
         if sensor and self.role(id)=='output':return None
         frames=self.samples(id,100)
         if frames is None:return None
-        values=[]
+        values=[];excluded=eligible=0
         for f in frames:
             e=f.elements[id]
             if sensor:
-                if not individual_valid(f,id):continue
                 site=f.sites.get(partner)
-                if site is not None and site[3]>0 and math.hypot(e[0]-site[0],e[1]-site[1])<3:values.append(e[2]-site[2])
-            elif partner in f.neighbors[id] and partner in f.elements and pair_valid(f,id,partner):values.append(e[2]-f.elements[partner][2])
+                if site is not None and site[3]>0 and math.hypot(e[0]-site[0],e[1]-site[1])<3:
+                    eligible+=1
+                    if individual_valid(f,id):values.append(e[2]-site[2])
+                    else:excluded+=1
+            elif partner in f.neighbors[id] and partner in f.elements:
+                eligible+=1
+                if pair_valid(f,id,partner):values.append(e[2]-f.elements[partner][2])
+                else:excluded+=1
+        if self.estimator_index!=self.step_index:
+            self.estimator_seen.clear();self.estimator_index=self.step_index
+        key=(id,partner,sensor)
+        if key not in self.estimator_seen:
+            self.estimator_seen.add(key)
+            counts=self.estimator_counts.setdefault('site' if sensor else 'element',dict(windows=0,eligible_observations=0,valid_observations=0,transient_exclusions=0,rejected_below_80=0,active_histogram={}))
+            counts['windows']+=1;counts['eligible_observations']+=eligible;counts['valid_observations']+=len(values)
+            counts['transient_exclusions']+=excluded;counts['rejected_below_80']+=int(len(values)<80)
+            counts['active_histogram'][len(values)]=counts['active_histogram'].get(len(values),0)+1
         return values if len(values)>=80 else None
+
+    def estimator_validity(self):
+        return dict(status='DESCRIPTIVE',used_in_verdict=False,window_records=100,minimum_active=80,
+            denominator_policy='unique directed id/partner/kind windows actually requested per world endpoint; site reach/strength or element neighbour eligibility before excursion filter',
+            site=deepcopy(self.estimator_counts.get('site')),element=deepcopy(self.estimator_counts.get('element')))
 
     def adapt(self):
         signals={}

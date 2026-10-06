@@ -1,5 +1,6 @@
 """Package and verify new source/evidence only; never include native build products."""
 import hashlib
+import gzip
 import json
 from pathlib import Path
 import tarfile
@@ -16,14 +17,20 @@ def package():
     paths=list(base.glob('medium/rev7_*.*'))+[base/'medium/build_rev7.py']
     paths+=list(HERE.glob('rev7_*.py'))+[HERE/'test_rev7.py']
     paths+=[p for p in HERE.glob('REV7_*') if p.is_file() and p not in (ARCHIVE,MANIFEST,HERE/'REV7_DELIVERY_NOTE.md',HERE/'REV7_DELIVERY_VERIFICATION.json')]
+    paths+=list((HERE/'rev73_integration_history').glob('REV7_*'))
+    paths+=list((HERE/'rev74_failed_synthetic_attempt').glob('*'))
     forbidden={'.dylib','.so','.dll','.o','.obj','.a','.lib','.pyc'}
     entries={}
     for p in sorted(set(paths)):
         if p.suffix in forbidden or '_rev7_build' in p.parts:raise ValueError('native product in source-only package')
         data=p.read_bytes()
-        if len(data)>=MAX_BYTES:raise ValueError(f'oversize source: {p}')
+        if len(data)>=MAX_BYTES:
+            if p.suffix not in ('.json','.jsonl','.txt','.log','.md'):raise ValueError(f'oversize source: {p}')
+            p=p.with_suffix(p.suffix+'.gz');data=gzip.compress(data,mtime=0)
+            if len(data)>=MAX_BYTES:raise ValueError(f'oversize compressed receipt: {p}')
+            p.write_bytes(data)
         entries[str(p.relative_to(ROOT))]=dict(bytes=len(data),sha256=hashlib.sha256(data).hexdigest())
-    manifest=dict(kind='SOURCE_ONLY',execution_pin_sha256=identity['pin_sha256'],files=entries,
+    manifest=dict(kind='SOURCE_ONLY',revision='7.4',execution_pin_sha256=identity['pin_sha256'],files=entries,
         native_products='EXCLUDED',fixture_execution='NOT_RUN',provenance='Assisted-by: Codex:GPT-6')
     MANIFEST.write_text(json.dumps(manifest,sort_keys=True,indent=2)+'\n')
     with tarfile.open(ARCHIVE,'w:gz') as output:

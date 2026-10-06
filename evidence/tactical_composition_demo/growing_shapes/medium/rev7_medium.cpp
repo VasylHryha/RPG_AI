@@ -412,7 +412,7 @@ Medium Medium::load(const void* data,size_t size) {
     if(v2){auto flag=[&](){int32_t f=r.pod<int32_t>();require(f==0||f==1,"invalid option flag");return bool(f);};m.automatic_samples=flag();m.carried_sites=flag();m.undirected_cost=flag();}
     m.phase_scale=r.pod<double>();
     auto flag=[&](){int32_t f=r.pod<int32_t>();require(f==0||f==1,"invalid policy flag");return bool(f);};m.site_bodies=flag();m.fixed_positions=flag();
-    require((m.phase_scale==8||m.phase_scale==1),"invalid phase scale");
+    require((m.phase_scale==32||m.phase_scale==8||m.phase_scale==1),"invalid phase scale");
     int32_t conf=r.pod<int32_t>();require(conf==0||conf==1,"invalid configured flag");m.configured=conf;
     m.time=r.pod<double>();m.last_growth=r.pod<double>();m.next_id=r.pod<uint64_t>();m.rng=r.pod<uint64_t>();
     size_t n=r.count();for(size_t i=0;i<n;++i){Element e;
