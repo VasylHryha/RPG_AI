@@ -1,0 +1,59 @@
+{
+  "F5_composite_awake_seconds": 1257.7116051666671,
+  "F5_workload": {
+    "frozen_assay_episodes": 180,
+    "live_world_frames": 16000,
+    "qualification_starts": 24
+  },
+  "assumptions": [
+    "Entire mixed F5 cost, including setup, qualification, recovery, diagnostics and donor work, is attributed to the chosen live/assay shares; shares are assumed, not observed.",
+    "Transfer the composite component rates unchanged across populations, tasks, training lengths and concurrent machine load.",
+    "The planned development workload includes site-body-off; do not add it or donor captures again.",
+    "Unmeasured future qualification/recovery demand is not separately priced. No third share is added to these two-share scenarios."
+  ],
+  "development_workload": {
+    "donor_capture_episodes": 8192,
+    "growth_checks": 76800,
+    "intact_trainings": 16,
+    "qualification_starts": 8512,
+    "site_body_off_added_episodes": 2048,
+    "site_body_off_episodes_per_intact_training": 128,
+    "snapshot_assay_episodes_max": 327680,
+    "total_assay_episodes_max_all_four_tasks": 434176,
+    "training_world_frames": 15360000,
+    "trainings": 48
+  },
+  "formula": "T_F5/3600 * (alpha_live * 15360000/16000 + (1-alpha_live) * 434176/180)",
+  "frozen_assay_workload_ratio": 2412.088888888889,
+  "isolated_assay_rate": null,
+  "isolated_live_rate": null,
+  "limitations": [
+    "F5(i) failed; these are cost-planning arithmetic only and do not authorize development.",
+    "These scenarios are alternatives, neither additive nor bounds, and are not independent replication or a measured full development total.",
+    "Small-scaffold proxies remain separately preserved; they are not added to this mixed-composite scenario."
+  ],
+  "live_frame_workload_ratio": 960.0,
+  "lower_or_upper_bound": false,
+  "pre_augmentation_report_sha256": "85f57ff3cee292c22b00784882d0adb06f28415f91586a6e4f566319218cf9cb",
+  "provenance": "Assisted-by: Codex:GPT-6",
+  "qualified_total_hours": null,
+  "scenarios": [
+    {
+      "alpha_frozen_assay": 0.0,
+      "alpha_live": 1.0,
+      "assumed_hours": 335.3897613777779
+    },
+    {
+      "alpha_frozen_assay": 0.5,
+      "alpha_live": 0.5,
+      "assumed_hours": 589.0437957234899
+    },
+    {
+      "alpha_frozen_assay": 1.0,
+      "alpha_live": 0.0,
+      "assumed_hours": 842.6978300692019
+    }
+  ],
+  "source_timing": "F5_TIMING.json",
+  "status": "ASSUMPTION_QUALIFIED_SENSITIVITY_NOT_SCIENTIFIC_QUALIFICATION"
+}

@@ -1,0 +1,39 @@
+{
+  "B_path_rate": null,
+  "F1_composite_awake_seconds_per_substep": 4.167421853298947e-05,
+  "F4_mixed_native_reference_awake_seconds_per_assay_episode": 0.2734653708321275,
+  "F5_composite_awake_seconds": 1257.7116051666671,
+  "F5_measured_workload": {
+    "frozen_assay_episodes": 180,
+    "live_world_frames": 16000
+  },
+  "F6_frozen_assay_composite_seconds_per_episode": null,
+  "F7_control_M_live_composite_seconds_per_frame": null,
+  "F8_move_memory_live_composite_seconds_per_frame": null,
+  "N1_composite_awake_seconds_per_substep": 2.4534971527949285e-05,
+  "all_assay_hours_F4_proxy": 32.98113912400272,
+  "donor_capture_rate": null,
+  "grown_population_assay_rate": null,
+  "grown_population_training_rate": null,
+  "limitation": "Whole-call composites include setup, diagnostics, growth/recovery and task work. F5 mixes live growth with frozen assays and cannot isolate their rates. F6 frozen memory, F7 control-M and F8 reward tasks are different workloads. Training proxies are alternatives, not additive; site-body-off is already included in all-assay workload. Shared-machine load prevents isolated timing claims. No development executed.",
+  "lower_or_upper_bound": false,
+  "qualification_rate": null,
+  "qualified_total_hours": null,
+  "recovery_rate": null,
+  "site_body_off_added_hours_F4_proxy": 0.155571410962277,
+  "status": "A7_PARTIAL_TOTAL_NOT_QUALIFIED",
+  "training_hours_F1_proxy": 3.556199981481768,
+  "training_hours_N1_proxy": 2.093650903718339,
+  "workload": {
+    "donor_capture_episodes": 8192,
+    "growth_checks": 76800,
+    "intact_trainings": 16,
+    "qualification_starts": 8512,
+    "site_body_off_added_episodes": 2048,
+    "site_body_off_episodes_per_intact_training": 128,
+    "snapshot_assay_episodes_max": 327680,
+    "total_assay_episodes_max_all_four_tasks": 434176,
+    "training_world_frames": 15360000,
+    "trainings": 48
+  }
+}

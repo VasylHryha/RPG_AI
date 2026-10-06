@@ -1,0 +1,79 @@
+{
+  "artifacts": {
+    "F5": {
+      "bytes": 252,
+      "delivery_eligible": true,
+      "path": "F5.json.gz",
+      "sha256": "85f84b1454637f76125cef33e5302c0c97ecf579115bc553313c293e48f7b772"
+    }
+  },
+  "harness_receipt": {
+    "bytes": 302,
+    "delivery_eligible": true,
+    "path": "HARNESS_RECEIPT.json.gz",
+    "sha256": "388e7f47ae11240c2905a0a07249eb649cf9d62890a17848f00503a32cb49ae9"
+  },
+  "individual_nested_execution_costs": null,
+  "nested_cost_reason": "Harness returns no individual execution clocks for F1a-c or F5i/ii; enclosing whole calls are timed. F1 includes F1d; do not sum both.",
+  "provenance": "Assisted-by: Codex:GPT-6",
+  "timings": {
+    "F5": {
+      "awake_seconds": 4.2125000000000495e-05,
+      "continuous_seconds": 4.208399999999779e-05,
+      "elapsed_utc_seconds": 4.2e-05,
+      "end_clock": {
+        "awake": 0.026718208,
+        "continuous": 0.02671825,
+        "utc": "2026-10-06T17:38:25.092056+00:00"
+      },
+      "end_utc": "2026-10-06T17:38:25.092056+00:00",
+      "machine_load_after_call": {
+        "load_average_1_5_15": [
+          8.19970703125,
+          9.96484375,
+          8.73974609375
+        ],
+        "logical_cpus": 10,
+        "process_inventory": null,
+        "qualification": "Owner specified after C6 quiet timing, alongside 0g v5 development; shared machine, not isolated timing. Per-process inventory unavailable: sandbox denies ps from Python."
+      },
+      "machine_load_before_call": {
+        "load_average_1_5_15": [
+          8.19970703125,
+          9.96484375,
+          8.73974609375
+        ],
+        "logical_cpus": 10,
+        "process_inventory": null,
+        "qualification": "Owner specified after C6 quiet timing, alongside 0g v5 development; shared machine, not isolated timing. Per-process inventory unavailable: sandbox denies ps from Python."
+      },
+      "scope": "whole method call; excludes persistence after return",
+      "start_clock": {
+        "awake": 0.026676083,
+        "continuous": 0.026676166,
+        "utc": "2026-10-06T17:38:25.092014+00:00"
+      },
+      "start_utc": "2026-10-06T17:38:25.092014+00:00"
+    }
+  },
+  "total": {
+    "awake_seconds": 0.0007099170000000009,
+    "continuous_seconds": 0.0007099159999999979,
+    "elapsed_utc_seconds": 0.00071,
+    "end_clock": {
+      "awake": 0.027378083,
+      "continuous": 0.027378166,
+      "utc": "2026-10-06T17:38:25.092716+00:00"
+    },
+    "end_utc": "2026-10-06T17:38:25.092716+00:00",
+    "scope": "whole method call; excludes persistence after return",
+    "start_clock": {
+      "awake": 0.026668166,
+      "continuous": 0.02666825,
+      "utc": "2026-10-06T17:38:25.092006+00:00"
+    },
+    "start_utc": "2026-10-06T17:38:25.092006+00:00"
+  },
+  "verdict": "FIXTURES_PASS",
+  "wrapper_sha256": "b9df84ccd14eff6b3007d157b9a6e26ba80c5dadc94f184a7cede8299c2f5c42"
+}

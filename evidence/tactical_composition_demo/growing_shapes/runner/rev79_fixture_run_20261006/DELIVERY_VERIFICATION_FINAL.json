@@ -1,0 +1,76 @@
+{
+  "N1f_hold": {
+    "agree": true,
+    "coarse_fine": [
+      true,
+      true
+    ],
+    "harness_verdict_preserved": "PASS",
+    "reported_F1c_verdict": "PASS"
+  },
+  "archive": {
+    "bytes": 2713877,
+    "path": "evidence/tactical_composition_demo/growing_shapes/runner/REV79_FIXTURE_EVIDENCE.tar.gz",
+    "sha256": "ecb576371375083281753dbe0103330fc0283cf4df0764227447c5fed896338a"
+  },
+  "changes_since_initial_verification": [
+    "Correct external final audit label to actual analyze_saved_now.py; original verifier record preserved",
+    "Refresh excluded delivery log hash after its builder stdout was complete; archive/member bytes unchanged"
+  ],
+  "commit_blocker": "read-only .git/index.lock Operation not permitted",
+  "commit_created": false,
+  "every_delivered_file_strictly_under_50MB": true,
+  "every_manifest_member_matches_archive_and_current_disk": true,
+  "every_omitted_file_matches_final_manifest": true,
+  "excluded_evidence": [
+    {
+      "bytes": 182,
+      "path": "evidence/tactical_composition_demo/growing_shapes/runner/rev79_fixture_run_20261006/ANALYSIS_LOG.txt",
+      "reason": "Raw operational log remains local, omitted from delivery and git",
+      "sha256": "68de7fc56e6a95c35a41da71feaaa53fb6cfc58add207ca5d9b4a3143b1b2f2e"
+    },
+    {
+      "bytes": 2158,
+      "path": "evidence/tactical_composition_demo/growing_shapes/runner/rev79_fixture_run_20261006/DELIVERY_LOG.txt",
+      "reason": "Raw operational log remains local, omitted from delivery and git",
+      "sha256": "c518512303f4206d6edb256122fb6a7dadf594b48a6663f3aca967608c7a04a5"
+    },
+    {
+      "bytes": 576,
+      "path": "evidence/tactical_composition_demo/growing_shapes/runner/rev79_fixture_run_20261006/EXECUTION_LOG.txt",
+      "reason": "Raw operational log remains local, omitted from delivery and git",
+      "sha256": "d9e15c34444c17c037b8987833af7b6b4eb57414b09fb366447f6c94acaeb4d8"
+    },
+    {
+      "bytes": 73319972,
+      "path": "evidence/tactical_composition_demo/growing_shapes/runner/rev79_fixture_run_20261006/F5.json.gz",
+      "reason": "Large trace remains local, omitted from delivery and git",
+      "sha256": "7abfee05b67d79b970e5844316ce37d447996391618e69eeb41dbfeb34ddd011"
+    },
+    {
+      "bytes": 74992678,
+      "path": "evidence/tactical_composition_demo/growing_shapes/runner/rev79_fixture_run_20261006/HARNESS_RECEIPT.json.gz",
+      "reason": "Large trace remains local, omitted from delivery and git",
+      "sha256": "a10255c0ca477fb2138579180d4d6d08f4494ae32dd6f69fd2ff4e484f03a6a7"
+    }
+  ],
+  "final_owner_recheck": "OWNER_RECHECK_DELIVERY_FINAL.md",
+  "final_utc": "2026-10-06T18:15:14.685762+00:00",
+  "fixture_outcome": "FIXTURES_FAIL",
+  "largest_member_bytes": 2673766,
+  "manifest_sha256": "823a0ee9ebf1be495390628db25b1ca2a0285632c3ec7d3de16ad95e8cf4ef10",
+  "members_verified": 83,
+  "not_run": [
+    "F6",
+    "F7",
+    "F8",
+    "F9"
+  ],
+  "plan_sha256": "3df3395920009774d02d2f3a33f45b305901c701edcf320906c5c7db85742c9a",
+  "plan_unchanged": true,
+  "preservation": "PASS",
+  "review": "OWNER_RECHECK_REPORT.md and OWNER_RECHECK_DISPOSITION.md",
+  "scientific_inputs_checked": 69,
+  "stage_equals_exact_receipt": "checked by actual executed analyze_saved_now.py",
+  "status": "PASS"
+}
