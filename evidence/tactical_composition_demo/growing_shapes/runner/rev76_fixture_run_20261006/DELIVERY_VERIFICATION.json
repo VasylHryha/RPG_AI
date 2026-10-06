@@ -1,0 +1,62 @@
+{
+  "F5_both_starts_persisted": true,
+  "N1f_hold_agrees": true,
+  "archive": {
+    "bytes": 2988441,
+    "path": "evidence/tactical_composition_demo/growing_shapes/runner/REV76_FIXTURE_EVIDENCE.tar.gz",
+    "sha256": "03aeeff2a18ba5e8b2f4a9ab9c1726ce36d24cad30aef4fb0708541621f7aae1"
+  },
+  "artifact_hashes_verified": true,
+  "every_delivered_file_strictly_under_50MB": true,
+  "exact_stage_receipt_equality": "PASS: analyze_saved.py",
+  "excluded_evidence": [
+    {
+      "bytes": 182,
+      "path": "evidence/tactical_composition_demo/growing_shapes/runner/rev76_fixture_run_20261006/ANALYSIS_LOG.txt",
+      "reason": "Raw operational log stays local; omitted from git and bundle",
+      "sha256": "68de7fc56e6a95c35a41da71feaaa53fb6cfc58add207ca5d9b4a3143b1b2f2e"
+    },
+    {
+      "bytes": 576,
+      "path": "evidence/tactical_composition_demo/growing_shapes/runner/rev76_fixture_run_20261006/EXECUTION_LOG.txt",
+      "reason": "Raw operational log stays local; omitted from git and bundle",
+      "sha256": "de619a3abdc205d7c0faa45b194a48ea0fb89b171959a9696568e558a5616454"
+    },
+    {
+      "bytes": 73243871,
+      "path": "evidence/tactical_composition_demo/growing_shapes/runner/rev76_fixture_run_20261006/F5.json.gz",
+      "reason": "Large complete raw trace stays local; omitted from git and bundle",
+      "sha256": "4d9a71ce0bd0722a3484e40d8ef94edba4ce2db2deee4e6ee8407feab66d074f"
+    },
+    {
+      "bytes": 74912458,
+      "path": "evidence/tactical_composition_demo/growing_shapes/runner/rev76_fixture_run_20261006/HARNESS_RECEIPT.json.gz",
+      "reason": "Large complete raw trace stays local; omitted from git and bundle",
+      "sha256": "142dcbd0b35f6241462d0fdcff922539d187b77498a1bdcb5f926a3030593c91"
+    }
+  ],
+  "fixture_outcome": "FIXTURES_FAIL",
+  "largest_member_bytes": 2627906,
+  "manifest": {
+    "bytes": 21745,
+    "path": "evidence/tactical_composition_demo/growing_shapes/runner/REV76_FIXTURE_EVIDENCE_MANIFEST.json",
+    "sha256": "9cb2939f0382e280e94ca84501fa28914b3f281f2834fa99860ab2c47f80f52d"
+  },
+  "manifest_policy": "Manifest and final verification are adjacent, excluded from archive to avoid self-reference",
+  "members_verified": 57,
+  "no_line_hooks": true,
+  "owner_recheck": "OWNER_RECHECK_REPORT.md / OWNER_RECHECK_DISPOSITION.md",
+  "pooled_A_B_E_reconstruction": "PASS: analyze_saved.py",
+  "preservation": {
+    "changed": [],
+    "files_checked": 7683,
+    "git_status": "?? evidence/c6_option_b/QUIET_ACTIVE_SESSION.txt\n?? evidence/c6_option_b/quiet_session_20261006_161801/\n?? evidence/tactical_composition_demo/growing_shapes/runner/rev76_fixture_run_20261006/\n",
+    "head_unchanged": true,
+    "plan_unchanged": true,
+    "status": "PASS"
+  },
+  "real_execution_once": true,
+  "scientific_inputs_checked": 69,
+  "status": "PASS",
+  "wrapper_double": "PASS"
+}

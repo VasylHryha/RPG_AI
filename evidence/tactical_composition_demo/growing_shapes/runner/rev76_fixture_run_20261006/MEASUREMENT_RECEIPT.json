@@ -1,0 +1,273 @@
+{
+  "artifacts": {
+    "F1": {
+      "bytes": 1070772,
+      "delivery_eligible": true,
+      "path": "F1.json.gz",
+      "sha256": "54738060e4a1284d02d1d2dd0d53dd406617ff5d1153c96c552c7aba6d5f4ff5"
+    },
+    "F1d": {
+      "bytes": 264154,
+      "delivery_eligible": true,
+      "path": "F1d.json.gz",
+      "sha256": "51d346212a95853536a5165e52f028974c945cbb349e62442fd5e19ebc0defba"
+    },
+    "F2": {
+      "bytes": 1668,
+      "delivery_eligible": true,
+      "path": "F2.json.gz",
+      "sha256": "2df5ae9da41c6954916da78706f85423164f5715535453c91336312b02618684"
+    },
+    "F3": {
+      "bytes": 2078,
+      "delivery_eligible": true,
+      "path": "F3.json.gz",
+      "sha256": "5e98c603aa2f7fdae7193070aa6844220d580d7eb3bad3022c35abc4cf63ece5"
+    },
+    "F4": {
+      "bytes": 258351,
+      "delivery_eligible": true,
+      "path": "F4.json.gz",
+      "sha256": "2a2d0dddfa3eae9d71c7f984b163f7774ca3d08dfe17f1f820c504be98455203"
+    },
+    "F5": {
+      "bytes": 73243871,
+      "delivery_eligible": false,
+      "path": "F5.json.gz",
+      "sha256": "4d9a71ce0bd0722a3484e40d8ef94edba4ce2db2deee4e6ee8407feab66d074f"
+    },
+    "N1": {
+      "bytes": 200542,
+      "delivery_eligible": true,
+      "path": "N1.json.gz",
+      "sha256": "c8a5f56a9d29602b2395bce7f6fa6e92f0efd7f1ce679051885fe5f2777018d1"
+    }
+  },
+  "harness_receipt": {
+    "bytes": 74912458,
+    "delivery_eligible": false,
+    "path": "HARNESS_RECEIPT.json.gz",
+    "sha256": "142dcbd0b35f6241462d0fdcff922539d187b77498a1bdcb5f926a3030593c91"
+  },
+  "individual_nested_execution_costs": null,
+  "nested_cost_reason": "Harness returns no individual execution clocks for F1a-c or F5i/ii; enclosing whole calls are timed. F1 includes F1d; do not sum both.",
+  "provenance": "Assisted-by: Codex:GPT-6",
+  "timings": {
+    "F1": {
+      "awake_seconds": 7.930560416687513,
+      "continuous_seconds": 7.930560708336998,
+      "elapsed_utc_seconds": 7.930497,
+      "end_clock": {
+        "awake": 170645.34799379166,
+        "continuous": 201146.40502679165,
+        "utc": "2026-10-06T14:40:51.854880+00:00"
+      },
+      "end_utc": "2026-10-06T14:40:51.854880+00:00",
+      "machine_load_after_call": {
+        "load_average_1_5_15": [
+          6.45263671875,
+          9.64794921875,
+          10.98828125
+        ],
+        "logical_cpus": 10,
+        "process_inventory": null,
+        "qualification": "Shared machine, not isolated timing. C6 session directories existed at preflight; active workload is not inferred from their existence. Load averages are observed; process inventory unavailable."
+      },
+      "scope": "whole method call; excludes persistence after return",
+      "start_clock": {
+        "awake": 170637.41743337497,
+        "continuous": 201138.4744660833,
+        "utc": "2026-10-06T14:40:43.924383+00:00"
+      },
+      "start_utc": "2026-10-06T14:40:43.924383+00:00"
+    },
+    "F1d": {
+      "awake_seconds": 3.3506372916453984,
+      "continuous_seconds": 3.350637291674502,
+      "elapsed_utc_seconds": 3.35061,
+      "end_clock": {
+        "awake": 170644.6936972083,
+        "continuous": 201145.75072995832,
+        "utc": "2026-10-06T14:40:51.200589+00:00"
+      },
+      "end_utc": "2026-10-06T14:40:51.200589+00:00",
+      "machine_load_after_call": {
+        "load_average_1_5_15": [
+          6.23095703125,
+          9.6591796875,
+          11.0
+        ],
+        "logical_cpus": 10,
+        "process_inventory": null,
+        "qualification": "Shared machine, not isolated timing. C6 session directories existed at preflight; active workload is not inferred from their existence. Load averages are observed; process inventory unavailable."
+      },
+      "scope": "whole method call; excludes persistence after return",
+      "start_clock": {
+        "awake": 170641.34305991666,
+        "continuous": 201142.40009266665,
+        "utc": "2026-10-06T14:40:47.849979+00:00"
+      },
+      "start_utc": "2026-10-06T14:40:47.849979+00:00"
+    },
+    "F2": {
+      "awake_seconds": 0.19901895834482275,
+      "continuous_seconds": 0.1990184166643303,
+      "elapsed_utc_seconds": 0.199017,
+      "end_clock": {
+        "awake": 170647.64121516666,
+        "continuous": 201148.69824783332,
+        "utc": "2026-10-06T14:40:54.148083+00:00"
+      },
+      "end_utc": "2026-10-06T14:40:54.148083+00:00",
+      "machine_load_after_call": {
+        "load_average_1_5_15": [
+          6.45263671875,
+          9.64794921875,
+          10.98828125
+        ],
+        "logical_cpus": 10,
+        "process_inventory": null,
+        "qualification": "Shared machine, not isolated timing. C6 session directories existed at preflight; active workload is not inferred from their existence. Load averages are observed; process inventory unavailable."
+      },
+      "scope": "whole method call; excludes persistence after return",
+      "start_clock": {
+        "awake": 170647.4421962083,
+        "continuous": 201148.49922941666,
+        "utc": "2026-10-06T14:40:53.949066+00:00"
+      },
+      "start_utc": "2026-10-06T14:40:53.949066+00:00"
+    },
+    "F3": {
+      "awake_seconds": 0.001747958332998678,
+      "continuous_seconds": 0.0017470416787546128,
+      "elapsed_utc_seconds": 0.001746,
+      "end_clock": {
+        "awake": 170647.64438016666,
+        "continuous": 201148.70141258332,
+        "utc": "2026-10-06T14:40:54.151247+00:00"
+      },
+      "end_utc": "2026-10-06T14:40:54.151247+00:00",
+      "machine_load_after_call": {
+        "load_average_1_5_15": [
+          6.45263671875,
+          9.64794921875,
+          10.98828125
+        ],
+        "logical_cpus": 10,
+        "process_inventory": null,
+        "qualification": "Shared machine, not isolated timing. C6 session directories existed at preflight; active workload is not inferred from their existence. Load averages are observed; process inventory unavailable."
+      },
+      "scope": "whole method call; excludes persistence after return",
+      "start_clock": {
+        "awake": 170647.64263220833,
+        "continuous": 201148.69966554164,
+        "utc": "2026-10-06T14:40:54.149501+00:00"
+      },
+      "start_utc": "2026-10-06T14:40:54.149501+00:00"
+    },
+    "F4": {
+      "awake_seconds": 2.799798333348008,
+      "continuous_seconds": 2.7997985833499115,
+      "elapsed_utc_seconds": 2.799778,
+      "end_clock": {
+        "awake": 170650.44579191666,
+        "continuous": 201151.50282445832,
+        "utc": "2026-10-06T14:40:56.952638+00:00"
+      },
+      "end_utc": "2026-10-06T14:40:56.952638+00:00",
+      "machine_load_after_call": {
+        "load_average_1_5_15": [
+          6.3359375,
+          9.5703125,
+          10.953125
+        ],
+        "logical_cpus": 10,
+        "process_inventory": null,
+        "qualification": "Shared machine, not isolated timing. C6 session directories existed at preflight; active workload is not inferred from their existence. Load averages are observed; process inventory unavailable."
+      },
+      "scope": "whole method call; excludes persistence after return",
+      "start_clock": {
+        "awake": 170647.6459935833,
+        "continuous": 201148.70302587497,
+        "utc": "2026-10-06T14:40:54.152860+00:00"
+      },
+      "start_utc": "2026-10-06T14:40:54.152860+00:00"
+    },
+    "F5": {
+      "awake_seconds": 1193.3673177916498,
+      "continuous_seconds": 1193.3673179583566,
+      "elapsed_utc_seconds": 1193.357885,
+      "end_clock": {
+        "awake": 171844.04629379165,
+        "continuous": 202345.103327125,
+        "utc": "2026-10-06T15:00:50.543705+00:00"
+      },
+      "end_utc": "2026-10-06T15:00:50.543705+00:00",
+      "machine_load_after_call": {
+        "load_average_1_5_15": [
+          6.55517578125,
+          10.8515625,
+          11.0244140625
+        ],
+        "logical_cpus": 10,
+        "process_inventory": null,
+        "qualification": "Shared machine, not isolated timing. C6 session directories existed at preflight; active workload is not inferred from their existence. Load averages are observed; process inventory unavailable."
+      },
+      "scope": "whole method call; excludes persistence after return",
+      "start_clock": {
+        "awake": 170650.678976,
+        "continuous": 201151.73600916663,
+        "utc": "2026-10-06T14:40:57.185820+00:00"
+      },
+      "start_utc": "2026-10-06T14:40:57.185820+00:00"
+    },
+    "N1": {
+      "awake_seconds": 3.037591083353618,
+      "continuous_seconds": 3.037590291671222,
+      "elapsed_utc_seconds": 3.037564,
+      "end_clock": {
+        "awake": 170637.13878345833,
+        "continuous": 201138.19581604164,
+        "utc": "2026-10-06T14:40:43.645735+00:00"
+      },
+      "end_utc": "2026-10-06T14:40:43.645735+00:00",
+      "machine_load_after_call": {
+        "load_average_1_5_15": [
+          6.0771484375,
+          9.6875,
+          11.01806640625
+        ],
+        "logical_cpus": 10,
+        "process_inventory": null,
+        "qualification": "Shared machine, not isolated timing. C6 session directories existed at preflight; active workload is not inferred from their existence. Load averages are observed; process inventory unavailable."
+      },
+      "scope": "whole method call; excludes persistence after return",
+      "start_clock": {
+        "awake": 170634.10119237498,
+        "continuous": 201135.15822574997,
+        "utc": "2026-10-06T14:40:40.608171+00:00"
+      },
+      "start_utc": "2026-10-06T14:40:40.608171+00:00"
+    }
+  },
+  "total": {
+    "awake_seconds": 1301.5104899166618,
+    "continuous_seconds": 1301.5104899583384,
+    "elapsed_utc_seconds": 1301.500198,
+    "end_clock": {
+      "awake": 171935.41148216664,
+      "continuous": 202436.4685150833,
+      "utc": "2026-10-06T15:02:21.908174+00:00"
+    },
+    "end_utc": "2026-10-06T15:02:21.908174+00:00",
+    "scope": "whole method call; excludes persistence after return",
+    "start_clock": {
+      "awake": 170633.90099224998,
+      "continuous": 201134.95802512497,
+      "utc": "2026-10-06T14:40:40.407976+00:00"
+    },
+    "start_utc": "2026-10-06T14:40:40.407976+00:00"
+  },
+  "verdict": "FIXTURES_FAIL",
+  "wrapper_sha256": "376087c1d24987788dd333e25cc962908f0b3368a45b3e5bb3ca82236f1fc91d"
+}
