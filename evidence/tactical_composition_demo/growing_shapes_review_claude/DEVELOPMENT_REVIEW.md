@@ -45,3 +45,19 @@ Any change to these is a new design revision on fresh development seeds. It is n
 1. Run the owner's recheck prompt on this chunk (queued after the C6 quiet timing).
 2. Its first questions: confirm or refute the abstention reading of finding 2; explain the duplicate G1c means.
 3. Then the drafter proposes revision 6 to the owner. The candidates are a G0' stability clause that tolerates turnover at the budget, a G0 competence read per structure or through the library, and a control queue that cannot always drop.
+
+## Addendum 1: the floor is identical everywhere (from the 16 committed `REPORT.json.gz`)
+
+- **The final whole-medium score per task is identical, to every digit, in all 16 intact runs of both arms:** perceive 0.0050, move −0.0329, remember_static −0.1075, choose 0.2231. The mean of these four is the 0.0219 of finding 2.
+
+  task_blind 106065's G1c means equal the same move and remember_static values, which explains finding 2's duplicate. Its 20 evaluated snapshots scored that same constant.
+
+  **So the whole-medium read-out does not depend on the learned state.** It is a fixed floor, most likely abstention. Snapshot means below it (for example choose 0.10 against the floor 0.22) mean some snapshots act and do **worse** than abstaining.
+- **The population is pinned by the budget, not by need.** Over the last 20% of training, N is 42–45 in every seed, intact and control alike.
+
+  Cost = N + 0.1 × undirected pairs reaches 64 at about 44 elements. Meanwhile coverage is only 6–22%: sites stay uncovered, B1 keeps asking, and the cost cap rejects the births. Turnover (D1 deaths of unlocked newborns) replaces elements without raising coverage.
+- **The control was starved.** It made 23–71 additions against the intact run's 74–149. It dies less (3–52 deaths), so it sits at the budget and its requests fail feasibility.
+
+**Reading:** growth fills the budget and then churns. Newborns rarely lock to their sites, the read-out never responds to what is learned, and the snapshots that do respond score below abstention.
+
+The engine and the run are faithful. The design does not yet connect structure to action. That is defect D3, and it is now the main one.
