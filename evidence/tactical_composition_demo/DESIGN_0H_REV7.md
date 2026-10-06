@@ -1,6 +1,6 @@
-# Design 0h, revision 7.9: phase on the task's clock, pinned ends (after the revision-6.5 fixture failure)
+# Design 0h, revision 7.10: phase on the task's clock, pinned ends (after the revision-6.5 fixture failure)
 
-**Status:** revision 7.9 (section 16: strong links defined by their actual coupling rate; section 15 was rejected by the Codex review and is superseded; under review). Revision 7.7 (section 14) was approved with notes. Revision 7.6 (section 13) was approved with notes. Revision 7.5 (section 12) was approved with notes. Revision 7.4 (section 11) was approved with notes. Revision 7.3 was design-approved by the Codex round-4 review (APPROVE_WITH_NOTES; its three low notes applied in 10.6). This is design review only: integration and execution readiness are separate gates. **Section 8 answers the Codex review** `docs/reviews/tactical_0h_rev7_design_review_codex.md` (R7-1 … R7-12) **and governs over sections 1–7. Section 9 (revision 7.2) answers the round-2 review `…_codex_r2.md` (R2-1 … R2-7) and governs over everything before it. Section 10 (revision 7.3) answers round 3 (`…_codex_r3.md`, R3-1 … R3-4) and governs over everything before it.** Drafted by Claude for Codex review. Not approved, and no execution is authorized. **The base is revision 6.5** (`DESIGN_0H_REV6.md`, with every section through 19.9). Every rule not changed below stays as written there. This is a new revision on **fresh entropy**: every key prefix `0h-rev6/` becomes `0h-rev7/`, and every world-id range moves up by 10,000,000.
+**Status:** revision 7.10 (section 17: B-path finishes the nearest bridge first, after the 7.9 F5(i) failure; under review). Revision 7.9 (section 16) was approved with notes; section 15 is superseded. Revision 7.7 (section 14) was approved with notes. Revision 7.6 (section 13) was approved with notes. Revision 7.5 (section 12) was approved with notes. Revision 7.4 (section 11) was approved with notes. Revision 7.3 was design-approved by the Codex round-4 review (APPROVE_WITH_NOTES; its three low notes applied in 10.6). This is design review only: integration and execution readiness are separate gates. **Section 8 answers the Codex review** `docs/reviews/tactical_0h_rev7_design_review_codex.md` (R7-1 … R7-12) **and governs over sections 1–7. Section 9 (revision 7.2) answers the round-2 review `…_codex_r2.md` (R2-1 … R2-7) and governs over everything before it. Section 10 (revision 7.3) answers round 3 (`…_codex_r3.md`, R3-1 … R3-4) and governs over everything before it.** Drafted by Claude for Codex review. Not approved, and no execution is authorized. **The base is revision 6.5** (`DESIGN_0H_REV6.md`, with every section through 19.9). Every rule not changed below stays as written there. This is a new revision on **fresh entropy**: every key prefix `0h-rev6/` becomes `0h-rev7/`, and every world-id range moves up by 10,000,000.
 
 ## 1. What the 6.5 fixtures showed (`growing_shapes/runner/REV6_FIXTURE_REPORT.md`, decision 0030)
 
@@ -746,3 +746,38 @@ meaning a time scale of **τ_link ≤ 2 s** per edge.
 - **R79-4:** **"a path of k links has a serial bound of about 2k s" is withdrawn.** 1/c ≤ 2 s is an aligned, single-edge, small-angle scale; the local derivative is c·cos(Δ). Only the F gates measure the response.
 - **R79-5:** strong paths alone establish neither drive, locking, mediation nor a task-clock response. The relaxation relative to 7.7 makes structural exposure easier, so the A/B gates stay decisive. Degree dependence is tested.
 - **R79-6:** the cutoff was selected after the known F1 outcomes and the rejected 7.8. It is engineering, not unique. Every historical FAIL and the limited entropy exception are kept.
+
+## 17. Revision 7.10: B-path finishes the nearest bridge first (the 7.9 F5 report and fix)
+
+### 17.1 The result and the failure report
+
+**Run:** `growing_shapes/runner/REV79_FIXTURE_REPORT.md` (`rev79_fixture_run_20261006`), pin `27a3c462…`.
+- **N1 and F1–F4 PASS.**
+- **F5(ii) PASSES** (the literal hand-built start):
+  - A = 1.206 rad and B = 1.183 rad (bar 0.3); max E = 0.7 (bar 0.5).
+  - The response is present from the first 2 s bin (A = 0.86 rad) and rises to 1.36.
+  - **The first grown network whose output responds to its input through the grown path,** under the registered criteria.
+- **F5(i) FAILS** (the empty start): A = 0.023, B = 0.020, **E = 0 at every site.** B-out fired; B-path made 26 accepted births; B1 made 17.
+
+**Cause** (from the events):
+- 12.1's **fair round-robin** spread B-path over all 8 sites. Each site grew its own bridge toward O, at about r* per birth.
+- By t = 300 s, the 26 B-path and 17 B1 births had filled the budget. **125 B-path requests were refused for `cost`**, and 37 more for `quota`.
+- **Every bridge stopped 1.5–2.4 m.u. short of O. None completed.**
+- In start (ii), the hand-built hexagon gave one site a head start, and that bridge finished.
+- The fairness rule meant to prevent starvation (R2-1) instead **divided a fixed budget across eight unfinished paths.**
+
+### 17.2 The change: the smallest deficit first
+
+**The B-path site order at each check:** sites without a strong path, sorted by their **current deficit δ_s ascending** (smallest first). Ties are broken by the 12.1 round-robin pointer, which still advances by 1 at every check.
+
+- Everything else of B-path is unchanged: at most 2 births per check, the post-trial conditions on G_s, clearance, and the budget.
+- Once a site connects, T (the set of elements reaching O) grows, so the other sites' deficits shrink. **Later bridges can join an existing path instead of reaching O alone.** This is the growing-neural-gas principle of inserting where the error is resolved soonest.
+- **Starvation** is bounded differently: a site with a large deficit waits while closer sites complete. Its deficit is re-evaluated at every check. Per-site waiting is reported.
+
+**Unchanged:** λ, h, the strong-edge rule (16), O's protection (13), every gate, and every other rule.
+
+**Disclosure:** this is an outcome-informed revision, made after the 7.9 F5(i) result. The 7.9 FAIL is kept, and **F5(ii)'s 7.9 PASS is recorded as is.** F5 and F7 reuse the fixture keys under 13.3's exception. The development inventory is untouched.
+
+| Item | Cause |
+|---|---|
+| The fair round-robin divided the budget across unfinished bridges | Starvation was prevented without checking the budget's arithmetic for eight parallel bridges from an empty start |
