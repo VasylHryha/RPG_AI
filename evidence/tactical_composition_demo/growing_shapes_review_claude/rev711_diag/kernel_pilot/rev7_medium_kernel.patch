@@ -1,0 +1,4 @@
+125c125
+<             double radial=(p.A*(1+p.J*std::cos(d))-p.B/rr)/rr;
+---
+>             double radial=std::exp(-rr*rr)*(p.A*(1+p.J*std::cos(d))-p.B/rr)/rr; /* KERNEL PILOT */
