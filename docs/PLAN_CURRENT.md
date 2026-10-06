@@ -51,7 +51,8 @@
 | A6l | Revision 7.8 (a radius 1.177) | **REJECTED** by Codex (F1c degree is 6; F1c's last link sits at 1.41) | — | — |
 | A6m | **Revision 7.9:** strong edge = actual coupling rate ≥ 0.5 /s | DONE: Codex APPROVE_WITH_NOTES (saved F1b and F1c strong paths at 100%; weak links excluded); implemented (122 tests); Claude check **READY_FOR_FIXTURES** (pin `27a3c462…`) | Claude, Codex | — |
 | A6n | 7.9 fixtures | DONE: N1 and F1–F4 PASS; **F5(ii) PASS (A 1.21, B 1.18 rad, E 0.7): the first grown network responding through its grown path**; F5(i), the empty start, FAILS (8 half-bridges filled the budget) | Codex | — |
-| A6o | **Revision 7.10:** B-path serves the smallest deficit first | DONE: Codex APPROVE_WITH_NOTES; implemented (132 tests); Claude check READY_FOR_FIXTURES (pin `ebc58aa2…`). **Fixtures RUNNING** | Claude, Codex | decision 0031 |
+| A6o | Revision 7.10 (the smallest deficit first) | DONE; fixtures **FAIL at F5**: (ii) response strong (A 1.14) but max E 0.45 < 0.5; (i) the empty start still never connects (the budget refuses 102 births) | Claude, Codex | — |
+| A6p | **The growth-budget question:** from an empty start the budget (N + 0.1·pairs ≤ 64) runs out on dense sensor clusters before any bridge completes. **Design options for the owner:** (a) reserve budget for B-path; (b) count only strong pairs in the cost; (c) limit B1 per site; (d) a seeded start (F5(ii)-like) as the standard start | **WAITING: the drafter's analysis and recommendation, then the owner's choice** | Claude, then the owner | — |
 | A7 | Cost projection from the measured F rates | — | Codex | — |
 | A8 | **The development run** (48 trainings, about 16 h or more of serial compute) | — | Codex | **[OWNER] approve the run and its time** |
 | A9 | Review the results, then the owner's recheck | — | Claude, then Codex | — |
