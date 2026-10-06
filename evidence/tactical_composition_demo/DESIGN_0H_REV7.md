@@ -1,6 +1,6 @@
-# Design 0h, revision 7.6: phase on the task's clock, pinned ends (after the revision-6.5 fixture failure)
+# Design 0h, revision 7.7: phase on the task's clock, pinned ends (after the revision-6.5 fixture failure)
 
-**Status:** revision 7.6 (section 13: the output port protected, after the 7.5 F5 failure; under review). Revision 7.5 (section 12) was approved with notes. Revision 7.4 (section 11) was approved with notes. Revision 7.3 was design-approved by the Codex round-4 review (APPROVE_WITH_NOTES; its three low notes applied in 10.6). This is design review only: integration and execution readiness are separate gates. **Section 8 answers the Codex review** `docs/reviews/tactical_0h_rev7_design_review_codex.md` (R7-1 … R7-12) **and governs over sections 1–7. Section 9 (revision 7.2) answers the round-2 review `…_codex_r2.md` (R2-1 … R2-7) and governs over everything before it. Section 10 (revision 7.3) answers round 3 (`…_codex_r3.md`, R3-1 … R3-4) and governs over everything before it.** Drafted by Claude for Codex review. Not approved, and no execution is authorized. **The base is revision 6.5** (`DESIGN_0H_REV6.md`, with every section through 19.9). Every rule not changed below stays as written there. This is a new revision on **fresh entropy**: every key prefix `0h-rev6/` becomes `0h-rev7/`, and every world-id range moves up by 10,000,000.
+**Status:** revision 7.7 (section 14: paths must be made of strong links, after the 7.6 F5 failure; under review). Revision 7.6 (section 13) was approved with notes. Revision 7.5 (section 12) was approved with notes. Revision 7.4 (section 11) was approved with notes. Revision 7.3 was design-approved by the Codex round-4 review (APPROVE_WITH_NOTES; its three low notes applied in 10.6). This is design review only: integration and execution readiness are separate gates. **Section 8 answers the Codex review** `docs/reviews/tactical_0h_rev7_design_review_codex.md` (R7-1 … R7-12) **and governs over sections 1–7. Section 9 (revision 7.2) answers the round-2 review `…_codex_r2.md` (R2-1 … R2-7) and governs over everything before it. Section 10 (revision 7.3) answers round 3 (`…_codex_r3.md`, R3-1 … R3-4) and governs over everything before it.** Drafted by Claude for Codex review. Not approved, and no execution is authorized. **The base is revision 6.5** (`DESIGN_0H_REV6.md`, with every section through 19.9). Every rule not changed below stays as written there. This is a new revision on **fresh entropy**: every key prefix `0h-rev6/` becomes `0h-rev7/`, and every world-id range moves up by 10,000,000.
 
 ## 1. What the 6.5 fixtures showed (`growing_shapes/runner/REV6_FIXTURE_REPORT.md`, decision 0030)
 
@@ -633,3 +633,39 @@ The definitions are hashed with the N1 recipes.
   - The F5 growth entropy was consumed, and its outcome informed this change.
   - F7's own stream was unconsumed, but its targets depend on the reused F5 run.
   - Neither is called fresh or independent. The development inventory is untouched.
+
+## 14. Revision 7.7: a path counts only through strong links (the 7.6 F5 failure report and fix)
+
+### 14.1 Failure report (the stop row F5_failed)
+
+**Run:** `growing_shapes/runner/REV76_FIXTURE_REPORT.md` (`rev76_fixture_run_20261006`), on the owner's "go", at pin `43b0f578…`.
+- **N1 and F1–F4 PASS.**
+- **F5:** **the output persists, and growth forms paths:** max E is 0.8 for start (i) and 0.7 for (ii), above the 0.5 bar; B-out and B-path PASS.
+- **But the response is weak:** A = 0.216 and 0.045, and B = 0.144 and 0.055, against 0.3. **FAIL.**
+
+**Cause** (from the stored decisions and events):
+- **The response grows slowly within each episode.** In start (i), A rises steadily by 2 s bin, ending at 0.37 in the last bin: [0.03, 0.09, 0.14, 0.20, 0.26, 0.31, 0.34, 0.37]. B follows the same pattern.
+- **The output follows its input with a time constant of more than 10 s.**
+- **The accepted B-path births stop 2.2–2.6 m.u. from O.** They are inside the 3 m.u. coupling radius, so the graph counts a path. But the coupling weight there is exp(−r²) ≈ 0.008 at r = 2.2. With λ = 32 and up to 8 neighbours, the last link's rate is about 32 · 0.008 / n ≈ 0.25/n rad/s: a time constant of 4n seconds.
+- **B-path stops growing as soon as a path exists, however weak.** Codex's revision-6 review R2-2 predicted exactly this failure mode ("a weak but connected path triggers no growth").
+
+### 14.2 The change: strong links, by the clock ledger
+
+**A link is strong** if its coupling weight is w = exp(−r²) ≥ w_min, with
+
+    w_min = n_max / (λ · K · τ_link) = 8 / (32 · 1 · 0.5 s) = 0.5,  so  r ≤ r_s = √(ln 2) ≈ 0.833 m.u.
+
+- **τ_link = 0.5 s** keeps a 6-link path within about 3 s, inside the 4 s margin of 8.1.
+- n_max = 8 is the neighbour cap; λ = 32 and K = 1.
+
+**The strong-link graph G_s** is the subset of the directed influence graph G whose edges satisfy r < r_s.
+- **B-path's site test, its frontier sets F_s and T, its trial conditions** (`new_reached`, `a_reached`, `paths_kept`, `deficit_or_connect`), **path exposure E and the effective-root paths of F5 and G2** all use G_s.
+- **D4 liveness and qualification keep the full graph G.** They are about survival and structure, not transmission.
+- **B-path births** still go at r* = 0.556 (< r_s) from a toward b. With G_s, the frontier now **keeps growing until a strong path reaches O.**
+- **Unchanged:** λ, h, every gate, every cut, O's protection, the budget, and every other rule.
+
+**Disclosure:** this is an outcome-informed revision, made after the 7.6 F5 result. The 7.6 FAIL is kept. F5 and F7 reuse the fixture keys under 13.3's limited exception, and are not called fresh or independent. The development inventory is untouched.
+
+| Item | Cause |
+|---|---|
+| Paths were connected but too weak | The path graph used the coupling radius, not a strength derived from the clock ledger (R2-2's warning was recorded but not acted on) |
