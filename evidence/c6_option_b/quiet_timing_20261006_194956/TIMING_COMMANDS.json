@@ -1,0 +1,123 @@
+{
+  "queue_sha256": "577bb90fe54296698a71c87b6031bacef8317cd77fe6ed339bfbc6c48dc5cbf6",
+  "commands": [
+    {
+      "id": "quiet_smoke_0",
+      "kind": "quiet_timing",
+      "concurrency_pair": "smoke",
+      "command": [
+        ".venv/bin/python",
+        "tools/c6_option_b_check.py",
+        "--backend",
+        "native",
+        "--parallel",
+        "--entropy",
+        "smoke",
+        "--world",
+        "0",
+        "--output",
+        "evidence/c6_option_b/recheck_later/quiet_smoke_0"
+      ],
+      "comparison_command": [
+        ".venv/bin/python",
+        "tools/c6_option_b_compare.py",
+        "--reference",
+        "evidence/c6_option_b/reference_smoke_0/world.json.gz",
+        "--native",
+        "evidence/c6_option_b/recheck_later/quiet_smoke_0/world.json.gz",
+        "--exact",
+        "--output",
+        "evidence/c6_option_b/recheck_later/quiet_smoke_0_EXACT.json"
+      ]
+    },
+    {
+      "id": "quiet_smoke_1",
+      "kind": "quiet_timing",
+      "concurrency_pair": "smoke",
+      "command": [
+        ".venv/bin/python",
+        "tools/c6_option_b_check.py",
+        "--backend",
+        "native",
+        "--parallel",
+        "--entropy",
+        "smoke",
+        "--world",
+        "1",
+        "--output",
+        "evidence/c6_option_b/recheck_later/quiet_smoke_1"
+      ],
+      "comparison_command": [
+        ".venv/bin/python",
+        "tools/c6_option_b_compare.py",
+        "--reference",
+        "evidence/c6_option_b/reference_smoke_1/world.json.gz",
+        "--native",
+        "evidence/c6_option_b/recheck_later/quiet_smoke_1/world.json.gz",
+        "--exact",
+        "--output",
+        "evidence/c6_option_b/recheck_later/quiet_smoke_1_EXACT.json"
+      ]
+    },
+    {
+      "id": "quiet_development_0",
+      "kind": "quiet_timing",
+      "concurrency_pair": "development",
+      "command": [
+        ".venv/bin/python",
+        "tools/c6_option_b_check.py",
+        "--backend",
+        "native",
+        "--parallel",
+        "--entropy",
+        "development",
+        "--world",
+        "0",
+        "--output",
+        "evidence/c6_option_b/recheck_later/quiet_development_0"
+      ],
+      "comparison_command": [
+        ".venv/bin/python",
+        "tools/c6_option_b_compare.py",
+        "--reference",
+        "evidence/c6_option_b/profile_run/reference_world_000.json.gz",
+        "--native",
+        "evidence/c6_option_b/recheck_later/quiet_development_0/world.json.gz",
+        "--exact",
+        "--output",
+        "evidence/c6_option_b/recheck_later/quiet_development_0_EXACT.json"
+      ]
+    },
+    {
+      "id": "quiet_development_1",
+      "kind": "quiet_timing",
+      "concurrency_pair": "development",
+      "command": [
+        ".venv/bin/python",
+        "tools/c6_option_b_check.py",
+        "--backend",
+        "native",
+        "--parallel",
+        "--entropy",
+        "development",
+        "--world",
+        "1",
+        "--output",
+        "evidence/c6_option_b/recheck_later/quiet_development_1"
+      ],
+      "comparison_command": [
+        ".venv/bin/python",
+        "tools/c6_option_b_compare.py",
+        "--reference",
+        "evidence/c6_option_b/recheck_later/reference_development_1/world.json.gz",
+        "--native",
+        "evidence/c6_option_b/recheck_later/quiet_development_1/world.json.gz",
+        "--exact",
+        "--output",
+        "evidence/c6_option_b/recheck_later/quiet_development_1_EXACT.json"
+      ]
+    }
+  ],
+  "executing_comparison_commands": false,
+  "maximum_simultaneous_worlds": 2
+}
