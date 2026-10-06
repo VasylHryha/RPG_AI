@@ -1,6 +1,6 @@
-# Design 0h, revision 7.3: phase on the task's clock, pinned ends (after the revision-6.5 fixture failure)
+# Design 0h, revision 7.4: phase on the task's clock, pinned ends (after the revision-6.5 fixture failure)
 
-**Status:** revision 7.3, design-approved by the Codex round-4 review (APPROVE_WITH_NOTES; its three low notes applied in 10.6). This is design review only: integration and execution readiness are separate gates. **Section 8 answers the Codex review** `docs/reviews/tactical_0h_rev7_design_review_codex.md` (R7-1 … R7-12) **and governs over sections 1–7. Section 9 (revision 7.2) answers the round-2 review `…_codex_r2.md` (R2-1 … R2-7) and governs over everything before it. Section 10 (revision 7.3) answers round 3 (`…_codex_r3.md`, R3-1 … R3-4) and governs over everything before it.** Drafted by Claude for Codex review. Not approved, and no execution is authorized. **The base is revision 6.5** (`DESIGN_0H_REV6.md`, with every section through 19.9). Every rule not changed below stays as written there. This is a new revision on **fresh entropy**: every key prefix `0h-rev6/` becomes `0h-rev7/`, and every world-id range moves up by 10,000,000.
+**Status:** revision 7.4 (section 11, an outcome-informed λ change after the 7.3 fixtures; under review). Revision 7.3 was design-approved by the Codex round-4 review (APPROVE_WITH_NOTES; its three low notes applied in 10.6). This is design review only: integration and execution readiness are separate gates. **Section 8 answers the Codex review** `docs/reviews/tactical_0h_rev7_design_review_codex.md` (R7-1 … R7-12) **and governs over sections 1–7. Section 9 (revision 7.2) answers the round-2 review `…_codex_r2.md` (R2-1 … R2-7) and governs over everything before it. Section 10 (revision 7.3) answers round 3 (`…_codex_r3.md`, R3-1 … R3-4) and governs over everything before it.** Drafted by Claude for Codex review. Not approved, and no execution is authorized. **The base is revision 6.5** (`DESIGN_0H_REV6.md`, with every section through 19.9). Every rule not changed below stays as written there. This is a new revision on **fresh entropy**: every key prefix `0h-rev6/` becomes `0h-rev7/`, and every world-id range moves up by 10,000,000.
 
 ## 1. What the 6.5 fixtures showed (`growing_shapes/runner/REV6_FIXTURE_REPORT.md`, decision 0030)
 
@@ -472,3 +472,48 @@ The definitions are hashed with the N1 recipes.
 - **R4-1:** the status line now says revision 7.3. Design approval is recorded separately from integration and execution readiness. Any execution-start pin uses the hash of the final committed design.
 - **R4-2:** unwrapped endpoints are described as retaining whole-turn information, with their accuracy subject to N1. They are not "exact".
 - **R4-3:** site-body-off **recomputes N^x** under the existing nearest-neighbour and mean rules. It is labelled the **total effect of removing the site bodies**, including normalization and neighbour-selection changes. The N^x count changes are reported with the paired differences. It stays descriptive.
+
+## 11. Revision 7.4: λ chosen on the live-geometry scaffold (an outcome-informed change; disclosed)
+
+**What the 7.3 fixtures showed** (`growing_shapes/runner/REV7_FIXTURE_REPORT.md`; decision 0031; pin `3b6cf563…`):
+
+| Fixture | Result |
+|---|---|
+| N1 | PASS (every difference ≤ 0.0017) |
+| F1a | PASS, 0.6 s delay |
+| F1b | PASS, 2.5 s delay (it was 15.4 s in 6.5) |
+| F2–F4 | PASS |
+| F1d | λ = 1 never settles by 16 s; λ = 8 settles in 2.5 s |
+| **F1c** | **FAIL by a hair:** the first entry is at **16.1 s** against the 16 s deadline (error 0.306 rad against 0.3). After that the response holds 99.9% of [16, 160], with path and access 100% and **no collapse** (the pins work). |
+
+**The reading:**
+- F1c is the **live geometry**: the source at the sensor, O pinned at the origin, 6 links.
+- λ was chosen on F1b, the 3-link scaffold. Phase transmission through the mean C4 coupling is diffusion-like, so longer paths need more speed.
+- **The rule of 8.1 is applied to the scaffold that matches the live layout.** That rule: the smallest power of two that settles within half the 8 s deadline, so within 4 s.
+- F1c's measured engine delay at λ = 8 is 8.1 s. Delay scales close to 1/λ at fixed geometry: F1d's 23 s → 2.5 s matches it, and so does the toy `rev7_toy/f1c_toy.py`.
+  - **λ = 16** predicts about 4.05 s (at the 4 s rule's boundary).
+  - **λ = 32** predicts about 2.0 s.
+- The fixed-position toy is slower (13.1 s at λ = 8, 6.5 s at 16, 3.3 s at 32), because it lacks the chain's shortening under motion.
+
+**The change:**
+- **λ = 32**, the smallest power of two that meets the 4 s rule with margin on both the engine extrapolation and the toy.
+- **The integration step is reduced to h = 0.005 s** (20 RK4 substeps per world step) for numerical safety. The conservative high-gain stiffness bound is 32 · 2 · 4 = 256 /s, and 256 × 0.005 = 1.28, well inside RK4's real-axis stability limit of about 2.8.
+- **N1's refinement comparison** becomes h = 0.005 against h = 0.00125, with the same tolerances.
+- **The frame excursion bound E_i** sums over 20 substeps.
+
+**Unchanged:**
+- every F1 criterion (no deadline is relaxed);
+- the carrier;
+- motion (whose geometric clock stays as it was; at h = 0.005 it is integrated more finely, never faster);
+- every other rule.
+
+**Disclosure:**
+- This is an **outcome-informed revision**. It is made after seeing F1c's 0.1 s miss, and the 7.3 FAIL is kept as recorded.
+- The F1 scaffolds are deterministic (they have no entropy). Their re-run under 7.4 is new engineering evidence about a changed λ and h. It is not an independent replication of 7.3.
+- F5 and later fixtures consumed no entropy under 7.3 (they were never run). Their revision-7 inventory stays valid, re-pinned under 7.4's configuration identity.
+- **Cost:** h = 0.005 makes integration about 4× slower. The F5 fixture cost and the development projection (A7) are re-estimated from the 7.4 fixture timings.
+- **Version:** `rev7_rhs_v1` with configuration λ = 32 and h = 0.005. The configuration identity changes, so the pin changes.
+
+| Item | Cause |
+|---|---|
+| λ = 8 was too slow for the live geometry | λ was derived on a shorter scaffold than the live path |
