@@ -55,9 +55,9 @@
 | # | Step | Status | Who | Gate |
 |---|---|---|---|---|
 | B1 | v4 design (travel-time hold, commit focus, decision traces): `DESIGN_0G.md` section 15 | DONE | Claude | — |
-| B2 | v4 implementation and development run (amended S4 protocol, fresh seeds, 360 min) | **RUNNING** (Codex; prompt `scratchpad/v4b_prompt.txt`) | Codex | (development authorized: "go ahead, improve the AI") |
-| B3 | Review the v4 report (`astelia_cpp/S4_V4_DEVELOPMENT_REPORT.md`), then the owner's recheck | — | Claude, then Codex | — |
-| B4 | v5: a progress-aware release of the hold (planned in `DESIGN_0G.md` after section 15), with thresholds from the v4 traces | — | Claude drafts, Codex reviews | — |
+| B2 | v4 implementation and development run | DONE, **NOT_READY / a negative result**: stage B resonator +9.4 against novice and **−22.2 against regular** (v3 −7.6); morale −15.4 (v3 +8.6); reversals not reduced; stage C stopped by the runtime guard before validation. One restart was caused by Claude editing `DESIGN_0G.md` during the run (a rule violation, owned) | Codex | — |
+| B3 | Review v4, then the owner's recheck | **Codex recheck RUNNING** (read-only analysis: why v4 got worse, and the v5 recommendation) | Codex, then Claude | — |
+| B4 | v5: decided **after** the recheck (the v4 hold and focus made things worse; the planned progress-aware release may not be the right fix) | — | Claude drafts, Codex reviews | — |
 | B5 | Update the replay viewer (`viz_0g/`) with v4/v5 fights | — | Claude | — |
 | B6 | S5 registration (W4: CLOSED) | DECIDED: no registration until a development version beats regular; then register with morale as a labelled comparator | Claude drafts | **[OWNER] approves the registered run** |
 
