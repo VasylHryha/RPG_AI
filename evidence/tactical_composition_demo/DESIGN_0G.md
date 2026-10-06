@@ -468,3 +468,30 @@ Emergencies take precedence over the hold. The thresholds will come from the v4 
 **The objective** (the drafter's decision, from the owner's goal of beating the scripted AI): **S stays the score**, survivors minus enemy survivors, because it decides who wins the fight.
 - From v5 on, development selection uses the **regular-head S** as the primary target, with novice performance kept as a declared constraint.
 - Guns alive, timeouts, damage and time to elimination are always reported beside S.
+
+## 17. Revision 9 (v5): the v3 skeleton, tuned to beat regular (2026-10-06, after the section-16 attribution)
+
+**What section 16 showed** (`astelia_cpp/S4_ATTRIBUTION_REPORT.md`; fixed v3 knobs; 3,200 fresh fights):
+- **Commit focus hurts both controllers** against regular: morale +10.2 → +1.3; resonator −7.6 → −12.6.
+- **The hold, alone,** barely moves the regular score (resonator −7.6 → −9.0; morale unchanged), and costs the resonator 10 points against novice.
+- **Combined, they collapse the resonator** to −35.3 (an interaction of −21.4).
+- The hold **did** cut actual pair-mode switching (892 → 139 per unit-minute), **without** improving outcomes. **So instability of the mode is not the main cause of losing to regular.**
+- Against regular, the v3 resonator loses by elimination: 183/200 own eliminations; damage dealt 4,981 against taken 7,108. Morale "wins" by surviving to the timeout (197/200), with 9 enemy guns still alive.
+
+**The reading:**
+- The resonator's tuned rotation (ω_ranged ≈ −1.9 rad/s) was **selected on a pooled novice + regular score**. That score rewards aggressive cycling, which wins big against novice and loses to regular.
+- The development **selection target** decides what the oscillator learns. The external recheck said the same (recommending regular-head selection, A24 in its response).
+
+**v5:**
+- **The skeleton is v3** (sections 13–14): the binary commit/escape mode with ±0.2 hysteresis and range-aware bands. **No travel-time hold and no commit focus** (both are removed as defaults, and stay available as labelled variants). Knob counts are unchanged (11, 11, 3).
+- **The tuning protocol** is the amended S4 CMA-ES (population 16, 16 generations, the same budgets per arm) **with one change:**
+  - **the selection score is the regular-head mean S** on the stage's tuning clusters;
+  - **subject to a novice constraint:** a candidate whose novice tuning mean S is below 0 is ranked below every candidate meeting it.
+  - Stage A stays melee-only against novice (unchanged; it has no regular head).
+  - Equal budgets for the resonator and morale; push-pull is tuned the same way.
+- **Validation** (unchanged sizes, fresh seeds): S against novice and against regular, guns alive, timeouts, damage dealt and taken, and time to elimination.
+- **Also reported:** **the selected ω** for each role. If selection drives ω toward 0, the oscillator's rotation is not helping against regular. That is reported as a finding, not hidden.
+- **Development stops before stage C** if the stage-B regular head of the resonator does not improve on v3's −7.6. The cost of a full stage C is spent only on a version that moves toward the goal (recheck finding: "proceed to C only after a declared fresh B gate").
+- **Fresh development seeds** (a new ledger). No judging, registration or recorded run.
+
+**Cost:** about 4–6 hours with 10 workers, at the measured v4 rate. **It runs only when the laptop is otherwise free:** after the C6 timing tonight (decision 0031: night runs need no approval).
