@@ -31,7 +31,9 @@ def main():
                    'PRESERVATION.json','EXTERNAL_WORKSPACE_CHANGES.json','ENGINEERING_REFINEMENT.json','TEST_RESULT.json',
                    'FAILED_FIRST_TEST_RESULT.json','FAILED_SECOND_TEST_RESULT.json','READINESS.json','DELIVERY_NOTE.md')]
     else:
-        files=['S4_V6_DEVELOPMENT_REPORT.md']+['s4_v6_checks/'+n for n in ('OWNER_RECHECK.md','REPORT_AUDIT.json','RAW_FILES_LOCAL.json','DELIVERY_NOTE.md','REPORT_IDENTITY.json','LAUNCH.json','SUPERVISOR_TIMING.json','LOAD_SUMMARY.json')]
+        files=['S4_V6_DEVELOPMENT_REPORT.md']+['s4_v6_checks/'+n for n in ('OWNER_RECHECK.md','REPORT_AUDIT.json','RAW_FILES_LOCAL.json','DELIVERY_NOTE.md','REPORT_IDENTITY.json','LAUNCH.json','SUPERVISOR_TIMING.json','LOAD_SUMMARY.json','PART1_DELIVERY.json','LEDGER_USED.json')]
+        files += ['result_schema_v6.py','result_cache_v6.py','s4_v6_cache_repair.py','test_s4_v6_cache_repair.py']
+        files += ['s4_v6_repair_checks/'+n for n in ('SOURCE_RECHECK.md','TEST_RESULT.json','FAILED_LAUNCH_TEST_RESULT.json','FINAL_PRESERVATION.json')]
         files += [n for n in ('s4_v6_report.py','s4_v6_delivery.py','s4_v6_run_once.py') if git('diff','--name-only','HEAD','--',PREFIX+n)]
         out=pathlib.Path(json.loads((CHECKS/'LAUNCH.json').read_text())['output'])
         files+=[str(out.relative_to(ROOT))+'/'+p.name for p in (out.iterdir() if out.exists() else []) if p.name in ('summary.json','failure.json','RUN_TIMING.json','run_identity.json','A_best.json','B_best.json','selected_omega.json')]
