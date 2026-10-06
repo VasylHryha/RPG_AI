@@ -737,3 +737,12 @@ meaning a time scale of **τ_link ≤ 2 s** per edge.
 | Item | Cause |
 |---|---|
 | 7.7 and 7.8 used a geometric proxy (a radius) for a dynamical quantity (the coupling rate), with an assumed degree | The drafter derived from an assumed neighbourhood instead of the right-hand side's own coefficient |
+
+### 16.1 Codex 7.9 review notes (APPROVE_WITH_NOTES; applied)
+
+- **R79-1:** c_ji = λ·K·exp(−r²)/len(held N_i^θ), inclusive, with no tolerance and no radius proxy. The denominator counts the receiver's **full** held phase list, before filtering.
+- **R79-2:** on the saved 7.7 F1 records, the strong-path fractions under this rule reach 100% for F1b and F1c. That is a structural diagnostic only; the historical verdicts are unchanged.
+- **R79-3:** the 7.6 weak last links are excluded at every degree: the maximum c at n = 1 is 0.253 /s at r = 2.2 and 0.037 /s at r = 2.6. "2–4× at best" refers to n = 1. Placement positions are distinct from trajectories.
+- **R79-4:** **"a path of k links has a serial bound of about 2k s" is withdrawn.** 1/c ≤ 2 s is an aligned, single-edge, small-angle scale; the local derivative is c·cos(Δ). Only the F gates measure the response.
+- **R79-5:** strong paths alone establish neither drive, locking, mediation nor a task-clock response. The relaxation relative to 7.7 makes structural exposure easier, so the A/B gates stay decisive. Degree dependence is tested.
+- **R79-6:** the cutoff was selected after the known F1 outcomes and the rejected 7.8. It is engineering, not unique. Every historical FAIL and the limited entropy exception are kept.
