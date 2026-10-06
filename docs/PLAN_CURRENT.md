@@ -39,8 +39,8 @@
 | A5 | **Engineering tests F1–F9** | DONE: **FIXTURES_FAIL at F1b** (a 3-link path is too slow: 15.4 s; F1c compacts); F2–F4 pass; F5–F9 blocked (`growing_shapes/runner/REV6_FIXTURE_REPORT.md`) | Codex | done |
 | A6 | Read the F results | DONE: a timescale mismatch (phase coupling far slower than the task clock) plus compaction | Claude | — |
 | A6b | **Revision 7.3** (`DESIGN_0H_REV7.md`): λ = 8, pinned ends with separate neighbour lists, freeze-not-reset demand, empty start, N1, validity masks | DONE: **Codex round 4 APPROVE_WITH_NOTES** (12 → 7 → 4 → 3 low; notes applied) | Claude drafts, Codex reviews | — |
-| A6c | Revision-7 integration (new files) | DONE: imported at `55a9f7a` (34 tests); **Claude implementation review RUNNING** (with the owner's recheck prompt) | Codex, then Claude | — |
-| A6d | Fixtures N1, F1–F9 (under 1 hour) | — | Codex | decision 0031: no separate approval after a passing review |
+| A6c | Revision-7 integration (new files) | DONE: `55a9f7a` + repair `a660de0`; Claude review READY_FOR_FIXTURES (pin `3b6cf563…b551`; `growing_shapes_review_claude/REV7_FIXTURE_READINESS.md`) | Codex, then Claude | — |
+| A6d | Fixtures N1, F1–F9 (under 1 hour) | **RUNNING** (Codex; prompt `scratchpad/fix7_run_prompt.txt`; it stops first if its estimate exceeds 1 hour) | Codex, then a Claude review plus the owner's recheck | decision 0031 |
 | A7 | Cost projection from the measured F rates | — | Codex | — |
 | A8 | **The development run** (48 trainings, about 16 h or more of serial compute) | — | Codex | **[OWNER] approve the run and its time** |
 | A9 | Review the results, then the owner's recheck | — | Claude, then Codex | — |
