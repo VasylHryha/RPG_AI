@@ -844,3 +844,10 @@ meaning a time scale of **τ_link ≤ 2 s** per edge.
   - The allocation-pressure diagnosis is supported, but it is not a complete causal identification.
 - **R711-3 and R711-4:** the two-birth cap per check, every post-trial condition and clearance are unchanged. Unresolved cases remain failures. One connected site meets max(E) ≥ 0.5 structurally, but cannot waive the A and B gates, the requirement that both starts pass, or coverage and G0.
 - **R711-5:** F5(ii)'s 7.10 FAIL (E = 0.454) is kept as recorded. 7.11 is not claimed to repair it by inference: the re-run measures it.
+
+### 18.4 Codex 7.11 round-2 notes (APPROVE_WITH_NOTES; applied)
+
+- **The root predicate is evaluated live before each B1 request,** on the current union of effective roots. B1 resumes after death, silencing, zero gain or loss of active drive leaves no root. O never qualifies.
+- **The same-site retrial is finite.** The total per check is still 2. Exhausting the candidates or connecting allows service of the next site. A resource refusal ends service for that check, and is logged.
+- **Instantaneous connection does not meet E ≥ 0.5, which is time-averaged.** A, B, both starts, coverage, the positive-task gates and exact control-M B1 matching are all unchanged. (Control M mirrors the intact run's **accepted** B1 births, deferred ones included in their timing.)
+- **F5(ii)'s 7.10 FAIL (E = 0.454) stays unrepaired by claim.** Only the 7.11 run measures it.
