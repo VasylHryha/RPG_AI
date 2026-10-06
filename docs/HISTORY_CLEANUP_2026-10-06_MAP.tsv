@@ -1,0 +1,130 @@
+old_commit	new_commit	subject
+797ced26ff95caa5f84ea71e9bb247422068b5c5	7cd43072eea087422dff309362ec3e13ee8f04b0	Port frozen Astelia simulator to native C++ with reference evidence
+49be4531ee9953929619b1fc13db622f9f037ed0	e46ae95e0e9229a2534a1a75bb0a281867239263	Checkpoint typed combat core, performance plan, and adversarial repairs
+715324dcaa275da4cb58a2c12596a901eb9eb18c	8bae446972679866be84556ef586cf2038e9e276	Migrate typed game combat, abilities, player state, and spawning
+bb6c1b0b9c7fa88087201aa5178b72c040889fc5	6d454b279ae66ab34a4bffcd8dbe97f7a04bcc55	Migrate typed formations, commanders, targeting, and coordinated abilities
+ff89d85ffedabc82059eb3a57327c8918517edd3	b84e0e96ec78ecf3e40093915828e07d236aa112	Migrate combo director and commands; repair skirmish and comparison lifecycle
+9fafffbd658822038da5d3faf4012d853c9c1b01	c542be1abc88a3211baeb44431ce5251824063b0	Migrate typed neural lookahead and isolated branch runtime options
+0a9d90aab04b0c55ae0ba16e126bd300eafe9e40	5b308d31754ea08e7fba00588de7c2e99f1b9aa2	Migrate typed artillery prediction, volleys, reservations and outcome rollouts
+1f694d454271e1fdf9503f0340fbd5cbc2acbfe7	1702558ab793191e257772b51568e6199571d093	Complete typed tactical simulator and performance qualification
+6344650e9c0fa468fb263714b0f204b4d23860b5	6139bf628116ef7398f955ec4c7fc3aad7cb58c8	Cross-family review of the typed C++ simulator: APPROVE_WITH_NOTES (same ladder order; compare only within one engine)
+f3c28097892e89a9edf9d9139bfc2910b988c585	c19a2333765704aacaacb82bc0c86ec6c07596d8	Astelia composition, run 5 stopped by the owner: three units grown (alone +20.9, formation +18.5, rules +25.3 with the r
+d9cdbdc2695acc62e51382521b2cf68e48bd98d0	a39f700b62b5472bfefac78ede644e6eca54e0ff	S2 request for Codex: the outside-controller plug in the typed C++ (Observation with damage dealt/taken, per-unit decide
+a61bdd629609c2a06803c4288ca105a82884aedf	6ff92d6ff9aad832a49004dcea8b3cf010f38a71	S3 prep: reference values of the accepted C4 law (5 fixed states x intact/J=0/K=0: neighbours, rhs, one RK4 step) for ch
+65c7dab4d9196a4d58cbee084122879b95598493	9ee5b56606f97bb19267f751beaf21751da7359b	Add S2 outside-controller plug and bound engineering evidence
+b143ed40c06d5eb68654450d574315067325f84d	173c02ccc74bedf4071a25c840eb46bb0a5bc1b1	Fix S2 controller boundaries and evidence validation
+85cf576eec08b5f0340dc1903f83c38a4c934cfe	87ba051ba23193fd5778945de61e0d694a533f6e	Cross-family review of S2 (outside-controller plug): APPROVE_WITH_NOTES; design 0g declares target visibility and tick t
+3a294503914e260b57afdab825ac0ca86802ab43	25a2db67c48d77ded10563a59e5ce8cdbc99fb55	Design 0g revision 2 after the Codex design review (CHANGES_REQUIRED): one movement law with a sign check, damage-rate r
+dae8c555a9ed8daa0eefc2424f537f3fa8d8d3de	47bf653c8ceb360ef6540e420a1bea6551077832	S3 request for Codex: plug extensions and the resonator, morale and push-pull controllers per design 0g revision 2 (buil
+3a91e2f3ee0e049061705951cdb1abd630c12158	04dc10ac528bbea871039ea11790e265f084cc11	Report S3 contract blockers before controller implementation
+4960eb9e6e03741dd39c6efdc12e27fcb28fe255	1d74da251bd1f19190661dca2480c676f12944a5	Resolve owner-authorized S3 controller contract blockers
+f23186aae7e8f51ee76c04d689f0c986cf5cc3b1	24baace824aaaf48e2e03ff9c4be98ba8392971d	Build S3 controllers and diagnostics with bound engineering checks
+08d44d704edfdd5d42b6d73f4f73b7ab2f0eb81e	507f12bea28c2c43634a7e067b9d5cee761c21cd	Cross-family review of S3 controllers: APPROVE_WITH_NOTES; commit Codex's design review file
+ebb8d5a090e9d21ba12cfaef070f80304942948d	060f872cb6d9fffc84dffe09f22c7d1757658ba8	S4 request for Codex: development (runner settings, the morale-vs-regular anomaly, a replay viewer, equal-budget tuning 
+9690d67ec19d871ea006f83a58c2fed3261b7501	96492afa98b32747b5237e0b983fb7c5416c398b	Declare and implement bounded S4 development tuning and replay
+0a9e0024b290dc6e399c6e8b55ff8600a407fc65	d6b0a674c1ab1f3ee9a2306e1df60be645be871d	Inspect morale configuration anomaly and compress offline S4 replays
+ee21545ff926e93c88b65a57838f7076ac935b54	c763ea60b188b4d54637c868b4cffd61c6431905	S4 request recheck: CMA-ES with common random numbers instead of the switch-search rule, equal budgets with a time cap, 
+d456a4f1fb6c5b1b98c9c48874b1242c39af43fd	7668863e6340a59e927cbbb9de14521ee326c4b9	Preserve original S4 development STOP evidence and replay handoff
+8c8956175e64b31d2ead0d2a0296ace4cf270cb1	7dbe88089901efa3d64aab6c8a8dcd84a9114057	Freeze separately authorized amended S4 CMA-ES development protocol
+a8375616c1eb3e1bbec1f2d7fd7ddb354a8178d9	82f429ae07d9bcf2dbf77c17eab010e57b6a7190	Cross-family review of the original S4 run: the STOP stands; zero forks verified in all 26,752 fights
+e12f259e059cf0fadd466fb142f4f5633a61554d	840f934f4451d8c8e1ed66ede2d9ee57db216528	Cross-family review of the amended S4 run (APPROVE_WITH_NOTES) and a correction to the original review (novice does not 
+5460380b82651c4dcd4e1d92ebbe2e47b7200e86	d1ddc5aee56cbe3879ddcf14cce925d172da21b4	S5 registration DRAFT for 0g: SPEC_0G.json and SPECIFICATION_0G.md (P1 head-to-head novice+regular, P2 vs morale, P3 vs 
+5dea8c25201a68989487a4493ad87dac6669a3fb	5d3cb178a994fcb449c4aa65127a858f37f7194b	Preserve completed amended S4 CMA-ES development evidence
+dfaddcfc5c3498ec73538bdad8730430bd6a7e72	6f1587e21ee4147180d5fa773d8d5349d877d789	Specification 0g revision 2 after the Codex review of revision 1 (CHANGES_REQUIRED, 8 findings): structured request temp
+c6e7316203a689810f8f4892fbdded18729434be	fb129b10a849a6eca4eae3281a752c9a5bbc07dd	Implement gated exploratory 0g S6 runner and synthetic tests
+2b023e7fcd4879a46b2a6ec28fd0b0c0a503f844	600c261a518de9dd1b804e8b31f94223d6529974	Specification 0g revision 3: comment moved out of the literal request template, one validity rule for required fights (c
+6c71c555ce6934bd6de369c2c740636b3dbe75d9	c92124894ab4ba8a030bd267a86a02faafa96365	Implement S6 revision 3 runner and stub coverage
+599d2b084d1f1f4095f979cd0c86c69867207d47	58e5ab56bfc075f6fdf70bf893fb0906f4808f16	Specification 0g revision 4: the review gate names this revision's review file; a clean manifest path with its rule in a
+7441bf0e5d287d0e583ad011fed89f20b303e678	8dc432d421e6ee460a7993732091b8106ce84b30	Update S6 runner for revision 4 registered paths
+13af5a856d33f674760648b17e79044813055087	0a761b9970d11ef342efe12473e77c1259493e8e	Codex review of specification 0g revision 4 (APPROVE_WITH_NOTES) and Claude's review of the S6 runner (APPROVE)
+70a38fd4d0ff140d899a26548a740f65a4cc95b8	9bd7442c5ba3ef7beee146d8361f7690826dc6f9	0g development replays and viewer: resonator beats novice; the retreat trap against regular (enemy guns out-range our un
+fd7ea6f4127a351f7bec68f9cfad8876e3fd4e0c	6d40067233d6536833fc0855aa4b69104e9ace1f	Design 0g revision 4 (v1): unanswered damage drives commitment instead of retreat, and targets prefer the most engaged e
+efc3f3a37634fd0befa075a7987384a8fcc4fc64	a478d5431ebd83f00ce94211a285cfb2bb88c396	Document S4 v1 stop on damage-attribution timing ambiguity
+90d6f2909630571b4ffd968ba0742c05cca12c93	c7f683e13d5c099b3e5b3d2a2282db5fd1acc5eb	Design 0g section 12: damage attribution timing for the answered/unanswered split (the status recorded at the start of t
+dca84c76bdc10e5c36ba13e9a9dc92d305cc1554	bee76c09c9daf1178e5db56cbbbfe2ed62770db4	Implement section-12 v1 controller skeleton and preserve v0 fixture parity
+6c6cbe055ae968e0466c2614eedcfbe33432086c	5e6baea8a0d8b84c3185d765b0450cc4932376fe	Proposal 0h draft: growing shapes from atomic skills (phase/band language, three bond conditions, resonance plus selecti
+55e3dbcaad61c444ebf2951fb420ffdc33c0ef5e	c7860fd096ee0a2323730dba16b40331273719fe	Proposal 0h revision 2: growth and death as the main mechanism with exact conditions (novelty birth, strain split, need 
+b3f795201a43b0c924922c20b28735d18cbd5d2b	1ec472ae4ebb6692a338169ba03c55951dd01cf1	Proposal 0h: roadmap from a bootstrap library of atoms (grow, lock, identity cards) to seeded media that grow combinatio
+82dd8177e7f58030e6b047cd93b29115706d038d	d87477f3104e275ab06a011525d16d1df42f1a23	Proposal 0h: types and instances, duplicate shapes in one combination with differentiated roles (G7), a sameness check a
+6288ed80db0a07b8809619e37959e4e4deff1dd6	4ab0b8a327529fc58e232b8740f4b2a7ca1c7ebc	Add docs/IDEAS_AND_ROADMAP.md: one tracker of goals, status, results, every idea and option with its status, pending own
+2932f980df23099c3c66f12046fb6791165b2180	a267fb8eaf7ebccd5ce28910a93cf9b18defc701	Recheck fixes: SPEC_0G.json marked WITHDRAWN inside the file (its hash changes, so the old review gate cannot pass); the
+3efa6cdca8d6e0359781c98501bc9c027ecf4cde	acfbfee2304e25d3c0e666c995f2b3170bb91e6b	Proposal 0h: thresholds chosen once on atom development data, then frozen for every level (decision 0007)
+b7081a2b0c3f72ca0467e846a1b036c84e4acf4d	9f92b11241689e697f2050ace911f2e25fd8566d	Decision 0028 item 17: the owner authorized parallel implementation of the 0h engine parts (2D task world, C4 medium) th
+85c656bb7886ccfaabe6024bb73d063cd39b7d8c	8c63470dc1d3ac4bb7089c67f3a3b57eebc507ab	Design 0h revision 1 draft: ledger and timescales, the rhythm language (bands, band clocks, drive and readout), resonanc
+68be0d0e23599c77b400eb712b02f3e27db9fd6c	7eba78540ed486f2574bf6f8cb4648aeb97c5226	Record S4 v1 development STOP at stage B and all-arm validation
+f0dcde6aefc501c45fc043ca59f4eabc96528664	c5a2e54c429bee4b10edb77293f116d7ab13bece	Document isolated S4 v1 delivery and concurrent source-document changes
+f54e0cb14714b0251ddb94b8e563b697b87eec5e	6a94cb8f202631046f512fc8bbbdeafd52fabbcd	Merge Codex's isolated S4 v1 commits (implementation dca84c7, STOP evidence 68be0d0, delivery note f0dcde6) from its bun
+5645a686849497681c7e4377a535a09ae273ee22	05b5bc96894d10ae1e45cd40b473e6f7eff073ee	Review of S4 v1 (STOP stands; resonator ahead of morale in melee for the first time; the retreat trap persists) and desi
+2edac7fcad8a7a933fe8707544c884934719ca23	8efd341d22b042df7ae5f314d2ac76f5c7b534bb	Tracker: 0g v1 result and root cause; 0g v2 running
+1856b264242d75c480c00a66700bb965980655ab	db4c6debcdedbe23ff5e2f117592da13f4bc09b1	Document S4 v2 contract stop and drafter questions
+fc55cd2e8b47d140ff517fb6297bf27a70439b1d	3b6154feb86a62177cae748a4372dbd58de908d2	Design 0h revision 2 after the Codex review (CHANGES_REQUIRED, 14 findings): scope narrowed to the bootstrap; a task-bli
+40c0cb5aae30af1be2052132c2fe170ce675effd	bf5f61642f64121a2047aa09216793a3e8426b71	Tracker: 0h design revision 2 (bootstrap scope) under re-review
+032b19eb8417a069dca95c54ff518b24df18724c	abd022f0e115020c39ced492a179652d687e1c7e	Add isolated-checkout delivery note for S4 v2 contract stop
+6ab3f39d00bf791787ff2e8077e7007ec0a0894a	b33081f5a6bc81bb15be526321c0d58e00b1a0ed	Merge Codex's S4 v2 contract-stop report (questions on the knob cap, the threat-union cap, mixed reach coordinates) from
+22cdd21c3dbc0ced3eb3432ff275dec79ed3f4cd	48bcdb500209f6364dc68146b737a5e6fc1277d4	Design 0g section 13: answers to Codex's v2 contract stop (knob cap 11 for both stateful arms, logged; enemy-set overflo
+aeb75a73c1d00706ff8e264563ae0f9a554c5f1c	52206e21dc4040199c4d1b2829af474afa773e65	Build tiny 2D growing-shapes task world and C ABI
+d0264cb5e516590d13536d88130e17fac72722d0	52fa8f855486341f135bbf60ee5f0eb9f6b320c8	Review of the 0h task world (APPROVE_WITH_NOTES) and DESIGN_0H updates: 8 sensor slots, one primary score per task, a st
+b323803daf4eb9bf09d193656cfd8c5006453498	f541fee4b4e297171e4db9c34b77866e4a610ece	Design 0h revision 3 after the Codex re-review (CHANGES_REQUIRED, 10 findings): one continuous run with no resets; the C
+7476d3616b85a4d64364eba1019afb9240eabc2e	20d13da67c0626677b260d818e970fd4c04ec0f6	Build exploratory 0h fast C4 medium
+29099acbf0fbcb5d4bb1d38a3530b47528c1ccb1	a7816e263985cc48e4f7ed55ee46870e40caab64	Add static-target memory task without changing original world outputs
+2616fdcba7c0cdcff08be9c22b041f5423e0e5fe	b365b66ba7952d549df123b7ff8ba882027dba92	Review of the 0h C4 medium (APPROVE_WITH_NOTES): 70 tests pass, C4 parity to 1e-9; gaps against DESIGN_0H revision 3 lis
+20461992559867112f74462ff84b16f56197c9ef	677096b62bc5f409de9379b6b74f21642e51662a	Document remember_static verified bundle delivery
+8e6e97ea496f48ddeb85b8882c1dbf292c70d2d6	42436a737f0ac36cf9319ca1dfb8daf3b9a4acfa	Implement section 13 v2 tactical controller and fresh development contract
+9a797db165d220b906fd05d72c9b946ac30acc5e	c3015a002c6c8692cc843a25e74103f6a6cc8e9b	Merge Codex's remember_static world task (29099ac, delivery 2046199) from its bundle
+69cc18c64a5b14362c44b509d1f0cb2d47e1c559	6cb32b82303e245731f74b79cb32141493e6b94f	Design 0h revision 4 after the third Codex review (CHANGES_REQUIRED, 10 findings): 601 endpoint frames; a timestamped sa
+b547d7f8efab06ec83bc47fff45c4dc5ddcff58f	f11ee3cf0991ca51ce3b1110db1fa1543875b438	Decision 0029: the owner chose C6 option B (an engineering and runtime port of the unchanged R4 model); tracker updated
+837a9db2c03e9bb8ec9970ce556e7552f12ff42e	2daf8058322e44cddca0886ac3c150e2e3c5fdb0	Design 0h revision 5 after the fourth Codex review (CHANGES_REQUIRED, R4-1 ... R4-9): one indexed update contract and a 
+af3e7ddbe3d981d7a344f60090d2e129b89e8570	6f2ffce1d07dc5d1598afe5c7d4566c931925e52	Design 0h revision 5.1: Codex review r5 APPROVE_WITH_NOTES; its four low notes applied (separate qualification window, s
+efbf268b972136e1b4caba3335887d054c96bc4c	c5937e7a428805ace5a89fdf5c311de0071f2968	Tracker: 0h design approved with notes (revision 5.1); implementation batch running
+5496b7e6ff6b4128f2cc1e9117f9d2a1fa216549	982e2a81c7e0d768ee5b5d7fb260446e311df55e	Implement revision 5.1 medium follow-up and 0h runner
+ff59a0df01f21e42f28f23df58f4964fd07bca6f	c85e430dab962b984495f4cec4c1af1d2e6a4a8c	Document scoped 0h runner bundle delivery and review gates
+1c1535e95f5ebdd225c4ceea83cd480b3061e350	52cf9dfdb6603ea727075657ead0127939fe4590	Merge Codex's 0h medium follow-up and runner (5496b7e, delivery ff59a0d) from its bundle
+68c10ac0ae809a1fed2c50d0556b73f7932d31d3	4e153968085e84abb0e7e78a4a3c4a4739fb1745	Review of the 0h medium follow-up and runner (APPROVE_WITH_NOTES): 175 tests pass, frozen C4 detector pinned, risky rule
+9c473ffb49424263e6d2840cf3572530f092ba01	244e913e19c340f5b90c665e2543a64466ebdbfd	Move 0h world-step orchestration into native batches with reference equivalence
+86268e7ed355cc2bdc6ff2147eb6b5c29a3c1a27	a03ec3c2ca5e4fa92f84a5f3057c1027583a493a	Document verified 0h native performance bundle delivery
+47d4be59ed7948fa839a96d792c92c9e1e611521	fda4bc8e6491e995a9ca4e9a641f712a296a31db	Retain v2 development resource stop with reconstructed A/B and partial C evidence
+9ad7296b5d4416c180a7b565155e7bc18c6f14f1	85e77c9ab92bc0fc192e36531338882845ae0f92	Document scoped v2 bundle delivery and resource-stop review handoff
+bc008699a8df46450beafee0b3d7558717be545f	173733c4f51a55bb3fae8e812d2a082f7ae85d4d	Merge Codex's 0h native performance pass (9c473ff, delivery 86268e7) from its bundle: 20.55 to 1.71 ms per world step, b
+f9dee9b6997dc779c8614bb65f976e5b7ec97cfd	2f90382203d8f0b473ebdbe982bc20fc00728863	Review of the 0h native performance pass (APPROVE): 12x on the smoke, decisions identical, 106 tests pass
+7e83a734c8f1d43d5515d416ed316450b441f0c1	e6e4358c4c64c53075929a9c6f948f1883dbbf63	Merge Codex's S4 v2 development (NOT_READY: stage C stopped at the runtime cap; A/B passed the novice gates) from its bu
+7cb02a71fe08d11bd1831d260604374d4dd16433	50066390b4931a2cf29193512e33446395092e42	Review of S4 v2 (APPROVE_WITH_NOTES): the resonator beats novice head-to-head by +16.4 (morale +9.7); against regular -4
+98d2873e3f8dce8e99622ec108c80485acada8e8	898e9757bfd5300e056086592b42a92e683a9e65	Decision 0028 item 18: the owner's go-ahead for the 0h development run (after the C++ recheck) and for the 0g v2 replay 
+08f432dd717e11b44d8d896d6af7c5746725d296	efcc96dde12f461bf20f6c34e9b9844c9815bdec	Design 0g section 14 (v3): a binary commit/escape mode with hysteresis in the out-ranged case, replacing interpolation; 
+49fc734142552c72c1ff485a93f4369bdef39a02	a9984b7ad28ccaf24808dc647be3f3bf94a29753	Tracker: 0g v3 running; 0h development run queued after the C++ recheck (decision 0028 item 18)
+ae6bc3494221be0205b141f48dccc289959fc60c	5d74d865da079bc7b2d315978f273457286463e4	0g v3: record artillery check contract stop
+f98376413da023bd889f4590469e94a43d17c738	cdacbdc0c528ecb686cc1b6d4bef81826f311887	Design 0g section 14: the kill-zone check uses the effective artillery commit distance (answering Codex's v3 stop)
+cb9c9df2fb16c80501096078521d75361d10901e	0796592f5bb02222db0ee6d739ca21e572a7e4e1	0g v3: implement binary commit/escape hysteresis and declare fresh S4 development
+7971be06981683fc2e8051929a4e7d5b285f037a	596081cdf9237da1b0bd8a804be5b36b0e38b8fd	C6 option B: profile and port exact R4 engineering hot paths
+474f77b68188ea98a1826f2b782943fc8d9ad9bc	064664bf082ea5902a5ba084dd3e93824d98ec16	Document verified-bundle delivery of the C6 option B engineering port
+cd34eb1249a90119395a232e226581b333583314	ef796dbd4751b845c5cd65c4ad209fc529e6a842	Merge Codex's C6 option B engineering port (7971be0, delivery 474f77b) from its bundle: exact equivalence, runtime NOT_R
+24b64f6a49842b9826a9938056b2abfda4380085	c547d0db4b1bd2008e378a914e7dc27a19a2514a	Claude review of C6 option B (APPROVE_WITH_NOTES): exact equivalence; the profile shows 70% already-native compute, so t
+54c21c7a0bbbb0fc3259d9f346e3548d3475a7fb	6074743cbc84b42ad6c2ff62d7d4c06a1d24d520	Tracker: C6 option B result; parallel-inside-world step running
+73fd9f2c8e119de4cbfdf0d51f8219b9b72705bf	4843c6a0ba357094ccea93c41851d0db7fe4448f	Recheck 0h native equivalence, recovery and evaluator costs
+63a2bcb10d2cb4f09ffd107f115034de6528105b	bc3bb6d4d3ce010ac84200b206f916d0c14da1f5	Document verified 0h recheck delivery
+6bdc82ed5bf2b03596e8178fcdf2be4632a3dbf2	770b135a46b648201000529133c11451ff595dde	Merge Codex's 0h C++ performance recheck from its bundle (findings fixed; recovery and evaluator native; expanded equiva
+2c998115c153f25650efd5fd8eb4ad618ca344f0	25bfc88f1582aa493549c67cd044a942afce7208	Review of the 0h C++ performance recheck (APPROVE_WITH_NOTES): 40 tests pass; four high findings fixed; section-10 cost 
+57b34ee0942f348fe140dc7139cf2a7b120ef9fa	02e0f23907b9112ec29840ecf536e0038b97b353	Parallelize unchanged C6 option B grids and independent futures
+5782c58865e63fe91908778429c06d9d3748a12b	8f4ddb9f6de4f5101fa2daa780e9dc5b55ac859e	Document scoped bundle delivery and quiet-machine handoff
+0c201b170ac6dbf8c32263bc9ae47d5c64c69a4b	f493015e986ce2aaeeb6be70b4ecfadc73119698	Decision 0028 item 19: the owner chose "C then A" for the 0h development run (as designed, in parallel, after 0g v3 fini
+c81486d9e98c7d3a7738ce5d2da0d3efe7479ff9	cddf63755cb56564dd8a87ab5f1501b62fd97994	Tracker: the 0h development run is approved as designed and queued after 0g v3
+075370da2c0c6d03a5e07a1ba8ea4690b4e6362d	a8522a7b36ffb82394b8ad4d670990ab4a062d38	Merge Codex's C6 option B parallel-inside-world step (57b34ee, delivery 5782c58) from its bundle: exact equivalence in b
+d9b15d7242b02f17b220a0f42e4ff1fec4a261a3	520d66fa70cb3e367151cd8f9a6cbb4d568055a9	Claude review addendum: C6 parallel step exact in both schedules; the official quiet-machine measurement is scheduled af
+ad33de908921cd2bed3811139ea86a024b051770	8aeb4b12589a0051328780a7133214b448a432b8	Tracker: the owner's recheck rule and the pending rechecks (C6 running; 0g v3 and 0h after they finish)
+09bbf734015339acfbcfad675231f586799b9d94	fb3cb0022f2ad4ea5140a6cfb78e970474cb8144	Repair C6 option B cache, identity and bounded scheduling contracts
+b4b2c4cb752d8f41c6aa237207bcfbf17d3a05a3	5eb11758f23be97b541d631e5138bd1de151b77a	Document scoped C6 option B recheck bundle delivery
+696078236f54ef8bbf3d79cad3ffadb9f5a7331c	61fcffbf3632c722884d867f3133a9f3d688e496	Merge Codex's C6 option B recheck (owner's recheck request): four high and five medium findings fixed; fixture equivalen
+bbd7f8f657c7decf68f3184a43b06ba2eb6fe66d	776236eb3a9e54ddcd102bd4276785f2cbac7b49	Claude review addendum 2: the C6 recheck (four high, five medium findings fixed; 72 tests pass); the full-world checks a
+38b159ec0224f0b0248c79f12da01c0c6a1d1b10	a8eb3e6560254b2192c6ae501f55e956c9c5e391	Tracker: C6 recheck done; quiet-window checks chained after the 0h run
+e60fbe52de4d18bd249c18334d55e8ca5ef429f5	3880d946ff10fd0d2d426a15199b6001e1156c9f	0g v3: complete amended S4 development and report audited evidence
+b7f635d7774cc39ae9488757dd035d595d9d0eb7	05d8106b253fb2148fc719aa5d9f91fe8ae7ba10	Merge Codex's S4 v3 development (READY_FOR_S5) from its bundle
+527c1fbbe840da90c9282c23bf63deba68931871	9fd39692a55cc76efafeeecf4edc5a0eab974f0a	Review of S4 v3 (APPROVE_WITH_NOTES, READY_FOR_S5): morale v3 beats novice and regular head-to-head (regular +8.55); the
+03fe69e715f48e6bdc26c06cbd715041c2c30c96	7f591aa57f0290aa3a9185f3a65caf9334ea2a51	Tracker: 0g v3 results (morale beats both scripted levels; the resonator beats novice only); the v3 recheck running; the
+536fecafd3aa8af5565691dbc0d568168f9af523	3dcd4af1875902c42f8b1067d97ba3f5f6e79099	0g v3: adversarially recheck preserved evidence and correct development limits
+db082fc4873a9303ae989ac86a52e27a7976472e	fcee9b2a5c966a63fe05901b77da14ffdd1d0178	Merge Codex's S4 v3 recheck (owner's recheck request; READY: mode logic correct, evidence sound, report overclaims fixed
+bcff7b13920f4e9d243af01e271ee45028da3f6e	b93c40366abbdcdec2f2725148bc73123fd9ded4	S4 v3 review addendum: the recheck (READY) and its key diagnostic: the resonator's sustained rotation flips commitment e
+bab6dc973071eaca64c08b5fcdb1bfaaf5033ad4	f987f66fd33be2a33ed21ca7f7b55ee73ee820dd	Tracker: the v3 recheck done
+7e5f6b0495276f7a2e425af65aba6443ddce3afa	a9cbe83fc0400362a43669f00770bccfc3ec7422	Import Codex's 0h development run (rev 5.1; FAIL under the G0' stop row: G1 and G5 PASS, G0 INCONCLUSIVE, G0' FAIL from 
+a5394e9f2064516b26c6680914de53c0c5b4fca2	c049826438d382aa774221d2bf08c53a937520a4	0h development review: structures form (11,862) and copies reproduce, but whole-medium competence is a constant 0.0219 i
+ca4d973ec52def74786c4a6f07cebacb8c39f68b	2160ec5ebfc693a6761248f3638d7ef86b53fd51	Track the Codex delivery verification records and the amended-S4 replay data; ignore delivery bundles (their commits are
+6960d39135ece15f879ae1a8e44985735a194408	5d697f0dc30bdc2e2c0a264bf270da11f63d3920	0h review addendum: the final whole-medium score per task is identical to every digit in all 16 runs (an abstention floo
+cdb74dc4fcbcf50d4adbea77bca27de2016f07a0	a8ebcad1ff1f531f04bc01dee7c864071898fc0a	0h failure report and revision-6 draft (root cause: growth never reaches the read-out, so every episode abstained; R6-1 
