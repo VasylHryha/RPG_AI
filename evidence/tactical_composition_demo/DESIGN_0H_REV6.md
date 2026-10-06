@@ -1,6 +1,6 @@
-# Design 0h, revision 6.2: an input-to-output path grown on purpose (consolidated; supersedes `DESIGN_0H_REV6_DRAFT.md` sections 2–6)
+# Design 0h, revision 6.3: an input-to-output path grown on purpose (consolidated; supersedes `DESIGN_0H_REV6_DRAFT.md` sections 2–6)
 
-**Revision 6.1** answers the second Codex review (`docs/reviews/tactical_0h_rev6_design_review_codex_r2.md`, R2-1 … R2-11). **Section 12 replaces the clauses it names and governs wherever it conflicts with sections 1–11.** Section 13 is its self-audit. **Revision 6.2** answers the third review (`…_r3.md`, R3-1 … R3-6). **Section 14 governs over section 12 and over sections 1–11 wherever they conflict.** Section 15 is its self-audit.
+**Revision 6.1** answers the second Codex review (`docs/reviews/tactical_0h_rev6_design_review_codex_r2.md`, R2-1 … R2-11). **Section 12 replaces the clauses it names and governs wherever it conflicts with sections 1–11.** Section 13 is its self-audit. **Revision 6.2** answers the third review (`…_r3.md`, R3-1 … R3-6). **Section 14 governs over section 12 and over sections 1–11 wherever they conflict.** Section 15 is its self-audit. **Revision 6.3** answers the fourth review (`…_r4.md`, R4-1, R4-2): **section 16 governs over everything before it**, and section 17 is its self-audit.
 
 **Status:** drafted by Claude for the second Codex review. Not approved, and no execution is authorized. The base is `DESIGN_0H.md` revision 5.1: every rule not changed below stays as written there. The failure report of the 5.1 run is `DESIGN_0H_REV6_DRAFT.md` section 1, as corrected by section 4 there and by section 9 here. The 5.1 verdicts and evidence are unchanged.
 
@@ -567,3 +567,60 @@ It is reported as **"superiority to the site-0 relay"**, with no selection inter
 | R3-4 | Entropy names without derivations | 14.6: SHA-256 seeds, world-id ranges, the donor permutation recipe, the sharing rules | Under-specified |
 | R3-5 | G2-sel overinterpreted | 14.8: label only | Overclaimed |
 | R3-6 | Graph sampling convention | 14.1: a fresh endpoint graph every world step | Under-specified |
+
+## 16. Revision 6.3 amendments
+
+### 16.1 The F5 and F7 arm and start states (R4-1)
+
+**Arm:** F5 and F7 run the **task-blind arm only**, with no reward update. They test growth and the output channel, not reward.
+
+**F5(i) start:** the base initial state (base section 4), drawn from medium key `F5/i` (16.2). Its rates have ±0.1π detuning and its phases are uniform.
+
+**F5(ii) start (literal; no random field):**
+
+| id | role | position | phase | ω | g |
+|---|---|---|---|---|---|
+| 0–5 | element | (3.4 + r* cos(60°·m), r* sin(60°·m)), m = id | 0 | π | 1 |
+| 6 | output | (−0.5, 0) | 0 | π | 1 (inert under the mask) |
+
+- r* is the **declared constant 0.556 m.u.**
+- **Initial conditions:** clock t = 0; empty histories; all timers 0; all seven members protected for 20 s, as newborns; the id counter starts at 7.
+
+**Bindings and logging (both starts):** observations use the normal permuted bindings; no item is forced onto any site. The log records every world step where the hexagon's site (physical site 0) is active, and every B-path opportunity, attempt and outcome.
+
+**F1c coordinates (exact):** S at x = 3.2; intermediates at x = 3.2 − 0.556·m for m = 1 … 8 (the last at −1.248); O at x = 3.2 − 0.556·9 = −1.804; all at y = 0. The recorded neighbour lists govern any interpretation, since free motion may create shortcuts.
+
+**Trial restore** (14.2): B-path trials consume **no randomness**, so the restore covers positions, neighbour lists, ids and counters. It has no RNG state to restore.
+
+### 16.2 The seed-consumer table (R4-2)
+
+**Slot mapping:** task-blind local seed k (0–7) → global slot k; reward local k → global slot 8 + k. Training worlds are World(task, 1,000,000 + 10,000·slot + e, 'dev').
+
+**Seed:** seed(key) = the first 8 bytes of SHA-256(`0h-rev6/` + key), big-endian. Python-side generators are `numpy.random.Generator(PCG64(seed))`.
+
+| Consumer | Key | API | Created | Shared by |
+|---|---|---|---|---|
+| Medium initial state | `medium/<arm>/<k>` | PCG64 | once at run start | intact, M and U of the slot (the same initial state) |
+| Growth draws (B-out's uniform-phase fallback, and any other growth randomness) | `growth/<arm>/<k>/<policy>`, with policy ∈ {intact, M, U} | PCG64 | once per run; advanced in event order | none |
+| Control-M placements | `matched/<arm>/<k>` | PCG64 | once per run; advanced in event order | none |
+| Control-U placements | `control_u/<arm>/<k>` | PCG64 | once per run (replaces the inherited U recipe) | none |
+| Recovery kicks | `recovery/<arm>/<k>/<policy>` | the inherited per-check sub-derivation (seed + check index), with this master seed in place of the old one | per check, as inherited | none |
+| Random comparator | `random_policy/<task>/<world episode id>` | native Policy(task, seed, 'random', 'validation') | fresh per evaluation episode | every seed, arm and checkpoint (one fixed random comparator per episode) |
+| Destructive receiver lesion (descriptive) | `lesion/<arm>/<k>/<world episode id>` | PCG64 | fresh per evaluation episode | none |
+| Donor permutation | `donor_perm/<j>` | the SHA-256 rank (14.6) | fixed | all |
+| Fixtures F5 and F7 | medium `F5/i`; growth `F5/<start>/intact`; matched `F5/i` | as above | once per fixture run | own, donor and lesion copies share the checkpoint |
+
+**Inherited exceptions kept:** the world's own episode generators and permutation(episode), on the new episode ids.
+
+**Receipts:** the implementer writes the instantiated seed inventory (key → uint64) into the receipt before any evaluation result exists.
+
+### 16.3 Base prerequisites kept (stop table)
+
+The base's stop row stays in force alongside section 14.9's integration row: the world, remember_static and the medium's design-specific follow-up must all be READY and reviewed.
+
+## 17. Self-audit: Codex round-4 findings
+
+| # | Finding | Disposition | Cause |
+|---|---|---|---|
+| R4-1 | F5 and F7 arm and start state not frozen | 16.1: task-blind only; a literal (ii) table; the (i) seed key; logging; exact F1c coordinates; restore scope | Left the fixture recipe partly implicit |
+| R4-2 | Seed consumers incomplete | 16.2: a slot mapping and a consumer table with keys, APIs, lifetimes and sharing | Gave a hash formula without its consumers |
