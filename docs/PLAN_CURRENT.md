@@ -48,22 +48,34 @@
 | B3 | Review the v4 report (`astelia_cpp/S4_V4_DEVELOPMENT_REPORT.md`), then the owner's recheck | — | Claude, then Codex | — |
 | B4 | v5: a progress-aware release of the hold (planned in `DESIGN_0G.md` after section 15), with thresholds from the v4 traces | — | Claude drafts, Codex reviews | — |
 | B5 | Update the replay viewer (`viz_0g/`) with v4/v5 fights | — | Claude | — |
-| B6 | **W4: what to register for S5** (as written, or plus a morale endpoint) | WAITING | — | **[OWNER] decision** |
+| B6 | S5 registration | DECIDED: no registration until a development version beats regular; then register with morale as a labelled comparator | Claude drafts | **[OWNER] approves the registered run** |
 
 ## Track C: C6 option B (a faster C6 engine)
 
 | # | Step | Status | Gate |
 |---|---|---|---|
 | C1 | Port, parallel and recheck | DONE (`evidence/c6_option_b/`) | — |
-| C2 | Official quiet-machine timing (is each world 360 s or less?) | WAITING for an idle laptop (prompt `scratchpad/c6quiet_prompt.txt`; the stopped partial attempt is in `evidence/c6_option_b/quiet_session/`) | **[OWNER] tells us when the laptop is idle** |
+| C2 | Official quiet-machine timing (is each world 360 s or less?) | SCHEDULED 2026-10-07 01:30 (`scratchpad/c6night.sh`; the stopped attempt is kept in `evidence/c6_option_b/quiet_session_stopped_20261006_0915/`) | the owner may cancel |
 | C3 | If over 360 s: the owner decides the resource rule | — | **[OWNER]** |
 
-## Decisions waiting for the owner (one line each)
+## Decisions: taken by the drafter from the goal (the owner may overrule any of them)
 
-2. **W4:** register 0g S5 as written, or plus a morale endpoint. (B6)
-3. **When is the laptop idle** for the C6 timing? (C2)
-4. Confirm the [R] readings in decision 0028, items 16–18.
-5. Where to keep the raw files outside git (about 15 GB: `evidence/LARGE_FILES_OUTSIDE_GIT.json`, the 0h ledgers).
+1. **W4, 0g S5 registration: no registration yet.**
+   - A registered run of a resonator that still loses to the regular script proves nothing toward the goal of beating the scripted AI with the new foundation.
+   - Register only after a development version beats regular (v4 or v5).
+   - The registration will then include **morale as a separately labelled comparator**, since it is the strongest simple controller. The resonator must be honest about it, not hide it.
+   - The registered run itself still needs the owner's approval (AGENTS.md).
+2. **C6 timing: scheduled automatically for tonight, 01:30 (2026-10-07),** under `caffeinate`. The batch waits up to 60 minutes for low load and records the conditions honestly. To cancel, say "no C6 tonight". Script: `scratchpad/c6night.sh`.
+3. **Backup of the raw files outside git: not needed for progress.**
+   - Almost all of them can be regenerated: deterministic code plus recorded seeds.
+   - Their hashes and every report are in git.
+   - They stay on the laptop. Deleting them later needs the owner's OK.
+
+## Decisions only the owner can make
+
+- **Decision 0028 [R] items:** my readings of short past replies as approvals. Examples: "C then A"; "isn't those our plan?"; "go ahead then".
+  - Only the owner can ratify them, in one message, for example "ratify all [R]".
+  - This is record-keeping and does not block any work.
 
 ## How to resume after a context loss
 
