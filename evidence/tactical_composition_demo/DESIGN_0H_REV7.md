@@ -611,3 +611,25 @@ The definitions are hashed with the N1 recipes.
 | Item | Cause |
 |---|---|
 | The output port could be deleted, and its re-creation competed for the budget | The role table covered drive and roots, not the death rules or the budget |
+
+### 13.3 Codex 7.6 review notes (APPROVE_WITH_NOTES; applied)
+
+- **R76-1, precision:**
+  - The two D1 deletions came after low-lock durations of 50.1 s and 46.6 s; the timers ran during the protection.
+  - O did have partners later: its locks were 0.717 and 0.733 at the D3 removals.
+  - The peak cost before pruning was 65.8 and 65.0.
+  - The role table cited as "12.3" is the measurement-role table of revision 6.5, section 12.3.
+- **R76-2, the budget definition (pinned):**
+  - O is external infrastructure for the growth budget, but stays a live oscillator and neighbour.
+  - **N counts ordinary elements.** The cost's pair term counts **only ordinary-to-ordinary** undirected N^θ pairs; pairs incident to O are excluded, without recomputing neighbour selection.
+  - Admission, live accounting and D3 use the same rule. The cap allows 64 ordinary elements plus one O.
+  - B-out ignores cap, cost and protected-over-budget, but respects placement and output uniqueness.
+  - Physical counts and compute time still include O.
+- **R76-3, the claim boundary:**
+  - A disconnected, permanent O is allowed. It has no direct drive, is not a root, and creates no path by existing. So F5 still fails max(E) ≥ 0.5 without a real path, and A = 0 for a free-running O.
+  - A synthetic isolated-O contract is added. The permanence of O is disclosed as supplied infrastructure.
+  - A future PASS supports the registered transmission test, not exclusive mediation by one grown path.
+- **R76-4, entropy:** reusing the F5 fixture keys is a **limited, disclosed exception** for outcome-informed engineering fixtures only. It supersedes 9.7's fresh-entropy action for those keys alone.
+  - The F5 growth entropy was consumed, and its outcome informed this change.
+  - F7's own stream was unconsumed, but its targets depend on the reused F5 run.
+  - Neither is called fresh or independent. The development inventory is untouched.
