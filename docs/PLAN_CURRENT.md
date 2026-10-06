@@ -57,8 +57,9 @@
 |---|---|---|---|---|
 | B1 | v4 design (travel-time hold, commit focus, decision traces): `DESIGN_0G.md` section 15 | DONE | Claude | — |
 | B2 | v4 implementation and development run | DONE, **NOT_READY / a negative result**: stage B resonator +9.4 against novice and **−22.2 against regular** (v3 −7.6); morale −15.4 (v3 +8.6); reversals not reduced; stage C stopped by the runtime guard before validation. One restart was caused by Claude editing `DESIGN_0G.md` during the run (a rule violation, owned) | Codex | — |
-| B3 | Review v4, then the owner's recheck | **Codex recheck RUNNING** (read-only analysis: why v4 got worse, and the v5 recommendation) | Codex, then Claude | — |
-| B4 | v5: decided **after** the recheck (the v4 hold and focus made things worse; the planned progress-aware release may not be the right fix) | — | Claude drafts, Codex reviews | — |
+| B3 | Review v4, then the owner's recheck | DONE: recheck CHANGES_REQUIRED (`astelia_cpp/S4_V4_RECHECK_REPORT.md`): the focus pulls units into gun range; holds expire in danger; the reversal comparison mixed definitions | Codex, Claude | — |
+| B3b | **2×2 attribution test** (hold × focus, fixed v3 knobs, fresh seeds; `DESIGN_0G.md` section 16) | Codex reviewing and implementing (light, while C6 measures); **the fights (about 10 min) run after C6 finishes** | Codex | decision 0031 |
+| B4 | v5: one coherent intent per unit, progress checks, a damage-risk budget (the recheck's recommendation), informed by the 2×2 test; selection on regular-head S | — | Claude drafts, Codex reviews | — |
 | B5 | Update the replay viewer (`viz_0g/`) with v4/v5 fights | — | Claude | — |
 | B6 | S5 registration (W4: CLOSED) | DECIDED: no registration until a development version beats regular; then register with morale as a labelled comparator | Claude drafts | **[OWNER] approves the registered run** |
 
@@ -67,7 +68,7 @@
 | # | Step | Status | Gate |
 |---|---|---|---|
 | C1 | Port, parallel and recheck | DONE (`evidence/c6_option_b/`) | — |
-| C2 | Official quiet-machine timing (is each world 360 s or less?) | SCHEDULED: starts automatically **as soon as the 0g v4 development run finishes** (01:30 at the latest; `scratchpad/c6soon.sh`; the owner asked for earlier; the stopped attempt is kept in `evidence/c6_option_b/quiet_session_stopped_20261006_0915/`) | the owner may cancel |
+| C2 | Official quiet-machine timing (is each world 360 s or less?) | **RUNNING since 16:17** (`evidence/c6_option_b/quiet_session_20261006_161801`); the first development world's reference took 355.9 s | the owner keeps the laptop light |
 | C3 | If over 360 s: the owner decides the resource rule | — | **[OWNER]** |
 
 ## Decisions: taken by the drafter from the goal (the owner may overrule any of them)
