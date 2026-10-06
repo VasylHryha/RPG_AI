@@ -1,0 +1,694 @@
+{
+  "status": "PASS",
+  "combat_executions": 0,
+  "raw_rows": 60996,
+  "fresh_rows": 60996,
+  "cache_hits": 0,
+  "budgets": {
+    "resonator": 19532,
+    "morale": 19532,
+    "pushpull": 19532
+  },
+  "completed_candidates": 1536,
+  "cma_generations_reconstructed": 96,
+  "partial_generation_candidates": 0,
+  "accounting_by_stage_arm_split": [
+    {
+      "stage": "A",
+      "arm": "morale",
+      "split": "tuning",
+      "recorded_rows": 9766
+    },
+    {
+      "stage": "A",
+      "arm": "morale",
+      "split": "validation",
+      "recorded_rows": 200
+    },
+    {
+      "stage": "A",
+      "arm": "nearest",
+      "split": "validation",
+      "recorded_rows": 200
+    },
+    {
+      "stage": "A",
+      "arm": "pushpull",
+      "split": "tuning",
+      "recorded_rows": 9766
+    },
+    {
+      "stage": "A",
+      "arm": "pushpull",
+      "split": "validation",
+      "recorded_rows": 200
+    },
+    {
+      "stage": "A",
+      "arm": "resonator",
+      "split": "tuning",
+      "recorded_rows": 9766
+    },
+    {
+      "stage": "A",
+      "arm": "resonator",
+      "split": "validation",
+      "recorded_rows": 200
+    },
+    {
+      "stage": "B",
+      "arm": "morale",
+      "split": "tuning",
+      "recorded_rows": 9766
+    },
+    {
+      "stage": "B",
+      "arm": "morale",
+      "split": "validation",
+      "recorded_rows": 400
+    },
+    {
+      "stage": "B",
+      "arm": "nearest",
+      "split": "validation",
+      "recorded_rows": 400
+    },
+    {
+      "stage": "B",
+      "arm": "pushpull",
+      "split": "tuning",
+      "recorded_rows": 9766
+    },
+    {
+      "stage": "B",
+      "arm": "pushpull",
+      "split": "validation",
+      "recorded_rows": 400
+    },
+    {
+      "stage": "B",
+      "arm": "resonator",
+      "split": "tuning",
+      "recorded_rows": 9766
+    },
+    {
+      "stage": "B",
+      "arm": "resonator",
+      "split": "validation",
+      "recorded_rows": 400
+    }
+  ],
+  "all_raw_rows_and_ledger_matched": true,
+  "zero_controller_failures": true,
+  "recorded_controller_failure_rows": 0,
+  "zero_planner_work": true,
+  "runtime_hashes_verified": 109,
+  "validation": {
+    "A|resonator|s4_melee10|novice": {
+      "stats": {
+        "n": 100,
+        "mean": 5.56,
+        "sd": 1.3526629179869498,
+        "se": 0.13526629179869498,
+        "descriptive_normal_95": [
+          5.294878068074557,
+          5.825121931925442
+        ]
+      },
+      "descriptive": {
+        "fights": 200,
+        "own_guns_alive_mean": 0.0,
+        "enemy_guns_alive_mean": 0.0,
+        "timeouts": 0,
+        "damage_dealt_mean": 2578.965,
+        "damage_taken_mean": 2084.235,
+        "own_eliminations": 2,
+        "own_elimination_time_mean": 94.14999999999722,
+        "enemy_eliminations": 198,
+        "enemy_elimination_time_mean": 78.41717171716984,
+        "mean_termination_time": 78.57449999999814,
+        "elimination_time_policy": "conditional on elimination; timeouts censored, no imputation"
+      }
+    },
+    "A|morale|s4_melee10|novice": {
+      "stats": {
+        "n": 100,
+        "mean": 1.365,
+        "sd": 2.4275928552183275,
+        "se": 0.24275928552183274,
+        "descriptive_normal_95": [
+          0.8891918003772079,
+          1.840808199622792
+        ]
+      },
+      "descriptive": {
+        "fights": 200,
+        "own_guns_alive_mean": 0.0,
+        "enemy_guns_alive_mean": 0.0,
+        "timeouts": 0,
+        "damage_dealt_mean": 2516.325,
+        "damage_taken_mean": 2374.905,
+        "own_eliminations": 63,
+        "own_elimination_time_mean": 68.22063492063361,
+        "enemy_eliminations": 137,
+        "enemy_elimination_time_mean": 64.01630170316194,
+        "mean_termination_time": 65.3406666666655,
+        "elimination_time_policy": "conditional on elimination; timeouts censored, no imputation"
+      }
+    },
+    "A|pushpull|s4_melee10|novice": {
+      "stats": {
+        "n": 100,
+        "mean": -2.125,
+        "sd": 2.682128470322242,
+        "se": 0.2682128470322242,
+        "descriptive_normal_95": [
+          -2.6506971801831596,
+          -1.5993028198168404
+        ]
+      },
+      "descriptive": {
+        "fights": 200,
+        "own_guns_alive_mean": 0.0,
+        "enemy_guns_alive_mean": 0.0,
+        "timeouts": 0,
+        "damage_dealt_mean": 2333.52,
+        "damage_taken_mean": 2516.445,
+        "own_eliminations": 144,
+        "own_elimination_time_mean": 56.956018518517844,
+        "enemy_eliminations": 56,
+        "enemy_elimination_time_mean": 63.15892857142755,
+        "mean_termination_time": 58.692833333332594,
+        "elimination_time_policy": "conditional on elimination; timeouts censored, no imputation"
+      }
+    },
+    "A|nearest|s4_melee10|novice": {
+      "stats": {
+        "n": 100,
+        "mean": 0.84,
+        "sd": 2.511468643538029,
+        "se": 0.2511468643538029,
+        "descriptive_normal_95": [
+          0.3477521458665463,
+          1.3322478541334537
+        ]
+      },
+      "descriptive": {
+        "fights": 200,
+        "own_guns_alive_mean": 0.0,
+        "enemy_guns_alive_mean": 0.0,
+        "timeouts": 0,
+        "damage_dealt_mean": 2512.515,
+        "damage_taken_mean": 2450.37,
+        "own_eliminations": 74,
+        "own_elimination_time_mean": 65.32657657657543,
+        "enemy_eliminations": 126,
+        "enemy_elimination_time_mean": 64.44021164021055,
+        "mean_termination_time": 64.76816666666559,
+        "elimination_time_policy": "conditional on elimination; timeouts censored, no imputation"
+      }
+    },
+    "B|resonator|s4_full_head|novice": {
+      "stats": {
+        "n": 100,
+        "mean": 5.6,
+        "sd": 4.414164528520486,
+        "se": 0.44141645285204856,
+        "descriptive_normal_95": [
+          4.7348237524099845,
+          6.465176247590015
+        ]
+      },
+      "descriptive": {
+        "fights": 200,
+        "own_guns_alive_mean": 4.765,
+        "enemy_guns_alive_mean": 0.81,
+        "timeouts": 0,
+        "damage_dealt_mean": 5304.53,
+        "damage_taken_mean": 6673.3,
+        "own_eliminations": 35,
+        "own_elimination_time_mean": 52.64285714285671,
+        "enemy_eliminations": 165,
+        "enemy_elimination_time_mean": 54.247676767676246,
+        "mean_termination_time": 53.966833333332815,
+        "elimination_time_policy": "conditional on elimination; timeouts censored, no imputation"
+      }
+    },
+    "B|resonator|s4_full_head|regular": {
+      "stats": {
+        "n": 100,
+        "mean": -6.025,
+        "sd": 2.447813908223607,
+        "se": 0.2447813908223607,
+        "descriptive_normal_95": [
+          -6.504771526011828,
+          -5.545228473988173
+        ]
+      },
+      "descriptive": {
+        "fights": 200,
+        "own_guns_alive_mean": 1.25,
+        "enemy_guns_alive_mean": 7.3,
+        "timeouts": 89,
+        "damage_dealt_mean": 4969.41,
+        "damage_taken_mean": 7001.595,
+        "own_eliminations": 111,
+        "own_elimination_time_mean": 103.1927927927895,
+        "enemy_eliminations": 0,
+        "enemy_elimination_time_mean": null,
+        "mean_termination_time": 124.03683333332873,
+        "elimination_time_policy": "conditional on elimination; timeouts censored, no imputation"
+      }
+    },
+    "B|morale|s4_full_head|novice": {
+      "stats": {
+        "n": 100,
+        "mean": 19.765,
+        "sd": 5.800755349630134,
+        "se": 0.5800755349630135,
+        "descriptive_normal_95": [
+          18.628051951472493,
+          20.901948048527508
+        ]
+      },
+      "descriptive": {
+        "fights": 200,
+        "own_guns_alive_mean": 6.495,
+        "enemy_guns_alive_mean": 0.06,
+        "timeouts": 0,
+        "damage_dealt_mean": 6354.105,
+        "damage_taken_mean": 5367.085,
+        "own_eliminations": 3,
+        "own_elimination_time_mean": 50.266666666666374,
+        "enemy_eliminations": 197,
+        "enemy_elimination_time_mean": 46.2324873096446,
+        "mean_termination_time": 46.292999999999964,
+        "elimination_time_policy": "conditional on elimination; timeouts censored, no imputation"
+      }
+    },
+    "B|morale|s4_full_head|regular": {
+      "stats": {
+        "n": 100,
+        "mean": 9.53,
+        "sd": 6.515645506289946,
+        "se": 0.6515645506289947,
+        "descriptive_normal_95": [
+          8.25293348076717,
+          10.807066519232828
+        ]
+      },
+      "descriptive": {
+        "fights": 200,
+        "own_guns_alive_mean": 6.83,
+        "enemy_guns_alive_mean": 9.7,
+        "timeouts": 198,
+        "damage_dealt_mean": 4890.85,
+        "damage_taken_mean": 5162.965,
+        "own_eliminations": 2,
+        "own_elimination_time_mean": 57.76666666666595,
+        "enemy_eliminations": 0,
+        "enemy_elimination_time_mean": null,
+        "mean_termination_time": 149.11066666666,
+        "elimination_time_policy": "conditional on elimination; timeouts censored, no imputation"
+      }
+    },
+    "B|pushpull|s4_full_head|novice": {
+      "stats": {
+        "n": 100,
+        "mean": -6.63,
+        "sd": 3.2314896336713277,
+        "se": 0.3231489633671328,
+        "descriptive_normal_95": [
+          -7.26337196819958,
+          -5.9966280318004195
+        ]
+      },
+      "descriptive": {
+        "fights": 200,
+        "own_guns_alive_mean": 0.155,
+        "enemy_guns_alive_mean": 6.425,
+        "timeouts": 0,
+        "damage_dealt_mean": 6140.51,
+        "damage_taken_mean": 6736.17,
+        "own_eliminations": 187,
+        "own_elimination_time_mean": 26.437611408200116,
+        "enemy_eliminations": 13,
+        "enemy_elimination_time_mean": 29.202564102564704,
+        "mean_termination_time": 26.6173333333338,
+        "elimination_time_policy": "conditional on elimination; timeouts censored, no imputation"
+      }
+    },
+    "B|pushpull|s4_full_head|regular": {
+      "stats": {
+        "n": 100,
+        "mean": -11.72,
+        "sd": 2.6317026020921483,
+        "se": 0.26317026020921486,
+        "descriptive_normal_95": [
+          -12.235813710010062,
+          -11.20418628998994
+        ]
+      },
+      "descriptive": {
+        "fights": 200,
+        "own_guns_alive_mean": 0.0,
+        "enemy_guns_alive_mean": 9.995,
+        "timeouts": 0,
+        "damage_dealt_mean": 4898.69,
+        "damage_taken_mean": 6619.29,
+        "own_eliminations": 200,
+        "own_elimination_time_mean": 41.39250000000021,
+        "enemy_eliminations": 0,
+        "enemy_elimination_time_mean": null,
+        "mean_termination_time": 41.392500000000226,
+        "elimination_time_policy": "conditional on elimination; timeouts censored, no imputation"
+      }
+    },
+    "B|nearest|s4_full_head|novice": {
+      "stats": {
+        "n": 100,
+        "mean": -17.52,
+        "sd": 3.926033287395482,
+        "se": 0.3926033287395482,
+        "descriptive_normal_95": [
+          -18.289502524329514,
+          -16.750497475670485
+        ]
+      },
+      "descriptive": {
+        "fights": 200,
+        "own_guns_alive_mean": 0.0,
+        "enemy_guns_alive_mean": 9.875,
+        "timeouts": 0,
+        "damage_dealt_mean": 5145.155,
+        "damage_taken_mean": 6910.755,
+        "own_eliminations": 200,
+        "own_elimination_time_mean": 23.352833333333653,
+        "enemy_eliminations": 0,
+        "enemy_elimination_time_mean": null,
+        "mean_termination_time": 23.352833333333646,
+        "elimination_time_policy": "conditional on elimination; timeouts censored, no imputation"
+      }
+    },
+    "B|nearest|s4_full_head|regular": {
+      "stats": {
+        "n": 100,
+        "mean": -23.455,
+        "sd": 6.2636094251081005,
+        "se": 0.6263609425108101,
+        "descriptive_normal_95": [
+          -24.682667447321187,
+          -22.22733255267881
+        ]
+      },
+      "descriptive": {
+        "fights": 200,
+        "own_guns_alive_mean": 0.0,
+        "enemy_guns_alive_mean": 10.0,
+        "timeouts": 0,
+        "damage_dealt_mean": 4282.32,
+        "damage_taken_mean": 6826.73,
+        "own_eliminations": 200,
+        "own_elimination_time_mean": 28.621166666667108,
+        "enemy_eliminations": 0,
+        "enemy_elimination_time_mean": null,
+        "mean_termination_time": 28.621166666667115,
+        "elimination_time_policy": "conditional on elimination; timeouts censored, no imputation"
+      }
+    }
+  },
+  "tuning": [
+    {
+      "stage": "A",
+      "arm": "resonator",
+      "completed_generations": 16,
+      "selection": {
+        "novice_mean": 5.7894736842105265,
+        "regular_mean": null,
+        "eligible": null,
+        "rank": [
+          5.7894736842105265
+        ],
+        "objective": -5.7894736842105265
+      },
+      "knobs": {
+        "K": 3.238296265897462,
+        "K_t": 2.562976584723713,
+        "kappa": 35.33547384246197,
+        "beta": 0.01973366141519286,
+        "G": 3.9906813193935857,
+        "w": 2.492501617153541,
+        "f_c": 0.3085600682917833,
+        "m_k": 0.7566221921464964,
+        "lambda_th": 1.3066944864992882,
+        "omega_melee": 0.5428447077087157,
+        "omega_ranged": -1.999893587841726
+      },
+      "accounted_rows": 9766,
+      "all_generations_saved": true,
+      "completed": true
+    },
+    {
+      "stage": "A",
+      "arm": "morale",
+      "completed_generations": 16,
+      "selection": {
+        "novice_mean": 2.1052631578947367,
+        "regular_mean": null,
+        "eligible": null,
+        "rank": [
+          2.1052631578947367
+        ],
+        "objective": -2.1052631578947367
+      },
+      "knobs": {
+        "K": 2.9816718555355486,
+        "K_t": 3.078052416867019,
+        "kappa": 12.108213116349809,
+        "beta": 2.500603207012437,
+        "G": 4.985845444737913,
+        "w": 1.0345043316281182,
+        "f_c": 0.5386114306342364,
+        "m_k": 0.2838124233525861,
+        "lambda_th": 2.745820889949302,
+        "lambda_melee": 1.323134254648507,
+        "lambda_ranged": 1.8059885656180625
+      },
+      "accounted_rows": 9766,
+      "all_generations_saved": true,
+      "completed": true
+    },
+    {
+      "stage": "A",
+      "arm": "pushpull",
+      "completed_generations": 16,
+      "selection": {
+        "novice_mean": -0.7105263157894737,
+        "regular_mean": null,
+        "eligible": null,
+        "rank": [
+          -0.7105263157894737
+        ],
+        "objective": 0.7105263157894737
+      },
+      "knobs": {
+        "G": 4.532847311076128,
+        "f_c": 0.48526502836517627,
+        "m_k": 0.4088638712381263
+      },
+      "accounted_rows": 9766,
+      "all_generations_saved": true,
+      "completed": true
+    },
+    {
+      "stage": "B",
+      "arm": "resonator",
+      "completed_generations": 16,
+      "selection": {
+        "novice_mean": 7.6,
+        "regular_mean": -4.333333333333333,
+        "eligible": true,
+        "rank": [
+          1,
+          -4.333333333333333
+        ],
+        "objective": 4.333333333333333
+      },
+      "knobs": {
+        "K": 0.2510765409210622,
+        "K_t": 2.8309858079667096,
+        "kappa": 30.772156074222266,
+        "beta": 0.2612425434672661,
+        "G": 2.797734815692188,
+        "w": 1.5586928561395483,
+        "f_c": 0.9833204460055593,
+        "m_k": 0.9440764936251373,
+        "lambda_th": 0.44025543959044067,
+        "omega_melee": -0.35834082706003145,
+        "omega_ranged": -1.911951778821679
+      },
+      "accounted_rows": 9766,
+      "all_generations_saved": true,
+      "completed": true
+    },
+    {
+      "stage": "B",
+      "arm": "morale",
+      "completed_generations": 16,
+      "selection": {
+        "novice_mean": 18.1,
+        "regular_mean": 13.333333333333334,
+        "eligible": true,
+        "rank": [
+          1,
+          13.333333333333334
+        ],
+        "objective": -13.333333333333334
+      },
+      "knobs": {
+        "K": 2.5192076942397983,
+        "K_t": 3.760718153450039,
+        "kappa": 29.386755743300146,
+        "beta": 0.1455450386022827,
+        "G": 3.3470408597462598,
+        "w": 0.4255226763046283,
+        "f_c": 0.9990580060403558,
+        "m_k": 0.6402983559398885,
+        "lambda_th": 0.018572162375896796,
+        "lambda_melee": 0.7476665170177133,
+        "lambda_ranged": 0.9290745979101134
+      },
+      "accounted_rows": 9766,
+      "all_generations_saved": true,
+      "completed": true
+    },
+    {
+      "stage": "B",
+      "arm": "pushpull",
+      "completed_generations": 16,
+      "selection": {
+        "novice_mean": -6.2,
+        "regular_mean": -10.61111111111111,
+        "eligible": false,
+        "rank": [
+          0,
+          -10.61111111111111
+        ],
+        "objective": 111.61111111111111
+      },
+      "knobs": {
+        "G": 4.979108053936759,
+        "f_c": 0.9982270265621331,
+        "m_k": 0.9997440664658577
+      },
+      "accounted_rows": 9766,
+      "all_generations_saved": true,
+      "completed": true
+    }
+  ],
+  "endpoint_coverage": [
+    {
+      "stage": "A",
+      "arm": "resonator",
+      "endpoint": "s4_melee10|novice",
+      "status": "evaluated",
+      "value": 5.56,
+      "verdict": "descriptive"
+    },
+    {
+      "stage": "A",
+      "arm": "morale",
+      "endpoint": "s4_melee10|novice",
+      "status": "evaluated",
+      "value": 1.365,
+      "verdict": "descriptive"
+    },
+    {
+      "stage": "A",
+      "arm": "pushpull",
+      "endpoint": "s4_melee10|novice",
+      "status": "evaluated",
+      "value": -2.125,
+      "verdict": "descriptive"
+    },
+    {
+      "stage": "A",
+      "arm": "nearest",
+      "endpoint": "s4_melee10|novice",
+      "status": "evaluated",
+      "value": 0.84,
+      "verdict": "descriptive"
+    },
+    {
+      "stage": "B",
+      "arm": "resonator",
+      "endpoint": "s4_full_head|novice",
+      "status": "evaluated",
+      "value": 5.6,
+      "verdict": "descriptive"
+    },
+    {
+      "stage": "B",
+      "arm": "resonator",
+      "endpoint": "s4_full_head|regular",
+      "status": "evaluated",
+      "value": -6.025,
+      "verdict": "descriptive"
+    },
+    {
+      "stage": "B",
+      "arm": "morale",
+      "endpoint": "s4_full_head|novice",
+      "status": "evaluated",
+      "value": 19.765,
+      "verdict": "descriptive"
+    },
+    {
+      "stage": "B",
+      "arm": "morale",
+      "endpoint": "s4_full_head|regular",
+      "status": "evaluated",
+      "value": 9.53,
+      "verdict": "descriptive"
+    },
+    {
+      "stage": "B",
+      "arm": "pushpull",
+      "endpoint": "s4_full_head|novice",
+      "status": "evaluated",
+      "value": -6.63,
+      "verdict": "descriptive"
+    },
+    {
+      "stage": "B",
+      "arm": "pushpull",
+      "endpoint": "s4_full_head|regular",
+      "status": "evaluated",
+      "value": -11.72,
+      "verdict": "descriptive"
+    },
+    {
+      "stage": "B",
+      "arm": "nearest",
+      "endpoint": "s4_full_head|novice",
+      "status": "evaluated",
+      "value": -17.52,
+      "verdict": "descriptive"
+    },
+    {
+      "stage": "B",
+      "arm": "nearest",
+      "endpoint": "s4_full_head|regular",
+      "status": "evaluated",
+      "value": -23.455,
+      "verdict": "descriptive"
+    },
+    {
+      "stage": "C",
+      "status": "not_run",
+      "reason": "outside v5 amended A/B scope"
+    }
+  ],
+  "elapsed_seconds": 3.817219042,
+  "partial_candidate_limit": "Completed candidates in partial generation reconstructed; rows of an unfinished candidate checked against ledger/identity/allocation only."
+}

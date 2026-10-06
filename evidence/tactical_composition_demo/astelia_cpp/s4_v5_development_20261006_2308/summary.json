@@ -1,0 +1,113 @@
+{
+  "status": "PROGRESS",
+  "stages_completed": [
+    "A",
+    "B"
+  ],
+  "gates": {
+    "A": {
+      "novice_mean": 5.56,
+      "novice_validation_pass": true,
+      "regular_mean": null,
+      "regular_progress_pass": null,
+      "regular_threshold": -7.62,
+      "status": "CONTINUE",
+      "C_authorized": false
+    },
+    "B": {
+      "novice_mean": 5.6,
+      "novice_validation_pass": true,
+      "regular_mean": -6.025,
+      "regular_progress_pass": true,
+      "regular_threshold": -7.62,
+      "status": "PROGRESS",
+      "C_authorized": false
+    }
+  },
+  "best": {
+    "resonator": {
+      "K": 0.2510765409210622,
+      "K_t": 2.8309858079667096,
+      "kappa": 30.772156074222266,
+      "beta": 0.2612425434672661,
+      "G": 2.797734815692188,
+      "w": 1.5586928561395483,
+      "f_c": 0.9833204460055593,
+      "m_k": 0.9440764936251373,
+      "lambda_th": 0.44025543959044067,
+      "omega_melee": -0.35834082706003145,
+      "omega_ranged": -1.911951778821679
+    },
+    "morale": {
+      "K": 2.5192076942397983,
+      "K_t": 3.760718153450039,
+      "kappa": 29.386755743300146,
+      "beta": 0.1455450386022827,
+      "G": 3.3470408597462598,
+      "w": 0.4255226763046283,
+      "f_c": 0.9990580060403558,
+      "m_k": 0.6402983559398885,
+      "lambda_th": 0.018572162375896796,
+      "lambda_melee": 0.7476665170177133,
+      "lambda_ranged": 0.9290745979101134
+    },
+    "pushpull": {
+      "G": 4.979108053936759,
+      "f_c": 0.9982270265621331,
+      "m_k": 0.9997440664658577
+    }
+  },
+  "selections": {
+    "resonator": {
+      "novice_mean": 7.6,
+      "regular_mean": -4.333333333333333,
+      "eligible": true,
+      "rank": [
+        1,
+        -4.333333333333333
+      ],
+      "objective": 4.333333333333333
+    },
+    "morale": {
+      "novice_mean": 18.1,
+      "regular_mean": 13.333333333333334,
+      "eligible": true,
+      "rank": [
+        1,
+        13.333333333333334
+      ],
+      "objective": -13.333333333333334
+    },
+    "pushpull": {
+      "novice_mean": -6.2,
+      "regular_mean": -10.61111111111111,
+      "eligible": false,
+      "rank": [
+        0,
+        -10.61111111111111
+      ],
+      "objective": 111.61111111111111
+    }
+  },
+  "selected_omega": {
+    "melee": -0.35834082706003145,
+    "ranged": -1.911951778821679
+  },
+  "omega_diagnostic_only": true,
+  "C": {
+    "status": "not_run",
+    "reason": "outside v5 A/B scope; requires later declared revision"
+  },
+  "B": {
+    "status": "evaluated",
+    "reason": null
+  },
+  "budgets": {
+    "resonator": 19532,
+    "morale": 19532,
+    "pushpull": 19532
+  },
+  "executed_fights": 60996,
+  "cache_hits": 0,
+  "development_only": true
+}
