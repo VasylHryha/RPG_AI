@@ -592,3 +592,151 @@ Emergencies take precedence over the hold. The thresholds will come from the v4 
 - **Cost:** about 65 minutes with 10 workers, at the measured v5 rate (60,996 fights in 64.2 min).
 
 No registration, judging seeds or recorded run.
+
+### 18.1 Amendment answering the Codex section-18 review (`docs/reviews/tactical_0g_s18_design_review_codex.md`, CHANGES_REQUIRED, `a8a5001`)
+
+**F1 (high): the ally similarity, now explicit.** Section 3's resonator similarity cos(θ_j − θ_i) is replaced, for v6 only, by an **amplitude-gated phase similarity**:
+
+    s_ij = Re(z_i · conj(z_j)) / max(|z_i| · |z_j|, δ²),    δ = 0.2 (fixed; the hysteresis threshold)
+
+- **Range:** s_ij ∈ [−1, 1], because |Re(z_i z̄_j)| ≤ |z_i||z_j|. It is dimensionless.
+- **When both amplitudes are ≥ δ,** s_ij = cos(arg z_j − arg z_i), the v5 form.
+- **Toward zero:** if either amplitude is small, s_ij shrinks continuously to 0. Zero–zero and zero–nonzero pairs give exactly 0, with no undefined argument.
+- **Which state enters movement:** the state after this tick's accepted integration, as for v5's θ.
+- **This changes the formation law.**
+  - Morale's similarity at m_i = m_j = 0 is 1 (full in-phase attraction); v6's at z = 0 is 0 (attraction A only).
+  - **So v6 is a changed controller package, not an isolated amplitude intervention.**
+  - v6 claims no unchanged-C4 phase-law identity. v0–v5 dispatch, historical fixtures and reference adapters are preserved separately.
+- **Fixtures:** sign and range; zero–zero; zero–nonzero; equal phase at amplitudes above and below δ; opposite phase; deterministic ties (N_i ties are unchanged: by id).
+
+**F2 (medium): zero startup, kept and stated.**
+- z_i = 0 at birth, and P = 0 with all neighbours at 0 keeps z exactly 0 under RK4 **for either sign of μ**. Neither positive μ nor diffusive coupling breaks the symmetry.
+- **The controller is therefore pressure- and coupling-triggered.** A unit is excited by its own pressure, or through coupling by a driven neighbour or by its target group.
+- Positive-μ oscillation needs a nonzero excitation first. No seeded perturbation is added.
+- **The mode hysteresis inherits section 14 unchanged.**
+  - A new out-ranged pair starts in **commit** when c ≥ 0, so a quiet start holds commit, not escape. Morale inherits exactly the same rule from m = 0.
+  - A new pair initializes from the current c, not from another pair's history.
+- **Amplitude decay alone does not guarantee a safe escape:**
+  - with μ > 0, an excited, unforced unit approaches its free radius √(μ/ν) and can keep crossing thresholds;
+  - while the amplitude is appreciable, rotation can cross either threshold.
+- **Stage A is melee-only and ω_melee = 0.** Under real forcing and real coupling from zero, the state stays on the real axis, so stage A does not exercise rotation. It is stated as such.
+- **Checks:**
+  - exact all-zero invariance for μ < 0 and μ > 0;
+  - first-pressure onset;
+  - excitation by a driven neighbour;
+  - stage-A real-axis invariance;
+  - a new pair at c = 0 starting in commit;
+  - a previously escaping pair keeping escape while c stays in [−0.2, 0.2].
+
+**F3 (medium): normalization and corrected checks.**
+- **The cubic term is −ν|z|²z with ν = 1/s fixed** (not a knob), so every RHS term is in 1/s with z dimensionless.
+- **The free radius is √(μ/ν).** It is not a numerical bound: driven amplitude can exceed it.
+- For an isolated, unforced unit with r = |z|:
+
+      dr/dt = μr − νr³,    d(arg z)/dt = ω only where r > 0
+
+- **The corrected checks:**
+  1. **μ < 0, r₀ > 0:** r(t) follows the radial solution, which falls faster than r₀e^{μt}. Compare with the analytic solution of the Bernoulli equation, and with e^{μt} only in the small-amplitude limit.
+  2. **μ = 0:** algebraic decay, r(t) = r₀/√(1 + 2νr₀²t).
+  3. **μ > 0, r₀ > 0:** r → √(μ/ν). With ω ≠ 0, arg z rotates at ω; with ω = 0 the phase is stationary. **Zero stays zero** (invariance, separately).
+  4. **Constant drive, μ < 0, ω = 0:** the unique real root of μx − νx³ = P has the sign opposite to P (P ≠ 0).
+  5. **Coupling,** tested on its own: the diffusive term contracts z_i − z_j by itself. A **matched damped pair** (equal μ < 0, ω, no drive) converges. **Declared counterexamples:** differing ω or drives need not equalize; two identical μ > 2a oscillators with symmetric coupling rate a admit the antiphase solution z₂ = −z₁ of radius √((μ − 2a)/ν).
+  6. **An independent complex RK4 reference** to 1e-9 per step, **plus physical-tick refinement:** the same tick at dt and at dt/4 substeps, reported over the declared envelope (F5).
+
+**F4 (medium): target alignment, now on morale's scale.**
+
+    a_ij = max(−1, 1 − |z_i − ζ_ij|)
+
+- **On the real axis with bounded states this is exactly morale's 1 − |m_i − μ_ij|** (1, 0, −1 at distances 0, 1, 2). The lower clip only matters beyond distance 2, which the unbounded complex state can reach. Section 18's [0, 1] form is withdrawn.
+- **ζ_ij is the complex arithmetic mean of z_k** over the living own units k ≠ i whose previous-tick target is j. "Previous-tick" means assignments are frozen through the tick.
+  - It is recomputed from each joint RK4 trial state, and scoring uses the updated state.
+- **Defined and undefined cases:**
+  - an **empty** group is the only undefined case: a_ij = 0, and for the unit's own target the whole K_t term is omitted;
+  - a **nonempty** group whose mean is 0 (all-zero, or cancelling z and −z) is **valid**: a_ij = max(−1, 1 − |z_i|), and the K_t term is −K_t z_i;
+  - the v5 resultant < 0.1 rejection does **not** apply;
+  - a non-finite member is a controller failure, never an empty-group fallback.
+- **The target score keeps the inherited engaged-enemy term** γ · tanh(κ(z_in(j) + z_out(j)) · 1 s) with γ = 1 (sections 12–13), not section 3's superseded beaten-enemy preference.
+- **Fixtures:** empty, self-only (empty), singleton, cancellation, a real-axis comparison with morale's alignment, scale and saturation, and exact η = 0.2 and tie behaviour.
+
+**F5 (high): numerical safety, without clamping the state.**
+- **Both components of z are persisted, unbounded but finite.** c = clip(Re z, −1, 1) is computed only after the integration result is accepted. The action clip is never a state clip.
+- **The integration policy** (declared before any fight):
+  - each tick's RK4 is split into n equal substeps, where n is the smallest integer with h·L ≤ 1, h = dt/n and L = |μ| + |ω| + 3ν·max_i |z_i|² + K + K_t, evaluated at the tick start;
+  - the cap is n ≤ 64;
+  - if the cap is reached, or any stage value is non-finite, the step fails (below).
+  - This bounds h·L inside explicit RK4's real-axis stability interval (about 2.78) with margin. **The pressure P is an additive forcing,** so it does not enter L.
+- **Finiteness is checked** on both components, norms, cubic products, every RHS stage, group means, alignment and similarity values, scores and raw actions, **before** any clip, min or max can hide a non-finite value.
+- **On failure:**
+  - the unit atomically retains its last finite complex state, publishes hold with target none, and the failure is counted;
+  - dependent trial states contaminated by a failed member fail with it;
+  - **the inherited runner's raw failure record and stop semantics apply unchanged** (a failed fight is recorded as a controller failure, never scored or dropped).
+- **A no-combat stability and refinement check before the run,** over the envelope:
+  - μ ∈ [−2, 2], ω ∈ [−2, 2], K and K_t ∈ [0, 5];
+  - |z₀| up to 10;
+  - |P| up to 500 /s, the κ upper bound 50 × a damage-rate bound of 10 /s, with the per-tick damage clipped to remaining HP by `World::damage`;
+  - the result is the substep counts, the refinement error against dt/4, and the absence of non-finite values.
+  - **If the envelope cannot be met within n ≤ 64, the drafter declares a different integration policy before any fight.** The ODE is never silently changed.
+- **Clone checks** cover both components, counters, answered-status memory, previous assignments, pair modes and diagnostics. A clone is advanced independently and the parent is verified unchanged.
+
+**F6 (medium): claims corrected.**
+- The amplitude is a **candidate explanation and design hypothesis**, not "the missing degree of freedom".
+- **Fixing ω_melee = 0 is a disclosed budget tradeoff** to keep 11 knobs.
+  - About 16 s is the resonator–regular **mean** melee death time; the maximum is 28.1 s.
+  - Melee states act on allies before death, through coupling, forces, targeting and screening.
+- **The selected μ and ω_ranged are optimizer diagnostics.**
+  - **No oscillation-necessity claim is made either way:** not for a zero-ω win, and not for a nonzero-ω win, without a necessity intervention.
+  - No universal physical-resonator or RRG requirement follows from selecting a Hopf normal form.
+  - No causal background-transformation, C5 or unchanged-C4 claim follows from this one-level controller.
+- **Evidence wording:**
+  - |ω_ranged| ≈ 1.91 rad/s (selected −1.912), and the observed rates are absolute rates.
+  - The phase "rarely meets the operational lock threshold in these traces" (not "never settles").
+  - **Reversals, matched definitions** (1 s, speed ≥ 5 px/s): resonator direct/gun 27.48/24.32, morale 0.92/0.74 per living unit-minute.
+  - The 8.73 s span is a distance-over-base-speed comparison, not a measured travel time.
+  - Gun-band deaths are co-occurrence, not killer attribution.
+- **The pressure is restated exactly:** own P = κ(z_in,answered − β z_out − z_in,unanswered), with status from the producing tick (sections 12–13).
+  - Positive answered pressure pushes toward escape; unanswered damage makes P negative and pushes toward commit.
+  - Additive −P excites a zero state, unlike v5's P sin θ.
+  - With ω ≠ 0 the initial drive sign does not fix the sign of Re z permanently; this is measured, not promised.
+
+**Gates (restated in full):**
+- **Stage A and stage B:** the resonator's **novice validation mean S must be strictly > 0** (the inherited separate gate; tuning eligibility ≥ 0 does not replace it).
+- **Stage B progress:** regular validation mean S strictly > −6.025.
+- **"Beats regular in development":** strictly > 0, **and** the novice validation pass, **and** failure-free completion.
+  - It is an exploratory W4 trigger to **draft** S5. It is not P1 support, superiority over morale, source qualification, approval or authorization to run S5.
+- **Equality fails** every gate.
+- The −6.025 reference is a historical, unmatched panel, not a paired comparison.
+- **All of v5's tuning ordering is inherited:**
+  - both orientations averaged within a seed;
+  - ten novice and nine regular tuning clusters;
+  - novice tuning mean ≥ 0 eligibility first, then regular mean S;
+  - ineligible candidates rank below every eligible one;
+  - exact earlier ties stay incumbent;
+  - the identical ordering feeds CMA and retention;
+  - fixed generations and budgets;
+  - fresh development entropy;
+  - no validation-based selection;
+  - all-arm validation;
+  - explicit not_run for C, P2 and P3;
+  - input pins, bounded deadlines and child cleanup.
+- **Gate fixtures** use fake records (boundary values, negative novice, a failure row), with no combat.
+
+**Diagnostics (amplitude-aware):**
+- The host exports Re z, Im z and |z| per unit.
+- **arg z is valid only where |z| ≥ 0.2.** No atan2(0, 0) is reported as phase 0 or coherence 1.
+- The arg-rate is sampled only when both consecutive endpoints are valid, unwrapped within contiguous valid segments and reset across gaps, with null reasons and denominators.
+- The v5 phase-coherence, target-phase and candidate diagnostics become amplitude-aware, or are explicitly not_run for v6.
+- Diagnostics on versus off leave actions byte-identical. Death and absence clear all per-unit memory.
+
+**Implementation:**
+- separate versioned complex state, RHS and policy dispatch;
+- v0–v5 scalar paths, historical fixtures, the regular and novice configurations and unchanged-arm actions preserved byte-identically at fixed knobs and requests;
+- no new engine information: the observation, prepare, decide and clone interfaces are reused.
+
+| Finding | Fix | Cause |
+|---|---|---|
+| F1 the ally similarity undefined after θ was removed | An explicit amplitude-gated similarity; the changed package disclosed | I changed the state without tracing every use of θ in the skeleton |
+| F2 zero startup and mode behaviour unstated | Stated, with checks | I assumed "decays at rest" without the exact-zero and positive-μ cases |
+| F3 a missing ν; wrong checks | ν = 1/s; corrected radial checks; refinement | I wrote the normal form without units and stated the checks from memory |
+| F4 the alignment is not morale's form; group semantics | Morale's scale; a complete group contract | A form chosen by analogy, not checked against morale's range |
+| F5 no numerical safety contract | A substep policy, finiteness, failure semantics, an envelope check | I relied on the continuous ODE's saturation |
+| F6 overstated claims; mixed reversal definitions | Narrowed; matched definitions | I compressed the diagnostic report too far |
