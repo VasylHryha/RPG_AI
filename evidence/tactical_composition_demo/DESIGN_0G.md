@@ -420,3 +420,14 @@ They report how often a held decision actually moves the unit the right way.
 **Before the capped run**, the runner gets the recheck F2 deadline repairs: bounded submission, an absolute monotonic deadline passed to the workers, timeouts clamped to the remaining allowance, cancellation of pending futures, and termination of active children on stop. They are tested with fake workers and no combat. Allowance: 360 minutes.
 
 No registration, judging seeds or recorded run.
+
+**Clarifications of Change 3, answering Codex's v4 contract stop** (`astelia_cpp/S4_V4_DEVELOPMENT_REPORT.md`, commit `babaaf5`). Traces are output-only and change nothing in the policy.
+1. **Reference enemy.** It is the focus pair if one exists. Otherwise it is the **main threat**: the enemy in the unit's section-13 movement threat set E_i with the highest damage weight, ties by lowest enemy id. If E_i is empty, the feasibility is null with reason `no_reference`.
+2. **Alignment** (option b). The reducing direction is computed from the **prepare(k) geometry** and that tick's preferred distance d_mode: the unit vector toward the reference if ρ > d_mode, and away from it if ρ < d_mode. It is compared with the **realized displacement during tick k**: the position after movement, collision separation and arena clipping, minus the position at prepare(k).
+3. **Undefined samples** are null with a reason, and excluded from the cosine mean. The reasons are:
+   - `zero_displacement`: the displacement norm is below 1e-9 px;
+   - `coincident`: the centre distance to the reference is below 1e-9 px;
+   - `at_distance`: |ρ − d_mode| ≤ 1e-6 px;
+   - `no_reference`.
+
+   Their counts are reported per reason, beside the mean and the distribution of the defined cosines.
