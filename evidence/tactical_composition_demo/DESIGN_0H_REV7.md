@@ -517,3 +517,28 @@ The definitions are hashed with the N1 recipes.
 | Item | Cause |
 |---|---|
 | λ = 8 was too slow for the live geometry | λ was derived on a shorter scaffold than the live path |
+
+### 11.1 Codex 7.4 review notes (APPROVE_WITH_NOTES; all six applied)
+
+- **R74-1, the toy and the engine:**
+  - λ = 32 is the smallest power of two meeting the 4 s rule on the **fixed-position toy**. It is a **provisional candidate** for the mobile engine.
+  - **F1d** compares λ = 1, 8 and 32 on F1b, all at h = 0.005, with identical starts and input, and the same outputs as before.
+  - **F1c** additionally reports its sustained entry delay, its error at t = 12 s (the 4 s margin), and whether that margin is met. **The existing 8 s gate and every hold and persistence cut are unchanged.** A missed 4 s margin is reported, never gated.
+- **R74-2, the stiffness bound:** 256 /s is the **one-site maximum drive-derivative scale**.
+  - The phase-only Jacobian row bound is λ(2C_i + D_i). It is 320 /s in the one-site envelope (h · 320 = 1.6, inside RK4's negative-real interval of about 2.785).
+  - It is not a guarantee of full coupled phase–position stability. **Stability is not accuracy:** N1 checks accuracy.
+- **R74-3, N1 completed:** every N1 case runs at λ = 32, with 20 and 80 substeps per world step (h = 0.005 and h = 0.00125), and E_i accumulated with each run's own h.
+  - **New case N1f:** the deterministic F1c state, compared through t = 24 s, including entry and the hold, with the same tolerances.
+  - The individual and used-pair invalid-frame counts, and their coarse/fine disagreements, are reported.
+  - π/2, the 80-of-100 rule, consecutive records and window rejection are unchanged.
+- **R74-4, the wording corrected:**
+  - The toy's 23.04 → 2.88 s is reported separately from the engine's F1d: λ = 1 is censored at the deadline; λ = 8 takes 2.5 s.
+  - F1c is a hand-built mobile scaffold with the live pin layout; its source is 0.8 m.u. from its site, over 6 adjacent intervals, and it can gain shortcuts.
+  - "No collapse" is narrowed to: the output pin, the path and access were preserved, despite substantial compaction of ordinary members (span 2.78 → 1.17).
+- **R74-5, the clocks in the handoff:**
+  - Adaptation, gain, reward and structural updates happen once per world step (or at their inherited checks), **never once per substep**. No horizon or threshold is divided.
+  - Positions and phases are integrated together at h = 0.005 in every mode: live, evaluation copies, controls, recovery futures and parity. The carrier advances at each stage.
+  - N^x and N^θ are recomputed per substep and held for its 4 stages.
+  - Changed valid-window denominators and transient exclusions are reported.
+  - The configuration and artifact identities distinguish λ = 32 and h = 0.005 under `rev7_rhs_v1`.
+- **R74-6, cost:** "4×" is a nominal ratio of right-hand-side work per substep, not a runtime multiplier. The fixture and A7 costs are re-measured from the 7.4 run, with unavailable parts null.
