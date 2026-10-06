@@ -1,0 +1,27 @@
+{
+  "approval_reference": "docs/decisions/0031-owner-run-approval-policy.md",
+  "estimate_seconds": 5476.771066599999,
+  "execution_once": true,
+  "first_attempt_F5_persisted_or_observed": false,
+  "integration_review": "evidence/tactical_composition_demo/growing_shapes_review_claude/REV710_FIXTURE_READINESS.md",
+  "kind": "MEASUREMENT_TOOL_RERUN",
+  "machine_load": {
+    "load_average_1_5_15": [
+      14.82861328125,
+      19.39794921875,
+      21.69921875
+    ],
+    "logical_cpus": 10,
+    "process_inventory": null,
+    "qualification": "Owner cancelled C6 quiet timing; run now alongside owner-reported 0g v5 development and C6 performance analysis. Shared machine, not isolated timing. Per-process inventory unavailable: sandbox denies ps from Python."
+  },
+  "owner_explicit_approval": {
+    "approval_reference": "docs/decisions/0031-owner-run-approval-policy.md",
+    "approved_over_one_hour": true,
+    "owner_instruction": "Owner explicitly approved revision-7.10 fixtures in this task despite the approximately 91-minute estimate.",
+    "source": "Explicit current user task: Run now; estimate about 91 minutes; proceed"
+  },
+  "pin_sha256": "ebc58aa2fa30509356f97b079cec0f8c089df88047f10f0aad6a9c95cbac0071",
+  "provenance": "Assisted-by: Codex:GPT-6",
+  "scheduling_allowance_seconds": 6572.125279919999
+}

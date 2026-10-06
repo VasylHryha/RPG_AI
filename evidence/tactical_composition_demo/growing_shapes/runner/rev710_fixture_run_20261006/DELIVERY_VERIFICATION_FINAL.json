@@ -1,0 +1,65 @@
+{
+  "archive": {
+    "bytes": 2740832,
+    "path": "evidence/tactical_composition_demo/growing_shapes/runner/REV710_FIXTURE_EVIDENCE.tar.gz",
+    "sha256": "6e697e1f9bb9034eaf4cee5dcc6559df087da3d66f904a43548b3d506dae1b39"
+  },
+  "every_delivered_file_under_50MB": true,
+  "excluded_evidence": [
+    {
+      "bytes": 182,
+      "path": "evidence/tactical_composition_demo/growing_shapes/runner/rev710_fixture_run_20261006/ANALYSIS_LOG.txt",
+      "reason": "Raw operational log stays local, excluded from git and bundle",
+      "sha256": "68de7fc56e6a95c35a41da71feaaa53fb6cfc58add207ca5d9b4a3143b1b2f2e"
+    },
+    {
+      "bytes": 0,
+      "path": "evidence/tactical_composition_demo/growing_shapes/runner/rev710_fixture_run_20261006/DELIVERY_FINAL_LOG.txt",
+      "reason": "Raw operational log stays local, excluded from git and bundle",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "bytes": 394,
+      "path": "evidence/tactical_composition_demo/growing_shapes/runner/rev710_fixture_run_20261006/DELIVERY_LOG.txt",
+      "reason": "Raw operational log stays local, excluded from git and bundle",
+      "sha256": "ec5625340b4c9d7568c1f1e38ae9ac0045113f357d85c22127ceefd495108343"
+    },
+    {
+      "bytes": 576,
+      "path": "evidence/tactical_composition_demo/growing_shapes/runner/rev710_fixture_run_20261006/EXECUTION_LOG.txt",
+      "reason": "Raw operational log stays local, excluded from git and bundle",
+      "sha256": "1af7b80bc92122096a9cb0f62e6af62d6a2c2a5d4901f13bd84c2ad2ba80301a"
+    },
+    {
+      "bytes": 74478560,
+      "path": "evidence/tactical_composition_demo/growing_shapes/runner/rev710_fixture_run_20261006/F5.json.gz",
+      "reason": "Large trace stays local, excluded from git and bundle",
+      "sha256": "9c9483195aa9a54eb9229bdf0a6de9be82f7e9c60f6c6b9dff980d5e4ea833b5"
+    },
+    {
+      "bytes": 76149921,
+      "path": "evidence/tactical_composition_demo/growing_shapes/runner/rev710_fixture_run_20261006/HARNESS_RECEIPT.json.gz",
+      "reason": "Large trace stays local, excluded from git and bundle",
+      "sha256": "c47f632f89178e78c7aceacc660e3b98d9e1399bfd27821c1f22e770d2ec38c2"
+    }
+  ],
+  "fixture_outcome": "FIXTURES_FAIL",
+  "largest_member_bytes": 2686251,
+  "members_verified": 64,
+  "not_run": [
+    "F6",
+    "F7",
+    "F8",
+    "F9"
+  ],
+  "owner_recheck": {
+    "disposition": "PASS; exact 64 archived members match both manifest and workspace; size/hashes, excluded traces, pin, verdict, stops and external committed-plan preservation verified independently",
+    "findings": [],
+    "request_verbatim": "Recheck what you did please, check if it is the best we can do, we want 10 out of 10 or above 9 - it's fine to break the things or fully rework. Check for issues, conflicts, gaps.",
+    "reviewer": "/root/rev710_fixture_reviewer",
+    "reviewer_family": "Codex"
+  },
+  "preservation": "PASS_FOR_TASK_SCOPE_WITH_CONCURRENT_COMMITTED_PLAN_UPDATE",
+  "scientific_inputs_checked": 69,
+  "status": "PASS"
+}

@@ -1,0 +1,343 @@
+{
+  "artifacts": {
+    "F1": {
+      "bytes": 1070770,
+      "delivery_eligible": true,
+      "path": "F1.json.gz",
+      "sha256": "5cd1fe96000315728f4197a470c3c39c30013de0630013f52c7000b6b83e464a"
+    },
+    "F1d": {
+      "bytes": 264148,
+      "delivery_eligible": true,
+      "path": "F1d.json.gz",
+      "sha256": "8818742d507b578390e2cd922e03b8d75c815d7836525498af8fcaf9207793f2"
+    },
+    "F2": {
+      "bytes": 1668,
+      "delivery_eligible": true,
+      "path": "F2.json.gz",
+      "sha256": "cef557d4621413760cf457106d550096362bf89e550ab9fa5d8824b970458401"
+    },
+    "F3": {
+      "bytes": 2078,
+      "delivery_eligible": true,
+      "path": "F3.json.gz",
+      "sha256": "3f8f5f853336c6b9631a9c9b8c2a84df3138ef7ee142572fc67b72958439b3b9"
+    },
+    "F4": {
+      "bytes": 260422,
+      "delivery_eligible": true,
+      "path": "F4.json.gz",
+      "sha256": "45de245fbc9754b79d2ed3af29e6d36293ebb460ae152ae228ff9d0761d2e861"
+    },
+    "F5": {
+      "bytes": 74478560,
+      "delivery_eligible": false,
+      "path": "F5.json.gz",
+      "sha256": "9c9483195aa9a54eb9229bdf0a6de9be82f7e9c60f6c6b9dff980d5e4ea833b5"
+    },
+    "N1": {
+      "bytes": 200539,
+      "delivery_eligible": true,
+      "path": "N1.json.gz",
+      "sha256": "4391f20e748f5f7c66b1059b2e450d07702571c04bab0cbe55af4d6582ca12e7"
+    }
+  },
+  "harness_receipt": {
+    "bytes": 76149921,
+    "delivery_eligible": false,
+    "path": "HARNESS_RECEIPT.json.gz",
+    "sha256": "c47f632f89178e78c7aceacc660e3b98d9e1399bfd27821c1f22e770d2ec38c2"
+  },
+  "individual_nested_execution_costs": null,
+  "nested_cost_reason": "Harness returns no individual execution clocks for F1a-c or F5i/ii; enclosing whole calls are timed. F1 includes F1d; do not sum both.",
+  "provenance": "Assisted-by: Codex:GPT-6",
+  "timings": {
+    "F1": {
+      "awake_seconds": 9.039569541666424,
+      "continuous_seconds": 9.039569208340254,
+      "elapsed_utc_seconds": 9.039561,
+      "end_clock": {
+        "awake": 184767.13532737497,
+        "continuous": 215268.1923603333,
+        "utc": "2026-10-06T18:36:13.652589+00:00"
+      },
+      "end_utc": "2026-10-06T18:36:13.652589+00:00",
+      "machine_load_after_call": {
+        "load_average_1_5_15": [
+          13.119140625,
+          18.79150390625,
+          21.44140625
+        ],
+        "logical_cpus": 10,
+        "process_inventory": null,
+        "qualification": "Owner cancelled C6 quiet timing; run now alongside owner-reported 0g v5 development and C6 performance analysis. Shared machine, not isolated timing. Per-process inventory unavailable: sandbox denies ps from Python."
+      },
+      "machine_load_before_call": {
+        "load_average_1_5_15": [
+          14.12158203125,
+          19.17529296875,
+          21.60693359375
+        ],
+        "logical_cpus": 10,
+        "process_inventory": null,
+        "qualification": "Owner cancelled C6 quiet timing; run now alongside owner-reported 0g v5 development and C6 performance analysis. Shared machine, not isolated timing. Per-process inventory unavailable: sandbox denies ps from Python."
+      },
+      "scope": "whole method call; excludes persistence after return",
+      "start_clock": {
+        "awake": 184758.0957578333,
+        "continuous": 215259.15279112497,
+        "utc": "2026-10-06T18:36:04.613028+00:00"
+      },
+      "start_utc": "2026-10-06T18:36:04.613028+00:00"
+    },
+    "F1d": {
+      "awake_seconds": 4.172556708334014,
+      "continuous_seconds": 4.172556583333062,
+      "elapsed_utc_seconds": 4.172546,
+      "end_clock": {
+        "awake": 184766.47067999997,
+        "continuous": 215267.52771249998,
+        "utc": "2026-10-06T18:36:12.987943+00:00"
+      },
+      "end_utc": "2026-10-06T18:36:12.987943+00:00",
+      "machine_load_after_call": {
+        "load_average_1_5_15": [
+          13.119140625,
+          18.79150390625,
+          21.44140625
+        ],
+        "logical_cpus": 10,
+        "process_inventory": null,
+        "qualification": "Owner cancelled C6 quiet timing; run now alongside owner-reported 0g v5 development and C6 performance analysis. Shared machine, not isolated timing. Per-process inventory unavailable: sandbox denies ps from Python."
+      },
+      "machine_load_before_call": {
+        "load_average_1_5_15": [
+          13.39111328125,
+          18.93994140625,
+          21.50927734375
+        ],
+        "logical_cpus": 10,
+        "process_inventory": null,
+        "qualification": "Owner cancelled C6 quiet timing; run now alongside owner-reported 0g v5 development and C6 performance analysis. Shared machine, not isolated timing. Per-process inventory unavailable: sandbox denies ps from Python."
+      },
+      "scope": "whole method call; excludes persistence after return",
+      "start_clock": {
+        "awake": 184762.29812329164,
+        "continuous": 215263.35515591665,
+        "utc": "2026-10-06T18:36:08.815397+00:00"
+      },
+      "start_utc": "2026-10-06T18:36:08.815397+00:00"
+    },
+    "F2": {
+      "awake_seconds": 0.20706562499981374,
+      "continuous_seconds": 0.20706470831646584,
+      "elapsed_utc_seconds": 0.207064,
+      "end_clock": {
+        "awake": 184769.46871158332,
+        "continuous": 215270.52574404163,
+        "utc": "2026-10-06T18:36:15.985971+00:00"
+      },
+      "end_utc": "2026-10-06T18:36:15.985971+00:00",
+      "machine_load_after_call": {
+        "load_average_1_5_15": [
+          13.119140625,
+          18.79150390625,
+          21.44140625
+        ],
+        "logical_cpus": 10,
+        "process_inventory": null,
+        "qualification": "Owner cancelled C6 quiet timing; run now alongside owner-reported 0g v5 development and C6 performance analysis. Shared machine, not isolated timing. Per-process inventory unavailable: sandbox denies ps from Python."
+      },
+      "machine_load_before_call": {
+        "load_average_1_5_15": [
+          13.119140625,
+          18.79150390625,
+          21.44140625
+        ],
+        "logical_cpus": 10,
+        "process_inventory": null,
+        "qualification": "Owner cancelled C6 quiet timing; run now alongside owner-reported 0g v5 development and C6 performance analysis. Shared machine, not isolated timing. Per-process inventory unavailable: sandbox denies ps from Python."
+      },
+      "scope": "whole method call; excludes persistence after return",
+      "start_clock": {
+        "awake": 184769.26164595832,
+        "continuous": 215270.31867933332,
+        "utc": "2026-10-06T18:36:15.778907+00:00"
+      },
+      "start_utc": "2026-10-06T18:36:15.778907+00:00"
+    },
+    "F3": {
+      "awake_seconds": 0.001613958360394463,
+      "continuous_seconds": 0.0016135000041685998,
+      "elapsed_utc_seconds": 0.001613,
+      "end_clock": {
+        "awake": 184769.47178558333,
+        "continuous": 215270.528817875,
+        "utc": "2026-10-06T18:36:15.989044+00:00"
+      },
+      "end_utc": "2026-10-06T18:36:15.989044+00:00",
+      "machine_load_after_call": {
+        "load_average_1_5_15": [
+          13.119140625,
+          18.79150390625,
+          21.44140625
+        ],
+        "logical_cpus": 10,
+        "process_inventory": null,
+        "qualification": "Owner cancelled C6 quiet timing; run now alongside owner-reported 0g v5 development and C6 performance analysis. Shared machine, not isolated timing. Per-process inventory unavailable: sandbox denies ps from Python."
+      },
+      "machine_load_before_call": {
+        "load_average_1_5_15": [
+          13.119140625,
+          18.79150390625,
+          21.44140625
+        ],
+        "logical_cpus": 10,
+        "process_inventory": null,
+        "qualification": "Owner cancelled C6 quiet timing; run now alongside owner-reported 0g v5 development and C6 performance analysis. Shared machine, not isolated timing. Per-process inventory unavailable: sandbox denies ps from Python."
+      },
+      "scope": "whole method call; excludes persistence after return",
+      "start_clock": {
+        "awake": 184769.47017162497,
+        "continuous": 215270.527204375,
+        "utc": "2026-10-06T18:36:15.987431+00:00"
+      },
+      "start_utc": "2026-10-06T18:36:15.987431+00:00"
+    },
+    "F4": {
+      "awake_seconds": 3.033803916652687,
+      "continuous_seconds": 3.033803958329372,
+      "elapsed_utc_seconds": 3.033803,
+      "end_clock": {
+        "awake": 184772.50737266665,
+        "continuous": 215273.564405375,
+        "utc": "2026-10-06T18:36:19.024631+00:00"
+      },
+      "end_utc": "2026-10-06T18:36:19.024631+00:00",
+      "machine_load_after_call": {
+        "load_average_1_5_15": [
+          13.029296875,
+          18.6787109375,
+          21.3857421875
+        ],
+        "logical_cpus": 10,
+        "process_inventory": null,
+        "qualification": "Owner cancelled C6 quiet timing; run now alongside owner-reported 0g v5 development and C6 performance analysis. Shared machine, not isolated timing. Per-process inventory unavailable: sandbox denies ps from Python."
+      },
+      "machine_load_before_call": {
+        "load_average_1_5_15": [
+          13.119140625,
+          18.79150390625,
+          21.44140625
+        ],
+        "logical_cpus": 10,
+        "process_inventory": null,
+        "qualification": "Owner cancelled C6 quiet timing; run now alongside owner-reported 0g v5 development and C6 performance analysis. Shared machine, not isolated timing. Per-process inventory unavailable: sandbox denies ps from Python."
+      },
+      "scope": "whole method call; excludes persistence after return",
+      "start_clock": {
+        "awake": 184769.47356875,
+        "continuous": 215270.53060141666,
+        "utc": "2026-10-06T18:36:15.990828+00:00"
+      },
+      "start_utc": "2026-10-06T18:36:15.990828+00:00"
+    },
+    "F5": {
+      "awake_seconds": 1460.125432916655,
+      "continuous_seconds": 1460.1254337916616,
+      "elapsed_utc_seconds": 1460.115637,
+      "end_clock": {
+        "awake": 186232.87032845832,
+        "continuous": 216733.9273620833,
+        "utc": "2026-10-06T19:00:39.377790+00:00"
+      },
+      "end_utc": "2026-10-06T19:00:39.377790+00:00",
+      "machine_load_after_call": {
+        "load_average_1_5_15": [
+          67.0751953125,
+          62.20849609375,
+          42.3779296875
+        ],
+        "logical_cpus": 10,
+        "process_inventory": null,
+        "qualification": "Owner cancelled C6 quiet timing; run now alongside owner-reported 0g v5 development and C6 performance analysis. Shared machine, not isolated timing. Per-process inventory unavailable: sandbox denies ps from Python."
+      },
+      "machine_load_before_call": {
+        "load_average_1_5_15": [
+          13.029296875,
+          18.6787109375,
+          21.3857421875
+        ],
+        "logical_cpus": 10,
+        "process_inventory": null,
+        "qualification": "Owner cancelled C6 quiet timing; run now alongside owner-reported 0g v5 development and C6 performance analysis. Shared machine, not isolated timing. Per-process inventory unavailable: sandbox denies ps from Python."
+      },
+      "scope": "whole method call; excludes persistence after return",
+      "start_clock": {
+        "awake": 184772.74489554166,
+        "continuous": 215273.80192829165,
+        "utc": "2026-10-06T18:36:19.262153+00:00"
+      },
+      "start_utc": "2026-10-06T18:36:19.262153+00:00"
+    },
+    "N1": {
+      "awake_seconds": 3.1122722500003874,
+      "continuous_seconds": 3.112271833320847,
+      "elapsed_utc_seconds": 3.112267,
+      "end_clock": {
+        "awake": 184757.81412824997,
+        "continuous": 215258.87116104164,
+        "utc": "2026-10-06T18:36:04.331398+00:00"
+      },
+      "end_utc": "2026-10-06T18:36:04.331398+00:00",
+      "machine_load_after_call": {
+        "load_average_1_5_15": [
+          14.12158203125,
+          19.17529296875,
+          21.60693359375
+        ],
+        "logical_cpus": 10,
+        "process_inventory": null,
+        "qualification": "Owner cancelled C6 quiet timing; run now alongside owner-reported 0g v5 development and C6 performance analysis. Shared machine, not isolated timing. Per-process inventory unavailable: sandbox denies ps from Python."
+      },
+      "machine_load_before_call": {
+        "load_average_1_5_15": [
+          14.82861328125,
+          19.39794921875,
+          21.69921875
+        ],
+        "logical_cpus": 10,
+        "process_inventory": null,
+        "qualification": "Owner cancelled C6 quiet timing; run now alongside owner-reported 0g v5 development and C6 performance analysis. Shared machine, not isolated timing. Per-process inventory unavailable: sandbox denies ps from Python."
+      },
+      "scope": "whole method call; excludes persistence after return",
+      "start_clock": {
+        "awake": 184754.70185599997,
+        "continuous": 215255.75888920831,
+        "utc": "2026-10-06T18:36:01.219131+00:00"
+      },
+      "start_utc": "2026-10-06T18:36:01.219131+00:00"
+    }
+  },
+  "total": {
+    "awake_seconds": 1633.75425025,
+    "continuous_seconds": 1633.7542503333243,
+    "elapsed_utc_seconds": 1633.743671,
+    "end_clock": {
+      "awake": 186388.25564999998,
+      "continuous": 216889.31268312497,
+      "utc": "2026-10-06T19:03:14.762358+00:00"
+    },
+    "end_utc": "2026-10-06T19:03:14.762358+00:00",
+    "scope": "whole method call; excludes persistence after return",
+    "start_clock": {
+      "awake": 184754.50139974998,
+      "continuous": 215255.55843279164,
+      "utc": "2026-10-06T18:36:01.018687+00:00"
+    },
+    "start_utc": "2026-10-06T18:36:01.018687+00:00"
+  },
+  "verdict": "FIXTURES_FAIL",
+  "wrapper_sha256": "3f95ac5adaa828ba736640d0ece7dbe0311cfb118ff7b5203ab8bdc141cde96b"
+}
