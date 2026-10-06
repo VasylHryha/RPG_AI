@@ -2,7 +2,7 @@
 
 **Rule:** work follows this file, top to bottom, within each track. After every step, update its status line here and commit. If context is lost, read this file first, then `docs/IDEAS_AND_ROADMAP.md` (the tracker) and the files named in the step.
 
-**Last updated:** 2026-10-06 16:40. **The evening chain** (`scratchpad/evening_chain.sh`, log `evening_chain.log`): the C6 timing finishes → the 0g 2×2 test (about 10 min) → from 22:00 the 0h fixtures (about 91 min).
+**Last updated:** 2026-10-06 16:40. The 0h fixtures run now (the owner's go). `scratchpad/g16_chain.sh` runs the 0g 2×2 test after the C6 timing finishes (log `evening_chain.log`).
 
 ## Standing rules (from the owner; never skip)
 
@@ -43,7 +43,7 @@
 | A6d | Fixtures N1, F1–F9 under 7.3 | DONE: FIXTURES_FAIL at F1c by 0.1 s (live geometry, 6 links); N1, F1a, F1b (2.5 s) and F2–F4 PASS; no collapse | Codex | decision 0031 |
 | A6e | Revision 7.4: λ = 32, h = 0.005 | DONE: approved; fixtures **FAIL at N1d** (a knife-edge test start), but **N1f (the live layout) settles in 2.1 s**, so λ = 32 works | Claude, Codex | decision 0031 |
 | A6f | Revision 7.5 fixtures | **N1 and F1–F4 PASS** (F1c, the live layout: 2.1 s, persistence 100%); F5 INVALID (Codex's measurement wrapper defect, not science) | Claude, Codex | decision 0031 |
-| A6g | **Complete re-run N1–F9 with a new wrapper** | The wrapper was tested; the estimate is about 91 min (over 1 h), so it stopped before running (`cb59593`). **SCHEDULED from 22:00 tonight** (`scratchpad/evening_chain.sh`, after C6 and the 0g 2×2) | Codex | decision 0031 (after 22:00) |
+| A6g | **Complete re-run N1–F9 with a new wrapper** | The wrapper was tested; the estimate is about 91 min (over 1 h), so it stopped before running (`cb59593`). **RUNNING since 16:45** (the owner: "you can run tests now"; about 91 min; concurrent with the C6 timing) | Codex | decision 0031 (after 22:00) |
 | A7 | Cost projection from the measured F rates | — | Codex | — |
 | A8 | **The development run** (48 trainings, about 16 h or more of serial compute) | — | Codex | **[OWNER] approve the run and its time** |
 | A9 | Review the results, then the owner's recheck | — | Claude, then Codex | — |
