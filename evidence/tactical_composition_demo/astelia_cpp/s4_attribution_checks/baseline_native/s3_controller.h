@@ -1,8 +1,8 @@
 #pragma once
-#include "controller.h"
+#include "../../src/native/controller.h"
 #include <array>
 #include <set>
-namespace astelia::control {
+namespace astelia::control::attribution_baseline {
 enum class Arm { Resonator, Morale, PushPull };
 struct Knobs {
   double K=2.5,Kt=2.5,kappa=25,beta=1.5,rateM=0,rateR=0,G=2.5,w=1.5,f=.75,gamma=1,fc=.65,mk=.6,lambdaTh=1.5;
@@ -10,8 +10,8 @@ struct Knobs {
 Knobs controllerKnobs(Arm,const ControllerParams&,const std::string& skeleton="v1");
 struct Memory {double state=0,zOut=0,zIn=0,lastOut=0,lastIn=0;UnitId target=0;double zInAnswered=0,zInUnanswered=0;bool hadLegalTarget=true,hadUnansweredThreat=false;};
 // v2 geometry is centre-distance in model units (100 pixels per unit).
-bool v2Legal(const ObservedUnit& source,const ObservedUnit& target);
-bool v2Threat(const ObservedUnit& self,const ObservedUnit& enemy,double zOut);
+bool baselineV2Legal(const ObservedUnit& source,const ObservedUnit& target);
+bool baselineV2Threat(const ObservedUnit& self,const ObservedUnit& enemy,double zOut);
 double v2Preferred(const ObservedUnit& self,const ObservedUnit& enemy,const Knobs&,double commitment);
 std::vector<const ObservedUnit*> v2EnemySet(const ObservedUnit& self,const std::vector<const ObservedUnit*>& nearest,const std::map<UnitId,Memory>&);
 std::array<double,2> v2EnemyMotion(const ObservedUnit& self,const std::vector<const ObservedUnit*>& selected,const std::map<UnitId,Memory>&,const Knobs&,double commitment);
@@ -36,7 +36,7 @@ std::vector<ModelUnit> frozenStep(std::vector<ModelUnit>,Arm,const Knobs&,double
 struct DiagnosticUnit {UnitId id=0,target=0;double x=0,y=0,state=0,commitment=1,zOut=0,zIn=0;};
 class S3Controller : public Controller {
 protected:
-  Arm arm_;Knobs knobs_;bool v1_,v2_,v3_,v4_,holdEnabled_,focusEnabled_,attributionDiagnostics_=false;
+  Arm arm_;Knobs knobs_;bool v1_,v2_,v3_,v4_;
   PairModes pairModes_;
   PairHolds pairHolds_;
   std::map<UnitId,UnitId> focus_;
@@ -62,6 +62,5 @@ public:
   const std::vector<ModelUnit>& model() const {return model_;}
   const Knobs& knobs() const {return knobs_;}
   Arm arm() const {return arm_;}
-  void attributionDiagnostics(bool enabled) {attributionDiagnostics_=enabled;}
 };
 } // namespace astelia::control

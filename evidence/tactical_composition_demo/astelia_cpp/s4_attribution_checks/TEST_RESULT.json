@@ -1,0 +1,20 @@
+{
+  "command": [
+    ".venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "evidence/tactical_composition_demo/astelia_cpp/test_s4_attribution.py",
+    "evidence/tactical_composition_demo/astelia_cpp/test_s4_deadline.py",
+    "evidence/tactical_composition_demo/astelia_cpp/test_s3_controllers.py::test_s3_runner_rejects_nonfixed_world",
+    "evidence/tactical_composition_demo/astelia_cpp/test_s3_controllers.py::test_fixed_world_either_controlled_side",
+    "--basetemp",
+    "evidence/tactical_composition_demo/astelia_cpp/build/attribution_test_tmp"
+  ],
+  "test_invocations": 1,
+  "exit_code": 0,
+  "wall_seconds": 1.677154334,
+  "combat_fights": 0,
+  "native_build_invocations": 1
+}

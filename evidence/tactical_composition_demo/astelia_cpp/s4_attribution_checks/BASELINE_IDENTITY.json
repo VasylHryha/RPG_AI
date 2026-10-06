@@ -1,0 +1,11 @@
+{
+  "workspace_head": "49b5394b1b4ecc9c0c1a50f1c607c303f118965c",
+  "design_sha256": "5ca80142c8c6f4bd5dce951cb726d961b0dd36c470513ddb2e89b8cfe0e8caa4",
+  "original_hashes": {
+    "s3_controller.h": "901e362560190f377590cdc26d956b538d374bf1ce96ede3ea8732a2714f72f6",
+    "s3_controller.cpp": "fbe8ca455c15b8362437c082e6eedf16b90c2815372b63e4d671de05d6694bc7"
+  },
+  "transformation": "Namespace isolation; header include path adjusted; shared-observation v2Legal/v2Threat renamed to avoid ADL. Tests reverse these substitutions and check the original hashes.",
+  "historical_v4_contract_original_sha256": "e92b2bd34450745dfc0d951f2817bb9ac218cf838b82d7926651ff12faf59a1d",
+  "historical_v4_contract_transformation": "main renamed, explicit success return0 added"
+}

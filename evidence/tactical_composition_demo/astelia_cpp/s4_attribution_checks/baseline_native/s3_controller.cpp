@@ -2,7 +2,7 @@
 #include <algorithm>
 #include <cmath>
 #include <stdexcept>
-namespace astelia::control {
+namespace astelia::control::attribution_baseline {
 namespace {
 constexpr double pi=3.14159265358979323846;
 std::vector<size_t> neighbors(const std::vector<ModelUnit>& a,size_t i){
@@ -26,7 +26,7 @@ Knobs controllerKnobs(Arm arm,const ControllerParams& params,const std::string& 
   if(arm!=Arm::PushPull){bounds.insert({{"K",{&k.K,0,5}},{"K_t",{&k.Kt,0,5}},{"kappa",{&k.kappa,0,50}},{"beta",{&k.beta,0,3}},{"w",{&k.w,0,3}},{"gamma",{&k.gamma,0,2}}});
     if(arm==Arm::Resonator){bounds["omega_melee"]={&k.rateM,-2,2};bounds["omega_ranged"]={&k.rateR,-2,2};}
     else{bounds["lambda_melee"]={&k.rateM,0,2};bounds["lambda_ranged"]={&k.rateR,0,2};}}
-  if(skeleton=="v2"||skeleton=="v3"||skeleton=="v4"||skeleton=="H"||skeleton=="F"||skeleton=="HF"){
+  if(skeleton=="v2"||skeleton=="v3"||skeleton=="v4"){
     bounds.erase("f");bounds.erase("gamma");
     bounds["f_c"]={&k.fc,.3,1};bounds["m_k"]={&k.mk,.2,1};
     if(arm!=Arm::PushPull)bounds["lambda_th"]={&k.lambdaTh,0,3};else k.lambdaTh=0;
@@ -34,11 +34,11 @@ Knobs controllerKnobs(Arm arm,const ControllerParams& params,const std::string& 
   for(const auto& p:params){auto b=bounds.find(p.first);if(b==bounds.end()||!std::isfinite(p.second)||p.second<b->second.lo||p.second>b->second.hi)throw std::invalid_argument("invalid controller param: "+p.first);*b->second.value=p.second;}
   return k;
 }
-bool v2Legal(const ObservedUnit& source,const ObservedUnit& target){
+bool baselineV2Legal(const ObservedUnit& source,const ObservedUnit& target){
   const double r=std::hypot(target.x-source.x,target.y-source.y);
   return source.role==ObservedRole::Artillery?r>=source.minRange&&r<=source.range:r<=source.range+source.radius+target.radius;
 }
-bool v2Threat(const ObservedUnit& self,const ObservedUnit& enemy,double zOut){return enemy.hp>0&&enemy.team!=self.team&&zOut>0&&v2Legal(enemy,self);}
+bool baselineV2Threat(const ObservedUnit& self,const ObservedUnit& enemy,double zOut){return enemy.hp>0&&enemy.team!=self.team&&zOut>0&&baselineV2Legal(enemy,self);}
 double v2Preferred(const ObservedUnit& self,const ObservedUnit& enemy,const Knobs& k,double c){
   const double own=(self.range+(self.role==ObservedRole::Artillery?0:self.radius+enemy.radius))/100;
   const double opposing=(enemy.range+(enemy.role==ObservedRole::Artillery?0:self.radius+enemy.radius))/100;
@@ -91,7 +91,7 @@ double v4Preferred(const ObservedUnit& self,const ObservedUnit& enemy,const Knob
 std::vector<const ObservedUnit*> v2EnemySet(const ObservedUnit& self,const std::vector<const ObservedUnit*>& nearest,const std::map<UnitId,Memory>& memory){
   auto selected=nearest;if(selected.size()>8)selected.resize(8);
   std::vector<const ObservedUnit*> extra;
-  for(auto u:nearest)if(v2Threat(self,*u,memory.at(u->id).zOut)&&std::find(selected.begin(),selected.end(),u)==selected.end())extra.push_back(u);
+  for(auto u:nearest)if(baselineV2Threat(self,*u,memory.at(u->id).zOut)&&std::find(selected.begin(),selected.end(),u)==selected.end())extra.push_back(u);
   std::sort(extra.begin(),extra.end(),[&](auto a,auto b){
     const double za=memory.at(a->id).zOut,zb=memory.at(b->id).zOut;
     if(za!=zb)return za>zb;
@@ -156,7 +156,7 @@ std::vector<ModelUnit> frozenStep(std::vector<ModelUnit> a,Arm arm,const Knobs& 
   return a;
 }
 
-S3Controller::S3Controller(double seed,uint8_t side,Arm arm,const ControllerParams& params,const std::string& skeleton):Controller(seed,side),arm_(arm),knobs_(controllerKnobs(arm,params,skeleton)),v1_(skeleton!="v0"),v2_(skeleton=="v2"||skeleton=="v3"||skeleton=="v4"||skeleton=="H"||skeleton=="F"||skeleton=="HF"),v3_(v2_&&skeleton!="v2"),v4_(v3_&&skeleton!="v3"),holdEnabled_(skeleton=="v4"||skeleton=="H"||skeleton=="HF"),focusEnabled_(skeleton=="v4"||skeleton=="F"||skeleton=="HF"){if(skeleton!="v0"&&skeleton!="v1"&&skeleton!="v2"&&skeleton!="v3"&&skeleton!="v4"&&skeleton!="H"&&skeleton!="F"&&skeleton!="HF")throw std::invalid_argument("invalid skeleton");}
+S3Controller::S3Controller(double seed,uint8_t side,Arm arm,const ControllerParams& params,const std::string& skeleton):Controller(seed,side),arm_(arm),knobs_(controllerKnobs(arm,params,skeleton)),v1_(skeleton!="v0"),v2_(skeleton=="v2"||skeleton=="v3"||skeleton=="v4"),v3_(skeleton=="v3"||skeleton=="v4"),v4_(skeleton=="v4"){if(skeleton!="v0"&&skeleton!="v1"&&skeleton!="v2"&&skeleton!="v3"&&skeleton!="v4")throw std::invalid_argument("invalid skeleton");}
 void S3Controller::prepare(const Observation& o){
   prepared_.clear();diagnostic_.clear();decisionDiagnostic_.clear();holdEvents_.clear();focus_.clear();std::vector<const ObservedUnit*> units;std::set<UnitId> live;
   for(const auto& u:o.units)if(u.hp>0){units.push_back(&u);live.insert(u.id);}
@@ -196,12 +196,12 @@ void S3Controller::prepare(const Observation& o){
         std::map<UnitId,double> distances;
         const ObservedUnit* focus=nullptr;double focusWeight=-1;
         for(auto enemy:enemies){
-          const double preferred=holdEnabled_?v4Preferred(self,*enemy,knobs_,c,pairModes_,pairHolds_,o.t,holdEvents_):v3Preferred(self,*enemy,knobs_,c,pairModes_);distances[enemy->id]=preferred;
+          const double preferred=v4Preferred(self,*enemy,knobs_,c,pairModes_,pairHolds_,o.t,holdEvents_);distances[enemy->id]=preferred;
           const auto key=std::make_pair(id,enemy->id);auto mode=pairModes_.find(key);
           if(mode!=pairModes_.end()&&self.range+(self.role==ObservedRole::Artillery?0:self.radius+enemy->radius)<=enemy->range+(enemy->role==ObservedRole::Artillery?0:self.radius+enemy->radius)){
             auto h=pairHolds_.find(key);diagnostic.pairs.push_back({enemy->id,mode->second,h==pairHolds_.end()?0:std::max(0.0,h->second.until-o.t),100*preferred});
             const double weight=1+knobs_.lambdaTh*std::tanh(memory_.at(enemy->id).zOut);
-            if(focusEnabled_&&mode->second&&(weight>focusWeight||(weight==focusWeight&&(!focus||enemy->id<focus->id)))){focus=enemy;focusWeight=weight;}
+            if(mode->second&&(weight>focusWeight||(weight==focusWeight&&(!focus||enemy->id<focus->id)))){focus=enemy;focusWeight=weight;}
           }
         }
         // Section 15 selects among all committed out-ranged pairs. The fallback uses E_i unchanged.
@@ -209,43 +209,23 @@ void S3Controller::prepare(const Observation& o){
         const ObservedUnit* reference=focus;double mainWeight=-1,total=0;
         for(auto enemy:selected){const double weight=1+knobs_.lambdaTh*std::tanh(memory_.at(enemy->id).zOut);total+=weight;
           if(!focus&&(weight>mainWeight||(weight==mainWeight&&(!reference||enemy->id<reference->id)))){reference=enemy;mainWeight=weight;}}
-        const bool inheritedSum=!focusEnabled_||(!holdEnabled_&&!focus);double enemyX=0,enemyY=0;
         for(auto enemy:selected){const double dx=(enemy->x-self.x)/100,dy=(enemy->y-self.y)/100,r=std::hypot(dx,dy);if(r==0)continue;
           const double weight=1+knobs_.lambdaTh*std::tanh(memory_.at(enemy->id).zOut);
-          const double term=knobs_.G*(1-distances.at(enemy->id)/std::max(r,.01))*weight/total;if(inheritedSum){enemyX+=dx/r*term;enemyY+=dy/r*term;}else{vx+=dx/r*term;vy+=dy/r*term;}
+          const double term=knobs_.G*(1-distances.at(enemy->id)/std::max(r,.01))*weight/total;vx+=dx/r*term;vy+=dy/r*term;
         }
-        if(inheritedSum){vx+=enemyX;vy+=enemyY;}
         if(reference){diagnostic.reference=reference->id;diagnostic.dx=reference->x-self.x;diagnostic.dy=reference->y-self.y;diagnostic.preferred=100*distances.at(reference->id);}
         decisionDiagnostic_.push_back(std::move(diagnostic));
       }else{
         if(v3_)for(auto enemy:enemies)v3Preferred(self,*enemy,knobs_,c,pairModes_);
-        const auto enemyMotion=v3_?v3EnemyMotion(self,selected,memory_,knobs_,c,pairModes_):v2EnemyMotion(self,selected,memory_,knobs_,c);vx+=enemyMotion[0];vy+=enemyMotion[1];
-        if(v3_&&attributionDiagnostics_){
-          // Read-only diagnostics after the unchanged v3 policy. Never add a focus or hold.
-          DecisionDiagnostic d;d.id=id;d.x=self.x;d.y=self.y;d.c=c;
-          const ObservedUnit* reference=nullptr;double bestWeight=-1;
-          for(auto enemy:selected){const double weight=1+knobs_.lambdaTh*std::tanh(memory_.at(enemy->id).zOut);
-            if(weight>bestWeight||(weight==bestWeight&&(!reference||enemy->id<reference->id))){reference=enemy;bestWeight=weight;}}
-          const auto preferred=[&](const ObservedUnit& enemy){
-            const double own=(self.range+(self.role==ObservedRole::Artillery?0:self.radius+enemy.radius))/100;
-            const double opposing=(enemy.range+(enemy.role==ObservedRole::Artillery?0:self.radius+enemy.radius))/100;
-            if(opposing<own)return v2Preferred(self,enemy,knobs_,c);
-            const double committed=self.role==ObservedRole::Artillery?std::max(knobs_.fc*own,1.05*self.minRange/100):knobs_.fc*own;
-            return pairModes_.at({id,enemy.id})?committed:opposing+knobs_.w*own;
-          };
-          for(auto enemy:enemies){auto mode=pairModes_.find({id,enemy->id});if(mode!=pairModes_.end())d.pairs.push_back({enemy->id,mode->second,0,100*preferred(*enemy)});}
-          if(reference){d.reference=reference->id;d.dx=reference->x-self.x;d.dy=reference->y-self.y;d.preferred=100*preferred(*reference);}
-          decisionDiagnostic_.push_back(std::move(d));
-        }
-      }}
+        const auto enemyMotion=v3_?v3EnemyMotion(self,selected,memory_,knobs_,c,pairModes_):v2EnemyMotion(self,selected,memory_,knobs_,c);vx+=enemyMotion[0];vy+=enemyMotion[1];}}
     else{const double preferred=knobs_.f*self.range/100*(1+(arm_==Arm::PushPull?0:knobs_.w)*(1-c)/2);
     for(size_t e=0;e<std::min(size_t(8),enemies.size());++e){auto u=enemies[e];double dx=(u->x-self.x)/100,dy=(u->y-self.y)/100,r=std::hypot(dx,dy);if(r==0)continue;
       double rho=r-(self.role==ObservedRole::Artillery?0:(self.radius+u->radius)/100);double term=knobs_.G*(1-preferred/std::max(rho,.01))/std::min(size_t(8),enemies.size());vx+=dx/r*term;vy+=dy/r*term;}}
     double best=-INFINITY,old=-INFINITY;UnitId target=0;bool hasLegalTarget=false;for(auto u:enemies){double r=std::hypot(u->x-self.x,u->y-self.y),gap=r-self.radius-u->radius;
-      bool legal=v2_?v2Legal(self,*u):self.role==ObservedRole::Artillery?r>=self.minRange&&r<=self.range:gap<=self.range;if(!legal)continue;hasLegalTarget=true;
+      bool legal=v2_?baselineV2Legal(self,*u):self.role==ObservedRole::Artillery?r>=self.minRange&&r<=self.range:gap<=self.range;if(!legal)continue;hasLegalTarget=true;
       double score;if(arm_==Arm::PushPull)score=-r/100;else{auto g=aggregate(next,i,u->id,arm_);double a=!g.valid?0:arm_==Arm::Resonator?std::cos(m.state-g.value):1-std::abs(m.state-g.value);auto& em=memory_.at(u->id);score=a+knobs_.gamma*std::tanh(knobs_.kappa*(v1_?em.zIn+em.zOut:em.zIn-knobs_.beta*em.zOut));if(bad.count(u->id))bad.insert(id);}
       if(!std::isfinite(score)){bad.insert(id);continue;}if(score>best||(score==best&&u->id<target)){best=score;target=u->id;}if(u->id==m.target)old=score;}
-    if(v2_){m.hadUnansweredThreat=false;for(auto u:enemies)if(v2Threat(self,*u,memory_.at(u->id).zOut)&&!v2Legal(self,*u)){m.hadUnansweredThreat=true;break;}}
+    if(v2_){m.hadUnansweredThreat=false;for(auto u:enemies)if(baselineV2Threat(self,*u,memory_.at(u->id).zOut)&&!baselineV2Legal(self,*u)){m.hadUnansweredThreat=true;break;}}
     m.hadLegalTarget=hasLegalTarget; // snapshot status for the next counter increment; clone-owned memory
     if(std::isfinite(old)&&best-old<.2)target=m.target;d.target=target;
     const double speed=std::hypot(vx,vy);if(!enemies.empty()&&speed>=1e-9){d.x=self.x+200*vx/speed;d.y=self.y+200*vy/speed;d.multiplier=std::min(1.0,speed);}

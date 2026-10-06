@@ -15,7 +15,7 @@ COMBAT_SOURCES = ['src/native/world.cpp', 'src/native/combat.cpp', 'src/native/s
                   'src/native/decisions.cpp', 'src/native/director.cpp', 'src/native/network.cpp', 'src/native/network_tables.cpp', 'src/native/search.cpp', 'src/native/artillery_prediction.cpp', 'src/native/artillery.cpp', 'src/native/api.cpp', 'src/native/controller.cpp', 'src/native/controller_bridge.cpp', 'src/native/s3_controller.cpp', 'src/native/s3_diagnostics.cpp']
 TARGETS = {
     'legacy': ('astelia', ['src/main.cpp', 'src/formation_sim.cpp', 'src/v8_ieee754.cpp']),
-    'native': ('astelia_native', ['src/native/host.cpp', 'src/native/config_codec.cpp', *COMBAT_SOURCES]),
+    'native': ('astelia_native', ['src/native/host.cpp', 'src/native/config_codec.cpp', 'native_s4_attribution_contract.cpp', *COMBAT_SOURCES]),
     'core-check': ('native_core_contract', ['native_core_contract.cpp', *COMBAT_SOURCES]),
     'artillery-check': ('native_artillery_contract', ['native_artillery_contract.cpp', *COMBAT_SOURCES]),
     'search-check': ('native_search_contract', ['native_search_contract.cpp', *COMBAT_SOURCES]),
@@ -63,6 +63,8 @@ def main():
     headers = sorted((ROOT / 'src').rglob('*.h'))
     inputs = sources + headers
     extra = [ROOT / 'build.py']
+    if args.engine == 'native':
+        extra += [ROOT/'s4_attribution_checks/baseline_native/s3_controller.cpp', ROOT/'s4_attribution_checks/baseline_native/s3_controller.h', ROOT/'s4_attribution_checks/BASELINE_IDENTITY.json', ROOT/'native_s4_v4_contract.cpp', ROOT/'s4_attribution_checks/baseline_native/v4_contract.cpp']
     if args.engine == 'full-check':
         extra += [ROOT / ('native_'+name+'_contract.cpp') for name in ('core','combat','formation','search','artillery','api')]
     if args.engine != 'legacy':
@@ -79,7 +81,10 @@ def main():
         stamp = obj.with_suffix('.sha256')
         contraction = 'on' if source.name == 'v8_ieee754.cpp' else 'off'
         command = common + ['-ffp-contract=' + contraction, '-c', str(source), '-o', str(obj)]
-        fingerprint = hashlib.sha256(compiler_identity + compiler_sha256.encode() + header_identity + source.read_bytes() +
+        embedded = b''
+        if source.name == 'native_s4_attribution_contract.cpp':
+            embedded = b''.join((ROOT/p).read_bytes() for p in ('s4_attribution_checks/baseline_native/v4_contract.cpp', 's4_attribution_checks/baseline_native/s3_controller.cpp', 's4_attribution_checks/baseline_native/s3_controller.h'))
+        fingerprint = hashlib.sha256(embedded + compiler_identity + compiler_sha256.encode() + header_identity + source.read_bytes() +
                                      json.dumps(command).encode()).hexdigest()
         existing = stamp.read_text().splitlines() if stamp.exists() else []
         if not obj.exists() or len(existing) != 2 or existing[0] != fingerprint or existing[1] != sha(obj):

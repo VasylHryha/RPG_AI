@@ -11,6 +11,7 @@
 #include <map>
 #include <iomanip>
 
+int attributionContract();
 namespace {
 using js::V;
 V encodeSummary(const astelia::World& w,bool extended,bool endCounts) {
@@ -61,6 +62,8 @@ V fight(V request,astelia::WorkCounters& counts,uint64_t& fights,bool testContro
   for(const auto& p:config->controllers)if(p.name=="passthrough"&&!testControllers)throw std::invalid_argument("passthrough is test-only");
   bool extended=js::truth(js::get(request,"s3"));for(const auto& p:config->controllers)if(p.name=="resonator"||p.name=="morale"||p.name=="pushpull")extended=true;
   auto w=astelia::World::create(config); ++fights;
+  const bool attributionDiagnostics=js::truth(js::get(request,"attributionDiagnostics"));
+  if(attributionDiagnostics)for(auto& controller:w.controllers)if(auto* c=dynamic_cast<astelia::control::S3Controller*>(controller.get()))c->attributionDiagnostics(true);
   uint64_t tick=0; const bool trace=js::truth(js::get(request,"trace"));
   std::map<astelia::UnitId,V> history;
   const bool debug=js::truth(js::get(request,"debug"));
@@ -79,7 +82,24 @@ V fight(V request,astelia::WorkCounters& counts,uint64_t& fights,bool testContro
         js::Args pairs;for(const auto& p:d.pairs)pairs.push_back(js::obj({{"enemy",double(p.enemy)},{"mode",p.commit?"commit":"escape"},{"remainingHold",p.remaining},{"preferred",p.preferred}}));
         rows.push_back(js::obj({{"id",double(d.id)},{"focus",d.focus?V(double(d.focus)):V(nullptr)},{"reference",d.reference?V(double(d.reference)):V(nullptr)},{"c",d.c},{"pairs",js::arr(std::move(pairs))},{"feasibility",reason.empty()?V(cosine):V(nullptr)},{"undefinedReason",reason.empty()?V(nullptr):V(reason)}}));
       }
+      if(attributionDiagnostics){
+        // Observer-only prepare geometry and release identities. Keep legacy trace bytes unchanged.
+        for(auto& row:rows){const auto id=astelia::UnitId(js::num(js::get(row,"id")));const astelia::ObservedUnit* self=nullptr;
+          for(const auto& u:w.observations[side].units)if(u.id==id){self=&u;break;}
+          bool gunReach=false;if(self)for(const auto& enemy:w.observations[side].units)if(enemy.hp>0&&enemy.team!=side&&enemy.role==astelia::ObservedRole::Artillery&&astelia::control::v2Legal(enemy,*self)){gunReach=true;break;}
+          js::set(row,"insideGunReach",gunReach);
+        }
+      }
       for(const auto& e:c->holdEvents())events.push_back(js::obj({{"id",double(e.id)},{"enemy",double(e.enemy)},{"reason",e.reason},{"duration",e.duration},{"planned",e.planned}}));
+      if(attributionDiagnostics){
+        for(auto& event:events){const auto id=astelia::UnitId(js::num(js::get(event,"id"))),enemy=astelia::UnitId(js::num(js::get(event,"enemy")));
+          bool ownKnown=false,enemyKnown=false,ownDead=false,enemyDead=false;
+          for(const auto& u:w.observations[side].units){if(u.id==id){ownKnown=true;ownDead=u.hp<=0;}if(u.id==enemy){enemyKnown=true;enemyDead=u.hp<=0;}}
+          // Observation omits dead slots: the native world retains monotonic dead identities.
+          for(const auto& u:w.units){if(u.id==id&&!ownKnown){ownKnown=true;ownDead=!u.alive;}if(u.id==enemy&&!enemyKnown){enemyKnown=true;enemyDead=!u.alive;}}
+          js::set(event,"releaseCause",ownDead&&enemyDead?"both_death":ownDead?"own_death":enemyDead?"enemy_death":!ownKnown||!enemyKnown?"missing":"none");
+        }
+      }
       std::cout<<js::stringify(js::obj({{"decisionDiagnostics",true},{"step",double(tick)},{"prepareTime",w.observations[side].t},{"t",w.time},{"dt",w.dt},{"side",double(side)},{"units",js::arr(std::move(rows))},{"holdEvents",js::arr(std::move(events))}}))<<'\n';
     }
     if(capture)for(uint8_t side=0;side<2;++side)if(auto* c=dynamic_cast<astelia::control::S3Controller*>(w.controllers[side].get()))if(c->arm()!=astelia::control::Arm::PushPull){js::Args rows;size_t i=0;for(const auto& u:c->model()){rows.push_back(js::obj({{"id",double(u.id)},{"target",double(u.target)},{"x",u.x},{"y",u.y},{"state",u.state},{"rate",u.rate},{"pressure",u.pressure},{"commitment",numeric(c->diagnostic()[i++].commitment)}}));}std::cout<<js::stringify(js::obj({{"capture",true},{"arm",c->arm()==astelia::control::Arm::Resonator?"resonator":"morale"},{"side",double(side)},{"dt",w.dt},{"K",c->knobs().K},{"K_t",c->knobs().Kt},{"units",js::arr(std::move(rows))}}))<<'\n';}
@@ -101,6 +121,7 @@ V fight(V request,astelia::WorkCounters& counts,uint64_t& fights,bool testContro
 } // namespace
 int main(int argc,char** argv) {
   bool metrics=false,testControllers=false,capture=false;for (int i=1;i<argc;++i) {
+    if (std::string(argv[i])=="--attribution-contract")return attributionContract();
     if (std::string(argv[i])=="--catalog") {std::cout<<astelia::catalogJSON<<'\n';return 0;}
     if (std::string(argv[i])=="--capture-s3")capture=true;else if (std::string(argv[i])=="--test-controllers")testControllers=true;else if (std::string(argv[i])=="--metrics") metrics=true;else {std::cerr<<"unknown argument\n";return 1;}
   }
