@@ -774,3 +774,12 @@ F5 and F7 are perceive-only **by design**. The secondary rows (move, memory and 
 | A01 | 19.4 | Already declared; direction recorded |
 | A03 | 19.5 | Coverage not stated |
 | A08, A18, A20, A21 | 19.6 | Interpretation limits implicit |
+
+### 19.7 From Claude's implementation review (`growing_shapes_review_claude/REV6_INTEGRATION_REVIEW.md`)
+
+- **F1 response criterion (tightens 14.3).** The output angle must be within 0.3 rad of π/2 + φ(t) **at every world step from its first entry until t = 16 s, including t = 16 s.** A transient crossing does not pass. The time of first entry is reported.
+- **The identity scope (narrows 14.9's source-identity row):**
+  - The identity covers the governing design file, the revision-6 sources, the native images and the seed inventory. It does not cover `AGENTS.md` or review files.
+  - It is checked **once at the start** of each fixture or development execution and recorded in every seed receipt. Later unrelated edits to other files cannot invalidate running seeds.
+  - Editing any covered file during an execution is forbidden (AGENTS.md: no edits during long runs).
+- **The B-path trial is evaluated on positions only.** The post-trial graph, reach, deficit and clearance are computed from a copy of the **positions, roles, gains and current drives**. The medium, with its histories and frames, is never deep-copied. Only an accepted placement mutates the medium. The restore requirement is satisfied trivially, because a rejected trial never touches the medium.
