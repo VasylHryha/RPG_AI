@@ -154,3 +154,93 @@ I found no defect in `gp_assay` by reading. It is logically consistent with the 
 ## Verdict rationale
 
 Finding 1 blocks execution at the reviewed commit and leaves the 6.5 obligations unimplemented. Finding 2 invalidates the cost projection that the owner's fixture and development approvals depend on. Finding 3 leaves the code path that produces every G2/F5 decision unverified by any gate. Fix 1–3, and preferably 4, then run the suite once and request a single re-review of the delta.
+
+---
+
+## Delta re-review (bba9348)
+
+READY_FOR_FIXTURES
+
+Reviewer family: Claude
+Reviewed commit: bba9348 (Codex's revision-6.5 repair). The delta reviewed is `git diff 915dc32..bba9348 -- evidence/tactical_composition_demo/growing_shapes`.
+Governing design: `DESIGN_0H_REV6.md` at SHA256 `0f62e13246bbfc02ee79d785dff1659d7ea7d0b021e47f57d5ec46bea926794b` (6.5 with 19.7 and 19.8), which equals the pinned `DESIGN_SHA256`.
+Reviewer: Claude (claude-opus-5-5), 2026-10-06, about 15 minutes. No numeric scores.
+
+**What was executed.**
+- I ran the synthetic suite once, `pytest -q -x runner/test_rev6.py`, with the temp directory in the reviewer scratchpad and the cache disabled. The result was **47 passed in 1.17 s**.
+- `git status` for `growing_shapes/` was identical before and after the run.
+- I recomputed every hash in `REV65_SOURCE_IDENTITY.json` with plain `hashlib`; all match.
+- No fixture, training or panel was run, and no source file was edited.
+
+The verdict means the code is ready for the owner's separate F1–F9 fixture decision. It is not an acceptance and not an owner approval. Notes D1–D3 below should be fixed before **development**; none of them blocks the fixtures.
+
+### Status of findings 1–10
+
+1. **Resolved.**
+   - The design pin is now 6.5 (`rev6_identity.py`), and the suite passes.
+   - F9 exists as a descriptive, decoder-only fixture (`rev6_fixtures.py` `F9`, `F9_CASES`, world ids 808–811 reserved, four new seed keys). The inventory now has 2,846 keys.
+   - The memory row gains `single_oscillator` and `sample_and_hold` modes (`rev6_evaluator.py`), the `memory_windows` encoding/retention split and the `INTERPRETATION` labels for 19.1 and 19.6 (`rev6_reporting.py`).
+   - The single oscillator matches 19.8. It is an ordinary element, so its drive is not masked. It sits at `SITES[permutation(episode)[0]]`, which is the cue's permuted physical site, so K_d = 1. Motion is off (`geometry_rate=0`). g = 1, ω = π, and the initial phase equals the carrier offset, so the relative phase is 0. Decoding is direct with C = 1. It is a fresh frozen copy per episode, evaluated on the same panel with the same estimator.
+   - Sample-and-hold holds `phase − π·t_start` of the last active drive, which is the last visible angle.
+2. **Resolved.**
+   - B-path trials and admission are position-only (`geometry`, `geometric_graph`, `geometric_trial`, `Rev6Medium.feasible`). No medium or native clone happens on a rejected trial; a test monkeypatches both `clone` methods to fail.
+   - Neighbour selection is identical to `Medium::neighbors`. Python sorts all non-silent candidates by (r, array index) and takes k, then applies strict r < 3. Native first filters to r < 3, then partially sorts by (r, index) and takes k. The two give the same set, because every r < 3 candidate sorts ahead of every r ≥ 3 one.
+   - `hypot` is sign-symmetric, so the distances are bitwise equal. Ties fall back to array index in both, and a newborn is appended at the last index in both.
+   - The admission cost, `N + 1 + 0.1·undirected pairs`, is the same expression as `gm_cost` with `undirected_cost`.
+   - Tests:
+     - random states with a deletion and a silenced element, comparing the graph against `influence()` and all six checks against a native clone;
+     - an exact equal-distance tie case at the strict r = 3 boundary;
+     - admission cost against a native clone;
+     - the unchanged R3-2 REJECT case.
+   - The static timing gives 0.03–0.12 s per exhausted 104-trial site (`REV65_BPATH_TIMING.json`), down from about 78 s.
+3. **Resolved.**
+   - `gp_assay` and the new bounded `gp_assay_synthetic` share one templated `assay_run` loop.
+   - Seven three-observation contracts on a nonzero carrier (t₀ = 1 s) compare the native result against the Python reference on angle, magnitude, choice, paths, has_output, drives, final state and index. The modes are intact, donor replay, output-channel lesion, receiver lesion, site0, oracle and empty.
+   - F4 now also runs native-versus-reference parity on fixture episode 768 (donor 778) for intact, donor, output_channel, site0 and oracle. A mismatch raises INVALID and blocks F5.
+   - `has_output` for the relays was aligned between native and Python. Decisions now record magnitude and choice.
+4. **Resolved.** `step_response` needs all 80 samples in (8, 16] with t = 16 present, and every sample from the first entry through 16 s must be within 0.3 rad. The first entry and the delay are reported. Tests reject a later excursion, a miss at the deadline and a missing deadline sample. This matches 19.7.
+5. **Resolved as specified by 19.7.** `AGENTS.md` and review files are out of scope. `Execution.start` checks the identity once, and the snapshot is reused by `Run`, `Evaluator` and `Harness` and recorded in every seed and fixture receipt. A test checks that an `AGENTS.md` edit is ignored and a design edit is caught. A scope gap remains; see D1.
+6. **Resolved.** `rev6_reporting.descriptive` gives, for the whole run and the inclusive late window:
+   - per-role opportunities, attempts and acceptances;
+   - cap/cost rates with explicit denominators;
+   - trial-failure counts;
+   - cap-limited and cost-limited flags;
+   - turnover;
+   - count range;
+   - uncovered-sensor exposure with warm-up undefined;
+   - path exposure;
+   - the wall's maximum radius, penetration time and sensor-access loss.
+
+   The "flat count with unmet demand" label is applied in `Run.report`. The `sensor_access` and `covered_sites` fields were added to both the native and the Python diagnostics.
+7. **Resolved.** F3 now places S at 4 − r* and O at the sensor (4, 0).
+8. **Resolved.** The construct-only test writes to `tmp_path`. The tracked receipt stays byte-identical; it is compared except for F3 and F6 and is now stale for F3, F6 and F9 (see D3).
+9. **Resolved.** Native roots require `!silent`. A contract test of a silenced root passes in both native and Python.
+10. **Resolved as a guardrail.** `approval_reference` must be a repository-relative `docs/decisions/*.md` file whose bytes equal the HEAD blob; its hash and commit are captured. Any existing decision record satisfies the format, so this binds identity, not authority, and the authority booleans remain the actual gate. That is acceptable for a guardrail.
+
+### New notes from the delta (none blocks fixtures)
+
+**D1. MEDIUM-LOW: the execution-start identity omits executed inherited inputs and the reused calibration.**
+- *Evidence.* `REV65_SOURCE_IDENTITY.json` covers the rev6 sources, native images, `medium_c.h`, `perf.h`, the world dylib, the design and the seed inventory. It does **not** cover:
+  - `runner/development_20261006/CALIBRATION.json`, which normalizes every panel score;
+  - the base `DESIGN_0H.md`, which governs every unchanged rule;
+  - the inherited 5.1 Python modules that execute live: `medium/design_0h.py` (lock, timers, adapt, coverage), `medium/medium.py`, `runner/protocol.py` (entropy, permutation, bindings, oriented, Calibration), `runner/control.py` (the U queue) and `world/world.py`.
+
+  Before the repair, the inventory pinned `CALIBRATION.json` and `DESIGN_0H.md` at run time; the repair dropped both. The 202-file baseline is enforced only by a unit test, which does not cover `DESIGN_0H.md`, not at execution start.
+- *Failure scenario.* A changed calibration or inherited module between the suite run and a development execution would alter scores or rules with no INVALID.
+- *Fix.* Add these files to `REV65_SOURCE_IDENTITY.json`. They are frozen 5.1 inputs, so pinning them causes no churn. This is required before development; it is harmless to do now.
+
+**D2. LOW: the F6 memory baselines are evaluated six times on identical inputs.**
+- *Evidence.* The baselines do not depend on the checkpoint, yet F6 runs them for each of the six checkpoints. That gives 60 records per baseline from 10 unique episodes, which are then pooled (`rev6_fixtures.py` `F6`).
+- *Failure scenario.* The JS correlation value is unchanged by replication. The "at least 5 defined pairs" rule, however, counts duplicates, so a single defined unique episode becomes 6 pairs and clears the threshold. The rule is descriptive only.
+- *Fix.* Evaluate each baseline once per recipient episode (10 episodes), or report the unique-episode count and apply the minimum to it.
+
+**D3. LOW: the committed `REV6_CONSTRUCT_ONLY.json` receipt predates the F3, F6 and F9 recipe changes.**
+- *Fix.* Regenerate it once as a new, labelled receipt (for example `REV65_CONSTRUCT_ONLY.json`) rather than editing the historical file.
+
+### Verified with no new defect
+
+- **Geometric trial semantics.** The post-trial roots include the newborn (g = 1, element), `paths_kept` iterates all drives' roots, the deficit uses post-trial forward and backward sets, and clearance is measured against pre-trial positions.
+- **Order of checks.** Cap/cost is checked only after all geometry passes, and only an accepted placement mutates the medium.
+- **Sample-and-hold and the encoding cue.** They use the same carrier arithmetic as `memory_windows`.
+- **Native diagnostics.** `covered_sites` reports null during warm-up (fewer than 101 frames), matching Python.
+- **Reporting with chunked ledgers.** `descriptive` accepts the string keys produced when chunked JSON ledgers are reloaded.

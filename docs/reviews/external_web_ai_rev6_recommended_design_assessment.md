@@ -7,7 +7,7 @@
 1. **An input-only phasor baseline** (its B2): arg Σ k_s e^{iα_s} from the same encoded inputs, with no medium. This is the most important missing comparator in 6.5. A grown relay can beat default, random, donor input and the lesion while doing nothing more than this average. The medium must beat it to show that oscillator dynamics compute anything.
 2. **A K = 0 ablation** (its C3): the same state with internal coupling off and drives kept. It separates collective interaction from independent driven elements. It is not element deletion.
 3. **A fixed-structure comparator** (its B5): the same geometry, with growth off. It separates having a structure from growing one.
-4. **Active-time demand timers** that freeze rather than reset while a site is inactive (its §4). They fix the memory-cue timing defect (external recheck A01) without a task label.
+4. **Active-time demand timers** that freeze rather than reset while a site is inactive (its §4). They fix the memory-cue timing defect (external recheck A01) without a task label. (**Correction:** this changes a growth rule, so it goes to the next revision, not 6.5; see design 19.9.)
 5. **A case-by-case failure taxonomy** (its §19), so one verdict does not hide different failures.
 6. **The scope:** perceive primary, memory with its simple baselines, choose and move deferred. This matches 6.5's sections 19.1–19.3.
 

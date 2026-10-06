@@ -794,3 +794,15 @@ F5 and F7 are perceive-only **by design**. The secondary rows (move, memory and 
 - It is evaluated on the same panel, with the same paired estimator, as a descriptive comparator.
 
 A globally fixed site is **not** used: it would deny the baseline the cue in most episodes, making it artificially weak.
+
+### 19.9 Three comparators from the owner's external design (descriptive; evaluator-side only)
+
+All three are evaluated on the same panel, with the same paired estimator, and reported beside G2 and G0. **None changes a rule or a verdict cut.**
+1. **Input-only phasor** (perceive): β = arg Σ_s k_s(t) e^{iα_s(t)} over the active sites. It uses the same encoded inputs as the medium, with no medium, and the same decoder (C taken as 1). This is the key comparator: a seed whose grown medium does **not** beat it shows no oscillator computation beyond averaging the inputs, whatever G2 says.
+2. **K = 0 ablation:** the same final medium copy with the internal C4 phase coupling set to 0 at every RK4 stage. Drives, motion and the read-out are unchanged. It is not element deletion.
+3. **Fixed structure:** the same final medium copy, with motion **and** growth off (positions frozen), against the normal mobile copy. It separates geometry drift from phase-transfer failure.
+
+**Not adopted into 6.5** (deferred to the next revision, with the anchoring decision; see `docs/reviews/external_web_ai_rev6_recommended_design_assessment.md`):
+- freeze-not-reset demand timers, because they change a growth rule;
+- the empty start;
+- overlap-lens placement.
