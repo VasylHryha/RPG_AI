@@ -129,3 +129,16 @@ When a group of locked oscillators acts as one unit at a higher level, does the 
 - Confirming Claude's readings of decision 0028, items 16–18.
 - After the research: which output mechanism 0h revision 6 uses, from options (a)–(d) in the draft.
 - Where to keep the 14 GB of 0h ledgers long-term: an external disk or cloud storage. They are on the laptop now, and the disk is 93% full.
+
+## E. Sources the drafter used for revision 6, section 6 (2026-10-06)
+
+- AKOrN, Artificial Kuramoto Oscillatory Neurons (ICLR 2025): https://arxiv.org/pdf/2410.13821
+- Oscillatory neural networks, classification by synchrony with an output and reference oscillator: https://par.nsf.gov/biblio/10090819 , https://www.mdpi.com/2079-9292/8/1/64
+- Growing neural gas (insertion at the largest error; utility-based removal): https://en.wikipedia.org/wiki/Neural_gas
+- Activity-dependent axon guidance and self-wiring: https://arxiv.org/pdf/0903.1012 , https://ar5iv.labs.arxiv.org/html/q-bio/0607021
+- Adaptive-frequency oscillators, dynamic Hebbian learning (Righetti, Buchli and Ijspeert, 2006): https://mg.is.mpg.de/publications/righetti_dynamic_2006
+- Three-factor learning rules (Gerstner et al., 2018): https://www.frontiersin.org/articles/10.3389/fncir.2018.00053/full
+- The assembly calculus (Papadimitriou et al.): https://faculty.cc.gatech.edu/~vempala/papers/assemblies.pdf
+- Growing neural cellular automata (growth that persists and regenerates): https://research.google/pubs/growing-neural-cellular-automata/
+
+The web research assistant's deeper answers to section B are still welcome. They go into the self-audit when they arrive.

@@ -91,3 +91,61 @@ Each intact seed gets two paired controls. Both use the intact seed's medium see
 **Open for review (Codex):**
 - whether random-site placement (above), or a uniform disk, is the better control region once D5's confinement is chosen;
 - the 5% unmatched threshold.
+
+## 6. R6-3 (output) and D5 (confinement): the drafter's choice after research
+
+**Research basis** (short; links in `docs/RESEARCH_AND_REVIEW_NEEDED.md`, section E):
+- **Oscillatory neural networks** read a decision from a designated output oscillator's synchrony with a reference, or from which cluster locks first. AKOrN uses a trained read-out module per block; that is option (c), which we avoid.
+- **Growing neural gas** inserts a unit **between** the unit with the largest accumulated error and its worst neighbour, and removes units with low utility (the increase in error if removed). It is a direct precedent for growing a path where an error persists.
+- **Activity-dependent axon guidance** moves growth toward targets by gradients from active targets: a precedent for attraction to active sites.
+- **Adaptive-frequency oscillators** (Righetti, Buchli and Ijspeert, 2006) learn input frequencies by a Hebbian rule inside the dynamics. Our ω adaptation is of this kind.
+- **The assembly calculus** reads out an assembly in a downstream area, which projection reaches; it needs a path, as we do.
+
+**Diagnosis from the C4 law** (`geomind/c4_model.py`): motion is x_dot_i = mean_j[unit_ij · (A(1 + J cos(θ_j − θ_i)) − B/r_ij)] over **element** neighbours only. Sensors drive phase, never position. A group that locks internally therefore has nothing tying it to the world, and drifts as a unit. D1 cannot remove it, because its members lock to one another (L ≥ 0.5).
+
+### 6.1 D5: anchoring through resonance with the input, and death on losing the world
+
+- **Sites enter the motion law as drive-only neighbours** (no new law: the C4 attraction term with the site's drive phase). For each element i and each active site s with K(|x_i − q_s|) > 0:
+
+      x_dot_i += k_s · K(|x_i − q_s|) · unit_is · A · (1 + J cos(ψ_s − θ_i)) / (1 + n_i)
+
+  Here n_i is the element's neighbour count and unit_is points toward the site. There is no repulsion term: sites are not bodies.
+
+  **An element in phase with a site moves toward it; an element in anti-phase is attracted only weakly** (factor 1 + J cos). Resonance with the input holds structure near the input. This is the "attraction to active sites" precedent, inside our own law.
+- **Death rule D4, losing the world.** An element is removed if, for 40 s, it has **no path of C4 neighbour links** (within radius 3) to an element inside a sensor's drive reach or inside the output port. The same protection rules as D1 apply.
+
+  A structure lives only while it is connected to the world's inputs or outputs. This replaces the drift that the 5.1 run showed (radii up to 246).
+
+### 6.2 R6-3: an output port reached by a grown path
+
+- **The output port** stays at the origin: elements within r < 2, with the same read-out and the same default actions on an empty read-out.
+
+  The sensors stay at radius 4, so **the port cannot be driven directly** (drive reach < 3). Any phase at the port must arrive through coupled elements, which is a grown path. A direct echo of the drives is impossible by geometry.
+- **B-out, output demand.** If the port has Σw = 0 for 20 s of a timer, one birth on the spiral at the origin is attempted at the growth check. Its phase is the circular mean of the elements within radius 3 of the newborn point, or uniform if there are none.
+- **B-path, bridge insertion (the growing-neural-gas rule).** At each growth check, take the port element with the highest port weight and the nearest element locked to an active site (eligible PLV ≥ 0.8). If they are farther apart than the coupling radius 3, insert one element at their midpoint, with the circular mean of their phases. This happens at most once per check, and only if the cap and cost allow it.
+
+  A missing path is the persistent error, and the insertion goes where the error is.
+- **Budget order** at the growth check: D1, D4, D3, then B1, B-out and B-path. Sensor births (B1) do not outrank the path rules: they are processed in rule order and each is subject to the cap and cost.
+- **Credit** is unchanged: the reward arm's three-factor gain update (Δg = 0.5 (r − r̄) e_i), with the eligibility e_i computed from each element's own drive lock.
+
+  Port and bridge elements have no direct drive, so their e_i is 0. Their credit flows only through structure: they survive through D1 and D4 while they stay locked and connected. The rule is unchanged and declared.
+
+### 6.3 The task-use endpoint (replaces G0's competence half; the recheck's requirements)
+
+- **Per task and seed,** on the fixed panel, with per-episode scores retained:
+  1. Δ_default = intact − the default action;
+  2. Δ_scramble = intact − **the same final medium with its site bindings scrambled** at evaluation, which breaks the input;
+  3. Δ_random = intact − the random policy.
+- **"Task use" for a seed and task** requires all three Δ > 0, with a one-sided paired 95% bound above 0 over the episodes.
+- **G2 (new, the registered task-use read-out):** PASS if ≥ 6 of 8 seeds show task use in at least one usable task, with **move** reported separately. FAIL if ≤ 2. Otherwise INCONCLUSIVE.
+
+  The choose default already beats random, so choose counts only through Δ_default and Δ_scramble.
+- **G0** compares the intact run with control M (section 5) on coverage and on G2's per-seed Δ_scramble.
+- **Path-exists stop row (R6-4).** An engineering smoke, separately approved, must show Σw > 0 after warm-up in all four tasks and a non-zero Δ_scramble on at least one task. Without that, no development run starts.
+
+### 6.4 What stays open for the Codex review
+
+- Is the site-attraction term large enough to anchor, and small enough not to crush the free C4 dynamics? The coefficient is fixed at the C4 A and J, with no new constant. The review should check this on paper, then on the separately approved smoke.
+- D4's 40 s connectivity timer, and the cost of computing the path (a breadth-first search over the k ≤ 8 neighbour graph at each growth check, which is cheap).
+- Whether B-path's midpoint phase, as a circular mean, makes the bridge trivially echo the site. The scramble intervention measures that; it does not prevent it.
+- Every new rule gets the same logging, replay and accounting as B1, D1 and D3.
