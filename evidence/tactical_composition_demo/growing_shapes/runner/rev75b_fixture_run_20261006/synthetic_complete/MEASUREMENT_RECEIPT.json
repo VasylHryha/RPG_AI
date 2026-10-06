@@ -1,0 +1,59 @@
+{
+  "artifacts": {
+    "F5": {
+      "bytes": 252,
+      "delivery_eligible": true,
+      "path": "F5.json.gz",
+      "sha256": "97adf5de6a3adb6f6588c45019a00539012d258cd249450f1a5efe5b16eabef9"
+    }
+  },
+  "harness_receipt": {
+    "bytes": 302,
+    "delivery_eligible": true,
+    "path": "HARNESS_RECEIPT.json.gz",
+    "sha256": "d7e5dbc00589c904c915851a91c0c6ee5079da5a7e4c26164a54200df6cfccb7"
+  },
+  "individual_nested_execution_costs": null,
+  "nested_cost_reason": "Harness returns no individual execution clocks for F1a-c or F5i/ii; enclosing whole calls are timed. F1 includes F1d; do not sum both.",
+  "provenance": "Assisted-by: Codex:GPT-6",
+  "timings": {
+    "F5": {
+      "awake_seconds": 2.1041999999998895e-05,
+      "continuous_seconds": 2.10830000000016e-05,
+      "elapsed_utc_seconds": 2.1e-05,
+      "end_clock": {
+        "awake": 0.024947708,
+        "continuous": 0.024947791,
+        "utc": "2026-10-06T13:32:29.345439+00:00"
+      },
+      "end_utc": "2026-10-06T13:32:29.345439+00:00",
+      "scope": "whole method call; excludes persistence after return",
+      "start_clock": {
+        "awake": 0.024926666,
+        "continuous": 0.024926708,
+        "utc": "2026-10-06T13:32:29.345418+00:00"
+      },
+      "start_utc": "2026-10-06T13:32:29.345418+00:00"
+    }
+  },
+  "total": {
+    "awake_seconds": 0.0009401670000000022,
+    "continuous_seconds": 0.0009401670000000022,
+    "elapsed_utc_seconds": 0.00094,
+    "end_clock": {
+      "awake": 0.025858083,
+      "continuous": 0.025858208,
+      "utc": "2026-10-06T13:32:29.346350+00:00"
+    },
+    "end_utc": "2026-10-06T13:32:29.346350+00:00",
+    "scope": "whole method call; excludes persistence after return",
+    "start_clock": {
+      "awake": 0.024917916,
+      "continuous": 0.024918041,
+      "utc": "2026-10-06T13:32:29.345410+00:00"
+    },
+    "start_utc": "2026-10-06T13:32:29.345410+00:00"
+  },
+  "verdict": "FIXTURES_PASS",
+  "wrapper_sha256": "ca2daf3ed52f4d3c1e67f1a57cd49365fa8a8caadc3852107fc201009dc392ec"
+}
