@@ -244,3 +244,15 @@ The verdict means the code is ready for the owner's separate F1–F9 fixture dec
 - **Sample-and-hold and the encoding cue.** They use the same carrier arithmetic as `memory_windows`.
 - **Native diagnostics.** `covered_sites` reports null during warm-up (fewer than 101 frames), matching Python.
 - **Reporting with chunked ledgers.** `descriptive` accepts the string keys produced when chunked JSON ledgers are reloaded.
+
+## Short check of the 19.9 batch (`855d931`; Claude, the plan's step A4)
+
+**READY_FOR_FIXTURES (unchanged).**
+- **Input-only phasor:** `rev6_protocol.input_phasor` sums k_s · e^{i(ψ_s − πt)} over active drives, which is exactly α_s with the carrier removed, and decodes with C = 1. It is perceive-only.
+- **K = 0:** `gm_comparator(mode 1)` sets the medium's K = 0, which every RK4 right-hand side reads.
+- **Fixed structure:** `gm_comparator(mode 2)` sets `fixed_positions`.
+- **Scope:** both act on fresh evaluator copies only. They are labelled descriptive and kept out of every verdict.
+- **Tests:** Codex's parity tests cover native and Python, and 71 pass.
+- **D1–D3:** dispositions accepted.
+
+No new findings.

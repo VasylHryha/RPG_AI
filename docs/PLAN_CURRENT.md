@@ -2,7 +2,7 @@
 
 **Rule:** work follows this file, top to bottom, within each track. After every step, update its status line here and commit. If context is lost, read this file first, then `docs/IDEAS_AND_ROADMAP.md` (the tracker) and the files named in the step.
 
-**Last updated:** 2026-10-06, 13:00.
+**Last updated:** 2026-10-06, after A4.
 
 ## Standing rules (from the owner; never skip)
 
@@ -28,7 +28,7 @@
 | A1 | Revision-6 design | DONE: 6.5 (`evidence/tactical_composition_demo/DESIGN_0H_REV6.md`), Codex review rounds 1–6, APPROVE_WITH_NOTES | Claude drafts, Codex reviews | — |
 | A2 | Implementation | DONE: `growing_shapes/runner/rev6_*`, `medium/rev6_*`; 47 tests | Codex | — |
 | A3 | Implementation review | DONE: READY_FOR_FIXTURES (`growing_shapes_review_claude/REV6_INTEGRATION_REVIEW.md`, delta at `bba9348`) | Claude | — |
-| A4 | Add 19.9 comparators (input average, K = 0, frozen positions) and review notes D1–D3 | **RUNNING** (Codex; prompt `scratchpad/cmp6_prompt.txt`) | Codex, then a short Claude check | — |
+| A4 | Add 19.9 comparators (input average, K = 0, frozen positions) and review notes D1–D3 | DONE (`855d931`; 71 tests; Claude's short check READY_FOR_FIXTURES) | Codex, then a short Claude check | — |
 | A5 | **Engineering tests F1–F9** (about 2–6 min) | WAITING | Codex runs, Claude reviews | **[OWNER] approve the F1–F9 run** |
 | A6 | Read the F results | — | Claude | If F1/F5 show that structure collapses under C4 motion: go to A6b. Otherwise: A7. |
 | A6b | Next revision: an **anchoring decision**, plus the deferred ideas (freeze-not-reset demand timers, empty start, possibly overlap placement); see `docs/reviews/external_web_ai_rev6_recommended_design_assessment.md` | — | Claude drafts, Codex reviews | **[OWNER]** approves the design |
