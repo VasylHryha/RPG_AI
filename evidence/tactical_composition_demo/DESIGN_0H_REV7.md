@@ -1,6 +1,6 @@
 # Design 0h, revision 7.3: phase on the task's clock, pinned ends (after the revision-6.5 fixture failure)
 
-**Status:** revision 7.1. **Section 8 answers the Codex review** `docs/reviews/tactical_0h_rev7_design_review_codex.md` (R7-1 … R7-12) **and governs over sections 1–7. Section 9 (revision 7.2) answers the round-2 review `…_codex_r2.md` (R2-1 … R2-7) and governs over everything before it. Section 10 (revision 7.3) answers round 3 (`…_codex_r3.md`, R3-1 … R3-4) and governs over everything before it.** Drafted by Claude for Codex review. Not approved, and no execution is authorized. **The base is revision 6.5** (`DESIGN_0H_REV6.md`, with every section through 19.9). Every rule not changed below stays as written there. This is a new revision on **fresh entropy**: every key prefix `0h-rev6/` becomes `0h-rev7/`, and every world-id range moves up by 10,000,000.
+**Status:** revision 7.3, design-approved by the Codex round-4 review (APPROVE_WITH_NOTES; its three low notes applied in 10.6). This is design review only: integration and execution readiness are separate gates. **Section 8 answers the Codex review** `docs/reviews/tactical_0h_rev7_design_review_codex.md` (R7-1 … R7-12) **and governs over sections 1–7. Section 9 (revision 7.2) answers the round-2 review `…_codex_r2.md` (R2-1 … R2-7) and governs over everything before it. Section 10 (revision 7.3) answers round 3 (`…_codex_r3.md`, R3-1 … R3-4) and governs over everything before it.** Drafted by Claude for Codex review. Not approved, and no execution is authorized. **The base is revision 6.5** (`DESIGN_0H_REV6.md`, with every section through 19.9). Every rule not changed below stays as written there. This is a new revision on **fresh entropy**: every key prefix `0h-rev6/` becomes `0h-rev7/`, and every world-id range moves up by 10,000,000.
 
 ## 1. What the 6.5 fixtures showed (`growing_shapes/runner/REV6_FIXTURE_REPORT.md`, decision 0030)
 
@@ -438,7 +438,7 @@ Consecutive timestamped records and every E_i are kept. Three validity rules app
 
 **P_i** is undefined in a frame whose own sample is invalid: g is unchanged that step (the inherited no-drive rule).
 
-**ω̂** keeps using unwrapped endpoints, which are exact. It is suspended (ω unchanged) only if an endpoint sample is itself invalid.
+**ω̂** keeps using unwrapped endpoints, which retain whole-turn information; their numerical accuracy is subject to N1. It is suspended (ω unchanged) only if an endpoint sample is itself invalid.
 
 **Qualification:** the saved bounds are evaluated on the actual cohort's pairs before any circular criterion. A window with any invalid cohort pair is not-qualified. The stage-sampling limitation is stated.
 
@@ -466,3 +466,9 @@ The definitions are hashed with the N1 recipes.
 | R3-2 | 10.2: three validity rules, pair-only, consecutive records kept | Under-specified the mask |
 | R3-3 | 10.3: position and unwrapped comparisons | Checked only phases and topology |
 | R3-4 | 10.4: the panel, copies and cost of the new comparator | Left the scope open |
+
+### 10.6 Codex round-4 low notes (applied)
+
+- **R4-1:** the status line now says revision 7.3. Design approval is recorded separately from integration and execution readiness. Any execution-start pin uses the hash of the final committed design.
+- **R4-2:** unwrapped endpoints are described as retaining whole-turn information, with their accuracy subject to N1. They are not "exact".
+- **R4-3:** site-body-off **recomputes N^x** under the existing nearest-neighbour and mean rules. It is labelled the **total effect of removing the site bodies**, including normalization and neighbour-selection changes. The N^x count changes are reported with the paired differences. It stays descriptive.
