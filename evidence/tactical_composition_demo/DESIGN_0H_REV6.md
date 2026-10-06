@@ -1,4 +1,4 @@
-# Design 0h, revision 6.4: an input-to-output path grown on purpose (consolidated; supersedes `DESIGN_0H_REV6_DRAFT.md` sections 2–6)
+# Design 0h, revision 6.4 (Codex round 6: APPROVE_WITH_NOTES; its two low notes applied in 18.5): an input-to-output path grown on purpose (consolidated; supersedes `DESIGN_0H_REV6_DRAFT.md` sections 2–6)
 
 **Revision 6.1** answers the second Codex review (`docs/reviews/tactical_0h_rev6_design_review_codex_r2.md`, R2-1 … R2-11). **Section 12 replaces the clauses it names and governs wherever it conflicts with sections 1–11.** Section 13 is its self-audit. **Revision 6.2** answers the third review (`…_r3.md`, R3-1 … R3-6). **Section 14 governs over section 12 and over sections 1–11 wherever they conflict.** Section 15 is its self-audit. **Revision 6.3** answers the fourth review (`…_r4.md`, R4-1, R4-2): **section 16 governs over everything before it**, and section 17 is its self-audit. **Revision 6.4** answers the fifth review (`…_r5.md`, R5-1): section 18 governs over everything before it.
 
@@ -672,3 +672,29 @@ G0' counts terminal requests (`placement`, `exhausted`), never attempts.
 | # | Finding | Disposition | Cause |
 |---|---|---|---|
 | R5-1 | The fixture consumer row omitted F7-M growth and the fixture recovery masters; the recovery recipe was misdescribed | 18.1: an explicit per-fixture table; 18.2: the exact inherited call, byte order and domain string | Summarized the inherited code instead of reading it |
+
+### 18.5 Codex round-6 low notes (applied)
+
+**R6-1, birth outcomes.** 18.3's terminal list is the **frontier-search** outcome list for B-path only. Every processed birth request (B-out, B-path site or B1 site) gets exactly one terminal record from this schema:
+- `accepted`;
+- `cap`;
+- `cost`;
+- `placement` (B1 and B-out spiral);
+- `exhausted` (B-path geometric search);
+- `no_output`;
+- `no_root`;
+- `quota`: the request was not processed because the per-check birth limit was reached. It is **not** a placement failure.
+
+A candidate that passes the geometric conditions but is refused for cap or cost records `cap` or `cost`, never `exhausted`. G0' still counts only `placement` and `exhausted`. Per-candidate failures stay attempt diagnostics.
+
+**R6-2, the F6 mean direction:**
+- The within-episode summary is the circular mean of the decoded, carrier-demodulated angles β over the hidden interval, with its resultant R recorded.
+- If R < 0.05 (degenerate), the episode has **no defined mean direction**, and is reported as such.
+- The minimum of 5 counts episodes with a defined mean, not episodes with an output.
+- If the correlation cannot be formed, the result is null with its reason.
+- Raw β and R traces are kept. F6 stays descriptive.
+
+| # | Finding | Disposition | Cause |
+|---|---|---|---|
+| R6-1 (Codex round 6) | The outcome list was ambiguous for resource refusals | One terminal schema with `cap`, `cost` and `quota` | Listed only search outcomes |
+| R6-2 (Codex round 6) | F6's within-episode mean could be undefined | A resultant threshold of 0.05 and a defined-mean count | Missed a degenerate mean |
