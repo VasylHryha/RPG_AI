@@ -41,7 +41,8 @@
 | A6b | **Revision 7.3** (`DESIGN_0H_REV7.md`): λ = 8, pinned ends with separate neighbour lists, freeze-not-reset demand, empty start, N1, validity masks | DONE: **Codex round 4 APPROVE_WITH_NOTES** (12 → 7 → 4 → 3 low; notes applied) | Claude drafts, Codex reviews | — |
 | A6c | Revision-7 integration (new files) | DONE: `55a9f7a` + repair `a660de0`; Claude review READY_FOR_FIXTURES (pin `3b6cf563…b551`; `growing_shapes_review_claude/REV7_FIXTURE_READINESS.md`) | Codex, then Claude | — |
 | A6d | Fixtures N1, F1–F9 under 7.3 | DONE: FIXTURES_FAIL at F1c by 0.1 s (live geometry, 6 links); N1, F1a, F1b (2.5 s) and F2–F4 PASS; no collapse | Codex | decision 0031 |
-| A6e | **Revision 7.4:** λ = 32 and h = 0.005, re-derived on F1c by the same rule (outcome-informed, disclosed) | **Codex review RUNNING**; then a config change, a quick check, and the fixtures re-run (under 1 hour) | Claude, Codex | decision 0031 |
+| A6e | Revision 7.4: λ = 32, h = 0.005 | DONE: approved; fixtures **FAIL at N1d** (a knife-edge test start), but **N1f (the live layout) settles in 2.1 s**, so λ = 32 works | Claude, Codex | decision 0031 |
+| A6f | **Revision 7.5:** N1d starts off the unstable antiphase point; the old start kept as descriptive N1g | **Codex review + implementation RUNNING**; then a Claude check and the fixtures re-run | Claude, Codex | decision 0031 |
 | A7 | Cost projection from the measured F rates | — | Codex | — |
 | A8 | **The development run** (48 trainings, about 16 h or more of serial compute) | — | Codex | **[OWNER] approve the run and its time** |
 | A9 | Review the results, then the owner's recheck | — | Claude, then Codex | — |
