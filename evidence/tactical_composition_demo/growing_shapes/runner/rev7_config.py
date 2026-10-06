@@ -1,4 +1,4 @@
-"""Frozen revision-7.7 configuration identity and numerical recipes; no execution."""
+"""Frozen revision-7.9 configuration identity and numerical recipes; no execution."""
 from copy import deepcopy
 import math
 from .protocol import canonical
@@ -8,8 +8,7 @@ PHASE_SCALE=32.
 PRODUCTION_H=.005
 REFINEMENT_H=.00125
 WORLD_DT=.1
-STRONG_LINK_WEIGHT=.5
-STRONG_LINK_RADIUS=math.sqrt(-math.log(STRONG_LINK_WEIGHT))
+STRONG_LINK_RATE=.5
 F1D_SCALES=(1.,8.,32.)
 
 PIN_TABLE={'live':[0.,0.],'F1a':[2.644,0.],'F1b':[1.532,0.],'F1c':[0.,0.],
@@ -36,8 +35,8 @@ N1_SADDLE_DIAGNOSTIC=dict(member=0,departure_radians=.5,
  time='first 0.1 s endpoint crossing, bracketed by previous endpoint (initial t=0 included)',
  not_observed='null direction/time/bracket, status NOT_OBSERVED; horizon 16 s',used_in_verdict=False)
 
-CONFIG=dict(revision='7.7',versions=['rev7_rhs_v1','rev7_eval_v1','rev7_template_v1','rev7_qual_v1'],phase_scale=PHASE_SCALE,
- strong_links=dict(weight_min=STRONG_LINK_WEIGHT,radius=STRONG_LINK_RADIUS,comparison='distance <= computed radius; inclusive, no tolerance',selection='filter actual directed phase edges after full k-nearest selection',uses=['B-path site test','B-path front/back sets','B-path graph trial conditions','transmission path exposure E','effective-root-to-output paths'],full_graph_uses=['RHS and mean normalization','D4 liveness','qualification','budget'],root_eligibility='unchanged gain > 0, active strict site reach, ordinary unsilenced member',clock=dict(neighbor_cap=8,K=1.,tau_link_seconds=.5,status='provisional aligned single-edge scale; no end-to-end settling guarantee'),placement='unchanged r_star=0.556; progress conditional on admissible trial, clearance and budget'),
+CONFIG=dict(revision='7.9',versions=['rev7_rhs_v1','rev7_eval_v1','rev7_template_v1','rev7_qual_v1'],phase_scale=PHASE_SCALE,
+ strong_links=dict(rate_min_per_second=STRONG_LINK_RATE,formula='lambda * K * exp(-r*r) / full held receiver phase-neighbor count',comparison='computed coefficient >= 0.5 /s; inclusive, no tolerance',selection='filter actual directed phase edges after full k-nearest selection',uses=['B-path site test','B-path front/back sets','B-path graph trial conditions','transmission path exposure E','effective-root-to-output paths'],full_graph_uses=['RHS and mean normalization','D4 liveness','qualification','budget'],root_eligibility='unchanged gain > 0, active strict site reach, ordinary unsilenced member',clock=dict(degree='actual full held receiver row; recomputed after trial insertion',K='live signed coupling K; weighted experiment K=1',tau_link_seconds=2.,status='provisional aligned single-edge scale; no end-to-end settling guarantee or serial bound'),placement='unchanged r_star=0.556; progress conditional on admissible trial, clearance and budget'),
  output_port=dict(death_exempt=['D1','D3','D4'],budget_elements='ordinary only',budget_pairs='actual Ntheta undirected ordinary-to-ordinary pairs; O incident pairs excluded',cap=64,budget=64.,pair_cost=.1,B_out_budget_exempt=True,B_out_placement_required=True,physical_count_includes_output=True),
  fixture_entropy=dict(F5='reused outcome-informed engineering fixture; not independent',F7='previously NOT_RUN; dependent on reused F5; chain not fresh',exception='section 13 supersedes fresh-entropy stop for these fixtures only',development='unchanged'),
  carrier=math.pi,motion=dict(k=8,radius=3.,strict=True,ties=['distance','element_before_site','id'],mean='own_count',held='four RK4 stages',site_presence='strength > 0',site_weight='unweighted',silent_element_motion=True),

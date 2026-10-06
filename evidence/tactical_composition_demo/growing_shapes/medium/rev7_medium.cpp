@@ -84,11 +84,13 @@ Neighbors Medium::neighbors(bool padded) const {
 }
 Neighbors Medium::strong_neighbors() const {
     auto out=neighbors();
-    const double radius=std::sqrt(std::log(2.0)); // exp(-r*r) >= 0.5, inclusive.
     for(size_t i=0;i<out.size();++i) {
         auto& row=out[i];
+        const auto degree=row.size(); // Full held receiver degree, before filtering.
         row.erase(std::remove_if(row.begin(),row.end(),[&](int j) {
-            return distance(elements[i].v,elements[j].v)>radius;
+            const double r=distance(elements[i].v,elements[j].v);
+            const double rate=phase_scale*p.K*std::exp(-r*r)/degree;
+            return !(rate>=0.5); // Inclusive coefficient comparison; no radius proxy.
         }),row.end());
     }
     return out;

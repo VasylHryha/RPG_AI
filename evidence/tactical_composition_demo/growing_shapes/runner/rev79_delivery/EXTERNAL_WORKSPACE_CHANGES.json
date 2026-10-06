@@ -1,0 +1,53 @@
+{
+  "status": "EXTERNAL_CONCURRENT_CHANGES_OBSERVED",
+  "baseline_head": "691a300a17a4c4518850330fa289cf1058526bcd",
+  "observed_head": "d74fbe2695b308f7b85876facd2156128676f429",
+  "commits": [
+    "d74fbe2 Plan: 0g v5 ready (runs after C6); 0h 7.8 rejected; 7.9 coupling-rate rule in review",
+    "353241c 0g v5: the delivery verification and hook records",
+    "b988c07 Import Codex's 0g v5 Part 1 (bundle head 240aea2; the files are byte-identical): section-17 round 2 APPROVE_WITH_NOTES; skeleton v5 (= v3, byte-identical on synthetic fixtures; hold and focus as labelled variants), the regular-head selection with the novice-eligibility ranking, the exact B gate (> -7.62), A/B only, a fresh unclaimed ledger, the bounded runner; 27 tests; READY_TO_RUN (4-6 h)"
+  ],
+  "committed_changed_paths": [
+    ".gitignore",
+    "docs/PLAN_CURRENT.md",
+    "docs/reviews/tactical_0g_s17_design_review_codex_r2.md",
+    "evidence/tactical_composition_demo/astelia_cpp/.gitignore",
+    "evidence/tactical_composition_demo/astelia_cpp/S4_V5_DESIGN_PIN.md",
+    "evidence/tactical_composition_demo/astelia_cpp/S4_V5_PROTOCOL.md",
+    "evidence/tactical_composition_demo/astelia_cpp/S4_V5_READINESS.md",
+    "evidence/tactical_composition_demo/astelia_cpp/S4_V5_SEEDS.json",
+    "evidence/tactical_composition_demo/astelia_cpp/native_s4_attribution_contract.cpp",
+    "evidence/tactical_composition_demo/astelia_cpp/s3_runner.py",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_v5.py",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_v5_checks/BUNDLE_VERIFIED.json",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_v5_checks/COMMIT_HOOKS.txt",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_v5_delivery.py",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_v5_part1_checks/BUILD.stderr.txt",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_v5_part1_checks/BUILD.stdout.txt",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_v5_part1_checks/BUILD_RESULT.json",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_v5_part1_checks/CLAUDE_REVIEW_ATTEMPT.json",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_v5_part1_checks/COMMIT_HOOKS.txt",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_v5_part1_checks/DELIVERY_NOTE.md",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_v5_part1_checks/FAILED_FIRST_TESTS.stderr.txt",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_v5_part1_checks/FAILED_FIRST_TESTS.stdout.txt",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_v5_part1_checks/FAILED_FIRST_TEST_RESULT.json",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_v5_part1_checks/NATIVE_CONTRACT.json",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_v5_part1_checks/OWNER_RECHECK.md",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_v5_part1_checks/PLAN_AND_REVIEW.md",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_v5_part1_checks/TESTS.stderr.txt",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_v5_part1_checks/TESTS.stdout.txt",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_v5_part1_checks/TEST_RESULT.json",
+    "evidence/tactical_composition_demo/astelia_cpp/src/native/controller.cpp",
+    "evidence/tactical_composition_demo/astelia_cpp/src/native/s3_controller.cpp",
+    "evidence/tactical_composition_demo/astelia_cpp/test_s4_v5.py"
+  ],
+  "observed_sha256": {
+    ".gitignore": "3f4adbbd6c264877e871aa0312131de9f9c585f276e897938a844ed355f2418d",
+    "docs/PLAN_CURRENT.md": "b364ac55abc6be5a6281fbccd315f24ed469ac9f85f96c68c604f3375ebb3299"
+  },
+  "baseline_sha256": {
+    ".gitignore": "3d633b142ca3556eb971436e68fcb52098a8547994bc72500bc6216b00469961",
+    "docs/PLAN_CURRENT.md": "f3f010033d4ddf5533b210882ebf7127b8d45653801d03c9f22bf8ae73463940"
+  },
+  "disposition": "Observed only; this agent did not edit PLAN_CURRENT or root .gitignore, or create these commits. Preserve external committed work; bind observed HEAD for source overlay and retain original baseline. No scoped implementation files were committed by concurrent activity."
+}

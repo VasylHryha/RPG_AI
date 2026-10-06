@@ -23,7 +23,7 @@ def create_pin():
     inherited=json.loads((HERE/'REV65_SOURCE_IDENTITY.json').read_text())['sha256']
     paths+=[ROOT/p for p in inherited]
     paths+=[base.parent/n for n in ('DESIGN_0H_REV7.md','DESIGN_0H_REV6.md','DESIGN_0H.md')]
-    paths+=[ROOT/'docs/reviews/tactical_0h_rev77_design_review_codex.md']
+    paths+=[ROOT/'docs/reviews/tactical_0h_rev79_design_review_codex.md']
     pin=dict(configuration_sha256=CONFIG_SHA256,configuration=CONFIG,sha256={str(p.relative_to(ROOT)):digest(p) for p in sorted(set(paths))})
     PIN.write_bytes(canonical(pin)+b'\n');return pin
 

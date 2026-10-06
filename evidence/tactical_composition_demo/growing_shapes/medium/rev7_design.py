@@ -1,4 +1,4 @@
-"""Revision 7.7: full structural graph and strong transmission paths."""
+"""Revision 7.9: full structural graph and coefficient-screened transmission."""
 from collections import deque
 from copy import deepcopy
 from dataclasses import dataclass
@@ -6,7 +6,7 @@ import math
 import numpy as np
 from .design_0h import DesignMedium, DT, SITES, kernel, wrap
 from .rev7_native import Rev7Native,budget_counts
-from ..runner.rev7_config import PRODUCTION_H, REFINEMENT_H, STRONG_LINK_RADIUS
+from ..runner.rev7_config import PRODUCTION_H, REFINEMENT_H, PHASE_SCALE, STRONG_LINK_RATE
 
 @dataclass(frozen=True)
 class Frame:
@@ -92,14 +92,15 @@ def geometry(native,drives):
             [(d.id,d.x,d.y,d.strength,d.reach) for d in drives])
 
 
-def geometric_graph(elements,drives,k=8,radius=3.,*,strong=False):
+def geometric_graph(elements,drives,k=8,radius=3.,*,strong=False,phase_scale=PHASE_SCALE,K=1.):
     # Medium::neighbors ties by element array index, including after deletions.
     incoming={}
     for i,(id,x,y,role,gain,silent) in enumerate(elements):
         candidates=[] if silent else [(math.hypot(x-e[1],y-e[2]),j,e[0])
             for j,e in enumerate(elements) if i!=j and not e[5]]
-        incoming[id]={id2 for r,j,id2 in sorted(candidates)[:k]
-                      if r<radius and (not strong or r<=STRONG_LINK_RADIUS)}
+        held=[row for row in sorted(candidates)[:k] if row[0]<radius]
+        incoming[id]={id2 for r,j,id2 in held
+                      if not strong or phase_scale*K*math.exp(-r*r)/len(held)>=STRONG_LINK_RATE}
     outgoing={e[0]:set() for e in elements}
     for target,sources in incoming.items():
         for source in sources:outgoing[source].add(target)
@@ -110,15 +111,15 @@ def geometric_graph(elements,drives,k=8,radius=3.,*,strong=False):
     return Influence(incoming,outgoing,roots,outputs)
 
 
-def geometric_trial(elements,drives,site,a,b,position,new,*,k=8,radius=3.,before=None):
+def geometric_trial(elements,drives,site,a,b,position,new,*,k=8,radius=3.,before=None,phase_scale=PHASE_SCALE,K=1.):
     # Trials use G_s, including edge_a_to_new; budget admission still uses G.
-    before=before or geometric_graph(elements,drives,k,radius,strong=True)
+    before=before or geometric_graph(elements,drives,k,radius,strong=True,phase_scale=phase_scale,K=K)
     positions={e[0]:(e[1],e[2]) for e in elements}
     def gap(g,positions):
         return min((math.hypot(positions[u][0]-positions[v][0],positions[u][1]-positions[v][1])
             for u in g.forward(site) for v in g.backward()),default=math.inf)
     old_gap=gap(before,positions)
-    after=geometric_graph(elements+[(new,*position,'element',1.,False)],drives,k,radius,strong=True)
+    after=geometric_graph(elements+[(new,*position,'element',1.,False)],drives,k,radius,strong=True,phase_scale=phase_scale,K=K)
     reached=after.forward(site);positions[new]=position
     return dict(edge_a_to_new=a in after.incoming[new],new_reached=new in reached,
         a_reached=a in reached,paths_kept=all(not before.path(s) or after.path(s) for s in before.roots),
@@ -157,7 +158,8 @@ class Rev7Medium(DesignMedium):
         if self.backend=='native':return graph(self.native,self.drives,strong=True)
         elements,drives=geometry(self.native,self.drives)
         return geometric_graph(elements,drives,self.native.params.k,
-                               self.native.params.radius,strong=True)
+                               self.native.params.radius,strong=True,
+                               phase_scale=self.native.policy()[0],K=self.native.params.K)
 
     def add(self,position,phase,rate=math.pi,gain=1.,rule='B1',role='element',**values):
         id=self.native.add(*position,phase,rate,role=role)
@@ -345,7 +347,8 @@ class Rev7Medium(DesignMedium):
         # The trial id only needs to be unique; tie order is insertion order.
         new=max((e[0] for e in elements),default=-1)+1
         return geometric_trial(elements,drives,site,a,b,position,new,
-            k=self.native.params.k,radius=self.native.params.radius)
+            k=self.native.params.k,radius=self.native.params.radius,
+            phase_scale=self.native.policy()[0],K=self.native.params.K)
 
     def feasible(self,position,phase):
         # O and its incident pairs are external to N + .1 per ordinary pair.
@@ -400,7 +403,8 @@ class Rev7Medium(DesignMedium):
                     angle=direction+math.radians(rotation)
                     point=(es[a].x+R_STAR*math.cos(angle),es[a].y+R_STAR*math.sin(angle))
                     checks=geometric_trial(elements,drives,site,a,b,point,new,
-                        k=self.native.params.k,radius=self.native.params.radius,before=g);attempts+=1
+                        k=self.native.params.k,radius=self.native.params.radius,before=g,
+                        phase_scale=self.native.policy()[0],K=self.native.params.K);attempts+=1
                     for name,yes in checks.items():failures[name]+=int(not yes)
                     self.emit('birth_attempt',request=request,birth_rule='B-path',site=site,
                               a=a,b=b,position=point,checks=checks)

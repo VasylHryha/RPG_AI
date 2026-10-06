@@ -190,7 +190,7 @@ def test_clearance_every_rule_origin_reservation_and_Bpath_trial():
 
 
 @pytest.mark.parametrize('backend',['native','reference'])
-def test_rev77_weak_connected_scaffold_grows_until_strong_path_reaches_O(backend):
+def test_rev79_weak_connected_scaffold_grows_until_strong_path_reaches_O(backend):
     with medium(backend=backend) as m:
         out=m.b_out()[0]
         root=m.add((3.2,0.),.2)
@@ -198,32 +198,31 @@ def test_rev77_weak_connected_scaffold_grows_until_strong_path_reaches_O(backend
         m.drives=[drive()]
         assert m.influence().path(0) and not m.strong_influence().path(0)
         births=[]
-        for _ in range(4):
+        for _ in range(2):
             assert not m.strong_influence().path(0)
             added=m.b_path();assert len(added)==1
             births+=added
             assert m.influence().path(0)
             assert m.native.pin(out)==(True,(0.,0.))
         assert m.strong_influence().path(0)
-        assert len(births)==4 and m.b_path()==[]
+        assert len(births)==2 and m.b_path()==[]
         assert m.endpoint_diagnostics()['paths'][0]
         assert root in m.strong_influence().roots[0] and out not in m.strong_influence().roots[0]
         attempts={e['values']['request']:e for e in m.events
                   if e['rule']=='birth_attempt' and e['values']['birth_rule']=='B-path'}
         accepted=[e for e in m.events if e['rule']=='birth_terminal'
                   and e['values']['birth_rule']=='B-path' and e['values']['outcome']=='accepted']
-        assert len(accepted)==4
+        assert len(accepted)==2
         assert all(all(attempts[e['values']['request']]['values']['checks'].values()) for e in accepted)
 
 
 @pytest.mark.parametrize('distance',[
-    math.nextafter(math.sqrt(math.log(2)),0.),
-    math.sqrt(math.log(2)),
-    math.nextafter(math.sqrt(math.log(2)),math.inf),
+    math.nextafter(math.sqrt(math.log(64)),0.),
+    math.sqrt(math.log(64)),
+    math.nextafter(math.sqrt(math.log(64)),math.inf),
     2.2,3.])
-def test_rev77_native_python_strong_boundary_subset_and_full_mean(distance):
+def test_rev79_native_python_strong_distance_boundary_subset_and_full_mean(distance):
     from evidence.tactical_composition_demo.growing_shapes.medium.rev7_design import geometric_graph,geometry
-    from evidence.tactical_composition_demo.growing_shapes.runner.rev7_config import STRONG_LINK_RADIUS
     with medium() as m:
         out=m.add((0.,0.),0.,role='output');root=m.add((distance,0.),.4)
         m.drives=[drive(x=distance+1.)]
@@ -231,12 +230,72 @@ def test_rev77_native_python_strong_boundary_subset_and_full_mean(distance):
         full=m.influence();strong=m.strong_influence()
         assert strong==geometric_graph(es,ds,strong=True)
         assert full==geometric_graph(es,ds)
-        assert strong.path(0)==(distance<=STRONG_LINK_RADIUS)
+        assert strong.path(0)==(distance<3. and 32*math.exp(-distance*distance)>=.5)
         assert full.path(0)==(distance<3.)
         assert strong.incoming[out]<=full.incoming[out]
         assert m.native.neighbors()[2][0]==1. # full count, never strong count
         assert m.endpoint_diagnostics()['paths'][0]==strong.path(0)
         assert root in strong.roots[0] and out not in strong.roots[0]
+
+
+@pytest.mark.parametrize('K,expected',[
+    (math.nextafter(1/64,0.),False),(1/64,True),
+    (math.nextafter(1/64,math.inf),True),(0.,False),(-1.,False)])
+@pytest.mark.parametrize('backend',['native','reference'])
+def test_rev79_exact_coefficient_inclusive_boundary(K,expected,backend):
+    from evidence.tactical_composition_demo.growing_shapes.medium.rev7_design import geometric_graph,geometry
+    # Coincident synthetic points make exp(-r*r)=1 exactly; these do not
+    # exercise birth clearance. Multiplication by 32 preserves adjacent ULPs.
+    with medium(params=Params(K=K),backend=backend) as m:
+        out=m.add((0.,0.),0.,role='output');root=m.add((0.,0.),0.)
+        es,ds=geometry(m.native,[])
+        assert m.strong_influence()==geometric_graph(es,ds,K=K,strong=True)
+        assert (root in m.strong_influence().incoming[out]) is expected
+        assert m.influence().incoming[out]=={root}
+
+
+@pytest.mark.parametrize('backend',['native','reference'])
+def test_rev79_full_receiver_degree_direction_and_weak_neighbor_dilution(backend):
+    from evidence.tactical_composition_demo.growing_shapes.medium.rev7_design import geometric_graph,geometry
+    with medium(backend=backend) as m:
+        out=m.add((0.,0.),0.,role='output');root=m.add((2.,0.),0.)
+        beyond=m.add((3.5,0.),0.,gain=0.)
+        # root->O has n_O=1 (rate .586), reverse has n_root=2 (.293).
+        assert m.strong_influence().incoming[out]=={root}
+        assert out not in m.strong_influence().incoming[root]
+        weak=m.add((0.,2.9),0.,gain=0.)
+        # The weak incoming edge itself fails, but must still dilute root->O.
+        assert m.influence().incoming[out]=={root,weak}
+        assert m.strong_influence().incoming[out]==set()
+        es,ds=geometry(m.native,[])
+        assert m.strong_influence()==geometric_graph(es,ds,strong=True)
+        m.native.silence(weak)
+        assert m.strong_influence().incoming[out]=={root}
+        m.remove(weak,'SYNTHETIC')
+        assert m.strong_influence().incoming[out]=={root}
+        assert beyond not in m.influence().incoming[out]
+
+
+@pytest.mark.parametrize('backend',['native','reference'])
+def test_rev79_live_scale_K_and_trial_post_insertion_degree(backend):
+    from evidence.tactical_composition_demo.growing_shapes.medium.rev7_design import geometric_trial,geometry
+    with medium(backend=backend) as m:
+        out=m.add((0.,0.),0.,role='output');root=m.add((2.,0.),0.)
+        m.drives=[Drive(0,2.,0.,.4,math.pi,2.,1.,.1)]
+        assert m.strong_influence().path(0)
+        # Insertion of an unreachable weak neighbour dilutes the existing
+        # receiver row and must trigger paths_kept=False, despite fixed geometry.
+        es,ds=geometry(m.native,m.drives)
+        checks=geometric_trial(es,ds,0,root,out,(0.,2.9),2)
+        assert not checks['paths_kept']
+        assert m.trial(0,root,out,(0.,2.9))==checks
+        m.native.phase_scale(8.)
+        assert not m.strong_influence().path(0)
+        assert m.trial(0,root,out,(0.,2.9))==geometric_trial(es,ds,0,root,out,(0.,2.9),2,phase_scale=8.)
+        m.native.phase_scale(32.)
+        m.native.comparator('k_zero')
+        assert not m.strong_influence().path(0)
+        assert m.trial(0,root,out,(1.,0.))['edge_a_to_new'] is False
 
 
 def test_rev77_directed_selection_ties_silence_and_topology_refresh():
@@ -276,11 +335,11 @@ def test_rev77_strong_filter_does_not_change_RHS_normalization_or_cost():
 def test_rev77_trials_reject_weak_edges_preserve_strong_paths_and_clearance():
     from evidence.tactical_composition_demo.growing_shapes.medium.rev7_design import geometric_trial
     # A formerly admissible weak edge a->new must no longer pass its trial.
-    es=[(0,0.,0.,'output',1.,False),(1,2.4,0.,'element',1.,False)]
-    ds=[(0,2.4,0.,2.,.1)] # only a is a root; new must be reached through edges
-    checks=geometric_trial(es,ds,0,1,0,(1.4,0.),2)
+    es=[(0,0.,0.,'output',1.,False),(1,2.9,0.,'element',1.,False)]
+    ds=[(0,2.9,0.,2.,.1)] # only a is a root; new must be reached through edges
+    checks=geometric_trial(es,ds,0,1,0,(.7,0.),2)
     assert not checks['edge_a_to_new'] and not checks['new_reached']
-    assert not geometric_trial(es,ds,0,1,0,(2.4,.556),2)['deficit_or_connect']
+    assert not geometric_trial(es,ds,0,1,0,(2.9,.556),2)['deficit_or_connect']
     # A trial can displace a's source and leave a/new in a disconnected strong cycle.
     crowded=[(0,0.,0.,'output',1.,False),(1,2.4,0.,'element',1.,False),
              (2,1.8,0.,'element',0.,False)]
@@ -319,19 +378,20 @@ def test_rev77_full_D4_budget_and_qualification_history_survive_weak_path(backen
         assert m.frames[-1].neighbors[root]==(out,)
 
 
-def test_rev77_configuration_pins_screen_and_preserves_clock_and_entropy():
+def test_rev79_configuration_pins_screen_and_preserves_clock_and_entropy():
     policy=CONFIG['strong_links']
-    assert policy['weight_min']==.5 and policy['radius']==math.sqrt(math.log(2))
-    assert policy['clock']['tau_link_seconds']==.5
+    assert policy['rate_min_per_second']==.5
+    assert 'full held receiver' in policy['formula']
+    assert policy['clock']['tau_link_seconds']==2.
     assert 'no end-to-end' in policy['clock']['status']
-    previous=json.loads((HERE/'rev77_delivery/PRIOR_SOURCE_IDENTITY.json').read_text())['configuration']
+    previous=json.loads((HERE/'rev79_delivery/PRIOR_REV7_SOURCE_IDENTITY.json').read_text())['configuration']
     assert {k:v for k,v in CONFIG.items() if k not in ('revision','strong_links')}=={
-        k:v for k,v in previous.items() if k!='revision'}
+        k:v for k,v in previous.items() if k not in ('revision','strong_links')}
 
 
-def test_rev77_qualification_keeps_coherent_weak_link_cohort_synthetic():
+def test_rev79_qualification_keeps_coherent_weak_link_cohort_synthetic():
     with medium() as m:
-        ids=[m.add(point,0.) for point in ((0.,0.),(.9,0.),(.45,.9*math.sqrt(3)/2))]
+        ids=[m.add(point,0.) for point in ((0.,0.),(2.2,0.),(1.1,2.2*math.sqrt(3)/2))]
         assert all(not row for row in m.strong_influence().incoming.values())
         assert all(len(row)==2 for row in m.influence().incoming.values())
         m.step_index=600;m.frames.clear()
@@ -749,7 +809,7 @@ def test_clock_ledger_declared_units_no_rescaled_admission_windows():
 
 def test_rev75_configuration_identity_and_N1f_literal_recipe():
     from evidence.tactical_composition_demo.growing_shapes.runner.rev7_config import F1D_SCALES
-    assert CONFIG['revision']=='7.7' and CONFIG['phase_scale']==32.
+    assert CONFIG['revision']=='7.9' and CONFIG['phase_scale']==32.
     assert CONFIG['output_port']['death_exempt']==['D1','D3','D4']
     assert CONFIG['output_port']['B_out_budget_exempt']
     assert CONFIG['fixture_entropy']['development']=='unchanged'
