@@ -1,0 +1,60 @@
+........F
+=================================== FAILURES ===================================
+__________ test_actual_tune_feedback_retention_ties_and_budget[False] __________
+
+tmp_path = PosixPath('/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/build/v5_pytest_tmp/test_actual_tune_feedback_rete0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x108a52880>
+all_ineligible = False
+
+    @pytest.mark.parametrize('all_ineligible',[False,True])
+    def test_actual_tune_feedback_retention_ties_and_budget(tmp_path,monkeypatch,all_ineligible):
+        es=FakeOptimizer()
+        class Bench:
+            out=tmp_path;locked={};identity='fake';started=V.time.monotonic()
+            deadline=V.Deadline(V.time.monotonic()+3600)
+            budgets={'resonator':9766};executed=0;hits=0
+            def ledger(self):pass
+            def evaluate(self,arm,params,panel,stage,split,tag,tuning):
+                self.budgets[arm]+=38;self.executed+=38
+                if tag=='initial':return scores('B',-1 if all_ineligible else 0,-2)
+                i=int(tag.split(':')[1])
+                return scores('B',-1 if all_ineligible or i%2==0 else 0,50 if i%2==0 else 3)
+        def optimizer(arm,start):return es
+        monkeypatch.setattr(V,'optimizer',optimizer);monkeypatch.setattr(V,'identity',lambda *a:'fake')
+>       best,sel=V.tune(Bench(),'B','resonator',V.defaults('resonator'))
+
+evidence/tactical_composition_demo/astelia_cpp/test_s4_v5.py:100: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+bench = <test_s4_v5.test_actual_tune_feedback_retention_ties_and_budget.<locals>.Bench object at 0x108cd6b50>
+stage = 'B', arm = 'resonator'
+start = {'G': 2.5, 'K': 2.5, 'K_t': 2.5, 'beta': 1.5, ...}
+
+    def tune(bench,stage,arm,start):
+        optimizer.stage=stage;es=optimizer(arm,start);panel=battles(stage,'tuning')
+        initial=bench.evaluate(arm,start,panel,stage,'tuning','initial',True)
+        best=dict(start);best_selection=selection(stage,initial);logs=[]
+        def remember(complete=False):
+            if not hasattr(bench,'progress_best'):bench.progress_best={a:defaults(a) for a in BOUNDS}
+            if not hasattr(bench,'progress_selections'):bench.progress_selections={}
+            bench.progress_best[arm]=dict(best)
+            bench.progress_selections[arm]=dict(best_selection,stage=stage,complete=complete)
+            write(bench.out/'selected_omega.json',dict(stage=stage,omega=selected_omega(bench.progress_best),
+                  selection=bench.progress_selections.get('resonator'),diagnostic_only=True))
+        remember()
+        def save():write(bench.out/f'{stage}_{arm}_tuning.json',dict(initial_knobs=start,initial_scores=initial,
+                        generations=logs,best=best,best_selection=best_selection,selected_omega=selected_omega({'resonator':best}) if arm=='resonator' else None))
+        save()
+        for generation in range(GENERATIONS):
+            check_inputs(bench.locked);bench.deadline.remaining()
+            if identity('cpp',[str(BINARY),'--metrics'])!=bench.identity:raise RuntimeError('engine identity changed')
+            elapsed=time.monotonic()-bench.started;evaluated=bench.executed+bench.hits
+            remaining=max(0,TOTAL_FIGHTS-evaluated)*max(.062,elapsed/max(1,bench.executed))
+>           if remaining>bench.deadline.remaining():raise TimeoutError('projected remaining A/B work exceeds 360-minute deadline')
+E           TimeoutError: projected remaining A/B work exceeds 360-minute deadline
+
+evidence/tactical_composition_demo/astelia_cpp/s4_v5.py:213: TimeoutError
+=========================== short test summary info ============================
+FAILED evidence/tactical_composition_demo/astelia_cpp/test_s4_v5.py::test_actual_tune_feedback_retention_ties_and_budget[False]
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 8 passed in 1.01s

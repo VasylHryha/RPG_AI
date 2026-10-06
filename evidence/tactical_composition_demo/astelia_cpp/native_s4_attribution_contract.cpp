@@ -31,10 +31,10 @@ Observation symmetric(){Observation o;o.dt=.1;ObservedUnit u;u.id=1;u.x=300;u.y=
 int attributionContract(){try{
   need(historical_v4_contract::historicalV4Contract()==0,"historical v4 contracts");
   unsigned compared=0;
-  for(const auto& skeleton:{"v0","v1","v2","v3","v4"})for(auto arm:{Arm::Resonator,Arm::Morale,Arm::PushPull})for(uint8_t side:{0,1})for(int seed:{7,177,3201}){
+  for(const auto& skeleton:{"v0","v1","v2","v3","v4","v5"})for(auto arm:{Arm::Resonator,Arm::Morale,Arm::PushPull})for(uint8_t side:{0,1})for(int seed:{7,177,3201}){
     S3Controller current(seed,side,arm,{},skeleton),traced(seed,side,arm,{},skeleton);
     traced.attributionDiagnostics(true);
-    baseline::S3Controller prior(seed,side,baseline::Arm(int(arm)),{},skeleton);
+    baseline::S3Controller prior(seed,side,baseline::Arm(int(arm)),{},std::string(skeleton)=="v5"?"v3":skeleton);
     for(int tick=0;tick<32;++tick){auto o=fixture(tick,side);current.prepare(o);traced.prepare(o);prior.prepare(o);
       for(const auto& u:o.units)if(u.hp>0&&u.team==side){auto a=current.decide(o,u.id),b=prior.decide(o,u.id),t=traced.decide(o,u.id);
         need(bytes(a)==bytes(b)&&bytes(a)==bytes(t),"v0-v4 synthetic fixture bytes changed");
@@ -51,7 +51,7 @@ int attributionContract(){try{
     auto o=symmetric();auto ally=o.units[0];ally.id=2;ally.x+=30;o.units.push_back(ally);test.prepare(o);v3.prepare(o);
     need(bytes(test.decide(o,1))==bytes(v3.decide(o,1)),"factor altered inherited summation");}
   ControllerParams params{{"K",0},{"K_t",0},{"kappa",0},{"lambda_melee",0},{"lambda_ranged",0},{"G",2.5},{"w",1}};
-  for(const auto& cell:{"v3","H","F","HF","v4"}){
+  for(const auto& cell:{"v3","v5","H","F","HF","v4"}){
     Probe p(7,0,Arm::Morale,params,cell),plain(7,0,Arm::Morale,params,cell);p.attributionDiagnostics(true);auto o=symmetric();
     p.commitment(1);plain.commitment(1);p.prepare(o);plain.prepare(o);
     const bool focus=std::string(cell)=="F"||std::string(cell)=="HF"||std::string(cell)=="v4";
@@ -65,7 +65,7 @@ int attributionContract(){try{
     need(!copy->pairModes().count({1,20})&&p.pairModes().count({1,20}),"clone cleanup isolation");
     if(hold){o.t=10;p.prepare(o);need(p.pairModes().at({1,20}),"expiry crossing");need(!p.holdEvents().empty(),"expiry events absent");}
   }
-  for(const auto& cell:{"v3","H","F","HF","v4"}){
+  for(const auto& cell:{"v3","v5","H","F","HF","v4"}){
     auto request=js::obj({{"mode","alone"},{"trace",true},{"decisionDiagnostics",true},{"attributionDiagnostics",true},{"options",js::obj({{"ai",js::arr({js::obj({{"controller","morale"},{"skeleton",cell}}),js::obj({})})}})}});
     auto config=astelia::configuration(request);auto c=makeController(config.controllers[0],7,0);need(dynamic_cast<S3Controller*>(c.get())!=nullptr,"production configuration/factory rejected cell");
     js::set(request,"trace",false);bool rejected=false;try{astelia::configuration(request);}catch(const std::invalid_argument&){rejected=true;}need(rejected,"attribution trace precondition missing");

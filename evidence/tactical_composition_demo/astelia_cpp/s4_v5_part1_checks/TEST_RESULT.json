@@ -1,0 +1,19 @@
+{
+  "command": [
+    ".venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "evidence/tactical_composition_demo/astelia_cpp/test_s4_v5.py",
+    "evidence/tactical_composition_demo/astelia_cpp/test_s4_deadline.py",
+    "--basetemp",
+    "evidence/tactical_composition_demo/astelia_cpp/build/v5_pytest_retry_tmp"
+  ],
+  "returncode": 0,
+  "elapsed_seconds": 1.906482375,
+  "test_batch_count": 2,
+  "successful_batch_count": 1,
+  "retry_reason": "first fake tuning fixture allowance below projection floor; fixture repaired after review",
+  "development_fights": 0
+}

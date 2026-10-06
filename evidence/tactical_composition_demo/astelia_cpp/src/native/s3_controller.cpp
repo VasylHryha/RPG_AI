@@ -26,7 +26,7 @@ Knobs controllerKnobs(Arm arm,const ControllerParams& params,const std::string& 
   if(arm!=Arm::PushPull){bounds.insert({{"K",{&k.K,0,5}},{"K_t",{&k.Kt,0,5}},{"kappa",{&k.kappa,0,50}},{"beta",{&k.beta,0,3}},{"w",{&k.w,0,3}},{"gamma",{&k.gamma,0,2}}});
     if(arm==Arm::Resonator){bounds["omega_melee"]={&k.rateM,-2,2};bounds["omega_ranged"]={&k.rateR,-2,2};}
     else{bounds["lambda_melee"]={&k.rateM,0,2};bounds["lambda_ranged"]={&k.rateR,0,2};}}
-  if(skeleton=="v2"||skeleton=="v3"||skeleton=="v4"||skeleton=="H"||skeleton=="F"||skeleton=="HF"){
+  if(skeleton=="v2"||skeleton=="v3"||skeleton=="v5"||skeleton=="v4"||skeleton=="H"||skeleton=="F"||skeleton=="HF"){
     bounds.erase("f");bounds.erase("gamma");
     bounds["f_c"]={&k.fc,.3,1};bounds["m_k"]={&k.mk,.2,1};
     if(arm!=Arm::PushPull)bounds["lambda_th"]={&k.lambdaTh,0,3};else k.lambdaTh=0;
@@ -156,7 +156,7 @@ std::vector<ModelUnit> frozenStep(std::vector<ModelUnit> a,Arm arm,const Knobs& 
   return a;
 }
 
-S3Controller::S3Controller(double seed,uint8_t side,Arm arm,const ControllerParams& params,const std::string& skeleton):Controller(seed,side),arm_(arm),knobs_(controllerKnobs(arm,params,skeleton)),v1_(skeleton!="v0"),v2_(skeleton=="v2"||skeleton=="v3"||skeleton=="v4"||skeleton=="H"||skeleton=="F"||skeleton=="HF"),v3_(v2_&&skeleton!="v2"),v4_(v3_&&skeleton!="v3"),holdEnabled_(skeleton=="v4"||skeleton=="H"||skeleton=="HF"),focusEnabled_(skeleton=="v4"||skeleton=="F"||skeleton=="HF"){if(skeleton!="v0"&&skeleton!="v1"&&skeleton!="v2"&&skeleton!="v3"&&skeleton!="v4"&&skeleton!="H"&&skeleton!="F"&&skeleton!="HF")throw std::invalid_argument("invalid skeleton");}
+S3Controller::S3Controller(double seed,uint8_t side,Arm arm,const ControllerParams& params,const std::string& skeleton):Controller(seed,side),arm_(arm),knobs_(controllerKnobs(arm,params,skeleton)),v1_(skeleton!="v0"),v2_(skeleton=="v2"||skeleton=="v3"||skeleton=="v5"||skeleton=="v4"||skeleton=="H"||skeleton=="F"||skeleton=="HF"),v3_(v2_&&skeleton!="v2"),v4_(v3_&&skeleton!="v3"&&skeleton!="v5"),holdEnabled_(skeleton=="v4"||skeleton=="H"||skeleton=="HF"),focusEnabled_(skeleton=="v4"||skeleton=="F"||skeleton=="HF"){if(skeleton!="v0"&&skeleton!="v1"&&skeleton!="v2"&&skeleton!="v3"&&skeleton!="v5"&&skeleton!="v4"&&skeleton!="H"&&skeleton!="F"&&skeleton!="HF")throw std::invalid_argument("invalid skeleton");}
 void S3Controller::prepare(const Observation& o){
   prepared_.clear();diagnostic_.clear();decisionDiagnostic_.clear();holdEvents_.clear();focus_.clear();std::vector<const ObservedUnit*> units;std::set<UnitId> live;
   for(const auto& u:o.units)if(u.hp>0){units.push_back(&u);live.insert(u.id);}

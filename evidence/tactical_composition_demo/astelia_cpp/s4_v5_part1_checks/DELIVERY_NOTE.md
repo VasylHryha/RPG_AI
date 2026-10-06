@@ -1,0 +1,7 @@
+# v5 Part 1 delivery
+
+Scope: astelia_cpp v5 alias, A/B runner, exact selection/gates, fresh development declaration, synthetic tests, protocol/pin/readiness and checks; plus the named round-2 design review. No edits to DESIGN_0G.md or docs/PLAN_CURRENT.md, no historical receipt modification and no development execution. Existing unrelated/untracked files are preserved.
+
+Workspace .git is read-only under the managed filesystem policy. The owner's authorized fallback uses an isolated writable Git directory under astelia_cpp/build/, its own index and ref, original repository hooks, and Assisted-by: Codex:GPT-6. No hooks are bypassed. S4_V5_PART1.bundle transports the commit; PART1_DELIVERY.json records parent/commit, all scoped file hashes, bundle hash/size and an independent fresh-fetch blob comparison. Sidecar and bundle stay local to avoid self-hashing. Every delivered file and bundle must be below 50,000,000 bytes.
+
+The admitted rebuilt native binary is local; its source/build identities are in the build receipt and delivery sidecar. Runtime pins include all imported helpers and pycma source files. The runner verifies those identities and the selected Part 1 commit before claiming the fresh ledger. Importing the bundle does not authorize development execution or scientific acceptance. READY_TO_RUN means Part 1 engineering checks passed, subject to the separate scheduling/run instruction.
