@@ -1430,3 +1430,27 @@ This is a stored-data analysis. It runs while the 0h pilots run.
   - no rule or constant changes after any fight.
 
 **If replicated:** P16 becomes the feasibility witness required by the owner's decision (§19.11), and v7 (§20) is revised against it, answering R2–R9 with P16 as the witness.
+
+### 19.13 The P16 replication: REPLICATED (`astelia_cpp/s4_escort_probe_v4/S4_ESCORT_PROBE.md`; Codex's owner recheck pending)
+
+| 20 fresh clusters × 2 orientations | P12 | **P16** |
+|---|---|---|
+| Regular elimination wins | 12/40 | **34/40** |
+| Regular mean S | −14.83 | **+2.38** |
+| Regular enemy guns destroyed / own guns lost | 8.53 / 8.6 | 9.68 / 4.73 |
+| Novice elimination wins (mean S) | 40/40 (+19.3) | 40/40 (+22.98) |
+
+- **Every condition of §19.12 holds:**
+  - regular ≥ 26/40;
+  - regular and novice mean S > 0;
+  - novice ≥ 21/40;
+  - no failures;
+  - P16 better than P12 in **14 of 20** paired clusters (≥ 12 required).
+- **P16 is the scripted feasibility witness the owner required (§19.11).** It is a development observation on 40 fights, not a population rate.
+- The criterion for registered judging (an S5 registration) is still the owner's to approve.
+
+**What P16 is:** P12 (focused, committed, spaced guns + a ranged escort), with one change. Guns order their enemy-gun targets by **splash value**, the number of enemy units a shell landing on that gun would hit, then by the lowest HP, then by id. **The battery picks the enemy gun standing in the densest knot of enemies,** so each shell does several units' worth of damage. That is the same splash physics that hurt us in §19.6, now used on the enemy.
+
+**Next:**
+1. Codex's owner recheck of the replication.
+2. **The v7 revision (§20)** against R2–R9, with P16 as the witness. **The P16 mechanism to carry into v7:** **target choice by local enemy density** (splash value), the commit post, spacing and the escort.
