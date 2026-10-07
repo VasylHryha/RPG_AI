@@ -1026,3 +1026,55 @@ If a scripted probe cannot kill regular guns, the v7 hypothesis is wrong, and th
 - a ranged screen placed against the enemy ranged units that kill our guns.
 
 This is a stored-data analysis. It runs while the 0h pilots run.
+
+### 19.6 The fire-efficiency diagnostic (`astelia_cpp/S4_FIRE_EFFICIENCY_DIAGNOSTIC.md`, `ed2633f`) and the spacing probe
+
+**What the stored traces show** (P5 and P7 against regular, P5 against novice, 60 fights; no new fights):
+- **Splash multiplicity decides the artillery exchange.** In P5 against regular:
+  - each of our successful gun-targeted shells damaged **1.11** enemy guns;
+  - each of the enemy's damaged **3.85** of ours, and up to nine.
+  - The enemy landed fewer successful gun shells (22.75 per fight against our 47.65), but dealt **2.11×** our artillery damage to guns (31,604 HP against 14,958). In P7 the ratio is 2.96×.
+- **Against novice it reverses:** our shells damaged **3.27** novice guns each, and every novice gun died. The regular line keeps its guns about 46 px apart, against a 40 px splash; our committed battery does not.
+- **Not the cause:** firing uptime and counter-battery priority.
+  - Our guns fire as fast as the enemy's: about 0.82 launches per gun-second in range, a 1.2 s cadence, even while moving.
+  - Movement does not cancel the windup.
+  - We aim two-thirds of our shells at guns, the enemy under a quarter.
+- **Secondary factors:**
+  - enemy ranged units add 11.7% of the damage to our guns;
+  - 164 of 167 non-hitting shells were aimed at a gun that died before impact (redundant commitment).
+- **Why P5 clusters:** its commitment replaces the whole v6 gun movement command, including the v6 neighbour forces, so every gun converges on the same arc around one target.
+
+**The hypothesis (one change): our battery loses because it bunches, so one enemy shell damages several guns.**
+
+**Spacing probe (scripted, descriptive, one change on P5, declared before any fight):**
+- **P5 (control)**, re-run on fresh seeds.
+- **P10 = P5 plus a battery spacing rule.**
+  - After P5 computes each own gun's movement goal, the goal is shifted away from every other living own gun closer than S, by (S − d) along the unit vector away from that gun, summed over neighbours.
+  - The multiplier and stop distance are as in P5.
+  - Targeting is unchanged.
+  - **S = 2·(splash radius + gun radius)** from the catalog. That leaves no shared splash from a shell landing anywhere within one splash radius of a gun's centre (a margin for the shell aiming at the release-time position). The implementer reads both radii from the catalog and declares the number before any fight.
+- **P11 = P10 with S = splash radius + 2·gun radius.** That is the minimum, with no shared splash only for a shell landing on a gun's centre. It gives a two-point dose of the same single change.
+- **Panel:** 10 fresh development clusters × 2 orientations × {P5, P10, P11} × {regular, novice} = 120 fights. Same world and conventions as §19.3–19.5.
+
+**Measured:**
+- elimination wins, timeouts, S;
+- enemy guns destroyed, own guns lost, own losses;
+- **gun victims per successful shell, for both sides** (the diagnostic's measure);
+- realized nearest-own-gun distance (median and 10th percentile);
+- artillery HP exchange ratio;
+- shells aimed at already-dead guns;
+- killers.
+
+**Reading (descriptive, under the owner's criterion):**
+- **Enemy victims per shell fall towards 1 and the exchange ratio turns, but there are still no elimination wins:** spacing is necessary but not sufficient. The next single change is chosen from the remaining factors (redundant commitment, the enemy ranged units).
+- **Real elimination wins against regular, clearly better than P5:** a candidate for a resonator mechanism. Spacing is an element-level short-range repulsion, which the v6 neighbour forces already contain and P5 discarded.
+- **Victims per shell do not fall** (spacing is not realized, for example because of clipping or the arena's width): inconclusive, reported as such.
+
+**Stop rows:**
+
+| Yes/no | Action | Role |
+|---|---|---|
+| Does the compute projection exceed 1 h? | Stop and report | implementer |
+| Is a constant or rule changed after any fight? | INVALID; a new declaration on fresh seeds | implementer |
+| Is P5 on the new seeds outside §19.4's sanity bounds? | Report it before reading the other arms | implementer |
+| Is a 0h pilot batch running? | Wait for it to finish before combat (no heavy 0h and 0g runs together) | implementer |
