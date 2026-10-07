@@ -160,3 +160,68 @@
 | 5 | the selection-bias explanation was wrong | tuning and validation were conflated | §4 sizing source |
 | 6 | immutable identity and safeguards were incomplete | a proposal-level sketch | §5.2 |
 | 7 | the analysis budget was undefined | the full-trace cost was underestimated | §5.4 |
+
+## 9. Revision 3, answering the Codex round-2 review (`docs/reviews/tactical_0g_s5_v7_proposal_review_r2_codex.md`, CHANGES_REQUIRED)
+
+**§9 overrides §4–§8 where they differ.**
+
+**9.1 S returns to its §19 role (R2 note on authority).**
+- **DESIGN §19 says:** for registered judging, the primary outcome is the **elimination-win rate**, with S a **reported secondary**. The development W4 trigger needs S > 0, but **registration does not**. My revision 2 wrongly attributed the S conjunct to the owner.
+- **The endpoints are therefore:**
+  - **E1 (regular)** and **E2 (novice):** SUPPORTED iff the one-sided betting lower bound **LB_w > 0.5** for the cluster win fraction, at α = 0.005 each (familywise 0.01 by Bonferroni).
+  - **S, enemy guns destroyed, the time to elimination and own losses per kill** are reported for each head, with a **descriptive** betting lower bound for S. **S is not part of any verdict.**
+- **The owner may still ask for S > 0 as a registered conjunct.** That would need its own sizing; the scale check suggests more than 200 clusters.
+
+**9.2 The betting bound, frozen now (R2-2), one-sided, fixed n:**
+- **Inputs:** X_i ∈ [0, 1] are the cluster win fractions, processed in the sealed schedule-key order (not outcome order).
+- **The predictable estimates:**
+  - mean: μ̂_{i−1} = (1/2 + Σ_{j<i} X_j) / i;
+  - variance: σ̂²_{i−1} = (1/4 + Σ_{j<i} (X_j − μ̂_{j−1})²) / i.
+  - These are the paper's prior-initialized predictable plug-in estimates.
+- **The bet:** for a null mean m ∈ (0, 1), λ_i(m) = min( sqrt( 2 ln(1/α) / (n · σ̂²_{i−1}) ), c/m ), with **c = 1/2**.
+- **The capital (positive side only, hedge weight h = 1, the one-sided construction):** K_n(m) = Π_{i=1..n} [1 + λ_i(m)(X_i − m)], computed in log-space.
+- **The rejection rule:** reject "mean ≤ m" iff ln K_n(m) ≥ ln(1/α).
+- **The lower bound:** LB_w = sup{ m ∈ [0, 1] : ln K_n(m′) ≥ ln(1/α) for every m′ ∈ (0, m] }.
+  - It is computed on a grid of step 10⁻⁴, with outward (conservative) rounding: **the largest grid point at which every point at or below it rejects.**
+  - **Support needs LB_w > 0.5, strictly.**
+- **Validity:** K_n(m) is a nonnegative supermartingale under mean ≤ m, because λ_i(m) is predictable and λ_i(m) < 1/m (Waudby-Smith and Ramdas, Theorem 3 with h = 1). There is no variance-positivity requirement.
+- **The all-win boundary:** the bound stays strictly below 1. The review's witness applies.
+- **The same code serves the planning simulation and the final analysis.** Its hash is sealed before sizing.
+
+**9.3 Sizing against achievable adverse scenarios (R2-1).**
+- **Every scenario is a distribution on the achievable support {0, ½, 1}** (two binary fights per cluster), plus an attributable-failure rate f, coded as a lost fight (W = 0).
+- **Regular** (a planning mean of 0.70 for the win fraction, below the development 0.80):
+
+| Scenario | P(w = 1) | P(w = ½) | P(w = 0) | f | Notes |
+|---|---|---|---|---|---|
+| R-a | 0.70 | 0 | 0.30 | 0 | maximum variance: perfectly concordant orientations |
+| R-b | 0.55 | 0.30 | 0.15 | 0 | development-like shape |
+| R-c | 0.49 | 0.42 | 0.09 | 0 | independent orientations, p = 0.7 per fight |
+| R-d | R-a | | | 0.02 | failure-coded |
+
+- **Novice** (mean 0.85): the same four shapes. **N-a**: P(w = 1) = 0.85, P(w = 0) = 0.15; and so on.
+- **The rule:**
+  1. for each n_c ∈ {60, 80, 100, 120, 150, 200} and each scenario, simulate 20,000 panels (fixed seed 20261008, numpy PCG64; the version is recorded);
+  2. apply the frozen betting bound;
+  3. take the **lower 99% Monte Carlo confidence bound** of the power (Clopper–Pearson), Bonferroni over the 6 × 4 cells per head;
+  4. **n_c = the smallest candidate whose minimum over scenarios is ≥ 0.90,** taking the larger n over the two heads.
+  - **If none qualifies at 200, stop and ask the owner.**
+- **This power is conditional on the declared scenarios.** It is not a property of the unknown population.
+- **The cap of 200** is a new proposal, replacing DESIGN §10's 2,000-cluster boundary for this registration. It needs the owner's approval.
+- **The planning receipt** (input hashes, code hash, the table and n_c) is published before any judging entropy is drawn.
+
+**9.4 Failure attribution (R2-3).**
+- **The precedence:** an integrity or identity breach makes the run **INVALID**, before anything else. Then an infrastructure interruption (host, process exit without a controller failure record, deadline, I/O) makes it **PARTIAL**. Only then is a failure **attributable**.
+- **An attributable failure** needs the native controller failure counter > 0 **for our side,** or a non-finite controller state reported by our controller, in a completed process with a valid terminal record.
+- **An opponent or world failure,** or an opaque failure, stops the run as PARTIAL.
+- **For an attributable v7 failure, the endpoint value is W = 0,** with the label "failure-coded". **Actual diagnostics are kept separately.** No survivor counts, times or ratios are invented; their denominators exclude failure-coded fights and report the exclusions.
+- **Completeness is per endpoint:** a completed head keeps its verdict if the other head stops as PARTIAL, unless there is an integrity breach.
+- **No retries.**
+
+**9.5 Self-audit (revision 3):**
+
+| Finding | What was wrong | Cause | Fix |
+|---|---|---|---|
+| R2-1 | contraction created impossible outcomes and erased loss variance | I transformed the data instead of modelling achievable outcomes | §9.3 achievable scenarios, least favorable |
+| R2-2 | the algorithm was not frozen before sizing; Monte Carlo error was ignored; the S conjunct was very expensive | the sizing preceded the algorithm; I misread §19 | §9.2 frozen formulas; §9.3 the lower MC bound; §9.1 S secondary |
+| R2-3 | failure attribution was unspecified | principles only | §9.4 predicates and precedence |
