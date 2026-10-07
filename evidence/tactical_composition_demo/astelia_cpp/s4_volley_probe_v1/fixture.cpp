@@ -1,0 +1,11 @@
+#include "native/s4_volley_probe_v1.h"
+#include <cassert>
+#include <iostream>
+using namespace astelia::control;
+ObservedUnit u(unsigned id,int team,ObservedRole role,double x,double y,double cd=0){ObservedUnit a;a.id=id;a.team=team;a.role=role;a.x=x;a.y=y;a.hp=a.maxhp=181;a.range=320;a.radius=10;a.speed=55;a.cd=cd;a.cdMax=1.2;return a;}
+int main(){Observation o;o.dt=1.0/30;o.width=1400;o.height=800;o.units={u(1,0,ObservedRole::Artillery,300,300),u(2,0,ObservedRole::Artillery,300,350),u(3,0,ObservedRole::Artillery,300,400,.5),u(4,0,ObservedRole::Ranged,100,100),u(5,0,ObservedRole::Melee,100,150),u(11,1,ObservedRole::Artillery,550,300),u(12,1,ObservedRole::Artillery,550,346),u(13,1,ObservedRole::Artillery,550,392),u(14,1,ObservedRole::Artillery,550,438),u(15,1,ObservedRole::Ranged,180,100)};
+VolleyProbeV1 p1(77,0,{},1);S4V6Controller base(77,0,{});p1.prepare(o);base.prepare(o);assert(p1.decide(o,1).target==0);auto a=p1.decide(o,4),b=base.decide(o,4);assert(a.x==b.x&&a.y==b.y&&a.target==b.target&&a.multiplier==b.multiplier);o.t=.5;o.units[2].cd=0;p1.prepare(o);auto t=p1.decide(o,1).target;assert(t&&p1.decide(o,2).target==t&&p1.decide(o,3).target==t);
+VolleyProbeV1 p2(77,0,{},2);p2.prepare(o);assert(p2.decide(o,1).target&&p2.decide(o,2).target&&p2.decide(o,3).target);assert(p2.decide(o,1).target!=p2.decide(o,2).target&&p2.decide(o,1).target!=p2.decide(o,3).target&&p2.decide(o,2).target!=p2.decide(o,3).target);
+VolleyProbeV1 timeout(77,0,{},1);o.units[1].cd=1;o.units[2].cd=1;o.t=0;timeout.prepare(o);assert(!timeout.decide(o,1).target);o.t=1.5;timeout.prepare(o);assert(timeout.decide(o,1).target);
+VolleyProbeV1 p3(77,0,{},3);p3.prepare(o);S4V6Controller p3base(77,0,{});p3base.prepare(o);assert(p3.decide(o,4).multiplier==0&&p3.decide(o,4).target==p3base.decide(o,4).target);assert(p3.decide(o,5).target==p3base.decide(o,5).target&&p3.decide(o,5).multiplier==p3base.decide(o,5).multiplier);o.units[3].x=540;o.units[3].y=400;o.t+=o.dt;p3.prepare(o);auto r=p3.decide(o,4);assert(r.multiplier==1);for(auto&e:o.units)if(e.team==1&&e.role==ObservedRole::Artillery)assert(std::hypot(r.x-e.x,r.y-e.y)>e.range+12);auto copy=p3.clone();assert(copy->decide(o,4).x==r.x);
+std::cout<<"PASS: hold, k release, distinct net, deadline fallback, baseline direct decisions, safe retreat, clone\n";}
