@@ -1,37 +1,4541 @@
 {
-  "status": "NOT_RUN",
-  "completed_fights": 0,
-  "declared_fights": 160,
+  "status": "DONE",
+  "scope": "descriptive development only",
+  "paired_clusters": [
+    {
+      "head": "regular",
+      "cluster": 0,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": false,
+            "S": -21
+          },
+          {
+            "orientation": 1,
+            "win": false,
+            "S": -23
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 6
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 1
+          }
+        ]
+      },
+      "wins": {
+        "P12": 0,
+        "P16": 2
+      },
+      "mean_S": {
+        "P12": -22.0,
+        "P16": 3.5
+      },
+      "win_difference": {
+        "P16": 2
+      },
+      "mean_S_difference": {
+        "P16": 25.5
+      }
+    },
+    {
+      "head": "regular",
+      "cluster": 1,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": false,
+            "S": -24
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 3
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 7
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 6
+          }
+        ]
+      },
+      "wins": {
+        "P12": 1,
+        "P16": 2
+      },
+      "mean_S": {
+        "P12": -10.5,
+        "P16": 6.5
+      },
+      "win_difference": {
+        "P16": 1
+      },
+      "mean_S_difference": {
+        "P16": 17.0
+      }
+    },
+    {
+      "head": "regular",
+      "cluster": 2,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": false,
+            "S": -25
+          },
+          {
+            "orientation": 1,
+            "win": false,
+            "S": -14
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 2
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 5
+          }
+        ]
+      },
+      "wins": {
+        "P12": 0,
+        "P16": 2
+      },
+      "mean_S": {
+        "P12": -19.5,
+        "P16": 3.5
+      },
+      "win_difference": {
+        "P16": 2
+      },
+      "mean_S_difference": {
+        "P16": 23.0
+      }
+    },
+    {
+      "head": "regular",
+      "cluster": 3,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": false,
+            "S": -2
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 3
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 8
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 6
+          }
+        ]
+      },
+      "wins": {
+        "P12": 1,
+        "P16": 2
+      },
+      "mean_S": {
+        "P12": 0.5,
+        "P16": 7.0
+      },
+      "win_difference": {
+        "P16": 1
+      },
+      "mean_S_difference": {
+        "P16": 6.5
+      }
+    },
+    {
+      "head": "regular",
+      "cluster": 4,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 3
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 2
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 4
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 6
+          }
+        ]
+      },
+      "wins": {
+        "P12": 2,
+        "P16": 2
+      },
+      "mean_S": {
+        "P12": 2.5,
+        "P16": 5.0
+      },
+      "win_difference": {
+        "P16": 0
+      },
+      "mean_S_difference": {
+        "P16": 2.5
+      }
+    },
+    {
+      "head": "regular",
+      "cluster": 5,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": false,
+            "S": -25
+          },
+          {
+            "orientation": 1,
+            "win": false,
+            "S": -15
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 5
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 2
+          }
+        ]
+      },
+      "wins": {
+        "P12": 0,
+        "P16": 2
+      },
+      "mean_S": {
+        "P12": -20.0,
+        "P16": 3.5
+      },
+      "win_difference": {
+        "P16": 2
+      },
+      "mean_S_difference": {
+        "P16": 23.5
+      }
+    },
+    {
+      "head": "regular",
+      "cluster": 6,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": false,
+            "S": -21
+          },
+          {
+            "orientation": 1,
+            "win": false,
+            "S": -25
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 6
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 6
+          }
+        ]
+      },
+      "wins": {
+        "P12": 0,
+        "P16": 2
+      },
+      "mean_S": {
+        "P12": -23.0,
+        "P16": 6.0
+      },
+      "win_difference": {
+        "P16": 2
+      },
+      "mean_S_difference": {
+        "P16": 29.0
+      }
+    },
+    {
+      "head": "regular",
+      "cluster": 7,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 7
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 4
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 6
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 9
+          }
+        ]
+      },
+      "wins": {
+        "P12": 2,
+        "P16": 2
+      },
+      "mean_S": {
+        "P12": 5.5,
+        "P16": 7.5
+      },
+      "win_difference": {
+        "P16": 0
+      },
+      "mean_S_difference": {
+        "P16": 2.0
+      }
+    },
+    {
+      "head": "regular",
+      "cluster": 8,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": false,
+            "S": -22
+          },
+          {
+            "orientation": 1,
+            "win": false,
+            "S": -31
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 9
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 5
+          }
+        ]
+      },
+      "wins": {
+        "P12": 0,
+        "P16": 2
+      },
+      "mean_S": {
+        "P12": -26.5,
+        "P16": 7.0
+      },
+      "win_difference": {
+        "P16": 2
+      },
+      "mean_S_difference": {
+        "P16": 33.5
+      }
+    },
+    {
+      "head": "regular",
+      "cluster": 9,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 7
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 6
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 10
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 10
+          }
+        ]
+      },
+      "wins": {
+        "P12": 2,
+        "P16": 2
+      },
+      "mean_S": {
+        "P12": 6.5,
+        "P16": 10.0
+      },
+      "win_difference": {
+        "P16": 0
+      },
+      "mean_S_difference": {
+        "P16": 3.5
+      }
+    },
+    {
+      "head": "regular",
+      "cluster": 10,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 5
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 6
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": false,
+            "S": -4
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 10
+          }
+        ]
+      },
+      "wins": {
+        "P12": 2,
+        "P16": 1
+      },
+      "mean_S": {
+        "P12": 5.5,
+        "P16": 3.0
+      },
+      "win_difference": {
+        "P16": -1
+      },
+      "mean_S_difference": {
+        "P16": -2.5
+      }
+    },
+    {
+      "head": "regular",
+      "cluster": 11,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": false,
+            "S": -25
+          },
+          {
+            "orientation": 1,
+            "win": false,
+            "S": -25
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 4
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 8
+          }
+        ]
+      },
+      "wins": {
+        "P12": 0,
+        "P16": 2
+      },
+      "mean_S": {
+        "P12": -25.0,
+        "P16": 6.0
+      },
+      "win_difference": {
+        "P16": 2
+      },
+      "mean_S_difference": {
+        "P16": 31.0
+      }
+    },
+    {
+      "head": "regular",
+      "cluster": 12,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": false,
+            "S": -17
+          },
+          {
+            "orientation": 1,
+            "win": false,
+            "S": -22
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 7
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 6
+          }
+        ]
+      },
+      "wins": {
+        "P12": 0,
+        "P16": 2
+      },
+      "mean_S": {
+        "P12": -19.5,
+        "P16": 6.5
+      },
+      "win_difference": {
+        "P16": 2
+      },
+      "mean_S_difference": {
+        "P16": 26.0
+      }
+    },
+    {
+      "head": "regular",
+      "cluster": 13,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": false,
+            "S": -20
+          },
+          {
+            "orientation": 1,
+            "win": false,
+            "S": -22
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 3
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 7
+          }
+        ]
+      },
+      "wins": {
+        "P12": 0,
+        "P16": 2
+      },
+      "mean_S": {
+        "P12": -21.0,
+        "P16": 5.0
+      },
+      "win_difference": {
+        "P16": 2
+      },
+      "mean_S_difference": {
+        "P16": 26.0
+      }
+    },
+    {
+      "head": "regular",
+      "cluster": 14,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": false,
+            "S": -26
+          },
+          {
+            "orientation": 1,
+            "win": false,
+            "S": -27
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 1
+          },
+          {
+            "orientation": 1,
+            "win": false,
+            "S": -18
+          }
+        ]
+      },
+      "wins": {
+        "P12": 0,
+        "P16": 1
+      },
+      "mean_S": {
+        "P12": -26.5,
+        "P16": -8.5
+      },
+      "win_difference": {
+        "P16": 1
+      },
+      "mean_S_difference": {
+        "P16": 18.0
+      }
+    },
+    {
+      "head": "regular",
+      "cluster": 15,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": false,
+            "S": -25
+          },
+          {
+            "orientation": 1,
+            "win": false,
+            "S": -31
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": false,
+            "S": -19
+          },
+          {
+            "orientation": 1,
+            "win": false,
+            "S": -29
+          }
+        ]
+      },
+      "wins": {
+        "P12": 0,
+        "P16": 0
+      },
+      "mean_S": {
+        "P12": -28.0,
+        "P16": -24.0
+      },
+      "win_difference": {
+        "P16": 0
+      },
+      "mean_S_difference": {
+        "P16": 4.0
+      }
+    },
+    {
+      "head": "regular",
+      "cluster": 16,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 3
+          },
+          {
+            "orientation": 1,
+            "win": false,
+            "S": -23
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 9
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 9
+          }
+        ]
+      },
+      "wins": {
+        "P12": 1,
+        "P16": 2
+      },
+      "mean_S": {
+        "P12": -10.0,
+        "P16": 9.0
+      },
+      "win_difference": {
+        "P16": 1
+      },
+      "mean_S_difference": {
+        "P16": 19.0
+      }
+    },
+    {
+      "head": "regular",
+      "cluster": 17,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": false,
+            "S": -35
+          },
+          {
+            "orientation": 1,
+            "win": false,
+            "S": -32
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": false,
+            "S": -26
+          },
+          {
+            "orientation": 1,
+            "win": false,
+            "S": -21
+          }
+        ]
+      },
+      "wins": {
+        "P12": 0,
+        "P16": 0
+      },
+      "mean_S": {
+        "P12": -33.5,
+        "P16": -23.5
+      },
+      "win_difference": {
+        "P16": 0
+      },
+      "mean_S_difference": {
+        "P16": 10.0
+      }
+    },
+    {
+      "head": "regular",
+      "cluster": 18,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": false,
+            "S": -29
+          },
+          {
+            "orientation": 1,
+            "win": false,
+            "S": -22
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 6
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 6
+          }
+        ]
+      },
+      "wins": {
+        "P12": 0,
+        "P16": 2
+      },
+      "mean_S": {
+        "P12": -25.5,
+        "P16": 6.0
+      },
+      "win_difference": {
+        "P16": 2
+      },
+      "mean_S_difference": {
+        "P16": 31.5
+      }
+    },
+    {
+      "head": "regular",
+      "cluster": 19,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 7
+          },
+          {
+            "orientation": 1,
+            "win": false,
+            "S": -20
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 8
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 9
+          }
+        ]
+      },
+      "wins": {
+        "P12": 1,
+        "P16": 2
+      },
+      "mean_S": {
+        "P12": -6.5,
+        "P16": 8.5
+      },
+      "win_difference": {
+        "P16": 1
+      },
+      "mean_S_difference": {
+        "P16": 15.0
+      }
+    },
+    {
+      "head": "novice",
+      "cluster": 0,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 24
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 10
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 22
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 22
+          }
+        ]
+      },
+      "wins": {
+        "P12": 2,
+        "P16": 2
+      },
+      "mean_S": {
+        "P12": 17.0,
+        "P16": 22.0
+      },
+      "win_difference": {
+        "P16": 0
+      },
+      "mean_S_difference": {
+        "P16": 5.0
+      }
+    },
+    {
+      "head": "novice",
+      "cluster": 1,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 24
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 22
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 28
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 30
+          }
+        ]
+      },
+      "wins": {
+        "P12": 2,
+        "P16": 2
+      },
+      "mean_S": {
+        "P12": 23.0,
+        "P16": 29.0
+      },
+      "win_difference": {
+        "P16": 0
+      },
+      "mean_S_difference": {
+        "P16": 6.0
+      }
+    },
+    {
+      "head": "novice",
+      "cluster": 2,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 20
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 18
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 28
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 20
+          }
+        ]
+      },
+      "wins": {
+        "P12": 2,
+        "P16": 2
+      },
+      "mean_S": {
+        "P12": 19.0,
+        "P16": 24.0
+      },
+      "win_difference": {
+        "P16": 0
+      },
+      "mean_S_difference": {
+        "P16": 5.0
+      }
+    },
+    {
+      "head": "novice",
+      "cluster": 3,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 10
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 12
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 22
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 17
+          }
+        ]
+      },
+      "wins": {
+        "P12": 2,
+        "P16": 2
+      },
+      "mean_S": {
+        "P12": 11.0,
+        "P16": 19.5
+      },
+      "win_difference": {
+        "P16": 0
+      },
+      "mean_S_difference": {
+        "P16": 8.5
+      }
+    },
+    {
+      "head": "novice",
+      "cluster": 4,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 22
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 27
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 28
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 25
+          }
+        ]
+      },
+      "wins": {
+        "P12": 2,
+        "P16": 2
+      },
+      "mean_S": {
+        "P12": 24.5,
+        "P16": 26.5
+      },
+      "win_difference": {
+        "P16": 0
+      },
+      "mean_S_difference": {
+        "P16": 2.0
+      }
+    },
+    {
+      "head": "novice",
+      "cluster": 5,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 21
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 16
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 28
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 26
+          }
+        ]
+      },
+      "wins": {
+        "P12": 2,
+        "P16": 2
+      },
+      "mean_S": {
+        "P12": 18.5,
+        "P16": 27.0
+      },
+      "win_difference": {
+        "P16": 0
+      },
+      "mean_S_difference": {
+        "P16": 8.5
+      }
+    },
+    {
+      "head": "novice",
+      "cluster": 6,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 19
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 22
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 29
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 28
+          }
+        ]
+      },
+      "wins": {
+        "P12": 2,
+        "P16": 2
+      },
+      "mean_S": {
+        "P12": 20.5,
+        "P16": 28.5
+      },
+      "win_difference": {
+        "P16": 0
+      },
+      "mean_S_difference": {
+        "P16": 8.0
+      }
+    },
+    {
+      "head": "novice",
+      "cluster": 7,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 18
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 16
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 20
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 19
+          }
+        ]
+      },
+      "wins": {
+        "P12": 2,
+        "P16": 2
+      },
+      "mean_S": {
+        "P12": 17.0,
+        "P16": 19.5
+      },
+      "win_difference": {
+        "P16": 0
+      },
+      "mean_S_difference": {
+        "P16": 2.5
+      }
+    },
+    {
+      "head": "novice",
+      "cluster": 8,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 14
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 15
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 23
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 27
+          }
+        ]
+      },
+      "wins": {
+        "P12": 2,
+        "P16": 2
+      },
+      "mean_S": {
+        "P12": 14.5,
+        "P16": 25.0
+      },
+      "win_difference": {
+        "P16": 0
+      },
+      "mean_S_difference": {
+        "P16": 10.5
+      }
+    },
+    {
+      "head": "novice",
+      "cluster": 9,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 20
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 16
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 12
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 19
+          }
+        ]
+      },
+      "wins": {
+        "P12": 2,
+        "P16": 2
+      },
+      "mean_S": {
+        "P12": 18.0,
+        "P16": 15.5
+      },
+      "win_difference": {
+        "P16": 0
+      },
+      "mean_S_difference": {
+        "P16": -2.5
+      }
+    },
+    {
+      "head": "novice",
+      "cluster": 10,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 21
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 28
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 28
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 29
+          }
+        ]
+      },
+      "wins": {
+        "P12": 2,
+        "P16": 2
+      },
+      "mean_S": {
+        "P12": 24.5,
+        "P16": 28.5
+      },
+      "win_difference": {
+        "P16": 0
+      },
+      "mean_S_difference": {
+        "P16": 4.0
+      }
+    },
+    {
+      "head": "novice",
+      "cluster": 11,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 15
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 14
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 26
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 14
+          }
+        ]
+      },
+      "wins": {
+        "P12": 2,
+        "P16": 2
+      },
+      "mean_S": {
+        "P12": 14.5,
+        "P16": 20.0
+      },
+      "win_difference": {
+        "P16": 0
+      },
+      "mean_S_difference": {
+        "P16": 5.5
+      }
+    },
+    {
+      "head": "novice",
+      "cluster": 12,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 20
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 21
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 16
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 25
+          }
+        ]
+      },
+      "wins": {
+        "P12": 2,
+        "P16": 2
+      },
+      "mean_S": {
+        "P12": 20.5,
+        "P16": 20.5
+      },
+      "win_difference": {
+        "P16": 0
+      },
+      "mean_S_difference": {
+        "P16": 0.0
+      }
+    },
+    {
+      "head": "novice",
+      "cluster": 13,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 23
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 19
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 26
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 22
+          }
+        ]
+      },
+      "wins": {
+        "P12": 2,
+        "P16": 2
+      },
+      "mean_S": {
+        "P12": 21.0,
+        "P16": 24.0
+      },
+      "win_difference": {
+        "P16": 0
+      },
+      "mean_S_difference": {
+        "P16": 3.0
+      }
+    },
+    {
+      "head": "novice",
+      "cluster": 14,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 23
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 14
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 22
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 13
+          }
+        ]
+      },
+      "wins": {
+        "P12": 2,
+        "P16": 2
+      },
+      "mean_S": {
+        "P12": 18.5,
+        "P16": 17.5
+      },
+      "win_difference": {
+        "P16": 0
+      },
+      "mean_S_difference": {
+        "P16": -1.0
+      }
+    },
+    {
+      "head": "novice",
+      "cluster": 15,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 13
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 16
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 18
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 27
+          }
+        ]
+      },
+      "wins": {
+        "P12": 2,
+        "P16": 2
+      },
+      "mean_S": {
+        "P12": 14.5,
+        "P16": 22.5
+      },
+      "win_difference": {
+        "P16": 0
+      },
+      "mean_S_difference": {
+        "P16": 8.0
+      }
+    },
+    {
+      "head": "novice",
+      "cluster": 16,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 22
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 16
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 24
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 24
+          }
+        ]
+      },
+      "wins": {
+        "P12": 2,
+        "P16": 2
+      },
+      "mean_S": {
+        "P12": 19.0,
+        "P16": 24.0
+      },
+      "win_difference": {
+        "P16": 0
+      },
+      "mean_S_difference": {
+        "P16": 5.0
+      }
+    },
+    {
+      "head": "novice",
+      "cluster": 17,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 19
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 30
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 22
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 20
+          }
+        ]
+      },
+      "wins": {
+        "P12": 2,
+        "P16": 2
+      },
+      "mean_S": {
+        "P12": 24.5,
+        "P16": 21.0
+      },
+      "win_difference": {
+        "P16": 0
+      },
+      "mean_S_difference": {
+        "P16": -3.5
+      }
+    },
+    {
+      "head": "novice",
+      "cluster": 18,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 24
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 22
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 25
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 18
+          }
+        ]
+      },
+      "wins": {
+        "P12": 2,
+        "P16": 2
+      },
+      "mean_S": {
+        "P12": 23.0,
+        "P16": 21.5
+      },
+      "win_difference": {
+        "P16": 0
+      },
+      "mean_S_difference": {
+        "P16": -1.5
+      }
+    },
+    {
+      "head": "novice",
+      "cluster": 19,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 22
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 24
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 24
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 23
+          }
+        ]
+      },
+      "wins": {
+        "P12": 2,
+        "P16": 2
+      },
+      "mean_S": {
+        "P12": 23.0,
+        "P16": 23.5
+      },
+      "win_difference": {
+        "P16": 0
+      },
+      "mean_S_difference": {
+        "P16": 0.5
+      }
+    }
+  ],
   "P12_sanity": {
-    "status": "NOT_RUN"
+    "status": "WITHIN_DECLARED_BOUNDS",
+    "novice_sanity_flag": false,
+    "reported_before_interventions": true,
+    "cells": [
+      {
+        "head": "regular",
+        "fights": 40,
+        "elimination_wins": 12,
+        "timeouts": 0,
+        "mean_S": -14.825,
+        "mean_enemy_guns_destroyed": 8.525,
+        "mean_own_guns_lost": 8.6,
+        "mean_own_losses": 48.6
+      },
+      {
+        "head": "novice",
+        "fights": 40,
+        "elimination_wins": 40,
+        "timeouts": 0,
+        "mean_S": 19.3,
+        "mean_enemy_guns_destroyed": 10.0,
+        "mean_own_guns_lost": 0.05,
+        "mean_own_losses": 30.7
+      }
+    ],
+    "control_ids": [
+      "P12_novice_c00_o0",
+      "P12_novice_c00_o1",
+      "P12_novice_c01_o0",
+      "P12_novice_c01_o1",
+      "P12_novice_c02_o0",
+      "P12_novice_c02_o1",
+      "P12_novice_c03_o0",
+      "P12_novice_c03_o1",
+      "P12_novice_c04_o0",
+      "P12_novice_c04_o1",
+      "P12_novice_c05_o0",
+      "P12_novice_c05_o1",
+      "P12_novice_c06_o0",
+      "P12_novice_c06_o1",
+      "P12_novice_c07_o0",
+      "P12_novice_c07_o1",
+      "P12_novice_c08_o0",
+      "P12_novice_c08_o1",
+      "P12_novice_c09_o0",
+      "P12_novice_c09_o1",
+      "P12_novice_c10_o0",
+      "P12_novice_c10_o1",
+      "P12_novice_c11_o0",
+      "P12_novice_c11_o1",
+      "P12_novice_c12_o0",
+      "P12_novice_c12_o1",
+      "P12_novice_c13_o0",
+      "P12_novice_c13_o1",
+      "P12_novice_c14_o0",
+      "P12_novice_c14_o1",
+      "P12_novice_c15_o0",
+      "P12_novice_c15_o1",
+      "P12_novice_c16_o0",
+      "P12_novice_c16_o1",
+      "P12_novice_c17_o0",
+      "P12_novice_c17_o1",
+      "P12_novice_c18_o0",
+      "P12_novice_c18_o1",
+      "P12_novice_c19_o0",
+      "P12_novice_c19_o1",
+      "P12_regular_c00_o0",
+      "P12_regular_c00_o1",
+      "P12_regular_c01_o0",
+      "P12_regular_c01_o1",
+      "P12_regular_c02_o0",
+      "P12_regular_c02_o1",
+      "P12_regular_c03_o0",
+      "P12_regular_c03_o1",
+      "P12_regular_c04_o0",
+      "P12_regular_c04_o1",
+      "P12_regular_c05_o0",
+      "P12_regular_c05_o1",
+      "P12_regular_c06_o0",
+      "P12_regular_c06_o1",
+      "P12_regular_c07_o0",
+      "P12_regular_c07_o1",
+      "P12_regular_c08_o0",
+      "P12_regular_c08_o1",
+      "P12_regular_c09_o0",
+      "P12_regular_c09_o1",
+      "P12_regular_c10_o0",
+      "P12_regular_c10_o1",
+      "P12_regular_c11_o0",
+      "P12_regular_c11_o1",
+      "P12_regular_c12_o0",
+      "P12_regular_c12_o1",
+      "P12_regular_c13_o0",
+      "P12_regular_c13_o1",
+      "P12_regular_c14_o0",
+      "P12_regular_c14_o1",
+      "P12_regular_c15_o0",
+      "P12_regular_c15_o1",
+      "P12_regular_c16_o0",
+      "P12_regular_c16_o1",
+      "P12_regular_c17_o0",
+      "P12_regular_c17_o1",
+      "P12_regular_c18_o0",
+      "P12_regular_c18_o1",
+      "P12_regular_c19_o0",
+      "P12_regular_c19_o1"
+    ],
+    "utc": "2026-10-07T16:00:44Z",
+    "declaration_sha256": "68352d43e62aefb76e49f41ad10eb175527fee31462661b29227b631ac524be3"
   },
-  "engineering": "NOT_RUN",
   "rows": [
     {
       "arm": "P12",
       "head": "regular",
-      "completed_fights": 0,
-      "measurements": "not_run"
+      "fights": 40,
+      "failure_count": 0,
+      "gun_values": {
+        "target_sum": 451931,
+        "target_ticks": 167506,
+        "mean_chosen_target_V": 2.697998877652144,
+        "focus_ticks": 318419,
+        "mean_focus_V": 2.7248154161654927,
+        "mean_anchor_V": 2.620459206265958,
+        "no_reachable_target_ticks": 150913
+      },
+      "melee": {
+        "counts": {
+          "prepare_living_melee_ticks": 195916,
+          "action_reconciled_ticks": 195916,
+          "clipped_goal_ticks": 0,
+          "clipped_assigned_gun_within_splash_ticks": 0,
+          "raw_other_gun_body_overlap_ticks": 199,
+          "clipped_other_gun_body_overlap_ticks": 199,
+          "coincident_other_gun_shifted_goal_ticks": 0,
+          "displacement_known_ticks": 195516,
+          "moving_ticks": 195516,
+          "arrival_available_ticks": 195516,
+          "p12_raw_anchor_arrival_ticks": 13678,
+          "p12_clipped_anchor_arrival_ticks": 13678,
+          "raw_arrival_ticks": 13678,
+          "clipped_arrival_ticks": 13678,
+          "holding_ticks": 12978,
+          "raw_shared_point_pairs": 211870,
+          "clipped_shared_point_pairs": 211870,
+          "reassignment_ticks": 3729,
+          "post_step_dead_ticks": 400,
+          "post_melee_singleton_ticks": 935,
+          "gun1_singleton_ticks": 1150,
+          "gun0_singleton_ticks": 1325,
+          "arrival_unavailable_ticks": 400,
+          "first_arrival_units": 229,
+          "first_arrival_censored_units": 171
+        },
+        "p12_raw_anchor_arrival_fraction": 0.06981563527225954,
+        "p12_clipped_anchor_arrival_fraction": 0.06981563527225954,
+        "raw_arrival_fraction": 0.06981563527225954,
+        "clipped_arrival_fraction": 0.06981563527225954,
+        "holding_fraction": 0.06624267543232815,
+        "distributions": {
+          "gun0_nearest": {
+            "n": 316769,
+            "median": 49.69689198513549,
+            "p10": 19.815751284849547
+          },
+          "gun1_nearest": {
+            "n": 275697,
+            "median": 47.51372112330437,
+            "p10": 30.263403740697665
+          },
+          "raw_assigned_gun_distance": {
+            "n": 195916,
+            "median": 60.0,
+            "p10": 59.99999999999996
+          },
+          "clipped_assigned_gun_distance": {
+            "n": 195916,
+            "median": 60.0,
+            "p10": 59.99999999999996
+          },
+          "raw_other_gun_body_clearance": {
+            "n": 195916,
+            "median": 42.44699098835525,
+            "p10": 33.12016779420166
+          },
+          "clipped_other_gun_body_clearance": {
+            "n": 195916,
+            "median": 42.44699098835525,
+            "p10": 33.12016779420166
+          },
+          "clipped_other_gun_shifted_goal_distance": {
+            "n": 195916,
+            "median": 113.22725671413261,
+            "p10": 43.49848969624516
+          },
+          "realized_melee_to_melee_nearest": {
+            "n": 194581,
+            "median": 32.47243915198635,
+            "p10": 31.335853776490303
+          },
+          "actual_displacement": {
+            "n": 195516,
+            "median": 1.3333333333333366,
+            "p10": 1.0170746143797027
+          },
+          "realized_melee_to_gun_nearest": {
+            "n": 195516,
+            "median": 102.00153693265113,
+            "p10": 66.02222041894
+          },
+          "goal_shift_from_p12_px": {
+            "n": 195516,
+            "median": 0.0,
+            "p10": 0.0
+          },
+          "raw_point_error": {
+            "n": 195516,
+            "median": 52.41275790508283,
+            "p10": 22.868403144359675
+          },
+          "clipped_goal_error": {
+            "n": 195516,
+            "median": 52.41275790508283,
+            "p10": 22.868403144359675
+          },
+          "own_melee_to_enemy_ranged": {
+            "n": 195516,
+            "median": 320.98030399657875,
+            "p10": 133.0405004569451
+          },
+          "gun0_nearest_10_20": {
+            "n": 118388,
+            "median": 56.10017868297389,
+            "p10": 24.818169601348743
+          },
+          "gun1_nearest_10_20": {
+            "n": 108183,
+            "median": 47.48961609436745,
+            "p10": 30.83326857157138
+          },
+          "realized_melee_to_melee_nearest_10_20": {
+            "n": 74467,
+            "median": 31.999999999999993,
+            "p10": 30.778596907155272
+          },
+          "actual_displacement_10_20": {
+            "n": 75339,
+            "median": 1.3333333333332944,
+            "p10": 0.6886720278572277
+          },
+          "realized_melee_to_gun_nearest_10_20": {
+            "n": 75339,
+            "median": 92.41413392728543,
+            "p10": 55.41413830077356
+          },
+          "own_melee_to_enemy_ranged_10_20": {
+            "n": 75339,
+            "median": 150.56507789888295,
+            "p10": 118.42377524141024
+          },
+          "gun0_nearest_20_30": {
+            "n": 76192,
+            "median": 60.44058317869094,
+            "p10": 57.90569122202887
+          },
+          "gun1_nearest_20_30": {
+            "n": 44864,
+            "median": 47.84212421735976,
+            "p10": 27.76068342966836
+          },
+          "actual_displacement_20_30": {
+            "n": 177,
+            "median": 1.3333333333332837,
+            "p10": 0.7308089109970792
+          },
+          "realized_melee_to_gun_nearest_20_30": {
+            "n": 177,
+            "median": 141.24549627598094,
+            "p10": 116.42464067716216
+          },
+          "own_melee_to_enemy_ranged_20_30": {
+            "n": 177,
+            "median": 139.37195868389344,
+            "p10": 117.43014540979914
+          },
+          "realized_melee_to_melee_nearest_20_30": {
+            "n": 114,
+            "median": 96.07277724927597,
+            "p10": 41.47895274873277
+          }
+        }
+      },
+      "mean_own_melee_losses": 10,
+      "mean_own_ranged_losses": 30,
+      "own_melee_killers": {
+        "1_artillery": 264,
+        "1_melee": 28,
+        "1_ranged": 105,
+        "0_ranged": 2,
+        "0_artillery": 1
+      },
+      "elimination_wins": 12,
+      "timeouts": 0,
+      "mean_S": -14.825,
+      "mean_enemy_guns_destroyed": 8.525,
+      "mean_own_guns_lost": 8.6,
+      "mean_own_losses": 48.6,
+      "sides": [
+        {
+          "counts": {
+            "living_ticks": 363886,
+            "any_target_range_ticks": 233327,
+            "gun_target_range_ticks": 167506,
+            "windup_ticks": 143270,
+            "launch_ticks": 6466,
+            "move_command_ticks": 358234,
+            "command_range_ticks": 227675,
+            "hold_range_ticks": 5652,
+            "command_launch_ticks": 6330,
+            "hold_launch_ticks": 136,
+            "command_launch_range_ticks": 6330,
+            "hold_launch_range_ticks": 136,
+            "movement_known_ticks": 363542,
+            "moving_ticks": 333625,
+            "moving_launch_ticks": 5633,
+            "stationary_launch_ticks": 827,
+            "target_switches": 7949,
+            "incoming_damage_1_ranged": 26132,
+            "incoming_damage_1_artillery": 35788,
+            "death_interval_ticks": 344,
+            "incoming_damage_1_melee": 5602,
+            "incoming_damage_0_artillery": 90,
+            "other_target_shell_gun_victims": 0,
+            "other_target_shell_gun_damage": 0,
+            "shells_hitting_0_guns": 2494,
+            "launches": 6466,
+            "other_launches": 1830,
+            "launches_with_airborne_target_switch": 1725,
+            "gun_target_shell_gun_victims": 4618,
+            "gun_target_shell_gun_damage": 64620,
+            "shells_hitting_1_guns": 3370,
+            "gun_launches": 4636,
+            "gun_launches_hit_any_gun": 3972,
+            "gun_launches_hit_intended_gun": 3906,
+            "gun_launches_with_airborne_target_switch": 1063,
+            "gun_launches_with_airborne_target_switch_hit": 446,
+            "shells_hitting_2_guns": 558,
+            "shells_hitting_3_guns": 44,
+            "gun_launches_target_dead_before_scheduled_impact": 690,
+            "gun_launches_no_gun_hit_target_dead_before_scheduled_impact": 631,
+            "gun_launches_airborne_at_end": 12
+          },
+          "gun_targeted_launches": 4636,
+          "successful_gun_targeted_shells": 3972,
+          "gun_victims": 4618,
+          "gun_victims_per_successful_shell": 1.162638469284995,
+          "artillery_hp_to_opposing_guns": 64620,
+          "incidental_hp": 0,
+          "already_dead_before_impact": 690,
+          "airborne_at_end": 12
+        },
+        {
+          "counts": {
+            "living_ticks": 277188,
+            "any_target_range_ticks": 154623,
+            "gun_target_range_ticks": 130402,
+            "windup_ticks": 107403,
+            "launch_ticks": 4080,
+            "move_command_ticks": 277160,
+            "command_range_ticks": 154595,
+            "hold_range_ticks": 28,
+            "command_launch_ticks": 4078,
+            "hold_launch_ticks": 2,
+            "command_launch_range_ticks": 4077,
+            "hold_launch_range_ticks": 2,
+            "movement_known_ticks": 276847,
+            "moving_ticks": 203472,
+            "moving_launch_ticks": 3165,
+            "stationary_launch_ticks": 907,
+            "target_switches": 5312,
+            "incoming_damage_0_artillery": 64620,
+            "death_interval_ticks": 341,
+            "other_target_shell_gun_victims": 1219,
+            "other_target_shell_gun_damage": 18194,
+            "shells_hitting_0_guns": 2125,
+            "launches": 4080,
+            "other_launches": 2689,
+            "launches_with_airborne_target_switch": 1885,
+            "shells_hitting_3_guns": 102,
+            "other_launches_hit_gun": 780,
+            "shells_hitting_2_guns": 267,
+            "shells_hitting_1_guns": 1580,
+            "gun_target_shell_gun_victims": 1225,
+            "gun_target_shell_gun_damage": 17594,
+            "gun_launches": 1391,
+            "gun_launches_hit_any_gun": 1175,
+            "gun_launches_hit_intended_gun": 1169,
+            "gun_launches_target_dead_before_scheduled_impact": 215,
+            "gun_launches_no_gun_hit_target_dead_before_scheduled_impact": 209,
+            "gun_launches_with_airborne_target_switch": 320,
+            "gun_launches_with_airborne_target_switch_hit": 165,
+            "gun_launches_airborne_at_end": 38,
+            "incoming_damage_0_ranged": 146,
+            "shells_hitting_4_guns": 6
+          },
+          "gun_targeted_launches": 1391,
+          "successful_gun_targeted_shells": 1175,
+          "gun_victims": 1225,
+          "gun_victims_per_successful_shell": 1.0425531914893618,
+          "artillery_hp_to_opposing_guns": 35788,
+          "incidental_hp": 18194,
+          "already_dead_before_impact": 215,
+          "airborne_at_end": 38
+        }
+      ],
+      "nearest": [
+        {
+          "n": 316769,
+          "median": 49.69689198513549,
+          "p10": 19.815751284849547
+        },
+        {
+          "n": 275697,
+          "median": 47.51372112330437,
+          "p10": 30.263403740697665
+        }
+      ],
+      "early_10_20_nearest": [
+        {
+          "n": 118388,
+          "median": 56.10017868297389,
+          "p10": 24.818169601348743
+        },
+        {
+          "n": 108183,
+          "median": 47.48961609436745,
+          "p10": 30.83326857157138
+        }
+      ],
+      "nearest_singleton_ticks": [
+        1325,
+        1150
+      ],
+      "gun_phase_ticks": [
+        318094,
+        276847
+      ],
+      "gun_range_ticks": [
+        167506,
+        130402
+      ],
+      "spacing_audit": {
+        "prepare_gun_ticks": 318419,
+        "clipped_goal_ticks": 78,
+        "shift_ticks": 246508,
+        "zero_multiplier_shift_ticks": 468,
+        "raw_goal_out_of_focus_band_ticks": 57190,
+        "coincident_pair_terms": 0,
+        "neighbour_terms": 754758,
+        "clipped_action_reconciled_ticks": 318419
+      },
+      "enemy_over_own_artillery_hp_ratio": 0.5538223460229031,
+      "escort": {
+        "counts": {
+          "gun_prepare_ticks": 318419,
+          "gun_focus_V_sum": 867633,
+          "gun_anchor_V_sum": 834404,
+          "gun_no_reachable_target_ticks": 150913,
+          "prepare_living_ranged_ticks": 514043,
+          "action_reconciled_ticks": 514043,
+          "target_opportunity_ticks": 131267,
+          "threat_selected_ticks": 1912,
+          "clipped_goal_ticks": 0,
+          "clipped_assigned_gun_within_splash_ticks": 0,
+          "raw_other_gun_body_overlap_ticks": 34,
+          "clipped_other_gun_body_overlap_ticks": 34,
+          "coincident_other_gun_shifted_goal_ticks": 0,
+          "displacement_known_ticks": 512843,
+          "moving_ticks": 509910,
+          "arrival_available_ticks": 512843,
+          "p12_raw_anchor_arrival_ticks": 179601,
+          "p12_clipped_anchor_arrival_ticks": 179601,
+          "raw_arrival_ticks": 179601,
+          "clipped_arrival_ticks": 179601,
+          "holding_ticks": 175013,
+          "raw_shared_point_pairs": 1215616,
+          "clipped_shared_point_pairs": 1215616,
+          "reassignment_ticks": 11015,
+          "target_opportunity_ticks_10_20": 130369,
+          "threat_selected_ticks_10_20": 1688,
+          "gun_target_V_ticks": 167506,
+          "gun_target_V_sum": 451931,
+          "post_step_dead_ticks": 1200,
+          "artillery_enemy_ranged_last_hits_full": 674,
+          "artillery_enemy_ranged_last_hits_lt20": 487,
+          "artillery_enemy_ranged_last_hits_lt30": 533,
+          "post_ranged_singleton_ticks": 1715,
+          "gun1_singleton_ticks": 1150,
+          "gun0_singleton_ticks": 1325,
+          "arrival_unavailable_ticks": 1200,
+          "first_arrival_units": 1065,
+          "first_arrival_censored_units": 135,
+          "target_opportunity_ticks_20_30": 857,
+          "threat_selected_ticks_20_30": 224,
+          "ranged_enemy_ranged_last_hits_full": 4,
+          "ranged_enemy_ranged_last_hits_lt20": 4,
+          "ranged_enemy_ranged_last_hits_lt30": 4
+        },
+        "window_threat_selection": [
+          {
+            "interval": [
+              10,
+              20
+            ],
+            "opportunities": 130369,
+            "selected": 1688,
+            "fraction": 0.012947863372427494
+          },
+          {
+            "interval": [
+              20,
+              30
+            ],
+            "opportunities": 857,
+            "selected": 224,
+            "fraction": 0.2613768961493582
+          }
+        ],
+        "p12_raw_anchor_arrival_fraction": 0.3493890588919604,
+        "p12_clipped_anchor_arrival_fraction": 0.3493890588919604,
+        "raw_arrival_fraction": 0.3493890588919604,
+        "clipped_arrival_fraction": 0.3493890588919604,
+        "holding_fraction": 0.34046373552407094,
+        "threat_selection_fraction": 0.014565732438465113,
+        "distributions": {
+          "gun0_nearest": {
+            "n": 316769,
+            "median": 49.69689198513549,
+            "p10": 19.815751284849547
+          },
+          "gun1_nearest": {
+            "n": 275697,
+            "median": 47.51372112330437,
+            "p10": 30.263403740697665
+          },
+          "raw_assigned_gun_distance": {
+            "n": 514043,
+            "median": 60.0,
+            "p10": 59.99999999999996
+          },
+          "clipped_assigned_gun_distance": {
+            "n": 514043,
+            "median": 60.0,
+            "p10": 59.99999999999996
+          },
+          "raw_other_gun_body_clearance": {
+            "n": 514043,
+            "median": 47.0925880875229,
+            "p10": 38.92357053589164
+          },
+          "clipped_other_gun_body_clearance": {
+            "n": 514043,
+            "median": 47.0925880875229,
+            "p10": 38.92357053589164
+          },
+          "clipped_other_gun_shifted_goal_distance": {
+            "n": 514043,
+            "median": 144.50793536912974,
+            "p10": 36.93432383896651
+          },
+          "realized_ranged_to_ranged_nearest": {
+            "n": 511128,
+            "median": 17.190509979108946,
+            "p10": 15.457499406244562
+          },
+          "actual_displacement": {
+            "n": 512843,
+            "median": 1.7017410969866769,
+            "p10": 0.9853532074702781
+          },
+          "realized_ranged_to_gun_nearest": {
+            "n": 512843,
+            "median": 36.572490416186135,
+            "p10": 18.7812236819515
+          },
+          "goal_shift_from_p12_px": {
+            "n": 512843,
+            "median": 0.0,
+            "p10": 0.0
+          },
+          "raw_point_error": {
+            "n": 512843,
+            "median": 27.36110707874265,
+            "p10": 4.336453818575067
+          },
+          "clipped_goal_error": {
+            "n": 512843,
+            "median": 27.36110707874265,
+            "p10": 4.336453818575067
+          },
+          "own_ranged_to_enemy_ranged": {
+            "n": 512843,
+            "median": 423.6698845379911,
+            "p10": 178.05569687781397
+          },
+          "gun0_nearest_10_20": {
+            "n": 118388,
+            "median": 56.10017868297389,
+            "p10": 24.818169601348743
+          },
+          "gun1_nearest_10_20": {
+            "n": 108183,
+            "median": 47.48961609436745,
+            "p10": 30.83326857157138
+          },
+          "realized_ranged_to_ranged_nearest_10_20": {
+            "n": 150654,
+            "median": 17.531646677379563,
+            "p10": 16.189691610188767
+          },
+          "actual_displacement_10_20": {
+            "n": 151913,
+            "median": 1.6631503332249205,
+            "p10": 0.822717894187605
+          },
+          "realized_ranged_to_gun_nearest_10_20": {
+            "n": 151913,
+            "median": 41.28134491752397,
+            "p10": 18.988909444650684
+          },
+          "own_ranged_to_enemy_ranged_10_20": {
+            "n": 151913,
+            "median": 196.41416180149906,
+            "p10": 149.92691847007902
+          },
+          "gun0_nearest_20_30": {
+            "n": 76192,
+            "median": 60.44058317869094,
+            "p10": 57.90569122202887
+          },
+          "gun1_nearest_20_30": {
+            "n": 44864,
+            "median": 47.84212421735976,
+            "p10": 27.76068342966836
+          },
+          "actual_displacement_20_30": {
+            "n": 930,
+            "median": 1.8333333333333206,
+            "p10": 0.0
+          },
+          "realized_ranged_to_gun_nearest_20_30": {
+            "n": 930,
+            "median": 58.81004836316822,
+            "p10": 53.55145588843882
+          },
+          "own_ranged_to_enemy_ranged_20_30": {
+            "n": 930,
+            "median": 183.43406816393144,
+            "p10": 150.26956933565756
+          },
+          "realized_ranged_to_ranged_nearest_20_30": {
+            "n": 474,
+            "median": 85.47243768544382,
+            "p10": 18.000000000000064
+          }
+        },
+        "gun_hp_loss_bins": [
+          {
+            "interval": [
+              0,
+              10
+            ],
+            "hp": {}
+          },
+          {
+            "interval": [
+              10,
+              20
+            ],
+            "hp": {
+              "enemy_ranged": 3608,
+              "enemy_artillery": 19509,
+              "friendly_artillery": 15,
+              "enemy_melee": 224
+            }
+          },
+          {
+            "interval": [
+              20,
+              30
+            ],
+            "hp": {
+              "enemy_artillery": 15397,
+              "enemy_ranged": 18776,
+              "enemy_melee": 5218,
+              "friendly_artillery": 75
+            }
+          },
+          {
+            "interval": [
+              30,
+              60
+            ],
+            "hp": {
+              "enemy_ranged": 3692,
+              "enemy_artillery": 882,
+              "enemy_melee": 160
+            }
+          },
+          {
+            "interval": [
+              60,
+              150.1
+            ],
+            "hp": {
+              "enemy_ranged": 56
+            }
+          }
+        ]
+      },
+      "escort_shells": {
+        "counts": {
+          "friendly_artillery_hp_to_own_ranged": 294,
+          "own_other_targeted_launches": 1830,
+          "own_other_targeted_successful_shells": 1706,
+          "own_other_targeted_distinct_opposing_victims": 3676,
+          "own_other_targeted_friendly_hp": 5266,
+          "own_other_targeted_melee_victims": 2589,
+          "own_other_targeted_melee_hp": 35628,
+          "own_other_targeted_ranged_victims": 1087,
+          "own_other_targeted_ranged_hp": 14347,
+          "own_other_targeted_artillery_victims": 0,
+          "own_other_targeted_artillery_hp": 0,
+          "incidental_other_aim_launches": 3157,
+          "incidental_other_aim_own_ranged_hp": 42943,
+          "incidental_other_aim_distinct_victims": 3062,
+          "incidental_other_aim_successful_shells": 595,
+          "escort_targeted_launches": 923,
+          "escort_targeted_own_ranged_hp": 61422,
+          "escort_targeted_distinct_victims": 4743,
+          "escort_targeted_successful_shells": 777,
+          "own_gun_targeted_launches": 4636,
+          "own_gun_targeted_successful_shells": 4037,
+          "own_gun_targeted_distinct_opposing_victims": 9041,
+          "own_gun_targeted_friendly_hp": 0,
+          "own_gun_targeted_melee_victims": 0,
+          "own_gun_targeted_melee_hp": 0,
+          "own_gun_targeted_ranged_victims": 4423,
+          "own_gun_targeted_ranged_hp": 60279,
+          "own_gun_targeted_artillery_victims": 4618,
+          "own_gun_targeted_artillery_hp": 64620
+        },
+        "all_opposing_victims_per_successful_own_gun_targeted_shell": 2.2395343076541985,
+        "role_victims_per_successful_own_gun_targeted_shell": {
+          "melee": 0.0,
+          "ranged": 1.0956155561060192,
+          "artillery": 1.1439187515481792
+        },
+        "own_ranged_victims_per_successful_enemy_escort_targeted_shell": 6.104247104247104
+      },
+      "gun_survival": [
+        {
+          "t": 10,
+          "mean_alive": 10
+        },
+        {
+          "t": 20,
+          "mean_alive": 9.575
+        },
+        {
+          "t": 30,
+          "mean_alive": 3.05
+        },
+        {
+          "t": 45,
+          "mean_alive": 1.575
+        },
+        {
+          "t": 60,
+          "mean_alive": 1.4
+        }
+      ],
+      "own_ranged_killers": {
+        "1_artillery": 1040,
+        "0_artillery": 9,
+        "1_melee": 14,
+        "1_ranged": 135,
+        "0_ranged": 2
+      }
     },
     {
       "arm": "P12",
       "head": "novice",
-      "completed_fights": 0,
-      "measurements": "not_run"
+      "fights": 40,
+      "failure_count": 0,
+      "gun_values": {
+        "target_sum": 331406,
+        "target_ticks": 64716,
+        "mean_chosen_target_V": 5.12092836392855,
+        "focus_ticks": 186010,
+        "mean_focus_V": 5.923875060480619,
+        "mean_anchor_V": 5.855061555830332,
+        "no_reachable_target_ticks": 121294
+      },
+      "melee": {
+        "counts": {
+          "prepare_living_melee_ticks": 132561,
+          "action_reconciled_ticks": 132561,
+          "clipped_goal_ticks": 0,
+          "clipped_assigned_gun_within_splash_ticks": 0,
+          "raw_other_gun_body_overlap_ticks": 39,
+          "clipped_other_gun_body_overlap_ticks": 39,
+          "coincident_other_gun_shifted_goal_ticks": 0,
+          "displacement_known_ticks": 132175,
+          "moving_ticks": 132175,
+          "arrival_available_ticks": 132175,
+          "p12_raw_anchor_arrival_ticks": 8981,
+          "p12_clipped_anchor_arrival_ticks": 8981,
+          "raw_arrival_ticks": 8981,
+          "clipped_arrival_ticks": 8981,
+          "holding_ticks": 8515,
+          "raw_shared_point_pairs": 132911,
+          "clipped_shared_point_pairs": 132911,
+          "reassignment_ticks": 2502,
+          "post_step_dead_ticks": 386,
+          "post_melee_singleton_ticks": 1639,
+          "gun1_singleton_ticks": 875,
+          "arrival_unavailable_ticks": 386,
+          "first_arrival_units": 204,
+          "first_arrival_censored_units": 196
+        },
+        "p12_raw_anchor_arrival_fraction": 0.0677499415363493,
+        "p12_clipped_anchor_arrival_fraction": 0.0677499415363493,
+        "raw_arrival_fraction": 0.0677499415363493,
+        "clipped_arrival_fraction": 0.0677499415363493,
+        "holding_fraction": 0.0642345787976856,
+        "distributions": {
+          "gun0_nearest": {
+            "n": 186010,
+            "median": 28.279238782036916,
+            "p10": 19.6226432510069
+          },
+          "gun1_nearest": {
+            "n": 158655,
+            "median": 20.00000000000002,
+            "p10": 19.856515820115554
+          },
+          "raw_assigned_gun_distance": {
+            "n": 132561,
+            "median": 60.0,
+            "p10": 59.99999999999996
+          },
+          "clipped_assigned_gun_distance": {
+            "n": 132561,
+            "median": 60.0,
+            "p10": 59.99999999999996
+          },
+          "raw_other_gun_body_clearance": {
+            "n": 132561,
+            "median": 42.03224243258697,
+            "p10": 33.106976604417866
+          },
+          "clipped_other_gun_body_clearance": {
+            "n": 132561,
+            "median": 42.03224243258697,
+            "p10": 33.106976604417866
+          },
+          "clipped_other_gun_shifted_goal_distance": {
+            "n": 132561,
+            "median": 170.35243811021923,
+            "p10": 28.826929745618724
+          },
+          "realized_melee_to_melee_nearest": {
+            "n": 130536,
+            "median": 32.2546479337921,
+            "p10": 31.48361303335853
+          },
+          "actual_displacement": {
+            "n": 132175,
+            "median": 1.333333333333342,
+            "p10": 1.2993636233735415
+          },
+          "realized_melee_to_gun_nearest": {
+            "n": 132175,
+            "median": 103.38689585453139,
+            "p10": 68.31481268019213
+          },
+          "goal_shift_from_p12_px": {
+            "n": 132175,
+            "median": 0.0,
+            "p10": 0.0
+          },
+          "raw_point_error": {
+            "n": 132175,
+            "median": 52.045489405599476,
+            "p10": 23.24748301077077
+          },
+          "clipped_goal_error": {
+            "n": 132175,
+            "median": 52.045489405599476,
+            "p10": 23.24748301077077
+          },
+          "own_melee_to_enemy_ranged": {
+            "n": 132175,
+            "median": 381.0263899801191,
+            "p10": 148.99391228374992
+          },
+          "gun0_nearest_10_20": {
+            "n": 66010,
+            "median": 54.65642137179425,
+            "p10": 47.75069034892594
+          },
+          "gun1_nearest_10_20": {
+            "n": 38655,
+            "median": 20.00000000000003,
+            "p10": 19.893834041254244
+          },
+          "realized_melee_to_melee_nearest_10_20": {
+            "n": 12568,
+            "median": 32.13314614571458,
+            "p10": 30.832929508903575
+          },
+          "actual_displacement_10_20": {
+            "n": 14207,
+            "median": 1.3036070317579505,
+            "p10": 0.6677958644354577
+          },
+          "realized_melee_to_gun_nearest_10_20": {
+            "n": 14207,
+            "median": 89.96077048950156,
+            "p10": 50.97515082289237
+          },
+          "own_melee_to_enemy_ranged_10_20": {
+            "n": 14207,
+            "median": 142.61030408480605,
+            "p10": 117.14204289564668
+          }
+        }
+      },
+      "mean_own_melee_losses": 10,
+      "mean_own_ranged_losses": 20.65,
+      "own_melee_killers": {
+        "0_artillery": 61,
+        "1_artillery": 253,
+        "1_ranged": 58,
+        "1_melee": 27,
+        "0_ranged": 1
+      },
+      "elimination_wins": 40,
+      "timeouts": 0,
+      "mean_S": 19.3,
+      "mean_enemy_guns_destroyed": 10,
+      "mean_own_guns_lost": 0.05,
+      "mean_own_losses": 30.7,
+      "sides": [
+        {
+          "counts": {
+            "living_ticks": 344212,
+            "any_target_range_ticks": 207191,
+            "gun_target_range_ticks": 64716,
+            "windup_ticks": 149582,
+            "launch_ticks": 5875,
+            "move_command_ticks": 342796,
+            "command_range_ticks": 205775,
+            "hold_range_ticks": 1416,
+            "command_launch_ticks": 5838,
+            "hold_launch_ticks": 37,
+            "command_launch_range_ticks": 5838,
+            "hold_launch_range_ticks": 37,
+            "movement_known_ticks": 344210,
+            "moving_ticks": 337653,
+            "moving_launch_ticks": 5693,
+            "stationary_launch_ticks": 181,
+            "target_switches": 11304,
+            "incoming_damage_0_artillery": 390,
+            "incoming_damage_1_ranged": 5933,
+            "other_target_shell_gun_victims": 5,
+            "other_target_shell_gun_damage": 61,
+            "shells_hitting_0_guns": 4404,
+            "launches": 5875,
+            "other_launches": 4098,
+            "launches_with_airborne_target_switch": 2522,
+            "gun_target_shell_gun_victims": 5075,
+            "gun_target_shell_gun_damage": 71273,
+            "shells_hitting_3_guns": 195,
+            "gun_launches": 1777,
+            "gun_launches_hit_any_gun": 1469,
+            "gun_launches_hit_intended_gun": 1235,
+            "shells_hitting_7_guns": 135,
+            "gun_launches_with_airborne_target_switch": 768,
+            "gun_launches_with_airborne_target_switch_hit": 474,
+            "shells_hitting_4_guns": 156,
+            "shells_hitting_5_guns": 182,
+            "gun_launches_target_dead_before_scheduled_impact": 502,
+            "shells_hitting_2_guns": 275,
+            "shells_hitting_1_guns": 363,
+            "gun_launches_no_gun_hit_target_dead_before_scheduled_impact": 294,
+            "incoming_damage_1_artillery": 345,
+            "incoming_damage_1_melee": 469,
+            "shells_hitting_6_guns": 112,
+            "shells_hitting_8_guns": 46,
+            "shells_hitting_9_guns": 7,
+            "death_interval_ticks": 2,
+            "other_launches_hit_gun": 2
+          },
+          "gun_targeted_launches": 1777,
+          "successful_gun_targeted_shells": 1469,
+          "gun_victims": 5075,
+          "gun_victims_per_successful_shell": 3.454731109598366,
+          "artillery_hp_to_opposing_guns": 71334,
+          "incidental_hp": 61,
+          "already_dead_before_impact": 502,
+          "airborne_at_end": 0
+        },
+        {
+          "counts": {
+            "living_ticks": 159930,
+            "any_target_range_ticks": 74579,
+            "gun_target_range_ticks": 46271,
+            "windup_ticks": 42428,
+            "launch_ticks": 2040,
+            "move_command_ticks": 90632,
+            "command_range_ticks": 5281,
+            "hold_range_ticks": 69298,
+            "command_launch_ticks": 150,
+            "hold_launch_ticks": 1890,
+            "command_launch_range_ticks": 150,
+            "hold_launch_range_ticks": 1890,
+            "movement_known_ticks": 159530,
+            "moving_ticks": 117778,
+            "moving_launch_ticks": 889,
+            "stationary_launch_ticks": 1150,
+            "target_switches": 3149,
+            "incoming_damage_0_artillery": 71334,
+            "incoming_damage_0_ranged": 1066,
+            "death_interval_ticks": 400,
+            "other_target_shell_gun_victims": 22,
+            "other_target_shell_gun_damage": 330,
+            "shells_hitting_0_guns": 2018,
+            "launches": 2040,
+            "other_launches": 2039,
+            "launches_with_airborne_target_switch": 715,
+            "shells_hitting_1_guns": 21,
+            "other_launches_hit_gun": 21,
+            "gun_target_shell_gun_victims": 1,
+            "gun_target_shell_gun_damage": 15,
+            "gun_launches": 1,
+            "gun_launches_hit_any_gun": 1,
+            "gun_launches_hit_intended_gun": 1,
+            "gun_launches_with_airborne_target_switch": 1,
+            "gun_launches_with_airborne_target_switch_hit": 1,
+            "shells_hitting_2_guns": 1
+          },
+          "gun_targeted_launches": 1,
+          "successful_gun_targeted_shells": 1,
+          "gun_victims": 1,
+          "gun_victims_per_successful_shell": 1.0,
+          "artillery_hp_to_opposing_guns": 345,
+          "incidental_hp": 330,
+          "already_dead_before_impact": 0,
+          "airborne_at_end": 0
+        }
+      ],
+      "nearest": [
+        {
+          "n": 186010,
+          "median": 28.279238782036916,
+          "p10": 19.6226432510069
+        },
+        {
+          "n": 158655,
+          "median": 20.00000000000002,
+          "p10": 19.856515820115554
+        }
+      ],
+      "early_10_20_nearest": [
+        {
+          "n": 66010,
+          "median": 54.65642137179425,
+          "p10": 47.75069034892594
+        },
+        {
+          "n": 38655,
+          "median": 20.00000000000003,
+          "p10": 19.893834041254244
+        }
+      ],
+      "nearest_singleton_ticks": [
+        0,
+        875
+      ],
+      "gun_phase_ticks": [
+        186010,
+        159530
+      ],
+      "gun_range_ticks": [
+        64716,
+        46271
+      ],
+      "spacing_audit": {
+        "prepare_gun_ticks": 186010,
+        "clipped_goal_ticks": 0,
+        "shift_ticks": 183541,
+        "zero_multiplier_shift_ticks": 1344,
+        "raw_goal_out_of_focus_band_ticks": 45462,
+        "coincident_pair_terms": 0,
+        "neighbour_terms": 597746,
+        "clipped_action_reconciled_ticks": 186010
+      },
+      "enemy_over_own_artillery_hp_ratio": 0.004836403398099084,
+      "escort": {
+        "counts": {
+          "gun_prepare_ticks": 186010,
+          "gun_focus_V_sum": 1101900,
+          "gun_anchor_V_sum": 1089100,
+          "gun_no_reachable_target_ticks": 121294,
+          "prepare_living_ranged_ticks": 493112,
+          "action_reconciled_ticks": 493112,
+          "target_opportunity_ticks": 201947,
+          "threat_selected_ticks": 17719,
+          "clipped_goal_ticks": 0,
+          "clipped_assigned_gun_within_splash_ticks": 0,
+          "raw_other_gun_body_overlap_ticks": 224,
+          "clipped_other_gun_body_overlap_ticks": 224,
+          "coincident_other_gun_shifted_goal_ticks": 0,
+          "displacement_known_ticks": 492479,
+          "moving_ticks": 490361,
+          "arrival_available_ticks": 492479,
+          "p12_raw_anchor_arrival_ticks": 179797,
+          "p12_clipped_anchor_arrival_ticks": 179797,
+          "raw_arrival_ticks": 179797,
+          "clipped_arrival_ticks": 179797,
+          "holding_ticks": 174648,
+          "raw_shared_point_pairs": 1214800,
+          "clipped_shared_point_pairs": 1214800,
+          "reassignment_ticks": 10164,
+          "post_step_dead_ticks": 633,
+          "gun_target_V_ticks": 64716,
+          "gun_target_V_sum": 331406,
+          "target_opportunity_ticks_10_20": 136974,
+          "threat_selected_ticks_10_20": 17372,
+          "artillery_enemy_ranged_last_hits_full": 1091,
+          "artillery_enemy_ranged_last_hits_lt20": 469,
+          "artillery_enemy_ranged_last_hits_lt30": 1077,
+          "gun1_singleton_ticks": 875,
+          "arrival_unavailable_ticks": 633,
+          "first_arrival_units": 1172,
+          "first_arrival_censored_units": 28,
+          "ranged_enemy_ranged_last_hits_full": 109,
+          "ranged_enemy_ranged_last_hits_lt20": 82,
+          "ranged_enemy_ranged_last_hits_lt30": 108
+        },
+        "window_threat_selection": [
+          {
+            "interval": [
+              10,
+              20
+            ],
+            "opportunities": 136974,
+            "selected": 17372,
+            "fraction": 0.12682698906361792
+          },
+          {
+            "interval": [
+              20,
+              30
+            ],
+            "opportunities": 0,
+            "selected": 0,
+            "fraction": null
+          }
+        ],
+        "p12_raw_anchor_arrival_fraction": 0.3646169632862311,
+        "p12_clipped_anchor_arrival_fraction": 0.3646169632862311,
+        "raw_arrival_fraction": 0.3646169632862311,
+        "clipped_arrival_fraction": 0.3646169632862311,
+        "holding_fraction": 0.3541751164035757,
+        "threat_selection_fraction": 0.0877408428944228,
+        "distributions": {
+          "gun0_nearest": {
+            "n": 186010,
+            "median": 28.279238782036916,
+            "p10": 19.6226432510069
+          },
+          "gun1_nearest": {
+            "n": 158655,
+            "median": 20.00000000000002,
+            "p10": 19.856515820115554
+          },
+          "raw_assigned_gun_distance": {
+            "n": 493112,
+            "median": 60.0,
+            "p10": 59.99999999999996
+          },
+          "clipped_assigned_gun_distance": {
+            "n": 493112,
+            "median": 60.0,
+            "p10": 59.99999999999996
+          },
+          "raw_other_gun_body_clearance": {
+            "n": 493112,
+            "median": 48.929348835045445,
+            "p10": 38.707436072551396
+          },
+          "clipped_other_gun_body_clearance": {
+            "n": 493112,
+            "median": 48.929348835045445,
+            "p10": 38.707436072551396
+          },
+          "clipped_other_gun_shifted_goal_distance": {
+            "n": 493112,
+            "median": 103.21806831050915,
+            "p10": 32.856986164704374
+          },
+          "realized_ranged_to_ranged_nearest": {
+            "n": 492479,
+            "median": 17.191714621257983,
+            "p10": 15.431624098908207
+          },
+          "actual_displacement": {
+            "n": 492479,
+            "median": 1.6607201124164344,
+            "p10": 0.8071649295348072
+          },
+          "realized_ranged_to_gun_nearest": {
+            "n": 492479,
+            "median": 39.87147211354515,
+            "p10": 18.84576327748316
+          },
+          "goal_shift_from_p12_px": {
+            "n": 492479,
+            "median": 0.0,
+            "p10": 0.0
+          },
+          "raw_point_error": {
+            "n": 492479,
+            "median": 26.466706233186457,
+            "p10": 5.551405508360008
+          },
+          "clipped_goal_error": {
+            "n": 492479,
+            "median": 26.466706233186457,
+            "p10": 5.551405508360008
+          },
+          "own_ranged_to_enemy_ranged": {
+            "n": 492479,
+            "median": 330.69347485885424,
+            "p10": 155.99441256391412
+          },
+          "gun0_nearest_10_20": {
+            "n": 66010,
+            "median": 54.65642137179425,
+            "p10": 47.75069034892594
+          },
+          "gun1_nearest_10_20": {
+            "n": 38655,
+            "median": 20.00000000000003,
+            "p10": 19.893834041254244
+          },
+          "realized_ranged_to_ranged_nearest_10_20": {
+            "n": 136494,
+            "median": 17.58111099524946,
+            "p10": 15.90055587425061
+          },
+          "actual_displacement_10_20": {
+            "n": 136494,
+            "median": 1.3370902274536973,
+            "p10": 0.4033688750272745
+          },
+          "realized_ranged_to_gun_nearest_10_20": {
+            "n": 136494,
+            "median": 51.45552002887656,
+            "p10": 32.185186993369534
+          },
+          "own_ranged_to_enemy_ranged_10_20": {
+            "n": 136494,
+            "median": 165.52819419662774,
+            "p10": 136.87551066483667
+          }
+        },
+        "gun_hp_loss_bins": [
+          {
+            "interval": [
+              0,
+              10
+            ],
+            "hp": {
+              "enemy_artillery": 120
+            }
+          },
+          {
+            "interval": [
+              10,
+              20
+            ],
+            "hp": {
+              "friendly_artillery": 390,
+              "enemy_ranged": 2789,
+              "enemy_melee": 352,
+              "enemy_artillery": 225
+            }
+          },
+          {
+            "interval": [
+              20,
+              30
+            ],
+            "hp": {
+              "enemy_ranged": 3112
+            }
+          },
+          {
+            "interval": [
+              30,
+              60
+            ],
+            "hp": {
+              "enemy_ranged": 32,
+              "enemy_melee": 117
+            }
+          },
+          {
+            "interval": [
+              60,
+              150.1
+            ],
+            "hp": {}
+          }
+        ]
+      },
+      "escort_shells": {
+        "counts": {
+          "friendly_artillery_hp_to_own_ranged": 1940,
+          "own_other_targeted_launches": 4098,
+          "own_other_targeted_successful_shells": 3429,
+          "own_other_targeted_distinct_opposing_victims": 9870,
+          "own_other_targeted_friendly_hp": 10944,
+          "own_other_targeted_melee_victims": 4499,
+          "own_other_targeted_melee_hp": 61656,
+          "own_other_targeted_ranged_victims": 5366,
+          "own_other_targeted_ranged_hp": 70805,
+          "own_other_targeted_artillery_victims": 5,
+          "own_other_targeted_artillery_hp": 61,
+          "incidental_other_aim_launches": 1747,
+          "incidental_other_aim_own_ranged_hp": 43255,
+          "incidental_other_aim_distinct_victims": 3146,
+          "incidental_other_aim_successful_shells": 985,
+          "own_gun_targeted_launches": 1777,
+          "own_gun_targeted_successful_shells": 1517,
+          "own_gun_targeted_distinct_opposing_victims": 7420,
+          "own_gun_targeted_friendly_hp": 0,
+          "own_gun_targeted_melee_victims": 0,
+          "own_gun_targeted_melee_hp": 0,
+          "own_gun_targeted_ranged_victims": 2345,
+          "own_gun_targeted_ranged_hp": 32154,
+          "own_gun_targeted_artillery_victims": 5075,
+          "own_gun_targeted_artillery_hp": 71273,
+          "escort_targeted_launches": 293,
+          "escort_targeted_own_ranged_hp": 21516,
+          "escort_targeted_distinct_victims": 1549,
+          "escort_targeted_successful_shells": 284
+        },
+        "all_opposing_victims_per_successful_own_gun_targeted_shell": 4.891232696110745,
+        "role_victims_per_successful_own_gun_targeted_shell": {
+          "melee": 0.0,
+          "ranged": 1.5458141067897166,
+          "artillery": 3.3454185893210284
+        },
+        "own_ranged_victims_per_successful_enemy_escort_targeted_shell": 5.454225352112676
+      },
+      "gun_survival": [
+        {
+          "t": 10,
+          "mean_alive": 10
+        },
+        {
+          "t": 20,
+          "mean_alive": 9.975
+        },
+        {
+          "t": 30,
+          "mean_alive": 9.975
+        },
+        {
+          "t": 45,
+          "mean_alive": 9.975
+        },
+        {
+          "t": 60,
+          "mean_alive": 9.95
+        }
+      ],
+      "own_ranged_killers": {
+        "1_artillery": 476,
+        "1_ranged": 307,
+        "0_ranged": 4,
+        "1_melee": 27,
+        "0_artillery": 12
+      }
     },
     {
       "arm": "P16",
       "head": "regular",
-      "completed_fights": 0,
-      "measurements": "not_run"
+      "fights": 40,
+      "failure_count": 0,
+      "gun_values": {
+        "target_sum": 568183,
+        "target_ticks": 172305,
+        "mean_chosen_target_V": 3.2975421490960795,
+        "focus_ticks": 323199,
+        "mean_focus_V": 3.5009081092453873,
+        "mean_anchor_V": 3.934888412402266,
+        "no_reachable_target_ticks": 150894
+      },
+      "melee": {
+        "counts": {
+          "prepare_living_melee_ticks": 197575,
+          "action_reconciled_ticks": 197575,
+          "clipped_goal_ticks": 0,
+          "clipped_assigned_gun_within_splash_ticks": 0,
+          "raw_other_gun_body_overlap_ticks": 65,
+          "clipped_other_gun_body_overlap_ticks": 65,
+          "coincident_other_gun_shifted_goal_ticks": 0,
+          "displacement_known_ticks": 197176,
+          "moving_ticks": 197176,
+          "arrival_available_ticks": 197176,
+          "p12_raw_anchor_arrival_ticks": 14879,
+          "p12_clipped_anchor_arrival_ticks": 14879,
+          "raw_arrival_ticks": 14879,
+          "clipped_arrival_ticks": 14879,
+          "holding_ticks": 13992,
+          "raw_shared_point_pairs": 189786,
+          "clipped_shared_point_pairs": 189786,
+          "reassignment_ticks": 3994,
+          "post_step_dead_ticks": 399,
+          "post_melee_singleton_ticks": 1529,
+          "gun1_singleton_ticks": 1677,
+          "arrival_unavailable_ticks": 399,
+          "first_arrival_units": 281,
+          "first_arrival_censored_units": 119,
+          "gun0_singleton_ticks": 236
+        },
+        "p12_raw_anchor_arrival_fraction": 0.0753081108439833,
+        "p12_clipped_anchor_arrival_fraction": 0.0753081108439833,
+        "raw_arrival_fraction": 0.0753081108439833,
+        "clipped_arrival_fraction": 0.0753081108439833,
+        "holding_fraction": 0.07081867645198026,
+        "distributions": {
+          "gun0_nearest": {
+            "n": 322802,
+            "median": 51.648924463490076,
+            "p10": 19.798111122866608
+          },
+          "gun1_nearest": {
+            "n": 275635,
+            "median": 47.54499247437388,
+            "p10": 32.04219522843976
+          },
+          "raw_assigned_gun_distance": {
+            "n": 197575,
+            "median": 60.0,
+            "p10": 59.99999999999996
+          },
+          "clipped_assigned_gun_distance": {
+            "n": 197575,
+            "median": 60.0,
+            "p10": 59.99999999999996
+          },
+          "raw_other_gun_body_clearance": {
+            "n": 197575,
+            "median": 43.505457408297474,
+            "p10": 33.77823280943574
+          },
+          "clipped_other_gun_body_clearance": {
+            "n": 197575,
+            "median": 43.505457408297474,
+            "p10": 33.77823280943574
+          },
+          "clipped_other_gun_shifted_goal_distance": {
+            "n": 197575,
+            "median": 104.40659127792912,
+            "p10": 40.80106828298124
+          },
+          "realized_melee_to_melee_nearest": {
+            "n": 195647,
+            "median": 32.50730711930262,
+            "p10": 31.34040236155139
+          },
+          "actual_displacement": {
+            "n": 197176,
+            "median": 1.3333333333333381,
+            "p10": 1.00590194120478
+          },
+          "realized_melee_to_gun_nearest": {
+            "n": 197176,
+            "median": 100.48981244624181,
+            "p10": 64.38234308955674
+          },
+          "goal_shift_from_p12_px": {
+            "n": 197176,
+            "median": 0.0,
+            "p10": 0.0
+          },
+          "raw_point_error": {
+            "n": 197176,
+            "median": 50.85688951172351,
+            "p10": 22.236144405403845
+          },
+          "clipped_goal_error": {
+            "n": 197176,
+            "median": 50.85688951172351,
+            "p10": 22.236144405403845
+          },
+          "own_melee_to_enemy_ranged": {
+            "n": 197176,
+            "median": 319.2141109582267,
+            "p10": 132.41210136727585
+          },
+          "gun0_nearest_10_20": {
+            "n": 119385,
+            "median": 56.001712223232104,
+            "p10": 24.60291900799242
+          },
+          "gun1_nearest_10_20": {
+            "n": 113963,
+            "median": 47.534013566572156,
+            "p10": 32.59112002665923
+          },
+          "realized_melee_to_melee_nearest_10_20": {
+            "n": 75628,
+            "median": 32.000000000000085,
+            "p10": 30.90155584729505
+          },
+          "actual_displacement_10_20": {
+            "n": 76705,
+            "median": 1.3333333333333033,
+            "p10": 0.6764946007222606
+          },
+          "realized_melee_to_gun_nearest_10_20": {
+            "n": 76705,
+            "median": 92.46487491045698,
+            "p10": 54.20994601013256
+          },
+          "own_melee_to_enemy_ranged_10_20": {
+            "n": 76705,
+            "median": 150.60699436332695,
+            "p10": 118.91669858058371
+          },
+          "gun0_nearest_20_30": {
+            "n": 83048,
+            "median": 60.04813966136365,
+            "p10": 57.15788092498135
+          },
+          "gun1_nearest_20_30": {
+            "n": 40908,
+            "median": 51.38129691761789,
+            "p10": 33.99792613856326
+          },
+          "actual_displacement_20_30": {
+            "n": 471,
+            "median": 0.48960814824439197,
+            "p10": 0.09513095399660824
+          },
+          "realized_melee_to_gun_nearest_20_30": {
+            "n": 471,
+            "median": 108.45122087883163,
+            "p10": 64.77902758938619
+          },
+          "own_melee_to_enemy_ranged_20_30": {
+            "n": 471,
+            "median": 303.4104913366916,
+            "p10": 149.9660842587681
+          },
+          "realized_melee_to_melee_nearest_20_30": {
+            "n": 19,
+            "median": 33.694054011794385,
+            "p10": 33.303715058966134
+          }
+        }
+      },
+      "mean_own_melee_losses": 9.975,
+      "mean_own_ranged_losses": 30,
+      "own_melee_killers": {
+        "1_artillery": 274,
+        "1_ranged": 90,
+        "1_melee": 30,
+        "0_artillery": 4,
+        "0_ranged": 1
+      },
+      "elimination_wins": 34,
+      "timeouts": 0,
+      "mean_S": 2.375,
+      "mean_enemy_guns_destroyed": 9.675,
+      "mean_own_guns_lost": 4.725,
+      "mean_own_losses": 44.7,
+      "sides": [
+        {
+          "counts": {
+            "living_ticks": 430613,
+            "any_target_range_ticks": 263252,
+            "gun_target_range_ticks": 172305,
+            "windup_ticks": 180864,
+            "launch_ticks": 7396,
+            "move_command_ticks": 426583,
+            "command_range_ticks": 259222,
+            "hold_range_ticks": 4030,
+            "command_launch_ticks": 7282,
+            "hold_launch_ticks": 114,
+            "command_launch_range_ticks": 7282,
+            "hold_launch_range_ticks": 114,
+            "movement_known_ticks": 430424,
+            "moving_ticks": 404441,
+            "moving_launch_ticks": 6690,
+            "stationary_launch_ticks": 701,
+            "target_switches": 14244,
+            "incoming_damage_1_artillery": 32874,
+            "incoming_damage_1_ranged": 13835,
+            "incoming_damage_1_melee": 5007,
+            "death_interval_ticks": 189,
+            "other_target_shell_gun_victims": 3,
+            "other_target_shell_gun_damage": 45,
+            "shells_hitting_0_guns": 3167,
+            "launches": 7396,
+            "other_launches": 2651,
+            "launches_with_airborne_target_switch": 3213,
+            "gun_target_shell_gun_victims": 5081,
+            "gun_target_shell_gun_damage": 71126,
+            "shells_hitting_1_guns": 3449,
+            "gun_launches": 4745,
+            "gun_launches_hit_any_gun": 4227,
+            "gun_launches_hit_intended_gun": 4201,
+            "gun_launches_with_airborne_target_switch": 2173,
+            "gun_launches_with_airborne_target_switch_hit": 1688,
+            "shells_hitting_2_guns": 705,
+            "shells_hitting_3_guns": 75,
+            "gun_launches_target_dead_before_scheduled_impact": 504,
+            "gun_launches_no_gun_hit_target_dead_before_scheduled_impact": 483,
+            "incoming_damage_0_artillery": 172,
+            "other_launches_hit_gun": 2,
+            "gun_launches_airborne_at_end": 2
+          },
+          "gun_targeted_launches": 4745,
+          "successful_gun_targeted_shells": 4227,
+          "gun_victims": 5081,
+          "gun_victims_per_successful_shell": 1.2020345398627867,
+          "artillery_hp_to_opposing_guns": 71171,
+          "incidental_hp": 45,
+          "already_dead_before_impact": 504,
+          "airborne_at_end": 2
+        },
+        {
+          "counts": {
+            "living_ticks": 277699,
+            "any_target_range_ticks": 154189,
+            "gun_target_range_ticks": 125654,
+            "windup_ticks": 108808,
+            "launch_ticks": 4043,
+            "move_command_ticks": 277694,
+            "command_range_ticks": 154184,
+            "hold_range_ticks": 5,
+            "command_launch_ticks": 4043,
+            "hold_launch_ticks": 0,
+            "command_launch_range_ticks": 4043,
+            "hold_launch_range_ticks": 0,
+            "movement_known_ticks": 277312,
+            "moving_ticks": 197928,
+            "moving_launch_ticks": 3065,
+            "stationary_launch_ticks": 966,
+            "target_switches": 5407,
+            "incoming_damage_0_artillery": 71171,
+            "death_interval_ticks": 387,
+            "incoming_damage_0_ranged": 474,
+            "other_target_shell_gun_victims": 1171,
+            "other_target_shell_gun_damage": 17544,
+            "shells_hitting_0_guns": 2280,
+            "launches": 4043,
+            "other_launches": 2953,
+            "launches_with_airborne_target_switch": 1855,
+            "shells_hitting_1_guns": 1390,
+            "other_launches_hit_gun": 740,
+            "shells_hitting_2_guns": 290,
+            "shells_hitting_3_guns": 78,
+            "gun_target_shell_gun_victims": 1053,
+            "gun_target_shell_gun_damage": 15330,
+            "gun_launches": 1090,
+            "gun_launches_hit_any_gun": 1023,
+            "gun_launches_hit_intended_gun": 1020,
+            "gun_launches_with_airborne_target_switch": 213,
+            "gun_launches_with_airborne_target_switch_hit": 161,
+            "gun_launches_target_dead_before_scheduled_impact": 66,
+            "gun_launches_no_gun_hit_target_dead_before_scheduled_impact": 63,
+            "shells_hitting_4_guns": 5,
+            "gun_launches_airborne_at_end": 4
+          },
+          "gun_targeted_launches": 1090,
+          "successful_gun_targeted_shells": 1023,
+          "gun_victims": 1053,
+          "gun_victims_per_successful_shell": 1.029325513196481,
+          "artillery_hp_to_opposing_guns": 32874,
+          "incidental_hp": 17544,
+          "already_dead_before_impact": 66,
+          "airborne_at_end": 4
+        }
+      ],
+      "nearest": [
+        {
+          "n": 322802,
+          "median": 51.648924463490076,
+          "p10": 19.798111122866608
+        },
+        {
+          "n": 275635,
+          "median": 47.54499247437388,
+          "p10": 32.04219522843976
+        }
+      ],
+      "early_10_20_nearest": [
+        {
+          "n": 119385,
+          "median": 56.001712223232104,
+          "p10": 24.60291900799242
+        },
+        {
+          "n": 113963,
+          "median": 47.534013566572156,
+          "p10": 32.59112002665923
+        }
+      ],
+      "nearest_singleton_ticks": [
+        236,
+        1677
+      ],
+      "gun_phase_ticks": [
+        323038,
+        277312
+      ],
+      "gun_range_ticks": [
+        172305,
+        125654
+      ],
+      "spacing_audit": {
+        "prepare_gun_ticks": 323199,
+        "clipped_goal_ticks": 0,
+        "shift_ticks": 256531,
+        "zero_multiplier_shift_ticks": 557,
+        "raw_goal_out_of_focus_band_ticks": 53110,
+        "coincident_pair_terms": 0,
+        "neighbour_terms": 765318,
+        "clipped_action_reconciled_ticks": 323199
+      },
+      "enemy_over_own_artillery_hp_ratio": 0.46190161723173767,
+      "escort": {
+        "counts": {
+          "gun_prepare_ticks": 323199,
+          "gun_focus_V_sum": 1131490,
+          "gun_anchor_V_sum": 1271752,
+          "gun_no_reachable_target_ticks": 150894,
+          "prepare_living_ranged_ticks": 523755,
+          "action_reconciled_ticks": 523755,
+          "target_opportunity_ticks": 143021,
+          "threat_selected_ticks": 1396,
+          "clipped_goal_ticks": 0,
+          "clipped_assigned_gun_within_splash_ticks": 0,
+          "raw_other_gun_body_overlap_ticks": 183,
+          "clipped_other_gun_body_overlap_ticks": 183,
+          "coincident_other_gun_shifted_goal_ticks": 0,
+          "displacement_known_ticks": 522555,
+          "moving_ticks": 518941,
+          "arrival_available_ticks": 522555,
+          "p12_raw_anchor_arrival_ticks": 190093,
+          "p12_clipped_anchor_arrival_ticks": 190093,
+          "raw_arrival_ticks": 190093,
+          "clipped_arrival_ticks": 190093,
+          "holding_ticks": 185353,
+          "raw_shared_point_pairs": 1190559,
+          "clipped_shared_point_pairs": 1190559,
+          "reassignment_ticks": 10662,
+          "target_opportunity_ticks_10_20": 142145,
+          "threat_selected_ticks_10_20": 1247,
+          "gun_target_V_ticks": 172305,
+          "gun_target_V_sum": 568183,
+          "post_step_dead_ticks": 1200,
+          "artillery_enemy_ranged_last_hits_full": 1089,
+          "artillery_enemy_ranged_last_hits_lt20": 770,
+          "artillery_enemy_ranged_last_hits_lt30": 895,
+          "post_ranged_singleton_ticks": 1750,
+          "target_opportunity_ticks_20_30": 876,
+          "threat_selected_ticks_20_30": 149,
+          "gun1_singleton_ticks": 1677,
+          "arrival_unavailable_ticks": 1200,
+          "first_arrival_units": 1102,
+          "first_arrival_censored_units": 98,
+          "ranged_enemy_ranged_last_hits_full": 9,
+          "ranged_enemy_ranged_last_hits_lt20": 9,
+          "ranged_enemy_ranged_last_hits_lt30": 9,
+          "gun0_singleton_ticks": 236
+        },
+        "window_threat_selection": [
+          {
+            "interval": [
+              10,
+              20
+            ],
+            "opportunities": 142145,
+            "selected": 1247,
+            "fraction": 0.00877273206936579
+          },
+          {
+            "interval": [
+              20,
+              30
+            ],
+            "opportunities": 876,
+            "selected": 149,
+            "fraction": 0.17009132420091325
+          }
+        ],
+        "p12_raw_anchor_arrival_fraction": 0.36294259720670924,
+        "p12_clipped_anchor_arrival_fraction": 0.36294259720670924,
+        "raw_arrival_fraction": 0.36294259720670924,
+        "clipped_arrival_fraction": 0.36294259720670924,
+        "holding_fraction": 0.3538925642714628,
+        "threat_selection_fraction": 0.009760804357402059,
+        "distributions": {
+          "gun0_nearest": {
+            "n": 322802,
+            "median": 51.648924463490076,
+            "p10": 19.798111122866608
+          },
+          "gun1_nearest": {
+            "n": 275635,
+            "median": 47.54499247437388,
+            "p10": 32.04219522843976
+          },
+          "raw_assigned_gun_distance": {
+            "n": 523755,
+            "median": 60.0,
+            "p10": 59.99999999999996
+          },
+          "clipped_assigned_gun_distance": {
+            "n": 523755,
+            "median": 60.0,
+            "p10": 59.99999999999996
+          },
+          "raw_other_gun_body_clearance": {
+            "n": 523755,
+            "median": 47.77847845423899,
+            "p10": 39.208431284114155
+          },
+          "clipped_other_gun_body_clearance": {
+            "n": 523755,
+            "median": 47.77847845423899,
+            "p10": 39.208431284114155
+          },
+          "clipped_other_gun_shifted_goal_distance": {
+            "n": 523755,
+            "median": 134.48663697934884,
+            "p10": 37.95968320199419
+          },
+          "realized_ranged_to_ranged_nearest": {
+            "n": 520805,
+            "median": 17.266575238745773,
+            "p10": 15.545199640759417
+          },
+          "actual_displacement": {
+            "n": 522555,
+            "median": 1.6983045631668119,
+            "p10": 0.9315130116600714
+          },
+          "realized_ranged_to_gun_nearest": {
+            "n": 522555,
+            "median": 36.91345697082264,
+            "p10": 18.789178353010634
+          },
+          "goal_shift_from_p12_px": {
+            "n": 522555,
+            "median": 0.0,
+            "p10": 0.0
+          },
+          "raw_point_error": {
+            "n": 522555,
+            "median": 26.390778096564922,
+            "p10": 4.096257011181301
+          },
+          "clipped_goal_error": {
+            "n": 522555,
+            "median": 26.390778096564922,
+            "p10": 4.096257011181301
+          },
+          "own_ranged_to_enemy_ranged": {
+            "n": 522555,
+            "median": 416.03352008265927,
+            "p10": 176.8671479310209
+          },
+          "gun0_nearest_10_20": {
+            "n": 119385,
+            "median": 56.001712223232104,
+            "p10": 24.60291900799242
+          },
+          "gun1_nearest_10_20": {
+            "n": 113963,
+            "median": 47.534013566572156,
+            "p10": 32.59112002665923
+          },
+          "realized_ranged_to_ranged_nearest_10_20": {
+            "n": 160424,
+            "median": 17.64753914472041,
+            "p10": 16.406319237521757
+          },
+          "actual_displacement_10_20": {
+            "n": 161473,
+            "median": 1.6361519025196325,
+            "p10": 0.6746931290876244
+          },
+          "realized_ranged_to_gun_nearest_10_20": {
+            "n": 161473,
+            "median": 44.0870471617363,
+            "p10": 19.01045660209883
+          },
+          "own_ranged_to_enemy_ranged_10_20": {
+            "n": 161473,
+            "median": 194.29065172407738,
+            "p10": 151.3873330589212
+          },
+          "gun0_nearest_20_30": {
+            "n": 83048,
+            "median": 60.04813966136365,
+            "p10": 57.15788092498135
+          },
+          "gun1_nearest_20_30": {
+            "n": 40908,
+            "median": 51.38129691761789,
+            "p10": 33.99792613856326
+          },
+          "actual_displacement_20_30": {
+            "n": 1082,
+            "median": 1.8333333333333175,
+            "p10": 0.0
+          },
+          "realized_ranged_to_gun_nearest_20_30": {
+            "n": 1082,
+            "median": 58.22204187347421,
+            "p10": 51.31624888657679
+          },
+          "own_ranged_to_enemy_ranged_20_30": {
+            "n": 1082,
+            "median": 213.15675838886665,
+            "p10": 151.1822465226149
+          },
+          "realized_ranged_to_ranged_nearest_20_30": {
+            "n": 381,
+            "median": 163.48741231984332,
+            "p10": 19.04564287189699
+          }
+        },
+        "gun_hp_loss_bins": [
+          {
+            "interval": [
+              0,
+              10
+            ],
+            "hp": {}
+          },
+          {
+            "interval": [
+              10,
+              20
+            ],
+            "hp": {
+              "enemy_artillery": 17191,
+              "enemy_ranged": 1881,
+              "enemy_melee": 112
+            }
+          },
+          {
+            "interval": [
+              20,
+              30
+            ],
+            "hp": {
+              "enemy_ranged": 9957,
+              "enemy_artillery": 15499,
+              "enemy_melee": 4879,
+              "friendly_artillery": 172
+            }
+          },
+          {
+            "interval": [
+              30,
+              60
+            ],
+            "hp": {
+              "enemy_ranged": 1965,
+              "enemy_artillery": 184,
+              "enemy_melee": 16
+            }
+          },
+          {
+            "interval": [
+              60,
+              150.1
+            ],
+            "hp": {
+              "enemy_ranged": 32
+            }
+          }
+        ]
+      },
+      "escort_shells": {
+        "counts": {
+          "friendly_artillery_hp_to_own_ranged": 305,
+          "own_other_targeted_launches": 2651,
+          "own_other_targeted_successful_shells": 2299,
+          "own_other_targeted_distinct_opposing_victims": 4435,
+          "own_other_targeted_friendly_hp": 5040,
+          "own_other_targeted_melee_victims": 3053,
+          "own_other_targeted_melee_hp": 41817,
+          "own_other_targeted_ranged_victims": 1379,
+          "own_other_targeted_ranged_hp": 17253,
+          "own_other_targeted_artillery_victims": 3,
+          "own_other_targeted_artillery_hp": 45,
+          "incidental_other_aim_launches": 3044,
+          "incidental_other_aim_own_ranged_hp": 43323,
+          "incidental_other_aim_distinct_victims": 3061,
+          "incidental_other_aim_successful_shells": 604,
+          "escort_targeted_launches": 999,
+          "escort_targeted_own_ranged_hp": 61034,
+          "escort_targeted_distinct_victims": 4738,
+          "escort_targeted_successful_shells": 838,
+          "own_gun_targeted_launches": 4745,
+          "own_gun_targeted_successful_shells": 4252,
+          "own_gun_targeted_distinct_opposing_victims": 11481,
+          "own_gun_targeted_friendly_hp": 0,
+          "own_gun_targeted_melee_victims": 1,
+          "own_gun_targeted_melee_hp": 14,
+          "own_gun_targeted_ranged_victims": 6399,
+          "own_gun_targeted_ranged_hp": 86312,
+          "own_gun_targeted_artillery_victims": 5081,
+          "own_gun_targeted_artillery_hp": 71126
+        },
+        "all_opposing_victims_per_successful_own_gun_targeted_shell": 2.7001411100658514,
+        "role_victims_per_successful_own_gun_targeted_shell": {
+          "melee": 0.00023518344308560678,
+          "ranged": 1.5049388523047977,
+          "artillery": 1.1949670743179681
+        },
+        "own_ranged_victims_per_successful_enemy_escort_targeted_shell": 5.6539379474940334
+      },
+      "gun_survival": [
+        {
+          "t": 10,
+          "mean_alive": 10
+        },
+        {
+          "t": 20,
+          "mean_alive": 9.925
+        },
+        {
+          "t": 30,
+          "mean_alive": 5.975
+        },
+        {
+          "t": 45,
+          "mean_alive": 5.45
+        },
+        {
+          "t": 60,
+          "mean_alive": 5.275
+        }
+      ],
+      "own_ranged_killers": {
+        "1_artillery": 1053,
+        "1_ranged": 133,
+        "1_melee": 8,
+        "0_ranged": 3,
+        "0_artillery": 3
+      }
     },
     {
       "arm": "P16",
       "head": "novice",
-      "completed_fights": 0,
-      "measurements": "not_run"
+      "fights": 40,
+      "failure_count": 0,
+      "gun_values": {
+        "target_sum": 353797,
+        "target_ticks": 62233,
+        "mean_chosen_target_V": 5.685038484405379,
+        "focus_ticks": 182695,
+        "mean_focus_V": 8.660516160814472,
+        "mean_anchor_V": 8.896685733052355,
+        "no_reachable_target_ticks": 120462
+      },
+      "melee": {
+        "counts": {
+          "prepare_living_melee_ticks": 133384,
+          "action_reconciled_ticks": 133384,
+          "clipped_goal_ticks": 0,
+          "clipped_assigned_gun_within_splash_ticks": 0,
+          "raw_other_gun_body_overlap_ticks": 269,
+          "clipped_other_gun_body_overlap_ticks": 269,
+          "coincident_other_gun_shifted_goal_ticks": 0,
+          "displacement_known_ticks": 132998,
+          "moving_ticks": 132998,
+          "arrival_available_ticks": 132998,
+          "p12_raw_anchor_arrival_ticks": 9214,
+          "p12_clipped_anchor_arrival_ticks": 9214,
+          "raw_arrival_ticks": 9214,
+          "clipped_arrival_ticks": 9214,
+          "holding_ticks": 8746,
+          "raw_shared_point_pairs": 131582,
+          "clipped_shared_point_pairs": 131582,
+          "reassignment_ticks": 2745,
+          "post_step_dead_ticks": 386,
+          "gun1_singleton_ticks": 784,
+          "post_melee_singleton_ticks": 1662,
+          "arrival_unavailable_ticks": 386,
+          "first_arrival_units": 216,
+          "first_arrival_censored_units": 184
+        },
+        "p12_raw_anchor_arrival_fraction": 0.06907875007497151,
+        "p12_clipped_anchor_arrival_fraction": 0.06907875007497151,
+        "raw_arrival_fraction": 0.06907875007497151,
+        "clipped_arrival_fraction": 0.06907875007497151,
+        "holding_fraction": 0.06557008336832004,
+        "distributions": {
+          "gun0_nearest": {
+            "n": 182694,
+            "median": 27.992022306416416,
+            "p10": 19.641731854218058
+          },
+          "gun1_nearest": {
+            "n": 155854,
+            "median": 20.000000000000025,
+            "p10": 19.86694427056565
+          },
+          "raw_assigned_gun_distance": {
+            "n": 133384,
+            "median": 60.0,
+            "p10": 59.99999999999996
+          },
+          "clipped_assigned_gun_distance": {
+            "n": 133384,
+            "median": 60.0,
+            "p10": 59.99999999999996
+          },
+          "raw_other_gun_body_clearance": {
+            "n": 133384,
+            "median": 42.016602676390725,
+            "p10": 32.73250836051999
+          },
+          "clipped_other_gun_body_clearance": {
+            "n": 133384,
+            "median": 42.016602676390725,
+            "p10": 32.73250836051999
+          },
+          "clipped_other_gun_shifted_goal_distance": {
+            "n": 133384,
+            "median": 148.4760128620501,
+            "p10": 29.128848645058344
+          },
+          "realized_melee_to_melee_nearest": {
+            "n": 131336,
+            "median": 32.22689205062138,
+            "p10": 31.504942793264693
+          },
+          "actual_displacement": {
+            "n": 132998,
+            "median": 1.3333333333333404,
+            "p10": 1.287335080541994
+          },
+          "realized_melee_to_gun_nearest": {
+            "n": 132998,
+            "median": 104.0506316182869,
+            "p10": 69.17961676365758
+          },
+          "goal_shift_from_p12_px": {
+            "n": 132998,
+            "median": 0.0,
+            "p10": 0.0
+          },
+          "raw_point_error": {
+            "n": 132998,
+            "median": 52.648906800795544,
+            "p10": 23.17847224997079
+          },
+          "clipped_goal_error": {
+            "n": 132998,
+            "median": 52.648906800795544,
+            "p10": 23.17847224997079
+          },
+          "own_melee_to_enemy_ranged": {
+            "n": 132998,
+            "median": 378.03586503268525,
+            "p10": 148.53893040043022
+          },
+          "gun0_nearest_10_20": {
+            "n": 62694,
+            "median": 54.527146445659966,
+            "p10": 47.204301786147866
+          },
+          "gun1_nearest_10_20": {
+            "n": 35854,
+            "median": 20.00000000000005,
+            "p10": 19.936431923953364
+          },
+          "realized_melee_to_melee_nearest_10_20": {
+            "n": 13228,
+            "median": 32.11561781452025,
+            "p10": 30.911421737462284
+          },
+          "actual_displacement_10_20": {
+            "n": 14890,
+            "median": 1.2735067475086828,
+            "p10": 0.6763389451816736
+          },
+          "realized_melee_to_gun_nearest_10_20": {
+            "n": 14890,
+            "median": 95.96507807739958,
+            "p10": 56.79244707843873
+          },
+          "own_melee_to_enemy_ranged_10_20": {
+            "n": 14890,
+            "median": 141.74547382113536,
+            "p10": 107.74933525556449
+          }
+        }
+      },
+      "mean_own_melee_losses": 10,
+      "mean_own_ranged_losses": 17,
+      "own_melee_killers": {
+        "0_artillery": 59,
+        "1_artillery": 246,
+        "1_melee": 42,
+        "1_ranged": 45,
+        "0_ranged": 8
+      },
+      "elimination_wins": 40,
+      "timeouts": 0,
+      "mean_S": 22.975,
+      "mean_enemy_guns_destroyed": 10,
+      "mean_own_guns_lost": 0.025,
+      "mean_own_losses": 27.025,
+      "sides": [
+        {
+          "counts": {
+            "living_ticks": 330947,
+            "any_target_range_ticks": 203039,
+            "gun_target_range_ticks": 62233,
+            "windup_ticks": 138944,
+            "launch_ticks": 5788,
+            "move_command_ticks": 329784,
+            "command_range_ticks": 201876,
+            "hold_range_ticks": 1163,
+            "command_launch_ticks": 5757,
+            "hold_launch_ticks": 31,
+            "command_launch_range_ticks": 5757,
+            "hold_launch_range_ticks": 31,
+            "movement_known_ticks": 330946,
+            "moving_ticks": 325533,
+            "moving_launch_ticks": 5645,
+            "stationary_launch_ticks": 143,
+            "target_switches": 11151,
+            "incoming_damage_1_artillery": 330,
+            "incoming_damage_1_ranged": 5501,
+            "other_target_shell_gun_victims": 12,
+            "other_target_shell_gun_damage": 180,
+            "shells_hitting_0_guns": 4339,
+            "launches": 5788,
+            "other_launches": 4106,
+            "gun_target_shell_gun_victims": 5098,
+            "gun_target_shell_gun_damage": 71431,
+            "shells_hitting_5_guns": 168,
+            "gun_launches": 1682,
+            "gun_launches_hit_any_gun": 1444,
+            "gun_launches_hit_intended_gun": 1258,
+            "launches_with_airborne_target_switch": 2539,
+            "gun_launches_with_airborne_target_switch": 835,
+            "gun_launches_with_airborne_target_switch_hit": 611,
+            "shells_hitting_8_guns": 91,
+            "shells_hitting_4_guns": 162,
+            "shells_hitting_1_guns": 387,
+            "shells_hitting_7_guns": 112,
+            "shells_hitting_3_guns": 164,
+            "gun_launches_target_dead_before_scheduled_impact": 391,
+            "shells_hitting_2_guns": 254,
+            "gun_launches_no_gun_hit_target_dead_before_scheduled_impact": 223,
+            "shells_hitting_6_guns": 92,
+            "incoming_damage_0_ranged": 56,
+            "shells_hitting_9_guns": 19,
+            "incoming_damage_1_melee": 256,
+            "other_launches_hit_gun": 5,
+            "incoming_damage_0_artillery": 150,
+            "death_interval_ticks": 1
+          },
+          "gun_targeted_launches": 1682,
+          "successful_gun_targeted_shells": 1444,
+          "gun_victims": 5098,
+          "gun_victims_per_successful_shell": 3.5304709141274238,
+          "artillery_hp_to_opposing_guns": 71611,
+          "incidental_hp": 180,
+          "already_dead_before_impact": 391,
+          "airborne_at_end": 0
+        },
+        {
+          "counts": {
+            "living_ticks": 157038,
+            "any_target_range_ticks": 71631,
+            "gun_target_range_ticks": 42839,
+            "windup_ticks": 40843,
+            "launch_ticks": 1959,
+            "move_command_ticks": 90653,
+            "command_range_ticks": 5246,
+            "hold_range_ticks": 66385,
+            "command_launch_ticks": 156,
+            "hold_launch_ticks": 1803,
+            "command_launch_range_ticks": 156,
+            "hold_launch_range_ticks": 1803,
+            "movement_known_ticks": 156638,
+            "moving_ticks": 116452,
+            "moving_launch_ticks": 849,
+            "stationary_launch_ticks": 1108,
+            "target_switches": 2862,
+            "incoming_damage_0_artillery": 71611,
+            "death_interval_ticks": 400,
+            "other_target_shell_gun_victims": 22,
+            "other_target_shell_gun_damage": 330,
+            "shells_hitting_0_guns": 1939,
+            "launches": 1959,
+            "other_launches": 1959,
+            "shells_hitting_2_guns": 2,
+            "other_launches_hit_gun": 20,
+            "launches_with_airborne_target_switch": 636,
+            "incoming_damage_0_ranged": 789,
+            "shells_hitting_1_guns": 18
+          },
+          "gun_targeted_launches": 0,
+          "successful_gun_targeted_shells": 0,
+          "gun_victims": 0,
+          "gun_victims_per_successful_shell": null,
+          "artillery_hp_to_opposing_guns": 330,
+          "incidental_hp": 330,
+          "already_dead_before_impact": 0,
+          "airborne_at_end": 0
+        }
+      ],
+      "nearest": [
+        {
+          "n": 182694,
+          "median": 27.992022306416416,
+          "p10": 19.641731854218058
+        },
+        {
+          "n": 155854,
+          "median": 20.000000000000025,
+          "p10": 19.86694427056565
+        }
+      ],
+      "early_10_20_nearest": [
+        {
+          "n": 62694,
+          "median": 54.527146445659966,
+          "p10": 47.204301786147866
+        },
+        {
+          "n": 35854,
+          "median": 20.00000000000005,
+          "p10": 19.936431923953364
+        }
+      ],
+      "nearest_singleton_ticks": [
+        0,
+        784
+      ],
+      "gun_phase_ticks": [
+        182694,
+        156638
+      ],
+      "gun_range_ticks": [
+        62233,
+        42839
+      ],
+      "spacing_audit": {
+        "prepare_gun_ticks": 182695,
+        "clipped_goal_ticks": 0,
+        "shift_ticks": 180144,
+        "zero_multiplier_shift_ticks": 885,
+        "raw_goal_out_of_focus_band_ticks": 44681,
+        "coincident_pair_terms": 0,
+        "neighbour_terms": 588800,
+        "clipped_action_reconciled_ticks": 182695
+      },
+      "enemy_over_own_artillery_hp_ratio": 0.004608230579100976,
+      "escort": {
+        "counts": {
+          "gun_prepare_ticks": 182695,
+          "gun_focus_V_sum": 1582233,
+          "gun_anchor_V_sum": 1625380,
+          "gun_no_reachable_target_ticks": 120462,
+          "prepare_living_ranged_ticks": 495676,
+          "action_reconciled_ticks": 495676,
+          "target_opportunity_ticks": 205463,
+          "threat_selected_ticks": 18248,
+          "clipped_goal_ticks": 0,
+          "clipped_assigned_gun_within_splash_ticks": 0,
+          "raw_other_gun_body_overlap_ticks": 267,
+          "clipped_other_gun_body_overlap_ticks": 267,
+          "coincident_other_gun_shifted_goal_ticks": 0,
+          "displacement_known_ticks": 495187,
+          "moving_ticks": 493203,
+          "arrival_available_ticks": 495187,
+          "p12_raw_anchor_arrival_ticks": 180018,
+          "p12_clipped_anchor_arrival_ticks": 180018,
+          "raw_arrival_ticks": 180018,
+          "clipped_arrival_ticks": 180018,
+          "holding_ticks": 174671,
+          "raw_shared_point_pairs": 1250820,
+          "clipped_shared_point_pairs": 1250820,
+          "reassignment_ticks": 10322,
+          "gun_target_V_ticks": 62233,
+          "gun_target_V_sum": 353797,
+          "post_step_dead_ticks": 489,
+          "target_opportunity_ticks_10_20": 139480,
+          "threat_selected_ticks_10_20": 17879,
+          "artillery_enemy_ranged_last_hits_full": 1048,
+          "artillery_enemy_ranged_last_hits_lt20": 460,
+          "artillery_enemy_ranged_last_hits_lt30": 1040,
+          "gun1_singleton_ticks": 784,
+          "ranged_enemy_ranged_last_hits_full": 152,
+          "ranged_enemy_ranged_last_hits_lt20": 87,
+          "ranged_enemy_ranged_last_hits_lt30": 152,
+          "arrival_unavailable_ticks": 489,
+          "first_arrival_units": 1178,
+          "first_arrival_censored_units": 22
+        },
+        "window_threat_selection": [
+          {
+            "interval": [
+              10,
+              20
+            ],
+            "opportunities": 139480,
+            "selected": 17879,
+            "fraction": 0.12818325207915113
+          },
+          {
+            "interval": [
+              20,
+              30
+            ],
+            "opportunities": 0,
+            "selected": 0,
+            "fraction": null
+          }
+        ],
+        "p12_raw_anchor_arrival_fraction": 0.3631767525561052,
+        "p12_clipped_anchor_arrival_fraction": 0.3631767525561052,
+        "raw_arrival_fraction": 0.3631767525561052,
+        "clipped_arrival_fraction": 0.3631767525561052,
+        "holding_fraction": 0.3523894640854106,
+        "threat_selection_fraction": 0.08881404437781985,
+        "distributions": {
+          "gun0_nearest": {
+            "n": 182694,
+            "median": 27.992022306416416,
+            "p10": 19.641731854218058
+          },
+          "gun1_nearest": {
+            "n": 155854,
+            "median": 20.000000000000025,
+            "p10": 19.86694427056565
+          },
+          "raw_assigned_gun_distance": {
+            "n": 495676,
+            "median": 60.0,
+            "p10": 59.99999999999996
+          },
+          "clipped_assigned_gun_distance": {
+            "n": 495676,
+            "median": 60.0,
+            "p10": 59.99999999999996
+          },
+          "raw_other_gun_body_clearance": {
+            "n": 495676,
+            "median": 48.89626561919104,
+            "p10": 38.29095320107784
+          },
+          "clipped_other_gun_body_clearance": {
+            "n": 495676,
+            "median": 48.89626561919104,
+            "p10": 38.29095320107784
+          },
+          "clipped_other_gun_shifted_goal_distance": {
+            "n": 495676,
+            "median": 97.60233471204896,
+            "p10": 31.249066760487647
+          },
+          "realized_ranged_to_ranged_nearest": {
+            "n": 495187,
+            "median": 17.18184339632025,
+            "p10": 15.424232107141593
+          },
+          "actual_displacement": {
+            "n": 495187,
+            "median": 1.6595770584250233,
+            "p10": 0.80078736768249
+          },
+          "realized_ranged_to_gun_nearest": {
+            "n": 495187,
+            "median": 40.178986996566046,
+            "p10": 18.857438929954167
+          },
+          "goal_shift_from_p12_px": {
+            "n": 495187,
+            "median": 0.0,
+            "p10": 0.0
+          },
+          "raw_point_error": {
+            "n": 495187,
+            "median": 26.602679774968827,
+            "p10": 5.960185519618334
+          },
+          "clipped_goal_error": {
+            "n": 495187,
+            "median": 26.602679774968827,
+            "p10": 5.960185519618334
+          },
+          "own_ranged_to_enemy_ranged": {
+            "n": 495187,
+            "median": 327.40268938464345,
+            "p10": 153.57275370962478
+          },
+          "gun0_nearest_10_20": {
+            "n": 62694,
+            "median": 54.527146445659966,
+            "p10": 47.204301786147866
+          },
+          "gun1_nearest_10_20": {
+            "n": 35854,
+            "median": 20.00000000000005,
+            "p10": 19.936431923953364
+          },
+          "realized_ranged_to_ranged_nearest_10_20": {
+            "n": 139121,
+            "median": 17.501351418753643,
+            "p10": 15.82432698523523
+          },
+          "actual_displacement_10_20": {
+            "n": 139121,
+            "median": 1.3329136915821622,
+            "p10": 0.42997196556192985
+          },
+          "realized_ranged_to_gun_nearest_10_20": {
+            "n": 139121,
+            "median": 51.823880351962806,
+            "p10": 32.61995596190241
+          },
+          "own_ranged_to_enemy_ranged_10_20": {
+            "n": 139121,
+            "median": 163.90018855574078,
+            "p10": 133.88282487473006
+          }
+        },
+        "gun_hp_loss_bins": [
+          {
+            "interval": [
+              0,
+              10
+            ],
+            "hp": {
+              "enemy_artillery": 165,
+              "enemy_ranged": 8
+            }
+          },
+          {
+            "interval": [
+              10,
+              20
+            ],
+            "hp": {
+              "enemy_ranged": 2277,
+              "friendly_ranged": 40,
+              "enemy_artillery": 165,
+              "enemy_melee": 256,
+              "friendly_artillery": 150
+            }
+          },
+          {
+            "interval": [
+              20,
+              30
+            ],
+            "hp": {
+              "enemy_ranged": 3216,
+              "friendly_ranged": 16
+            }
+          },
+          {
+            "interval": [
+              30,
+              60
+            ],
+            "hp": {}
+          },
+          {
+            "interval": [
+              60,
+              150.1
+            ],
+            "hp": {}
+          }
+        ]
+      },
+      "escort_shells": {
+        "counts": {
+          "friendly_artillery_hp_to_own_ranged": 1358,
+          "own_other_targeted_launches": 4106,
+          "own_other_targeted_successful_shells": 3460,
+          "own_other_targeted_distinct_opposing_victims": 9467,
+          "own_other_targeted_friendly_hp": 10510,
+          "own_other_targeted_melee_victims": 4488,
+          "own_other_targeted_melee_hp": 61318,
+          "own_other_targeted_ranged_victims": 4967,
+          "own_other_targeted_ranged_hp": 66210,
+          "own_other_targeted_artillery_victims": 12,
+          "own_other_targeted_artillery_hp": 180,
+          "incidental_other_aim_launches": 1757,
+          "incidental_other_aim_own_ranged_hp": 39026,
+          "incidental_other_aim_distinct_victims": 2821,
+          "incidental_other_aim_successful_shells": 890,
+          "escort_targeted_launches": 202,
+          "escort_targeted_own_ranged_hp": 16620,
+          "escort_targeted_distinct_victims": 1170,
+          "escort_targeted_successful_shells": 201,
+          "own_gun_targeted_launches": 1682,
+          "own_gun_targeted_successful_shells": 1490,
+          "own_gun_targeted_distinct_opposing_victims": 7614,
+          "own_gun_targeted_friendly_hp": 0,
+          "own_gun_targeted_melee_victims": 0,
+          "own_gun_targeted_melee_hp": 0,
+          "own_gun_targeted_ranged_victims": 2516,
+          "own_gun_targeted_ranged_hp": 34231,
+          "own_gun_targeted_artillery_victims": 5098,
+          "own_gun_targeted_artillery_hp": 71431
+        },
+        "all_opposing_victims_per_successful_own_gun_targeted_shell": 5.11006711409396,
+        "role_victims_per_successful_own_gun_targeted_shell": {
+          "melee": 0.0,
+          "ranged": 1.6885906040268457,
+          "artillery": 3.421476510067114
+        },
+        "own_ranged_victims_per_successful_enemy_escort_targeted_shell": 5.82089552238806
+      },
+      "gun_survival": [
+        {
+          "t": 10,
+          "mean_alive": 10
+        },
+        {
+          "t": 20,
+          "mean_alive": 9.975
+        },
+        {
+          "t": 30,
+          "mean_alive": 9.975
+        },
+        {
+          "t": 45,
+          "mean_alive": 9.975
+        },
+        {
+          "t": 60,
+          "mean_alive": 9.975
+        }
+      ],
+      "own_ranged_killers": {
+        "1_artillery": 361,
+        "1_melee": 24,
+        "1_ranged": 278,
+        "0_artillery": 10,
+        "0_ranged": 7
+      }
     }
   ],
-  "reading": "Not available until all 160 fights and sealed measurements are verified",
-  "entropy_claimed": false
+  "reading": {
+    "reading": "Replicated",
+    "replicated": true,
+    "checks": {
+      "regular_at_least_26": true,
+      "regular_mean_S_positive": true,
+      "novice_mean_S_positive": true,
+      "novice_at_least_21": true,
+      "no_failures": true,
+      "better_in_at_least_12_clusters": true
+    },
+    "regular_clusters_better": 14,
+    "regular_clusters_tied": 5,
+    "regular_clusters_worse": 1,
+    "cluster_uncertainty": [
+      {
+        "head": "regular",
+        "quantity": "P12",
+        "clusters": 20,
+        "mean": 0.3,
+        "cluster_standard_error": 0.0917662935482247,
+        "approximate_t95_interval": [
+          0.1079309402571407,
+          0.4920690597428593
+        ],
+        "assumptions": "Independent development clusters; paired orientations averaged first. Approximate t interval (19 df), unbounded; descriptive, not a registered population-rate guarantee. Zero sample variance is not proof of certainty."
+      },
+      {
+        "head": "regular",
+        "quantity": "P16",
+        "clusters": 20,
+        "mean": 0.85,
+        "cluster_standard_error": 0.0734488722997519,
+        "approximate_t95_interval": [
+          0.696269743537445,
+          1.003730256462555
+        ],
+        "assumptions": "Independent development clusters; paired orientations averaged first. Approximate t interval (19 df), unbounded; descriptive, not a registered population-rate guarantee. Zero sample variance is not proof of certainty."
+      },
+      {
+        "head": "regular",
+        "quantity": "P16_minus_P12",
+        "clusters": 20,
+        "mean": 0.55,
+        "cluster_standard_error": 0.10821518523658993,
+        "approximate_t95_interval": [
+          0.32350301429175166,
+          0.7764969857082484
+        ],
+        "assumptions": "Independent development clusters; paired orientations averaged first. Approximate t interval (19 df), unbounded; descriptive, not a registered population-rate guarantee. Zero sample variance is not proof of certainty."
+      },
+      {
+        "head": "novice",
+        "quantity": "P12",
+        "clusters": 20,
+        "mean": 1.0,
+        "cluster_standard_error": 0.0,
+        "approximate_t95_interval": [
+          1.0,
+          1.0
+        ],
+        "assumptions": "Independent development clusters; paired orientations averaged first. Approximate t interval (19 df), unbounded; descriptive, not a registered population-rate guarantee. Zero sample variance is not proof of certainty."
+      },
+      {
+        "head": "novice",
+        "quantity": "P16",
+        "clusters": 20,
+        "mean": 1.0,
+        "cluster_standard_error": 0.0,
+        "approximate_t95_interval": [
+          1.0,
+          1.0
+        ],
+        "assumptions": "Independent development clusters; paired orientations averaged first. Approximate t interval (19 df), unbounded; descriptive, not a registered population-rate guarantee. Zero sample variance is not proof of certainty."
+      },
+      {
+        "head": "novice",
+        "quantity": "P16_minus_P12",
+        "clusters": 20,
+        "mean": 0.0,
+        "cluster_standard_error": 0.0,
+        "approximate_t95_interval": [
+          0.0,
+          0.0
+        ],
+        "assumptions": "Independent development clusters; paired orientations averaged first. Approximate t interval (19 df), unbounded; descriptive, not a registered population-rate guarantee. Zero sample variance is not proof of certainty."
+      }
+    ],
+    "limits": "20 fresh paired development clusters; no population-rate, resonator, judging, registration or scientific acceptance claim. A replicated result supplies the scripted feasibility witness for the owner-directed v7 revision; it does not approve the draft v7."
+  },
+  "declaration_sha256": "68352d43e62aefb76e49f41ad10eb175527fee31462661b29227b631ac524be3",
+  "fights_sha256": "db835616cd1638f476f304c01ccc8d0710d80c9354c54ea238004632fa6c8b35"
 }
