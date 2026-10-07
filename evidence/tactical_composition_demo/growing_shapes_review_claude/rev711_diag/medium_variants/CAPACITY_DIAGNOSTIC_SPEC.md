@@ -42,3 +42,26 @@
   - **"Capacity scales with budget":** total service at cap 128 ≥ 1.5 × RD3's (≥ 3.22), and at cap 96 between the two.
   - **"Not budget-bound":** total service at cap 128 ≤ 1.15 × RD3's (≤ 2.47).
   - Anything else is descriptive.
+
+## Amendment 1, answering the Codex spec review (`docs/reviews/tactical_0h_capacity_diagnostic_spec_review_codex.md`, CHANGES_REQUIRED)
+
+**Self-audit:** I treated "the budget" as only the cost ceiling. RD3 has three 64 literals:
+- **line 365:** the ordinary-body **count** admission ceiling;
+- **line 370:** the prospective **cost** admission ceiling;
+- **line 499:** the D3 over-budget trigger.
+
+**The intervention, redefined as one change: "the resource ceiling" × 1.5 or × 2.**
+
+| Arm | Count ceiling (365) | Cost ceiling (370) | D3 trigger (499) |
+|---|---|---|---|
+| CAP96 | 96 | 96 | 96 |
+| CAP128 | 128 | 128 | 128 |
+
+- **All three are scaled together;** no other constant changes.
+- **The telemetry's hardcoded `cap = 64` fields** (observer lines 129 and 156) are reporting constants. They are **parameterized to the arm's ceiling for reporting only**, which changes no policy. The 640 s late-window selector and the other non-RD3 64s stay unchanged.
+
+**The readings, narrowed (N1 adopted: "total service" is a site-normalized coverage index, Σ over the 8 sites of the pooled active served fractions, at most 8):**
+- **"Capacity scales with the resource ceiling":** the index at CAP128 ≥ 1.5 × RD3's (≥ 3.22), and CAP96 lies between RD3 and CAP128.
+- **"Not resource-bound"** applies **only if** the arm actually used the extra resources (its median cost after 400 s > 80 for CAP128) **and** its index ≤ 1.15 × RD3's (≤ 2.47). If the resources were not used, the reading is "ceiling not reached; the bound is elsewhere" (descriptive).
+- Anything else is descriptive.
+- **Mass and cost** are reported by class, so a gain can be traced to served routes, fronts or redundancy.
