@@ -13,7 +13,7 @@ import time
 OUT = Path(__file__).resolve().parent
 ROOT = OUT.parents[4]
 LOCAL = OUT / '_local' / 'economy'
-CAP = 14400  # night resume from 22:00 under decision 0031 (after 22:00 the plan's runs proceed without asking); earlier daytime cap 5400 was the owner's ~19:20 approval
+CAP = 5400  # owner approval 2026-10-07 ~19:20 (decision 0031, daytime run just over 1 h; projection about 66 min); raised explicitly, as Amendment 1 requires
 MAX_WORKERS = 10
 # Anchor at executable, not any substring of the command. Both script/native
 # alternatives contain this exact repository path. In particular pgrep cannot match.
