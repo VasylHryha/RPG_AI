@@ -843,3 +843,35 @@ No registration, judging seeds or recorded run.
 Then run a short diagnostic: how guns die against novice, and why gun assaults fail against regular (timing, approach paths, cover, simultaneity).
 
 **v7 is then designed from that evidence.** The leading hypothesis to test, not assume: **collective commitment.** A phase-locked target group commits **together**, so the guns cannot destroy attackers one at a time. This is a resonator-level mechanism (group synchronization drives a coordinated assault).
+
+### 19.1 What the kill telemetry shows (`astelia_cpp/S4_GUN_ASSAULT_DIAGNOSTIC.md`, `e0afa50`) and the next probe
+
+**Evidence** (120 fresh development fights, observer-only telemetry, actions byte-identical):
+- **Enemy guns die to artillery, not to assaults:**
+  - against novice, our artillery makes **556 of 565 gun kills (98.4%)**;
+  - direct and melee approaches on regular guns almost never connect. Entrants are covered by about 3–4 other gun bands, and most die. The v6 resonator made 3,041 entries; 312 reached its own range and 9 dealt gun damage.
+- **Enemy artillery makes 81% of our deaths against regular**, most of them **before** the gun-only phase.
+- **The regular guns dodge shells and hold a line:**
+  - about 80–95 k dodge-goal returns per 20 fights (novice: none);
+  - guns about 46 px apart, each overlapping about 8.8 other bands.
+- **The result against regular:** we destroy only **0.4–3.3 of 10 guns** (against novice, 8.6–9.95), and there are **0/20 elimination wins for every arm**.
+- **The relevant game facts** (the catalog): a shell aims at the target's position at release (`lobLead` off), with splash radius 40 and storm dodge distance 110. Regular has `dodgeShells` on (it steps out of predicted splashes) and `lead: raw`. Our controller sees no shells, but it sets every unit's target every tick and sees cooldowns.
+
+**The reading: beating regular is an artillery duel against a dodging gun line.**
+
+**Hypothesis to test before any v7 design: synchronized battery volleys.**
+- If our guns hold their targets until several are ready and then fire together, the dodge may stop working.
+- That works when the guns are assigned to **adjacent** enemy guns in the line (a net), so a sidestep out of one splash lands in another.
+- This is a timing-coordination mechanism, a natural job for phase locking in a resonator.
+
+**Feasibility probe (scripted, not an RRG controller; descriptive, fresh development entropy):** probe arms that differ **only** in our artillery's targeting and timing. The rest of the army is fixed to the v6 attempt-2 resonator knobs.
+- P0: the v6 resonator as is;
+- P1: a synchronized volley on one target gun (hold until k ready);
+- P2: a synchronized net on adjacent target guns;
+- P3: P2 with our direct units held outside all enemy gun bands until the enemy guns are depleted.
+
+**Prerequisites, checked first:** whether "target none" actually holds fire under game rules, and what the abilities (`Auto`: barrage, slow) do.
+
+**Measurements:** against regular, enemy guns destroyed, our shell hit rate, our gun losses, elimination wins and timeouts. Against novice, the same, for a sanity check.
+
+If a scripted probe cannot kill regular guns, the v7 hypothesis is wrong, and the drafter returns to the evidence before designing.
