@@ -48,7 +48,29 @@
   - **The total service index** (Σ of 8 per-site fractions) is RD3 2.15, COV-A 1.75, DEBT 1.82. **Freeing material raises it** (COV-B recycling 2.50) and **removing material lowers it** (ECO-R thinning 1.16; ECO-R also broke the response, 0/8 gate).
   - **ECO-F (front retraction) was inert:** every "front" body is a sensor root (the reach-3 zones cover 97% of the arena), so there was never an eligible donor.
   - **The waste:** 60–68% of the cost sits in root mass near sensors without a link to O, mostly B-path-born.
-- **The capacity diagnostic** (resource ceiling ×1.5 and ×2): *[result to be filled in]*.
+- **The capacity diagnostic** (resource ceiling ×1.5 and ×2; night run, 20 runs plus 2 off controls; integrity PASS; `CAPACITY_DIAGNOSTIC_REPORT.md`, commit `f33d194`): the reading is **CAPACITY_SCALES_WITH_RESOURCE_CEILING**, as declared in Amendment 2.
+
+  | Ceiling | Total service index | Sites 3–6 pooled | Weakest site | Gate empty / seeded |
+  |---|---|---|---|---|
+  | 64 (RD3) | 2.148 | 0.086 | 0.019 (site 4) | 5/5 / 3/5 |
+  | 96 | 3.212 (×1.50) | 0.261 (×3.0) | 0.100 (site 5) | 5/5 / 5/5 |
+  | 128 | 3.458 (×1.61) | 0.300 (×3.5) | 0.148 (site 5) | 5/5 / 5/5 |
+
+  - **What it means:** in this *dynamic* medium the resource ceiling does bind. That holds even though a *static* eight-spoke star would cost only 22.4. More material buys far-site service, and the gate does not degrade.
+  - **Diminishing returns:** most of the gain arrives by 96. Doubling to 128 adds little more, and no site reaches full service (site 5 stays under 15%).
+  - **The tension with your research update** ("do not raise the budget yet"): the data show that the budget is a real lever, not that allocation is solved. More budget may only mask waste: 60–68% of the cost sits in fronts. Codex's recheck of this result is in `docs/reviews/tactical_0h_capacity_result_recheck_codex.md`.
+  - **What the stored data already rule out** (`FRONT_ALLOCATION_DIAGNOSTIC.md`):
+    - **"One active front per site"** (the research update's rank 1) can free little. An unserved site has 1.15 front components on average, and only 13–18% of the owned front cost lies outside its largest component.
+    - **Service-debt ordering** was tested (DEBT) and matched COV-A exactly.
+    - The research update's decision tree therefore reaches its last branch: **revisit the geometry or representation.** The measured cause is that the sensor root zones (reach 3) cover 97% of the arena. "Front" mass is therefore mostly root mass near sensors, and no recycling rule may touch roots.
+  - **Your decision (0h):**
+    - (a) **adopt ceiling 96** into the candidate law. It is measured: gate 10/10, far sites ×3. It is the price of a dynamic medium whose structure is always partly in flux.
+    - (b) **keep 64 and test one representation change:** a narrower sensor root zone, matched to the strong-edge range (about 1.44) instead of 3.
+      - **Note:** this also changes how sensors drive the medium, not only the bookkeeping.
+      - **Recycling root mass is already tested:** COV-B's donor may be any non-service body, roots included. That allocation route plateaued at index 2.50, against 3.21 at ceiling 96.
+    - (c) **both:** run (b) at 64 as one exploratory pilot, and keep 96 as the measured fallback.
+
+    My recommendation is (c). Option (b) attacks the measured waste at its cause, and (a) is already known to work if (b) fails.
 - **Your research update** was assessed: adopted except one correction (the fronts are root mass, not bridge tips). See `docs/reviews/rrg_next_steps_assessment_claude.md`.
 
 ## 4. C6
