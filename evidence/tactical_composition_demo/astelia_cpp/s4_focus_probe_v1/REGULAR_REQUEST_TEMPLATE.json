@@ -1,0 +1,48 @@
+{
+  "trace": false,
+  "debug": false,
+  "mode": "alone",
+  "opponent": "alone",
+  "s3": true,
+  "diagnostics": false,
+  "options": {
+    "seed": 3612969044,
+    "rules": "game",
+    "scenario": "mirror",
+    "sandboxAbilities": false,
+    "perception": false,
+    "duration": 150,
+    "dt": 0.03333333333333333,
+    "army": {
+      "melee": 10,
+      "ranged": 30,
+      "artillery": 10
+    },
+    "swapSides": false,
+    "ai": [
+      {
+        "controller": "P0",
+        "params": {
+          "K": 3.566896608697073,
+          "K_t": 3.727239438188206,
+          "kappa": 28.18188378050727,
+          "beta": 0.1344978184970619,
+          "G": 4.529277505112292,
+          "w": 1.8368755705836595,
+          "f_c": 0.9115160242941771,
+          "m_k": 0.20353322914295716,
+          "lambda_th": 1.250917647665491,
+          "mu": -1.8154310511852993,
+          "omega_ranged": 1.3914459541507074
+        },
+        "skeleton": "focus_probe_v1"
+      },
+      {
+        "level": "regular"
+      }
+    ]
+  },
+  "endCounts": true,
+  "killerTelemetry": true,
+  "decisionTrace": true
+}
