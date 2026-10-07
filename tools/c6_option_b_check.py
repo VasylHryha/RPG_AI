@@ -23,7 +23,8 @@ from geomind.c6_r4_integrity import validate_pin
 
 def machine():
     return {'utc':time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime()),
-            'load_average':list(os.getloadavg()),'cpu_count':os.cpu_count(),'platform':platform.platform()}
+            'load_average':list(os.getloadavg()),'cpu_count':os.cpu_count(),'platform':platform.platform(),
+            'macos_build':O.B.require_platform()}
 
 def write(path,data):
     if path.exists(): raise FileExistsError(path)
@@ -46,6 +47,7 @@ def fixture():
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--backend',choices=('reference','native'),required=True)
+    parser.add_argument('--kernel',choices=('exact','inexact'),default=O.B.kernel())
     parser.add_argument('--entropy',choices=('smoke','development'),default='smoke')
     parser.add_argument('--world',type=int,choices=(0,1),default=0)
     parser.add_argument('--fixture',action='store_true')
@@ -54,12 +56,15 @@ def main():
     parser.add_argument('--schedule',choices=('forward','reverse'),default='forward')
     parser.add_argument('--output',type=Path,required=True)
     args=parser.parse_args()
+    os.environ['C6_OPTION_B_KERNEL']=args.kernel
     if args.parallel and args.backend != 'native':parser.error('--parallel requires --backend native')
     if args.audit and args.backend != 'native':parser.error('--audit requires --backend native')
     if args.schedule != 'forward' and not args.parallel:parser.error('--schedule requires --parallel')
     args.output.mkdir(parents=True,exist_ok=False)
     s=P.load_settings();pin=validate_pin(ROOT)
     meta={'kind':'OPTION_B_ENGINEERING_ONLY','backend':args.backend,'audit':args.audit,
+          'kernel':args.kernel if args.backend=='native' else 'reference',
+          'macos_build':O.B.require_platform(),
           'parallel':args.parallel,'schedule':args.schedule,
           'thread_budget':{'world_workers':2,'threads_per_world':5 if args.parallel else 1,
                            'blas_threads':1,
@@ -80,7 +85,7 @@ def main():
           'python_cache_limits_process':{'passive':O.PASSIVE_CACHE_BYTES,'emission':O.EMISSION_CACHE_BYTES}}
 
     write(args.output/'START.json',(json.dumps(meta,indent=2)+'\n').encode())
-    started=time.perf_counter();cpu=time.process_time()
+    started=time.perf_counter();cpu=time.process_time();awake_start=time.monotonic();wall_start=time.time()
     try:
         with O.backend(args.backend,args.audit) as checker:
             from geomind.c6_option_b_parallel import parallel
@@ -106,6 +111,7 @@ def main():
                 total_seconds=compute+io_seconds,raw_bytes=len(raw),compressed_bytes=len(compressed),
                 world_sha256=hashlib.sha256(compressed).hexdigest(),end_machine=machine(),
                 audit=audit,native_cache=cache,invalid=row.get('invalid'),chain_complete=row.get('chain_complete'))
+    meta.update(awake_seconds=time.monotonic()-awake_start,elapsed_seconds=time.time()-wall_start)
     peak=int(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss)
     meta['post_serialization_peak_rss_bytes']=peak if sys.platform=='darwin' else peak*1024
     write(args.output/'COSTS.json',(json.dumps(meta,indent=2)+'\n').encode())

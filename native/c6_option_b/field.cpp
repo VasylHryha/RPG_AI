@@ -1,9 +1,12 @@
-// Option B: unchanged scalar R4 evaluator plus exact typed trajectory caches.
+// Option B: decision 0032 vector kernel (default), selectable scalar exact kernel.
+// C6_OPTION_B_INEXACT=0 retains the pre-adoption evaluator. Caches remain exact
+// within a selected kernel; libraries and caches are isolated by build identity.
 //
 // Performance revision (evidence/c6_option_b/PERFORMANCE_DEEPDIVE_REPORT.md):
 // - the evaluator forms independent arguments first, calls the same libm
 //   entries back to back, then accumulates in the original order; every
-//   floating-point operation keeps its operands, order and function;
+//   floating-point operation keeps its operands, order and function in the
+//   exact build; decision 0032 changes the vector functions/site factorization;
 // - the material, actual-medium and drive caches are process-wide (shared by
 //   all worker threads), single-flight and indexed by a hash of the complete
 //   byte key. Equality is always a full byte comparison of the key, so no
@@ -23,6 +26,13 @@
 #include <condition_variable>
 #include <unordered_map>
 #include <math.h>
+#ifndef C6_OPTION_B_INEXACT
+#define C6_OPTION_B_INEXACT 1
+#endif
+#if C6_OPTION_B_INEXACT
+#include <Accelerate/Accelerate.h>
+#endif
+extern "C" int option_b_inexact_kernel(){return C6_OPTION_B_INEXACT;}
 using C=std::complex<double>;
 static C get(const double* a,int i){return C(a[2*i],a[2*i+1]);}
 static void put(double* a,int i,C v){a[2*i]=v.real();a[2*i+1]=v.imag();}
@@ -229,7 +239,7 @@ static int evaluate(int ns,int n,int nc,const double* y,const double* q,
    }
  };
  if(!material_only)medium(y,out);
- const int pairs=n*(n-1)/2, sites=n*ns;
+ const int pairs=int(size_t(n)*(n-1)/2), sites=n*ns;
  double* const ps=work.ps.data();double* const pf=work.pf.data();
  double* const pdx=work.pdx.data();double* const pdy=work.pdy.data();
  double* const psin=work.psin.data();double* const pcos=work.pcos.data();
@@ -260,8 +270,13 @@ static int evaluate(int ns,int n,int nc,const double* y,const double* q,
    // and adding it changes nothing (1.+(+-0.)==1.; vt stays +0.). Nonfinite
    // operands keep the original evaluation, so every error decision is kept.
    const bool need_cos=J!=0., need_coupling=K!=0.;
+#if C6_OPTION_B_INEXACT
+   if(need_cos||need_coupling){int count=pairs;vvsincos(psin,pcos,pf,&count);}
+   if(need_coupling){int count=pairs;vvexp(pexp,parg,&count);}
+#else
    if(need_cos||need_coupling)for(int k=0;k<pairs;k++)__sincos(pf[k],psin+k,pcos+k);
    if(need_coupling)for(int k=0;k<pairs;k++)pexp[k]=std::exp(parg[k]);
+#endif
    for(int i=0,k=0;i<n;i++)for(int j=i+1;j<n;j++,k++){
      const double s=ps[k],phase=pf[k],dx=pdx[k],dy=pdy[k];
      double cosine=0.;
@@ -281,11 +296,34 @@ static int evaluate(int ns,int n,int nc,const double* y,const double* q,
    const bool fixed=mode==2;
    double* const weight=fixed?work.fixed_w.data()+size_t(c)*sites:sw;
    if(!fixed||!work.fixed_ready[c]){
+#if C6_OPTION_B_INEXACT
+     // The study used fixed 64-site/64-element buffers without a guard.
+     // Larger valid inputs take the scalar Gaussian path before any fixed
+     // buffer access; this preserves the exact kernel's input domain.
+     if(n<=64 && ns<=64){
+       double ux[64],uy[64];int ix[64],iy[64],nux=0,nuy=0;
+       for(int a=0;a<ns;a++){
+         int u=0;while(u<nux&&ux[u]!=q[2*a])u++;
+         if(u==nux)ux[nux++]=q[2*a];ix[a]=u;
+         int v=0;while(v<nuy&&uy[v]!=q[2*a+1])v++;
+         if(v==nuy)uy[nuy++]=q[2*a+1];iy[a]=v;
+       }
+       static thread_local double tx[64*64],ty[64*64],ex[64*64],ey[64*64];
+       for(int i=0;i<n;i++){
+         for(int u=0;u<nux;u++){double d=ux[u]-weights[2*i];tx[i*nux+u]=-(d*d)/(2*p[6]*p[6]);}
+         for(int v=0;v<nuy;v++){double d=uy[v]-weights[2*i+1];ty[i*nuy+v]=-(d*d)/(2*p[6]*p[6]);}
+       }
+       int nx=n*nux,ny=n*nuy;vvexp(ex,tx,&nx);vvexp(ey,ty,&ny);
+       for(int i=0;i<n;i++)for(int a=0;a<ns;a++)weight[i*ns+a]=ex[i*nux+ix[a]]*ey[i*nuy+iy[a]];
+     }else
+#endif
+     {
      for(int i=0;i<n;i++)for(int a=0;a<ns;a++){
        double dx=q[2*a]-weights[2*i],dy=q[2*a+1]-weights[2*i+1];
        sarg[i*ns+a]=-(dx*dx+dy*dy)/(2*p[6]*p[6]);
      }
      for(int k=0;k<sites;k++)weight[k]=std::exp(sarg[k]);
+     }
      if(fixed)work.fixed_ready[c]=1;
    }
    const double* own=weight;
@@ -342,7 +380,8 @@ static bool valid_dimensions(int ns,int n,int nc) {
  if(ns<1||n<3||nc<0)return false;
  const uint64_t stride=3ULL*n+2ULL*ns;
  return stride<=INT_MAX && 2ULL*ns+uint64_t(nc)*stride<=INT_MAX &&
-        8ULL*ns<=INT_MAX && uint64_t(ns)*ns<=INT_MAX && uint64_t(n)*nc<=INT_MAX;
+        8ULL*ns<=INT_MAX && uint64_t(ns)*ns<=INT_MAX && uint64_t(n)*nc<=INT_MAX &&
+        uint64_t(n)*(n-1)/2<=INT_MAX && uint64_t(n)*ns<=INT_MAX;
 }
 extern "C" int field_rhs(int ns,int n,int nc,double t,const double* y,const double* q,
  const double* omega,const double* psi,const int* adj,const double* rates,

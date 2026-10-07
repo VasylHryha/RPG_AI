@@ -10,6 +10,11 @@ from geomind import c6_r4_field as F, c6_r4_field_assay as A, c6_r4_field_protoc
 from tools import c6_option_b_compare as C
 from tools import c6_r4_design_gate as G
 
+@pytest.fixture(autouse=True)
+def exact_kernel(monkeypatch):
+    monkeypatch.setenv('C6_OPTION_B_KERNEL','exact')
+
+
 def owner(n=24):
     random=np.random.default_rng(882901);s=P.load_settings()
     o=F.population(random,F.medium(random,s['model']),0,0,n)
@@ -366,7 +371,7 @@ def test_single_flight_cache_concurrent_success_failure_and_eviction():
 def test_loaded_binary_record_change_requires_restart():
     lib,record=O.load();altered=dict(record);altered['compiler']='another compiler'
     with pytest.raises(RuntimeError,match='restart process'):
-        O._checked_load(O.B.LIBRARY,altered)
+        O._checked_load(O.B.library_for(record['kernel']),altered)
     assert O.load()[0] is lib
 
 
@@ -387,20 +392,21 @@ def test_builder_compiles_snapshot_and_rejects_source_drift(tmp_path,monkeypatch
     library=tmp_path/'build'/'option_b.dylib'
     monkeypatch.setattr(B,'ROOT',tmp_path);monkeypatch.setattr(B,'SOURCES',sources)
     monkeypatch.setattr(B,'LIBRARY',library)
+    monkeypatch.setattr(B,'require_platform',lambda:dict(B.PINNED_MACOS))
     monkeypatch.setattr(B.subprocess,'check_output',lambda *a,**k:'test compiler\nTarget: test\n')
     def compile_snapshot(command,**kwargs):
         snapshots=[Path(p) for p in command if p.endswith('.cpp')]
         assert all(p not in sources and p.read_text()=='original' for p in snapshots)
         Path(command[-1]).write_bytes(b'synthetic binary')
     monkeypatch.setattr(B.subprocess,'run',compile_snapshot)
-    record=B.build()
+    record=B.build('inexact')
     assert record['compiler_version']=='test compiler\nTarget: test\n'
     assert record['architecture'] and record['binary_sha256']==B.digest(library)
     original_binary=library.read_bytes();original_record=(library.parent/'BUILD.json').read_bytes()
     def drift(command,**kwargs):
         compile_snapshot(command,**kwargs);sources[0].write_text('changed')
     monkeypatch.setattr(B.subprocess,'run',drift)
-    with pytest.raises(RuntimeError,match='sources changed'):B.build()
+    with pytest.raises(RuntimeError,match='sources changed'):B.build('inexact')
     assert library.read_bytes()==original_binary
     assert (library.parent/'BUILD.json').read_bytes()==original_record
 
@@ -473,7 +479,7 @@ int main() {
     st=store.stats(); assert(st.entries==0 && st.bytes==0);
 }
 ''')
-    subprocess.run(['clang++','-std=c++17','-O2','-fno-fast-math','-ffp-contract=off',str(source),'-o',str(binary)],check=True,capture_output=True)
+    subprocess.run(['clang++','-std=c++17','-O2','-fno-fast-math','-ffp-contract=off',str(source),'-framework','Accelerate','-o',str(binary)],check=True,capture_output=True)
     subprocess.run([str(binary)],check=True,capture_output=True)
 
 
@@ -502,7 +508,7 @@ void* operator new(std::size_t n) {
 void operator delete(void* p) noexcept { if(p&&counting) live-= (long long)malloc_size(p); std::free(p); }
 void operator delete(void* p, std::size_t) noexcept { operator delete(p); }
 '''+'#include "'+implementation.as_posix()+'"\n'+body)
-    subprocess.run(['clang++','-std=c++17','-O2','-fno-fast-math','-ffp-contract=off',str(source),'-o',str(binary)],check=True,capture_output=True)
+    subprocess.run(['clang++','-std=c++17','-O2','-fno-fast-math','-ffp-contract=off',str(source),'-framework','Accelerate','-o',str(binary)],check=True,capture_output=True)
     result=subprocess.run([str(binary)],capture_output=True,text=True)
     assert result.returncode==0,result.stdout+result.stderr
 
@@ -610,4 +616,3 @@ int main(){
   assert(store.stats().entries==2);
 }
 ''')
-

@@ -11,6 +11,11 @@ from geomind import c6_r4_field as F
 from tools.c6_option_b_compare import compare
 
 
+@pytest.fixture(autouse=True,params=['exact','inexact'])
+def selected_kernel(request,monkeypatch):
+    monkeypatch.setenv('C6_OPTION_B_KERNEL',request.param)
+
+
 def owner():
     random=np.random.default_rng(882901);s=P.load_settings()
     o=F.population(random,F.medium(random,s['model']),0,0,24)
@@ -41,7 +46,8 @@ def experiment(parallel, order):
                 result=run()
                 assert scheduler.summary()['worker_threads_used']<=4
         else:result=run()
-        assert audit.calls==audit.exact_calls and audit.maximum_error==0
+        assert audit.calls>0 and audit.maximum_error<=audit.summary()['absolute_tolerance']
+        if audit.kernel=='exact':assert audit.calls==audit.exact_calls and audit.maximum_error==0
     return result
 
 

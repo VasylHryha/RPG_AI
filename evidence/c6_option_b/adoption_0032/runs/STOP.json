@@ -1,0 +1,67 @@
+{
+  "status": "STOP",
+  "reason": "STOP: projected task compute over one hour: 3606.5s",
+  "macos_build": {
+    "ProductName": "macOS",
+    "ProductVersion": "26.6.2",
+    "BuildVersion": "25G83"
+  },
+  "builds": {
+    "exact": {
+      "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+      "compiler_version": "Apple clang version 21.0.0 (clang-2100.3.34.2)\nTarget: arm64-apple-darwin25.6.0\nThread model: posix\nInstalledDir: /Library/Developer/CommandLineTools/usr/bin\n",
+      "platform": "Darwin",
+      "architecture": "arm64",
+      "flags": [
+        "-std=c++17",
+        "-O2",
+        "-fno-fast-math",
+        "-ffp-contract=off",
+        "-dynamiclib",
+        "-DC6_OPTION_B_INEXACT=0"
+      ],
+      "source_hashes": {
+        "native/c6_option_b/field.cpp": "a54b289f27d44fc83a713e435023945426469c3481ae3fc17d6d66a497b01936",
+        "native/c6_option_b/detection.cpp": "fd2ab679359cb00e857555ee7614adaa4d335464ea242abf0c869e6400b00b52"
+      },
+      "kernel": "exact",
+      "macos_build": {
+        "ProductName": "macOS",
+        "ProductVersion": "26.6.2",
+        "BuildVersion": "25G83"
+      },
+      "binary_sha256": "bb573e1e30441fd1146bdc17d97a4732f06388316acd7f4ef41004d0184bd6fa",
+      "build_seconds": 3.082137083
+    },
+    "inexact": {
+      "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+      "compiler_version": "Apple clang version 21.0.0 (clang-2100.3.34.2)\nTarget: arm64-apple-darwin25.6.0\nThread model: posix\nInstalledDir: /Library/Developer/CommandLineTools/usr/bin\n",
+      "platform": "Darwin",
+      "architecture": "arm64",
+      "flags": [
+        "-std=c++17",
+        "-O2",
+        "-fno-fast-math",
+        "-ffp-contract=off",
+        "-dynamiclib",
+        "-DC6_OPTION_B_INEXACT=1",
+        "-framework",
+        "Accelerate"
+      ],
+      "source_hashes": {
+        "native/c6_option_b/field.cpp": "a54b289f27d44fc83a713e435023945426469c3481ae3fc17d6d66a497b01936",
+        "native/c6_option_b/detection.cpp": "fd2ab679359cb00e857555ee7614adaa4d335464ea242abf0c869e6400b00b52"
+      },
+      "kernel": "inexact",
+      "macos_build": {
+        "ProductName": "macOS",
+        "ProductVersion": "26.6.2",
+        "BuildVersion": "25G83"
+      },
+      "binary_sha256": "07ad3daa3939a376604074accc55affe55a726c1098af91382a535ba2048c289",
+      "build_seconds": 4.002533625
+    }
+  },
+  "awake_seconds": 99.486918459,
+  "elapsed_seconds": 99.48551988601685
+}

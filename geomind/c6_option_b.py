@@ -36,10 +36,11 @@ PASSIVE_CACHE_BYTES = 64*1024*1024
 EMISSION_CACHE_BYTES = 128*1024*1024
 
 
-def verify_build(library=B.LIBRARY):
+def verify_build(library=None, kernel=None):
+    kernel=kernel or B.kernel();library=library or B.library_for(kernel)
     record = json.loads((library.parent/'BUILD.json').read_text())
     expected = {str(s.relative_to(B.ROOT)):sha256(s) for s in B.SOURCES}
-    if record.get('source_hashes') != expected or record.get('binary_sha256') != sha256(library) or record.get('flags') != list(B.FLAGS) or record.get('platform') != platform.system() or record.get('architecture') != platform.machine():
+    if record.get('source_hashes') != expected or record.get('binary_sha256') != sha256(library) or record.get('flags') != list(B.flags_for(kernel)) or record.get('platform') != platform.system() or record.get('architecture') != platform.machine() or record.get('kernel') != kernel or record.get('macos_build') != B.require_platform():
         raise RuntimeError('Option B source/build identity mismatch')
     return record
 
@@ -84,7 +85,11 @@ def reference():
 
 def load():
     record = verify_build()
-    lib = _checked_load(B.LIBRARY,record)
+    lib = _checked_load(B.library_for(record['kernel']),record)
+    lib.option_b_inexact_kernel.argtypes=[]
+    lib.option_b_inexact_kernel.restype=ct.c_int
+    if lib.option_b_inexact_kernel()!=int(record['kernel']=='inexact'):
+        raise RuntimeError('Option B compiled kernel identity mismatch')
     lib.option_b_components.argtypes = [ct.c_int,PTR,ct.c_double,ct.POINTER(ct.c_ubyte),ct.POINTER(ct.c_int64)]
     lib.option_b_components.restype = ct.c_int
     lib.option_b_cache_clear.argtypes = []
@@ -105,8 +110,10 @@ def cache_stats(lib):
 
 class Audit:
     """Compare every returned full production-step array on identical inputs."""
-    def __init__(self, lib, ref):
+    def __init__(self, lib, ref, kernel='exact'):
+        if kernel not in ('exact','inexact'):raise ValueError('Unknown audit kernel')
         self.lib, self.ref = lib, ref
+        self.kernel=kernel
         self.calls = self.elements = self.component_calls = 0
         self.exact_calls = 0
         self.maximum_error = 0.
@@ -135,8 +142,7 @@ class Audit:
             self.maximum_error = max(self.maximum_error,error)
             self.elements += count
             self.exact_calls += int(exact)
-        # All evaluator/RK arithmetic is unchanged and requires exact equality.
-        if not exact:
+        if (self.kernel=='exact' and not exact) or error>(0. if self.kernel=='exact' else 1e-8):
             raise RuntimeError('Option B full-flow equivalence failed: '+str(error))
         return code
     def field_run(self,*args): return self.invoke('field_run',args)
@@ -144,7 +150,8 @@ class Audit:
     def summary(self):
         return {'calls':self.calls,'float64_values_compared':self.elements,
                 'bit_identical_calls':self.exact_calls,'maximum_error':self.maximum_error,
-                'component_calls':self.component_calls,'absolute_tolerance':0.,'exact_arithmetic_required':True}
+                'component_calls':self.component_calls,'absolute_tolerance':0. if self.kernel=='exact' else 1e-8,
+                'kernel':self.kernel,'exact_arithmetic_required':self.kernel=='exact'}
 
 def components(lib, X, link_factor, locked):
     x = np.ascontiguousarray(X,dtype='f8')
@@ -217,7 +224,7 @@ def backend(name='reference', audit=False):
         lib, record = load() if name == 'native' else (ref,ref_record)
         if name == 'native':
             lib.option_b_cache_limits(*CACHE_LIMITS)
-        checker = Audit(lib,ref) if audit and name == 'native' else None
+        checker = Audit(lib,ref,record['kernel']) if audit and name == 'native' else None
         with F._CACHE_LOCK:
             F._PASSIVE_CACHE.clear(); F._EMISSION_CACHE.clear()
         def detected(X,link_factor,locked):
