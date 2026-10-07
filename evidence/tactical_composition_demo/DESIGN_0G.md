@@ -1399,3 +1399,34 @@ This is a stored-data analysis. It runs while the 0h pilots run.
 - **"Clearly above P12":** the arm's regular elimination wins ≥ P12's + 3 **and** ≥ 10/20.
 - **"The observed owner criterion":** ≥ 11/20 regular elimination wins, mean S > 0, novice ≥ 11/20, and no failures. An observed count is not a population rate.
 - The report includes the paired cluster table.
+
+### 19.12 The P16 result and its replication (declared before the replication's seal)
+
+**Result** (`astelia_cpp/s4_escort_probe_v3/S4_ESCORT_PROBE.md`, `d5044e8`; Codex's owner recheck pending):
+
+| Against regular (20 fights each) | P12 (fresh control) | **P16 (splash-value gun focus)** | P17 (melee escorts) |
+|---|---|---|---|
+| Elimination wins | 3 | **19** | 0 |
+| Mean S | −17.55 | **+4.9** | −36.05 |
+| Enemy guns destroyed / own guns lost | 8.15 / 9.05 | **10 / 4.95** | 5.75 / 10 |
+| Own losses (of 50) | 49.05 | 44.95 | 50 |
+
+- **Novice:** 20/20 in every arm (P16 mean S +22.65).
+- **P16 meets every part of the declared observed owner criterion (§19.11):** ≥ 11/20 regular, mean S > 0, novice ≥ 11/20, no failures. It is also "clearly above P12".
+- **This is one panel of 10 clusters**, and the P12 control here (3/20) is lower than on the earlier panels (6–7/20). So it needs replication before it serves as the v7 witness.
+
+**Replication (scripted, descriptive, declared before any fight):**
+- **Arms:** P12 and P16 **exactly as sealed in `s4_escort_probe_v3`.** The same code and binary; only the entropy is fresh.
+- **Panel:** **20 fresh development clusters** × 2 orientations × {P12, P16} × {regular, novice} = 160 fights, from a new development ledger.
+- **Replication reading (paired by cluster):**
+  - **"Replicated":** P16 regular elimination wins ≥ 26/40 (65%), **and** mean S > 0 on regular and novice, **and** novice ≥ 21/40, **and** no failures, **and** P16 > P12 in at least 12 of the 20 clusters (paired win counts).
+  - **"Not replicated":** P16 regular wins ≤ 20/40.
+  - **In between:** descriptive. Report the paired cluster table and the cluster-level uncertainty.
+- **Also reported:** the P16 mechanism measures (the V of chosen gun targets; splash victims per our gun-targeted shell; early enemy-ranged kills by our artillery; the gun-survival curve).
+- **Process:**
+  - P12 is reported first;
+  - stop rows as §19.8.1;
+  - **the seal must not pin `docs/PLAN_CURRENT.md`** (it changes during work);
+  - no rule or constant changes after any fight.
+
+**If replicated:** P16 becomes the feasibility witness required by the owner's decision (§19.11), and v7 (§20) is revised against it, answering R2–R9 with P16 as the witness.
