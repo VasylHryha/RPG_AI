@@ -1156,3 +1156,71 @@ This is a stored-data analysis. It runs while the 0h pilots run.
 - **The escort is not realized** (no arrival, or the spacing is lost): inconclusive.
 
 **Stop rows:** as §19.6 (a 1 h projection; INVALID on any change after a fight; P11's sanity on the new seeds reported first; wait while a 0h batch runs).
+
+#### 19.8.1 Amendment answering the Codex §19.8 review (`docs/reviews/tactical_0g_s198_probe_review_codex.md`, CHANGES_REQUIRED)
+
+19.8.1 overrides 19.8 where they differ.
+
+**Self-audit (the drafter's causes):**
+- **R1:** I wrote "P5's multiplier and stop-distance conventions" for ranged units, but P5 defines them only for guns, around a focus radius. The cause: I copied the gun rule's wording without checking which units it covers.
+- **R2:** the zero-vector and tie cases were not specified.
+- **R5:** I inherited P5's sanity window for a P11 control.
+
+**R1, the movement rule:**
+- P12 and P13 **recompute the ranged movement from the escort-point error.** For each assigned ranged unit:
+  - the goal = the escort point **after the native arena clip**;
+  - multiplier = 1 if the unit's current centre is more than **2 px** from that clipped goal, otherwise 0;
+  - stop distance = 0.
+- The v6 ranged multiplier is not used; no gun multiplier is copied.
+- **Gun decisions are exactly P11's.** **Ranged targeting is exactly the prepared v6 decision.** Melee is v6.
+
+**R2, the direction (all from the same prepare snapshot, all in fixed id order):**
+- **The assigned gun:** the nearest living own gun to the unit; ties go to the lowest gun id.
+- **The threat:** the nearest living enemy ranged unit with centre distance **≤ 400 px** (inclusive) from the assigned gun; ties go to the lowest id. û points from the gun toward it.
+- **If the vector is shorter than 1e-9 px,** or there is no such threat: û points toward the centroid of the living enemy guns (summed in ascending id order).
+- **If that vector is also shorter than 1e-9 px:** û points toward the nearest living enemy gun (ties by id).
+- **If even that vector is degenerate:** this unit keeps the complete prepared v6 action for this tick. Such ticks are counted.
+- **With no living own gun or no living enemy gun:** the complete P11/v6 fallthrough for everyone. No stale assignment is kept.
+
+**R3, realization (no new mechanism):**
+- Escort points use the **current observed** gun positions, not the spacing-shifted gun goals.
+- No lanes, avoidance, extra repulsion, reassignment or clearance correction are added. Native collisions and P11's spacing stay as they are.
+- **The splash claim is narrowed:** d = 60 keeps an escort centre outside the splash of a shell landing on its **assigned** gun's centre (the bound is 40 + 9 = 49 px; the gun radius is an extra margin). It says nothing about shells aimed at other guns or at the escorts.
+- **The audit reports:**
+  - raw and clipped escort goals;
+  - goal-to-other-gun clearances;
+  - shared or coincident escort points;
+  - realized ranged-to-gun and gun-to-gun nearest distances;
+  - victims per shell for both sides;
+  - blocked realization.
+
+**R4, measurement conventions (sealed before any fight):**
+- **Arrival:** the unit's post-step centre within 20 px of the point computed from that step's prepare snapshot.
+  - Report raw-point arrival and clipped-goal arrival separately.
+  - The denominator is living own-ranged unit-ticks while both sides had living guns at prepare.
+  - Also report first arrival, holding, and actual displacement.
+- **Common windows:** [10, 20) s and [20, 30) s; strict event times (< 20 s, < 30 s).
+- **The targeting share** keeps the diagnostic's definition:
+  - opportunity = a unit-tick with at least one reachable enemy ranged unit that threatens any living own gun;
+  - the numerator = such a threat selected.
+  - **Reach** = each pair's native range plus both body radii; geometric reach is not a legal or ready shot.
+- **Last hits:** opposing-team kills only; friendly damage is reported separately. HP is actual capped HP lost.
+- **Victims per shell** are inherited from the fire-efficiency diagnostic, for both teams, with incidental targeting reported separately.
+- **The categorical readings now have declared rules:**
+  - **"Clearly above P11":** the arm's regular elimination wins are ≥ 5/20 **and** at least 3 more than P11's on the same seeds.
+  - **"Arrive and engage":** clipped-goal arrival ≥ 50% of the arrival denominator **and** own-ranged last hits on enemy ranged before 20 s at least twice P11's (and at least 5 in 20 fights).
+  - **"Spacing lost":** enemy victims per successful gun-targeted shell > 1.5.
+  - Anything else is reported descriptively, including mixed and unavailable cases.
+- **Limits:** none of these readings is a population rate, permission for v7, or a resonator claim. Zero kills under unchanged targeting does not by itself refute the position hypothesis.
+
+**R5, the control:**
+- The fresh 40-fight P11 block is run and **reported first, descriptively**, before P12 and P13.
+- **It is flagged, not aborted,** if regular enemy guns destroyed < 4 or own guns lost < 7: a gross departure from the historical P11's 7.55 and 9.95.
+- **P5's window is not used.** No tuning or reinterpretation after the intervention arms are read.
+
+**R6, execution:**
+- The implementer keeps the mandatory pgrep gate before **every** combat block (engineering included), with a separate timestamped gate receipt per attempt.
+- **Records:** UTC start and end, with code and binary identities.
+- **Resume behaviour:** the scripts resume by skipping verified completions. They never replay a possibly executed or ambiguous fight, and they fail closed on ambiguity.
+- Entropy is claimed only after clearance; the worker bounds and the stage limits are kept.
+- **Combat is executed by Claude** (the Codex sandbox cannot list processes).
