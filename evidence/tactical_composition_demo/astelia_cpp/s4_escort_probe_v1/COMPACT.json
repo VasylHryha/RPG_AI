@@ -1,506 +1,2207 @@
 {
-  "status": "NOT_RUN",
-  "completed_fights": 0,
-  "declared_fights": 120,
+  "status": "DONE",
+  "scope": "descriptive development only",
   "P11_sanity": {
-    "status": "NOT_RUN",
-    "reason": "Fresh control not executed"
+    "status": "WITHIN_DECLARED_BOUNDS",
+    "reported_before_interventions": true,
+    "cells": [
+      {
+        "head": "regular",
+        "fights": 20,
+        "elimination_wins": 1,
+        "timeouts": 11,
+        "mean_S": -13.7,
+        "mean_enemy_guns_destroyed": 6.95,
+        "mean_own_guns_lost": 9.9,
+        "mean_own_losses": 43.5
+      },
+      {
+        "head": "novice",
+        "fights": 20,
+        "elimination_wins": 20,
+        "timeouts": 0,
+        "mean_S": 38.75,
+        "mean_enemy_guns_destroyed": 10.0,
+        "mean_own_guns_lost": 1.25,
+        "mean_own_losses": 11.25
+      }
+    ],
+    "control_ids": [
+      "P11_regular_c00_o0",
+      "P11_regular_c00_o1",
+      "P11_regular_c01_o0",
+      "P11_regular_c01_o1",
+      "P11_regular_c02_o0",
+      "P11_regular_c02_o1",
+      "P11_regular_c03_o0",
+      "P11_regular_c03_o1",
+      "P11_regular_c04_o0",
+      "P11_regular_c04_o1",
+      "P11_regular_c05_o0",
+      "P11_regular_c05_o1",
+      "P11_regular_c06_o0",
+      "P11_regular_c06_o1",
+      "P11_regular_c07_o0",
+      "P11_regular_c07_o1",
+      "P11_regular_c08_o0",
+      "P11_regular_c08_o1",
+      "P11_regular_c09_o0",
+      "P11_regular_c09_o1",
+      "P11_novice_c00_o0",
+      "P11_novice_c00_o1",
+      "P11_novice_c01_o0",
+      "P11_novice_c01_o1",
+      "P11_novice_c02_o0",
+      "P11_novice_c02_o1",
+      "P11_novice_c03_o0",
+      "P11_novice_c03_o1",
+      "P11_novice_c04_o0",
+      "P11_novice_c04_o1",
+      "P11_novice_c05_o0",
+      "P11_novice_c05_o1",
+      "P11_novice_c06_o0",
+      "P11_novice_c06_o1",
+      "P11_novice_c07_o0",
+      "P11_novice_c07_o1",
+      "P11_novice_c08_o0",
+      "P11_novice_c08_o1",
+      "P11_novice_c09_o0",
+      "P11_novice_c09_o1"
+    ],
+    "utc": "2026-10-07T12:35:41Z",
+    "declaration_sha256": "1f76e6c642f0f5d57200ae4b9fe74544d841ce3ea313e972180c96cfac51ed21"
   },
-  "engineering": "NOT_RUN",
   "rows": [
     {
       "arm": "P11",
       "head": "regular",
-      "completed_fights": 0,
-      "measurements": {
-        "elimination_wins": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
+      "fights": 20,
+      "elimination_wins": 1,
+      "timeouts": 11,
+      "mean_S": -13.7,
+      "mean_enemy_guns_destroyed": 6.95,
+      "mean_own_guns_lost": 9.9,
+      "mean_own_losses": 43.5,
+      "sides": [
+        {
+          "counts": {
+            "living_ticks": 147794,
+            "any_target_range_ticks": 99004,
+            "gun_target_range_ticks": 75283,
+            "windup_ticks": 56124,
+            "launch_ticks": 2732,
+            "move_command_ticks": 144607,
+            "command_range_ticks": 95817,
+            "hold_range_ticks": 3187,
+            "command_launch_ticks": 2637,
+            "hold_launch_ticks": 95,
+            "command_launch_range_ticks": 2637,
+            "hold_launch_range_ticks": 95,
+            "movement_known_ticks": 147596,
+            "moving_ticks": 132929,
+            "moving_launch_ticks": 2310,
+            "stationary_launch_ticks": 417,
+            "target_switches": 2962,
+            "incoming_damage_1_artillery": 18685,
+            "incoming_damage_0_ranged": 1496,
+            "incoming_damage_1_ranged": 14838,
+            "death_interval_ticks": 198,
+            "other_target_shell_gun_victims": 0,
+            "other_target_shell_gun_damage": 0,
+            "shells_hitting_0_guns": 924,
+            "launches": 2732,
+            "other_launches": 645,
+            "launches_with_airborne_target_switch": 675,
+            "gun_target_shell_gun_victims": 1977,
+            "gun_target_shell_gun_damage": 27854,
+            "shells_hitting_1_guns": 1647,
+            "gun_launches": 2087,
+            "gun_launches_hit_any_gun": 1808,
+            "gun_launches_hit_intended_gun": 1791,
+            "gun_launches_with_airborne_target_switch": 435,
+            "gun_launches_with_airborne_target_switch_hit": 172,
+            "shells_hitting_2_guns": 153,
+            "gun_launches_target_dead_before_scheduled_impact": 282,
+            "gun_launches_no_gun_hit_target_dead_before_scheduled_impact": 268,
+            "incoming_damage_1_melee": 976,
+            "shells_hitting_3_guns": 8,
+            "incoming_damage_0_artillery": 39
+          },
+          "gun_targeted_launches": 2087,
+          "successful_gun_targeted_shells": 1808,
+          "gun_victims": 1977,
+          "gun_victims_per_successful_shell": 1.0934734513274336,
+          "artillery_hp_to_opposing_guns": 27854,
+          "incidental_hp": 0,
+          "already_dead_before_impact": 282,
+          "airborne_at_end": 0
         },
-        "timeouts": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "S": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "enemy_guns_destroyed": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "own_guns_lost": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "own_losses": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "ranged_enemy_ranged_last_hits_lt20": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "ranged_enemy_ranged_last_hits_lt30": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "early_nearest_enemy_ranged": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "targeting_share": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "gun_HP_by_source_and_time": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "ranged_losses_and_killers": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "victims_per_shell_both_teams": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "raw_clipped_arrival": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "clearance_collisions_and_spacing": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
+        {
+          "counts": {
+            "living_ticks": 330563,
+            "any_target_range_ticks": 91736,
+            "gun_target_range_ticks": 69791,
+            "windup_ticks": 204758,
+            "launch_ticks": 2409,
+            "move_command_ticks": 330563,
+            "command_range_ticks": 91736,
+            "hold_range_ticks": 0,
+            "command_launch_ticks": 2409,
+            "hold_launch_ticks": 0,
+            "command_launch_range_ticks": 2408,
+            "hold_launch_range_ticks": 0,
+            "movement_known_ticks": 330424,
+            "moving_ticks": 171467,
+            "moving_launch_ticks": 1842,
+            "stationary_launch_ticks": 560,
+            "target_switches": 3251,
+            "incoming_damage_0_artillery": 27854,
+            "death_interval_ticks": 139,
+            "other_target_shell_gun_victims": 655,
+            "other_target_shell_gun_damage": 9694,
+            "shells_hitting_1_guns": 801,
+            "launches": 2409,
+            "other_launches": 1715,
+            "other_launches_hit_gun": 432,
+            "launches_with_airborne_target_switch": 1207,
+            "shells_hitting_0_guns": 1385,
+            "shells_hitting_3_guns": 33,
+            "shells_hitting_2_guns": 185,
+            "gun_target_shell_gun_victims": 635,
+            "gun_target_shell_gun_damage": 8991,
+            "gun_launches": 694,
+            "gun_launches_hit_any_gun": 592,
+            "gun_launches_hit_intended_gun": 584,
+            "gun_launches_with_airborne_target_switch": 255,
+            "gun_launches_with_airborne_target_switch_hit": 162,
+            "gun_launches_target_dead_before_scheduled_impact": 103,
+            "gun_launches_no_gun_hit_target_dead_before_scheduled_impact": 96,
+            "incoming_damage_0_ranged": 313,
+            "shells_hitting_4_guns": 5
+          },
+          "gun_targeted_launches": 694,
+          "successful_gun_targeted_shells": 592,
+          "gun_victims": 635,
+          "gun_victims_per_successful_shell": 1.072635135135135,
+          "artillery_hp_to_opposing_guns": 18685,
+          "incidental_hp": 9694,
+          "already_dead_before_impact": 103,
+          "airborne_at_end": 0
         }
+      ],
+      "nearest": [
+        {
+          "n": 145534,
+          "median": 48.49525850523118,
+          "p10": 21.727622835889317
+        },
+        {
+          "n": 327843,
+          "median": 47.544982169112664,
+          "p10": 32.95104957222849
+        }
+      ],
+      "early_10_20_nearest": [
+        {
+          "n": 56844,
+          "median": 56.852516505169035,
+          "p10": 37.314541590014294
+        },
+        {
+          "n": 54094,
+          "median": 47.278827456214714,
+          "p10": 29.043711322747118
+        }
+      ],
+      "nearest_singleton_ticks": [
+        952,
+        2581
+      ],
+      "gun_phase_ticks": [
+        146486,
+        330424
+      ],
+      "gun_range_ticks": [
+        75283,
+        69791
+      ],
+      "spacing_audit": {
+        "prepare_gun_ticks": 146683,
+        "clipped_goal_ticks": 79,
+        "shift_ticks": 112100,
+        "zero_multiplier_shift_ticks": 250,
+        "raw_goal_out_of_focus_band_ticks": 31797,
+        "coincident_pair_terms": 0,
+        "neighbour_terms": 353406,
+        "clipped_action_reconciled_ticks": 146683
+      },
+      "enemy_over_own_artillery_hp_ratio": 0.6708192719178574,
+      "escort": {
+        "counts": {
+          "prepare_living_ranged_ticks": 524178,
+          "action_reconciled_ticks": 524178,
+          "target_opportunity_ticks": 68351,
+          "threat_selected_ticks": 36622,
+          "clipped_goal_ticks": 0,
+          "clipped_assigned_gun_within_splash49_ticks": 0,
+          "raw_other_gun_body_overlap_ticks": 17107,
+          "clipped_other_gun_body_overlap_ticks": 17107,
+          "coincident_other_gun_shifted_goal_ticks": 0,
+          "displacement_known_ticks": 523979,
+          "moving_ticks": 523788,
+          "arrival_available_ticks": 523979,
+          "raw_arrival_ticks": 21470,
+          "clipped_arrival_ticks": 21470,
+          "holding_ticks": 21047,
+          "raw_shared_point_pairs": 2270211,
+          "clipped_shared_point_pairs": 2270211,
+          "reassignment_ticks": 5799,
+          "post_step_dead_ticks": 199,
+          "ranged_enemy_ranged_last_hits_full": 104,
+          "ranged_enemy_ranged_last_hits_lt20": 7,
+          "ranged_enemy_ranged_last_hits_lt30": 54,
+          "gun0_singleton_ticks": 952,
+          "post_nearest_gun_unavailable_ticks": 372,
+          "arrival_unavailable_ticks": 199,
+          "first_arrival_units": 291,
+          "first_arrival_censored_units": 309,
+          "gun1_singleton_ticks": 335
+        },
+        "raw_arrival_fraction": 0.0409593687640458,
+        "clipped_arrival_fraction": 0.0409593687640458,
+        "holding_fraction": 0.04015239098168943,
+        "threat_selection_fraction": 0.5357931851765153,
+        "distributions": {
+          "gun0_nearest": {
+            "n": 145534,
+            "median": 48.49525850523118,
+            "p10": 21.727622835889317
+          },
+          "gun1_nearest": {
+            "n": 144345,
+            "median": 47.476193361351896,
+            "p10": 30.49357581073803
+          },
+          "raw_assigned_gun_distance": {
+            "n": 524178,
+            "median": 60.0,
+            "p10": 59.99999999999996
+          },
+          "clipped_assigned_gun_distance": {
+            "n": 524178,
+            "median": 60.0,
+            "p10": 59.99999999999996
+          },
+          "raw_other_gun_body_clearance": {
+            "n": 502921,
+            "median": 54.62697967530352,
+            "p10": 13.436244354954432
+          },
+          "clipped_other_gun_body_clearance": {
+            "n": 502921,
+            "median": 54.62697967530352,
+            "p10": 13.436244354954432
+          },
+          "clipped_other_gun_shifted_goal_distance": {
+            "n": 502921,
+            "median": 85.57481960478388,
+            "p10": 34.482020414930034
+          },
+          "actual_displacement": {
+            "n": 523979,
+            "median": 0.8905423944468058,
+            "p10": 0.2888708021922369
+          },
+          "realized_ranged_to_gun_nearest": {
+            "n": 523607,
+            "median": 104.3270885483527,
+            "p10": 39.95345680409477
+          },
+          "raw_point_error": {
+            "n": 523979,
+            "median": 140.35568017774597,
+            "p10": 31.962177687220127
+          },
+          "clipped_goal_error": {
+            "n": 523979,
+            "median": 140.35568017774597,
+            "p10": 31.962177687220127
+          },
+          "own_ranged_to_enemy_ranged": {
+            "n": 523979,
+            "median": 366.410651088089,
+            "p10": 265.2579917154099
+          },
+          "gun0_nearest_10_20": {
+            "n": 56844,
+            "median": 56.852516505169035,
+            "p10": 37.314541590014294
+          },
+          "gun1_nearest_10_20": {
+            "n": 54094,
+            "median": 47.278827456214714,
+            "p10": 29.043711322747118
+          },
+          "actual_displacement_10_20": {
+            "n": 178346,
+            "median": 0.48313954682984095,
+            "p10": 0.19215408460360717
+          },
+          "realized_ranged_to_gun_nearest_10_20": {
+            "n": 178346,
+            "median": 109.74489547481639,
+            "p10": 48.97391153474707
+          },
+          "own_ranged_to_enemy_ranged_10_20": {
+            "n": 178346,
+            "median": 323.0952590112096,
+            "p10": 264.4140870295406
+          },
+          "gun0_nearest_20_30": {
+            "n": 25855,
+            "median": 61.86962498100561,
+            "p10": 59.36258694445746
+          },
+          "gun1_nearest_20_30": {
+            "n": 26758,
+            "median": 47.28437307950814,
+            "p10": 32.511621653715096
+          },
+          "actual_displacement_20_30": {
+            "n": 139011,
+            "median": 1.0714936458288458,
+            "p10": 0.3620013463229214
+          },
+          "realized_ranged_to_gun_nearest_20_30": {
+            "n": 138823,
+            "median": 205.0896842777102,
+            "p10": 55.86258922892014
+          },
+          "own_ranged_to_enemy_ranged_20_30": {
+            "n": 139011,
+            "median": 340.1325156734631,
+            "p10": 223.31880568838207
+          }
+        },
+        "gun_hp_loss_bins": [
+          {
+            "interval": [
+              0,
+              10
+            ],
+            "hp": {}
+          },
+          {
+            "interval": [
+              10,
+              20
+            ],
+            "hp": {
+              "enemy_artillery": 12187,
+              "friendly_ranged": 1192,
+              "enemy_ranged": 4733,
+              "enemy_melee": 368
+            }
+          },
+          {
+            "interval": [
+              20,
+              30
+            ],
+            "hp": {
+              "enemy_ranged": 8480,
+              "enemy_artillery": 5984,
+              "enemy_melee": 608,
+              "friendly_ranged": 304,
+              "friendly_artillery": 39
+            }
+          },
+          {
+            "interval": [
+              30,
+              60
+            ],
+            "hp": {
+              "enemy_ranged": 1625,
+              "enemy_artillery": 514
+            }
+          },
+          {
+            "interval": [
+              60,
+              150.1
+            ],
+            "hp": {}
+          }
+        ]
+      },
+      "own_ranged_killers": {
+        "1_ranged": 249,
+        "1_artillery": 222,
+        "0_ranged": 1
       }
     },
     {
       "arm": "P11",
       "head": "novice",
-      "completed_fights": 0,
-      "measurements": {
-        "elimination_wins": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
+      "fights": 20,
+      "elimination_wins": 20,
+      "timeouts": 0,
+      "mean_S": 38.75,
+      "mean_enemy_guns_destroyed": 10,
+      "mean_own_guns_lost": 1.25,
+      "mean_own_losses": 11.25,
+      "sides": [
+        {
+          "counts": {
+            "living_ticks": 162031,
+            "any_target_range_ticks": 96688,
+            "gun_target_range_ticks": 31909,
+            "windup_ticks": 69911,
+            "launch_ticks": 2771,
+            "move_command_ticks": 161279,
+            "command_range_ticks": 95936,
+            "hold_range_ticks": 752,
+            "command_launch_ticks": 2748,
+            "hold_launch_ticks": 23,
+            "command_launch_range_ticks": 2748,
+            "hold_launch_range_ticks": 23,
+            "movement_known_ticks": 162006,
+            "moving_ticks": 158988,
+            "moving_launch_ticks": 2680,
+            "stationary_launch_ticks": 90,
+            "target_switches": 4966,
+            "incoming_damage_1_artillery": 3238,
+            "incoming_damage_1_ranged": 10057,
+            "incoming_damage_0_ranged": 1824,
+            "death_interval_ticks": 25,
+            "other_target_shell_gun_victims": 2,
+            "other_target_shell_gun_damage": 30,
+            "shells_hitting_0_guns": 2044,
+            "launches": 2771,
+            "other_launches": 1888,
+            "launches_with_airborne_target_switch": 1056,
+            "gun_target_shell_gun_victims": 2596,
+            "gun_target_shell_gun_damage": 36154,
+            "shells_hitting_5_guns": 72,
+            "gun_launches": 883,
+            "gun_launches_hit_any_gun": 726,
+            "gun_launches_hit_intended_gun": 636,
+            "shells_hitting_4_guns": 145,
+            "gun_launches_target_dead_before_scheduled_impact": 236,
+            "gun_launches_no_gun_hit_target_dead_before_scheduled_impact": 149,
+            "gun_launches_with_airborne_target_switch": 313,
+            "shells_hitting_1_guns": 175,
+            "gun_launches_with_airborne_target_switch_hit": 165,
+            "shells_hitting_3_guns": 102,
+            "shells_hitting_2_guns": 83,
+            "incoming_damage_1_melee": 624,
+            "shells_hitting_6_guns": 68,
+            "shells_hitting_7_guns": 59,
+            "other_launches_hit_gun": 1,
+            "shells_hitting_8_guns": 17,
+            "shells_hitting_9_guns": 6,
+            "incoming_damage_0_artillery": 15
+          },
+          "gun_targeted_launches": 883,
+          "successful_gun_targeted_shells": 726,
+          "gun_victims": 2596,
+          "gun_victims_per_successful_shell": 3.5757575757575757,
+          "artillery_hp_to_opposing_guns": 36184,
+          "incidental_hp": 30,
+          "already_dead_before_impact": 236,
+          "airborne_at_end": 0
         },
-        "timeouts": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "S": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "enemy_guns_destroyed": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "own_guns_lost": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "own_losses": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "ranged_enemy_ranged_last_hits_lt20": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "ranged_enemy_ranged_last_hits_lt30": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "early_nearest_enemy_ranged": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "targeting_share": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "gun_HP_by_source_and_time": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "ranged_losses_and_killers": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "victims_per_shell_both_teams": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "raw_clipped_arrival": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "clearance_collisions_and_spacing": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
+        {
+          "counts": {
+            "living_ticks": 79586,
+            "any_target_range_ticks": 38234,
+            "gun_target_range_ticks": 26469,
+            "windup_ticks": 21785,
+            "launch_ticks": 1065,
+            "move_command_ticks": 42500,
+            "command_range_ticks": 1148,
+            "hold_range_ticks": 37086,
+            "command_launch_ticks": 39,
+            "hold_launch_ticks": 1026,
+            "command_launch_range_ticks": 39,
+            "hold_launch_range_ticks": 1026,
+            "movement_known_ticks": 79386,
+            "moving_ticks": 54311,
+            "moving_launch_ticks": 358,
+            "stationary_launch_ticks": 705,
+            "target_switches": 1826,
+            "incoming_damage_0_artillery": 36184,
+            "death_interval_ticks": 200,
+            "other_target_shell_gun_victims": 44,
+            "other_target_shell_gun_damage": 660,
+            "shells_hitting_0_guns": 884,
+            "launches": 1065,
+            "other_launches": 917,
+            "shells_hitting_1_guns": 144,
+            "other_launches_hit_gun": 44,
+            "launches_with_airborne_target_switch": 370,
+            "gun_target_shell_gun_victims": 175,
+            "gun_target_shell_gun_damage": 2578,
+            "gun_launches": 148,
+            "gun_launches_hit_any_gun": 137,
+            "gun_launches_hit_intended_gun": 136,
+            "shells_hitting_2_guns": 36,
+            "gun_launches_with_airborne_target_switch": 58,
+            "gun_launches_with_airborne_target_switch_hit": 48,
+            "gun_launches_target_dead_before_scheduled_impact": 12,
+            "gun_launches_no_gun_hit_target_dead_before_scheduled_impact": 11,
+            "shells_hitting_3_guns": 1,
+            "incoming_damage_0_ranged": 16
+          },
+          "gun_targeted_launches": 148,
+          "successful_gun_targeted_shells": 137,
+          "gun_victims": 175,
+          "gun_victims_per_successful_shell": 1.2773722627737227,
+          "artillery_hp_to_opposing_guns": 3238,
+          "incidental_hp": 660,
+          "already_dead_before_impact": 12,
+          "airborne_at_end": 0
         }
-      }
+      ],
+      "nearest": [
+        {
+          "n": 90899,
+          "median": 35.09146267391334,
+          "p10": 20.937914274365703
+        },
+        {
+          "n": 79133,
+          "median": 20.00000000000001,
+          "p10": 19.918296263850532
+        }
+      ],
+      "early_10_20_nearest": [
+        {
+          "n": 30899,
+          "median": 54.463811232210276,
+          "p10": 47.91214341303546
+        },
+        {
+          "n": 19133,
+          "median": 20.000000000000036,
+          "p10": 19.972361106134006
+        }
+      ],
+      "nearest_singleton_ticks": [
+        0,
+        253
+      ],
+      "gun_phase_ticks": [
+        90899,
+        79386
+      ],
+      "gun_range_ticks": [
+        31909,
+        26469
+      ],
+      "spacing_audit": {
+        "prepare_gun_ticks": 90909,
+        "clipped_goal_ticks": 0,
+        "shift_ticks": 89777,
+        "zero_multiplier_shift_ticks": 649,
+        "raw_goal_out_of_focus_band_ticks": 26550,
+        "coincident_pair_terms": 0,
+        "neighbour_terms": 290606,
+        "clipped_action_reconciled_ticks": 90909
+      },
+      "enemy_over_own_artillery_hp_ratio": 0.08948706610656644,
+      "escort": {
+        "counts": {
+          "prepare_living_ranged_ticks": 273900,
+          "action_reconciled_ticks": 273900,
+          "target_opportunity_ticks": 41886,
+          "threat_selected_ticks": 15882,
+          "clipped_goal_ticks": 0,
+          "clipped_assigned_gun_within_splash49_ticks": 0,
+          "raw_other_gun_body_overlap_ticks": 21836,
+          "clipped_other_gun_body_overlap_ticks": 21836,
+          "coincident_other_gun_shifted_goal_ticks": 0,
+          "displacement_known_ticks": 273900,
+          "moving_ticks": 273900,
+          "arrival_available_ticks": 273900,
+          "raw_arrival_ticks": 20440,
+          "clipped_arrival_ticks": 20440,
+          "holding_ticks": 20031,
+          "raw_shared_point_pairs": 840128,
+          "clipped_shared_point_pairs": 840128,
+          "reassignment_ticks": 3205,
+          "ranged_enemy_ranged_last_hits_full": 133,
+          "ranged_enemy_ranged_last_hits_lt20": 45,
+          "ranged_enemy_ranged_last_hits_lt30": 132,
+          "gun1_singleton_ticks": 253,
+          "arrival_unavailable_ticks": 0,
+          "first_arrival_units": 295,
+          "first_arrival_censored_units": 305
+        },
+        "raw_arrival_fraction": 0.07462577583059511,
+        "clipped_arrival_fraction": 0.07462577583059511,
+        "holding_fraction": 0.07313253012048193,
+        "threat_selection_fraction": 0.3791720383899155,
+        "distributions": {
+          "gun0_nearest": {
+            "n": 90899,
+            "median": 35.09146267391334,
+            "p10": 20.937914274365703
+          },
+          "gun1_nearest": {
+            "n": 79133,
+            "median": 20.00000000000001,
+            "p10": 19.918296263850532
+          },
+          "raw_assigned_gun_distance": {
+            "n": 273900,
+            "median": 60.0,
+            "p10": 59.99999999999996
+          },
+          "clipped_assigned_gun_distance": {
+            "n": 273900,
+            "median": 60.0,
+            "p10": 59.99999999999996
+          },
+          "raw_other_gun_body_clearance": {
+            "n": 273900,
+            "median": 45.06367228068586,
+            "p10": 3.333607050323476
+          },
+          "clipped_other_gun_body_clearance": {
+            "n": 273900,
+            "median": 45.06367228068586,
+            "p10": 3.333607050323476
+          },
+          "clipped_other_gun_shifted_goal_distance": {
+            "n": 273900,
+            "median": 70.26872475838438,
+            "p10": 18.15369318197194
+          },
+          "actual_displacement": {
+            "n": 273900,
+            "median": 0.9398180270073532,
+            "p10": 0.3102699479228276
+          },
+          "realized_ranged_to_gun_nearest": {
+            "n": 273900,
+            "median": 89.05427079780233,
+            "p10": 36.94974110078057
+          },
+          "raw_point_error": {
+            "n": 273900,
+            "median": 93.86579832104911,
+            "p10": 23.681308919357406
+          },
+          "clipped_goal_error": {
+            "n": 273900,
+            "median": 93.86579832104911,
+            "p10": 23.681308919357406
+          },
+          "own_ranged_to_enemy_ranged": {
+            "n": 273900,
+            "median": 342.6598034031156,
+            "p10": 257.93209789361055
+          },
+          "gun0_nearest_10_20": {
+            "n": 30899,
+            "median": 54.463811232210276,
+            "p10": 47.91214341303546
+          },
+          "gun1_nearest_10_20": {
+            "n": 19133,
+            "median": 20.000000000000036,
+            "p10": 19.972361106134006
+          },
+          "actual_displacement_10_20": {
+            "n": 93900,
+            "median": 0.4940503000775606,
+            "p10": 0.20959900773025184
+          },
+          "realized_ranged_to_gun_nearest_10_20": {
+            "n": 93900,
+            "median": 115.07183898749466,
+            "p10": 70.52528124106055
+          },
+          "own_ranged_to_enemy_ranged_10_20": {
+            "n": 93900,
+            "median": 297.7290984663513,
+            "p10": 236.97791410785123
+          }
+        },
+        "gun_hp_loss_bins": [
+          {
+            "interval": [
+              0,
+              10
+            ],
+            "hp": {
+              "enemy_artillery": 495,
+              "friendly_ranged": 112,
+              "enemy_ranged": 32
+            }
+          },
+          {
+            "interval": [
+              10,
+              20
+            ],
+            "hp": {
+              "enemy_ranged": 8894,
+              "friendly_ranged": 1712,
+              "enemy_artillery": 2743,
+              "enemy_melee": 624,
+              "friendly_artillery": 15
+            }
+          },
+          {
+            "interval": [
+              20,
+              30
+            ],
+            "hp": {
+              "enemy_ranged": 1075
+            }
+          },
+          {
+            "interval": [
+              30,
+              60
+            ],
+            "hp": {
+              "enemy_ranged": 56
+            }
+          },
+          {
+            "interval": [
+              60,
+              150.1
+            ],
+            "hp": {}
+          }
+        ]
+      },
+      "own_ranged_killers": {}
     },
     {
       "arm": "P12",
       "head": "regular",
-      "completed_fights": 0,
-      "measurements": {
-        "elimination_wins": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
+      "fights": 20,
+      "elimination_wins": 6,
+      "timeouts": 0,
+      "mean_S": -14.2,
+      "mean_enemy_guns_destroyed": 8.25,
+      "mean_own_guns_lost": 8.75,
+      "mean_own_losses": 48.75,
+      "sides": [
+        {
+          "counts": {
+            "living_ticks": 180411,
+            "any_target_range_ticks": 115874,
+            "gun_target_range_ticks": 83664,
+            "windup_ticks": 71621,
+            "launch_ticks": 3221,
+            "move_command_ticks": 176033,
+            "command_range_ticks": 111496,
+            "hold_range_ticks": 4378,
+            "command_launch_ticks": 3114,
+            "hold_launch_ticks": 107,
+            "command_launch_range_ticks": 3114,
+            "hold_launch_range_ticks": 107,
+            "movement_known_ticks": 180236,
+            "moving_ticks": 163201,
+            "moving_launch_ticks": 2775,
+            "stationary_launch_ticks": 442,
+            "target_switches": 3723,
+            "incoming_damage_1_artillery": 18643,
+            "incoming_damage_1_ranged": 13178,
+            "death_interval_ticks": 175,
+            "incoming_damage_1_melee": 2366,
+            "incoming_damage_0_artillery": 30,
+            "other_target_shell_gun_victims": 1,
+            "other_target_shell_gun_damage": 15,
+            "shells_hitting_0_guns": 1228,
+            "launches": 3221,
+            "other_launches": 907,
+            "launches_with_airborne_target_switch": 813,
+            "gun_target_shell_gun_victims": 2269,
+            "gun_target_shell_gun_damage": 31836,
+            "shells_hitting_1_guns": 1739,
+            "gun_launches": 2314,
+            "gun_launches_hit_any_gun": 1992,
+            "gun_launches_hit_intended_gun": 1978,
+            "gun_launches_with_airborne_target_switch": 490,
+            "gun_launches_with_airborne_target_switch_hit": 201,
+            "shells_hitting_2_guns": 231,
+            "shells_hitting_3_guns": 23,
+            "gun_launches_target_dead_before_scheduled_impact": 311,
+            "gun_launches_no_gun_hit_target_dead_before_scheduled_impact": 298,
+            "gun_launches_airborne_at_end": 8,
+            "other_launches_hit_gun": 1
+          },
+          "gun_targeted_launches": 2314,
+          "successful_gun_targeted_shells": 1992,
+          "gun_victims": 2269,
+          "gun_victims_per_successful_shell": 1.1390562248995983,
+          "artillery_hp_to_opposing_guns": 31851,
+          "incidental_hp": 15,
+          "already_dead_before_impact": 311,
+          "airborne_at_end": 8
         },
-        "timeouts": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "S": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "enemy_guns_destroyed": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "own_guns_lost": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "own_losses": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "ranged_enemy_ranged_last_hits_lt20": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "ranged_enemy_ranged_last_hits_lt30": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "early_nearest_enemy_ranged": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "targeting_share": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "gun_HP_by_source_and_time": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "ranged_losses_and_killers": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "victims_per_shell_both_teams": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "raw_clipped_arrival": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "clearance_collisions_and_spacing": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
+        {
+          "counts": {
+            "living_ticks": 141990,
+            "any_target_range_ticks": 79862,
+            "gun_target_range_ticks": 66142,
+            "windup_ticks": 55757,
+            "launch_ticks": 2117,
+            "move_command_ticks": 141976,
+            "command_range_ticks": 79848,
+            "hold_range_ticks": 14,
+            "command_launch_ticks": 2117,
+            "hold_launch_ticks": 0,
+            "command_launch_range_ticks": 2117,
+            "hold_launch_range_ticks": 0,
+            "movement_known_ticks": 141825,
+            "moving_ticks": 104374,
+            "moving_launch_ticks": 1633,
+            "stationary_launch_ticks": 480,
+            "target_switches": 2789,
+            "incoming_damage_0_artillery": 31851,
+            "death_interval_ticks": 165,
+            "other_target_shell_gun_victims": 613,
+            "other_target_shell_gun_damage": 9146,
+            "shells_hitting_0_guns": 1097,
+            "launches": 2117,
+            "other_launches": 1365,
+            "launches_with_airborne_target_switch": 1018,
+            "shells_hitting_2_guns": 149,
+            "other_launches_hit_gun": 383,
+            "shells_hitting_3_guns": 52,
+            "shells_hitting_1_guns": 817,
+            "gun_target_shell_gun_victims": 666,
+            "gun_target_shell_gun_damage": 9497,
+            "gun_launches": 752,
+            "gun_launches_hit_any_gun": 637,
+            "gun_launches_hit_intended_gun": 627,
+            "gun_launches_with_airborne_target_switch": 189,
+            "gun_launches_with_airborne_target_switch_hit": 101,
+            "gun_launches_target_dead_before_scheduled_impact": 118,
+            "gun_launches_no_gun_hit_target_dead_before_scheduled_impact": 108,
+            "gun_launches_airborne_at_end": 18,
+            "incoming_damage_0_ranged": 144,
+            "shells_hitting_4_guns": 2,
+            "incoming_damage_1_ranged": 8
+          },
+          "gun_targeted_launches": 752,
+          "successful_gun_targeted_shells": 637,
+          "gun_victims": 666,
+          "gun_victims_per_successful_shell": 1.0455259026687598,
+          "artillery_hp_to_opposing_guns": 18643,
+          "incidental_hp": 9146,
+          "already_dead_before_impact": 118,
+          "airborne_at_end": 18
         }
+      ],
+      "nearest": [
+        {
+          "n": 158757,
+          "median": 49.7790344682389,
+          "p10": 19.81611810710885
+        },
+        {
+          "n": 141195,
+          "median": 47.51639667092483,
+          "p10": 29.910965274946495
+        }
+      ],
+      "early_10_20_nearest": [
+        {
+          "n": 59391,
+          "median": 56.27930581934133,
+          "p10": 24.735411723276396
+        },
+        {
+          "n": 54983,
+          "median": 47.55663172720683,
+          "p10": 30.437800356186724
+        }
+      ],
+      "nearest_singleton_ticks": [
+        556,
+        630
+      ],
+      "gun_phase_ticks": [
+        159313,
+        141825
+      ],
+      "gun_range_ticks": [
+        83664,
+        66142
+      ],
+      "spacing_audit": {
+        "prepare_gun_ticks": 159474,
+        "clipped_goal_ticks": 18,
+        "shift_ticks": 122186,
+        "zero_multiplier_shift_ticks": 349,
+        "raw_goal_out_of_focus_band_ticks": 26787,
+        "coincident_pair_terms": 0,
+        "neighbour_terms": 376548,
+        "clipped_action_reconciled_ticks": 159474
+      },
+      "enemy_over_own_artillery_hp_ratio": 0.5853191422561301,
+      "escort": {
+        "counts": {
+          "prepare_living_ranged_ticks": 262569,
+          "action_reconciled_ticks": 262569,
+          "target_opportunity_ticks": 70515,
+          "threat_selected_ticks": 2085,
+          "clipped_goal_ticks": 0,
+          "clipped_assigned_gun_within_splash49_ticks": 0,
+          "raw_other_gun_body_overlap_ticks": 1,
+          "clipped_other_gun_body_overlap_ticks": 1,
+          "coincident_other_gun_shifted_goal_ticks": 0,
+          "displacement_known_ticks": 261969,
+          "moving_ticks": 260207,
+          "arrival_available_ticks": 261969,
+          "raw_arrival_ticks": 96331,
+          "clipped_arrival_ticks": 96331,
+          "holding_ticks": 93761,
+          "raw_shared_point_pairs": 581056,
+          "clipped_shared_point_pairs": 581056,
+          "reassignment_ticks": 5546,
+          "post_step_dead_ticks": 600,
+          "gun0_singleton_ticks": 556,
+          "arrival_unavailable_ticks": 600,
+          "first_arrival_units": 531,
+          "first_arrival_censored_units": 69,
+          "gun1_singleton_ticks": 630,
+          "ranged_enemy_ranged_last_hits_full": 3,
+          "ranged_enemy_ranged_last_hits_lt20": 3,
+          "ranged_enemy_ranged_last_hits_lt30": 3
+        },
+        "raw_arrival_fraction": 0.36687880138173207,
+        "clipped_arrival_fraction": 0.36687880138173207,
+        "holding_fraction": 0.3570908980115703,
+        "threat_selection_fraction": 0.029568176983620506,
+        "distributions": {
+          "gun0_nearest": {
+            "n": 158757,
+            "median": 49.7790344682389,
+            "p10": 19.81611810710885
+          },
+          "gun1_nearest": {
+            "n": 141195,
+            "median": 47.51639667092483,
+            "p10": 29.910965274946495
+          },
+          "raw_assigned_gun_distance": {
+            "n": 262569,
+            "median": 60.0,
+            "p10": 59.99999999999996
+          },
+          "clipped_assigned_gun_distance": {
+            "n": 262569,
+            "median": 60.0,
+            "p10": 59.99999999999996
+          },
+          "raw_other_gun_body_clearance": {
+            "n": 262569,
+            "median": 46.466774036412204,
+            "p10": 38.57025725205431
+          },
+          "clipped_other_gun_body_clearance": {
+            "n": 262569,
+            "median": 46.466774036412204,
+            "p10": 38.57025725205431
+          },
+          "clipped_other_gun_shifted_goal_distance": {
+            "n": 262569,
+            "median": 147.1099910246977,
+            "p10": 39.01203791533702
+          },
+          "actual_displacement": {
+            "n": 261969,
+            "median": 1.7092716624507305,
+            "p10": 0.9458372661504265
+          },
+          "realized_ranged_to_gun_nearest": {
+            "n": 261969,
+            "median": 37.59993511239206,
+            "p10": 18.775077857423987
+          },
+          "raw_point_error": {
+            "n": 261969,
+            "median": 26.276632023975242,
+            "p10": 3.667579690754341
+          },
+          "clipped_goal_error": {
+            "n": 261969,
+            "median": 26.276632023975242,
+            "p10": 3.667579690754341
+          },
+          "own_ranged_to_enemy_ranged": {
+            "n": 261969,
+            "median": 419.1295046218644,
+            "p10": 175.7195005349739
+          },
+          "gun0_nearest_10_20": {
+            "n": 59391,
+            "median": 56.27930581934133,
+            "p10": 24.735411723276396
+          },
+          "gun1_nearest_10_20": {
+            "n": 54983,
+            "median": 47.55663172720683,
+            "p10": 30.437800356186724
+          },
+          "actual_displacement_10_20": {
+            "n": 81451,
+            "median": 1.657923644181424,
+            "p10": 0.6880538392559168
+          },
+          "realized_ranged_to_gun_nearest_10_20": {
+            "n": 81451,
+            "median": 42.59308068003617,
+            "p10": 18.987411710493813
+          },
+          "own_ranged_to_enemy_ranged_10_20": {
+            "n": 81451,
+            "median": 196.1379191953071,
+            "p10": 148.55217755461342
+          },
+          "gun0_nearest_20_30": {
+            "n": 37611,
+            "median": 60.75915519250484,
+            "p10": 58.16756698505658
+          },
+          "gun1_nearest_20_30": {
+            "n": 24818,
+            "median": 47.43107251723157,
+            "p10": 25.917653411280263
+          },
+          "actual_displacement_20_30": {
+            "n": 518,
+            "median": 1.8333333333333135,
+            "p10": 0.0
+          },
+          "realized_ranged_to_gun_nearest_20_30": {
+            "n": 518,
+            "median": 57.84147474623403,
+            "p10": 41.809090561867144
+          },
+          "own_ranged_to_enemy_ranged_20_30": {
+            "n": 518,
+            "median": 198.64433991764227,
+            "p10": 174.70397527840262
+          }
+        },
+        "gun_hp_loss_bins": [
+          {
+            "interval": [
+              0,
+              10
+            ],
+            "hp": {}
+          },
+          {
+            "interval": [
+              10,
+              20
+            ],
+            "hp": {
+              "enemy_artillery": 9850,
+              "enemy_ranged": 1575,
+              "enemy_melee": 144,
+              "friendly_artillery": 15
+            }
+          },
+          {
+            "interval": [
+              20,
+              30
+            ],
+            "hp": {
+              "enemy_ranged": 9406,
+              "enemy_melee": 2202,
+              "enemy_artillery": 8229,
+              "friendly_artillery": 15
+            }
+          },
+          {
+            "interval": [
+              30,
+              60
+            ],
+            "hp": {
+              "enemy_ranged": 2149,
+              "enemy_artillery": 564,
+              "enemy_melee": 20
+            }
+          },
+          {
+            "interval": [
+              60,
+              150.1
+            ],
+            "hp": {
+              "enemy_ranged": 48
+            }
+          }
+        ]
+      },
+      "own_ranged_killers": {
+        "1_artillery": 528,
+        "1_ranged": 59,
+        "1_melee": 8,
+        "0_ranged": 3,
+        "0_artillery": 2
       }
     },
     {
       "arm": "P12",
       "head": "novice",
-      "completed_fights": 0,
-      "measurements": {
-        "elimination_wins": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
+      "fights": 20,
+      "elimination_wins": 20,
+      "timeouts": 0,
+      "mean_S": 19.05,
+      "mean_enemy_guns_destroyed": 10,
+      "mean_own_guns_lost": 0.05,
+      "mean_own_losses": 30.95,
+      "sides": [
+        {
+          "counts": {
+            "living_ticks": 169867,
+            "any_target_range_ticks": 107974,
+            "gun_target_range_ticks": 33060,
+            "windup_ticks": 70508,
+            "launch_ticks": 3067,
+            "move_command_ticks": 169490,
+            "command_range_ticks": 107597,
+            "hold_range_ticks": 377,
+            "command_launch_ticks": 3058,
+            "hold_launch_ticks": 9,
+            "command_launch_range_ticks": 3058,
+            "hold_launch_range_ticks": 9,
+            "movement_known_ticks": 169866,
+            "moving_ticks": 167180,
+            "moving_launch_ticks": 2999,
+            "stationary_launch_ticks": 68,
+            "target_switches": 5773,
+            "incoming_damage_1_ranged": 3590,
+            "other_target_shell_gun_victims": 2,
+            "other_target_shell_gun_damage": 30,
+            "shells_hitting_0_guns": 2350,
+            "launches": 3067,
+            "other_launches": 2182,
+            "launches_with_airborne_target_switch": 1287,
+            "gun_target_shell_gun_victims": 2541,
+            "gun_target_shell_gun_damage": 35767,
+            "shells_hitting_4_guns": 164,
+            "gun_launches": 885,
+            "gun_launches_hit_any_gun": 716,
+            "gun_launches_hit_intended_gun": 605,
+            "gun_launches_with_airborne_target_switch": 392,
+            "gun_launches_with_airborne_target_switch_hit": 231,
+            "shells_hitting_5_guns": 91,
+            "shells_hitting_3_guns": 101,
+            "shells_hitting_6_guns": 72,
+            "gun_launches_target_dead_before_scheduled_impact": 259,
+            "gun_launches_no_gun_hit_target_dead_before_scheduled_impact": 159,
+            "shells_hitting_2_guns": 75,
+            "shells_hitting_1_guns": 161,
+            "incoming_damage_1_artillery": 210,
+            "shells_hitting_8_guns": 15,
+            "shells_hitting_7_guns": 38,
+            "incoming_damage_1_melee": 208,
+            "death_interval_ticks": 1,
+            "other_launches_hit_gun": 1,
+            "incoming_damage_0_artillery": 60
+          },
+          "gun_targeted_launches": 885,
+          "successful_gun_targeted_shells": 716,
+          "gun_victims": 2541,
+          "gun_victims_per_successful_shell": 3.548882681564246,
+          "artillery_hp_to_opposing_guns": 35797,
+          "incidental_hp": 30,
+          "already_dead_before_impact": 259,
+          "airborne_at_end": 0
         },
-        "timeouts": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "S": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "enemy_guns_destroyed": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "own_guns_lost": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "own_losses": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "ranged_enemy_ranged_last_hits_lt20": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "ranged_enemy_ranged_last_hits_lt30": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "early_nearest_enemy_ranged": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "targeting_share": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "gun_HP_by_source_and_time": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "ranged_losses_and_killers": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "victims_per_shell_both_teams": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "raw_clipped_arrival": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "clearance_collisions_and_spacing": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
+        {
+          "counts": {
+            "living_ticks": 81154,
+            "any_target_range_ticks": 38452,
+            "gun_target_range_ticks": 24407,
+            "windup_ticks": 21843,
+            "launch_ticks": 1056,
+            "move_command_ticks": 45013,
+            "command_range_ticks": 2311,
+            "hold_range_ticks": 36141,
+            "command_launch_ticks": 67,
+            "hold_launch_ticks": 989,
+            "command_launch_range_ticks": 67,
+            "hold_launch_range_ticks": 989,
+            "movement_known_ticks": 80954,
+            "moving_ticks": 59023,
+            "moving_launch_ticks": 438,
+            "stationary_launch_ticks": 618,
+            "target_switches": 1734,
+            "incoming_damage_0_artillery": 35797,
+            "incoming_damage_0_ranged": 403,
+            "death_interval_ticks": 200,
+            "other_target_shell_gun_victims": 14,
+            "other_target_shell_gun_damage": 210,
+            "shells_hitting_0_guns": 1042,
+            "launches": 1056,
+            "other_launches": 1056,
+            "launches_with_airborne_target_switch": 381,
+            "shells_hitting_1_guns": 14,
+            "other_launches_hit_gun": 14
+          },
+          "gun_targeted_launches": 0,
+          "successful_gun_targeted_shells": 0,
+          "gun_victims": 0,
+          "gun_victims_per_successful_shell": null,
+          "artillery_hp_to_opposing_guns": 210,
+          "incidental_hp": 210,
+          "already_dead_before_impact": 0,
+          "airborne_at_end": 0
         }
+      ],
+      "nearest": [
+        {
+          "n": 93730,
+          "median": 28.820649160967196,
+          "p10": 19.67441188982037
+        },
+        {
+          "n": 80452,
+          "median": 19.99999999999999,
+          "p10": 19.88742433017714
+        }
+      ],
+      "early_10_20_nearest": [
+        {
+          "n": 33730,
+          "median": 54.71622829359347,
+          "p10": 48.51903701978739
+        },
+        {
+          "n": 20452,
+          "median": 20.0,
+          "p10": 19.84412237138112
+        }
+      ],
+      "nearest_singleton_ticks": [
+        0,
+        502
+      ],
+      "gun_phase_ticks": [
+        93730,
+        80954
+      ],
+      "gun_range_ticks": [
+        33060,
+        24407
+      ],
+      "spacing_audit": {
+        "prepare_gun_ticks": 93730,
+        "clipped_goal_ticks": 0,
+        "shift_ticks": 92646,
+        "zero_multiplier_shift_ticks": 347,
+        "raw_goal_out_of_focus_band_ticks": 21232,
+        "coincident_pair_terms": 0,
+        "neighbour_terms": 301160,
+        "clipped_action_reconciled_ticks": 93730
+      },
+      "enemy_over_own_artillery_hp_ratio": 0.005866413386596642,
+      "escort": {
+        "counts": {
+          "prepare_living_ranged_ticks": 245792,
+          "action_reconciled_ticks": 245792,
+          "target_opportunity_ticks": 99829,
+          "threat_selected_ticks": 11564,
+          "clipped_goal_ticks": 0,
+          "clipped_assigned_gun_within_splash49_ticks": 0,
+          "raw_other_gun_body_overlap_ticks": 46,
+          "clipped_other_gun_body_overlap_ticks": 46,
+          "coincident_other_gun_shifted_goal_ticks": 0,
+          "displacement_known_ticks": 245458,
+          "moving_ticks": 244419,
+          "arrival_available_ticks": 245458,
+          "raw_arrival_ticks": 90815,
+          "clipped_arrival_ticks": 90815,
+          "holding_ticks": 87934,
+          "raw_shared_point_pairs": 574044,
+          "clipped_shared_point_pairs": 574044,
+          "reassignment_ticks": 5032,
+          "post_step_dead_ticks": 334,
+          "ranged_enemy_ranged_last_hits_full": 57,
+          "ranged_enemy_ranged_last_hits_lt20": 44,
+          "ranged_enemy_ranged_last_hits_lt30": 57,
+          "gun1_singleton_ticks": 502,
+          "arrival_unavailable_ticks": 334,
+          "first_arrival_units": 595,
+          "first_arrival_censored_units": 5
+        },
+        "raw_arrival_fraction": 0.36947907173545114,
+        "clipped_arrival_fraction": 0.36947907173545114,
+        "holding_fraction": 0.3577577789350345,
+        "threat_selection_fraction": 0.11583808312213886,
+        "distributions": {
+          "gun0_nearest": {
+            "n": 93730,
+            "median": 28.820649160967196,
+            "p10": 19.67441188982037
+          },
+          "gun1_nearest": {
+            "n": 80452,
+            "median": 19.99999999999999,
+            "p10": 19.88742433017714
+          },
+          "raw_assigned_gun_distance": {
+            "n": 245792,
+            "median": 60.0,
+            "p10": 59.99999999999996
+          },
+          "clipped_assigned_gun_distance": {
+            "n": 245792,
+            "median": 60.0,
+            "p10": 59.99999999999996
+          },
+          "raw_other_gun_body_clearance": {
+            "n": 245792,
+            "median": 48.59497057542619,
+            "p10": 39.1569211340576
+          },
+          "clipped_other_gun_body_clearance": {
+            "n": 245792,
+            "median": 48.59497057542619,
+            "p10": 39.1569211340576
+          },
+          "clipped_other_gun_shifted_goal_distance": {
+            "n": 245792,
+            "median": 102.86601542192521,
+            "p10": 33.602595500747334
+          },
+          "actual_displacement": {
+            "n": 245458,
+            "median": 1.674654441842079,
+            "p10": 0.847987081857854
+          },
+          "realized_ranged_to_gun_nearest": {
+            "n": 245458,
+            "median": 40.59529583807603,
+            "p10": 18.85765320001089
+          },
+          "raw_point_error": {
+            "n": 245458,
+            "median": 25.981499978892423,
+            "p10": 5.603840766727111
+          },
+          "clipped_goal_error": {
+            "n": 245458,
+            "median": 25.981499978892423,
+            "p10": 5.603840766727111
+          },
+          "own_ranged_to_enemy_ranged": {
+            "n": 245458,
+            "median": 333.09929672789036,
+            "p10": 156.3358249617161
+          },
+          "gun0_nearest_10_20": {
+            "n": 33730,
+            "median": 54.71622829359347,
+            "p10": 48.51903701978739
+          },
+          "gun1_nearest_10_20": {
+            "n": 20452,
+            "median": 20.0,
+            "p10": 19.84412237138112
+          },
+          "actual_displacement_10_20": {
+            "n": 67163,
+            "median": 1.3734645730080781,
+            "p10": 0.46380506103599034
+          },
+          "realized_ranged_to_gun_nearest_10_20": {
+            "n": 67163,
+            "median": 51.78623832594396,
+            "p10": 32.26100397051092
+          },
+          "own_ranged_to_enemy_ranged_10_20": {
+            "n": 67163,
+            "median": 166.14742719560434,
+            "p10": 137.08168775617884
+          }
+        },
+        "gun_hp_loss_bins": [
+          {
+            "interval": [
+              0,
+              10
+            ],
+            "hp": {}
+          },
+          {
+            "interval": [
+              10,
+              20
+            ],
+            "hp": {
+              "enemy_ranged": 1776,
+              "enemy_artillery": 210,
+              "enemy_melee": 208,
+              "friendly_artillery": 60
+            }
+          },
+          {
+            "interval": [
+              20,
+              30
+            ],
+            "hp": {
+              "enemy_ranged": 1720
+            }
+          },
+          {
+            "interval": [
+              30,
+              60
+            ],
+            "hp": {
+              "enemy_ranged": 94
+            }
+          },
+          {
+            "interval": [
+              60,
+              150.1
+            ],
+            "hp": {}
+          }
+        ]
+      },
+      "own_ranged_killers": {
+        "1_artillery": 225,
+        "1_ranged": 163,
+        "1_melee": 20,
+        "0_ranged": 3,
+        "0_artillery": 7
       }
     },
     {
       "arm": "P13",
       "head": "regular",
-      "completed_fights": 0,
-      "measurements": {
-        "elimination_wins": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
+      "fights": 20,
+      "elimination_wins": 5,
+      "timeouts": 0,
+      "mean_S": -17.65,
+      "mean_enemy_guns_destroyed": 8,
+      "mean_own_guns_lost": 9.3,
+      "mean_own_losses": 49.3,
+      "sides": [
+        {
+          "counts": {
+            "living_ticks": 169776,
+            "any_target_range_ticks": 113654,
+            "gun_target_range_ticks": 84894,
+            "windup_ticks": 65951,
+            "launch_ticks": 3144,
+            "move_command_ticks": 165668,
+            "command_range_ticks": 109546,
+            "hold_range_ticks": 4108,
+            "command_launch_ticks": 3029,
+            "hold_launch_ticks": 115,
+            "command_launch_range_ticks": 3029,
+            "hold_launch_range_ticks": 115,
+            "movement_known_ticks": 169590,
+            "moving_ticks": 149398,
+            "moving_launch_ticks": 2560,
+            "stationary_launch_ticks": 575,
+            "target_switches": 3370,
+            "incoming_damage_1_artillery": 16785,
+            "incoming_damage_1_ranged": 15819,
+            "incoming_damage_1_melee": 2338,
+            "death_interval_ticks": 186,
+            "other_target_shell_gun_victims": 0,
+            "other_target_shell_gun_damage": 0,
+            "shells_hitting_0_guns": 1126,
+            "launches": 3144,
+            "other_launches": 793,
+            "launches_with_airborne_target_switch": 782,
+            "gun_target_shell_gun_victims": 2248,
+            "gun_target_shell_gun_damage": 31494,
+            "shells_hitting_1_guns": 1791,
+            "gun_launches": 2351,
+            "gun_launches_hit_any_gun": 2018,
+            "gun_launches_hit_intended_gun": 1993,
+            "shells_hitting_2_guns": 224,
+            "gun_launches_with_airborne_target_switch": 484,
+            "gun_launches_with_airborne_target_switch_hit": 175,
+            "gun_launches_target_dead_before_scheduled_impact": 341,
+            "gun_launches_no_gun_hit_target_dead_before_scheduled_impact": 318,
+            "shells_hitting_3_guns": 3,
+            "gun_launches_airborne_at_end": 7,
+            "incoming_damage_0_artillery": 15
+          },
+          "gun_targeted_launches": 2351,
+          "successful_gun_targeted_shells": 2018,
+          "gun_victims": 2248,
+          "gun_victims_per_successful_shell": 1.113974231912785,
+          "artillery_hp_to_opposing_guns": 31494,
+          "incidental_hp": 0,
+          "already_dead_before_impact": 341,
+          "airborne_at_end": 7
         },
-        "timeouts": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "S": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "enemy_guns_destroyed": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "own_guns_lost": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "own_losses": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "ranged_enemy_ranged_last_hits_lt20": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "ranged_enemy_ranged_last_hits_lt30": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "early_nearest_enemy_ranged": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "targeting_share": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "gun_HP_by_source_and_time": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "ranged_losses_and_killers": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "victims_per_shell_both_teams": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "raw_clipped_arrival": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "clearance_collisions_and_spacing": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
+        {
+          "counts": {
+            "living_ticks": 139799,
+            "any_target_range_ticks": 82627,
+            "gun_target_range_ticks": 68895,
+            "windup_ticks": 57329,
+            "launch_ticks": 2177,
+            "move_command_ticks": 139792,
+            "command_range_ticks": 82620,
+            "hold_range_ticks": 7,
+            "command_launch_ticks": 2177,
+            "hold_launch_ticks": 0,
+            "command_launch_range_ticks": 2175,
+            "hold_launch_range_ticks": 0,
+            "movement_known_ticks": 139639,
+            "moving_ticks": 101906,
+            "moving_launch_ticks": 1655,
+            "stationary_launch_ticks": 518,
+            "target_switches": 2676,
+            "incoming_damage_0_artillery": 31494,
+            "death_interval_ticks": 160,
+            "other_target_shell_gun_victims": 349,
+            "other_target_shell_gun_damage": 5207,
+            "shells_hitting_0_guns": 1184,
+            "launches": 2177,
+            "other_launches": 1298,
+            "launches_with_airborne_target_switch": 872,
+            "shells_hitting_2_guns": 124,
+            "other_launches_hit_gun": 231,
+            "shells_hitting_1_guns": 852,
+            "gun_target_shell_gun_victims": 802,
+            "gun_target_shell_gun_damage": 11578,
+            "gun_launches": 879,
+            "gun_launches_hit_any_gun": 762,
+            "gun_launches_hit_intended_gun": 759,
+            "gun_launches_with_airborne_target_switch": 204,
+            "gun_launches_with_airborne_target_switch_hit": 112,
+            "gun_launches_target_dead_before_scheduled_impact": 116,
+            "gun_launches_no_gun_hit_target_dead_before_scheduled_impact": 113,
+            "gun_launches_airborne_at_end": 18,
+            "shells_hitting_3_guns": 17,
+            "incoming_damage_0_ranged": 16
+          },
+          "gun_targeted_launches": 879,
+          "successful_gun_targeted_shells": 762,
+          "gun_victims": 802,
+          "gun_victims_per_successful_shell": 1.05249343832021,
+          "artillery_hp_to_opposing_guns": 16785,
+          "incidental_hp": 5207,
+          "already_dead_before_impact": 116,
+          "airborne_at_end": 18
         }
+      ],
+      "nearest": [
+        {
+          "n": 156368,
+          "median": 51.471940227214596,
+          "p10": 21.128880933765505
+        },
+        {
+          "n": 138894,
+          "median": 47.49308909003293,
+          "p10": 29.07230886832328
+        }
+      ],
+      "early_10_20_nearest": [
+        {
+          "n": 59094,
+          "median": 56.6011624576369,
+          "p10": 32.15110561667264
+        },
+        {
+          "n": 53841,
+          "median": 47.423139638996474,
+          "p10": 28.939960314493675
+        }
+      ],
+      "nearest_singleton_ticks": [
+        756,
+        745
+      ],
+      "gun_phase_ticks": [
+        157124,
+        139639
+      ],
+      "gun_range_ticks": [
+        84894,
+        68895
+      ],
+      "spacing_audit": {
+        "prepare_gun_ticks": 157303,
+        "clipped_goal_ticks": 0,
+        "shift_ticks": 121382,
+        "zero_multiplier_shift_ticks": 305,
+        "raw_goal_out_of_focus_band_ticks": 33238,
+        "coincident_pair_terms": 0,
+        "neighbour_terms": 376138,
+        "clipped_action_reconciled_ticks": 157303
+      },
+      "enemy_over_own_artillery_hp_ratio": 0.5329586587921509,
+      "escort": {
+        "counts": {
+          "prepare_living_ranged_ticks": 221758,
+          "action_reconciled_ticks": 221758,
+          "target_opportunity_ticks": 44363,
+          "threat_selected_ticks": 241,
+          "clipped_goal_ticks": 0,
+          "clipped_assigned_gun_within_splash49_ticks": 0,
+          "raw_other_gun_body_overlap_ticks": 0,
+          "clipped_other_gun_body_overlap_ticks": 0,
+          "coincident_other_gun_shifted_goal_ticks": 0,
+          "displacement_known_ticks": 221158,
+          "moving_ticks": 220997,
+          "arrival_available_ticks": 221158,
+          "raw_arrival_ticks": 15385,
+          "clipped_arrival_ticks": 15385,
+          "holding_ticks": 14894,
+          "raw_shared_point_pairs": 921169,
+          "clipped_shared_point_pairs": 921169,
+          "reassignment_ticks": 1719,
+          "post_step_dead_ticks": 600,
+          "gun0_singleton_ticks": 756,
+          "gun1_singleton_ticks": 745,
+          "arrival_unavailable_ticks": 600,
+          "first_arrival_units": 168,
+          "first_arrival_censored_units": 432
+        },
+        "raw_arrival_fraction": 0.0693774294501213,
+        "clipped_arrival_fraction": 0.0693774294501213,
+        "holding_fraction": 0.06716330414235337,
+        "threat_selection_fraction": 0.005432454973739377,
+        "distributions": {
+          "gun0_nearest": {
+            "n": 156368,
+            "median": 51.471940227214596,
+            "p10": 21.128880933765505
+          },
+          "gun1_nearest": {
+            "n": 138894,
+            "median": 47.49308909003293,
+            "p10": 29.07230886832328
+          },
+          "raw_assigned_gun_distance": {
+            "n": 221758,
+            "median": 120.0,
+            "p10": 119.99999999999996
+          },
+          "clipped_assigned_gun_distance": {
+            "n": 221758,
+            "median": 120.0,
+            "p10": 119.99999999999996
+          },
+          "raw_other_gun_body_clearance": {
+            "n": 221758,
+            "median": 106.6813334594799,
+            "p10": 96.65841933923134
+          },
+          "clipped_other_gun_body_clearance": {
+            "n": 221758,
+            "median": 106.6813334594799,
+            "p10": 96.65841933923134
+          },
+          "clipped_other_gun_shifted_goal_distance": {
+            "n": 221758,
+            "median": 131.39914604394238,
+            "p10": 27.738219368636447
+          },
+          "actual_displacement": {
+            "n": 221158,
+            "median": 1.7965582075473119,
+            "p10": 1.460896852581564
+          },
+          "realized_ranged_to_gun_nearest": {
+            "n": 221158,
+            "median": 58.53071414704654,
+            "p10": 23.95753995151089
+          },
+          "raw_point_error": {
+            "n": 221158,
+            "median": 65.62107065974584,
+            "p10": 25.291262167894363
+          },
+          "clipped_goal_error": {
+            "n": 221158,
+            "median": 65.62107065974584,
+            "p10": 25.291262167894363
+          },
+          "own_ranged_to_enemy_ranged": {
+            "n": 221158,
+            "median": 426.9316553323989,
+            "p10": 176.0303699242791
+          },
+          "gun0_nearest_10_20": {
+            "n": 59094,
+            "median": 56.6011624576369,
+            "p10": 32.15110561667264
+          },
+          "gun1_nearest_10_20": {
+            "n": 53841,
+            "median": 47.423139638996474,
+            "p10": 28.939960314493675
+          },
+          "actual_displacement_10_20": {
+            "n": 41158,
+            "median": 1.7940454282706986,
+            "p10": 1.327936232653543
+          },
+          "realized_ranged_to_gun_nearest_10_20": {
+            "n": 41158,
+            "median": 61.741473696730786,
+            "p10": 23.147245264228875
+          },
+          "own_ranged_to_enemy_ranged_10_20": {
+            "n": 41158,
+            "median": 172.4853291959498,
+            "p10": 120.45915606902199
+          },
+          "gun0_nearest_20_30": {
+            "n": 35722,
+            "median": 60.42236411219649,
+            "p10": 58.56988396426581
+          },
+          "gun1_nearest_20_30": {
+            "n": 23880,
+            "median": 47.59999999999995,
+            "p10": 24.823879566314307
+          }
+        },
+        "gun_hp_loss_bins": [
+          {
+            "interval": [
+              0,
+              10
+            ],
+            "hp": {}
+          },
+          {
+            "interval": [
+              10,
+              20
+            ],
+            "hp": {
+              "enemy_artillery": 8109,
+              "enemy_ranged": 3311,
+              "enemy_melee": 288
+            }
+          },
+          {
+            "interval": [
+              20,
+              30
+            ],
+            "hp": {
+              "enemy_artillery": 8183,
+              "enemy_melee": 2018,
+              "enemy_ranged": 10202,
+              "friendly_artillery": 15
+            }
+          },
+          {
+            "interval": [
+              30,
+              60
+            ],
+            "hp": {
+              "enemy_ranged": 2237,
+              "enemy_artillery": 493,
+              "enemy_melee": 32
+            }
+          },
+          {
+            "interval": [
+              60,
+              150.1
+            ],
+            "hp": {
+              "enemy_ranged": 69
+            }
+          }
+        ]
+      },
+      "own_ranged_killers": {
+        "1_artillery": 453,
+        "1_ranged": 73,
+        "0_artillery": 49,
+        "1_melee": 22,
+        "0_ranged": 3
       }
     },
     {
       "arm": "P13",
       "head": "novice",
-      "completed_fights": 0,
-      "measurements": {
-        "elimination_wins": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
+      "fights": 20,
+      "elimination_wins": 20,
+      "timeouts": 0,
+      "mean_S": 11.25,
+      "mean_enemy_guns_destroyed": 10,
+      "mean_own_guns_lost": 0.15,
+      "mean_own_losses": 38.75,
+      "sides": [
+        {
+          "counts": {
+            "living_ticks": 169256,
+            "any_target_range_ticks": 109244,
+            "gun_target_range_ticks": 31296,
+            "windup_ticks": 72614,
+            "launch_ticks": 3108,
+            "move_command_ticks": 168997,
+            "command_range_ticks": 108985,
+            "hold_range_ticks": 259,
+            "command_launch_ticks": 3102,
+            "hold_launch_ticks": 6,
+            "command_launch_range_ticks": 3102,
+            "hold_launch_range_ticks": 6,
+            "movement_known_ticks": 169253,
+            "moving_ticks": 167984,
+            "moving_launch_ticks": 3062,
+            "stationary_launch_ticks": 46,
+            "target_switches": 5877,
+            "incoming_damage_1_ranged": 4423,
+            "incoming_damage_1_melee": 144,
+            "other_target_shell_gun_victims": 6,
+            "other_target_shell_gun_damage": 76,
+            "shells_hitting_0_guns": 2420,
+            "launches": 3108,
+            "other_launches": 2259,
+            "launches_with_airborne_target_switch": 1251,
+            "gun_target_shell_gun_victims": 2559,
+            "gun_target_shell_gun_damage": 35843,
+            "shells_hitting_6_guns": 112,
+            "gun_launches": 849,
+            "gun_launches_hit_any_gun": 682,
+            "gun_launches_hit_intended_gun": 581,
+            "shells_hitting_3_guns": 138,
+            "shells_hitting_5_guns": 55,
+            "shells_hitting_1_guns": 148,
+            "other_launches_hit_gun": 6,
+            "gun_launches_with_airborne_target_switch": 391,
+            "gun_launches_with_airborne_target_switch_hit": 230,
+            "shells_hitting_4_guns": 77,
+            "gun_launches_target_dead_before_scheduled_impact": 256,
+            "gun_launches_no_gun_hit_target_dead_before_scheduled_impact": 159,
+            "shells_hitting_2_guns": 75,
+            "shells_hitting_7_guns": 69,
+            "incoming_damage_1_artillery": 105,
+            "incoming_damage_0_artillery": 105,
+            "incoming_damage_0_ranged": 8,
+            "shells_hitting_8_guns": 11,
+            "shells_hitting_9_guns": 3,
+            "death_interval_ticks": 3
+          },
+          "gun_targeted_launches": 849,
+          "successful_gun_targeted_shells": 682,
+          "gun_victims": 2559,
+          "gun_victims_per_successful_shell": 3.7521994134897363,
+          "artillery_hp_to_opposing_guns": 35919,
+          "incidental_hp": 76,
+          "already_dead_before_impact": 256,
+          "airborne_at_end": 0
         },
-        "timeouts": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "S": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "enemy_guns_destroyed": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "own_guns_lost": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "own_losses": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "ranged_enemy_ranged_last_hits_lt20": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "ranged_enemy_ranged_last_hits_lt30": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "early_nearest_enemy_ranged": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "targeting_share": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "gun_HP_by_source_and_time": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "ranged_losses_and_killers": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "victims_per_shell_both_teams": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "raw_clipped_arrival": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
-        },
-        "clearance_collisions_and_spacing": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Combat execution/analysis reserved for Claude; see stage and gate receipts"
+        {
+          "counts": {
+            "living_ticks": 78568,
+            "any_target_range_ticks": 38423,
+            "gun_target_range_ticks": 24212,
+            "windup_ticks": 21915,
+            "launch_ticks": 1044,
+            "move_command_ticks": 45585,
+            "command_range_ticks": 5440,
+            "hold_range_ticks": 32983,
+            "command_launch_ticks": 160,
+            "hold_launch_ticks": 884,
+            "command_launch_range_ticks": 160,
+            "hold_launch_range_ticks": 884,
+            "movement_known_ticks": 78368,
+            "moving_ticks": 60940,
+            "moving_launch_ticks": 560,
+            "stationary_launch_ticks": 481,
+            "target_switches": 2314,
+            "incoming_damage_0_artillery": 35919,
+            "death_interval_ticks": 200,
+            "incoming_damage_0_ranged": 281,
+            "other_target_shell_gun_victims": 7,
+            "other_target_shell_gun_damage": 105,
+            "shells_hitting_0_guns": 1039,
+            "launches": 1044,
+            "other_launches": 1044,
+            "launches_with_airborne_target_switch": 449,
+            "shells_hitting_2_guns": 2,
+            "other_launches_hit_gun": 5,
+            "shells_hitting_1_guns": 3
+          },
+          "gun_targeted_launches": 0,
+          "successful_gun_targeted_shells": 0,
+          "gun_victims": 0,
+          "gun_victims_per_successful_shell": null,
+          "artillery_hp_to_opposing_guns": 105,
+          "incidental_hp": 105,
+          "already_dead_before_impact": 0,
+          "airborne_at_end": 0
         }
+      ],
+      "nearest": [
+        {
+          "n": 90360,
+          "median": 32.70277232465013,
+          "p10": 20.483667869858095
+        },
+        {
+          "n": 77950,
+          "median": 20.000000000000007,
+          "p10": 19.776222436397205
+        }
+      ],
+      "early_10_20_nearest": [
+        {
+          "n": 30360,
+          "median": 53.89143258801206,
+          "p10": 47.94714706229359
+        },
+        {
+          "n": 17950,
+          "median": 20.0,
+          "p10": 19.70996121695749
+        }
+      ],
+      "nearest_singleton_ticks": [
+        0,
+        418
+      ],
+      "gun_phase_ticks": [
+        90360,
+        78368
+      ],
+      "gun_range_ticks": [
+        31296,
+        24212
+      ],
+      "spacing_audit": {
+        "prepare_gun_ticks": 90360,
+        "clipped_goal_ticks": 0,
+        "shift_ticks": 89419,
+        "zero_multiplier_shift_ticks": 251,
+        "raw_goal_out_of_focus_band_ticks": 27338,
+        "coincident_pair_terms": 0,
+        "neighbour_terms": 301300,
+        "clipped_action_reconciled_ticks": 90360
+      },
+      "enemy_over_own_artillery_hp_ratio": 0.0029232439655892425,
+      "escort": {
+        "counts": {
+          "prepare_living_ranged_ticks": 191593,
+          "action_reconciled_ticks": 191593,
+          "target_opportunity_ticks": 52838,
+          "threat_selected_ticks": 949,
+          "clipped_goal_ticks": 0,
+          "clipped_assigned_gun_within_splash49_ticks": 0,
+          "raw_other_gun_body_overlap_ticks": 0,
+          "clipped_other_gun_body_overlap_ticks": 0,
+          "coincident_other_gun_shifted_goal_ticks": 0,
+          "displacement_known_ticks": 191039,
+          "moving_ticks": 190914,
+          "arrival_available_ticks": 191039,
+          "raw_arrival_ticks": 11555,
+          "clipped_arrival_ticks": 11555,
+          "holding_ticks": 11174,
+          "raw_shared_point_pairs": 722134,
+          "clipped_shared_point_pairs": 722134,
+          "reassignment_ticks": 1287,
+          "post_step_dead_ticks": 554,
+          "ranged_enemy_ranged_last_hits_full": 10,
+          "ranged_enemy_ranged_last_hits_lt20": 8,
+          "ranged_enemy_ranged_last_hits_lt30": 10,
+          "gun1_singleton_ticks": 418,
+          "arrival_unavailable_ticks": 554,
+          "first_arrival_units": 204,
+          "first_arrival_censored_units": 396
+        },
+        "raw_arrival_fraction": 0.06031013659162913,
+        "clipped_arrival_fraction": 0.06031013659162913,
+        "holding_fraction": 0.05832154619427641,
+        "threat_selection_fraction": 0.017960558688822438,
+        "distributions": {
+          "gun0_nearest": {
+            "n": 90360,
+            "median": 32.70277232465013,
+            "p10": 20.483667869858095
+          },
+          "gun1_nearest": {
+            "n": 77950,
+            "median": 20.000000000000007,
+            "p10": 19.776222436397205
+          },
+          "raw_assigned_gun_distance": {
+            "n": 191593,
+            "median": 120.0,
+            "p10": 119.99999999999996
+          },
+          "clipped_assigned_gun_distance": {
+            "n": 191593,
+            "median": 120.0,
+            "p10": 119.99999999999996
+          },
+          "raw_other_gun_body_clearance": {
+            "n": 191593,
+            "median": 106.72056926182829,
+            "p10": 96.6846587913082
+          },
+          "clipped_other_gun_body_clearance": {
+            "n": 191593,
+            "median": 106.72056926182829,
+            "p10": 96.6846587913082
+          },
+          "clipped_other_gun_shifted_goal_distance": {
+            "n": 191593,
+            "median": 148.39617797658968,
+            "p10": 28.035525698692265
+          },
+          "actual_displacement": {
+            "n": 191039,
+            "median": 1.7957810473417044,
+            "p10": 1.4629316636909755
+          },
+          "realized_ranged_to_gun_nearest": {
+            "n": 191039,
+            "median": 58.3581728889631,
+            "p10": 24.163223995344904
+          },
+          "raw_point_error": {
+            "n": 191039,
+            "median": 66.64923535483508,
+            "p10": 26.905600768789856
+          },
+          "clipped_goal_error": {
+            "n": 191039,
+            "median": 66.64923535483508,
+            "p10": 26.905600768789856
+          },
+          "own_ranged_to_enemy_ranged": {
+            "n": 191039,
+            "median": 413.0719868552116,
+            "p10": 154.6274988036878
+          },
+          "gun0_nearest_10_20": {
+            "n": 30360,
+            "median": 53.89143258801206,
+            "p10": 47.94714706229359
+          },
+          "gun1_nearest_10_20": {
+            "n": 17950,
+            "median": 20.0,
+            "p10": 19.70996121695749
+          },
+          "actual_displacement_10_20": {
+            "n": 21369,
+            "median": 1.7739349151116788,
+            "p10": 1.1369453387455468
+          },
+          "realized_ranged_to_gun_nearest_10_20": {
+            "n": 21369,
+            "median": 82.46801740550728,
+            "p10": 50.02144748986616
+          },
+          "own_ranged_to_enemy_ranged_10_20": {
+            "n": 21369,
+            "median": 142.49100140295695,
+            "p10": 103.83291373650023
+          }
+        },
+        "gun_hp_loss_bins": [
+          {
+            "interval": [
+              0,
+              10
+            ],
+            "hp": {
+              "enemy_ranged": 16,
+              "enemy_artillery": 90
+            }
+          },
+          {
+            "interval": [
+              10,
+              20
+            ],
+            "hp": {
+              "enemy_ranged": 2160,
+              "enemy_melee": 144,
+              "friendly_artillery": 105,
+              "friendly_ranged": 8,
+              "enemy_artillery": 15
+            }
+          },
+          {
+            "interval": [
+              20,
+              30
+            ],
+            "hp": {
+              "enemy_ranged": 2199
+            }
+          },
+          {
+            "interval": [
+              30,
+              60
+            ],
+            "hp": {
+              "enemy_ranged": 48
+            }
+          },
+          {
+            "interval": [
+              60,
+              150.1
+            ],
+            "hp": {}
+          }
+        ]
+      },
+      "own_ranged_killers": {
+        "1_artillery": 416,
+        "1_ranged": 93,
+        "1_melee": 29,
+        "0_artillery": 33,
+        "0_ranged": 4
       }
     }
   ],
-  "reading": "No outcome reading applies until all sealed measurements are available",
-  "entropy_claimed": false
+  "reading": [
+    {
+      "arm": "P12",
+      "clearly_above_P11": true,
+      "arrive_and_engage": false,
+      "spacing_lost": false,
+      "enemy_shell_own_gun_victims_per_success": 1.0455259026687598,
+      "reading": "Clearly-above-P11 descriptive candidate; no v7 permission or population-rate claim"
+    },
+    {
+      "arm": "P13",
+      "clearly_above_P11": true,
+      "arrive_and_engage": false,
+      "spacing_lost": false,
+      "enemy_shell_own_gun_victims_per_success": 1.05249343832021,
+      "reading": "Clearly-above-P11 descriptive candidate; no v7 permission or population-rate claim"
+    }
+  ],
+  "declaration_sha256": "1f76e6c642f0f5d57200ae4b9fe74544d841ce3ea313e972180c96cfac51ed21",
+  "fights_sha256": "a99ec87f2d9ee3a70dc28b4c811900d68bacd776afe2c3840529c382f3ec51ac"
 }
