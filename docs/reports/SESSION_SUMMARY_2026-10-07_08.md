@@ -64,20 +64,22 @@
     - **The gain is mixed:** D3 pruning starts later and much less often (34 → 17 → 1 removals), and cost refusals start later. The count ceiling never bound (at most 67 bodies at 96).
     - **Pooled numbers hide starvation:** at ceiling 96, site 5 gets **zero** service in the empty start. At least one site gets zero service in 8 of 10 runs at 96 and in 5 of 10 at 128. The 10/10 gate shape does not mean full coverage.
     - **No contradiction with your research update:** the static 22.4 star shows feasibility, not that the dynamic growth can reach it. "Allocation is the problem" still stands; the ceiling simply binds for the current law.
-  - **What the stored data already rule out** (`FRONT_ALLOCATION_DIAGNOSTIC.md`):
-    - **"One active front per site"** (the research update's rank 1) can free little. An unserved site has 1.15 front components on average, and only 13–18% of the owned front cost lies outside its largest component.
-    - **Service-debt ordering** was tested (DEBT) and matched COV-A exactly.
-    - The research update's decision tree therefore reaches its last branch: **revisit the geometry or representation.** The measured cause is that the sensor root zones (reach 3) cover 97% of the arena. "Front" mass is therefore mostly root mass near sensors, and no recycling rule may touch roots.
+  - **A stored discriminant settled the options** (`FRONT_TIPS_ROOTZONE_DIAGNOSTIC.md`, `fbf7055`; 50 stored runs, no simulation; Codex recheck PASS_WITH_NOTES):
+    - **The front tax is a blob sitting on each sensor.** 96–97% of front cost lies within 1.44 of a sensor.
+      - **Correction of my earlier option:** a narrower root zone would release almost nothing (0.08–0.13% of front cost). I withdraw it.
+    - **One active front per site targets a minority:** competing tip subtrees own 17–25% of the unserved front cost, and only about 2–3% of checks have several tips inside one blob.
+    - **Ordering is ruled out:** DEBT matched COV-A exactly.
+    - **Recycling is limited:** COV-B, which may recycle any non-service body including roots, plateaued at index 2.50, against 3.21 at ceiling 96.
+    - **The sharpest fact:** about 99% of persistent growth tips make **no meaningful progress** (one in-phase spacing, 0.556) from one sample to the next, and almost every stall of 60 s or more has zero such progress. Front cost is mostly B-path-born (68–73%). **So B-path keeps feeding births into fronts that do not advance:** the motion law pulls them back into the sensor blob.
   - **Your decision (0h):**
-    - (a) **adopt ceiling 96** into the candidate law. It is measured: gate 10/10, far sites ×3. It is the price of a dynamic medium whose structure is always partly in flux.
-    - (b) **keep 64 and test one representation change:** a narrower sensor root zone, matched to the strong-edge range (about 1.44) instead of 3.
-      - **Note:** this also changes how sensors drive the medium, not only the bookkeeping.
-      - **Recycling root mass is already tested:** COV-B's donor may be any non-service body, roots included. That allocation route plateaued at index 2.50, against 3.21 at ceiling 96.
-    - (c) **both:** run (b) at 64 as one exploratory pilot, and keep 96 as the measured fallback.
+    - (a) **adopt ceiling 96** into the candidate law. It is measured: gate 10/10, far sites ×3, and the extra material is shared route redundancy (55–57% supports far sites). It is not full coverage: site 5 gets no service in the empty start.
+    - (b) **keep 64 and test one change, a stall gate on B-path funding:** a site whose best tip has not advanced one in-phase spacing (0.556) over a declared window gets no further B-path births until it does, or until its roots change. The budget then goes to sites that progress.
+      - The rule is task-blind, and its quantum comes from the placement scale.
+      - It is the research update's "meaningful-progress" idea applied to **births**, not removals. Removal is blocked here because every front body is a root.
+    - (c) **(b) first, as one exploratory pilot (about 1 h),** with 96 as the measured fallback.
 
-    My recommendation is (c). Option (b) attacks the fixed front tax at its cause: about 30 of 64 cost units sit in root mass without a link to O. Option (a) is already known to help if (b) fails, though it is not full coverage (site 5 starves in the empty start).
-    - **Where Codex and I differ:** Codex ranks one-active-front first, conditional on a stored check of duplicated fronts. That check already exists (`FRONT_ALLOCATION_DIAGNOSTIC.md`: 1.15 components per unserved site), which Codex had not been given. Its caveat is fair: one blob can hide several competing tips. If you prefer that route, a stored tip-level count comes before any pilot.
-- **Your research update** was assessed: adopted except one correction (the fronts are root mass, not bridge tips). See `docs/reviews/rrg_next_steps_assessment_claude.md`.
+    **My recommendation is (c).** (b) targets the measured mechanism: births that never advance. One-active-front is a weaker second, because it targets 17–25% of the front cost.
+- **Your research update** was assessed: adopted except one correction (the fronts are mass sitting on the sensors, not bridge tips). See `docs/reviews/rrg_next_steps_assessment_claude.md`.
 
 ## 4. C6
 
