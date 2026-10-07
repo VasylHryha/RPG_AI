@@ -989,3 +989,40 @@ If a scripted probe cannot kill regular guns, the v7 hypothesis is wrong, and th
 | Does a protected file, knob, source or binary drift, or does the controller fail? | Stop; preserve the evidence; report PARTIAL | implementer |
 | Is any constant or rule changed after a fight has run? | INVALID; a new declaration on fresh seeds | implementer |
 | Does P5 on the new seeds differ grossly from §19.3 (regular own gun losses < 7/10 or > 10, or enemy guns destroyed outside 1–6)? | Report it before reading the other arms; it may signal a pipeline difference | implementer |
+
+### 19.5 The collective-commitment probe result (`astelia_cpp/S4_COLLECTIVE_PROBE.md`, `abad882`) and the next step
+
+**Result (160 fights; one declared setting per arm; descriptive):**
+- **Against regular: 0/20 elimination wins in every arm, and every arm lost all 10 of its guns.** No arm improved on P5's gun exchange:
+  - P5 destroyed 3.15 enemy guns;
+  - P7 (synchronized wave) 2.45;
+  - P8 (+ screen) 1.85, losing all 50 units;
+  - P9 (end-of-line) 2.75.
+- **Against novice:** P5, P7 and P8 won 20/20; P9 won 15/20.
+- **P9 was not realized as designed, so it is inconclusive, not a test of end-on concentration:**
+  - its staging points lay outside the arena (no position is outside every enemy gun's reach + 30 px);
+  - every wave started on the 20 s fallback, with only 6.65 of 10 guns still alive;
+  - on average, 5.4 guns ever reached a post.
+- **The wave was realized in P7 and P8** (readiness reached in 20/20 fights, 80% engagement within about 2 s). Their realized exposure was higher than P5's: 3.7–4.0 enemy guns per committed gun-tick, against 1.35. The pooled definitions differ, since P5's includes its approach ticks. **A synchronized wave enters the overlapping bands together, so it is shot together.**
+- **Per Codex's design-review note 1,** each arm bundles several changes (target sharing, staging, fire suppression, movement, screen), so these are descriptive patterns, not isolated causes.
+
+**Reading:** collective commitment as scripted here does not win the artillery duel against regular. **The owner's second-view rule now applies:** with no elimination win, do not encode collective commitment into a resonator. Diagnose first, then test the next smallest scripted hypothesis. From now on, the v7 trigger is **real elimination wins against regular and clearly better than P5** (it replaces §19.4's "≥ 7/10 guns destroyed" reading).
+
+**The open question is the exchange rate:**
+- P5 lands about 48 hits on enemy guns per fight (953 of 1,120 launches over 20 fights). That kills about 3 guns.
+- The enemy kills all 10 of ours: enemy artillery makes about 7 of those kills per fight, and enemy ranged units about 3.
+- Why does the enemy battery put far more effective fire on our guns than ours puts on theirs, with equal guns and equal range?
+
+**Next step (stored data only, no new fights; Codex), the fire-efficiency diagnostic** on the stored P5 and P7 regular traces of this probe:
+1. **Per side:** launches per living gun-second; the fraction of gun-time that is moving, in range of any target, ready but not firing, and firing.
+2. **Whether moving suppresses firing:** windup interruptions and launch gaps after a move command.
+3. **Enemy target choice:** the share of enemy gun launches aimed at our guns rather than at other units, and their hit rate on our (non-dodging) guns.
+4. **Range at death:** the distance from each own gun's death to the nearest enemy gun and to the nearest enemy ranged unit.
+5. **Where our shells go:** the share of our launches aimed at guns against other targets, over time.
+
+**Then:** the smallest scripted hypothesis that the numbers point to. Candidates, not chosen:
+- fire uptime: stop moving once in range;
+- a counter-battery priority for our guns;
+- a ranged screen placed against the enemy ranged units that kill our guns.
+
+This is a stored-data analysis. It runs while the 0h pilots run.
