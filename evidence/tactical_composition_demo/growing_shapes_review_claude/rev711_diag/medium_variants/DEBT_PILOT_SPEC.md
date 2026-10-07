@@ -35,3 +35,10 @@
 - **"Regression":** ≤ 3/5 empty passes.
 - Anything else is descriptive.
 - **The falsifier** (from the diagnostic): if quota allocation follows debt but the minimum per-site service stays poor, scheduling is not the bottleneck.
+
+## Amendment 1 (before any DEBT fight): the minimum aggregation for "fairer than COV-A"
+
+- **The minimum per-site active served fraction** = min over the 8 sites of (Σ over the arm's 10 runs of the site's active-served steps) / (Σ over the 10 runs of its active steps). That is, the per-site pooled fraction, as in the coverage reports' Arm/site tables, then the minimum over sites.
+- **COV-A's value** is computed the same way from its committed report: min over sites of its pooled per-site fractions.
+- **"No site falls below 0.10"** uses the same pooled per-site fractions.
+- **Also reported, descriptive only:** the per-run minima.
