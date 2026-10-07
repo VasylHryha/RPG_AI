@@ -1,0 +1,81 @@
+{
+  "kind": "CAPACITY_DELIVERY_PROVENANCE",
+  "base_commit": "f48a1c97806f9f7854c23d3f67e037c0acd0a3ea",
+  "capacity_files_carried_by_concurrent_commit": "e44b528799d50f5a00a82d1767fd26580da71ea8",
+  "all_13_task_files_identical_to_tested_delivery": true,
+  "files": [
+    {
+      "path": "docs/reviews/tactical_0h_capacity_diagnostic_spec_review_r3_codex.md",
+      "bytes": 6148,
+      "verified_identical": true
+    },
+    {
+      "path": "docs/reviews/tactical_0h_capacity_implementation_recheck_codex.md",
+      "bytes": 4555,
+      "verified_identical": true
+    },
+    {
+      "path": "evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/CAPACITY_IMPLEMENTATION_VALIDATION.json",
+      "bytes": 2163,
+      "verified_identical": true
+    },
+    {
+      "path": "evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/CAPACITY_USAGE.md",
+      "bytes": 7327,
+      "verified_identical": true
+    },
+    {
+      "path": "evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/capacity_kernel.py",
+      "bytes": 849,
+      "verified_identical": true
+    },
+    {
+      "path": "evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/capacity_telemetry.py",
+      "bytes": 7907,
+      "verified_identical": true
+    },
+    {
+      "path": "evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/execute_capacity_plan.py",
+      "bytes": 15736,
+      "verified_identical": true
+    },
+    {
+      "path": "evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/run_capacity_pilot.py",
+      "bytes": 5865,
+      "verified_identical": true
+    },
+    {
+      "path": "evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/write_capacity_report.py",
+      "bytes": 10532,
+      "verified_identical": true
+    },
+    {
+      "path": "evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/test_capacity_pipeline.py",
+      "bytes": 20884,
+      "verified_identical": true
+    },
+    {
+      "path": "evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/kernel_builder/build_capacity_kernels.py",
+      "bytes": 8888,
+      "verified_identical": true
+    },
+    {
+      "path": "evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/kernel_builder/CAP96_BUILD.json",
+      "bytes": 8216,
+      "verified_identical": true
+    },
+    {
+      "path": "evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/kernel_builder/CAP128_BUILD.json",
+      "bytes": 8233,
+      "verified_identical": true
+    }
+  ],
+  "requested_provenance_present": true,
+  "primary_commit_block": "Unable to create .git/index.lock: Operation not permitted",
+  "concurrent_commit_preserved": true,
+  "design_plan_and_existing_evidence_not_modified_by_capacity_task": true,
+  "synthetic_tests": "17 passed in 1.36s",
+  "actual_pilots_process_listing_and_native_steps": false,
+  "executor": "Claude; commands in CAPACITY_USAGE.md",
+  "fallback": "Normal-hook one-file audit commit on current HEAD, verified incremental bundle; original capacity files already in prerequisite base"
+}
