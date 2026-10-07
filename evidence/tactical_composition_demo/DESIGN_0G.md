@@ -1103,3 +1103,56 @@ This is a stored-data analysis. It runs while the 0h pilots run.
 3. Then the smallest single scripted change it supports, on top of P11.
 
 **The resonator reading, for later (not a design yet):** spacing is the v6 element law's short-range repulsion, which P5's commitment discarded. A v7 must keep it in every mode.
+
+### 19.8 The ranged-threat diagnostic (`astelia_cpp/S4_RANGED_THREAT_DIAGNOSTIC.md`, `940208e`) and the escort probe
+
+**Codex's owner recheck of the spacing run:** APPROVE_WITH_NOTES (`docs/reviews/tactical_0g_spacing_probe_recheck_codex.md`).
+- Every table number matches the raw data.
+- **Both P11 elimination wins are genuine:** cluster c02/o0 at 69.6 s and cluster c09/o1 at 73.5 s.
+- Presentation errors were corrected.
+
+**What the stored P5, P10 and P11 traces show** (no new fights):
+- **The enemy ranged screen** stands about 52–59 px in front of its own guns.
+  - It reaches our battery at about 9.7 s and first damages a gun at about 11.6 s, in all 60 fights.
+  - Its reach covers 90–98% of our early gun positions.
+  - In P11 it makes 43% of our gun HP loss over the full fight, and most of it after 20 s.
+- **Our ranged units do not contest it.** Early in the fight they are a median **322 px** from the nearest enemy ranged unit, about 45 px beyond their 277 px reach.
+  - They mostly target enemy melee, or nothing.
+  - They kill almost no enemy ranged before 20 s (P11: 4 in 20 fights).
+- **Our melee** stays about 157 px from the enemy ranged units (melee reach 61 px).
+- **In P11's two wins against its 18 non-wins:**
+  - our artillery killed more enemy ranged before 20 s (10.5 against 5.8 per fight);
+  - more enemy guns died before 30 s (8.0 against 6.4);
+  - fewer of our guns died before 30 s (4.5 against 8.1).
+  - These are associations from two fights, not causes.
+
+**The hypothesis (one change on P11): our ranged units stand too far back to engage the enemy screen that shoots our guns.**
+
+**Escort probe (scripted, descriptive, declared before any fight):**
+- **P11 (control),** re-run on fresh seeds.
+- **P12 = P11 plus a ranged escort position.** It applies while both sides have living guns; otherwise everything is v6/P11.
+  - **Assignment:** each living own ranged unit is assigned to its nearest living own gun (ties by id).
+  - **The escort direction û:** the unit vector from that gun toward the nearest living enemy ranged unit within 400 px of the gun. If there is none, toward the centroid of the living enemy guns.
+  - **The escort point:** gun position + d·û. The unit's movement goal is replaced by the escort point; P5's multiplier and stop-distance conventions apply.
+  - **Targeting is unchanged** (v6/P11).
+  - **d = 60 px,** derived as splash 40 + ranged body 9 + gun body 10 = 59, rounded up. An escort standing there is outside the splash of a shell aimed at its own gun's centre. This matches P11's own-gun spacing.
+- **P13 = P12 with d = 120 px.** A second dose of the same change, further forward, to contest the screen earlier.
+- **Panel:** 10 fresh development clusters × 2 orientations × {P11, P12, P13} × {regular, novice} = 120 fights. Same world, conventions and spacing as §19.6; the process gate covers 0h runs.
+
+**Measured:**
+- elimination wins, timeouts, S;
+- enemy guns destroyed; own guns lost; own losses;
+- enemy ranged killed by our ranged units before 20 s and 30 s;
+- own-ranged distance to the nearest enemy ranged unit at 10–20 s;
+- the share of reachable gun-threatening enemy ranged that is selected as a target;
+- gun HP lost to enemy ranged and to enemy artillery, over time;
+- our ranged losses and their killers;
+- victims per shell (the spacing must stay realized);
+- escort arrival (the fraction of the gun phase within 20 px of the escort point).
+
+**Reading (descriptive):**
+- **Elimination wins clearly above P11's, moving toward the owner's >50% criterion:** the escort is a candidate mechanism. In the resonator it would be an element-level rule: ranged elements hold a position between their battery and the nearest threat.
+- **Our ranged units arrive and engage, but the guns still die:** the escort is not sufficient. The next single change is the targeting priority (candidate 1) or the gun post (candidate 3).
+- **The escort is not realized** (no arrival, or the spacing is lost): inconclusive.
+
+**Stop rows:** as §19.6 (a 1 h projection; INVALID on any change after a fight; P11's sanity on the new seeds reported first; wait while a 0h batch runs).
