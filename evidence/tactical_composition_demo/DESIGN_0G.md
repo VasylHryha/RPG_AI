@@ -1283,3 +1283,82 @@ This is a stored-data analysis. It runs while the 0h pilots run.
 - Novice is a sanity check (20/20 expected); its losses are reported.
 - Anything else is descriptive.
 - **The owner's criterion is above 50%.** Only a win rate in that range would make the scripted controller the feasibility witness for a v7 resonator design.
+
+## 20. Revision 12 (v7): the resonator carries the witnessed mechanisms (2026-10-07, after §19.3–19.10)
+
+**Why now:**
+- The §19.5 trigger is met. The scripted P12 (focus + commit + spacing + escort) has **real elimination wins against regular**: 6/20 and 7/20 on two fresh panels, against P5's 0/20.
+- The owner's second-view rule is met too: a scripted feasibility witness first, then an RRG controller revision.
+- Further single scripted changes have plateaued: P14 8/20, P15 6/20.
+
+**Logged as an outcome-informed change** (section 10): every mechanism below was found by the §19 probes on development seeds.
+
+**The question v7 answers:** do the resonator's dynamics, which decide **when** each unit commits (amplitude, phase, target-group synchrony), add anything over P12's always-on rules?
+- **A pass:** v7 at or above P12 on the same validation seeds.
+- **An equal result** at a relaxation-like setting (μ ≪ 0, ω → 0) means the oscillation adds nothing. That is reported as a finding.
+
+**What the probes showed, and how v7 expresses each finding:**
+
+| Witness | Finding | v7 element-level rule |
+|---|---|---|
+| §19.6–19.7 (splash) | Bunched guns lose the artillery exchange 2:1. Spacing turns it. | **C2, same-role spacing in every mode.** v6's swarmalator neighbour law already has an in-phase spacing of 100/(1 + 0.8) ≈ 56 px. P5's commit override discarded it. v7 keeps the v6 neighbour term in every mode, and **adds** P11's shift for guns (S = 60 px) and P15's for ranged units (S = 58 px) to the movement goal, so the spacing holds when commitment forces dominate. Fixed constants from the catalog, not knobs |
+| §19.3 (P5) | Committed, focused guns kill guns. v6's guns almost never commit (P0: 0.65 enemy guns destroyed) | **C1, the gun commitment geometry:** an artillery unit in commit mode toward an enemy gun takes the preferred distance **R_i − 12 px** (P5's post) instead of max(f_c R_i, 1.05 Rmin). **The resonator decides whether it commits:** the v3 mode hysteresis on c = clip(Re z) is unchanged |
+| §19.3 (P4/P5) | Focus: guns that can reach an enemy gun shoot the weakest reachable one | **C1b, the gun target score:** for artillery units, legal enemy-gun targets get + (1 − hp/maxhp) added to v6's score (alignment + tanh(engagement)). The ±0.2 retention rule is unchanged. No other role's targeting changes |
+| §19.8–19.10 (P12) | Escorts between the battery and the enemy screen buy the guns time (6–7 of 20 wins) | **C3, the escort as the ranged commit post:** while both sides have living guns, a ranged unit in commit mode toward a gun-threatening enemy ranged unit takes P12's escort point as its goal (the nearest own gun + 60 px toward the nearest threat, with 19.8.1's tie and fallback rules). In escape mode it uses v6's escape distance. **The resonator decides whether each ranged unit escorts.** P14's threat priority is not included (it did not separate from P12) |
+
+**Unchanged from v6:**
+- the z dynamics (μ, ω_role, K diffusive coupling, K_t target-group coupling, −P drive);
+- the similarity and alignment;
+- the mode hysteresis (±0.2);
+- the threats, pressure, melee, the failure rules and the RK4 policy;
+- no travel-time hold and no commit focus timer.
+
+**Knob ledger:**
+- The **11 v6 knobs:** K, K_t, κ, β, μ, ω_ranged, G, w, f_c (now direct units only), m_k, λ_th.
+- **The fixed constants added** are all declared here and come from the catalog or a witness:
+  - S_gun = 60 px, S_ranged = 58 px;
+  - the escort offset, 60 px;
+  - the gun post margin, 12 px;
+  - the threat cutoff, 400 px.
+- **The comparators are frozen, not re-tuned:** P12 (scripted witness), v6 at its attempt-2 knobs, and morale at its stage-B knobs. They are re-run on the same validation seeds.
+
+**Normalization ledger:**
+- distances in px, from the catalog (splash 40, bodies 9 and 10, ranges);
+- z dimensionless;
+- every term of dz/dt in 1/s, as in §18;
+- the spacing and escort shifts act on movement goals (px), exactly as in P11, P12 and P15.
+
+**Development** (the §18 protocol, with the §19 objective):
+- **Stages A and B,** CMA-ES with population 16 and 16 generations; fresh development entropy in a new ledger.
+- **Stage-B ranking:**
+  1. the **elimination-win rate** on the regular tuning clusters (novice eligibility: novice elimination-win rate ≥ 50%);
+  2. then mean S;
+  3. then own losses.
+- **Validation:** 10 fresh clusters × 2 orientations × {v7, P12, v6, morale} × {regular, novice}.
+- **Readings (declared now):**
+  - **"Progress over the witness":** v7's regular elimination wins on the validation panel ≥ P12's on the same seeds.
+  - **"Beats regular in development"** (§19): a regular elimination-win rate > 50%, mean S > 0, novice too, no failures.
+  - **The oscillation diagnostics are reported:** the selected μ and ω_ranged, the fraction of samples with |z| < 0.2, and the rotation rate of arg z when |z| > 0.2.
+- **Cost:** about 65 min at the v6 rate; the projection is reported first; decision 0031 applies.
+
+**Closest known methods and the difference:**
+- **Stuart-Landau central-pattern-generator controllers** for timing; the **separation rule of boids and formation controllers** for spacing; **escort or bodyguard behaviours** in game AI for the screen.
+- **The difference:** here one oscillator state per unit, driven by that unit's own damage exchange and coupled to its neighbours and its target group, decides commit or escape for **every** mechanism. The rules give only geometry. That is the RRG claim under test: a local resonance decides when the structure acts.
+
+**Checks before any fight (S3 style):**
+1. With every unit forced to commit (c = 1), v7's movement goals for guns and ranged units equal P12's on recorded observations, except for the v6 neighbour term and the spacing shifts. This is checked on fixtures.
+2. The spacing shifts equal P11's (guns) and P15's (ranged) on the same observations.
+3. With c = 0 hysteresis held, no mode changes.
+4. The artillery target score adds (1 − hp/maxhp) only for legal enemy-gun targets.
+5. v6, P12 and morale are byte-identical to their delivered versions.
+6. Clone and isolation of z and the modes.
+7. All §18 checks still pass.
+
+**Stop rows:**
+
+| Yes/no | Action | Role |
+|---|---|---|
+| Does a pre-fight check fail? | Fix before any fight | implementer |
+| Does the compute projection exceed 1 h before 22:00? | Ask the owner | implementer |
+| Is a rule, constant or knob bound changed after a development fight? | INVALID; a new revision on fresh seeds | implementer |
+| Does v7 fall below P12 on validation? | Report it; the drafter diagnoses (resonator gating against the static rules) before any v8 | drafter |
