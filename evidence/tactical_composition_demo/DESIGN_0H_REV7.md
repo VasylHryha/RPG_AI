@@ -1063,3 +1063,17 @@ meaning a time scale of **τ_link ≤ 2 s** per edge.
 | Is any of the five F7 runs INVALID? | Block the gate; fix only a defect proved before results are read; rerun on the same keys | implementer |
 | Is a downstream decision record missing because of an instrumentation defect proved before any outcome is read? | Keep the failed attempt and its evidence; rerun only that fixture, from the fingerprint-verified retained source, with identical worlds and keys | implementer |
 | Does any retained g = 1 state fail its stored native, Python and RNG fingerprint? | INVALID; block continuation; no regeneration, substitution, rerun or fingerprint update under this amendment | implementer |
+
+### 19.7.1 Owner decision on §19.7
+
+**2026-10-07, about 21:10:** the owner said "go ahead", twice, in reply to Claude's request about the §19.7 approval. **§19.7 is approved as written** (it includes the amendments of the Codex rounds 2 and 3, `183766a` and `a60f5c0`):
+- five fresh key sets;
+- every one of the ten F5 runs passes, in each start separately;
+- aggregate F5 and F7 verdicts with the existing Harness guards;
+- F6 and F8 on key set g = 1;
+- the INVALID rows as amended.
+
+**What the approval does not cover:**
+- **The proposed change that makes the seeded start a secondary report** (the owner's second-view V3 §9, plan row A7b) is **not** part of §19.7, so it is not approved by this decision. It stays a separate proposal.
+- **The stop-on-first-failure execution order** (V3 §8) is not approved either.
+- The approval authorizes the gate's **definition**. **It does not authorize a run.** A run of §19.7 still needs a formally reviewed candidate law (plan A7) and decision 0031's rules.
