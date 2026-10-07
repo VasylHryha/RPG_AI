@@ -1,0 +1,47 @@
+CHANGES_REQUIRED
+
+Reviewer family: Codex
+Reviewed commit: `831c54a433e2a0db54cf151d1499613e7552ad09`
+Spec SHA256: `3d13c56828a6c73faecc81ee77578d9bb7637cd0332f3cfbdc7820936f9dcc56`
+
+Step 1 only: static review of COVERAGE_PILOT_SPEC.md, COVERAGE_DIAGNOSTIC.md, SERVICE_TELEMETRY_REPORT.md, the previous Codex telemetry recheck, kernel_builder/, service_graph.py, service_telemetry.py, run_service_pilot.py, execute_service_plan.py and write_service_report.py. The admission/scheduling code was also checked at the builder's `fd21826` base. No project test, medium, pilot, assay or process-list command ran. This review does not independently revalidate the historical raw measurements.
+
+The two proposed interventions can use task-blind graph and physical-site information. They are not yet sufficiently specified to implement both as reproducible single-change arms. The drafter must resolve the following arm semantics before step 2.
+
+**Blocking — COV-B can delete the support for the birth it is about to retry (spec lines 23–29).** `_b_path_attempt()` first computes front/back sets, selects endpoints `a,b`, and validates the candidate with `geometric_trial()`. Only then does it check `feasible()`, which measures clearance, count and weighted cost; it does not revalidate strong-path progress. RD3's non-service class includes elements reachable from an unserved site's roots that cannot yet reach O. Thus the lowest-lock eligible donor can be the very root/front anchor `a` used to qualify the cost-refused candidate. Removing that element can leave the site rootless or invalidate the trial's strong links/deficit improvement, even if the same point is now affordable. Deletion also changes held receiver degrees.
+
+"Retry that same admission once" does not say whether to insert the fixed point using its pre-removal qualification, revalidate that point and its support on the new graph, or restart candidate search. These produce different birth laws. Excluding anchors from recycling would also change the declared donor eligibility. The spec must select one behavior, define phase/support retention if an anchor disappears, and define the terminal outcome when the post-removal geometry fails. Clarify that a failed retry leaves the removal in place, if that is intended. This is a change to the arm's meaning, not an observer or scheduler detail.
+
+**Blocking — COV-A's waiting clock lacks a complete update rule (spec lines 21–22).** Specify whether waiting is elapsed world time since the last active-and-served instant or accumulated active-unserved time. These differ across episode activity changes: at t=100, a site last served at t=10 and inactive during t=10–90 has 90 elapsed seconds but only 10 active waiting seconds; another site continuously active since service at t=50 has 50 of either. The ordering reverses. "While active" can qualify either the last-service event or the clock accumulation.
+
+Also define the sort key before a never-served site has its first active effective root. Such sites are included in the existing active/missing-route queue and receive `no_root` terminals; their priority cannot be computed from an onset that does not yet exist. Pin whether clock updates occur at every 0.1-second world boundary and at intra-check births/removals, or only at B-path checks. A short route that appears and disappears between checks changes the last-service time under one interpretation but not the other. State the behavior through inactivity/root loss and initialize seeded roots explicitly. Preserve the existing queue, pointer and output-first behavior unless the drafter expressly changes them.
+
+**Report defect — The requested churn measure is impossible as written (spec line 54).** A recycled element is removed from native state; subsequent additions use monotonic new ids. That removed id cannot later become service in the actual trajectory. If the intended measure concerns its replacement, the lineage between recycle/request/birth and later service must be defined. If it concerns what the donor would have become without deletion, that requires a counterfactual run and exceeds this plan. Report donor classes and retry outcomes directly until the drafter chooses a computable churn measure.
+
+Other findings and implementation requirements:
+
+| Topic | Finding / required disposition |
+|---|---|
+| RD3 age threshold | "Older than 200 steps" conflicts at exactly 200 with RD3's `step_index - birth_steps[id] >= 200`. Inherit `>= 200` explicitly to preserve the declared constants. Use the growth check's already measured locks; graph classes are evaluated immediately before each removal. |
+| Output-first and quota | COV-A changes only the queue order. Keep the live path checks, pointer advance, two accepted B-path births, repeat-after-acceptance behavior, and resource-stop propagation. B1 has its own two-birth quota and novelty/output-first rules; no timer change is authorized. COV-B must retry within the original request, emit one terminal, count successful retry as one birth, and share its one-removal limit across B-path and B1 for the whole growth check. A propagated resource-stop terminal has no new candidate admission to retry. |
+| Task blindness | Service history must use fixed physical sites and the same structural strong-route definition as RD3. No task labels, slot identity, reward, assay result or fresh entropy may affect ordering or donor selection. Waiting must be kernel-owned and clone-copied, independent of the optional observer. |
+| Observer B boundary fix | The proposed direction addresses the previous defect. Retain the pre-transition outage objects and record their post-birth gaps before closing them. Exclude both the repairing terminal and its endpoint gap sample from the B non-repair decision; retain the sample in the trace as restoration evidence. Keep instantaneous gap samples zero-weight for duration statistics. Newly opened outages must not inherit earlier births. B remains a global accepted-birth observation, C a global resource-refusal observation, and N a named-site request observation; these are not causal identifications. |
+| Historical control | Do not edit the committed summaries or receipts. Recompute corrected labels only into new outputs where retained traces establish the necessary boundary facts. Otherwise expose `legacy_B` and the reconstruction limit; do not mix legacy B totals with revised totals as equivalent measurements. Coverage and assay control values can be reused unchanged. |
+| Reading rule | Define "pooled served fraction of sites 3–6" as a specific formula before execution: e.g. sum(active_served_steps) / sum(active_steps) over sites 3–6 and the ten runs, rather than an unweighted mean of four fractions or a requirement that each site doubles. Report all eight per-site fractions regardless. With complete five-run empty starts, improvement requires coverage doubling and at least four passes; regression means at most three passes. Missing runs must not count as failures or produce a positive reading. A7 candidacy is prospective, not authorization to execute A7 or combine arms. |
+| Compute and scheduler | The 45-minute number is a projection, not a gate pass. The previous 66.48-minute receipt excludes the first attempt and reused a completed job. A future scheduler must use remaining jobs including both off controls, measured elapsed/CPU limits, at most ten workers and the requested 3600-second cap. Completed jobs are reused after identity verification; started/incomplete slots are never rerun. Process access errors stop execution. The `de89074` regex avoids matching concurrent pgrep commands, but its Python alternative lacks a literal repo component; narrow and synthetically test both alternatives to satisfy this task's explicit repo-only requirement. |
+
+Stop conditions for this delivery:
+
+| Yes/no condition | One action | Responsible role |
+|---|---|---|
+| Does an unresolved finding change an arm's meaning? **Yes** | Stop after this review. | reviewer |
+| Are the waiting and recycle semantics fully specified by the drafter? **No** | Revise the spec with a self-audit explaining these causes. | drafter |
+| Is step 2 unblocked by this reviewed spec? **No** | Do not build or implement the pilot variants. | implementer |
+
+Owner recheck request sent verbatim to separate reviewer `/root/coverage_spec_recheck`:
+
+> Recheck what you did please, check if it is the best we can do, we want 10 out of 10 or above 9 - it's fine to break the things or fully rework. Check for issues, conflicts, gaps.
+
+Recheck disposition: the separate read-only Codex reviewer independently confirmed both arm-definition blockers. It checked the concrete `geometric_trial()` requirements `edge_a_to_new` and `a_reached`, the undefined pre-root waiting key, monotonic id allocation, pooling, quotas and age eligibility. Its clarification that restoring gap samples must also be excluded from B non-repair classification is incorporated above. No numeric score or experimental acceptance is assigned. Only Codex-family agents are available; this additional pass is not a Claude-family acceptance review. Tracking stays in this new review because the owner expressly prohibits edits to docs/PLAN_CURRENT.md.
+
+Delivery boundary: step 2 stopped. No kernel variant, observer revision, scheduler, report writer or USAGE note was implemented; no pilot was run. Design files, existing pipeline scripts, committed evidence receipts and unrelated dirty work are preserved.
