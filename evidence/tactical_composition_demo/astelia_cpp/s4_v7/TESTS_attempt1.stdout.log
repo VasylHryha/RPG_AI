@@ -1,0 +1,18 @@
+......F
+=================================== FAILURES ===================================
+________________________ test_anchored_process_pattern _________________________
+
+    def test_anchored_process_pattern():
+     # POSIX ERE here uses the same operators as Python after translating whitespace class.
+     pattern=re.compile(common.process_pattern().replace('[[:space:]]',r'\s'))
+     repo=str(common.REPO)
+     samples=[repo+'/.venv/bin/python -c worker',repo+'/.venv/bin/python evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/run_economy.py','/usr/bin/python3 '+repo+'/evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/pilot.py','python3 evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/run.py',repo+'/evidence/tactical_composition_demo/astelia_cpp/s4_v7/build/astelia_native_v7 --metrics','./.venv/bin/python worker.py']
+>    assert all(pattern.search(s) for s in samples)
+E    assert False
+E     +  where False = all(<generator object test_anchored_process_pattern.<locals>.<genexpr> at 0x106ab1c80>)
+
+evidence/tactical_composition_demo/astelia_cpp/s4_v7/test_v7.py:83: AssertionError
+=========================== short test summary info ============================
+FAILED evidence/tactical_composition_demo/astelia_cpp/s4_v7/test_v7.py::test_anchored_process_pattern
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 6 passed in 2.67s

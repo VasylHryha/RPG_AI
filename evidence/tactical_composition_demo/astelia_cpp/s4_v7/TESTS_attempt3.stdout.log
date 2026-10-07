@@ -1,0 +1,23 @@
+.............F
+=================================== FAILURES ===================================
+_____________ test_engineering_accounts_build_and_each_check_once ______________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x106e14ee0>
+tmp_path = PosixPath('/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_v7/build/pytest_tmp/test_engineering_accounts_buil0')
+
+    def test_engineering_accounts_build_and_each_check_once(monkeypatch,tmp_path):
+>    import engineering
+
+evidence/tactical_composition_demo/astelia_cpp/s4_v7/test_v7.py:150:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    """Build and all appropriate new tests once; exclusively observation/fake fixtures."""
+    from common import *
+>   from build import build
+E   ImportError: cannot import name 'build' from 'build' (/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/build.py)
+
+evidence/tactical_composition_demo/astelia_cpp/s4_v7/engineering.py:3: ImportError
+=========================== short test summary info ============================
+FAILED evidence/tactical_composition_demo/astelia_cpp/s4_v7/test_v7.py::test_engineering_accounts_build_and_each_check_once
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 13 passed in 2.02s
