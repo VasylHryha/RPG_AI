@@ -875,3 +875,26 @@ Then run a short diagnostic: how guns die against novice, and why gun assaults f
 **Measurements:** against regular, enemy guns destroyed, our shell hit rate, our gun losses, elimination wins and timeouts. Against novice, the same, for a sanity check.
 
 If a scripted probe cannot kill regular guns, the v7 hypothesis is wrong, and the drafter returns to the evidence before designing.
+
+### 19.2 The volley probe (`astelia_cpp/S4_VOLLEY_PROBE.md`, `07d0b60`, PARTIAL) and the next probe
+
+**Facts:**
+- **Holding fire works:** target none gives zero launches.
+- **Auto abilities are inactive in the fixed world** (`sandboxAbilities=false`).
+- **Synchronized volleys and nets (P1–P3), at one declared setting,** won **0/20 regular and 0/20 novice**. P0, the v6 resonator, won 14/20 novice.
+  - **Confound:** the probe also suppressed every non-volley gun target and lost firing time while waiting. Fewer shells were fired at guns: 236 / 167 / 127 against P0's 280.
+- **The surprise:** against regular, **our shells aimed at enemy guns hit 277 of 280 times (99%)**. Yet only 0.55 of 10 guns die per fight.
+  - **The dodge is not what saves the guns.** Too few shells are aimed at them.
+  - We aim about 14 per fight in total, about 1.4 hits per enemy gun.
+  - A gun has 181 HP and a shell does about 15 after protection, so about 12 hits kill one.
+- **Our guns mostly shoot other targets, or are out of range.**
+
+**The reading, revised:** the artillery duel is lost by **dispersion and low engagement**, not by the dodge. The symmetric range is 320 px, so whichever side concentrates its fire on one gun at a time wins the exchange: Lanchester-style concentration of force.
+
+**Next probe (scripted, descriptive), with the same fixed world and the rest of the army at v6 knobs:**
+- **P4, focus fire without holding:** every gun that can reach any enemy gun targets **the reachable enemy gun with the least remaining HP** (ties by id), and fires as soon as it is ready. Otherwise it keeps its v6 target.
+- **P5:** P4, plus our guns **commit**: they move to keep the focused enemy gun within reach, while direct units keep their v6 behaviour.
+- **P6:** P5, plus direct units focus the same enemy gun when they can reach it.
+- **Measured:** elimination wins, enemy guns destroyed, our gun losses, shells fired at guns and hits, time to the first enemy gun kill. Against novice too.
+
+**If concentration kills regular guns, the RRG version is target-group synchrony:** K_t locks the attackers of one target, so commitment to it is collective. That becomes the v7 design. **If it does not,** the drafter returns to the evidence.
