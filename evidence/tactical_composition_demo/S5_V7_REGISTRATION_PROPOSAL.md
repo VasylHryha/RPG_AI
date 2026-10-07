@@ -10,7 +10,7 @@
 
 - **The W4 condition for drafting is met** (plan, "Decisions" §1):
   - a development version beats the regular scripted AI under the owner's criterion (DESIGN_0G §19): elimination wins, not survival to the timeout;
-  - **v7 (§20.1–20.3):** 32/40 regular elimination wins, mean S +4.68; novice 40/40.
+  - **v7 (§20.1–20.3):** 32/40 regular elimination wins, mean S +4.68; novice 40/40. The Codex recheck (`docs/reviews/tactical_0g_v7_validation_recheck_codex.md`) verified it, with wording corrections in DESIGN_0G §20.3.1.
 - **The scripted witness P16** (§19.11–19.13) beat regular 34/40 on its own replication.
 - **The owner's rule from W4:** the registration reports the strongest simple comparators, **labelled**, and the resonator must not hide them.
 

@@ -1670,3 +1670,13 @@ This is a stored-data analysis. It runs while the 0h pilots run.
   1. Codex's owner recheck of the run and analysis.
   2. **The S5 registration draft, for the owner's approval (B6):** a development version now beats regular, so the W4 condition for drafting is met. The draft must report morale and P16 as labelled comparators. The draft is Claude's; the registered run is the owner's decision.
   3. **The RRG question remains:** what the resonator adds beyond the scripted map. Candidates: target-group synchrony as the decision source, instead of a fixed ordering. This is a design question for after S5.
+
+#### 20.3.1 Corrections from the Codex owner recheck (`docs/reviews/tactical_0g_v7_validation_recheck_codex.md`, APPROVE_WITH_NOTES)
+
+All 257 tuning evaluations, 400 validation fights, the recorded numbers and the 32 regular wins are verified. **20.3.1 overrides 20.3's wording:**
+1. **The gate against always-commit.** v7 had **one additional observed regular win** (32 against forcedP16's 31). That falls in the predefined observed-match band. The descriptive paired interval [−0.125, +0.200] includes both negative and positive differences. **No test of no-improvement or of equivalence was made.**
+2. **The package contrast.** The regular wins of v7, forcedP16 and forcedv6 are **32 / 31 / 0**. This compares complete interacting policies. It does not identify the geometry as the sole cause, does not separate firing from movement, and does not remove the inherited oscillator from the P16 package.
+3. **ω0** had **two fewer observed regular wins** (30). The intervention changes the total inherited policy: regular gate transitions went from 951 to 811, the P16-selected unit-tick share from 0.840 to 0.825, and own launches from 7,377 to 7,515.
+4. **Priority.** v7 is **"the first explicit oscillator-gated witnessed-map candidate meeting the current elimination criterion in this documented series."** P16 already contains inherited oscillator dynamics, so no wider priority claim is made, and none is evidence of what the resonator adds.
+
+The readable report is `astelia_cpp/S4_V7_VALIDATION_REPORT.md`.
