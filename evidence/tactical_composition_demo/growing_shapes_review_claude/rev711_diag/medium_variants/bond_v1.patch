@@ -1,0 +1,18 @@
+0a1,7
+> #include <algorithm>
+> #ifndef BOND_K
+> #define BOND_K 2.0
+> #endif
+> #ifndef BOND_L0
+> #define BOND_L0 0.45
+> #endif
+125c132,138
+<             double radial=(p.A*(1+p.J*std::cos(d))-p.B/rr)/rr;
+---
+>             double radial;
+>             if(j>=0){ /* BOND PILOT: springs on strong (phase-coupling-rate >= 0.5/s) pairs, exclusion otherwise */
+>                 auto strong=[&](int a,int b){const auto& h=held[a];if(std::find(h.begin(),h.end(),b)==h.end())return false;
+>                     return phase_scale*p.K*std::exp(-rr*rr)/double(std::max<size_t>(1,h.size()))>=0.5;};
+>                 if(strong((int)i,j)||strong(j,(int)i)) radial=BOND_K*(rr-BOND_L0)/rr;
+>                 else radial=-std::max(0.0,p.B/rr-p.A*(1+p.J))/rr;
+>             } else radial=(p.A*(1+p.J*std::cos(d))-p.B/rr)/rr;

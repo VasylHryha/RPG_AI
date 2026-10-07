@@ -1,0 +1,27 @@
+0a1,10
+> #include <algorithm>
+> #ifndef BOND_MAX
+> #define BOND_MAX 2
+> #endif
+> #ifndef BOND_K
+> #define BOND_K 2.0
+> #endif
+> #ifndef BOND_L0
+> #define BOND_L0 0.556
+> #endif
+125c135,147
+<             double radial=(p.A*(1+p.J*std::cos(d))-p.B/rr)/rr;
+---
+>             double radial;
+>             if(j>=0){ /* BOND PILOT: springs on strong (phase-coupling-rate >= 0.5/s) pairs, exclusion otherwise */
+>                 /* bond v2: each element bonds only to its BOND_MAX nearest strong partners (chain topology) */
+>                 auto bonds=[&](int a){std::vector<std::pair<double,int>> c;const auto& h=held[a];
+>                     for(int b:h){double r2=std::hypot(s[b].x-s[a].x,s[b].y-s[a].y);
+>                         if(phase_scale*p.K*std::exp(-r2*r2)/double(std::max<size_t>(1,h.size()))>=0.5)c.emplace_back(r2,b);}
+>                     std::sort(c.begin(),c.end());std::vector<int> o;for(size_t q=0;q<c.size()&&q<BOND_MAX;++q)o.push_back(c[q].second);return o;};
+>                 auto in=[&](const std::vector<int>& v,int x){return std::find(v.begin(),v.end(),x)!=v.end();};
+>                 auto bi=bonds((int)i), bj=bonds(j);
+>                 if(in(bi,j)||in(bj,(int)i)) radial=BOND_K*(rr-BOND_L0)/rr;
+>                 else if(bi.size()>=BOND_MAX||bj.size()>=BOND_MAX) radial=-std::max(0.0,p.B/rr-p.A*(1+p.J))/rr; /* SCREENING: saturated cells exert/feel no cohesion */
+>                 else radial=(p.A*(1+p.J*std::cos(d))-p.B/rr)/rr; /* free cells keep the swarmalator law */
+>             } else radial=(p.A*(1+p.J*std::cos(d))-p.B/rr)/rr;

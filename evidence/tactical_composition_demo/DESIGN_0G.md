@@ -898,3 +898,32 @@ If a scripted probe cannot kill regular guns, the v7 hypothesis is wrong, and th
 - **Measured:** elimination wins, enemy guns destroyed, our gun losses, shells fired at guns and hits, time to the first enemy gun kill. Against novice too.
 
 **If concentration kills regular guns, the RRG version is target-group synchrony:** K_t locks the attackers of one target, so commitment to it is collective. That becomes the v7 design. **If it does not,** the drafter returns to the evidence.
+
+### 19.3 The focus-fire probe (`astelia_cpp/S4_FOCUS_PROBE.md`, `3e4ac4f`, DONE)
+
+**Arms,** each one declared setting:
+- **P4:** guns focus on the reachable enemy gun with the least remaining HP, with no holding of fire;
+- **P5:** P4, plus guns commit radially to their own reach minus 12 px;
+- **P6:** P5, plus direct units join. P6 was never realized against novice, so P6 = P5 there.
+
+| Arm | Regular: elimination wins | Regular: enemy guns destroyed / own guns lost | Novice: elimination wins | Novice: S |
+|---|---|---|---|---|
+| P0 (v6) | 0/20 | 0.65 / 2.60 | 14/20 | +2.95 |
+| P4 focus | 0/20 | 0.45 / 2.25 | 17/20 | +11.05 |
+| **P5 focus + commit** | 0/20 | **3.40 / 10.00** | **20/20** | **+38.85** |
+| P6 | 0/20 | 3.45 / 10.00 | 20/20 | +38.85 |
+
+**Reading:**
+- **Focused, committed guns kill guns quickly:** against regular the first enemy gun dies at about 14 s (against about 75 s for v6), and against novice the result is a rout.
+- **Against regular they lose the whole battery.** The killers are enemy artillery (133) and **enemy direct units (58)**.
+- **The regular line screens and supports its guns.** A committed gun walks into both the enemy battery and the direct screen.
+- **Single-unit commitment is therefore not enough. The commitment must be collective:**
+  - the guns must commit **together**, so the enemy battery's fire is split;
+  - and **with a screen**: our direct units engage the enemy direct screen at the same moment.
+- This is a timing and coordination problem: a phase-locking job.
+
+**Next (v7 candidate, after the 0h medium experiments free the machine):**
+- **Collective commitment by target-group synchrony:**
+  - K_t couples the guns that focus on one enemy gun;
+  - a commit wave starts only when the group's coherence (order parameter) exceeds a threshold, so the guns and their screen advance together, then return to escape together.
+- **Scripted probe first:** a synchronized group advance of the battery plus a direct screen, against regular. Only then the RRG version.
