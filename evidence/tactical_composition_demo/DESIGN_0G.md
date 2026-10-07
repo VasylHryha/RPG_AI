@@ -1249,3 +1249,37 @@ This is a stored-data analysis. It runs while the 0h pilots run.
   - P12 spacing + escort: **6/20**.
   - The owner's criterion is above 50%.
 - **Next:** the recheck and the mechanism diagnostic, then the smallest single change on P12 that the numbers support.
+
+### 19.10 The escort mechanism (`astelia_cpp/S4_ESCORT_MECHANISM_DIAGNOSTIC.md`, `3898a90`) and two single-change arms on P12
+
+**Recheck:** APPROVE_WITH_NOTES (`docs/reviews/tactical_0g_escort_probe_recheck_codex.md`). All 620 raw hashes, the sealed inputs, every reported number and all 11 wins are verified.
+
+**The mechanism, from the stored traces:**
+- **The escorts are sacrificial.** They draw enemy fire and buy the guns an early survival window:
+  - at 30 s, P12's wins keep 5.83 guns against 1.86 in its losses;
+  - **in every escort win, all our ranged units die**, and the guns finish the fight.
+- **Our artillery removes the enemy screen, mostly as splash** from shells aimed at enemy guns: early screen kills rose from 122 to 237, and 230 of those were incidental.
+- **The escorts bunch.** Each successful enemy shell aimed at an escort damages **6.04** of our ranged units. That is the same splash failure the guns had before §19.6.
+- **Against novice,** the escorts walk into artillery that P11 never exposed them to, so the losses rise.
+
+**Probe (scripted, descriptive, declared before any fight; two single-change arms on P12):**
+- **P12 (control),** re-run on fresh seeds.
+- **P14 = P12 plus escort target priority.** While the escort phase is active: if a geometrically reachable enemy ranged unit threatens any living own gun, the ranged unit's target is the nearest such enemy (ties go to the lowest id). Otherwise its v6 target is kept. Movement is exactly P12's.
+- **P15 = P12 plus escort spacing.** While the escort phase is active, each ranged unit's escort goal is shifted, as P11 shifts guns: by (58 − d) along the unit vector away from every other living own ranged unit closer than 58 px.
+  - 58 = splash 40 + two ranged bodies of 9.
+  - The shifts are summed in id order, with P11's +x convention at coincidence.
+  - The goal is then native-clipped; multiplier = 1 if the final goal error is over 2 px, otherwise 0; stop 0.
+  - Targeting is exactly P12's.
+- **Panel:** 10 fresh clusters × 2 orientations × {P12, P14, P15} × {regular, novice} = 120 fights. Conventions, measurements and stop rows as in §19.8.1.
+
+**Added measurements:**
+- escort victims per successful enemy shell aimed at an escort;
+- the threat-selection share;
+- early kills of enemy ranged by our ranged units and by our artillery;
+- the gun-survival curve at 10–60 s.
+
+**Reading rules:**
+- **"Clearly above P12":** regular elimination wins ≥ P12's + 3 on the same seeds, and ≥ 8/20.
+- Novice is a sanity check (20/20 expected); its losses are reported.
+- Anything else is descriptive.
+- **The owner's criterion is above 50%.** Only a win rate in that range would make the scripted controller the feasibility witness for a v7 resonator design.
