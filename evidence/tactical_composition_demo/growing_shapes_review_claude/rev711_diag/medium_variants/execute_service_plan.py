@@ -45,6 +45,8 @@ def worker(job,ticket):
     process=process_check()
     if process['status']!='CLEAR': raise RuntimeError('process preflight changed: '+json.dumps(process))
     name=f'{variant}_{start}_k{key}_{observer}'
+    # Resume (Claude 2026-10-07): a job that already completed in an earlier attempt is reused, never rerun.
+    if (LOCAL/(name+'.summary.json')).exists(): return json.loads((LOCAL/(name+'.summary.json')).read_text())
     with (LOCAL/(name+'.raw.log')).open('x') as log:
         subprocess.run([sys.executable,str(OUT/'run_service_pilot.py'),'--variant',variant,'--start',start,'--keyset',str(key),'--observer',observer,'--ticket',str(ticket)],stdout=log,stderr=subprocess.STDOUT,check=True,timeout=max(1,json.loads(ticket.read_text())['deadline_epoch']-time.time()))
     return json.loads((LOCAL/(name+'.summary.json')).read_text())
@@ -88,6 +90,10 @@ def main():
     if initial_projection>=3600:
         (OUT/'SERVICE_PREFLIGHT.json').write_text(json.dumps(dict(status='PROJECTION_STOP',projection_seconds=initial_projection,checks=checks),indent=2)+'\n');return 2
     data=dict(status='RUNNING',started_epoch=time.time(),deadline_epoch=time.time()+3600,code_hashes=baseline,projection_seconds=initial_projection)
+    if ticket.exists():  # resume: keep every earlier attempt's ticket unchanged under a new name
+        n=1
+        while (LOCAL/f'RUN_TICKET_attempt{n}.json').exists(): n+=1
+        ticket.rename(LOCAL/f'RUN_TICKET_attempt{n}.json')
     with ticket.open('x') as f: json.dump(data,f,indent=2)
     caffeinate=subprocess.Popen(['caffeinate','-i','-s'])
     results=[]; integrity={}; status='PARTIAL'
