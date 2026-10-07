@@ -18,7 +18,7 @@ Mechanism measurements (prepare-target V and actual impact multiplicity use diff
 | P16 regular | 3.2975421490960795 | 2.7001411100658514 | 770 / 895 | 10, 9.925, 5.975, 5.45, 5.275 |
 | P16 novice | 5.685038484405379 | 5.11006711409396 | 460 / 1040 | 10, 9.975, 9.975, 9.975, 9.975 |
 
-| Head/cluster | P12 o0/o1 (win,S) | P16 o0/o1 (win,S) | P12 wins/2 | P16 wins/2 | Win difference | P12 mean S | P16 mean S | S difference |
+| Head/cluster | P12 o0/o1 (win,S) | P16 o0/o1 (win,S) | P12 wins (out of 2) | P16 wins (out of 2) | Win difference | P12 mean S | P16 mean S | S difference |
 |---|---|---|---|---|---|---|---|---|
 | regular c00 | o0: nonwin,-21; o1: nonwin,-23 | o0: win,6; o1: win,1 | 0 | 2 | 2 | -22.0 | 3.5 | 25.5 |
 | regular c01 | o0: nonwin,-24; o1: win,3 | o0: win,7; o1: win,6 | 1 | 2 | 1 | -10.5 | 6.5 | 17.0 |
@@ -73,4 +73,12 @@ P16 novice complete measurements: {"arm": "P16", "head": "novice", "fights": 40,
 
 P12 and P16 reuse the exact v3 sources and executable. Replicated requires P16 regular >=26/40, positive regular and novice mean S, novice >=21/40, no failures, and more wins than paired P12 in >=12 of 20 regular clusters. Regular <=20/40 is Not replicated; otherwise a failed conjunction is descriptive. Orientations share cluster entropy; uncertainty is computed across 20 cluster averages, not 40 independent trials. No rule/constant changes after any fight. No judging, registration, scientific acceptance or resonator claim. A replicated result supplies the owner-directed scripted witness for revising v7; the draft v7 is not thereby approved.
 
-See POLICY.md, DECLARATION.json, SEAL.json, README.md and OWNER_RECHECK.md. Claude runs engineering.py, run.py, analyze.py and render.py in order without edits. Each missing combat block/resume checks mandatory pgrep; unavailable process access stops before claiming entropy. Verified completions are skipped; ambiguous possibly executed fights stop and are never replayed. PLAN_CURRENT.md and DESIGN_0G.md are outside the seal.
+See POLICY.md, DECLARATION.json, SEAL.json and README.md. Claude completed engineering.py, run.py, analyze.py and render.py in order with the sealed scripts unchanged. OWNER_RECHECK.md records the precombat preparation review; the completed-run Codex review is [tactical_0g_escort_probe_v4_replication_recheck_codex.md](../../../../docs/reviews/tactical_0g_escort_probe_v4_replication_recheck_codex.md). Each missing combat block/resume required a stored pgrep gate; unavailable process access required stopping before claiming entropy. Verified completions are skipped; ambiguous possibly executed fights stop and are never replayed. PLAN_CURRENT.md and DESIGN_0G.md are outside the seal.
+
+Presentation corrections in the completed-run Codex review:
+
+- C1: paired-table headings now say wins (out of 2); the unchanged entries are integer counts, not proportions.
+- C2: the completed-run review is linked separately from the precombat OWNER_RECHECK.md.
+- C3: the final execution paragraph now describes completed stages and their historical gate requirements.
+
+These corrections change no measurement, sealed rule, entropy, receipt or categorical reading. v4 contains 20 sampling clusters; the earlier v3 panel contained 10.
