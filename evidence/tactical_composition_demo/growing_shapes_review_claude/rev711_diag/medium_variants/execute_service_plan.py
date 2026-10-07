@@ -11,7 +11,7 @@ import time
 
 OUT=Path(__file__).resolve().parent
 LOCAL=OUT/'_local'
-PATTERN='s4_spacing_probe_v1|ai_RPG_test/.*(astelia_native|tactics.*host)'  # narrowed by Claude 2026-10-07: the broad form matched another project's tactics_lab_host and waited indefinitely
+PATTERN=r'(^|/)[Pp]ython[^ ]* [^ ]*s4_spacing_probe_v1/|^[^ ]*ai_RPG_test/[^ ]*astelia_native[^ ]*( |$)'  # Claude 2026-10-07: matches this repo's 0g probe python and native hosts only; never another project's tactics_lab_host, and never a concurrent worker's own pgrep (which made the first launch stop falsely)
 
 
 def sha(p): return hashlib.sha256(p.read_bytes()).hexdigest()
