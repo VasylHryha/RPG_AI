@@ -1,0 +1,58 @@
+DECLARED_BEFORE_FIGHTS
+
+Owner-authorized scripted development probe DESIGN_0G19.10 at0a132d52bb64feaf9f0d05c624b07aba2cf2a13c. Design review docs/reviews/tactical_0g_s1910_probe_review_codex.md APPROVE_WITH_NOTES. No tuning, judging, registration, status change, population reliability, v7 permission or resonator/source claim. All earlier pinned code/receipts and PLAN_CURRENT/DESIGN_0G remain unchanged. Rechecks/dispositions recorded in OWNER_RECHECK.md because the owner excludes PLAN_CURRENT.
+
+P12 is EXACTLY the original EscortProbeV1(seed,side,knobs,12), using original s4_escort_probe_v1/escort.cpp and escort.h read-only; it wraps original SpacingProbeV1 arm11. P14/P15 wrap that exact P12 object, without changing its internal prepared state or RNG. All rules use the SAME prepare Observation only. Phase active iff both sides have living artillery at prepare AND baseline lastTick.accepted. Dead is hp<=0. Actions cleared each prepare; clone copies complete baseline state and prepared overrides. No remembered assignment or phase. With either battery absent or integration rejected, complete P12 fallthrough.
+
+P12 d60 geometry is unchanged: nearest living own gun (centre distance, exact ties lowest id); nearest enemy ranged within inclusive400px of that gun (ties id); direction toward threat, otherwise ascending-id enemy-gun centroid, then nearest enemy gun, then complete v6 when vector<1e-9px remains degenerate. Uses observed gun centres. Raw point +60px direction; clip to[0,width]x[0,height]; multiplier1 iff error>2px else0, stop0. Gun/melee decisions unchanged. No lane/avoidance/reassignment/clearance correction added.
+
+P14 ONLY replaces the living own ranged TARGET during phase: candidates are living enemy ranged geometrically reachable from self AND geometrically reaching ANY living own gun. Each inclusive pair bound is source.range+source.radius+target.radius. Nearest candidate to selecting self centre, exact distance ties lowest id. No400px direction cutoff, readiness/lane/memory/assigned-gun filter. Empty candidates keep P12's v6 target; direction degeneracy does not suppress targeting override. Every other action field exactly P12. No publication back into baseline internal state.
+
+P15 ONLY replaces movement during phase and for a nondegenerate P12 point: starting from UNCLIPPED original d60 point, add simultaneous sum over other living own ranged, ascending neighbour id, using current prepare centres. Strict d<58px: (58-d)*(self-other)/d. EXACT d==0 uses P11 spacing convention lower id -x, higher id +x, y0. This clarifies19.10's shorthand '+x' using its referenced P11 spacing and diagnostic's explicit +/-x by id. No iterative goals, normalization or sum cap. Final goal native-clipped once; multiplier1 iff error>2px else0, stop0. Target and failure flag exactly P12; degenerate point keeps complete P12. 58=splash40+two ranged bodies9. It is a prospective spacing scale, not global splash safety. Overshoot, clipping, collisions, shared points and weakened shielding are outcomes, not authorization to retune.
+
+Panel10 fresh unused OS high-partition development clusters x2 orientations x{P12,P14,P15}x{regular,novice}=120 fights. Historical S4/v6 attempt2stageB knobs and50v50 game mirror world,150s,dt1/30,perception=false,sandboxAbilities=false,default skills. Ten paired clusters are sampling units. All previous development ledgers/declarations collision-checked including separate engineering seeds; judging ledgers NEVER read. New local ledger, one separate engineering seed. Claude engineering compares two2s P12 fights per head (original v1 binary versus new v2), removing ONLY output-only escort audit rows; all remaining bytes and attribution/v6 contract outputs must match.
+
+Codex builds and checks NONCOMBAT only. Claude runs engineering.py,run.py,analyze.py,render.py in order with NO edits. Fresh P12 all40 fights complete and descriptive control table print BEFORE P14/P15. Inherited broad flag-only sanity bounds regular mean enemy guns destroyed<4 or own guns lost<7 are retained as P12 gross-departure flags, not historical P11 expectation. Flag novice elimination<20/20; report own losses. Never abort/replay/tune for outcome flags. Intervention order P14 then P15.
+
+Mandatory pgrep before EVERY missing combat block and every resume, engineering included; timestamped receipt per gate invocation/attempt, match rev711_diag pilots and medium_variants telemetry. Error or unreadable process list fails closed. Active batches wait/recheck30s; gate waiting outside combat stage. Entropy claimed only AFTER clearance. <=2 workers with bounded pending queue and owned process-group deadlines. Cumulative preparation/build/checks/combat/analysis compute<=3600s; engineering<=1200s, all panel blocks combined<=1200s, analysis<=1200s, checks<=600s. Honest projection including600s analysis reserve. UTC start/end plus sealed code/declaration and admitted binary identities. No edits during long runs.
+
+Resume: exclusive durable request+claim BEFORE spawn; completion only after successful exit, summary/metrics verification and hashes. Skip only verified completions matching request/claim, seal, binary, gate, raw bytes/hash and stderr. Claim/request/raw without completion is ambiguous: STOP, never replay/delete. Completed siblings independently recoverable. Pre-spawn request after interruption conservatively ambiguous. Each missing block requires new gate clearance. Deterministic stored-only analysis may be regenerated after full verification; combat cannot. Raw and bundle gitignored locally; delivered files<=45MB.
+
+Normalization ledger / measurements:
+
+| Quantity | Level / units | Clock, cohort, normalization |
+|---|---|---|
+| Elimination / timeout / S | fight,counts/seconds | win=enemy0,own>=1,t<150; timeout t>=150; S=own-enemy survivors. Twenty fights per arm/head;10 paired clusters, no independent40-trial claim |
+| Gun kills/losses / own losses | fight,units |10-final opposing/own guns;50-final own units; means over20 |
+| Shell multiplicity / artillery HP ratio | shell/gun,counts/HP | inherited fire-efficiency analyzer, distinct opposing gun victims per successful gun-targeted shell, both teams; incidental nongun-targeted victims/HP separately; ratio enemy->own gun HP / own->enemy gun HP, null if denominator0 |
+| Arrival | ranged unit-tick,fraction | post-step centre within<=20px of SAME step's prepare raw/clipped point. Denominator ALL living own ranged while BOTH sides had living guns at prepare, at30Hz; degenerate points and post-step deaths remain denominator and separately unavailable, never arrived. P12 exact d60; P15 shifted raw/clipped goal arrival, unshifted P12 anchor arrival separately |
+| First arrival / holding | ranged unit/time,ticks | first clipped arrival per unit while eligible; censor eligible units never arriving. Holding=consecutive eligible clipped-arrived ticks assigned to same gun, current tick counted; gaps/death clear holding. Count reassignment separately. Per-fight first times/identities and counts; no pooled first-time interpretation |
+| Displacement / nearest geometry | ranged/gun snapshot,px | post centre minus own prepare centre, unavailable post deaths. Post living nearest gun/ranged distances pooled equally; both-sides gun phase at prepare. Whole phase and literal post time[10,20),[20,30); absent neighbours counted; survival/cohort bias. Median/p10 exact linear interpolation at p*(n-1), never means of fight quantiles |
+| Threat selection | living ranged unit-tick,fraction | prepare gun phase; opportunity>=1 reachable enemy ranged threatening>=1 living own gun. Native range+both body radii for each pair. Numerator action selects any such threat. Geometry is not a legal/ready shot; actions reconciled to native guard/clipping |
+| Early opposing ranged last hits | event,counts | own ranged source/team0 vs enemy ranged/team1, exact event t<20 and t<30, full fight separately; last hits not exclusive contributions |
+| Gun HP over time | event,actual capped HP | exact event bins[0,10),[10,20),[20,30),[30,60),[60,150.1); by opposing source role, friendly separately. Reconcile initial-final own-gun HP; full identities/times/killers retained |
+| Ranged losses / killers | event,units | all own-ranged deaths, source id/team/role; friendly distinguished, report other cohorts separately |
+| Realization audit | prepare/post,px/counts | raw/clipped points retained in raw; body-clearance minimum to OTHER observed own guns, shared/coincident point pairs, other gun shifted-goal coincidence, assigned splash49 violations, native guard holds, degenerate ticks, clipped ticks, point-error/displacement distributions, post gun/ranged unavailable counts, gun-spacing audit and nearest quantiles |
+
+| Added quantity | Level / units | Cohort, clock, normalization |
+|---|---|---|
+| Escort-targeted shell multiplicity | shell,distinct units/shell | Enemy shell aimed at own ranged at launch; successful iff positive capped HP to>=1 own ranged; numerator distinct own ranged victims per successful shell, denominator successful such shells. Null if0. Unique source+scheduled-impact match within one native tick; ambiguity STOP. Other-aim incidental ranged HP/victims and friendly HP separate; all30 ranged are cohort even after phase ends |
+| Artillery early screen last hits | event,counts | own artillery->opposing ranged strict t<20/<30 and full fight, beside own-ranged hits; no contribution exclusivity claim |
+| Gun survival | own gun,event units | samples10,20,30,45,60s; death at<=sample removed; hold terminal survivors after early ending. Per-fight curves and mean over20, not ongoing simulated survival |
+| P12 anchor/P15 movement goal | ranged unit-tick,fraction/px | Preserve unshifted raw/clipped P12 anchor, shifted raw/clipped goal, sum shift; report both arrivals on identical ALL prepare-living phase denominator, unavailable post deaths/points never arrived. Post nearest own-ranged distances in common windows; opportunity shares whole phase AND[10,20),[20,30) with explicit counts/null |
+
+§19.10 reading SUPERSEDES old above-P11/arrive-and-engage categorical rules. clearly_above_P12 iff regular elimination wins>=8/20 AND>=freshP12+3. Report observed_owner_criterion iff wins>=11/20 (strictly>50%), separately; no automatic v7 authorization or population rate. Other quantities descriptive, including mixed/null realization. Novice20/20 expected sanity, report losses. Gun-spacing lost (>1.5 own-gun victims per successful OPPONENT gun-targeted shell) retained as diagnostic only, null unavailable; no extra condition on above-P12 flag.
+
+| Yes/no stop condition | One action | Responsible role |
+|---|---|---|
+| pgrep unavailable/error? | STOP before combat, preserve NOT_RUN/PARTIAL | implementer |
+| 0h pilot batch active? | Wait and recheck | implementer |
+| Identity/binary/rule/constant/seed drift? | STOP and preserve evidence | implementer |
+| Any rule changed after a fight? | Mark INVALID for fresh declaration/entropy | implementer |
+| Claim/request/raw without verified completion? | STOP, never replay | implementer |
+| Controller failure/ambiguous shell/action/HP mismatch? | STOP, preserve evidence | implementer |
+| Measured/projected total>3600s or stage cap exhausted? | STOP owned children, preserve PARTIAL | implementer |
+| P12 or novice sanity flagged? | Report flag before interpreting interventions | implementer |
+| Reviewer finds implementation defect? | Fix before sealing/fights/final tests | implementer |
+
+Commit with hooks, explicit paths, Assisted-by: Codex:GPT-6; otherwise verified bundle on current HEAD. No push.
