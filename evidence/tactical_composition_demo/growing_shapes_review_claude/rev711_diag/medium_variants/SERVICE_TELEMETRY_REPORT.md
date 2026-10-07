@@ -18,7 +18,7 @@ Integrity status:
 | clone_isolation | PASS |
 | scr_v1_reproduction | PASS |
 
-The full 50-episode SCR empty-key-0 on/off comparison must pass before measurements are released. Clone isolation compares live native bytes and observer/digest sinks. All SCR/V1 assay and legacy summary fields must equal committed logs exactly before RD3 starts. Synthetic tests do not establish these run integrity checks.
+The full 50-episode SCR empty-key-0 on/off comparison passed; its state trajectory digest and legacy summary match. Clone isolation checks passed for all workers and compare live native bytes and observer/digest sinks. All 20 SCR/V1 assay and legacy summary fields equal committed logs exactly; RD3 launched after those checks. Synthetic tests alone do not establish these integrity checks. Native full-state streams were not archived, so the digest itself cannot be independently recomputed from the retained traces.
 
 | Variant | Gate shape empty/seeded | Site fractions/coverage | Outages/latency/causes | D3 classes/forced cuts/protection | Realized degree >2 |
 |---|---|---|---|---|---|
@@ -34,11 +34,11 @@ Empty-start exploratory entry filter: See each variant’s empty_entry_filter. T
 
 Interpretation limits: route reuse compares the deterministic shortest-route element set. G-dist/G-deg use held receiver degree and one-factor rate counterfactuals; multiple supported labels yield break X. A spring change alone cannot destroy strong reachability (R is retained in the schema, never invented). G cannot occur within a maximal site outage, because restoration closes the outage; adjacent outages remain separate. Non-repair labels are all applicable observations; the earliest is primary, simultaneous earliest labels produce X. Mostly-served coverage is given as the eight time fractions without adding a cutoff.
 
-Compute: spec estimate 11 CPU-min/run; 31 runs including the required off control, at most 10 concurrent. Scheduler checks projection before every phase, uses the greater of measured elapsed and CPU time per job, with phase concurrency rounding and imposes a shared 3600-second deadline; caffeinate -i -s surrounds all runs. Telemetry overhead and shared-machine throughput remain unmeasured here. No claim that the complete plan fits the cap. Resume uses the script’s measured STOP checks, never tuning or retries.
+Compute: 30 reported runs plus one off control, at most 10 concurrent. The owner-approved resumed schedule used a 12600-second (3.5-hour) cap and completed in 3989.0786 seconds (66.48 minutes). This excludes the first attempt’s 2298.9542 seconds and the pause before resuming; first launch through final completion spans 6792.0893 seconds (113.20 minutes), including that pause. SCR empty/key 0 was reused, never rerun. Scheduler projection uses the greater of measured elapsed and CPU time per job, with phase concurrency rounding. Caffeinate -i -s surrounded execution. Relative observer overhead is not isolated by this batch.
 
-Raw traces: no new pilot traces exist if NOT_RUN. Future traces remain gitignored under _local/, listed with bytes and SHA256. Build raw logs stay local by SHA256 in delivery metadata. All committed files must stay below 45 MB.
+Raw traces: the 93 stored inventory entries remain local under _local/ and total 407115335 bytes. The Codex stored-data recheck verified every size and SHA256 before decoding. The inventory includes the focused-test log marked INCOMPLETE by the job-name heuristic; it is not a missing medium run. All delivery files stay below 45 MB.
 
-Reproduction and launch commands are in kernel_builder/USAGE.md. A6w implementation/build is available; A6w run integrity and A6x exploratory execution remain pending when NOT_RUN. Owner rechecks and disposition are recorded here instead of docs/PLAN_CURRENT.md because the owner prohibits changing that file.
+Reproduction and launch commands are in kernel_builder/USAGE.md. A6w integrity checks and all 30 A6x exploratory runs are complete. This is an exploratory result, not formal acceptance or authorization to run fresh keys. Owner rechecks and disposition are recorded here instead of docs/PLAN_CURRENT.md because the owner prohibits changing that file.
 
 Owner recheck request, sent verbatim to independent reviewer /root/owner_recheck:
 
@@ -63,8 +63,18 @@ Review disposition (implementation batch, before the single focused test run):
 | Clone check ran before observer initialization | Initialize observer before cloning; compare observer metadata/stream cursor, native bytes, digest and legacy sink |
 | R/G labels have structural identification limits | Retain schema and disclose limits; never invent R causality or merge separate site outages to manufacture G |
 
-Focused validation: 7 tests passed in 0.35 s; wrapper/caffeinate elapsed 1.2744 s. See FOCUSED_TEST.json. No training, native integration, recorded panel, mutation probe, F5 assay or fresh judging keys executed.
+Historical implementation validation before Claude’s execution: 7 focused tests passed in 0.35 s; wrapper/caffeinate elapsed 1.2744 s (FOCUSED_TEST.json). Claude subsequently executed exploratory native trajectories and their F5 assays. No registered panel, mutation probe or fresh section-19.7 keys were used. The current Codex review runs stored-data analysis only.
 
 Final result recheck is recorded below after the reviewer inspects the generated report and compact JSON. Recheck tracking lives here because the owner explicitly prohibits edits to docs/PLAN_CURRENT.md.
 
-Final result recheck disposition: no remaining blocking delivery findings. The reviewer inspected the actual report, compact JSON, process preflight, focused-test log and preservation receipt. NOT_RUN, zero pilots and pending integrity checks are consistent across them. Implementation is ready for scoped delivery; A6w run integrity and all 30 exploratory runs remain blocked by process-list access. No scientific verdict or numeric score is assigned.
+Historical implementation recheck disposition (before Claude’s execution): the then-NOT_RUN delivery was internally consistent and process-list access was blocked in Codex. That historical statement does not describe the completed Claude batch. The stored-result Codex recheck is CHANGES_REQUIRED for the B-label boundary artifact documented below; numerical trajectory, summary and coverage measurements remain usable within their stated limits.
+
+Stored-result Codex recheck (reviewed commit 48078a5; presentation fixes only):
+
+- All 30 raw legacy summaries and telemetry aggregates match the receipts; all 20 SCR/V1 summaries reproduce their committed logs. A/B/E match stored raw assay values, but the underlying assay decision streams were not retained for independent recomputation.
+- V1 and RD3 have identical physical trajectories, assays and legacy summaries in all ten pairs. Idle-site routes were present near 23 of 34 D3 decisions. At seeded key 4, t=420, V1 protects 0/46 while RD3 protects 25/46 (24 ordinary); both remove non-service element 43. Equality reflects the same chosen deletions despite a real protection difference, not absence of idle routes or general equivalence of the rules.
+- Stored C labels concern any global B-path/B1 cost refusal; B concerns any global accepted birth; N concerns requests naming the outage’s site. These are observed conditions, not identified per-site causal non-repair explanations. N can occur during inactivity (SCR empty key 4, site 0, 760–800: no active steps).
+- Eight completed outages have a boundary-contaminated B label: the repairing terminal is appended before closing the outage, while its reduced post-birth gap is omitted. Stored B counts are SCR 30, V1 17, RD3 17; excluding these eight known artifacts yields 24, 16, 16. This is a descriptive exclusion, not complete causal reclassification. All primary labels are unchanged. Receipts and observer code are preserved; future instrumentation must correct event-boundary sampling before B is treated as qualified evidence.
+- Failure entries identify associated longest outages, not proved causes of the separate F5 assay failure. G-dist/G-deg counterfactual arithmetic checks out, but full pre/post transition graphs were not archived at every event.
+
+Each presentation fix is recorded in docs/reviews/tactical_0h_service_telemetry_recheck_codex.md (P1–P7). The separate stored-data coverage diagnostic and its recheck are in COVERAGE_DIAGNOSTIC.md. No plan, design or committed receipt was edited.
