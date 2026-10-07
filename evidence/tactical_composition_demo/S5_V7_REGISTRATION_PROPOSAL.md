@@ -1,234 +1,170 @@
-# S5 registration proposal, revision 2: the v7 resonator controller against the scripted AI (DRAFT for the owner's approval)
+# S5 registration proposal, revision 4 (consolidated): the v7 resonator controller against the scripted AI (DRAFT for the owner's approval)
 
-**Date:** 2026-10-08, night. **Drafter:** Claude (claude-opus-5-5). **Reviewer:** Codex (cross-family), before the owner sees a final version.
-**Revision 2** answers `docs/reviews/tactical_0g_s5_v7_proposal_review_codex.md` (CHANGES_REQUIRED, findings 1–7). The self-audit is in §8.
+**Date:** 2026-10-08, night. **Drafter:** Claude (claude-opus-5-5). **Reviewer:** Codex (cross-family).
+**History:**
+- revision 1 is at `f48a1c9`, revision 2 at `b98306b`, revision 3 at `510fd1d`;
+- the reviews are `docs/reviews/tactical_0g_s5_v7_proposal_review{,_r2,_r3}_codex.md`;
+- **this consolidated text replaces all earlier wording.** The self-audit is in §9.
+
 **Status:** **DRAFT. Nothing here authorizes a run.** A registered (judging) run needs:
-- this proposal reviewed;
-- a sealed specification derived from it;
-- **the owner's explicit approval** (AGENTS.md; plan B6).
+- this proposal approved in review;
+- a sealed specification that implements it exactly, and its review bound by hash;
+- **the owner's explicit approval** of the specification, of the 200-cluster cap (§5), and of the run (AGENTS.md; plan B6).
 
 ## 1. Why now
 
-- **The W4 condition for drafting is met** (plan, "Decisions" §1):
-  - a development version beats the regular scripted AI under the owner's criterion (DESIGN_0G §19): elimination wins, not survival to the timeout;
-  - **v7 (§20.1–20.3):** 32/40 regular elimination wins, mean S +4.68; novice 40/40. The Codex recheck (`docs/reviews/tactical_0g_v7_validation_recheck_codex.md`) verified it, with wording corrections in DESIGN_0G §20.3.1.
-- **The scripted witness P16** (§19.11–19.13) beat regular 34/40 on its own replication.
-- **The owner's rule from W4:** the registration reports the strongest simple comparators, **labelled**, and the resonator must not hide them.
+- **The W4 drafting condition is met** (plan B6; DESIGN §19): a development version beats the regular scripted AI in elimination wins.
+- **v7:** 32/40 regular elimination wins and 40/40 novice on fresh validation (DESIGN §20.3 and §20.3.1). Codex's recheck: `docs/reviews/tactical_0g_v7_validation_recheck_codex.md`.
+- **The owner's rule:** the strongest simple comparators are reported, labelled.
 
-## 2. What is being claimed (and what is not)
+## 2. Claims and non-claims
 
-**The claims (the endpoints in §4):**
-1. **The v7 resonator controller, frozen at θ*** (`s4_v7b` tuning ordinal 161), achieves an elimination-win rate **above 50%** against the regular scripted AI, with mean S > 0, on fresh judging seeds.
-2. The same against the novice scripted AI.
+**The claims (the registered endpoints, §4):**
+- **E1:** the frozen v7 package's **elimination-win rate against the regular scripted AI is above 50%,** on fresh judging seeds. The rate **includes the registered failure penalty**: an attributable v7 failure counts as a lost fight.
+- **E2:** the same against the novice scripted AI. **E2 is a compatibility check above 50%, not a no-regression claim** relative to the 100% development rate.
+- **Each endpoint is verdicted separately.** No combined "both heads" success claim is made.
 
 **Not claimed:**
-- that the oscillator gate is necessary, or better than always committing (§20.3: an observed match);
+- that the oscillator gate is necessary, or better than always committing (development: an observed match);
 - synchrony as a cause;
 - B→R→B recursion;
-- generality beyond this fixed world, roster, rules and the two scripted levels;
 - hierarchy or source qualification;
-- causal superiority over any labelled comparator.
+- causal superiority over any labelled comparator;
+- generality beyond this fixed world, roster, rules and the two scripted levels.
+- **Mean S is a reported secondary (DESIGN §19), not part of any verdict.** An inferential S conjunct would be a new owner decision, with a revised design and sizing.
 
 ## 3. The frozen object
 
-| Item | Value |
+| Item | Identity |
 |---|---|
-| The controller | the v7 gate exactly as in `astelia_cpp/s4_v7c`: binary `s4_v7c/build/astelia_native_v7`, SHA256 `9e8781b7…dc2dd`, build manifest `f2e1c916…2b790` |
-| θ* | `s4_v7c/THETA_ORIGIN.json`: tuning commit `796d0a8`, ordinal 161, TUNING.json SHA256 `6b146edc…96e65` |
-| The world | the fixed S4 world: 50 against 50 (10 melee, 30 ranged, 10 artillery), game rules, `sandboxAbilities = false`, 150 s, dt 1/30 |
-| The win definition | enemy 0, own ≥ 1, terminal time < 150 s; a timeout is never a win; the §20.2 overshoot-tick convention |
-| Failures | see §5.3 (an attributable failure is coded as a worst-case loss; an infrastructure or integrity failure stops the run as PARTIAL or INVALID) |
+| The native binary | `astelia_cpp/s4_v7c/build/astelia_native_v7`, SHA256 `9e8781b7e1004f62d9f4d4964fa855608b3070a9dd07fa4037bfbbd69e9fc2dd` |
+| The native build manifest | SHA256 `f2e1c916a08f170342073d5a03ae98e57e70de4e8c32971f469d17ea263b2790` |
+| `s4_v7c/BUILD.json` (95 source hashes) | SHA256 `63c7d989288c29095115b72dcea66b7337ba7fb276558da3a6a19773fcab2aea`, a different file from the native manifest |
+| θ* | `s4_v7c/THETA_ORIGIN.json`: tuning commit `796d0a8`, ordinal 161, TUNING.json SHA256 `6b146edcbd9d6c2147297deab0bc9149ba9801de979a7d1594f6889a89296e65` |
+| The world | the fixed S4 world (50 against 50: 10 melee, 30 ranged, 10 artillery), game rules, `sandboxAbilities = false`, 150 s, dt 1/30 |
+| The win predicate | enemy 0, own ≥ 1, terminal time < 150 s, with the §20.2 overshoot-tick convention. A timeout is never a win |
 
-**The comparators (labelled, frozen, on the same seeds; descriptive, not endpoints):**
-- **P16** (scripted witness), at its historical knobs;
-- **forcedP16(θ*)** (v7 with the gate forced to commit);
-- **morale v3** at its stage-B knobs (the strongest earlier simple controller);
-- **v6 at attempt-2 knobs.**
+- **The sealed specification adds:** the exact native request templates and controller selectors (v7 and each comparator), the game, catalog and opponent fingerprints, the orientation and side semantics, and the orchestration and analysis identities.
+- **Kept outside the seal:** `docs/PLAN_CURRENT.md` and the DESIGN files.
+- **The comparators (labelled, descriptive, same seeds, admitted against the frozen binary):**
+  - P16 at its historical knobs;
+  - forcedP16(θ*);
+  - morale v3 stage-B, pinned. Its selection metric (mean S) is disclosed. A stronger v6-era morale package is checked from **stored** evidence before sealing; if one is materially stronger, both are included.
+  - v6 at its attempt-2 knobs.
+- **E3** (v7 against forcedP16) is **descriptive only:** paired differences, never called equivalence.
+- **The older endpoints are superseded for this registration:** P1–P3 and the doctrine pool of DESIGN §6 and SPEC_0G.
 
-## 4. Endpoints and inference (revision 2)
+## 4. The endpoint test
 
-**The sampling unit** is a **cluster**: one judging seed, played in both orientations. Clusters are i.i.d. draws from the seed distribution. The two outcomes within a cluster are averaged:
-- the cluster win fraction w_c ∈ {0, ½, 1};
-- the cluster mean score S_c ∈ [−50, 50].
+**The sampling unit** is a cluster: one judging seed in both orientations. Clusters are i.i.d. The cluster win fraction is X_i = w_c ∈ {0, ½, 1}.
 
-| Endpoint | Panel | Support (pre-registered, per head) |
-|---|---|---|
-| **E1, beats regular** | v7 against regular, n_c clusters × 2 orientations | LB_w > 0.5 **and** LB_S > 0 |
-| **E2, beats novice** | v7 against novice, n_c clusters × 2 | the same; **a compatibility check, not a no-regression test** |
+**The one-sided betting lower bound** (the predictable plug-in construction of Waudby-Smith and Ramdas 2024, JRSS-B; arXiv 2010.09686: the paper's estimators of equation (26) and Theorem 3, positive capital only, h = 1; a fixed-n final-capital test, a declared one-sided variant of the paper's recommended two-sided procedure):
+- **The processing order** is the sealed schedule-key order of the clusters, not the outcome order.
+- **The predictable estimates (the paper's equation (26)):**
+  - μ̂_i = (1/2 + Σ_{j ≤ i} X_j) / (i + 1);
+  - σ̂²_i = (1/4 + Σ_{j ≤ i} (X_j − μ̂_j)²) / (i + 1);
+  - with μ̂_0 = 1/2 and σ̂²_0 = 1/4.
+- **The bet for observation i, at a null mean m ∈ (0, 1):**
+  - the base bet a_i = sqrt( 2 ln(1/α) / (n · σ̂²_{i−1}) ), which depends only on earlier observations;
+  - the clipped bet λ_i(m) = min(a_i, c/m), with **c = 1/2**.
+- **The capital:** ln K_n(m) = Σ_{i=1..n} ln[1 + λ_i(m)(X_i − m)].
+- **The rejection rule:** reject "E[w] ≤ m" iff ln K_n(m) ≥ ln(1/α), with **α = 0.005 per endpoint.** Bonferroni over E1 and E2 gives support-family error ≤ 0.01.
+- **Inversion:** on the grid m ∈ {0.0001, 0.0002, …, 0.9999}:
+  - LB = **the largest grid point g such that every grid point ≤ g rejects**;
+  - LB = 0 if no positive grid point rejects. m = 0 and m = 1 are not evaluated.
+  - **K_n(m) is nonincreasing in m** (Codex round 3), so this is conservative.
+- **Numerics:**
+  - finite inputs in [0, 1] only;
+  - the log capital is computed in IEEE double;
+  - comparisons with |ln K_n(m) − ln(1/α)| < 10⁻⁹ are re-evaluated deterministically in exact rational or 50-digit decimal arithmetic.
+  - There is no outcome-selected epsilon or fallback.
+- **The verdict:** **SUPPORTED** iff LB > 0.5 (on the grid, a rejecting point ≥ 0.5001). Otherwise, on a complete valid panel, **NOT_SUPPORTED**, which is neither a refutation nor an equivalence.
+- **The same code** serves the planning simulation and the final analysis. Its hash is sealed before sizing.
+- **Descriptive only:** the same bound on (S + 50)/100 for mean S, and the other §19 secondaries.
 
-**The test (finding 2): a distribution-free lower confidence bound for a bounded mean.**
-- **The method:** the hedged-capital betting confidence bound for the mean of i.i.d. observations bounded in [0, 1] (Waudby-Smith and Ramdas 2024, JRSS-B).
-  - It is applied to w_c directly, and to S_c rescaled to [0, 1] by (S_c + 50)/100.
-  - **One-sided level 1 − 0.005 per component.** It is valid for any distribution on the bounded range, including skew, rare losses and the all-win boundary.
-- **The implementation is pinned in the sealed specification:**
-  - the exact algorithm and parameters;
-  - the predictable bet sequence;
-  - a fixed processing order of the clusters by schedule key, not by outcome;
-  - strict comparisons;
-  - the behaviour on degenerate data (the bound stays valid; no fallback).
-- **The intersection-union rule:** both components must pass; no further split.
-- **Multiplicity:** Bonferroni over E1 and E2, familywise 0.01. Each endpoint is reported separately; **neither verdict depends on the other.**
-- **Mean S as a conjunct** comes from the owner's own criterion (§19: "an elimination-win rate > 50% plus S > 0"). **The owner is asked to confirm** this in the approval.
+## 5. Sizing: achievable adverse scenarios, a common n
 
-**Verdicts (finding 4), exhaustive per endpoint:**
-- **SUPPORTED:** both lower bounds pass, on a complete valid panel.
-- **NOT_SUPPORTED:** a complete valid panel on which either bound fails. **This is not a refutation; no REFUTED verdict exists.**
-- **PARTIAL:** an infrastructure stop. Endpoint coverage lists the evaluated and unevaluated cells, with reasons.
-- **INVALID:** an identity, integrity or seed-hygiene breach.
+**The failure law, frozen (R3-1):**
+- each oriented fight independently becomes an attributable failure with probability f, **independent of its underlying outcome and of the other orientation**;
+- a failure replaces that fight's win with 0.
 
-**Sizing (findings 1 and 5): a conservative fixed alternative, not the 80% development estimate.**
-- **The planning alternative:**
-  - the regular cluster win fraction is drawn from a distribution with mean **0.70**: the development cluster distribution shrunk toward 0.5 by a declared linear contraction;
-  - S_c is drawn from the development cluster S distribution **shifted to mean +2.0**, keeping the development SD of 8.13;
-  - the joint (w, S) dependence is kept by resampling development cluster pairs before the shift and contraction.
-  - **The same construction applies to novice,** with its own development pairs, with mean win 0.90 and mean S +10.
-- **The rule:** the smallest n_c in {60, 80, 100, 120, 150, 200} whose **simulated joint power** (both components of the endpoint) is ≥ 0.90 at the per-component level 0.005, by 20,000 simulated panels with a fixed seed.
-  - The same n_c serves both heads (the larger of the two).
-  - **If even 200 fails, stop and ask the owner** (DESIGN §10's trade-off rule, adapted).
-- **The source:** the fresh v7c validation split. Its 32/40 is **not** the tuning panel, so it carries no winner's-curse from tuning. The remaining optimism (a W4-gated, outcome-informed sequence of designs) is handled by the conservative contraction and shift, **not** by a new development panel.
-- **The planning receipt** (the n_c chosen, the power table, the fight and analysis time projections) is published and reviewed **before** any judging entropy is drawn.
+**The scenarios** (cluster probabilities of w = 1 / ½ / 0, after the failure law):
 
-## 5. Seeds, execution and safeguards (findings 3, 6 and 7)
+| Scenario | Base per cluster | f | Resulting P(1) / P(½) / P(0) | Mean |
+|---|---|---|---|---|
+| R-a | P(1) = 0.70, P(0) = 0.30 (concordant) | 0 | 0.70 / 0 / 0.30 | 0.700 |
+| R-b | 0.55 / 0.30 / 0.15 (development-like shape) | 0 | 0.55 / 0.30 / 0.15 | 0.700 |
+| R-c | independent orientations, p = 0.70 per fight | 0 | 0.49 / 0.42 / 0.09 | 0.700 |
+| R-d | R-a | 0.02 | 0.67228 / 0.02744 / 0.30028 | 0.686 |
+| N-a | P(1) = 0.85, P(0) = 0.15 (concordant) | 0 | 0.85 / 0 / 0.15 | 0.850 |
+| N-b | 0.75 / 0.20 / 0.05 | 0 | 0.75 / 0.20 / 0.05 | 0.850 |
+| N-c | independent orientations, p = 0.85 per fight | 0 | 0.7225 / 0.255 / 0.0225 | 0.850 |
+| N-d | N-a | 0.02 | 0.81634 / 0.03332 / 0.15034 | 0.833 |
 
-**5.1 Seeds.**
-- **Fresh OS entropy goes into a new judging ledger,** drawn at execution, inside an executor-only fence.
-- **Before any dispatch,** the preflight checks the new seeds against the complete development and retired-root inventory for duplicates and overlap. Reviewers see hashes and the overlap receipt, not the values.
-- **An overlap or a premature use** invalidates the ledger and requires a new registration. A consumed-root ledger prevents restarts.
-- The heads use distinct seed namespaces.
+- **N-d derived:** P(1) = 0.85 × 0.98²; P(½) = 0.85 × 2 × 0.98 × 0.02; P(0) = the rest.
+- **The power is conditional on these declared scenarios.** It is not a population property.
 
-**5.2 Immutable identity and safeguards** (carried from the historical SPEC):
-- **Identity:**
-  - the exact native request templates and controller selectors for v7 and for every comparator, all admitted against the frozen binary;
-  - game, catalog and opponent fingerprints;
-  - side and orientation semantics;
-  - terminal-time validation, and the t < 150 win predicate with overshoot handling.
-- **Approval:**
-  - a review that binds the specification by hash;
-  - the owner's authorization record.
-- **Execution safeguards:**
-  - a pre-dispatch identity fence;
-  - exhaustive schedule keys, pairing by (head, cluster, orientation, arm);
-  - exclusive output creation and a one-shot latch;
-  - attempts written before dispatch;
-  - immutable summaries, failure records and receipt hashes;
-  - no cached outcomes.
-- **Reporting:**
-  - endpoint coverage;
-  - a normalization ledger.
-- **Kept outside the seal:** `docs/PLAN_CURRENT.md`, DESIGN files.
-- **The older endpoints are superseded:** P1–P3 and the doctrine pool of DESIGN §6 / SPEC_0G are explicitly superseded for this registration. This S5 claims only E1 and E2.
+**The rule (R3-1):**
+1. For each n ∈ {60, 80, 100, 120, 150, 200}, simulate 20,000 independent panels per scenario cell (numpy PCG64, seed 20261008, with the version and the order of RNG use sealed) and apply the frozen test.
+2. Take each cell's **one-sided Clopper–Pearson lower bound of power at tail 0.01/48.** That is 48 cells: 6 n values × 8 scenarios. It gives ≥ 99% simultaneous Monte Carlo assurance.
+3. **n_c = the smallest common n at which all 8 scenarios** (both heads) **have a lower bound ≥ 0.90.**
+4. **If no candidate up to 200 qualifies, stop; the owner decides.**
+- **The 200 cap** is a new proposal that replaces DESIGN §10's 2,000-cluster boundary for this registration. It needs the owner's approval.
+- **A scale check, not a power result:** at n = 60 the best possible test for R-a has power ≈ 0.72, so 60 cannot qualify. The table decides.
+- **The planning receipt** (input, code and scenario hashes; the full table; n_c; the fight and analysis time projections) is published and reviewed **before any judging entropy is drawn.** Assumptions and seeds never change after the table is seen.
 
-**5.3 Failures:**
-- **An attributable controller or numerical failure in a v7 fight** (detected by the native failure counters, non-finite values or a missing terminal) counts as **W = 0, S = −50** (the worst admissible score), **failure-coded and labelled.** The schedule **continues;** no retry.
-- **An attributable failure in a comparator fight** is recorded and does not affect E1 or E2.
-- **An infrastructure failure** (host, process, deadline, I/O) stops the run as **PARTIAL**, with no rerun on the same seeds.
-- **An identity or integrity failure** makes the run **INVALID.**
+## 6. Seeds and execution
 
-**5.4 Budget and outputs:**
-- **The primary record** is a minimal endpoint schema per fight: W, S, survivors, terminal time, failure counters, enemy guns destroyed, elimination time, own losses per kill.
-- **Diagnostics:** full diagnostics only for a **predeclared subset** of fights, outside the verdicts.
-- **The primary receipt** is computed from the minimal records, with **no HTML render and no full-trace parsing.**
-- **Sealed:** the per-stage and cumulative caps, the concurrency (at most 10), the per-fight timeouts, deadline enforcement and child cleanup, and the stored-only analysis-interruption procedure (decided in advance; v7c's recovery authorizations do not transfer).
-- **The fight count** (5 arms × 2 heads × n_c × 2) and the time projections are recomputed in the planning receipt and announced under decision 0031.
+- **The judging ledger:**
+  - fresh OS entropy, drawn at execution inside an executor-only fence;
+  - a pre-dispatch overlap and duplicate check against the complete development and retired-root inventory (reviewers see hashes and receipts, not values);
+  - distinct per-head namespaces;
+  - a consumed-root ledger.
+- **An overlap or a premature use** makes the run **INVALID** and needs a new registration.
+- **Carried from the historical SPEC:**
+  - **identity and approval:** a pre-dispatch identity fence; the review binds the specification by hash; the owner's authorization record;
+  - **execution:** exhaustive schedule keys, pairing by (head, cluster, orientation, arm); exclusive outputs and a one-shot latch; attempts written before dispatch; immutable summaries, failure records and receipt hashes; no cached outcomes;
+  - **reporting:** endpoint coverage, with evaluated values, bounds and verdicts, or not_run with reasons; a normalization ledger.
+- **The primary record:** a minimal schema per fight (W, S, survivors, terminal time, failure counters for both sides, enemy guns destroyed, elimination time, own losses per kill).
+  - **Full diagnostics** only for a predeclared subset, outside the verdicts.
+  - **The primary receipt** is computed from the minimal records only (no render, no full-trace parsing).
+- **Sealed:** the per-stage and cumulative caps; at most 10 workers; per-fight timeouts; deadline enforcement and child cleanup; a stored-only analysis-interruption procedure (v7c's recovery authorizations do not transfer).
+- **The fight count** (5 arms × 2 heads × n_c × 2) and the time are taken from the planning receipt and announced under decision 0031.
 
-## 6. Stop rows
+## 7. Failure attribution (R2-3; precedence in this order)
+
+1. **INVALID:** any identity, integrity or seed-hygiene breach. It voids the run.
+2. **PARTIAL:** an infrastructure interruption (host, process exit without a controller failure record, deadline, I/O), or an opponent or world failure, or an opaque failure.
+   - **Per endpoint:** a head whose panel completed keeps its verdict; the other is reported not_run, with the reason.
+3. **Attributable v7 failure:** our side's native controller failure counter > 0, or a non-finite controller state reported by our controller, in a completed process with a valid terminal record.
+   - **The endpoint value is W = 0,** labelled "failure-coded". The schedule continues; no retry.
+   - **Actual diagnostics are kept separately.** No survivor counts, times or ratios are invented. Descriptive denominators exclude failure-coded fights and report the exclusions.
+4. **An attributable comparator failure** is recorded, with no effect on E1 or E2.
+
+## 8. Stop rows
 
 | Yes/no | Action | Role |
 |---|---|---|
-| Has the owner approved the sealed specification and the S-conjunct? | If no: no judging run | owner |
-| Does the planning receipt need n_c > 200 for 0.90 joint power? | Stop; the owner decides | drafter |
-| Does the frozen identity (binary, θ*, world, templates) differ at preflight? | INVALID; no run | implementer |
-| Does a judging seed overlap any inventory, or get used early? | INVALID; new ledger and registration | implementer |
-| Is there an infrastructure stop? | PARTIAL; no rerun on the same seeds | implementer |
-| Does a valid panel fail either bound? | NOT_SUPPORTED as registered; no re-analysis | drafter |
+| Has the owner approved the sealed specification, the 200 cap and the run? | If no: no judging run | owner |
+| Does the planning receipt find no common n ≤ 200? | Stop; the owner decides | drafter |
+| Does the identity differ at preflight? | INVALID; no run | implementer |
+| Does a judging seed overlap, or get used early? | INVALID; new ledger and registration | implementer |
+| Is there an infrastructure stop? | PARTIAL per endpoint; no rerun on the same seeds | implementer |
+| Does a complete valid panel fail its bound? | NOT_SUPPORTED as registered; no re-analysis | drafter |
 
-## 7. The open questions, resolved
+## 9. Self-audit
 
-1. **Morale:** v3 stage-B, pinned to its exact code and knobs. **Its selection metric (mean S) is disclosed.** A stronger v6-era morale package is checked from **stored** development evidence before sealing; if one is materially stronger, both are included descriptively.
-2. **E3 (v7 against forcedP16):** **descriptive only.** The paired differences are reported, and an observed match is not called equivalence.
-3. **n_c:** by the §4 sizing rule. 60 is no longer assumed.
-4. **Novice E2:** retained, as a compatibility check (> 50%), **not** a no-regression claim.
-
-## 8. Self-audit (revision 2)
-
-| Finding | What was wrong | Cause | Fix |
+| Finding | What was wrong | Cause | Fix (revision) |
 |---|---|---|---|
-| 1 | the claimed power for 50–60 clusters was false; there was no joint power | a hand estimate with an optimistic design effect | §4, a simulated joint-power sizing rule under a conservative alternative |
-| 2 | "cluster bootstrap" did not guarantee α | the method was named, but not specified or justified | §4, a distribution-free betting bound for bounded means, pinned |
-| 3 | failure-as-loss conflicted with stop-on-failure | two policies were written separately | §5.3, failures split by type |
-| 4 | "REFUTED" had no rule | wording carried over from older registrations | §4 verdict table; no REFUTED |
-| 5 | the selection-bias explanation was wrong | tuning and validation were conflated | §4 sizing source |
-| 6 | immutable identity and safeguards were incomplete | a proposal-level sketch | §5.2 |
-| 7 | the analysis budget was undefined | the full-trace cost was underestimated | §5.4 |
-
-## 9. Revision 3, answering the Codex round-2 review (`docs/reviews/tactical_0g_s5_v7_proposal_review_r2_codex.md`, CHANGES_REQUIRED)
-
-**§9 overrides §4–§8 where they differ.**
-
-**9.1 S returns to its §19 role (R2 note on authority).**
-- **DESIGN §19 says:** for registered judging, the primary outcome is the **elimination-win rate**, with S a **reported secondary**. The development W4 trigger needs S > 0, but **registration does not**. My revision 2 wrongly attributed the S conjunct to the owner.
-- **The endpoints are therefore:**
-  - **E1 (regular)** and **E2 (novice):** SUPPORTED iff the one-sided betting lower bound **LB_w > 0.5** for the cluster win fraction, at α = 0.005 each (familywise 0.01 by Bonferroni).
-  - **S, enemy guns destroyed, the time to elimination and own losses per kill** are reported for each head, with a **descriptive** betting lower bound for S. **S is not part of any verdict.**
-- **The owner may still ask for S > 0 as a registered conjunct.** That would need its own sizing; the scale check suggests more than 200 clusters.
-
-**9.2 The betting bound, frozen now (R2-2), one-sided, fixed n:**
-- **Inputs:** X_i ∈ [0, 1] are the cluster win fractions, processed in the sealed schedule-key order (not outcome order).
-- **The predictable estimates:**
-  - mean: μ̂_{i−1} = (1/2 + Σ_{j<i} X_j) / i;
-  - variance: σ̂²_{i−1} = (1/4 + Σ_{j<i} (X_j − μ̂_{j−1})²) / i.
-  - These are the paper's prior-initialized predictable plug-in estimates.
-- **The bet:** for a null mean m ∈ (0, 1), λ_i(m) = min( sqrt( 2 ln(1/α) / (n · σ̂²_{i−1}) ), c/m ), with **c = 1/2**.
-- **The capital (positive side only, hedge weight h = 1, the one-sided construction):** K_n(m) = Π_{i=1..n} [1 + λ_i(m)(X_i − m)], computed in log-space.
-- **The rejection rule:** reject "mean ≤ m" iff ln K_n(m) ≥ ln(1/α).
-- **The lower bound:** LB_w = sup{ m ∈ [0, 1] : ln K_n(m′) ≥ ln(1/α) for every m′ ∈ (0, m] }.
-  - It is computed on a grid of step 10⁻⁴, with outward (conservative) rounding: **the largest grid point at which every point at or below it rejects.**
-  - **Support needs LB_w > 0.5, strictly.**
-- **Validity:** K_n(m) is a nonnegative supermartingale under mean ≤ m, because λ_i(m) is predictable and λ_i(m) < 1/m (Waudby-Smith and Ramdas, Theorem 3 with h = 1). There is no variance-positivity requirement.
-- **The all-win boundary:** the bound stays strictly below 1. The review's witness applies.
-- **The same code serves the planning simulation and the final analysis.** Its hash is sealed before sizing.
-
-**9.3 Sizing against achievable adverse scenarios (R2-1).**
-- **Every scenario is a distribution on the achievable support {0, ½, 1}** (two binary fights per cluster), plus an attributable-failure rate f, coded as a lost fight (W = 0).
-- **Regular** (a planning mean of 0.70 for the win fraction, below the development 0.80):
-
-| Scenario | P(w = 1) | P(w = ½) | P(w = 0) | f | Notes |
-|---|---|---|---|---|---|
-| R-a | 0.70 | 0 | 0.30 | 0 | maximum variance: perfectly concordant orientations |
-| R-b | 0.55 | 0.30 | 0.15 | 0 | development-like shape |
-| R-c | 0.49 | 0.42 | 0.09 | 0 | independent orientations, p = 0.7 per fight |
-| R-d | R-a | | | 0.02 | failure-coded |
-
-- **Novice** (mean 0.85; the development value was 1.0):
-
-| Scenario | P(w = 1) | P(w = ½) | P(w = 0) | f |
-|---|---|---|---|---|
-| N-a | 0.85 | 0 | 0.15 | 0 |
-| N-b | 0.75 | 0.20 | 0.05 | 0 |
-| N-c | 0.7225 | 0.255 | 0.0225 | 0 (independent orientations, p = 0.85 per fight) |
-| N-d | N-a | | | 0.02 |
-- **The rule:**
-  1. for each n_c ∈ {60, 80, 100, 120, 150, 200} and each scenario, simulate 20,000 panels (fixed seed 20261008, numpy PCG64; the version is recorded);
-  2. apply the frozen betting bound;
-  3. take the **lower 99% Monte Carlo confidence bound** of the power (Clopper–Pearson), Bonferroni over the 6 × 4 cells per head;
-  4. **n_c = the smallest candidate whose minimum over scenarios is ≥ 0.90,** taking the larger n over the two heads.
-  - **If none qualifies at 200, stop and ask the owner.**
-- **This power is conditional on the declared scenarios.** It is not a property of the unknown population.
-- **The cap of 200** is a new proposal, replacing DESIGN §10's 2,000-cluster boundary for this registration. It needs the owner's approval.
-- **The planning receipt** (input hashes, code hash, the table and n_c) is published before any judging entropy is drawn.
-
-**9.4 Failure attribution (R2-3).**
-- **The precedence:** an integrity or identity breach makes the run **INVALID**, before anything else. Then an infrastructure interruption (host, process exit without a controller failure record, deadline, I/O) makes it **PARTIAL**. Only then is a failure **attributable**.
-- **An attributable failure** needs the native controller failure counter > 0 **for our side,** or a non-finite controller state reported by our controller, in a completed process with a valid terminal record.
-- **An opponent or world failure,** or an opaque failure, stops the run as PARTIAL.
-- **For an attributable v7 failure, the endpoint value is W = 0,** with the label "failure-coded". **Actual diagnostics are kept separately.** No survivor counts, times or ratios are invented; their denominators exclude failure-coded fights and report the exclusions.
-- **Completeness is per endpoint:** a completed head keeps its verdict if the other head stops as PARTIAL, unless there is an integrity breach.
-- **No retries.**
-
-**9.5 Self-audit (revision 3):**
-
-| Finding | What was wrong | Cause | Fix |
-|---|---|---|---|
-| R2-1 | contraction created impossible outcomes and erased loss variance | I transformed the data instead of modelling achievable outcomes | §9.3 achievable scenarios, least favorable |
-| R2-2 | the algorithm was not frozen before sizing; Monte Carlo error was ignored; the S conjunct was very expensive | the sizing preceded the algorithm; I misread §19 | §9.2 frozen formulas; §9.3 the lower MC bound; §9.1 S secondary |
-| R2-3 | failure attribution was unspecified | principles only | §9.4 predicates and precedence |
+| r1-1 | a false power claim for 50–60 clusters | a hand estimate | the §5 sizing table (r2, r3, r4) |
+| r1-2 | the bootstrap did not guarantee α | the method was not specified | §4, a distribution-free betting bound (r2) |
+| r1-3 | failure-as-loss conflicted with stop-on-failure | two policies written separately | §7 (r2, r3) |
+| r1-4 | "REFUTED" had no rule | carried-over wording | §4 verdicts (r2) |
+| r1-5 | the selection-bias explanation was wrong | tuning and validation were conflated | §1 and §5 (r2, r4) |
+| r1-6/7 | the identity, safeguards and budget were incomplete | a sketch-level draft | §3 and §6 (r2, r4) |
+| r2-1 | contraction created impossible outcomes | the data were transformed instead of modelled | §5 achievable scenarios (r3) |
+| r2-2 | the algorithm was not frozen before sizing; the S conjunct was costly; Monte Carlo error was ignored | ordering; I misread §19 | §4, §5, §2 (r3, r4) |
+| r2-3 | failure attribution was unspecified | principles only | §7 (r3) |
+| r3-1 | the failure law and the common-n rule were undefined | a marginal f only; per-head maxima | §5 (r4) |
+| r3-2 | the variance estimator was not the paper's | an index error (μ̂_{j−1} instead of μ̂_j) | §4 now uses equation (26) (r4) |
+| r3-3 | the S conjunct survived in §2 | revision 3 appended instead of consolidating | this consolidated text (r4) |
