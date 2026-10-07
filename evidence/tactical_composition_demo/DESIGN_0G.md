@@ -1633,3 +1633,40 @@ This is a stored-data analysis. It runs while the 0h pilots run.
 - **N3:** §20.1's spacing sentence is corrected. **P16 has P11 repulsion for guns and P12's unshifted ranged escorts; there is no ranged repulsion.** P11's preserved zero multiplier and margin consumption are inherited. Melee's outer mode has no direct effect on its action.
 
 **The validation panel, recomputed:** 20 fresh clusters × 2 orientations × {v7, forcedP16, forcedv6, ω0, historical P16} × {regular, novice} = **400 fights**.
+
+### 20.3 The v7 result (`astelia_cpp/s4_v7c/ANALYSIS.json`; tuning `s4_v7b`; Codex's owner recheck pending)
+
+**Process:**
+- v7 attempt 1 stopped on a projection warm-up defect. v7b fixed it, and its tuning completed: θ* = ordinal 161.
+- v7b's validation request was rejected by the native host with 0 fights run. v7c fixed it: validation only, θ* pinned, fresh seeds.
+- **v7c's 400 fights completed.** The analysis was interrupted by a host reboot, then recovered with the exact boot-bound charge and a stored-only night allowance (recovery v2).
+
+**Validation** (20 fresh clusters × 2 orientations; descriptive development):
+
+| Arm | Regular wins (mean S) | Novice wins (mean S) |
+|---|---|---|
+| **v7(θ*), the resonator gate** | **32/40 (+4.68)** | 40/40 (+26.45) |
+| forcedP16(θ*), always commit | 31/40 (+2.10) | 40/40 (+21.65) |
+| forcedv6(θ*), always escape | 0/40 (+1.58) | 0/40 (−7.08) |
+| v7-ω0(θ*) | 30/40 (+4.10) | 40/40 (+25.85) |
+| historical P16(θ_v6) | 32/40 (+1.08) | 40/40 (+22.43) |
+
+- **The declared readings (§20.2):**
+  - **v7 meets the observed owner criterion:** ≥ 21/40 regular, mean S > 0 on both heads, novice ≥ 21/40, no failures.
+  - **Relative to the matched forcedP16: "observed match"** (+1 win). 4 clusters are better, 4 worse and 12 tied; the paired cluster-bootstrap interval of the win-rate difference is [−0.125, +0.200].
+  - The comparator floor is met (forcedP16 31/40).
+- **What this shows:**
+  - **A controller whose commit decisions are made by per-unit damage-driven oscillators (v7) eliminates the regular scripted army in 80% of development fights, with a positive score on both heads.** This is the first resonator-based controller to do so.
+  - **The gate's timing does not measurably improve wins over always committing** at this setting. Its higher mean S (+4.68 against +2.10) is descriptive only.
+  - **The always-escape arm wins nothing,** so the witnessed action map does the killing.
+  - **ω = 0 changes little** (30/40).
+- **What it does not show:**
+  - that oscillation is necessary;
+  - that synchrony is a cause;
+  - any B→R→B recursion;
+  - any population rate;
+  - authorization for S5.
+- **Next:**
+  1. Codex's owner recheck of the run and analysis.
+  2. **The S5 registration draft, for the owner's approval (B6):** a development version now beats regular, so the W4 condition for drafting is met. The draft must report morale and P16 as labelled comparators. The draft is Claude's; the registered run is the owner's decision.
+  3. **The RRG question remains:** what the resonator adds beyond the scripted map. Candidates: target-group synchrony as the decision source, instead of a fixed ordering. This is a design question for after S5.
