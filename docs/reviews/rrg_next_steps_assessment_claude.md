@@ -81,3 +81,25 @@
   2. **Measure coverage early,** descriptively, on every candidate; a coverage mechanism may need its own single change (A6z).
   3. **The entry filter is 5/5 exploratory empty-start runs** (seeded reported), consistent with V3's seeded-secondary gate.
 - **V1's result:** 8/10, with the empty start 5/5. Spec for the next step: `medium_variants/TELEMETRY_AND_RANKED_D3_SPEC.md`.
+
+## 5. Addendum: the owner's research update (`~/Downloads/RRG_0H_FULL_COVERAGE_RESEARCH_UPDATE_AFTER_PUSH_2026-10-07.md`, read at pushed `cbe2da2`)
+
+**Adopted:**
+- don't raise the budget;
+- no global pull toward O;
+- keep served-route redundancy (ECO-R confirmed its role);
+- treat coverage as an allocation and fairness problem;
+- a cheap stored analysis before any new pilot (its §5);
+- the decision tree (its §6);
+- its 0g and §19.7 sections, which are accurate.
+
+**Corrected by evidence it could not see** (`ECONOMY_DIAGNOSTIC.md`, `32c40ff`, after the push):
+- **ECO-F's stall clock did reach 60 s, 76 times.** The rule was inert because **every front body at all 3,200 site snapshots is a root of some site**, so no donor was ever eligible. The cause is not "tiny progress resets" alone: 512 of 891 resets are below the corrected threshold.
+- **The cause is geometry:** with 8 sites on the radius-4 ring and reach 3, the root zones cover almost the whole arena. **The "front" class is therefore mostly root mass near sensors without a strong link to O** (likely from B1 novelty births), not duplicated bridge tips.
+
+**Consequences for its ranking:**
+- **Rank 1 (one active frontier per site)** may target the wrong mass.
+- **Rank 2 (service-debt scheduling)** stands.
+- **Rank 3** needs a donor rule that does not exclude all roots.
+- **Added to its stored-analysis list:** (E) the birth-rule attribution of the front cost; (F) the root-zone geometry. A narrower root definition is now a candidate representation change.
+- That analysis is running (`FRONT_ALLOCATION_DIAGNOSTIC.md`).
