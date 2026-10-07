@@ -199,7 +199,14 @@
 | R-c | 0.49 | 0.42 | 0.09 | 0 | independent orientations, p = 0.7 per fight |
 | R-d | R-a | | | 0.02 | failure-coded |
 
-- **Novice** (mean 0.85): the same four shapes. **N-a**: P(w = 1) = 0.85, P(w = 0) = 0.15; and so on.
+- **Novice** (mean 0.85; the development value was 1.0):
+
+| Scenario | P(w = 1) | P(w = ½) | P(w = 0) | f |
+|---|---|---|---|---|
+| N-a | 0.85 | 0 | 0.15 | 0 |
+| N-b | 0.75 | 0.20 | 0.05 | 0 |
+| N-c | 0.7225 | 0.255 | 0.0225 | 0 (independent orientations, p = 0.85 per fight) |
+| N-d | N-a | | | 0.02 |
 - **The rule:**
   1. for each n_c ∈ {60, 80, 100, 120, 150, 200} and each scenario, simulate 20,000 panels (fixed seed 20261008, numpy PCG64; the version is recorded);
   2. apply the frozen betting bound;
