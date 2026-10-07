@@ -1,0 +1,19 @@
+{
+  "status": "PASS",
+  "argv": [
+    ".venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_v7c/test_analysis_recovery_v1.py",
+    "--basetemp=evidence/tactical_composition_demo/astelia_cpp/s4_v7c/build/recovery_v1_pytest_final"
+  ],
+  "returncode": 0,
+  "seconds": 3.01241325,
+  "scope": "fake receipts, supplemental manifest, runtime isolation and cap refusal only",
+  "executed_fights": 0,
+  "stdout_sha256": "c5a22b3bada1858d74080777caea657d375787a599db22260e88d2a206889ea6",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "preceding_failed_collection": "RECOVERY_V1_TESTS_FAILED_COLLECTION.json"
+}

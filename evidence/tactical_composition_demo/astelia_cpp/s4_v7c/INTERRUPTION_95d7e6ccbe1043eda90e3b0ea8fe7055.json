@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "status": "INTERRUPTED_STORED_ONLY",
+  "interruption_id": "95d7e6ccbe1043eda90e3b0ea8fe7055",
+  "attempt_id": "eb681c6dfe8240248636f44adbcd5a4d",
+  "attempt_file": "ATTEMPT_eb681c6dfe8240248636f44adbcd5a4d.json",
+  "attempt_sha256": "0f8ba0348120c933243dd9b8bc39f1061d9155b9bda16d5246eeabfde7ac2f86",
+  "stage": "analyze_validate",
+  "utc_start": "2026-10-07T18:06:31Z",
+  "declaration_sha256": "5d8ac75687155a47ade9476835c2d06138c83f4e1b5d684da2c500f74c2a5fa0",
+  "recorded_utc": "2026-10-07T19:02:48.771384Z",
+  "cause": {
+    "kind": "host_reboot",
+    "authority": "owner report in recovery request and historical corroborating commit 36ca007",
+    "reported_approximate_utc": "2026-10-07T18:51:00Z",
+    "reported_approximate_local": "2026-10-07T21:51:00+03:00",
+    "context": "Owner rebooted laptop because another session froze the machine; process exit was never recorded."
+  },
+  "boot_time_evidence": {
+    "argv": [
+      "/usr/sbin/sysctl",
+      "kern.boottime"
+    ],
+    "returncode": 1,
+    "stdout": "",
+    "stderr": "sysctl: sysctl fmt -1 1024 1: Operation not permitted\n",
+    "available": false
+  },
+  "wall_time_upper_bound_utc": "2026-10-07T19:02:48.771384Z",
+  "charged_seconds": 3377.771384,
+  "charge_basis": "Full elapsed wall time from receipt start to recovery observation; conservatively includes reboot and all subsequent downtime. No exact boot time accessible; approximate owner time is not used to discount compute. Never clamp to allowance or reset the cap.",
+  "stored_only": true,
+  "executed_fights": 0,
+  "stored_only_evidence": {
+    "entrypoint": "analyze.py validate",
+    "entrypoint_sha256": "5dc0bc0b42348b3d899c4f843ed82fcd51751d7ee3d7b9e197dcd2a2e59e06d3",
+    "gate": {
+      "status": "not_run",
+      "reason": "stored analysis; no fights"
+    },
+    "import_audit": "analyze imports common/protocol and read-only helpers from run; run defines combat functions but its guarded __main__ is not invoked by import; metrics.py is a pure observation oracle. Analysis entrypoint invokes only attempt/analyze/deadline.remaining. No native host, executor, or fight call."
+  },
+  "original_attempt_preserved": true
+}
