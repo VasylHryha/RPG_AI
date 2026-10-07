@@ -1,0 +1,222 @@
+<title>Growing Shapes Atlas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,650&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a lab-notebook page; scenario rows of oscilloscope-like dish views with a time scrubber, then the planned architecture. */
+:root{
+  --bg:#f3f4f1; --panel:#fbfbf8; --ink:#1c2321; --muted:#5d6864; --rule:#d5d9d3;
+  --accent:#0f7c6c; --path:#d9480f; --site:#7a5c00; --site-on:#c79400; --o:#1c2321;
+  --c0:#2b6cb0; --c1:#2f855a; --c2:#b83280; --c3:#805ad5; --c4:#c05621; --c5:#2c7a7b; --c6:#975a16; --c7:#4a5568;
+  --lone:#a0aaa6;
+  --f-display:'Fraunces',Georgia,'Times New Roman',serif;
+  --f-body:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --f-mono:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#121615; --panel:#181d1c; --ink:#e4e9e6; --muted:#9aa6a1; --rule:#2c3432;
+  --accent:#4fd1b7; --path:#ff8a4c; --site:#bfa24a; --site-on:#f2c94c; --o:#e4e9e6;
+  --c0:#63b3ed; --c1:#68d391; --c2:#f687b3; --c3:#b794f4; --c4:#f6ad55; --c5:#4fd1c5; --c6:#d6a65a; --c7:#a0aec0;
+  --lone:#5b6662; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121615; --panel:#181d1c; --ink:#e4e9e6; --muted:#9aa6a1; --rule:#2c3432;
+  --accent:#4fd1b7; --path:#ff8a4c; --site:#bfa24a; --site-on:#f2c94c; --o:#e4e9e6;
+  --c0:#63b3ed; --c1:#68d391; --c2:#f687b3; --c3:#b794f4; --c4:#f6ad55; --c5:#4fd1c5; --c6:#d6a65a; --c7:#a0aec0;
+  --lone:#5b6662; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:20px;padding-block:28px 64px;display:grid;gap:36px}
+h1{font-family:var(--f-display);font-weight:650;font-size:clamp(28px,4vw,40px);line-height:1.1;margin:0;text-wrap:balance}
+h2{font-family:var(--f-display);font-weight:500;font-size:24px;margin:0 0 4px;text-wrap:balance}
+p{margin:0;max-width:68ch}
+.lede{color:var(--muted);font-size:16px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+header{display:grid;gap:10px}
+.legend{display:flex;flex-wrap:wrap;gap:10px 22px;font-size:13px;color:var(--muted);align-items:center}
+.legend span{display:inline-flex;gap:8px;align-items:center}
+.legend svg{flex:none}
+section{display:grid;gap:14px}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
+.card{background:var(--panel);border:1px solid var(--rule);border-radius:6px;padding:14px;display:grid;gap:10px;min-width:0}
+.card h3{font-family:var(--f-body);font-weight:600;font-size:15px;margin:0}
+.card .sub{color:var(--muted);font-size:13px}
+.dish{width:100%;max-width:100%;aspect-ratio:1/1;display:block}
+.scrub{display:flex;align-items:center;gap:10px;font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.scrub input{flex:1;min-width:0;accent-color:var(--accent)}
+.stats{display:flex;flex-wrap:wrap;gap:6px 14px;font-family:var(--f-mono);font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.pill{display:inline-block;padding:1px 8px;border-radius:999px;font-family:var(--f-mono);font-size:12px;border:1px solid var(--rule)}
+.pill.ok{color:var(--accent);border-color:var(--accent)}
+.pill.no{color:var(--path);border-color:var(--path)}
+.note{border-left:3px solid var(--accent);padding-left:12px;color:var(--ink)}
+.arch{background:var(--panel);border:1px solid var(--rule);border-radius:6px;padding:14px;overflow-x:auto}
+.arch svg{min-width:640px;width:100%;height:auto;display:block}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;counter-reset:s}
+.step{border-top:2px solid var(--rule);padding-top:8px;font-size:14px}
+.step b{font-family:var(--f-mono);font-size:12px;color:var(--accent);display:block}
+.mono{font-family:var(--f-mono);font-size:12px}
+input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+<header>
+  <div class="eyebrow">0h · growing shapes · revision 7.11 law</div>
+  <h1>Growing Shapes Atlas</h1>
+  <p class="lede">Real recorded positions from the F5 growth test. Eight sensor sites sit on a ring of radius 4 m.u.; the output O must be reached by a chain of strong links from a cell the sensors drive. Each panel is one moment of one run; drag the scrubber to move through time.</p>
+  <div class="legend" id="legend"></div>
+</header>
+
+<section>
+  <div><h2>What a shape is</h2>
+  <p class="lede">A cell is an oscillator with a position and a phase (the small tick). Cells joined by strong links (coupling ≥ 0.5 per second) form a shape; each shape gets its own colour. Grey cells belong to no multi-cell shape. The orange chain is a strong path from a driven cell to O, the connection the task needs.</p></div>
+</section>
+
+<section id="scenarios"></section>
+
+<section>
+  <div><h2>Why the link snaps back</h2>
+  <p class="lede">Each cell moves toward the average of its eight nearest neighbours. A cell at the tip of a bridge has about seven neighbours behind it and only O in front, so it is pulled back into the cluster at 0.3–0.6 m.u. per second. The cluster behaves like a water drop: it stays round. Moving O toward the first driven cell (the root-relative pin) lets the cluster's resting edge reach O, which is why that run keeps its path.</p></div>
+  <p class="note">Measured across five seed sets: the root-relative pin passes the F5 thresholds in 8 of 10 cases, the centre pin in 3 of 10. Spring links between linked cells are being tested now.</p>
+</section>
+
+<section>
+  <div><h2>Where this is heading: shapes as nodes</h2>
+  <p class="lede">Inside a shape: stable and organized. Connections only at its ports. A shape that does one job becomes one node at the next level, and requests reach the right shape by resonance.</p></div>
+  <div class="arch" role="img" aria-label="Diagram: three shapes with input and output ports, linked port to port, and a request routed by resonance to the shape tuned to it">
+  <svg viewBox="0 0 900 330" xmlns="http://www.w3.org/2000/svg" id="archsvg"></svg>
+  </div>
+  <div class="steps">
+    <div class="step"><b>step 1 · now</b>One port-to-port link that grows and holds.</div>
+    <div class="step"><b>step 2</b>Define the port: what a port is, what a link carries.</div>
+    <div class="step"><b>step 3</b>Compose two or three shapes through ports; check they do not merge.</div>
+    <div class="step"><b>step 4</b>Route requests by resonance: only the shape tuned to a signal answers.</div>
+  </div>
+</section>
+</div>
+
+<script>
+const DATA = __DATA__;
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const PAL = ['--c0','--c1','--c2','--c3','--c4','--c5','--c6','--c7'];
+const NS='http://www.w3.org/2000/svg';
+function el(tag, attrs, parent){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;}
+
+function analyse(s){
+  const ids = s.elements.map(e=>e.id), byId = {}; s.elements.forEach(e=>byId[e.id]=e);
+  const out = s.elements.find(e=>e.role==='output');
+  // undirected strong adjacency (O excluded from shape colouring)
+  const adj = {}; ids.forEach(i=>adj[i]=new Set());
+  for(const [i,srcs] of Object.entries(s.strong)) for(const j of srcs){ if(byId[i]&&byId[j]){adj[i].add(j);adj[j].add(+i);} }
+  const comp = {}; let k=0; const sizes=[];
+  for(const i of ids){ if(comp[i]!==undefined||(out&&i===out.id)) continue; const stack=[i]; comp[i]=k; let n=0;
+    while(stack.length){const a=stack.pop(); n++; for(const b of adj[a]) if(comp[b]===undefined && !(out&&b===out.id)){comp[b]=k;stack.push(b);} }
+    sizes.push(n); k++; }
+  // colour index by size rank among components with >1 cell
+  const order = sizes.map((n,c)=>[n,c]).filter(x=>x[0]>1).sort((a,b)=>b[0]-a[0]).map(x=>x[1]);
+  const colour = {}; order.forEach((c,r)=>colour[c]=PAL[r%PAL.length]);
+  // edges on a root->O path: forward reach from active roots, backward reach to O (directed j->i if j in strong[i])
+  const outgoing = {}; ids.forEach(i=>outgoing[i]=[]);
+  for(const [i,srcs] of Object.entries(s.strong)) for(const j of srcs) if(outgoing[j]) outgoing[j].push(+i);
+  const roots = new Set(); for(const [site,r] of Object.entries(s.roots)) if(s.paths.includes(+site)) r.forEach(x=>roots.add(x));
+  const fwd = new Set(roots), q=[...roots]; while(q.length){const a=q.pop(); for(const b of outgoing[a]||[]) if(!fwd.has(b)){fwd.add(b);q.push(b);} }
+  const back = new Set(out?[out.id]:[]), q2=out?[out.id]:[]; while(q2.length){const a=q2.pop(); for(const b of (s.strong[a]||[])) if(!back.has(b)){back.add(b);q2.push(b);} }
+  const onPath = (j,i)=>fwd.has(j)&&back.has(i)&&fwd.has(i);
+  const shapes = order.length, lone = sizes.filter(n=>n===1).length;
+  let dO = null; if(out){ dO = Math.min(...s.elements.filter(e=>e.id!==out.id).map(e=>Math.hypot(e.x-out.x,e.y-out.y))); }
+  return {byId,out,comp,colour,onPath,shapes,lone,dO,roots};
+}
+
+function draw(svg, s){
+  svg.replaceChildren();
+  const R=5.2, S=400/(2*R), X=x=>200+x*S, Y=y=>200-y*S;
+  el('rect',{x:0,y:0,width:400,height:400,fill:css('--panel')},svg);
+  // grid rings
+  for(const r of [1,2,3]) el('circle',{cx:200,cy:200,r:r*S,fill:'none',stroke:css('--rule'),'stroke-width':0.6},svg);
+  el('circle',{cx:200,cy:200,r:4*S,fill:'none',stroke:css('--site'),'stroke-width':1,'stroke-dasharray':'3 4'},svg);
+  const A = analyse(s);
+  // strong edges
+  for(const [i,srcs] of Object.entries(s.strong)) for(const j of srcs){
+    const a=A.byId[j], b=A.byId[i]; if(!a||!b) continue;
+    const path=A.onPath(j,+i);
+    el('line',{x1:X(a.x),y1:Y(a.y),x2:X(b.x),y2:Y(b.y),stroke:path?css('--path'):css('--muted'),'stroke-opacity':path?0.95:0.35,'stroke-width':path?2.4:0.8},svg);
+  }
+  // sites
+  const active = new Set(s.sites.filter(d=>d.strength>0).map(d=>d.id));
+  const siteXY = [...Array(8).keys()].map(k=>[4*Math.cos(Math.PI*k/4),4*Math.sin(Math.PI*k/4)]);
+  siteXY.forEach(([x,y],k)=>{ const on=active.has(k);
+    el('rect',{x:X(x)-5,y:Y(y)-5,width:10,height:10,fill:on?css('--site-on'):css('--panel'),stroke:css('--site'),'stroke-width':1.2},svg);
+    const t=el('text',{x:X(x*1.13),y:Y(y*1.13)+4,'text-anchor':'middle','font-size':10,fill:css('--muted'),'font-family':css('--f-mono')},svg); t.textContent=k; });
+  // cells
+  for(const e of s.elements){ if(A.out&&e.id===A.out.id) continue;
+    const c=A.comp[e.id], col = A.colour[c]?css(A.colour[c]):css('--lone');
+    const root=A.roots.has(e.id)||Object.values(s.roots).some(r=>r.includes(e.id));
+    el('circle',{cx:X(e.x),cy:Y(e.y),r:5.2,fill:col,stroke:root?css('--ink'):'none','stroke-width':root?1.4:0},svg);
+    const L=8; el('line',{x1:X(e.x),y1:Y(e.y),x2:X(e.x)+L*Math.cos(e.phase),y2:Y(e.y)-L*Math.sin(e.phase),stroke:col,'stroke-width':1.1},svg);
+  }
+  // O
+  if(A.out){ const x=X(A.out.x), y=Y(A.out.y);
+    el('circle',{cx:x,cy:y,r:9,fill:'none',stroke:css('--o'),'stroke-width':2},svg);
+    el('circle',{cx:x,cy:y,r:3.2,fill:css('--o')},svg);
+    const t=el('text',{x:x+12,y:y-10,'font-size':12,'font-weight':600,fill:css('--ink'),'font-family':css('--f-body')},svg); t.textContent='O'; }
+  return A;
+}
+
+function buildLegend(){
+  const L=document.getElementById('legend');
+  const item=(svgInner,text)=>{const sp=document.createElement('span');sp.innerHTML=`<svg width="22" height="16" viewBox="0 0 22 16" aria-hidden="true">${svgInner}</svg>`;sp.append(text);L.append(sp);};
+  item(`<circle cx="11" cy="8" r="5" fill="${css('--c0')}"/>`,'cell, coloured by shape');
+  item(`<circle cx="11" cy="8" r="5" fill="${css('--lone')}"/>`,'cell in no shape');
+  item(`<circle cx="11" cy="8" r="5" fill="${css('--c1')}" stroke="${css('--ink')}" stroke-width="1.4"/>`,'driven root cell');
+  item(`<line x1="2" y1="8" x2="20" y2="8" stroke="${css('--path')}" stroke-width="2.4"/>`,'strong path to O');
+  item(`<line x1="2" y1="8" x2="20" y2="8" stroke="${css('--muted')}" stroke-opacity=".5"/>`,'strong link');
+  item(`<rect x="6" y="3" width="10" height="10" fill="${css('--site-on')}" stroke="${css('--site')}"/>`,'active sensor site');
+  item(`<circle cx="11" cy="8" r="6" fill="none" stroke="${css('--o')}" stroke-width="2"/><circle cx="11" cy="8" r="2.4" fill="${css('--o')}"/>`,'output O');
+}
+
+function buildScenarios(){
+  const host=document.getElementById('scenarios');
+  for(const sc of DATA){
+    const card=document.createElement('div'); card.className='card';
+    card.innerHTML=`<div><h3>${sc.title}</h3><div class="sub">${sc.sub}</div></div>`;
+    const svg=document.createElementNS(NS,'svg'); svg.setAttribute('viewBox','0 0 400 400'); svg.setAttribute('class','dish'); svg.setAttribute('role','img'); svg.setAttribute('aria-label',sc.title);
+    card.append(svg);
+    const scrub=document.createElement('div'); scrub.className='scrub';
+    const id='scrub-'+sc.key; scrub.innerHTML=`<label for="${id}">t</label><input id="${id}" type="range" min="0" max="${sc.snaps.length-1}" step="1" value="${sc.start}"><span class="t"></span>`;
+    card.append(scrub);
+    const stats=document.createElement('div'); stats.className='stats'; card.append(stats);
+    const verdict=document.createElement('div'); verdict.innerHTML=sc.verdict; card.append(verdict);
+    const input=scrub.querySelector('input'), tl=scrub.querySelector('.t');
+    const render=()=>{const s=sc.snaps[+input.value]; const A=draw(svg,s); tl.textContent=`${s.t.toFixed(0)} s`;
+      stats.innerHTML=`<span>cells ${s.elements.length-(A.out?1:0)}</span><span>shapes ${A.shapes}</span><span>path to O ${s.paths.length?'yes · sites '+s.paths.join(','):'no'}</span><span>nearest cell to O ${A.dO==null?'—':A.dO.toFixed(2)+' m.u.'}</span>`;};
+    input.addEventListener('input',render); render();
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',render);
+    host.append(card);
+  }
+}
+function buildArch(){
+  const svg=document.getElementById('archsvg'); const ink=css('--ink'), mut=css('--muted'), acc=css('--accent'), path=css('--path');
+  const shape=(cx,cy,col,label,freq)=>{
+    el('ellipse',{cx,cy,rx:95,ry:62,fill:'none',stroke:col,'stroke-width':2},svg);
+    for(let k=0;k<11;k++){const a=k*2.4, r=18+((k*37)%34);
+      el('circle',{cx:cx+r*Math.cos(a)*1.25,cy:cy+r*Math.sin(a)*0.75,r:5,fill:col,'fill-opacity':0.85},svg);}
+    el('circle',{cx:cx-95,cy:cy,r:8,fill:css('--panel'),stroke:ink,'stroke-width':2},svg);
+    el('circle',{cx:cx+95,cy:cy,r:8,fill:ink},svg);
+    const t=el('text',{x:cx,y:cy+86,'text-anchor':'middle','font-size':13,'font-weight':600,fill:ink,'font-family':css('--f-body')},svg); t.textContent=label;
+    const f=el('text',{x:cx,y:cy+102,'text-anchor':'middle','font-size':11,fill:mut,'font-family':css('--f-mono')},svg); f.textContent=freq;
+  };
+  shape(170,150,css('--c0'),'shape A · perceive','tuned to band 1');
+  shape(450,150,css('--c1'),'shape B · move','tuned to band 2');
+  shape(730,150,css('--c2'),'shape C · remember','tuned to band 3');
+  el('line',{x1:265,y1:150,x2:355,y2:150,stroke:path,'stroke-width':3},svg);
+  el('line',{x1:545,y1:150,x2:635,y2:150,stroke:path,'stroke-width':3},svg);
+  const lab=(x,y,txt,col)=>{const t=el('text',{x,y,'text-anchor':'middle','font-size':11,fill:col||mut,'font-family':css('--f-mono')},svg);t.textContent=txt;};
+  lab(310,140,'port → port',path); lab(590,140,'port → port',path);
+  lab(75,150,'in',ink); lab(825,150,'out',ink);
+  // request wave and routing
+  let d='M 20 40'; for(let x=20;x<=420;x+=4){d+=` L ${x} ${40+10*Math.sin((x-20)/9)}`;}
+  el('path',{d,fill:'none',stroke:acc,'stroke-width':1.6},svg);
+  lab(220,22,'request with signature band 2 → only shape B resonates and answers',acc);
+  el('line',{x1:420,y1:40,x2:450,y2:86,stroke:acc,'stroke-width':1.4,'stroke-dasharray':'4 3'},svg);
+  lab(450,318,'inside each shape: stable, organized, keeps evolving · outside: ports, signature, cost = one node',mut);
+}
+buildLegend(); buildScenarios(); buildArch();
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{document.getElementById('legend').replaceChildren();buildLegend();document.getElementById('archsvg').replaceChildren();buildArch();});
+</script>
