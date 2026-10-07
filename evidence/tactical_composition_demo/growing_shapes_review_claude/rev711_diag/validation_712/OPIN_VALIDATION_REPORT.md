@@ -1,9 +1,9 @@
-OBSERVED PAIRED IMPROVEMENT IN AN EXPLORATORY BATTERY (revision 3): the root-relative O pin (C2) met the F5 gate shape in 8/10 runs against the control's 3/10 on the same keys; direction dependence is a hypothesis; F5 outcomes depend on the key set under every rule tested, so one key establishes only one configuration
+OBSERVED PAIRED IMPROVEMENT IN AN EXPLORATORY BATTERY (revision 4): the root-relative O pin (C2) met the F5 gate shape in 8/10 runs against the control's 3/10 on the same keys; direction dependence is a hypothesis; F5 outcomes depend on the key set under every rule tested, so one key establishes only one configuration
 
 # The root-relative output pin (revision 7.12, C2): pilot tests, possible mechanism and research
 
 **Date:** 2026-10-07. **Author:** Claude (claude-opus-5-5).
-**Revision 3** answers the Codex round-2 recheck (`docs/reviews/tactical_0h_opin_validation_recheck2_codex.md`, CHANGES_REQUIRED, R2-F1 to R2-F4 and N1). Revision 2 (`b5d8969`) answered round 1 (`docs/reviews/tactical_0h_opin_validation_recheck_codex.md`, R1–R6). Revision 1 is at commit `47b578c`. The self-audit is in §8.
+**Revision 4** answers the Codex round-3 recheck (`docs/reviews/tactical_0h_opin_validation_recheck3_codex.md`, R3-F1, R3-F2, N1–N3). Revision 3 (`183766a`) answered the round-2 recheck (`docs/reviews/tactical_0h_opin_validation_recheck2_codex.md`, CHANGES_REQUIRED, R2-F1 to R2-F4 and N1). Revision 2 (`b5d8969`) answered round 1 (`docs/reviews/tactical_0h_opin_validation_recheck_codex.md`, R1–R6). Revision 1 is at commit `47b578c`. The self-audit is in §8.
 **Why this exists:** the owner, on the proposed pin change, said: "it can not be decision — we should confirm it with tests and explain it etc... maybe do research".
 **Status:** exploratory pilots. No verdict, no fixture result. The historical fixture verdicts are unchanged.
 - **Provenance:** `PROVENANCE.md` (this directory) lists, per run:
@@ -82,7 +82,7 @@ OBSERVED PAIRED IMPROVEMENT IN AN EXPLORATORY BATTERY (revision 3): the root-rel
 **Plausible explanation, consistent with but not proved by the evidence:**
 - **The motion law** is a local form of the swarmalator kernel (O'Keeffe, Hong and Strogatz 2017: constant-magnitude attraction `(A + J cos Δθ)·r̂`, repulsion `r̂/r`). Ours is made local by the 8-nearest-neighbour rule. In-phase swarmalators form compact discs, not filaments (research memo §1).
 - **The F5(i) diagnosis measured** a lone closing tip retracting at 0.30–0.64 m.u./s and its strong edge being lost.
-- **So,** if the grown mass tends to rest as a compact cluster, its nearest elements stay well away from the control's O. In all 7 control failures the final nearest-element distance is 1.67–2.45 m.u. (`STORED_ANALYSIS.json`): 3 empty-start runs with O at the centre, and 4 seeded runs with the legacy pin at (−0.5, 0). An O placed 1.0 m.u. toward the first root sits closer to where that mass forms. In the 8 passing toward-root, distance-1.0 C2 runs, the final nearest element is 0.34–0.59 m.u. from O; passing direction controls end farther away, for example 1.19 for opposite, empty, key 0.
+- **So,** if the grown mass tends to rest as a compact cluster, its nearest elements stay well away from the control's O. In all 7 control failures the final nearest-element distance is 1.67–2.45 m.u. (`STORED_ANALYSIS.json`): 3 empty-start runs with O at the centre, and 4 seeded runs with the legacy pin at (−0.5, 0). An O placed 1.0 m.u. toward the first root sits closer to where that mass forms. In the 8 passing toward-root, distance-1.0 C2 runs, the final nearest element is 0.34–0.59 m.u. from O; some passing direction controls end farther away, for example 1.19 for opposite, empty, key 0 (others end closer, for example 0.33 for opposite, empty, key 1).
 - **Not measured (the recorder kept only O, four nearest distances, the element count, the active sites and path membership):**
   - which element forms the last strong edge, and its degree and coefficient;
   - hop counts;
@@ -115,7 +115,7 @@ OBSERVED PAIRED IMPROVEMENT IN AN EXPLORATORY BATTERY (revision 3): the root-rel
 | key 3 | 0 (88%), 1, 2 (3 at 4%) | .33, .7, .8, .2, 0, 0, 0, 0 | none (fail) | all 0 |
 | key 4 | 0, 1, 2, 3 (3 at 56%) | .33, .7, .8, .4, 0, 0, 0, 0 | 0, 1, 7 | .5, .7, 0, 0, 0, 0, 0, .7 |
 
-- **So the gate shape can pass with five of eight sites never reaching O.** For example, empty key 1 passes with E = [0.5, 0.7, 0.8, 0, 0, 0, 0, 0], and seeded key 0 with E = [0.5, 0.7, 0, 0, 0, 0, 0, 0.7]. A max-E pass is not broad causal response.
+- **So the gate shape can pass with zero recorded assay exposure at five of eight sites.** For example, empty key 1 passes with E = [0.5, 0.7, 0.8, 0, 0, 0, 0, 0], and seeded key 0 with E = [0.5, 0.7, 0, 0, 0, 0, 0, 0.7]. A max-E pass is not broad causal response. (Training coverage is separate: over the whole run these two examples have four sites, not five, with no recorded training path, because site 7 in empty key 1 and site 6 in seeded key 0 had transient paths.)
 - **The connected sites are adjacent ones,** consistent with O sitting nearest one root. This is the selected-root bias the research memo warned about.
 - **Unavailable:** the stored traces keep only averaged A/B and per-site E. They do not keep own, donor and lesion decisions, per-pair or per-checkpoint summaries, or per-site input interventions. **So per-site causal response is not measured, and the memo's per-site response condition is open, not met.**
 - **Future instrumentation** should keep per-checkpoint × pair summaries, active and connected site exposures, and the per-site interventions that identify contributions to A and B.
@@ -131,7 +131,7 @@ All from the stored events and per-step traces (`STORED_ANALYSIS.json`):
 | key 3 | **fail, a collapse** | 0.428 / **0.2994** | 0 | 20.1 s | 197.8–260.4 s (the longest of 13 holds) | 362.4 s | 0 | 2.338 |
 | key 4 | PASS | 1.626 / 1.493 | 0.70 | 20.1 s | 432.1–656.0 s | 800 s | 0.70 | 0.404 |
 
-- **Key 1, the narrow miss:** sites 0, 1 and 7 had a path in 95% of the late samples. The last sample with a path is at 792.6 s and the next sample, at 792.7 s, has none, although all eight sites are active. So the path was lost between those samples, 7.4 s before the last checkpoint at 800 s. **The miss follows a late loss, not a failure to form.**
+- **Key 1, the narrow miss:** some site had a path in 95.4% of all late samples (1,526 of 1,600). Conditional on being active, sites 0, 1 and 7 had a path in 93.4%, 94.2% and 94.2% of their active late samples. The last sample with a path is at 792.6 s and the next sample, at 792.7 s, has none, although all eight sites are active. So the path was lost between those samples, 7.4 s before the last checkpoint at 800 s. **The miss follows a late loss, not a failure to form.**
   - The max E equals 0.7 × 2/3 = 0.467 arithmetically (sites 1 and 7; site 0's E is 0.333). That is consistent with assay paths at checkpoints 40 and 45 and none at 50. **This is a hypothesis:** the individual assay records were not kept, and training paths cannot stand in for the assays, which integrate new worlds.
   - Changing the cutoff to rescue the run would not be justified.
 - **Key 3, the collapse:** the longest uninterrupted hold was 197.8–260.4 s, among 13 holds. The last path was seen at 362.4 s and lost by 362.5 s. **The order of events:** the last accepted birth was at 360 s, the path was lost at 362.4–362.5 s, and the first cost refusal came at 380 s, after the loss. So the refusal did not cause the collapse. The mass then settled 2.34 m.u. from O. B = 0.2994 is below 0.3 (rounded 0.299 in SUMMARY.md, not a pass).
@@ -143,7 +143,7 @@ All from the stored events and per-step traces (`STORED_ANALYSIS.json`):
   - Connectivity can also return without any birth.
   - `STORED_ANALYSIS.json` reports the first cost refusal and the last accepted birth separately.
   - Budget pressure is an untested possible contributor to late losses, not a cause.
-  - **A related observation from another battery (`../medium_variants/`, A6v):** in two traced failures of the chain-bond + screening law, the budget's death rule D3 removed an element on the live root→O path. That law is different, so it is not evidence about these runs.
+  - **A related observation from another battery (`../medium_variants/`, A6v):** in two traced failures of the chain-bond + screening law, the budget's death rule D3 removed an element on the live root→O path. That law is different, so it is not evidence about these runs. Its evidence is delivered separately in `../medium_variants/signal_loss/`; until then this observation is pending.
 - **The seeded protocol is downgraded:** it is a literal-scaffold condition with variable outcomes, not a reliable reference. The six-element scaffold and the recorded verdicts are not changed retrospectively. Causal attribution of the seeded failures needs a preregistered matched-start study.
 
 ## 6. What C2 does and does not claim
@@ -166,7 +166,7 @@ All from the stored events and per-step traces (`STORED_ANALYSIS.json`):
 3. **The seeded start:** treat it as a variable literal-scaffold condition, not a reference.
 4. **The longer term:** keep the medium-law route (`../medium_variants/`: chain bonds and screening) as a hypothesis for a growth claim beyond placement.
 
-## 8. Self-audit (revisions 2 and 3; the drafter's record of the recheck findings and their causes)
+## 8. Self-audit (revisions 2–4; the drafter's record of the recheck findings and their causes)
 
 | Finding | What was wrong in revision 1 | Cause | Fix |
 |---|---|---|---|
@@ -181,6 +181,9 @@ All from the stored events and per-step traces (`STORED_ANALYSIS.json`):
 | R2-F3 | key 4's no-path samples read as a break; key 1's per-checkpoint E stated as measured; key 3's hold called the only one | site activity was not separated from structure; arithmetic was taken as a record | §5 reworded; key 1's decomposition is a hypothesis; "the longest of 13 holds" |
 | R2-F4 | the connectivity denominator misdescribed; the coverage example had four zero sites, not five | the analyzer's definition was not quoted | §4 and the JSON note define conditional connectivity with active counts; a true five-zero example |
 | N1 | "a single-key F5 gate is not reliable"; the passing-distance scope; the controls' O positions | wording broader than the data | first line, §2 item 4 and §3 bounded |
+| R3-F1 (round 3) | §19.7's INVALID row allowed a rerun from retained state that failed its own identity check | two cases (a missing record, a damaged source) were merged in one row | §19.7: the cases are split; a damaged retained source blocks, with no regeneration or rerun |
+| R3-F2 | key 1's 95% was the any-site fraction, stated per site; "never reaching O" extended assay absence to the whole run | the aggregate and conditional measures were still mixed in prose | §5 and §4 give the separate measures |
+| R3 N1–N3 | §19.7 precedence ("only", "as now"); "passing direction controls end farther away"; the A6v observation not yet delivered | wording broader than the record | precedence restated; "some", with a counterexample; marked pending its delivery |
 
 ## 9. Limits
 

@@ -1014,7 +1014,7 @@ meaning a time scale of **τ_link ≤ 2 s** per edge.
   - No dropping, replacing or adding key sets, and no running until a target count is reached.
   - **INVALID** in any run blocks the gate; the implementer fixes and reruns on the same keys only for an instrumentation defect proved before the results are read.
 - **Downstream fixtures (declared before any result; amended after the Codex round-2 recheck R2-F1, `docs/reviews/tactical_0h_opin_validation_recheck2_codex.md`).**
-  - **Precedence:** 19.7 replaces only the single-key F5 verdict and its stop row. **The Harness guards stay as they are,** with "F5" and "F7" read as the aggregate verdicts below:
+  - **Precedence:** 19.7 replaces the single-key F5 verdict and its stop row, F7's single run and verdict (now aggregated), and the downstream schedule (`Harness.run_all` today runs F6 before F7). **The `Harness.require` guards stay as they are,** with "F5" and "F7" read as the aggregate verdicts below:
     - F6–F9 run only if F5 passes;
     - F8 and F9 run only if F7 also passes;
     - N1 and F1–F4 must pass first, unchanged.
@@ -1026,7 +1026,7 @@ meaning a time scale of **τ_link ≤ 2 s** per edge.
     1. All ten F5 runs.
     2. If F5 passes: the five F7 runs.
     3. If F7 passes: F6, F8 and F9.
-    - **If F5 or F7 fails, no downstream fixture runs,** as now. Development stays blocked, and the drafter writes the failure report. No diagnostic run after a failed gate is part of this amendment; one would need its own owner-approved exception.
+    - **If F5 or F7 fails, no downstream fixture runs** (F6 included, which today's `run_all` would run before F7). Development stays blocked, and the drafter writes the failure report. No diagnostic run after a failed gate is part of this amendment; one would need its own owner-approved exception.
   - **F7 (control M) per key set g** mirrors today's `keys('i','M')` with the gate suffix:
     - growth `growth/F5/i/M/gate{g}`;
     - recovery `recovery/F5/i/M/gate{g}`;
@@ -1061,4 +1061,5 @@ meaning a time scale of **τ_link ≤ 2 s** per edge.
 | Does any of the ten F5 runs FAIL? | Block development; write a failure report covering every failing key set | drafter |
 | Does any of the five F7 runs FAIL? | Block development; failure report | drafter |
 | Is any of the five F7 runs INVALID? | Block the gate; fix only a defect proved before results are read; rerun on the same keys | implementer |
-| Is a downstream record invalid (a missing decision record, or retained g = 1 state that does not match its stored fingerprint)? | INVALID; fix; rerun from the same retained state; no key replacement | implementer |
+| Is a downstream decision record missing because of an instrumentation defect proved before any outcome is read? | Keep the failed attempt and its evidence; rerun only that fixture, from the fingerprint-verified retained source, with identical worlds and keys | implementer |
+| Does any retained g = 1 state fail its stored native, Python and RNG fingerprint? | INVALID; block continuation; no regeneration, substitution, rerun or fingerprint update under this amendment | implementer |
