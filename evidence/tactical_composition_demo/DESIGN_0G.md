@@ -1550,3 +1550,86 @@ This is a stored-data analysis. It runs while the 0h pilots run.
 | Does the projection exceed 1 h before 22:00? | Ask the owner | Claude (executor) |
 | Is a rule, constant, knob bound or ledger changed after a tuning or validation fight? | INVALID; a new revision on fresh seeds | implementer |
 | Does P16 fall below 21/40 on the validation panel? | Report "the panel does not support a comparison" | drafter |
+
+### 20.2 Amendment answering the Codex round-2 review (`docs/reviews/tactical_0g_s20_v7_design_review_r2_codex.md`, CHANGES_REQUIRED)
+
+**20.2 overrides 20.1 where they differ.**
+
+**Self-audit (the drafter's causes):**
+- **R2-F1:** I treated "P16" as a fixed object, but P16 inherits v6's knobs: its firing, fallthrough and z all depend on them.
+- **R2-F2:** I copied the 12-of-20-cluster rule from the P16-against-P12 setting, where it was usable, to a comparator that already wins 85%. There, it can never pass.
+- **R2-F3:** "Action" meant movement geometry to me, but the commands also carry v6 firing.
+
+**R2-F1, the matched arms at one knob vector:**
+- Tuning selects one vector θ*.
+- **The validation arms, all at θ* on the same seeds:**
+
+| Arm | Selector |
+|---|---|
+| **v7(θ*)** | the gate |
+| **v7-forcedP16(θ*)** | always commit (the matched always-P16 control) |
+| **v7-forcedv6(θ*)** | always escape |
+| **v7-ω0(θ*)** | θ* with ω_ranged = 0, gate on |
+
+- **Historical P16(θ_v6)** is a separately labelled descriptive witness on the same seeds. It is not the matched control.
+- **Forcing touches only the outer selector.** z integration, internal target publication, pair-mode updates, pressure bookkeeping and failure handling run normally.
+- **One controller state per arm, advanced once per tick.** v6's prepare runs once. P16's overlay is computed from that same prepared baseline, exactly as the P16 probe does, and the selector picks per unit. There is no double integration.
+- **Checks:**
+  - forcedP16(θ) equals the delivered P16 code's complete commands and state at θ, for **at least three admissible knob vectors** (θ_v6, the bound corners, and one interior random point with a fixed seed);
+  - forcedv6(θ) equals v6(θ) the same way;
+  - observation sequences cover no reachable gun, no battery, a degenerate escort direction and melee.
+
+**R2-F2 and R2-F5.1, ceiling-aware, exhaustive readings** (regular head; v7 against forcedP16, paired on 20 clusters):
+- **"Observed improvement":** v7 wins ≥ forcedP16 wins + 4 (of 40).
+- **"Observed match":** within ±3.
+- **"Observed worse":** ≤ forcedP16 − 4.
+- **Always reported:**
+  - positive, negative and tied clusters;
+  - orientation discordance;
+  - the paired cluster-bootstrap percentile interval of the win-rate difference (10,000 resamples, seed 20261007).
+- **No cluster-majority condition.** These are descriptive observations only: no superiority, no equivalence, and no population rate.
+
+**R2-F5.2, the floor:**
+- **The floor governs the comparator-relative readings only.** They are reported as "the panel does not support a comparison" if forcedP16 < 21/40 on regular.
+- **v7's own observed owner criterion is always evaluated and reported:** ≥ 21/40 regular wins, mean S > 0 on both heads, novice ≥ 21/40, no failures.
+- Comparator underperformance is flagged separately.
+
+**R2-F5.3, the optimizer contract (sealed):**
+- **The search:** the inherited `s4_v6.py` CMA-ES, with v6's normalized knob ordering and bounds and σ = 0.25. The optimizer version and RNG seed are recorded in the declaration.
+- **The start vector θ_v6 is evaluated first.** It is evaluation 0, inside the budget: 257 × 32 = 8,224 fights. It may remain the incumbent.
+- **The candidate index** is the monotonic evaluation ordinal. The incumbent is the best by the §20.1 order. **Ties keep the earlier ordinal.**
+- **The identical rank order** feeds both CMA's selection and retention.
+- **Fake-record fixtures cover:**
+  - cross-generation ties;
+  - the start-vector incumbent;
+  - no eligible candidate;
+  - the exact boundaries of the novice and readiness criteria;
+  - the comparator floor;
+  - failure rows.
+
+**R2-F3, the corrected ledger (replaces §20.1's table):**
+
+| Role and phase | Movement | Firing target | Knobs that reach it |
+|---|---|---|---|
+| Artillery, commit, a reachable enemy gun | P16 post + P11 spacing (fixed geometry) | P16's ordering (splash value, HP, id) | none directly; z through the gate |
+| Artillery, commit, no reachable enemy gun | P16 anchor approach (fixed geometry) | **v6 target** | K, K_t, κ, β, μ, ω (target scores, alignment, engagement) |
+| Artillery, escape | v6 command | v6 target | all 11 (v6 law: G, w, f_c, m_k, λ_th, plus the oscillator knobs) |
+| Ranged, commit, battery phase, valid escort direction | P12 escort (fixed geometry) | **v6 target** | oscillator knobs, through the targeting |
+| Ranged, commit, degenerate direction or no battery | v6 command | v6 target | all 11 |
+| Ranged, escape | v6 command | v6 target | all 11 |
+| Melee, either mode | v6 command (identical in both sources) | v6 target | all 11; f_c in melee's out-ranged commit |
+| All units | — | — | the gate: z (μ, ω_ranged, K, K_t, κ, β) |
+
+- **The contrast v7 against forcedP16 therefore tests the outer switching policy,** conditional on an oscillator-containing P16 package. It does not test adding oscillators to a fully static controller.
+- **The exclusions stay:** no source recursion, hierarchy, synchrony causality, or necessity of oscillation.
+
+**R2-F4, ω0:** it is **the observed total effect of setting the inherited ranged/artillery natural rate to zero at θ*.** That covers the gate, firing alignment, the target groups, pressure and fallback movement, so it is not isolated gate timing.
+- Gate transitions and firing changes are reported with it.
+- If θ* already has ω_ranged = 0, the arm is identical. That is disclosed, and the fights are still run once for the record.
+
+**The notes N1–N3, adopted:**
+- **N1:** telemetry labels each unit-tick by its **selected source** (P16 or v6), not "retreat". Pair-mode diagnostics are kept. There are fixtures for mixed pair histories and target death or reassignment. No pair modes are synchronized or overwritten.
+- **N2:** the all-living assignment and its interactions are disclosed: a committed escort may follow an escaping gun, committed guns repel from escaping guns, and the anchor can be made reachable by an escaping gun. There are mixed-mode fixtures, plus measurements of escort-to-gun mode combinations, post arrival and gun survival. Candidate sets are not restricted.
+- **N3:** §20.1's spacing sentence is corrected. **P16 has P11 repulsion for guns and P12's unshifted ranged escorts; there is no ranged repulsion.** P11's preserved zero multiplier and margin consumption are inherited. Melee's outer mode has no direct effect on its action.
+
+**The validation panel, recomputed:** 20 fresh clusters × 2 orientations × {v7, forcedP16, forcedv6, ω0, historical P16} × {regular, novice} = **400 fights**.
