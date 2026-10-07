@@ -1078,3 +1078,28 @@ This is a stored-data analysis. It runs while the 0h pilots run.
 | Is a constant or rule changed after any fight? | INVALID; a new declaration on fresh seeds | implementer |
 | Is P5 on the new seeds outside §19.4's sanity bounds? | Report it before reading the other arms | implementer |
 | Is a 0h pilot batch running? | Wait for it to finish before combat (no heavy 0h and 0g runs together) | implementer |
+
+### 19.7 The spacing probe result (`astelia_cpp/S4_SPACING_PROBE.md`, `a13b51c`; Codex's owner recheck pending)
+
+**Result** (120 fights; one declared setting per arm; descriptive). Both spacings come from the catalog (splash 40 px, body 10 px): P10 S = 100 px, P11 S = 60 px.
+
+| Against regular | P5 (control) | P10 (S 100) | P11 (S 60) |
+|---|---|---|---|
+| Elimination wins | 0/20 | 0/20 | **2/20** |
+| Enemy guns destroyed | 3.4 | 6.2 | 7.55 |
+| Own guns lost | 10 | 10 | 9.95 |
+| Our guns damaged per successful enemy shell | 3.55 | 1.00 | 1.05 |
+| Enemy artillery HP to ours | 2.06× | 0.78× | 0.59× |
+| Own-gun last hits by enemy artillery / ranged | 151 / 40 | 89 / 99 | 64 / 124 |
+
+- **Novice:** 20/20 in every arm.
+- **The splash hypothesis is supported:** spacing alone took enemy victims per shell from about 3.6 to about 1, and turned the artillery exchange in our favour.
+- **P11's two wins are the first elimination wins ever against regular.** They are an observation (2 of 20), not a rate, and they fall short of the owner's criterion (above 50%).
+- **The new limiting factor is the enemy ranged units.** With our guns spaced, they make most of the last hits on our guns.
+
+**Next:**
+1. Codex's owner recheck of this run.
+2. A stored-data ranged-threat diagnostic: where the enemy ranged units stand relative to their guns and ours; what our own ranged and melee units do meanwhile; what differed in the two wins.
+3. Then the smallest single scripted change it supports, on top of P11.
+
+**The resonator reading, for later (not a design yet):** spacing is the v6 element law's short-range repulsion, which P5's commitment discarded. A v7 must keep it in every mode.
