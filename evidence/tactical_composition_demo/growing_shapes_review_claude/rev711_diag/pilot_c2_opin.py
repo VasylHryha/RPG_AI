@@ -2,11 +2,14 @@
 check where an effective root exists, at distance 1.0 m.u. from the origin toward the lowest-id
 effective root, then frozen (B-out keeps its placement and uniqueness checks; no relocation).
 For (ii) the same rule replaces the literal O: the literal start is built without O, and B-out
-places it by this rule. Usage: python -m ...pilot_c2_opin <i|ii>"""
+places it by this rule. Usage: python -m ...pilot_c2_opin <i|ii> [distance=1.0] [keyset=0] [root|opposite|perp]"""
 import sys, math
 from . import pilot_common as P
 D = P.D
 START = sys.argv[1]
+DIST = float(sys.argv[2]) if len(sys.argv) > 2 else 1.0
+KEYSET = int(sys.argv[3]) if len(sys.argv) > 3 else 0
+DIRECTION = sys.argv[4] if len(sys.argv) > 4 else 'root'   # root | opposite | perp (control: same distance, rotated 180 or +90 degrees)
 
 
 def install():
@@ -17,7 +20,10 @@ def install():
         if not roots:
             request = self.request('B-out'); self.terminal(request, 'B-out', None, 'no_root', 0); return []
         es = {e.id: e for e in self.native.elements}; r0 = es[roots[0]]; n = math.hypot(r0.x, r0.y) or 1.
-        point = (r0.x / n, r0.y / n)
+        ux, uy = r0.x / n, r0.y / n
+        if DIRECTION == 'opposite': ux, uy = -ux, -uy
+        elif DIRECTION == 'perp': ux, uy = -uy, ux
+        point = (DIST * ux, DIST * uy)
         request = self.request('B-out')
         if not D.clear_position(point, [(e.x, e.y) for e in self.native.elements]):
             self.terminal(request, 'B-out', None, 'placement', 1); return []
@@ -38,4 +44,6 @@ def seeded_without_o():
 
 if __name__ == '__main__':
     install()
-    P.run(START, 'c2opin', initial_factory=seeded_without_o)
+    tag = 'c2opin' if DIST == 1.0 else f'c2opin_d{DIST:g}'
+    if DIRECTION != 'root': tag += f'_{DIRECTION}'
+    P.run(START, tag, initial_factory=seeded_without_o, keyset=KEYSET)

@@ -47,8 +47,12 @@ def clone_isolation_check(medium):
     assert (medium.time, medium.step_index, len(TRACE)) == before, 'clone advanced the live run'
 
 
-def run(start, tag, episodes=50, initial_factory=None):
+def run(start, tag, episodes=50, initial_factory=None, keyset=0):
+    """keyset 0 = the F5 fixture keys and worlds; keyset k>0 = alternative pilot keys (suffix /altK on every
+    growth/recovery/medium key) and training worlds 13000000 + 100000*k + e, a range no registered fixture or
+    development schedule uses (F5 12000000+, F8 12100000+, development 11000000+); robustness only, no verdict."""
     if ASSAY and not tag.endswith('_assay'): tag = tag + '_assay'
+    if keyset: tag = f'{tag}_alt{keyset}'
     identity = assert_inputs()
     receipt = ROOT / f'evidence/tactical_composition_demo/growing_shapes/runner/rev711_pilot_{tag}_{start}_20261007'
     grant = Execution(engines_ready_reviewed=True, integration_tested_reviewed=True,
@@ -57,14 +61,15 @@ def run(start, tag, episodes=50, initial_factory=None):
     grant.start('fixtures')
     rows, _ = reused_calibration()
     initial = (initial_factory or F.literal_start)() if start == 'ii' else None
-    r = Run(0, rows, episodes=50, keys=F.keys(start), initial=initial, backend='native', execution=grant, scope='fixtures')
+    keys = {k: (v + f'/alt{keyset}' if keyset else v) for k, v in F.keys(start).items()}
+    r = Run(0, rows, episodes=50, keys=keys, initial=initial, backend='native', execution=grant, scope='fixtures')
     if initial: initial.close()
     LIVE[0] = r.medium
     clone_isolation_check(r.medium)
     checkpoints = {}
     try:
         for e in range(episodes):
-            r.episode(e, task='perceive', world_id=12000000 + e)
+            r.episode(e, task='perceive', world_id=(12000000 + e) if keyset == 0 else (13000000 + 100000*keyset + e))
             assert len(TRACE) == 160 * (e + 1), f'step count {len(TRACE)} after episode {e}'
             if ASSAY and e + 1 in F.CHECKPOINTS: checkpoints[e + 1] = r.medium.clone(events=False)
         events = [ev for ev in r.medium.events if ev['rule'] != 'adaptation']
@@ -83,6 +88,8 @@ def run(start, tag, episodes=50, initial_factory=None):
                 own = ev_.episode(value, 'perceive', recipient)
                 other = ev_.episode(value, 'perceive', recipient, mode='donor', donor=donor)
                 lesion = ev_.episode(value, 'perceive', recipient, mode='output_channel')
+                # Harness.F5's guard (Codex 7.12 N3): every assay stream has exactly 160 decisions.
+                if any(len(x['decisions']) != 160 for x in (own, other, lesion)): raise ValueError('missing F5 decision record')
                 absent = not any(row[5] == 'output' for row in value['members'])
                 A.append(0. if absent else float(np.mean([abs(float(wrap(a['angle']-b['angle']))) for a, b in zip(own['decisions'], other['decisions'])])))
                 B.append(0. if absent else float(np.mean([abs(float(wrap(a['angle']-b['angle']))) for a, b in zip(own['decisions'], lesion['decisions'])])))
@@ -93,7 +100,7 @@ def run(start, tag, episodes=50, initial_factory=None):
             if hasattr(m, 'close'): m.close()
     st = TRACE
     with gzip.open(OUT / f'pilot_{tag}_{start}.json.gz', 'wt') as f:
-        json.dump(dict(kind='PILOT_NO_VERDICT', instrumentation='class-level live-only recorder (R2-F1 fix)', assay=assay,
+        json.dump(dict(kind='PILOT_NO_VERDICT', instrumentation='class-level live-only recorder (R2-F1 fix)', assay=assay, keyset=keyset,
                        pin_sha256=identity['pin_sha256'], start=start, tag=tag, episodes=episodes, steps=st, events=events), f)
     late = [s for s in st if s['t'] > 640]
     conn = sum(len(set(s['paths']) & set(s['active'])) / max(1, len(s['active'])) for s in late) / max(1, len(late))
@@ -107,4 +114,4 @@ def run(start, tag, episodes=50, initial_factory=None):
     births = {k: sum(ev['rule'] == k for ev in events) for k in ('B-out', 'B-path', 'B1')}
     print(json.dumps(dict(start=start, tag=tag, steps=len(st), last_t=st[-1]['t'], late_connectivity=round(conn, 3),
                           present=sum(bool(s['paths']) for s in st), longest_any_site=[span, best],
-                          final_n=st[-1]['n'], O=st[-1]['O'], births=births, final_dO=st[-1]['dO'], assay=assay)))
+                          final_n=st[-1]['n'], O=st[-1]['O'], births=births, final_dO=st[-1]['dO'], keyset=keyset, assay=assay)))

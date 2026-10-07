@@ -4,4 +4,4 @@ B 0.209, E 0). Usage: PILOT_ASSAY=1 python -m ...pilot_baseline <i|ii>"""
 import sys
 from . import pilot_common as P
 if __name__ == '__main__':
-    P.run(sys.argv[1], 'baseline_assay')
+    P.run(sys.argv[1], 'baseline_assay', keyset=int(sys.argv[2]) if len(sys.argv) > 2 else 0)
