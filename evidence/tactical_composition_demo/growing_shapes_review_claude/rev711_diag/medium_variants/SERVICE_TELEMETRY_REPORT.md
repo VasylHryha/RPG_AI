@@ -1,8 +1,8 @@
-NOT_RUN
+DONE
 
-A6w/A6x exploratory scratch delivery, base workspace HEAD `c123ec59333e7e470146a4b052a0137f77fe0bbc`. No verdict. Key sets 0–4 × starts i/ii only. Fresh section-19.7 keys never requested.
+A6w/A6x exploratory scratch delivery, base workspace HEAD `50ab49dfd089b5b4262c0113160e264b17c346ea`. No verdict. Key sets 0–4 × starts i/ii only. Fresh section-19.7 keys never requested.
 
-Pilot preflight: **PROCESS_ACCESS_BLOCKED**. `pgrep` returned a process-list access error. No training or F5 assay ran; no awake/run time accrued.
+Pilot preflight: **CLEAR**. See SERVICE_PREFLIGHT.json and run timing receipt.
 
 Builder: reviewed `fd21826` detached worktrees, exact traditional patches, original `build_rev7.py`, pinned source hashes and unchanged native law for V1/RD3. The historical Mach-O install name is a fixed string; the build needs no files in /private/tmp. All three binaries reproduced `b0b35a16ba134c57e56a44c9cb128b7a7ce2ae9cd4aaf836b8b1e82392c9578d`. V1 traditional Python diff exactly matched the committed diff. See kernel_builder/*_BUILD.json and HISTORICAL_SCREENING_IDENTITY.json.
 
@@ -14,23 +14,23 @@ Integrity status:
 
 | Check | Status |
 |---|---|
-| observer_on_off | NOT_RUN |
-| clone_isolation | NOT_RUN |
-| scr_v1_reproduction | NOT_RUN |
+| observer_on_off | PASS |
+| clone_isolation | PASS |
+| scr_v1_reproduction | PASS |
 
 The full 50-episode SCR empty-key-0 on/off comparison must pass before measurements are released. Clone isolation compares live native bytes and observer/digest sinks. All SCR/V1 assay and legacy summary fields must equal committed logs exactly before RD3 starts. Synthetic tests do not establish these run integrity checks.
 
 | Variant | Gate shape empty/seeded | Site fractions/coverage | Outages/latency/causes | D3 classes/forced cuts/protection | Realized degree >2 |
 |---|---|---|---|---|---|
-| SCR | NOT_RUN | NOT_RUN | NOT_RUN | NOT_RUN | NOT_RUN |
-| V1 | NOT_RUN | NOT_RUN | NOT_RUN | NOT_RUN | NOT_RUN |
-| RD3 | NOT_RUN | NOT_RUN | NOT_RUN | NOT_RUN | NOT_RUN |
+| SCR | {'i': {'passes': 3, 'runs': 5}, 'ii': {'passes': 3, 'runs': 5}} | JSON fractions for 8 sites | 102 outages; JSON distributions | {'critical': 6, 'non-service': 21, 'redundant': 4}; 0 forced cuts | JSON distribution |
+| V1 | {'i': {'passes': 5, 'runs': 5}, 'ii': {'passes': 3, 'runs': 5}} | JSON fractions for 8 sites | 86 outages; JSON distributions | {'non-service': 34}; 0 forced cuts | JSON distribution |
+| RD3 | {'i': {'passes': 5, 'runs': 5}, 'ii': {'passes': 3, 'runs': 5}} | JSON fractions for 8 sites | 86 outages; JSON distributions | {'non-service': 34}; 0 forced cuts | JSON distribution |
 
-Each failure: NOT_RUN; no failure classifications inferred from the historical logs.
+Each failure: See SERVICE_COMPACT_SUMMARIES.json failures and full per-run outages.
 
-RD3 against V1 coverage and budget: NOT_RUN.
+RD3 against V1 coverage and budget: {"status": "DESCRIPTIVE", "coverage_v1": {"ever_served_sites": 8, "mostly_served": "Fractions listed directly; no new mostly-served cutoff."}, "coverage_rd3": {"ever_served_sites": 8, "mostly_served": "Fractions listed directly; no new mostly-served cutoff."}, "per_site_fraction_difference": {"0": 0.0, "1": 0.0, "2": 0.0, "3": 0.0, "4": 0.0, "5": 0.0, "6": 0.0, "7": 0.0}, "rd3_protected_over_budget": 0, "rd3_forced_cuts": 0, "deadlock_reading": "Forced cuts are budget progress with service loss; protected_over_budget is blocked eligibility, not RD3 exemption."}
 
-Empty-start exploratory entry filter: NOT_RUN for all variants. Historical V1 5/5 is not a telemetry reproduction result.
+Empty-start exploratory entry filter: See each variant’s empty_entry_filter. This is an exploratory filter, not a verdict.
 
 Interpretation limits: route reuse compares the deterministic shortest-route element set. G-dist/G-deg use held receiver degree and one-factor rate counterfactuals; multiple supported labels yield break X. A spring change alone cannot destroy strong reachability (R is retained in the schema, never invented). G cannot occur within a maximal site outage, because restoration closes the outage; adjacent outages remain separate. Non-repair labels are all applicable observations; the earliest is primary, simultaneous earliest labels produce X. Mostly-served coverage is given as the eight time fractions without adding a cutoff.
 

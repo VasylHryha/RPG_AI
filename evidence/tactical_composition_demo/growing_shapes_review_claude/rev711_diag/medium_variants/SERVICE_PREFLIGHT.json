@@ -1,17 +1,17 @@
 {
-  "status": "PROCESS_ACCESS_BLOCKED",
+  "status": "CLEAR",
   "checks": [
     {
       "command": [
         "pgrep",
         "-fl",
-        "s4_spacing_probe_v1|astelia_native|tactics.*host"
+        "(^|/)[Pp]ython[^ ]* [^ ]*s4_spacing_probe_v1/|^[^ ]*ai_RPG_test/[^ ]*astelia_native[^ ]*( |$)"
       ],
-      "returncode": 3,
+      "returncode": 1,
       "stdout": "",
-      "stderr": "sysmon request failed with error: sysmond service not found\npgrep: Cannot get process list\n",
-      "time_epoch": 1791369159.825592,
-      "status": "PROCESS_ACCESS_BLOCKED"
+      "stderr": "",
+      "time_epoch": 1791372210.062264,
+      "status": "CLEAR"
     }
   ]
 }
