@@ -1,0 +1,2442 @@
+{
+  "status": "PASS",
+  "base_head": "722155f85fc6df410d4cf034ba51e929f2458f11",
+  "inputs": {
+    "evidence/tactical_composition_demo/astelia_cpp/s4_v7b/TUNING.json": "6b146edcbd9d6c2147297deab0bc9149ba9801de979a7d1594f6889a89296e65",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_v7b/TUNING_ANALYSIS.json": "1990d998a8d92964b48605a3bad629b72ad9c5f42d34eb9aae2a3196bc562d83",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_v7c/ANALYSIS.json": "f3160cf72e240d2fbfd493b4ba801e79ea4680daac8a4d46a2d0952bdec6bb52",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_v7c/VALIDATION.json": "3e053ea1e75eaad6f90ab15293d189c422cb22ef8ee584bf666cb4a808f6836d"
+  },
+  "hash_verified_records": 4512,
+  "tuning_fights": 8224,
+  "validation_fights": 400,
+  "failures": 0,
+  "cma_replay": "257 vectors exact",
+  "telemetry": "400/400 exact against reviewed sealed observation oracle; shared implementation disclosed",
+  "cells": [
+    {
+      "arm": "v7",
+      "head": "regular",
+      "wins": 32,
+      "mean_S": 4.675,
+      "own_losses": 42.325,
+      "failures": 0,
+      "fights": 40,
+      "timeouts": 1,
+      "mean_termination_time": 47.51916666666652,
+      "gun_survival": [
+        {
+          "t": 10,
+          "mean_alive": 10
+        },
+        {
+          "t": 20,
+          "mean_alive": 9.75
+        },
+        {
+          "t": 30,
+          "mean_alive": 5.75
+        },
+        {
+          "t": 45,
+          "mean_alive": 4.525
+        },
+        {
+          "t": 60,
+          "mean_alive": 4.475
+        }
+      ]
+    },
+    {
+      "arm": "v7",
+      "head": "novice",
+      "wins": 40,
+      "mean_S": 26.45,
+      "own_losses": 23.55,
+      "failures": 0,
+      "fights": 40,
+      "timeouts": 0,
+      "mean_termination_time": 26.04500000000045,
+      "gun_survival": [
+        {
+          "t": 10,
+          "mean_alive": 10
+        },
+        {
+          "t": 20,
+          "mean_alive": 9.975
+        },
+        {
+          "t": 30,
+          "mean_alive": 9.925
+        },
+        {
+          "t": 45,
+          "mean_alive": 9.925
+        },
+        {
+          "t": 60,
+          "mean_alive": 9.925
+        }
+      ]
+    },
+    {
+      "arm": "forcedP16",
+      "head": "regular",
+      "wins": 31,
+      "mean_S": 2.1,
+      "own_losses": 44.75,
+      "failures": 0,
+      "fights": 40,
+      "timeouts": 0,
+      "mean_termination_time": 39.51083333333363,
+      "gun_survival": [
+        {
+          "t": 10,
+          "mean_alive": 10
+        },
+        {
+          "t": 20,
+          "mean_alive": 9.875
+        },
+        {
+          "t": 30,
+          "mean_alive": 5.975
+        },
+        {
+          "t": 45,
+          "mean_alive": 5.375
+        },
+        {
+          "t": 60,
+          "mean_alive": 5.25
+        }
+      ]
+    },
+    {
+      "arm": "forcedP16",
+      "head": "novice",
+      "wins": 40,
+      "mean_S": 21.65,
+      "own_losses": 28.35,
+      "failures": 0,
+      "fights": 40,
+      "timeouts": 0,
+      "mean_termination_time": 26.42666666666714,
+      "gun_survival": [
+        {
+          "t": 10,
+          "mean_alive": 10
+        },
+        {
+          "t": 20,
+          "mean_alive": 10
+        },
+        {
+          "t": 30,
+          "mean_alive": 9.975
+        },
+        {
+          "t": 45,
+          "mean_alive": 9.975
+        },
+        {
+          "t": 60,
+          "mean_alive": 9.975
+        }
+      ]
+    },
+    {
+      "arm": "forcedv6",
+      "head": "regular",
+      "wins": 0,
+      "mean_S": 1.575,
+      "own_losses": 38.475,
+      "failures": 0,
+      "fights": 40,
+      "timeouts": 39,
+      "mean_termination_time": 148.45249999999416,
+      "gun_survival": [
+        {
+          "t": 10,
+          "mean_alive": 10
+        },
+        {
+          "t": 20,
+          "mean_alive": 10
+        },
+        {
+          "t": 30,
+          "mean_alive": 9.975
+        },
+        {
+          "t": 45,
+          "mean_alive": 9.525
+        },
+        {
+          "t": 60,
+          "mean_alive": 7.425
+        }
+      ]
+    },
+    {
+      "arm": "forcedv6",
+      "head": "novice",
+      "wins": 0,
+      "mean_S": -7.075,
+      "own_losses": 50,
+      "failures": 0,
+      "fights": 40,
+      "timeouts": 0,
+      "mean_termination_time": 53.16916666666621,
+      "gun_survival": [
+        {
+          "t": 10,
+          "mean_alive": 10
+        },
+        {
+          "t": 20,
+          "mean_alive": 10
+        },
+        {
+          "t": 30,
+          "mean_alive": 9.775
+        },
+        {
+          "t": 45,
+          "mean_alive": 1.45
+        },
+        {
+          "t": 60,
+          "mean_alive": 0.05
+        }
+      ]
+    },
+    {
+      "arm": "omega0",
+      "head": "regular",
+      "wins": 30,
+      "mean_S": 4.1,
+      "own_losses": 42.65,
+      "failures": 0,
+      "fights": 40,
+      "timeouts": 0,
+      "mean_termination_time": 47.838333333333175,
+      "gun_survival": [
+        {
+          "t": 10,
+          "mean_alive": 10
+        },
+        {
+          "t": 20,
+          "mean_alive": 9.85
+        },
+        {
+          "t": 30,
+          "mean_alive": 5.7
+        },
+        {
+          "t": 45,
+          "mean_alive": 4.3
+        },
+        {
+          "t": 60,
+          "mean_alive": 4.125
+        }
+      ]
+    },
+    {
+      "arm": "omega0",
+      "head": "novice",
+      "wins": 40,
+      "mean_S": 25.85,
+      "own_losses": 24.15,
+      "failures": 0,
+      "fights": 40,
+      "timeouts": 0,
+      "mean_termination_time": 25.535000000000426,
+      "gun_survival": [
+        {
+          "t": 10,
+          "mean_alive": 10
+        },
+        {
+          "t": 20,
+          "mean_alive": 9.975
+        },
+        {
+          "t": 30,
+          "mean_alive": 9.975
+        },
+        {
+          "t": 45,
+          "mean_alive": 9.975
+        },
+        {
+          "t": 60,
+          "mean_alive": 9.975
+        }
+      ]
+    },
+    {
+      "arm": "historicalP16",
+      "head": "regular",
+      "wins": 32,
+      "mean_S": 1.075,
+      "own_losses": 45.675,
+      "failures": 0,
+      "fights": 40,
+      "timeouts": 0,
+      "mean_termination_time": 50.83999999999966,
+      "gun_survival": [
+        {
+          "t": 10,
+          "mean_alive": 10
+        },
+        {
+          "t": 20,
+          "mean_alive": 9.875
+        },
+        {
+          "t": 30,
+          "mean_alive": 5.05
+        },
+        {
+          "t": 45,
+          "mean_alive": 4.55
+        },
+        {
+          "t": 60,
+          "mean_alive": 4.375
+        }
+      ]
+    },
+    {
+      "arm": "historicalP16",
+      "head": "novice",
+      "wins": 40,
+      "mean_S": 22.425,
+      "own_losses": 27.575,
+      "failures": 0,
+      "fights": 40,
+      "timeouts": 0,
+      "mean_termination_time": 27.0550000000005,
+      "gun_survival": [
+        {
+          "t": 10,
+          "mean_alive": 10
+        },
+        {
+          "t": 20,
+          "mean_alive": 10
+        },
+        {
+          "t": 30,
+          "mean_alive": 10
+        },
+        {
+          "t": 45,
+          "mean_alive": 10
+        },
+        {
+          "t": 60,
+          "mean_alive": 10
+        }
+      ]
+    }
+  ],
+  "paired_clusters": [
+    {
+      "head": "regular",
+      "cluster": 0,
+      "wins": {
+        "v7": 2,
+        "forcedP16": 2,
+        "forcedv6": 0,
+        "omega0": 2,
+        "historicalP16": 2
+      },
+      "orientation_wins": {
+        "v7": [
+          1,
+          1
+        ],
+        "forcedP16": [
+          1,
+          1
+        ],
+        "forcedv6": [
+          0,
+          0
+        ],
+        "omega0": [
+          1,
+          1
+        ],
+        "historicalP16": [
+          1,
+          1
+        ]
+      },
+      "mean_S": {
+        "v7": 11,
+        "forcedP16": 6,
+        "forcedv6": 0.5,
+        "omega0": 10.5,
+        "historicalP16": 5
+      }
+    },
+    {
+      "head": "regular",
+      "cluster": 1,
+      "wins": {
+        "v7": 2,
+        "forcedP16": 1,
+        "forcedv6": 0,
+        "omega0": 2,
+        "historicalP16": 0
+      },
+      "orientation_wins": {
+        "v7": [
+          1,
+          1
+        ],
+        "forcedP16": [
+          1,
+          0
+        ],
+        "forcedv6": [
+          0,
+          0
+        ],
+        "omega0": [
+          1,
+          1
+        ],
+        "historicalP16": [
+          0,
+          0
+        ]
+      },
+      "mean_S": {
+        "v7": 13.5,
+        "forcedP16": -7.5,
+        "forcedv6": 1,
+        "omega0": 13,
+        "historicalP16": -20
+      }
+    },
+    {
+      "head": "regular",
+      "cluster": 2,
+      "wins": {
+        "v7": 2,
+        "forcedP16": 2,
+        "forcedv6": 0,
+        "omega0": 2,
+        "historicalP16": 2
+      },
+      "orientation_wins": {
+        "v7": [
+          1,
+          1
+        ],
+        "forcedP16": [
+          1,
+          1
+        ],
+        "forcedv6": [
+          0,
+          0
+        ],
+        "omega0": [
+          1,
+          1
+        ],
+        "historicalP16": [
+          1,
+          1
+        ]
+      },
+      "mean_S": {
+        "v7": 8.5,
+        "forcedP16": 8.5,
+        "forcedv6": 4.5,
+        "omega0": 11,
+        "historicalP16": 5
+      }
+    },
+    {
+      "head": "regular",
+      "cluster": 3,
+      "wins": {
+        "v7": 1,
+        "forcedP16": 1,
+        "forcedv6": 0,
+        "omega0": 2,
+        "historicalP16": 2
+      },
+      "orientation_wins": {
+        "v7": [
+          0,
+          1
+        ],
+        "forcedP16": [
+          0,
+          1
+        ],
+        "forcedv6": [
+          0,
+          0
+        ],
+        "omega0": [
+          1,
+          1
+        ],
+        "historicalP16": [
+          1,
+          1
+        ]
+      },
+      "mean_S": {
+        "v7": -3,
+        "forcedP16": 0,
+        "forcedv6": 3.5,
+        "omega0": 6.5,
+        "historicalP16": 7
+      }
+    },
+    {
+      "head": "regular",
+      "cluster": 4,
+      "wins": {
+        "v7": 2,
+        "forcedP16": 2,
+        "forcedv6": 0,
+        "omega0": 1,
+        "historicalP16": 1
+      },
+      "orientation_wins": {
+        "v7": [
+          1,
+          1
+        ],
+        "forcedP16": [
+          1,
+          1
+        ],
+        "forcedv6": [
+          0,
+          0
+        ],
+        "omega0": [
+          1,
+          0
+        ],
+        "historicalP16": [
+          1,
+          0
+        ]
+      },
+      "mean_S": {
+        "v7": 5,
+        "forcedP16": 4.5,
+        "forcedv6": 1,
+        "omega0": -5.5,
+        "historicalP16": -7
+      }
+    },
+    {
+      "head": "regular",
+      "cluster": 5,
+      "wins": {
+        "v7": 1,
+        "forcedP16": 2,
+        "forcedv6": 0,
+        "omega0": 1,
+        "historicalP16": 2
+      },
+      "orientation_wins": {
+        "v7": [
+          0,
+          1
+        ],
+        "forcedP16": [
+          1,
+          1
+        ],
+        "forcedv6": [
+          0,
+          0
+        ],
+        "omega0": [
+          0,
+          1
+        ],
+        "historicalP16": [
+          1,
+          1
+        ]
+      },
+      "mean_S": {
+        "v7": -5.5,
+        "forcedP16": 5,
+        "forcedv6": -5,
+        "omega0": -3.5,
+        "historicalP16": 5.5
+      }
+    },
+    {
+      "head": "regular",
+      "cluster": 6,
+      "wins": {
+        "v7": 2,
+        "forcedP16": 2,
+        "forcedv6": 0,
+        "omega0": 2,
+        "historicalP16": 2
+      },
+      "orientation_wins": {
+        "v7": [
+          1,
+          1
+        ],
+        "forcedP16": [
+          1,
+          1
+        ],
+        "forcedv6": [
+          0,
+          0
+        ],
+        "omega0": [
+          1,
+          1
+        ],
+        "historicalP16": [
+          1,
+          1
+        ]
+      },
+      "mean_S": {
+        "v7": 7.5,
+        "forcedP16": 7.5,
+        "forcedv6": 4,
+        "omega0": 8.5,
+        "historicalP16": 9
+      }
+    },
+    {
+      "head": "regular",
+      "cluster": 7,
+      "wins": {
+        "v7": 2,
+        "forcedP16": 2,
+        "forcedv6": 0,
+        "omega0": 2,
+        "historicalP16": 2
+      },
+      "orientation_wins": {
+        "v7": [
+          1,
+          1
+        ],
+        "forcedP16": [
+          1,
+          1
+        ],
+        "forcedv6": [
+          0,
+          0
+        ],
+        "omega0": [
+          1,
+          1
+        ],
+        "historicalP16": [
+          1,
+          1
+        ]
+      },
+      "mean_S": {
+        "v7": 10,
+        "forcedP16": 9,
+        "forcedv6": -0.5,
+        "omega0": 11.5,
+        "historicalP16": 7
+      }
+    },
+    {
+      "head": "regular",
+      "cluster": 8,
+      "wins": {
+        "v7": 2,
+        "forcedP16": 0,
+        "forcedv6": 0,
+        "omega0": 1,
+        "historicalP16": 2
+      },
+      "orientation_wins": {
+        "v7": [
+          1,
+          1
+        ],
+        "forcedP16": [
+          0,
+          0
+        ],
+        "forcedv6": [
+          0,
+          0
+        ],
+        "omega0": [
+          0,
+          1
+        ],
+        "historicalP16": [
+          1,
+          1
+        ]
+      },
+      "mean_S": {
+        "v7": 5.5,
+        "forcedP16": -13,
+        "forcedv6": 3.5,
+        "omega0": 1,
+        "historicalP16": 5.5
+      }
+    },
+    {
+      "head": "regular",
+      "cluster": 9,
+      "wins": {
+        "v7": 2,
+        "forcedP16": 2,
+        "forcedv6": 0,
+        "omega0": 1,
+        "historicalP16": 2
+      },
+      "orientation_wins": {
+        "v7": [
+          1,
+          1
+        ],
+        "forcedP16": [
+          1,
+          1
+        ],
+        "forcedv6": [
+          0,
+          0
+        ],
+        "omega0": [
+          0,
+          1
+        ],
+        "historicalP16": [
+          1,
+          1
+        ]
+      },
+      "mean_S": {
+        "v7": 11.5,
+        "forcedP16": 9,
+        "forcedv6": 3.5,
+        "omega0": 2,
+        "historicalP16": 4.5
+      }
+    },
+    {
+      "head": "regular",
+      "cluster": 10,
+      "wins": {
+        "v7": 2,
+        "forcedP16": 1,
+        "forcedv6": 0,
+        "omega0": 1,
+        "historicalP16": 1
+      },
+      "orientation_wins": {
+        "v7": [
+          1,
+          1
+        ],
+        "forcedP16": [
+          0,
+          1
+        ],
+        "forcedv6": [
+          0,
+          0
+        ],
+        "omega0": [
+          0,
+          1
+        ],
+        "historicalP16": [
+          1,
+          0
+        ]
+      },
+      "mean_S": {
+        "v7": 8,
+        "forcedP16": -8,
+        "forcedv6": 7,
+        "omega0": 0,
+        "historicalP16": -9.5
+      }
+    },
+    {
+      "head": "regular",
+      "cluster": 11,
+      "wins": {
+        "v7": 2,
+        "forcedP16": 2,
+        "forcedv6": 0,
+        "omega0": 2,
+        "historicalP16": 1
+      },
+      "orientation_wins": {
+        "v7": [
+          1,
+          1
+        ],
+        "forcedP16": [
+          1,
+          1
+        ],
+        "forcedv6": [
+          0,
+          0
+        ],
+        "omega0": [
+          1,
+          1
+        ],
+        "historicalP16": [
+          1,
+          0
+        ]
+      },
+      "mean_S": {
+        "v7": 12.5,
+        "forcedP16": 7.5,
+        "forcedv6": 5,
+        "omega0": 11.5,
+        "historicalP16": -10
+      }
+    },
+    {
+      "head": "regular",
+      "cluster": 12,
+      "wins": {
+        "v7": 2,
+        "forcedP16": 2,
+        "forcedv6": 0,
+        "omega0": 2,
+        "historicalP16": 2
+      },
+      "orientation_wins": {
+        "v7": [
+          1,
+          1
+        ],
+        "forcedP16": [
+          1,
+          1
+        ],
+        "forcedv6": [
+          0,
+          0
+        ],
+        "omega0": [
+          1,
+          1
+        ],
+        "historicalP16": [
+          1,
+          1
+        ]
+      },
+      "mean_S": {
+        "v7": 12.5,
+        "forcedP16": 6.5,
+        "forcedv6": -0.5,
+        "omega0": 10.5,
+        "historicalP16": 3
+      }
+    },
+    {
+      "head": "regular",
+      "cluster": 13,
+      "wins": {
+        "v7": 2,
+        "forcedP16": 1,
+        "forcedv6": 0,
+        "omega0": 2,
+        "historicalP16": 1
+      },
+      "orientation_wins": {
+        "v7": [
+          1,
+          1
+        ],
+        "forcedP16": [
+          0,
+          1
+        ],
+        "forcedv6": [
+          0,
+          0
+        ],
+        "omega0": [
+          1,
+          1
+        ],
+        "historicalP16": [
+          0,
+          1
+        ]
+      },
+      "mean_S": {
+        "v7": 8,
+        "forcedP16": -2,
+        "forcedv6": -4,
+        "omega0": 7,
+        "historicalP16": 0
+      }
+    },
+    {
+      "head": "regular",
+      "cluster": 14,
+      "wins": {
+        "v7": 0,
+        "forcedP16": 1,
+        "forcedv6": 0,
+        "omega0": 1,
+        "historicalP16": 2
+      },
+      "orientation_wins": {
+        "v7": [
+          0,
+          0
+        ],
+        "forcedP16": [
+          0,
+          1
+        ],
+        "forcedv6": [
+          0,
+          0
+        ],
+        "omega0": [
+          1,
+          0
+        ],
+        "historicalP16": [
+          1,
+          1
+        ]
+      },
+      "mean_S": {
+        "v7": -12.5,
+        "forcedP16": 1,
+        "forcedv6": -1.5,
+        "omega0": 2.5,
+        "historicalP16": 3
+      }
+    },
+    {
+      "head": "regular",
+      "cluster": 15,
+      "wins": {
+        "v7": 2,
+        "forcedP16": 2,
+        "forcedv6": 0,
+        "omega0": 2,
+        "historicalP16": 2
+      },
+      "orientation_wins": {
+        "v7": [
+          1,
+          1
+        ],
+        "forcedP16": [
+          1,
+          1
+        ],
+        "forcedv6": [
+          0,
+          0
+        ],
+        "omega0": [
+          1,
+          1
+        ],
+        "historicalP16": [
+          1,
+          1
+        ]
+      },
+      "mean_S": {
+        "v7": 8.5,
+        "forcedP16": 5.5,
+        "forcedv6": 2.5,
+        "omega0": 9,
+        "historicalP16": 3.5
+      }
+    },
+    {
+      "head": "regular",
+      "cluster": 16,
+      "wins": {
+        "v7": 2,
+        "forcedP16": 2,
+        "forcedv6": 0,
+        "omega0": 2,
+        "historicalP16": 1
+      },
+      "orientation_wins": {
+        "v7": [
+          1,
+          1
+        ],
+        "forcedP16": [
+          1,
+          1
+        ],
+        "forcedv6": [
+          0,
+          0
+        ],
+        "omega0": [
+          1,
+          1
+        ],
+        "historicalP16": [
+          1,
+          0
+        ]
+      },
+      "mean_S": {
+        "v7": 9.5,
+        "forcedP16": 6,
+        "forcedv6": -1,
+        "omega0": 9.5,
+        "historicalP16": 0.5
+      }
+    },
+    {
+      "head": "regular",
+      "cluster": 17,
+      "wins": {
+        "v7": 1,
+        "forcedP16": 2,
+        "forcedv6": 0,
+        "omega0": 1,
+        "historicalP16": 2
+      },
+      "orientation_wins": {
+        "v7": [
+          1,
+          0
+        ],
+        "forcedP16": [
+          1,
+          1
+        ],
+        "forcedv6": [
+          0,
+          0
+        ],
+        "omega0": [
+          1,
+          0
+        ],
+        "historicalP16": [
+          1,
+          1
+        ]
+      },
+      "mean_S": {
+        "v7": 0.5,
+        "forcedP16": 9,
+        "forcedv6": 3,
+        "omega0": -5,
+        "historicalP16": 7.5
+      }
+    },
+    {
+      "head": "regular",
+      "cluster": 18,
+      "wins": {
+        "v7": 0,
+        "forcedP16": 0,
+        "forcedv6": 0,
+        "omega0": 0,
+        "historicalP16": 1
+      },
+      "orientation_wins": {
+        "v7": [
+          0,
+          0
+        ],
+        "forcedP16": [
+          0,
+          0
+        ],
+        "forcedv6": [
+          0,
+          0
+        ],
+        "omega0": [
+          0,
+          0
+        ],
+        "historicalP16": [
+          0,
+          1
+        ]
+      },
+      "mean_S": {
+        "v7": -12,
+        "forcedP16": -18,
+        "forcedv6": 0.5,
+        "omega0": -16,
+        "historicalP16": -3.5
+      }
+    },
+    {
+      "head": "regular",
+      "cluster": 19,
+      "wins": {
+        "v7": 1,
+        "forcedP16": 2,
+        "forcedv6": 0,
+        "omega0": 1,
+        "historicalP16": 2
+      },
+      "orientation_wins": {
+        "v7": [
+          1,
+          0
+        ],
+        "forcedP16": [
+          1,
+          1
+        ],
+        "forcedv6": [
+          0,
+          0
+        ],
+        "omega0": [
+          1,
+          0
+        ],
+        "historicalP16": [
+          1,
+          1
+        ]
+      },
+      "mean_S": {
+        "v7": -5.5,
+        "forcedP16": 5.5,
+        "forcedv6": 4.5,
+        "omega0": -2,
+        "historicalP16": 5.5
+      }
+    },
+    {
+      "head": "novice",
+      "cluster": 0,
+      "wins": {
+        "v7": 2,
+        "forcedP16": 2,
+        "forcedv6": 0,
+        "omega0": 2,
+        "historicalP16": 2
+      },
+      "orientation_wins": {
+        "v7": [
+          1,
+          1
+        ],
+        "forcedP16": [
+          1,
+          1
+        ],
+        "forcedv6": [
+          0,
+          0
+        ],
+        "omega0": [
+          1,
+          1
+        ],
+        "historicalP16": [
+          1,
+          1
+        ]
+      },
+      "mean_S": {
+        "v7": 26,
+        "forcedP16": 21,
+        "forcedv6": -4.5,
+        "omega0": 27.5,
+        "historicalP16": 26
+      }
+    },
+    {
+      "head": "novice",
+      "cluster": 1,
+      "wins": {
+        "v7": 2,
+        "forcedP16": 2,
+        "forcedv6": 0,
+        "omega0": 2,
+        "historicalP16": 2
+      },
+      "orientation_wins": {
+        "v7": [
+          1,
+          1
+        ],
+        "forcedP16": [
+          1,
+          1
+        ],
+        "forcedv6": [
+          0,
+          0
+        ],
+        "omega0": [
+          1,
+          1
+        ],
+        "historicalP16": [
+          1,
+          1
+        ]
+      },
+      "mean_S": {
+        "v7": 31,
+        "forcedP16": 25,
+        "forcedv6": -9.5,
+        "omega0": 32.5,
+        "historicalP16": 21.5
+      }
+    },
+    {
+      "head": "novice",
+      "cluster": 2,
+      "wins": {
+        "v7": 2,
+        "forcedP16": 2,
+        "forcedv6": 0,
+        "omega0": 2,
+        "historicalP16": 2
+      },
+      "orientation_wins": {
+        "v7": [
+          1,
+          1
+        ],
+        "forcedP16": [
+          1,
+          1
+        ],
+        "forcedv6": [
+          0,
+          0
+        ],
+        "omega0": [
+          1,
+          1
+        ],
+        "historicalP16": [
+          1,
+          1
+        ]
+      },
+      "mean_S": {
+        "v7": 25.5,
+        "forcedP16": 21.5,
+        "forcedv6": -8.5,
+        "omega0": 23.5,
+        "historicalP16": 26
+      }
+    },
+    {
+      "head": "novice",
+      "cluster": 3,
+      "wins": {
+        "v7": 2,
+        "forcedP16": 2,
+        "forcedv6": 0,
+        "omega0": 2,
+        "historicalP16": 2
+      },
+      "orientation_wins": {
+        "v7": [
+          1,
+          1
+        ],
+        "forcedP16": [
+          1,
+          1
+        ],
+        "forcedv6": [
+          0,
+          0
+        ],
+        "omega0": [
+          1,
+          1
+        ],
+        "historicalP16": [
+          1,
+          1
+        ]
+      },
+      "mean_S": {
+        "v7": 18.5,
+        "forcedP16": 16.5,
+        "forcedv6": -8,
+        "omega0": 17.5,
+        "historicalP16": 22
+      }
+    },
+    {
+      "head": "novice",
+      "cluster": 4,
+      "wins": {
+        "v7": 2,
+        "forcedP16": 2,
+        "forcedv6": 0,
+        "omega0": 2,
+        "historicalP16": 2
+      },
+      "orientation_wins": {
+        "v7": [
+          1,
+          1
+        ],
+        "forcedP16": [
+          1,
+          1
+        ],
+        "forcedv6": [
+          0,
+          0
+        ],
+        "omega0": [
+          1,
+          1
+        ],
+        "historicalP16": [
+          1,
+          1
+        ]
+      },
+      "mean_S": {
+        "v7": 22.5,
+        "forcedP16": 17.5,
+        "forcedv6": -7.5,
+        "omega0": 23,
+        "historicalP16": 19
+      }
+    },
+    {
+      "head": "novice",
+      "cluster": 5,
+      "wins": {
+        "v7": 2,
+        "forcedP16": 2,
+        "forcedv6": 0,
+        "omega0": 2,
+        "historicalP16": 2
+      },
+      "orientation_wins": {
+        "v7": [
+          1,
+          1
+        ],
+        "forcedP16": [
+          1,
+          1
+        ],
+        "forcedv6": [
+          0,
+          0
+        ],
+        "omega0": [
+          1,
+          1
+        ],
+        "historicalP16": [
+          1,
+          1
+        ]
+      },
+      "mean_S": {
+        "v7": 26,
+        "forcedP16": 24.5,
+        "forcedv6": -8.5,
+        "omega0": 23,
+        "historicalP16": 24.5
+      }
+    },
+    {
+      "head": "novice",
+      "cluster": 6,
+      "wins": {
+        "v7": 2,
+        "forcedP16": 2,
+        "forcedv6": 0,
+        "omega0": 2,
+        "historicalP16": 2
+      },
+      "orientation_wins": {
+        "v7": [
+          1,
+          1
+        ],
+        "forcedP16": [
+          1,
+          1
+        ],
+        "forcedv6": [
+          0,
+          0
+        ],
+        "omega0": [
+          1,
+          1
+        ],
+        "historicalP16": [
+          1,
+          1
+        ]
+      },
+      "mean_S": {
+        "v7": 25.5,
+        "forcedP16": 11.5,
+        "forcedv6": -3,
+        "omega0": 19.5,
+        "historicalP16": 17
+      }
+    },
+    {
+      "head": "novice",
+      "cluster": 7,
+      "wins": {
+        "v7": 2,
+        "forcedP16": 2,
+        "forcedv6": 0,
+        "omega0": 2,
+        "historicalP16": 2
+      },
+      "orientation_wins": {
+        "v7": [
+          1,
+          1
+        ],
+        "forcedP16": [
+          1,
+          1
+        ],
+        "forcedv6": [
+          0,
+          0
+        ],
+        "omega0": [
+          1,
+          1
+        ],
+        "historicalP16": [
+          1,
+          1
+        ]
+      },
+      "mean_S": {
+        "v7": 29,
+        "forcedP16": 26.5,
+        "forcedv6": -7.5,
+        "omega0": 26.5,
+        "historicalP16": 24
+      }
+    },
+    {
+      "head": "novice",
+      "cluster": 8,
+      "wins": {
+        "v7": 2,
+        "forcedP16": 2,
+        "forcedv6": 0,
+        "omega0": 2,
+        "historicalP16": 2
+      },
+      "orientation_wins": {
+        "v7": [
+          1,
+          1
+        ],
+        "forcedP16": [
+          1,
+          1
+        ],
+        "forcedv6": [
+          0,
+          0
+        ],
+        "omega0": [
+          1,
+          1
+        ],
+        "historicalP16": [
+          1,
+          1
+        ]
+      },
+      "mean_S": {
+        "v7": 33.5,
+        "forcedP16": 28,
+        "forcedv6": -9.5,
+        "omega0": 30.5,
+        "historicalP16": 25.5
+      }
+    },
+    {
+      "head": "novice",
+      "cluster": 9,
+      "wins": {
+        "v7": 2,
+        "forcedP16": 2,
+        "forcedv6": 0,
+        "omega0": 2,
+        "historicalP16": 2
+      },
+      "orientation_wins": {
+        "v7": [
+          1,
+          1
+        ],
+        "forcedP16": [
+          1,
+          1
+        ],
+        "forcedv6": [
+          0,
+          0
+        ],
+        "omega0": [
+          1,
+          1
+        ],
+        "historicalP16": [
+          1,
+          1
+        ]
+      },
+      "mean_S": {
+        "v7": 21.5,
+        "forcedP16": 15.5,
+        "forcedv6": -5,
+        "omega0": 26,
+        "historicalP16": 22
+      }
+    },
+    {
+      "head": "novice",
+      "cluster": 10,
+      "wins": {
+        "v7": 2,
+        "forcedP16": 2,
+        "forcedv6": 0,
+        "omega0": 2,
+        "historicalP16": 2
+      },
+      "orientation_wins": {
+        "v7": [
+          1,
+          1
+        ],
+        "forcedP16": [
+          1,
+          1
+        ],
+        "forcedv6": [
+          0,
+          0
+        ],
+        "omega0": [
+          1,
+          1
+        ],
+        "historicalP16": [
+          1,
+          1
+        ]
+      },
+      "mean_S": {
+        "v7": 27.5,
+        "forcedP16": 24.5,
+        "forcedv6": -6,
+        "omega0": 29.5,
+        "historicalP16": 25
+      }
+    },
+    {
+      "head": "novice",
+      "cluster": 11,
+      "wins": {
+        "v7": 2,
+        "forcedP16": 2,
+        "forcedv6": 0,
+        "omega0": 2,
+        "historicalP16": 2
+      },
+      "orientation_wins": {
+        "v7": [
+          1,
+          1
+        ],
+        "forcedP16": [
+          1,
+          1
+        ],
+        "forcedv6": [
+          0,
+          0
+        ],
+        "omega0": [
+          1,
+          1
+        ],
+        "historicalP16": [
+          1,
+          1
+        ]
+      },
+      "mean_S": {
+        "v7": 28,
+        "forcedP16": 25,
+        "forcedv6": -7.5,
+        "omega0": 21.5,
+        "historicalP16": 20.5
+      }
+    },
+    {
+      "head": "novice",
+      "cluster": 12,
+      "wins": {
+        "v7": 2,
+        "forcedP16": 2,
+        "forcedv6": 0,
+        "omega0": 2,
+        "historicalP16": 2
+      },
+      "orientation_wins": {
+        "v7": [
+          1,
+          1
+        ],
+        "forcedP16": [
+          1,
+          1
+        ],
+        "forcedv6": [
+          0,
+          0
+        ],
+        "omega0": [
+          1,
+          1
+        ],
+        "historicalP16": [
+          1,
+          1
+        ]
+      },
+      "mean_S": {
+        "v7": 23.5,
+        "forcedP16": 16,
+        "forcedv6": -9,
+        "omega0": 19,
+        "historicalP16": 21
+      }
+    },
+    {
+      "head": "novice",
+      "cluster": 13,
+      "wins": {
+        "v7": 2,
+        "forcedP16": 2,
+        "forcedv6": 0,
+        "omega0": 2,
+        "historicalP16": 2
+      },
+      "orientation_wins": {
+        "v7": [
+          1,
+          1
+        ],
+        "forcedP16": [
+          1,
+          1
+        ],
+        "forcedv6": [
+          0,
+          0
+        ],
+        "omega0": [
+          1,
+          1
+        ],
+        "historicalP16": [
+          1,
+          1
+        ]
+      },
+      "mean_S": {
+        "v7": 26.5,
+        "forcedP16": 16,
+        "forcedv6": -9.5,
+        "omega0": 30.5,
+        "historicalP16": 20
+      }
+    },
+    {
+      "head": "novice",
+      "cluster": 14,
+      "wins": {
+        "v7": 2,
+        "forcedP16": 2,
+        "forcedv6": 0,
+        "omega0": 2,
+        "historicalP16": 2
+      },
+      "orientation_wins": {
+        "v7": [
+          1,
+          1
+        ],
+        "forcedP16": [
+          1,
+          1
+        ],
+        "forcedv6": [
+          0,
+          0
+        ],
+        "omega0": [
+          1,
+          1
+        ],
+        "historicalP16": [
+          1,
+          1
+        ]
+      },
+      "mean_S": {
+        "v7": 28.5,
+        "forcedP16": 26.5,
+        "forcedv6": -8,
+        "omega0": 28.5,
+        "historicalP16": 30
+      }
+    },
+    {
+      "head": "novice",
+      "cluster": 15,
+      "wins": {
+        "v7": 2,
+        "forcedP16": 2,
+        "forcedv6": 0,
+        "omega0": 2,
+        "historicalP16": 2
+      },
+      "orientation_wins": {
+        "v7": [
+          1,
+          1
+        ],
+        "forcedP16": [
+          1,
+          1
+        ],
+        "forcedv6": [
+          0,
+          0
+        ],
+        "omega0": [
+          1,
+          1
+        ],
+        "historicalP16": [
+          1,
+          1
+        ]
+      },
+      "mean_S": {
+        "v7": 23.5,
+        "forcedP16": 18.5,
+        "forcedv6": -3,
+        "omega0": 23,
+        "historicalP16": 23.5
+      }
+    },
+    {
+      "head": "novice",
+      "cluster": 16,
+      "wins": {
+        "v7": 2,
+        "forcedP16": 2,
+        "forcedv6": 0,
+        "omega0": 2,
+        "historicalP16": 2
+      },
+      "orientation_wins": {
+        "v7": [
+          1,
+          1
+        ],
+        "forcedP16": [
+          1,
+          1
+        ],
+        "forcedv6": [
+          0,
+          0
+        ],
+        "omega0": [
+          1,
+          1
+        ],
+        "historicalP16": [
+          1,
+          1
+        ]
+      },
+      "mean_S": {
+        "v7": 29.5,
+        "forcedP16": 25,
+        "forcedv6": -7,
+        "omega0": 28.5,
+        "historicalP16": 15
+      }
+    },
+    {
+      "head": "novice",
+      "cluster": 17,
+      "wins": {
+        "v7": 2,
+        "forcedP16": 2,
+        "forcedv6": 0,
+        "omega0": 2,
+        "historicalP16": 2
+      },
+      "orientation_wins": {
+        "v7": [
+          1,
+          1
+        ],
+        "forcedP16": [
+          1,
+          1
+        ],
+        "forcedv6": [
+          0,
+          0
+        ],
+        "omega0": [
+          1,
+          1
+        ],
+        "historicalP16": [
+          1,
+          1
+        ]
+      },
+      "mean_S": {
+        "v7": 34.5,
+        "forcedP16": 31,
+        "forcedv6": -8,
+        "omega0": 35.5,
+        "historicalP16": 31
+      }
+    },
+    {
+      "head": "novice",
+      "cluster": 18,
+      "wins": {
+        "v7": 2,
+        "forcedP16": 2,
+        "forcedv6": 0,
+        "omega0": 2,
+        "historicalP16": 2
+      },
+      "orientation_wins": {
+        "v7": [
+          1,
+          1
+        ],
+        "forcedP16": [
+          1,
+          1
+        ],
+        "forcedv6": [
+          0,
+          0
+        ],
+        "omega0": [
+          1,
+          1
+        ],
+        "historicalP16": [
+          1,
+          1
+        ]
+      },
+      "mean_S": {
+        "v7": 20,
+        "forcedP16": 16.5,
+        "forcedv6": -8.5,
+        "omega0": 23.5,
+        "historicalP16": 12
+      }
+    },
+    {
+      "head": "novice",
+      "cluster": 19,
+      "wins": {
+        "v7": 2,
+        "forcedP16": 2,
+        "forcedv6": 0,
+        "omega0": 2,
+        "historicalP16": 2
+      },
+      "orientation_wins": {
+        "v7": [
+          1,
+          1
+        ],
+        "forcedP16": [
+          1,
+          1
+        ],
+        "forcedv6": [
+          0,
+          0
+        ],
+        "omega0": [
+          1,
+          1
+        ],
+        "historicalP16": [
+          1,
+          1
+        ]
+      },
+      "mean_S": {
+        "v7": 28.5,
+        "forcedP16": 26.5,
+        "forcedv6": -3.5,
+        "omega0": 28,
+        "historicalP16": 23
+      }
+    }
+  ],
+  "readings": {
+    "relative": "Observed match",
+    "comparator_underperformance": false,
+    "win_difference": 1,
+    "observed_owner_criterion": true,
+    "descriptive_only": true,
+    "S5_authorized": false
+  },
+  "genuine_regular_wins": [
+    {
+      "tag": "validation_v7_regular_c00_o0",
+      "own": 15,
+      "enemy": 0,
+      "stage": "validation",
+      "arm": "v7",
+      "head": "regular",
+      "cluster": 0,
+      "orientation": 0,
+      "win": 1,
+      "S": 15,
+      "losses": 35,
+      "timeout": 0,
+      "termination_time": 40.766666666666914
+    },
+    {
+      "tag": "validation_v7_regular_c00_o1",
+      "own": 7,
+      "enemy": 0,
+      "stage": "validation",
+      "arm": "v7",
+      "head": "regular",
+      "cluster": 0,
+      "orientation": 1,
+      "win": 1,
+      "S": 7,
+      "losses": 43,
+      "timeout": 0,
+      "termination_time": 39.133333333333674
+    },
+    {
+      "tag": "validation_v7_regular_c01_o0",
+      "own": 14,
+      "enemy": 0,
+      "stage": "validation",
+      "arm": "v7",
+      "head": "regular",
+      "cluster": 1,
+      "orientation": 0,
+      "win": 1,
+      "S": 14,
+      "losses": 36,
+      "timeout": 0,
+      "termination_time": 37.00000000000046
+    },
+    {
+      "tag": "validation_v7_regular_c01_o1",
+      "own": 13,
+      "enemy": 0,
+      "stage": "validation",
+      "arm": "v7",
+      "head": "regular",
+      "cluster": 1,
+      "orientation": 1,
+      "win": 1,
+      "S": 13,
+      "losses": 37,
+      "timeout": 0,
+      "termination_time": 32.33333333333406
+    },
+    {
+      "tag": "validation_v7_regular_c02_o0",
+      "own": 9,
+      "enemy": 0,
+      "stage": "validation",
+      "arm": "v7",
+      "head": "regular",
+      "cluster": 2,
+      "orientation": 0,
+      "win": 1,
+      "S": 9,
+      "losses": 41,
+      "timeout": 0,
+      "termination_time": 34.40000000000061
+    },
+    {
+      "tag": "validation_v7_regular_c02_o1",
+      "own": 8,
+      "enemy": 0,
+      "stage": "validation",
+      "arm": "v7",
+      "head": "regular",
+      "cluster": 2,
+      "orientation": 1,
+      "win": 1,
+      "S": 8,
+      "losses": 42,
+      "timeout": 0,
+      "termination_time": 29.6666666666673
+    },
+    {
+      "tag": "validation_v7_regular_c03_o1",
+      "own": 7,
+      "enemy": 0,
+      "stage": "validation",
+      "arm": "v7",
+      "head": "regular",
+      "cluster": 3,
+      "orientation": 1,
+      "win": 1,
+      "S": 7,
+      "losses": 43,
+      "timeout": 0,
+      "termination_time": 45.1
+    },
+    {
+      "tag": "validation_v7_regular_c04_o0",
+      "own": 8,
+      "enemy": 0,
+      "stage": "validation",
+      "arm": "v7",
+      "head": "regular",
+      "cluster": 4,
+      "orientation": 0,
+      "win": 1,
+      "S": 8,
+      "losses": 42,
+      "timeout": 0,
+      "termination_time": 38.36666666666705
+    },
+    {
+      "tag": "validation_v7_regular_c04_o1",
+      "own": 2,
+      "enemy": 0,
+      "stage": "validation",
+      "arm": "v7",
+      "head": "regular",
+      "cluster": 4,
+      "orientation": 1,
+      "win": 1,
+      "S": 2,
+      "losses": 48,
+      "timeout": 0,
+      "termination_time": 75.49999999999828
+    },
+    {
+      "tag": "validation_v7_regular_c05_o1",
+      "own": 12,
+      "enemy": 0,
+      "stage": "validation",
+      "arm": "v7",
+      "head": "regular",
+      "cluster": 5,
+      "orientation": 1,
+      "win": 1,
+      "S": 12,
+      "losses": 38,
+      "timeout": 0,
+      "termination_time": 49.03333333333311
+    },
+    {
+      "tag": "validation_v7_regular_c06_o0",
+      "own": 8,
+      "enemy": 0,
+      "stage": "validation",
+      "arm": "v7",
+      "head": "regular",
+      "cluster": 6,
+      "orientation": 0,
+      "win": 1,
+      "S": 8,
+      "losses": 42,
+      "timeout": 0,
+      "termination_time": 39.266666666667
+    },
+    {
+      "tag": "validation_v7_regular_c06_o1",
+      "own": 7,
+      "enemy": 0,
+      "stage": "validation",
+      "arm": "v7",
+      "head": "regular",
+      "cluster": 6,
+      "orientation": 1,
+      "win": 1,
+      "S": 7,
+      "losses": 43,
+      "timeout": 0,
+      "termination_time": 41.966666666666846
+    },
+    {
+      "tag": "validation_v7_regular_c07_o0",
+      "own": 13,
+      "enemy": 0,
+      "stage": "validation",
+      "arm": "v7",
+      "head": "regular",
+      "cluster": 7,
+      "orientation": 0,
+      "win": 1,
+      "S": 13,
+      "losses": 37,
+      "timeout": 0,
+      "termination_time": 43.066666666666784
+    },
+    {
+      "tag": "validation_v7_regular_c07_o1",
+      "own": 7,
+      "enemy": 0,
+      "stage": "validation",
+      "arm": "v7",
+      "head": "regular",
+      "cluster": 7,
+      "orientation": 1,
+      "win": 1,
+      "S": 7,
+      "losses": 43,
+      "timeout": 0,
+      "termination_time": 39.20000000000034
+    },
+    {
+      "tag": "validation_v7_regular_c08_o0",
+      "own": 9,
+      "enemy": 0,
+      "stage": "validation",
+      "arm": "v7",
+      "head": "regular",
+      "cluster": 8,
+      "orientation": 0,
+      "win": 1,
+      "S": 9,
+      "losses": 41,
+      "timeout": 0,
+      "termination_time": 42.90000000000013
+    },
+    {
+      "tag": "validation_v7_regular_c08_o1",
+      "own": 2,
+      "enemy": 0,
+      "stage": "validation",
+      "arm": "v7",
+      "head": "regular",
+      "cluster": 8,
+      "orientation": 1,
+      "win": 1,
+      "S": 2,
+      "losses": 48,
+      "timeout": 0,
+      "termination_time": 70.23333333333191
+    },
+    {
+      "tag": "validation_v7_regular_c09_o0",
+      "own": 13,
+      "enemy": 0,
+      "stage": "validation",
+      "arm": "v7",
+      "head": "regular",
+      "cluster": 9,
+      "orientation": 0,
+      "win": 1,
+      "S": 13,
+      "losses": 37,
+      "timeout": 0,
+      "termination_time": 40.4333333333336
+    },
+    {
+      "tag": "validation_v7_regular_c09_o1",
+      "own": 10,
+      "enemy": 0,
+      "stage": "validation",
+      "arm": "v7",
+      "head": "regular",
+      "cluster": 9,
+      "orientation": 1,
+      "win": 1,
+      "S": 10,
+      "losses": 40,
+      "timeout": 0,
+      "termination_time": 46.16666666666661
+    },
+    {
+      "tag": "validation_v7_regular_c10_o0",
+      "own": 6,
+      "enemy": 0,
+      "stage": "validation",
+      "arm": "v7",
+      "head": "regular",
+      "cluster": 10,
+      "orientation": 0,
+      "win": 1,
+      "S": 6,
+      "losses": 44,
+      "timeout": 0,
+      "termination_time": 38.30000000000039
+    },
+    {
+      "tag": "validation_v7_regular_c10_o1",
+      "own": 10,
+      "enemy": 0,
+      "stage": "validation",
+      "arm": "v7",
+      "head": "regular",
+      "cluster": 10,
+      "orientation": 1,
+      "win": 1,
+      "S": 10,
+      "losses": 40,
+      "timeout": 0,
+      "termination_time": 40.20000000000028
+    },
+    {
+      "tag": "validation_v7_regular_c11_o0",
+      "own": 10,
+      "enemy": 0,
+      "stage": "validation",
+      "arm": "v7",
+      "head": "regular",
+      "cluster": 11,
+      "orientation": 0,
+      "win": 1,
+      "S": 10,
+      "losses": 40,
+      "timeout": 0,
+      "termination_time": 39.00000000000035
+    },
+    {
+      "tag": "validation_v7_regular_c11_o1",
+      "own": 15,
+      "enemy": 0,
+      "stage": "validation",
+      "arm": "v7",
+      "head": "regular",
+      "cluster": 11,
+      "orientation": 1,
+      "win": 1,
+      "S": 15,
+      "losses": 35,
+      "timeout": 0,
+      "termination_time": 34.20000000000062
+    },
+    {
+      "tag": "validation_v7_regular_c12_o0",
+      "own": 8,
+      "enemy": 0,
+      "stage": "validation",
+      "arm": "v7",
+      "head": "regular",
+      "cluster": 12,
+      "orientation": 0,
+      "win": 1,
+      "S": 8,
+      "losses": 42,
+      "timeout": 0,
+      "termination_time": 36.73333333333381
+    },
+    {
+      "tag": "validation_v7_regular_c12_o1",
+      "own": 17,
+      "enemy": 0,
+      "stage": "validation",
+      "arm": "v7",
+      "head": "regular",
+      "cluster": 12,
+      "orientation": 1,
+      "win": 1,
+      "S": 17,
+      "losses": 33,
+      "timeout": 0,
+      "termination_time": 36.46666666666716
+    },
+    {
+      "tag": "validation_v7_regular_c13_o0",
+      "own": 7,
+      "enemy": 0,
+      "stage": "validation",
+      "arm": "v7",
+      "head": "regular",
+      "cluster": 13,
+      "orientation": 0,
+      "win": 1,
+      "S": 7,
+      "losses": 43,
+      "timeout": 0,
+      "termination_time": 36.43333333333383
+    },
+    {
+      "tag": "validation_v7_regular_c13_o1",
+      "own": 9,
+      "enemy": 0,
+      "stage": "validation",
+      "arm": "v7",
+      "head": "regular",
+      "cluster": 13,
+      "orientation": 1,
+      "win": 1,
+      "S": 9,
+      "losses": 41,
+      "timeout": 0,
+      "termination_time": 40.40000000000027
+    },
+    {
+      "tag": "validation_v7_regular_c15_o0",
+      "own": 4,
+      "enemy": 0,
+      "stage": "validation",
+      "arm": "v7",
+      "head": "regular",
+      "cluster": 15,
+      "orientation": 0,
+      "win": 1,
+      "S": 4,
+      "losses": 46,
+      "timeout": 0,
+      "termination_time": 58.366666666665914
+    },
+    {
+      "tag": "validation_v7_regular_c15_o1",
+      "own": 13,
+      "enemy": 0,
+      "stage": "validation",
+      "arm": "v7",
+      "head": "regular",
+      "cluster": 15,
+      "orientation": 1,
+      "win": 1,
+      "S": 13,
+      "losses": 37,
+      "timeout": 0,
+      "termination_time": 37.100000000000456
+    },
+    {
+      "tag": "validation_v7_regular_c16_o0",
+      "own": 12,
+      "enemy": 0,
+      "stage": "validation",
+      "arm": "v7",
+      "head": "regular",
+      "cluster": 16,
+      "orientation": 0,
+      "win": 1,
+      "S": 12,
+      "losses": 38,
+      "timeout": 0,
+      "termination_time": 38.36666666666705
+    },
+    {
+      "tag": "validation_v7_regular_c16_o1",
+      "own": 7,
+      "enemy": 0,
+      "stage": "validation",
+      "arm": "v7",
+      "head": "regular",
+      "cluster": 16,
+      "orientation": 1,
+      "win": 1,
+      "S": 7,
+      "losses": 43,
+      "timeout": 0,
+      "termination_time": 41.733333333333526
+    },
+    {
+      "tag": "validation_v7_regular_c17_o0",
+      "own": 12,
+      "enemy": 0,
+      "stage": "validation",
+      "arm": "v7",
+      "head": "regular",
+      "cluster": 17,
+      "orientation": 0,
+      "win": 1,
+      "S": 12,
+      "losses": 38,
+      "timeout": 0,
+      "termination_time": 30.833333333334025
+    },
+    {
+      "tag": "validation_v7_regular_c19_o0",
+      "own": 5,
+      "enemy": 0,
+      "stage": "validation",
+      "arm": "v7",
+      "head": "regular",
+      "cluster": 19,
+      "orientation": 0,
+      "win": 1,
+      "S": 5,
+      "losses": 45,
+      "timeout": 0,
+      "termination_time": 67.96666666666538
+    }
+  ],
+  "seconds": 274.748605875,
+  "limits": "Stored-only audit; no engine execution, sealed analysis/render run, new allowance, scientific acceptance or S5 authorization."
+}
