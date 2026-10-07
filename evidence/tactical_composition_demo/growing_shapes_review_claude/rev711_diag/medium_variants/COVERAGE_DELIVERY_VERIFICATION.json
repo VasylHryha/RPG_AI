@@ -1,0 +1,127 @@
+{
+  "base_commit": "0a132d52bb64feaf9f0d05c624b07aba2cf2a13c",
+  "status": "BUILD_AND_SYNTHETIC_VERIFIED_NO_PILOTS",
+  "round2": "APPROVE_WITH_NOTES",
+  "implementation_recheck": "APPROVE_WITH_NOTES",
+  "tests": {
+    "command": [
+      "/usr/bin/caffeinate",
+      "-i",
+      "-s",
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/test_coverage_pipeline.py",
+      "evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/test_service_telemetry.py"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 1.1452179169999999,
+    "awake_seconds": 1.1452187919999999,
+    "scope": "Focused synthetic only; no pilots, medium steps, assay or real process listing"
+  },
+  "preservation": {
+    "status": "PASS",
+    "files": 164,
+    "shared_modules_changed": false,
+    "summary_sha256": {
+      "SERVICE_RUN_SUMMARIES.json": "808f1b0485e647980022a2ed52e644ec5e4990ac646da58fba9044829828616f",
+      "SERVICE_COMPACT_SUMMARIES.json": "2dc71a9bba91dc86aebda36ea2a14deff4560d3c266a30aa614377bbe8363b72",
+      "COVERAGE_DIAGNOSTIC.json": "b136818723cd925e8a8aa4986358182e3a3aad3909c55c12f80d3e312712b24c"
+    }
+  },
+  "exploratory_jobs": 20,
+  "observer_off_controls": 2,
+  "integrity_pairs": "NOT_RUN",
+  "pilots_run": 0,
+  "real_process_list_calls": 0,
+  "budget": {
+    "cap_seconds": 3600,
+    "max_workers": 10,
+    "historical_rd3_job_max_seconds": 1329.326354583,
+    "initial_10_worker_projection_seconds": 3987.979063749,
+    "reading": "PROJECTION_STOP before fresh launches; owner/drafter disposition needed outside this delivery"
+  },
+  "runtime": "Claude scheduler/report writer not executed; writer main verified against synthetic PARTIAL fixture",
+  "build_identities": {
+    "COVA": {
+      "base_commit": "fd2182681ee8ed7b7b3a0772d69de898a8aa17c2",
+      "design_sha256": "124fc4a5d7ae621ab0fcdeff13bbc33b766c17b9d56e1c60e85e3a85f3d66134",
+      "coverage_kernel_sha256": "1c13b12731686c8711126edeba65e421179612b16e51d59ba220eaad7c5d8765",
+      "spec_sha256": "ca0def0dff6c352f1cb53d3f2aad6f7e9cc0be9556d7a30ae6d7bc74e4494cc5",
+      "binary_sha256": "b0b35a16ba134c57e56a44c9cb128b7a7ce2ae9cd4aaf836b8b1e82392c9578d"
+    },
+    "COVB": {
+      "base_commit": "fd2182681ee8ed7b7b3a0772d69de898a8aa17c2",
+      "design_sha256": "2b4905f6df0172ad80daead100f37319f52fc6c5b96f02541c84cea259636d92",
+      "coverage_kernel_sha256": "1c13b12731686c8711126edeba65e421179612b16e51d59ba220eaad7c5d8765",
+      "spec_sha256": "ca0def0dff6c352f1cb53d3f2aad6f7e9cc0be9556d7a30ae6d7bc74e4494cc5",
+      "binary_sha256": "b0b35a16ba134c57e56a44c9cb128b7a7ce2ae9cd4aaf836b8b1e82392c9578d"
+    }
+  },
+  "artifacts": {
+    "evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/coverage_kernel.py": {
+      "sha256": "1c13b12731686c8711126edeba65e421179612b16e51d59ba220eaad7c5d8765",
+      "bytes": 5528
+    },
+    "evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/coverage_telemetry.py": {
+      "sha256": "921b5663405037327c75366ccd52334c3c6af27fe0664aa82c52450de4ea321a",
+      "bytes": 16932
+    },
+    "evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/execute_coverage_plan.py": {
+      "sha256": "2abbaf3b2de3ff2d310f10ec1a98420fc3bbf638b9ea6337face9c12ff7ac306",
+      "bytes": 13251
+    },
+    "evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/run_coverage_pilot.py": {
+      "sha256": "fb0e4c2c56fc7b3b806a2d9a0b361e5549a8cf54d133468283b918bf757f2489",
+      "bytes": 6051
+    },
+    "evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/write_coverage_report.py": {
+      "sha256": "48525b8e494feba6757b6052308c102931543a79a0254efc54e931617ff502fb",
+      "bytes": 12040
+    },
+    "evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/test_coverage_pipeline.py": {
+      "sha256": "add7c364c776e4114e702f2b1e9fbbd26f5ee52ac77c9aee9b469751924da614",
+      "bytes": 20391
+    },
+    "evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/kernel_builder/build_coverage_kernels.py": {
+      "sha256": "6968794c764701b5718c63e13973a2dbc20441497e2cb911a36efd40953358bb",
+      "bytes": 8075
+    },
+    "evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/kernel_builder/COVA_BUILD.json": {
+      "sha256": "ea4fcccac4fed28275cac1f6ee79fe48fbda0258826d10f9a00955c2ef4f24d8",
+      "bytes": 8418
+    },
+    "evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/kernel_builder/COVB_BUILD.json": {
+      "sha256": "6e08b8a8a980721c7b0561f61dbfd205c832fe850e3314e781913003ee17dc63",
+      "bytes": 10625
+    },
+    "evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/COVERAGE_USAGE.md": {
+      "sha256": "7879449beb7d311a622a1896b7660c318eba7cf69f77cf169d697a2e41e55d03",
+      "bytes": 6782
+    },
+    "evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/COVERAGE_PRESERVATION.json": {
+      "sha256": "045395b6972668b52fad83993d7d6eceb9bc76010fd5015725aaf46e58147479",
+      "bytes": 26847
+    },
+    "evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/COVERAGE_FOCUSED_TEST.json": {
+      "sha256": "b6efdd082d81611c55fda74189c08e15e10f3c41f680126f4715b7f7e2ff587b",
+      "bytes": 578
+    },
+    "docs/reviews/tactical_0h_coverage_pilot_spec_review_r2_codex.md": {
+      "sha256": "89b4d0e43753cd8b4c9e1402c4295769f30843a1a3bedaaf696f35a5be0ff5be",
+      "bytes": 4763
+    },
+    "docs/reviews/tactical_0h_coverage_implementation_recheck_codex.md": {
+      "sha256": "9e1a5af3f91bd117443b901ddb5210ce91722b3cfef4cd2549b381018e8f724c",
+      "bytes": 4375
+    }
+  },
+  "test_log": {
+    "path": "evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/_local/coverage_focused_tests.log",
+    "sha256": "c2630c42f714c0b5b907addb66ada2615862b2c9f02efdc8f463df90a3d837b7"
+  },
+  "delivery_base_commit": "0a132d52bb64feaf9f0d05c624b07aba2cf2a13c",
+  "git_delivery": "Primary index.lock denied; verified local bundle with repository hooks and explicit pathspecs"
+}
