@@ -1362,3 +1362,40 @@ This is a stored-data analysis. It runs while the 0h pilots run.
 | Does the compute projection exceed 1 h before 22:00? | Ask the owner | implementer |
 | Is a rule, constant or knob bound changed after a development fight? | INVALID; a new revision on fresh seeds | implementer |
 | Does v7 fall below P12 on validation? | Report it; the drafter diagnoses (resonator gating against the static rules) before any v8 | drafter |
+
+### 19.11 Owner decision on v7 (R1), and two single-change arms toward the >50% witness
+
+**Owner decision (2026-10-07, about 17:30, answering Codex's v7 review R1):** **the scripted witness comes first, above 50%.** v7 (§20) stays a draft until then; its review findings R2–R9 stay open.
+
+**Recheck of §19.10's run:** APPROVE_WITH_NOTES (`docs/reviews/tactical_0g_escort_probe_v2_recheck_codex.md`). P12/P14/P15 won 7/8/6 of 20, and all 21 regular wins are genuine.
+- **Paired cluster differences:** P14 against P12 = [0, 1, −1, 1, −1, 0, 1, 0, 0, 0]; P15 against P12 = [0, 2, −1, 0, 0, 0, 1, −1, −1, −1].
+- **So the cluster-level noise is about ±12–16 percentage points** at 20 fights. An arm needs a large effect to separate from P12.
+
+**What the wins have that the losses lack** (`S4_ESCORT_MECHANISM_DIAGNOSTIC.md`; associations from stored data):
+- more early enemy-screen kills by our artillery: 10.5 against 5.8 per fight before 20 s, almost all **incidental splash** from shells aimed at enemy guns;
+- more guns alive at 30 s.
+
+**Probe (scripted, descriptive, declared before any fight; two single-change arms on P12):**
+- **P12 (control),** re-run on fresh seeds.
+- **P16 = P12 plus splash-value gun focus.**
+  - Wherever P5/P11/P12 choose an enemy gun by "lowest remaining HP, then id" (each gun's individual reachable choice, and the shared anchor), the ordering key becomes:
+    1. **the highest splash value V(g)**;
+    2. then the lowest HP;
+    3. then the id.
+  - **V(g)** = the number of living enemy units of any role whose centre is within 40 + that unit's body radius of g's centre. A shell lands on its target's release-time position (lobLead off), so V(g) counts the units that one landing on g would damage. The count includes g itself.
+  - **The movement focus follows the chosen gun,** exactly as P5's rule derives it from the focus. No other change.
+- **P17 = P12 plus melee escorts.**
+  - While both sides have living guns, every living own **melee** unit takes the P12 escort point as its goal, with the same assignment, direction, fallbacks, d = 60, movement multiplier rule and clipping as the ranged escorts (§19.8, 19.8.1).
+  - Melee targeting is unchanged (v6). The ranged escorts are unchanged.
+- **Panel:** 10 fresh clusters × 2 orientations × {P12, P16, P17} × {regular, novice} = 120 fights. Conventions, measurements and stop rows as §19.8.1 and §19.10.
+
+**Added measurements:**
+- the mean V of the chosen gun targets, and the splash victims per successful own gun-targeted shell;
+- early enemy-ranged kills by our artillery (< 20 s and < 30 s);
+- melee arrival and melee losses, and their killers;
+- the gun-survival curve.
+
+**Reading rules (paired clusters, descriptive):**
+- **"Clearly above P12":** the arm's regular elimination wins ≥ P12's + 3 **and** ≥ 10/20.
+- **"The observed owner criterion":** ≥ 11/20 regular elimination wins, mean S > 0, novice ≥ 11/20, and no failures. An observed count is not a population rate.
+- The report includes the paired cluster table.
