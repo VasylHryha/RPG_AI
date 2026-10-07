@@ -61,3 +61,23 @@
 4. The exploratory entry condition: 10/10.
 5. §19.7 fresh-key gate, with the base law and the pin as benchmarks.
 6. Cost projection, then the owner's approval of the development run.
+
+## 4. Addendum: the owner's V3 (`~/Downloads/RRG_NEXT_STEPS_FINAL_V3_2026-10-07.md`)
+
+**V3 incorporated this assessment, corrected two of my errors, and added gates:**
+- **The corrections:**
+  - the scratch "2-bond" cap limits **selected** partners, so the realized degree can exceed 2;
+  - K = 0 is not a clean phase ablation, because spring selection uses K.
+- **The additions:**
+  - a ranked, service-aware D3 instead of blanket path protection;
+  - a two-dimensional failure classification (break cause × non-repair cause);
+  - repair candidates ordered (rootless-fragment desaturation, then repair headroom, then O valence 1);
+  - stop-on-first-failure fresh keys;
+  - the seeded start as a secondary report;
+  - an eight-site service fixture (F5C) before development;
+  - M/U revalidation under the new death rule.
+- **I adopt V3 as the Track A order** (`docs/PLAN_CURRENT.md` A6w–A9), with three amendments:
+  1. **Service per physical site, active or not.** V1 and V3's ranked rule, as written, use `graph()` roots, which require an active drive. Because task assignments reshuffle the active sites every episode, idle sites' routes would be pruned first, against F5C.
+  2. **Measure coverage early,** descriptively, on every candidate; a coverage mechanism may need its own single change (A6z).
+  3. **The entry filter is 5/5 exploratory empty-start runs** (seeded reported), consistent with V3's seeded-secondary gate.
+- **V1's result:** 8/10, with the empty start 5/5. Spec for the next step: `medium_variants/TELEMETRY_AND_RANKED_D3_SPEC.md`.
