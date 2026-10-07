@@ -1,0 +1,55 @@
+[v6-development 83c0faf] Implement and verify 0g v6 complex controller
+ Committer: new <new@MacBook-Pro-new.local>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly. Run the
+following command and follow the instructions in your editor to edit
+your configuration file:
+
+    git config --global --edit
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 40 files changed, 15854 insertions(+)
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/S4_V6_CLAUDE_REVIEW_ATTEMPT.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/S4_V6_NO_COMBAT_PLAN.md
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/S4_V6_PRESERVATION_PIN.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/S4_V6_PROTOCOL.md
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/S4_V6_READINESS.md
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/S4_V6_SEEDS.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/build_v6.py
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/native_s4_v6_contract.cpp
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/native_s4_v6_numerics.cpp
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s3_v6_runner.py
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_v6.py
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_v6_checks/DELIVERY_NOTE.md
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_v6_checks/ENGINEERING_REFINEMENT.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_v6_checks/EXTERNAL_WORKSPACE_CHANGES.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_v6_checks/FAILED_FIRST_TEST_RESULT.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_v6_checks/FAILED_SECOND_TEST_RESULT.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_v6_checks/IMPLEMENTATION_RECHECK.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_v6_checks/NATIVE_CONTRACT.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_v6_checks/PRESERVATION.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_v6_checks/READINESS.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_v6_checks/TEST_RESULT.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_v6_checks/V6_CONTROLLER_CONTRACT.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_v6_delivery.py
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_v6_engineering.py
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_v6_numerical_checks/ACCEPTANCE.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_v6_numerical_checks/BUILD.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_v6_numerical_checks/INPUTS.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_v6_numerical_checks/KERNEL_CONTRACTS.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_v6_numerical_checks/TEST_RESULT.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_v6_numerics.py
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_v6_report.py
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_v6_run_once.py
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/src/native/host_v6.cpp
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/src/native/s4_v6_complex.cpp
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/src/native/s4_v6_complex.h
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/src/native/s4_v6_controller.cpp
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/src/native/s4_v6_controller.h
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/src/native/s4_v6_dispatch.cpp
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/test_s4_v6.py
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/test_s4_v6_numerics.py

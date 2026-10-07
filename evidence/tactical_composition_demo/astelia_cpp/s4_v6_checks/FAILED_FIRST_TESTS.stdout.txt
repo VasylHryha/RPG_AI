@@ -1,0 +1,16 @@
+....................F
+=================================== FAILURES ===================================
+___________________ test_native_complex_controller_contract ____________________
+
+    def test_native_complex_controller_contract():
+        run=subprocess.run([str(V.BINARY),'--v6-contract'],capture_output=True,text=True,timeout=30)
+        V.write(V.CHECKS/'V6_CONTROLLER_CONTRACT.json',dict(returncode=run.returncode,stdout=run.stdout,stderr=run.stderr,fights=0))
+        assert run.returncode==0,run.stderr
+>       assert json.loads(run.stdout)['unchanged_arm_action_bytes']>15000
+E       assert 13367 > 15000
+
+evidence/tactical_composition_demo/astelia_cpp/test_s4_v6.py:254: AssertionError
+=========================== short test summary info ============================
+FAILED evidence/tactical_composition_demo/astelia_cpp/test_s4_v6.py::test_native_complex_controller_contract
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 20 passed in 2.00s

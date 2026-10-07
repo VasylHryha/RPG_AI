@@ -1,0 +1,17 @@
+.......F
+=================================== FAILURES ===================================
+__________________ test_all_tracked_baseline_files_preserved ___________________
+
+    def test_all_tracked_baseline_files_preserved():
+        pin=json.loads((V.ROOT/'S4_V6_PRESERVATION_PIN.json').read_text())
+        repo=V.ROOT.parents[2]
+        changed=[name for name,expected in pin['tracked_sha256'].items() if V.sha(repo/name)!=expected]
+>       assert not changed,changed
+E       AssertionError: ['docs/PLAN_CURRENT.md', 'evidence/tactical_composition_demo/DESIGN_0H_REV7.md']
+E       assert not ['docs/PLAN_CURRENT.md', 'evidence/tactical_composition_demo/DESIGN_0H_REV7.md']
+
+evidence/tactical_composition_demo/astelia_cpp/test_s4_v6.py:280: AssertionError
+=========================== short test summary info ============================
+FAILED evidence/tactical_composition_demo/astelia_cpp/test_s4_v6.py::test_all_tracked_baseline_files_preserved
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 7 passed in 2.59s

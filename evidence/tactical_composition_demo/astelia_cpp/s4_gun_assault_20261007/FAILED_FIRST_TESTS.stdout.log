@@ -1,0 +1,30 @@
+..F
+=================================== FAILURES ===================================
+___ test_actions_outcomes_and_damage_ledger_identical[v6_resonator-novice-0] ___
+
+arm = 'v6_resonator', head = 'novice', orientation = 0
+
+    @pytest.mark.parametrize('arm,head,orientation',[(a,h,int(h=='regular')) for a in ARMS for h in ('novice','regular')])
+    def test_actions_outcomes_and_damage_ledger_identical(arm,head,orientation):
+     ledger=json.loads((RAW/'DEVELOPMENT_SEED_LEDGER.json').read_text());seed=ledger['engineering_seeds'][ARMS.index(arm)]
+     outputs=[];metrics=[];observer=[];reqs=[]
+     for name,on,binary in [('historical',False,CPP/'build/astelia_native_v6'),('off',False,BINARY),('on',True,BINARY)]:
+      req=request_for(arm,head,seed,orientation,on,trace=True);reqs.append(req)
+      run=subprocess.run([str(binary),'--metrics'],input=(json.dumps(req)+'\n').encode(),capture_output=True,timeout=90,check=True)
+      path=RAW/f'parity_{arm}_{head}_{name}.jsonl.gz'
+      with gzip.GzipFile(filename=str(path),mode='wb',mtime=0) as f:f.write(run.stdout)
+      lines=run.stdout.splitlines(keepends=True);obs=[json.loads(l) for l in lines if l.startswith(b'{"observerV1":true')]
+      outputs.append(b''.join(l for l in lines if not l.startswith(b'{"observerV1":true')));metrics.append(run.stderr)
+      if on:observer=obs
+     assert outputs[0]==outputs[1]==outputs[2];assert metrics[0]==metrics[1]==metrics[2]
+     # State contains both armies' exact decisions. Observer actions must describe the same records.
+     ticks=[json.loads(l) for l in outputs[2].splitlines() if b'"state"' in l];summary=json.loads(outputs[2].splitlines()[-1])
+>    assert len(observer)==len(ticks)>10
+E    assert 0 > 10
+E     +  where 0 = len([])
+
+evidence/tactical_composition_demo/astelia_cpp/test_observer_v1.py:42: AssertionError
+=========================== short test summary info ============================
+FAILED evidence/tactical_composition_demo/astelia_cpp/test_observer_v1.py::test_actions_outcomes_and_damage_ledger_identical[v6_resonator-novice-0]
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 2 passed in 1.23s

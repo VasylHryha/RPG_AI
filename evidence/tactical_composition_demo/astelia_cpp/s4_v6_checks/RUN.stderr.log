@@ -1,0 +1,30 @@
+Traceback (most recent call last):
+  File "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_v6.py", line 335, in <module>
+    if __name__=='__main__':main()
+  File "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_v6.py", line 327, in main
+    bench=Bench(args.output,deadline,locked);result=run_stages(bench)
+  File "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_v6.py", line 283, in run_stages
+    best[arm],selections[arm]=tune(bench,stage,arm,best[arm])
+  File "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_v6.py", line 224, in tune
+    initial=bench.evaluate(arm,start,panel,stage,'tuning','initial',True)
+  File "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_v6.py", line 205, in evaluate
+    for battle,rows in zip(panel,self.pool.map(execute,tasks)):
+  File "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_deadline.py", line 78, in map
+    result=future.result(timeout=self.deadline.remaining())
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/concurrent/futures/_base.py", line 445, in result
+    return self.__get_result()
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/concurrent/futures/_base.py", line 390, in __get_result
+    raise self._exception
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/concurrent/futures/thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_v6.py", line 168, in execute
+    rows=execute_fights(task,deadline)
+  File "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_v6.py", line 154, in execute_fights
+    if value.get('controllerStatus')=='completed' and not any(value['controllerFailures']):cache.put(reqs[i],[value],dict(purpose='S4 v6 fresh development',metrics=metrics))
+  File "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/result_cache.py", line 86, in put
+    validate_rows(request, rows)
+  File "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/result_schema.py", line 99, in validate_rows
+    status = validate_summary(rows[-1])
+  File "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/result_schema.py", line 24, in validate_summary
+    raise ValueError('invalid combat summary schema')
+ValueError: invalid combat summary schema

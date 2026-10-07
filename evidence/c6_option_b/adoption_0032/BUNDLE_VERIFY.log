@@ -1,0 +1,59 @@
+$ git bundle create /Users/new/RiderProjects/ai_RPG_test/evidence/c6_option_b/adoption_0032/ADOPTION_0032.bundle ad6be28379c097fdc96b06b55b87b45d944efe00..HEAD
+
+$ git bundle verify /Users/new/RiderProjects/ai_RPG_test/evidence/c6_option_b/adoption_0032/ADOPTION_0032.bundle
+The bundle contains this ref:
+fceedec92bd6331686617812109aecb027eafd9f HEAD
+The bundle requires this ref:
+ad6be28379c097fdc96b06b55b87b45d944efe00 
+The bundle uses this hash algorithm: sha1
+/Users/new/RiderProjects/ai_RPG_test/evidence/c6_option_b/adoption_0032/ADOPTION_0032.bundle is okay
+
+$ git clone --shared --bare /Users/new/RiderProjects/ai_RPG_test /Users/new/RiderProjects/ai_RPG_test/build/adoption_0032_delivery/verify.git
+Cloning into bare repository '/Users/new/RiderProjects/ai_RPG_test/build/adoption_0032_delivery/verify.git'...
+done.
+
+$ git fetch /Users/new/RiderProjects/ai_RPG_test/evidence/c6_option_b/adoption_0032/ADOPTION_0032.bundle HEAD:refs/heads/adoption-0032
+From /Users/new/RiderProjects/ai_RPG_test/evidence/c6_option_b/adoption_0032/ADOPTION_0032.bundle
+ * [new ref]         HEAD       -> adoption-0032
+
+$ git rev-parse refs/heads/adoption-0032
+fceedec92bd6331686617812109aecb027eafd9f
+
+$ git diff --name-only ad6be28379c097fdc96b06b55b87b45d944efe00 fceedec92bd6331686617812109aecb027eafd9f
+.gitignore
+evidence/c6_option_b/ADOPTION_0032_REPORT.md
+evidence/c6_option_b/adoption_0032/ADOPTION_STATUS.json
+evidence/c6_option_b/adoption_0032/COMPUTE_START.json
+evidence/c6_option_b/adoption_0032/DELIVERY_SCOPE.json
+evidence/c6_option_b/adoption_0032/EXACT_BUILD.json
+evidence/c6_option_b/adoption_0032/FINAL_RECHECK.md
+evidence/c6_option_b/adoption_0032/IMPLEMENTATION_RECHECK.md
+evidence/c6_option_b/adoption_0032/INEXACT_BUILD.json
+evidence/c6_option_b/adoption_0032/MAIN_GIT_WRITE_ATTEMPT.txt
+evidence/c6_option_b/adoption_0032/PRESERVATION.json
+evidence/c6_option_b/adoption_0032/TESTS.json
+evidence/c6_option_b/adoption_0032/TESTS.stderr.txt
+evidence/c6_option_b/adoption_0032/TESTS.stdout.txt
+evidence/c6_option_b/adoption_0032/runs/BUDGET_00.json
+evidence/c6_option_b/adoption_0032/runs/BUDGET_01.json
+evidence/c6_option_b/adoption_0032/runs/DIAGNOSTICS.json
+evidence/c6_option_b/adoption_0032/runs/IDENTITY.json
+evidence/c6_option_b/adoption_0032/runs/RAW_FILES_LOCAL.json
+evidence/c6_option_b/adoption_0032/runs/STOP.json
+geomind/c6_option_b.py
+native/c6_option_b/field.cpp
+tests/test_c6_option_b.py
+tests/test_c6_option_b_adoption.py
+tests/test_c6_option_b_parallel.py
+tools/build_c6_option_b.py
+tools/c6_option_b_adopt.py
+tools/c6_option_b_adoption_analyze.py
+tools/c6_option_b_check.py
+
+$ git log -1 --format=%B fceedec92bd6331686617812109aecb027eafd9f
+C6 option B: implement selectable inexact math; record adoption resource stop
+
+Default Accelerate/separable kernel with bounded scalar fallback, pinned build/OS identity, and strict adoption analyzer. 178 tests and both engineering diagnostics pass. STOP before worlds at the daytime one-hour projection guard; adoption remains incomplete, C6 BLOCKED / R006 STOP.
+
+Assisted-by: Codex:GPT-6
+

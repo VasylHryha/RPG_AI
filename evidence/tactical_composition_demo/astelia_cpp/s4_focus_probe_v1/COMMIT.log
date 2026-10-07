@@ -1,0 +1,57 @@
+[s4-focus-probe-v1 3e4ac4f] Record single-setting scripted focus-fire probe with committed guns
+ Committer: new <new@MacBook-Pro-new.local>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly. Run the
+following command and follow the instructions in your editor to edit
+your configuration file:
+
+    git config --global --edit
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 42 files changed, 52854 insertions(+)
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/S4_FOCUS_PROBE.md
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/build_focus_probe_v1.py
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/create_focus_probe_v1.py
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_focus_probe_v1/ANALYSIS_VERIFICATION.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_focus_probe_v1/BUILD_IDENTITY.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_focus_probe_v1/BUILD_TIMING.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_focus_probe_v1/CHECK_TIMING.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_focus_probe_v1/COMPACT.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_focus_probe_v1/CONCURRENT_WORK.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_focus_probe_v1/DECLARATION.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_focus_probe_v1/DEVELOPMENT_SEED_LEDGER.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_focus_probe_v1/FAILED_FIRST_CHECK_TIMING.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_focus_probe_v1/FIGHTS.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_focus_probe_v1/GIT_WRITABILITY.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_focus_probe_v1/HISTORICAL_FIXTURES.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_focus_probe_v1/INITIAL_DECLARATION.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_focus_probe_v1/LOCAL_LOGS.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_focus_probe_v1/NOVICE_REQUEST_TEMPLATE.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_focus_probe_v1/OWNER_RECHECK.md
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_focus_probe_v1/P0_PARITY.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_focus_probe_v1/P6_REALIZATION.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_focus_probe_v1/POLICY.md
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_focus_probe_v1/PRESERVATION.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_focus_probe_v1/RAW_FILES_LOCAL.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_focus_probe_v1/REGULAR_REQUEST_TEMPLATE.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_focus_probe_v1/REVIEW_TIMING.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_focus_probe_v1/RUN_START.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_focus_probe_v1/RUN_TIMING.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_focus_probe_v1/SUMMARY.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_focus_probe_v1/analyze.py
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_focus_probe_v1/build.py
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_focus_probe_v1/check.py
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_focus_probe_v1/deliver.py
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_focus_probe_v1/fixture.cpp
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_focus_probe_v1/make_analysis.py
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_focus_probe_v1/p6_realization.py
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_focus_probe_v1/report.py
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_focus_probe_v1/run.py
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_focus_probe_v1/test_probe.py
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/src/native/s4_focus_probe_v1.cpp
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/src/native/s4_focus_probe_v1.h
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/src/native/s4_focus_probe_v1_dispatch.cpp

@@ -1,0 +1,8 @@
+build keys observer_build ['manifest_sha256', 'binary_sha256', 'sources', 'engine', 'scope', 'sanitized', 'portable']
+build keys v6_build ['manifest_sha256', 'binary_sha256', 'sources', 'engine', 'scope', 'sanitized', 'portable']
+Traceback (most recent call last):
+  File "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_gun_assault_20261007/REVIEW_verify.py", line 70, in <module>
+    if __name__=='__main__':main()
+  File "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_gun_assault_20261007/REVIEW_verify.py", line 33, in main
+    assert len(regular)==2262 and sum(d['sourceRole']=='artillery' and d['sourceTeam']==1 for d in regular)==1832
+AssertionError

@@ -1,0 +1,17 @@
+...F
+=================================== FAILURES ===================================
+_____________________________ test_protected_files _____________________________
+
+    def test_protected_files():
+>    for n,h in json.loads((HERE/'DECLARATION.json').read_text())['protected'].items():assert sha(REPO/n)==h,n
+E    AssertionError: docs/IDEAS_AND_ROADMAP.md
+E    assert '62f9ce17d90a...0e83c1205f8bb' == 'aaf9d08fb7f2...af313b84e165d'
+E      
+E      - aaf9d08fb7f291adba0bd04e08b66715ce48e30fba274354924af313b84e165d
+E      + 62f9ce17d90ae4f1dd75d6b654c529bdbd25108b9962938d31f0e83c1205f8bb
+
+evidence/tactical_composition_demo/astelia_cpp/s4_focus_probe_v1/test_probe.py:28: AssertionError
+=========================== short test summary info ============================
+FAILED evidence/tactical_composition_demo/astelia_cpp/s4_focus_probe_v1/test_probe.py::test_protected_files
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 3 passed in 3.32s

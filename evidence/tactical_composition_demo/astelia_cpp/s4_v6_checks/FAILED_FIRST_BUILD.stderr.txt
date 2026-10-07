@@ -1,0 +1,12 @@
+/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/native_s4_v6_contract.cpp:82:112: error: deduced conflicting types ('float' vs 'double') for initializer list element type
+   82 |   for(auto key:{"mu","omega_ranged","K","K_t","kappa","beta","G","w","f_c","m_k","lambda_th"})for(double value:{NAN,INFINITY,-INFINITY,1e100}){bool rejected=false;try{makeController({"resonator",{{key,value}},"v6"},7,0);}catch(...){rejected=true;}require(rejected,"nonfinite/out-of-bounds knob");}
+      |                                                                                                                ^~~~                    ~~~~~
+1 error generated.
+Traceback (most recent call last):
+  File "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/build_v6.py", line 34, in <module>
+    if __name__=='__main__':main()
+  File "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/build_v6.py", line 24, in main
+    print('build',n,flush=True);subprocess.run(argv,check=True,timeout=120);stamp.write_text(fingerprint+'\n'+sha(obj)+'\n')
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 528, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['/usr/bin/clang++', '-std=c++17', '-O3', '-fno-fast-math', '-ffp-contract=off', '-fwrapv', '-I/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/src', '-mcpu=native', '-c', '/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/native_s4_v6_contract.cpp', '-o', '/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/build/v6_native_s4_v6_contract.o']' returned non-zero exit status 1.
