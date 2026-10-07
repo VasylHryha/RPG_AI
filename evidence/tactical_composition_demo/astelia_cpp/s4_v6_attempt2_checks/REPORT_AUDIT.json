@@ -1,0 +1,223 @@
+{
+  "status": "PASS",
+  "stored_only": true,
+  "combat_fights_executed": 0,
+  "rows": 60996,
+  "fresh_fights": 60996,
+  "cache_hits": 0,
+  "numerical_failure_rows": 0,
+  "failures": [],
+  "generations": 96,
+  "candidates": 1536,
+  "validation_endpoints": 12,
+  "counts": [
+    {
+      "stage": "A",
+      "arm": "morale",
+      "split": "tuning",
+      "head": "novice",
+      "rows": 9766
+    },
+    {
+      "stage": "A",
+      "arm": "morale",
+      "split": "validation",
+      "head": "novice",
+      "rows": 200
+    },
+    {
+      "stage": "A",
+      "arm": "nearest",
+      "split": "validation",
+      "head": "novice",
+      "rows": 200
+    },
+    {
+      "stage": "A",
+      "arm": "pushpull",
+      "split": "tuning",
+      "head": "novice",
+      "rows": 9766
+    },
+    {
+      "stage": "A",
+      "arm": "pushpull",
+      "split": "validation",
+      "head": "novice",
+      "rows": 200
+    },
+    {
+      "stage": "A",
+      "arm": "resonator",
+      "split": "tuning",
+      "head": "novice",
+      "rows": 9766
+    },
+    {
+      "stage": "A",
+      "arm": "resonator",
+      "split": "validation",
+      "head": "novice",
+      "rows": 200
+    },
+    {
+      "stage": "B",
+      "arm": "morale",
+      "split": "tuning",
+      "head": "novice",
+      "rows": 5140
+    },
+    {
+      "stage": "B",
+      "arm": "morale",
+      "split": "tuning",
+      "head": "regular",
+      "rows": 4626
+    },
+    {
+      "stage": "B",
+      "arm": "morale",
+      "split": "validation",
+      "head": "novice",
+      "rows": 200
+    },
+    {
+      "stage": "B",
+      "arm": "morale",
+      "split": "validation",
+      "head": "regular",
+      "rows": 200
+    },
+    {
+      "stage": "B",
+      "arm": "nearest",
+      "split": "validation",
+      "head": "novice",
+      "rows": 200
+    },
+    {
+      "stage": "B",
+      "arm": "nearest",
+      "split": "validation",
+      "head": "regular",
+      "rows": 200
+    },
+    {
+      "stage": "B",
+      "arm": "pushpull",
+      "split": "tuning",
+      "head": "novice",
+      "rows": 5140
+    },
+    {
+      "stage": "B",
+      "arm": "pushpull",
+      "split": "tuning",
+      "head": "regular",
+      "rows": 4626
+    },
+    {
+      "stage": "B",
+      "arm": "pushpull",
+      "split": "validation",
+      "head": "novice",
+      "rows": 200
+    },
+    {
+      "stage": "B",
+      "arm": "pushpull",
+      "split": "validation",
+      "head": "regular",
+      "rows": 200
+    },
+    {
+      "stage": "B",
+      "arm": "resonator",
+      "split": "tuning",
+      "head": "novice",
+      "rows": 5140
+    },
+    {
+      "stage": "B",
+      "arm": "resonator",
+      "split": "tuning",
+      "head": "regular",
+      "rows": 4626
+    },
+    {
+      "stage": "B",
+      "arm": "resonator",
+      "split": "validation",
+      "head": "novice",
+      "rows": 200
+    },
+    {
+      "stage": "B",
+      "arm": "resonator",
+      "split": "validation",
+      "head": "regular",
+      "rows": 200
+    }
+  ],
+  "runtime_pins_verified": 114,
+  "gates": {
+    "A": {
+      "novice_mean": 3.935,
+      "novice_validation_pass": true,
+      "regular_mean": null,
+      "regular_progress_pass": null,
+      "regular_threshold": -6.025,
+      "beats_regular_in_development": false,
+      "failure_free": true,
+      "numerical_failures": 0,
+      "status": "CONTINUE",
+      "C_authorized": false,
+      "S5_run_authorized": false
+    },
+    "B": {
+      "novice_mean": 5.19,
+      "novice_validation_pass": true,
+      "regular_mean": 8.025,
+      "regular_progress_pass": true,
+      "regular_threshold": -6.025,
+      "beats_regular_in_development": true,
+      "failure_free": true,
+      "numerical_failures": 0,
+      "status": "READY_TO_DRAFT_S5",
+      "C_authorized": false,
+      "S5_run_authorized": false
+    }
+  },
+  "amplitude_diagnostics": [
+    {
+      "stage": "A",
+      "head": "novice",
+      "samples": 5371917,
+      "low": 2393583,
+      "rates": 2970025,
+      "rate_sum": 0,
+      "retries": 0,
+      "numerical_failure_ticks": 0
+    },
+    {
+      "stage": "B",
+      "head": "novice",
+      "samples": 9653022,
+      "low": 7961719,
+      "rates": 1665923,
+      "rate_sum": 360948.4513022123,
+      "retries": 0,
+      "numerical_failure_ticks": 0
+    },
+    {
+      "stage": "B",
+      "head": "regular",
+      "samples": 22749769,
+      "low": 21215113,
+      "rates": 1511942,
+      "rate_sum": 299241.9838217228,
+      "retries": 0,
+      "numerical_failure_ticks": 0
+    }
+  ]
+}
