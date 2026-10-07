@@ -1,0 +1,511 @@
+{
+  "paired_deltas_vs_P5": [
+    {
+      "head": "regular",
+      "arm": "P7",
+      "paired_cells": 20,
+      "mean_kills_delta": -0.7,
+      "mean_exchange_delta": -0.7
+    },
+    {
+      "head": "regular",
+      "arm": "P8",
+      "paired_cells": 20,
+      "mean_kills_delta": -1.3,
+      "mean_exchange_delta": -1.3
+    },
+    {
+      "head": "regular",
+      "arm": "P9",
+      "paired_cells": 20,
+      "mean_kills_delta": -0.4,
+      "mean_exchange_delta": -0.4
+    },
+    {
+      "head": "novice",
+      "arm": "P7",
+      "paired_cells": 20,
+      "mean_kills_delta": 0.0,
+      "mean_exchange_delta": 0.0
+    },
+    {
+      "head": "novice",
+      "arm": "P8",
+      "paired_cells": 20,
+      "mean_kills_delta": 0.0,
+      "mean_exchange_delta": 1.05
+    },
+    {
+      "head": "novice",
+      "arm": "P9",
+      "paired_cells": 20,
+      "mean_kills_delta": -1.35,
+      "mean_exchange_delta": -6.15
+    }
+  ],
+  "status": "DONE",
+  "scope": "descriptive development scripted probe; no scientific/registration/readiness verdict",
+  "outcome_reading": "No arm improves P5 gun exchange at this setting; return to telemetry, without general rejection",
+  "rows": [
+    {
+      "arm": "P5",
+      "head": "regular",
+      "n": 20,
+      "elimination_wins": 0,
+      "elimination_before_wave": 0,
+      "elimination_after_wave": 0,
+      "timeouts": 18,
+      "mean_S": -16.05,
+      "mean_enemy_guns_destroyed": 3.15,
+      "mean_own_gun_losses": 10.0,
+      "mean_own_losses": 39.4,
+      "mean_gun_exchange": -6.85,
+      "own_losses_per_enemy_kill": 1.6873661670235547,
+      "first_gun_kill_fights": 20,
+      "mean_first_enemy_gun_kill_s": 14.30999999999996,
+      "waves_started": 0,
+      "wave_reasons": {},
+      "simultaneity_observed_fights": 0,
+      "mean_simultaneity_s": null,
+      "line_angle_observed_fights": 0,
+      "mean_enemy_line_angle_change_degrees": null,
+      "mean_realized_exposure": 1.346590181332455,
+      "fights_reaching_posts": 0,
+      "fights_escorts_reaching_points": 0,
+      "own_gun_killers": [
+        {
+          "team": 0,
+          "role": "ranged",
+          "kills": 2
+        },
+        {
+          "team": 1,
+          "role": "artillery",
+          "kills": 142
+        },
+        {
+          "team": 1,
+          "role": "melee",
+          "kills": 1
+        },
+        {
+          "team": 1,
+          "role": "ranged",
+          "kills": 55
+        }
+      ],
+      "enemy_guns_destroyed": 63,
+      "own_gun_losses": 200,
+      "own_losses": 788,
+      "enemy_units_killed": 467,
+      "shell_hits_on_enemy_guns": 953,
+      "shells_fired_at_enemy_guns": 1120,
+      "exposure_sum": 147185,
+      "committed_gun_ticks": 109302,
+      "post_arrival_gun_ticks": 0,
+      "escort_arrival_unit_ticks": 0,
+      "escort_focus_eligible_unit_ticks": 0,
+      "staging_outside_gun_ticks": 0,
+      "post_outside_gun_ticks": 0
+    },
+    {
+      "arm": "P5",
+      "head": "novice",
+      "n": 20,
+      "elimination_wins": 20,
+      "elimination_before_wave": 0,
+      "elimination_after_wave": 0,
+      "timeouts": 0,
+      "mean_S": 38.55,
+      "mean_enemy_guns_destroyed": 10.0,
+      "mean_own_gun_losses": 1.25,
+      "mean_own_losses": 11.45,
+      "mean_gun_exchange": 8.75,
+      "own_losses_per_enemy_kill": 0.229,
+      "first_gun_kill_fights": 20,
+      "mean_first_enemy_gun_kill_s": 11.54499999999997,
+      "waves_started": 0,
+      "wave_reasons": {},
+      "simultaneity_observed_fights": 0,
+      "mean_simultaneity_s": null,
+      "line_angle_observed_fights": 0,
+      "mean_enemy_line_angle_change_degrees": null,
+      "mean_realized_exposure": 1.2615051607950183,
+      "fights_reaching_posts": 0,
+      "fights_escorts_reaching_points": 0,
+      "own_gun_killers": [
+        {
+          "team": 1,
+          "role": "artillery",
+          "kills": 12
+        },
+        {
+          "team": 1,
+          "role": "melee",
+          "kills": 1
+        },
+        {
+          "team": 1,
+          "role": "ranged",
+          "kills": 12
+        }
+      ],
+      "enemy_guns_destroyed": 200,
+      "own_gun_losses": 25,
+      "own_losses": 229,
+      "enemy_units_killed": 1000,
+      "shell_hits_on_enemy_guns": 794,
+      "shells_fired_at_enemy_guns": 1039,
+      "exposure_sum": 118309,
+      "committed_gun_ticks": 93784,
+      "post_arrival_gun_ticks": 0,
+      "escort_arrival_unit_ticks": 0,
+      "escort_focus_eligible_unit_ticks": 0,
+      "staging_outside_gun_ticks": 0,
+      "post_outside_gun_ticks": 0
+    },
+    {
+      "arm": "P7",
+      "head": "regular",
+      "n": 20,
+      "elimination_wins": 0,
+      "elimination_before_wave": 0,
+      "elimination_after_wave": 0,
+      "timeouts": 18,
+      "mean_S": -22.15,
+      "mean_enemy_guns_destroyed": 2.45,
+      "mean_own_gun_losses": 10.0,
+      "mean_own_losses": 41.0,
+      "mean_gun_exchange": -7.55,
+      "own_losses_per_enemy_kill": 2.1750663129973473,
+      "first_gun_kill_fights": 20,
+      "mean_first_enemy_gun_kill_s": 14.243333333333293,
+      "waves_started": 20,
+      "wave_reasons": {
+        "ready": 20
+      },
+      "simultaneity_observed_fights": 20,
+      "mean_simultaneity_s": 2.456666666666658,
+      "line_angle_observed_fights": 20,
+      "mean_enemy_line_angle_change_degrees": 10.933445722205187,
+      "mean_realized_exposure": 3.686961780358007,
+      "fights_reaching_posts": 20,
+      "fights_escorts_reaching_points": 0,
+      "own_gun_killers": [
+        {
+          "team": 0,
+          "role": "ranged",
+          "kills": 2
+        },
+        {
+          "team": 1,
+          "role": "artillery",
+          "kills": 136
+        },
+        {
+          "team": 1,
+          "role": "melee",
+          "kills": 6
+        },
+        {
+          "team": 1,
+          "role": "ranged",
+          "kills": 56
+        }
+      ],
+      "enemy_guns_destroyed": 49,
+      "own_gun_losses": 200,
+      "own_losses": 820,
+      "enemy_units_killed": 377,
+      "shell_hits_on_enemy_guns": 683,
+      "shells_fired_at_enemy_guns": 818,
+      "exposure_sum": 152419,
+      "committed_gun_ticks": 41340,
+      "post_arrival_gun_ticks": 34951,
+      "escort_arrival_unit_ticks": 0,
+      "escort_focus_eligible_unit_ticks": 0,
+      "staging_outside_gun_ticks": 0,
+      "post_outside_gun_ticks": 0
+    },
+    {
+      "arm": "P7",
+      "head": "novice",
+      "n": 20,
+      "elimination_wins": 20,
+      "elimination_before_wave": 0,
+      "elimination_after_wave": 20,
+      "timeouts": 0,
+      "mean_S": 38.7,
+      "mean_enemy_guns_destroyed": 10.0,
+      "mean_own_gun_losses": 1.25,
+      "mean_own_losses": 11.3,
+      "mean_gun_exchange": 8.75,
+      "own_losses_per_enemy_kill": 0.226,
+      "first_gun_kill_fights": 20,
+      "mean_first_enemy_gun_kill_s": 11.758333333333303,
+      "waves_started": 20,
+      "wave_reasons": {
+        "ready": 20
+      },
+      "simultaneity_observed_fights": 20,
+      "mean_simultaneity_s": 1.9183333333333266,
+      "line_angle_observed_fights": 20,
+      "mean_enemy_line_angle_change_degrees": 1.5845237408278896,
+      "mean_realized_exposure": 3.107617734691155,
+      "fights_reaching_posts": 20,
+      "fights_escorts_reaching_points": 0,
+      "own_gun_killers": [
+        {
+          "team": 1,
+          "role": "artillery",
+          "kills": 4
+        },
+        {
+          "team": 1,
+          "role": "melee",
+          "kills": 3
+        },
+        {
+          "team": 1,
+          "role": "ranged",
+          "kills": 18
+        }
+      ],
+      "enemy_guns_destroyed": 200,
+      "own_gun_losses": 25,
+      "own_losses": 226,
+      "enemy_units_killed": 1000,
+      "shell_hits_on_enemy_guns": 732,
+      "shells_fired_at_enemy_guns": 967,
+      "exposure_sum": 139762,
+      "committed_gun_ticks": 44974,
+      "post_arrival_gun_ticks": 38531,
+      "escort_arrival_unit_ticks": 0,
+      "escort_focus_eligible_unit_ticks": 0,
+      "staging_outside_gun_ticks": 0,
+      "post_outside_gun_ticks": 0
+    },
+    {
+      "arm": "P8",
+      "head": "regular",
+      "n": 20,
+      "elimination_wins": 0,
+      "elimination_before_wave": 0,
+      "elimination_after_wave": 0,
+      "timeouts": 0,
+      "mean_S": -37.75,
+      "mean_enemy_guns_destroyed": 1.85,
+      "mean_own_gun_losses": 10.0,
+      "mean_own_losses": 50.0,
+      "mean_gun_exchange": -8.15,
+      "own_losses_per_enemy_kill": 4.081632653061225,
+      "first_gun_kill_fights": 20,
+      "mean_first_enemy_gun_kill_s": 14.163333333333293,
+      "waves_started": 20,
+      "wave_reasons": {
+        "ready": 20
+      },
+      "simultaneity_observed_fights": 20,
+      "mean_simultaneity_s": 2.166666666666659,
+      "line_angle_observed_fights": 20,
+      "mean_enemy_line_angle_change_degrees": 10.848332797531866,
+      "mean_realized_exposure": 3.995667716917111,
+      "fights_reaching_posts": 20,
+      "fights_escorts_reaching_points": 20,
+      "own_gun_killers": [
+        {
+          "team": 1,
+          "role": "artillery",
+          "kills": 171
+        },
+        {
+          "team": 1,
+          "role": "melee",
+          "kills": 2
+        },
+        {
+          "team": 1,
+          "role": "ranged",
+          "kills": 27
+        }
+      ],
+      "enemy_guns_destroyed": 37,
+      "own_gun_losses": 200,
+      "own_losses": 1000,
+      "enemy_units_killed": 245,
+      "shell_hits_on_enemy_guns": 553,
+      "shells_fired_at_enemy_guns": 658,
+      "exposure_sum": 131889,
+      "committed_gun_ticks": 33008,
+      "post_arrival_gun_ticks": 25689,
+      "escort_arrival_unit_ticks": 3633,
+      "escort_focus_eligible_unit_ticks": 60613,
+      "staging_outside_gun_ticks": 0,
+      "post_outside_gun_ticks": 0
+    },
+    {
+      "arm": "P8",
+      "head": "novice",
+      "n": 20,
+      "elimination_wins": 20,
+      "elimination_before_wave": 0,
+      "elimination_after_wave": 20,
+      "timeouts": 0,
+      "mean_S": 27.85,
+      "mean_enemy_guns_destroyed": 10.0,
+      "mean_own_gun_losses": 0.2,
+      "mean_own_losses": 22.15,
+      "mean_gun_exchange": 9.8,
+      "own_losses_per_enemy_kill": 0.443,
+      "first_gun_kill_fights": 20,
+      "mean_first_enemy_gun_kill_s": 11.638333333333303,
+      "waves_started": 20,
+      "wave_reasons": {
+        "ready": 20
+      },
+      "simultaneity_observed_fights": 20,
+      "mean_simultaneity_s": 1.6199999999999943,
+      "line_angle_observed_fights": 20,
+      "mean_enemy_line_angle_change_degrees": 1.5001349729774727,
+      "mean_realized_exposure": 3.575404181935762,
+      "fights_reaching_posts": 20,
+      "fights_escorts_reaching_points": 20,
+      "own_gun_killers": [
+        {
+          "team": 1,
+          "role": "ranged",
+          "kills": 4
+        }
+      ],
+      "enemy_guns_destroyed": 200,
+      "own_gun_losses": 4,
+      "own_losses": 443,
+      "enemy_units_killed": 1000,
+      "shell_hits_on_enemy_guns": 751,
+      "shells_fired_at_enemy_guns": 1047,
+      "exposure_sum": 165863,
+      "committed_gun_ticks": 46390,
+      "post_arrival_gun_ticks": 36933,
+      "escort_arrival_unit_ticks": 16119,
+      "escort_focus_eligible_unit_ticks": 114452,
+      "staging_outside_gun_ticks": 0,
+      "post_outside_gun_ticks": 0
+    },
+    {
+      "arm": "P9",
+      "head": "regular",
+      "n": 20,
+      "elimination_wins": 0,
+      "elimination_before_wave": 0,
+      "elimination_after_wave": 0,
+      "timeouts": 0,
+      "mean_S": -24.9,
+      "mean_enemy_guns_destroyed": 2.75,
+      "mean_own_gun_losses": 10.0,
+      "mean_own_losses": 50.0,
+      "mean_gun_exchange": -7.25,
+      "own_losses_per_enemy_kill": 1.9920318725099602,
+      "first_gun_kill_fights": 20,
+      "mean_first_enemy_gun_kill_s": 23.01666666666697,
+      "waves_started": 20,
+      "wave_reasons": {
+        "fallback20s": 20
+      },
+      "simultaneity_observed_fights": 20,
+      "mean_simultaneity_s": 0.5166666666666924,
+      "line_angle_observed_fights": 20,
+      "mean_enemy_line_angle_change_degrees": 19.69339087706697,
+      "mean_realized_exposure": 1.6231986353743897,
+      "fights_reaching_posts": 20,
+      "fights_escorts_reaching_points": 10,
+      "own_gun_killers": [
+        {
+          "team": 1,
+          "role": "artillery",
+          "kills": 132
+        },
+        {
+          "team": 1,
+          "role": "melee",
+          "kills": 1
+        },
+        {
+          "team": 1,
+          "role": "ranged",
+          "kills": 67
+        }
+      ],
+      "enemy_guns_destroyed": 55,
+      "own_gun_losses": 200,
+      "own_losses": 1000,
+      "enemy_units_killed": 502,
+      "shell_hits_on_enemy_guns": 708,
+      "shells_fired_at_enemy_guns": 837,
+      "exposure_sum": 82788,
+      "committed_gun_ticks": 51003,
+      "post_arrival_gun_ticks": 8061,
+      "escort_arrival_unit_ticks": 432,
+      "escort_focus_eligible_unit_ticks": 60746,
+      "staging_outside_gun_ticks": 97872,
+      "post_outside_gun_ticks": 12460
+    },
+    {
+      "arm": "P9",
+      "head": "novice",
+      "n": 20,
+      "elimination_wins": 15,
+      "elimination_before_wave": 0,
+      "elimination_after_wave": 15,
+      "timeouts": 0,
+      "mean_S": 3.35,
+      "mean_enemy_guns_destroyed": 8.65,
+      "mean_own_gun_losses": 6.05,
+      "mean_own_losses": 41.65,
+      "mean_gun_exchange": 2.6,
+      "own_losses_per_enemy_kill": 0.9255555555555556,
+      "first_gun_kill_fights": 20,
+      "mean_first_enemy_gun_kill_s": 22.07333333333359,
+      "waves_started": 20,
+      "wave_reasons": {
+        "fallback20s": 20
+      },
+      "simultaneity_observed_fights": 20,
+      "mean_simultaneity_s": 0.7700000000000383,
+      "line_angle_observed_fights": 19,
+      "mean_enemy_line_angle_change_degrees": 1.7699876830842067,
+      "mean_realized_exposure": 2.4511340893929288,
+      "fights_reaching_posts": 20,
+      "fights_escorts_reaching_points": 5,
+      "own_gun_killers": [
+        {
+          "team": 0,
+          "role": "artillery",
+          "kills": 2
+        },
+        {
+          "team": 1,
+          "role": "artillery",
+          "kills": 96
+        },
+        {
+          "team": 1,
+          "role": "ranged",
+          "kills": 23
+        }
+      ],
+      "enemy_guns_destroyed": 173,
+      "own_gun_losses": 121,
+      "own_losses": 833,
+      "enemy_units_killed": 900,
+      "shell_hits_on_enemy_guns": 701,
+      "shells_fired_at_enemy_guns": 768,
+      "exposure_sum": 73485,
+      "committed_gun_ticks": 29980,
+      "post_arrival_gun_ticks": 8345,
+      "escort_arrival_unit_ticks": 394,
+      "escort_focus_eligible_unit_ticks": 41503,
+      "staging_outside_gun_ticks": 46860,
+      "post_outside_gun_ticks": 757
+    }
+  ]
+}

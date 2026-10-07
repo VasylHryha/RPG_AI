@@ -1,0 +1,81 @@
+{
+  "status": "CHANGES_REQUIRED",
+  "awake_seconds": 22.889876124,
+  "elapsed_seconds": 22.889876124,
+  "attempts": [
+    {
+      "status": "CHANGES_REQUIRED",
+      "awake_seconds": 14.837901416,
+      "elapsed_seconds": 14.838058948516846,
+      "scope": "all aggregates/hashes/pins plus six full traces; stopped at incorrectly assumed1200x700 clip"
+    },
+    {
+      "status": "PASS",
+      "awake_seconds": 3.051974708,
+      "elapsed_seconds": 3.0520071983337402,
+      "scope": "two P9 full traces, actual1400x800 native game dimensions"
+    },
+    {
+      "status": "RESERVED",
+      "awake_seconds": 5,
+      "scope": "diagnostic stored read and short source inspections"
+    }
+  ],
+  "total_review_cap_seconds": 250,
+  "stored_only": true,
+  "samples": [
+    {
+      "id": "P5_regular_c00_o0",
+      "observer_policy_gun_checks": 0
+    },
+    {
+      "id": "P5_novice_c00_o0",
+      "observer_policy_gun_checks": 0
+    },
+    {
+      "id": "P7_regular_c00_o0",
+      "observer_policy_gun_checks": 5520
+    },
+    {
+      "id": "P7_novice_c00_o0",
+      "observer_policy_gun_checks": 5246
+    },
+    {
+      "id": "P8_regular_c00_o0",
+      "observer_policy_gun_checks": 5006
+    },
+    {
+      "id": "P8_novice_c00_o0",
+      "observer_policy_gun_checks": 5300
+    },
+    {
+      "id": "P9_regular_c00_o0",
+      "observer_policy_gun_checks": 8450
+    },
+    {
+      "id": "P9_novice_c00_o0",
+      "observer_policy_gun_checks": 6127
+    }
+  ],
+  "post_outside_discrepancies": [
+    {
+      "id": "P9_regular_c00_o0",
+      "actual_arena": [
+        1400,
+        800
+      ],
+      "correct_post_outside_gun_ticks": 602,
+      "reported_post_outside_gun_ticks": 1626
+    },
+    {
+      "id": "P9_novice_c00_o0",
+      "actual_arena": [
+        1400,
+        800
+      ],
+      "correct_post_outside_gun_ticks": 51,
+      "reported_post_outside_gun_ticks": 970
+    }
+  ],
+  "additional_failure": null
+}
