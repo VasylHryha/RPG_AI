@@ -1,0 +1,5 @@
+500a501,504
+>             # PILOT V1 (path-protected budget): never remove an element on a live strong root->O path, unless nothing else is eligible
+>             _g=self.strong_influence();_on=_g.forward()&_g.backward()
+>             _safe=[e for e in eligible if e.id not in _on]
+>             if _safe:eligible=_safe

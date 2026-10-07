@@ -1,4 +1,4 @@
-PILOTS (no verdict): medium-law variants for the connection problem, on scratch copies of the 7.11 code. Best medium-only result: chain bonds plus partial screening, 6/10 (pin 8/10, original 3/10)
+PILOTS (no verdict): medium-law variants for the connection problem, on scratch copies of the 7.11 code. Best medium-only result: chain bonds + partial screening + a path-protected budget (V1), 8/10 with the empty start 5/5 (pin 8/10, original 3/10)
 
 # Medium-law variants: can growth build and hold a link to O?
 
@@ -28,6 +28,7 @@ PILOTS (no verdict): medium-law variants for the connection problem, on scratch 
 | **Bond v2 + guidance G = 0.3** (`bond_v2_guide_G0.3.patch`) | plus a constant pull of 0.3 m.u./s toward O on every cell | 0/5 | 0/5 | **0/10** | far too strong: every cell collapses onto O (distance about 0) and the sensors are abandoned, so there is no response |
 | **Bond v2 + guidance G = 0.1** (`bond_v2_guide_G0.1.patch`) | a 0.1 m.u./s pull | 0/5 | 4/5 | **4/10** | paths to O exist in **all** 10 runs (max E 0.7–0.8), but cells pile up on O (nearest about 0.1) and the response is weak (A 0.05–0.45): the crowd at O swamps the signal |
 | **Bond v2 + partial screening** (`bond_v2_screening.patch`) | saturated cells (2 bonds) exert and feel no cohesion; free cells keep the swarmalator law | 3/5 | 3/5 | **6/10** | **the best medium-only result so far.** Cells reach O in every run (nearest exactly 0.556, the bond length); 4 runs still lose the signal (A about 0.03–0.2) |
+| **Screening + V1: path-protected budget** (`bond_v2_screening.patch` + `bond_v2_screening_V1_path_protected_D3.pydiff`; native binary unchanged, `b0b35a16…`) | the death rule D3 never removes an element on a live strong root→O path, unless nothing else is eligible (A6v: D3 cut the live chain in both traced screening failures) | **5/5** | 3/5 | **8/10** | the empty start passes in every key set (screening alone 3/5); the seeded failures are the same keys as before: key 3's history is unchanged (not D3-driven), key 2 improves only partly (max E 0.27). Passing runs still reach E ≥ 0.5 at only 3–5 of 8 sites. **Caveat:** "live" means paths from **currently active** sites only, so paths of idle sites stay prunable |
 
 **What we learn so far:**
 - **Saturation matters,** as for the strong force: chain bonds (at most 2) beat bonding everything (5/10 against 1/10).
@@ -43,3 +44,5 @@ PILOTS (no verdict): medium-law variants for the connection problem, on scratch 
 - Scratch code, not reviewed.
 - No verdict.
 - Raw traces stay in the session scratchpad and are not kept. The logs here carry the per-run summary and the assay numbers.
+
+**Correction (2026-10-07, from the owner's second-view review):** the "2-bond" patches cap each cell's **selected** partners at 2. A cell can still be selected by others, so its **realized** spring degree can exceed 2 (in the passing trace, cells with 3 springs occur). "Saturated" in the screening patch means 2 selected partners. Springs are recomputed every step from the current state; they are not persistent bonds, so a "bond age" means consecutive steps selected.
