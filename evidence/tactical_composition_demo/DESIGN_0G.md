@@ -927,3 +927,65 @@ If a scripted probe cannot kill regular guns, the v7 hypothesis is wrong, and th
   - K_t couples the guns that focus on one enemy gun;
   - a commit wave starts only when the group's coherence (order parameter) exceeds a threshold, so the guns and their screen advance together, then return to escape together.
 - **Scripted probe first:** a synchronized group advance of the battery plus a direct screen, against regular. Only then the RRG version.
+
+### 19.4 The collective-commitment probe (B4h; scripted, descriptive; declared before any fight)
+
+**Question:** P5's focused, committed guns kill regular guns fast (first kill at about 14 s) but lose the whole battery. **Is the loss caused by how they commit (one by one, into many enemy gun bands, with no screen), or would any commitment lose?** If a scripted collective commitment wins the artillery duel against regular, v7 encodes it as resonator synchrony. If none does, the drafter returns to the evidence.
+
+**The geometry that motivates the arms** (an estimate to be measured, not assumed):
+- The regular guns hold a line about 46 px apart; both sides' guns reach 320 px.
+- **A gun committed at 308 px (reach − 12) perpendicular to the line's middle** is inside the reach of every enemy gun within √(320² − 308²) ≈ 87 px of its foot point along the line. That is 3–4 enemy guns, matching the 3–4 gun bands that covered entrants in §19.1.
+- **The same gun placed on the line's axis beyond the end gun** is in reach of only that one: the next gun is at 354 px. The second gun stays out of reach up to about ±79° off the axis (at ±60° it is 333 px away).
+- So **concentrating on the end of the line** (Lanchester's defeat in detail: crossing the T) could face 1 enemy gun instead of 3–4. That holds only if the line does not turn, which the probe measures.
+
+**Arms** (every arm is the v6 attempt-2 stage-B controller with overlays, the P5 conventions of `s4_focus_probe_v1/POLICY.md`, and fresh development entropy):
+- **P5 (control):** exactly as in §19.3, re-run on the new seeds.
+- **P7, a synchronized wave on one shared target:**
+  - **The shared target:** the shared anchor of P5 (the weakest reachable enemy gun, ties by id). All own guns target it while it is within their reach, otherwise they keep their v6 target.
+  - **Staging:** until the wave starts, each own gun moves to its staging point: on the line from the target to itself, at distance (max enemy gun reach + 30 px) from the **nearest living enemy gun** (solved along that line; if it cannot be solved, it holds position). Own guns do not fire at guns while staging, but keep v6 fire at other targets.
+  - **The wave starts** when at least 80% of living own guns are within 20 px of their staging points, **or** 20 s after the first enemy gun enters any own gun's sight, whichever comes first. Then every gun commits at once, as in P5, to the shared target at reach − 12 px.
+  - **There is one wave per fight.** After it starts, the group continues as P5 with a shared target: when the target dies, the next shared anchor is chosen. There is no re-staging.
+- **P8 = P7 plus a direct screen:**
+  - From the wave start, every living own direct/ranged unit moves to an **escort point**: 60 px from the centroid of the committed own guns toward the shared target. Its fire targets the nearest enemy direct/ranged unit within its native reach, otherwise its v6 target.
+  - Melee stays v6.
+- **P9 = P8 with an end-of-line target and staging:**
+  - **The target:** for each living enemy gun g, compute u_g, the unit vector from the centroid of the **other** living enemy guns to g; the candidate post is s_g = g + 308·u_g. **Exposure(g)** = the number of living enemy guns whose reach (320 px) covers s_g. The target is the g with the least exposure; ties go to the lowest remaining HP, then the lowest id. It is re-chosen when the target dies.
+  - **The posts:** own guns spread over an arc of radius 308 px around g, from −60° to +60° about u_g. Assignment is by angular order around g (the i-th own gun by angle gets the i-th of n equally spaced arc points).
+  - **Staging:** as in P7, but each gun's staging point lies on the ray from g through its arc point.
+  - Wave start, screen and fire: as P8.
+- **When all enemy guns are gone,** every overlay falls through to complete v6 actions (as in §19.3).
+
+**One declared setting per arm.** No threshold, margin, arc or timing is tuned after outcomes. The constants (30 px, 80%, 20 px, 20 s, 60 px, ±60°, 308 px) are declared here.
+
+**Panel:** 10 fresh development clusters × 2 orientations × {P5, P7, P8, P9} × {regular, novice} = 160 fights. Controlled team 0, paired seeds, the fixed S4 world (50 against 50, game rules, 150 s, `sandboxAbilities=false`), as in §19.3. About 3 min of combat at the §19.3 rate (longer on the loaded laptop).
+
+**Measured, per arm and head:**
+- elimination wins (enemy 0, own ≥ 1, t < 150 s) and timeouts;
+- enemy guns destroyed, own guns lost, own losses, and mean S;
+- **exposure as realized:** for each committed own gun and tick, the number of living enemy guns whose reach covers it, averaged over commit ticks;
+- **simultaneity:** the time from the wave start until 80% of living own guns are within their own reach of the target;
+- **line response:** the change in the enemy gun line's principal-axis angle between the wave start and the first enemy gun kill;
+- the killers of own guns, by team and role;
+- the first enemy gun kill time, conditional on a kill;
+- shell hits and launches at enemy guns.
+
+**What the outcomes mean (descriptive, not verdicts):**
+- **P9 wins eliminations against regular, or destroys ≥ 7 of 10 enemy guns while losing fewer guns than it kills:** collective, end-on concentration is a mechanism worth encoding. **v7 design:** target-group synchrony (K_t over each target group, a coherence-triggered commit wave, and the exposure term as a geometric input to the group's phase target).
+- **P7 or P8 beat P5 but P9 adds nothing:** synchrony and the screen are the mechanism, and geometry is not.
+- **No arm improves on P5's gun exchange against regular:** collective commitment is not the missing piece. The drafter returns to the telemetry before any v7 design.
+- **The novice results** are a sanity check only: P5 already routs novice.
+
+**Limits declared in advance:**
+- The enemy line can turn, advance or break formation. P9's exposure is measured, not assumed.
+- Staging may stall if the enemy advances. The 20 s fallback bounds the stall.
+- The arc assignment ignores collisions. Native collisions, clipping and reflexes may obstruct the posts.
+- These are scripted policies, not an RRG controller. A win here is evidence for the mechanism, not for the resonator.
+
+**Stop rows:**
+
+| Yes/no | Action | Role |
+|---|---|---|
+| Is the compute projection over 1 h before 22:00? | Ask the owner first (decision 0031) | implementer |
+| Does a protected file, knob, source or binary drift, or does the controller fail? | Stop; preserve the evidence; report PARTIAL | implementer |
+| Is any constant or rule changed after a fight has run? | INVALID; a new declaration on fresh seeds | implementer |
+| Does P5 on the new seeds differ grossly from §19.3 (regular own gun losses < 7/10 or > 10, or enemy guns destroyed outside 1–6)? | Report it before reading the other arms; it may signal a pipeline difference | implementer |
