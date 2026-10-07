@@ -1,0 +1,96 @@
+{
+  "base_commit": "f48a1c97806f9f7854c23d3f67e037c0acd0a3ea",
+  "delivery_commit": "85c6c0fb9e4f3fe01aad1d91b6ee28697f02cfd8",
+  "branch": "capacity-codex-delivery",
+  "bundle_path": "evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/CAPACITY_IMPLEMENTATION.bundle",
+  "bundle_sha256": "1837de7c3d1494f58e8421797520c28e4ada7a09f154aa81df1b41a52665c845",
+  "bundle_bytes": 2113,
+  "normal_repository_hooks_passed": true,
+  "provenance": "Assisted-by: Codex:GPT-6",
+  "fresh_fetch_verified": true,
+  "new_files_only": true,
+  "audit_commit_paths": [
+    "evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/CAPACITY_DELIVERY_AUDIT.json"
+  ],
+  "original_13_capacity_files_already_in_base": true,
+  "capacity_carrier_commit": "e44b528799d50f5a00a82d1767fd26580da71ea8",
+  "files": [
+    {
+      "path": "docs/reviews/tactical_0h_capacity_diagnostic_spec_review_r3_codex.md",
+      "bytes": 6148,
+      "verified_identical": true
+    },
+    {
+      "path": "docs/reviews/tactical_0h_capacity_implementation_recheck_codex.md",
+      "bytes": 4555,
+      "verified_identical": true
+    },
+    {
+      "path": "evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/CAPACITY_IMPLEMENTATION_VALIDATION.json",
+      "bytes": 2163,
+      "verified_identical": true
+    },
+    {
+      "path": "evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/CAPACITY_USAGE.md",
+      "bytes": 7327,
+      "verified_identical": true
+    },
+    {
+      "path": "evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/capacity_kernel.py",
+      "bytes": 849,
+      "verified_identical": true
+    },
+    {
+      "path": "evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/capacity_telemetry.py",
+      "bytes": 7907,
+      "verified_identical": true
+    },
+    {
+      "path": "evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/execute_capacity_plan.py",
+      "bytes": 15736,
+      "verified_identical": true
+    },
+    {
+      "path": "evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/run_capacity_pilot.py",
+      "bytes": 5865,
+      "verified_identical": true
+    },
+    {
+      "path": "evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/write_capacity_report.py",
+      "bytes": 10532,
+      "verified_identical": true
+    },
+    {
+      "path": "evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/test_capacity_pipeline.py",
+      "bytes": 20884,
+      "verified_identical": true
+    },
+    {
+      "path": "evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/kernel_builder/build_capacity_kernels.py",
+      "bytes": 8888,
+      "verified_identical": true
+    },
+    {
+      "path": "evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/kernel_builder/CAP96_BUILD.json",
+      "bytes": 8216,
+      "verified_identical": true
+    },
+    {
+      "path": "evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/kernel_builder/CAP128_BUILD.json",
+      "bytes": 8233,
+      "verified_identical": true
+    }
+  ],
+  "primary_commit_block": "Unable to create .git/index.lock: Operation not permitted",
+  "primary_head_at_verification": "f48a1c97806f9f7854c23d3f67e037c0acd0a3ea",
+  "native_pilots_run": false,
+  "transport_recheck": {
+    "reviewer": "capacity_r3_recheck",
+    "family": "Codex",
+    "same_family_fallback": true,
+    "request": "Recheck what you did please, check if it is the best we can do, we want 10 out of 10 or above 9 - it's fine to break the things or fully rework. Check for issues, conflicts, gaps.",
+    "findings": [],
+    "disposition": "No transport misclaim; explicitly distinguish code in carrier/base from audit-only bundle delta; no outstanding finding",
+    "reviewer_execution": "read-only inspection; no edits, tests, pilots or process inspection"
+  }
+}
