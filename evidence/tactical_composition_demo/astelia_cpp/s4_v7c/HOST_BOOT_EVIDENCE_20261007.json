@@ -1,0 +1,17 @@
+{
+  "kind": "HOST_BOOT_EVIDENCE",
+  "captured_by": "Claude (claude-opus-5-5), outside the Codex sandbox",
+  "captured_utc": "2026-10-07T19:17:53Z",
+  "command": [
+    "sysctl",
+    "-n",
+    "kern.boottime"
+  ],
+  "returncode": 0,
+  "stdout": "{ sec = 1791399114, usec = 777526 } Wed Oct  7 21:51:54 2026",
+  "stderr": "",
+  "uptime": "22:17  up 26 mins, 2 users, load averages: 310.23 534.69 396.44",
+  "boot_epoch_seconds": 1791399114.777526,
+  "boot_utc": "2026-10-07T18:51:54Z",
+  "note": "The interrupted analyze_validate attempt started 2026-10-07T18:06:31Z, so it could have run at most 2723.8 s before the host rebooted."
+}
