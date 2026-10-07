@@ -1,0 +1,54 @@
+[s4-escort-probe-v2 66e5ec9] Review 19.10 and prepare sealed P12/P14/P15 escort probe v2; combat reserved for Claude
+ Committer: new <new@MacBook-Pro-new.local>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly. Run the
+following command and follow the instructions in your editor to edit
+your configuration file:
+
+    git config --global --edit
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 39 files changed, 5707 insertions(+)
+ create mode 100644 docs/reviews/tactical_0g_s1910_probe_review_codex.md
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_escort_probe_v2/.gitignore
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_escort_probe_v2/BUILD.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_escort_probe_v2/CHECKS.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_escort_probe_v2/COMPACT.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_escort_probe_v2/DECLARATION.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_escort_probe_v2/DEVELOPMENT_SEED_LEDGER.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_escort_probe_v2/FIXTURE.log
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_escort_probe_v2/GIT_WRITABILITY.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_escort_probe_v2/NOVICE_REQUEST_TEMPLATE.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_escort_probe_v2/OWNER_RECHECK.md
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_escort_probe_v2/POLICY.md
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_escort_probe_v2/README.md
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_escort_probe_v2/REGULAR_REQUEST_TEMPLATE.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_escort_probe_v2/S4_ESCORT_PROBE.md
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_escort_probe_v2/SEAL.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_escort_probe_v2/STAGE_build_23284391d4f848c593ec499a799d5443.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_escort_probe_v2/STAGE_checks_d87d6791d79d47f4b1984f9d319bfa75.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_escort_probe_v2/STAGE_seal_a2eb160f82f540dabd593aca2569a8d9.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_escort_probe_v2/TESTS.stderr.log
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_escort_probe_v2/TESTS.stdout.log
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_escort_probe_v2/VALIDATION.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_escort_probe_v2/analyze.py
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_escort_probe_v2/build.py
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_escort_probe_v2/check.py
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_escort_probe_v2/common.py
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_escort_probe_v2/deliver.py
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_escort_probe_v2/dispatch.cpp
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_escort_probe_v2/engineering.py
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_escort_probe_v2/escort.cpp
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_escort_probe_v2/escort.h
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_escort_probe_v2/fixture.cpp
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_escort_probe_v2/host.cpp
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_escort_probe_v2/metrics.py
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_escort_probe_v2/render.py
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_escort_probe_v2/run.py
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_escort_probe_v2/seal.py
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_escort_probe_v2/test_probe.py
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_escort_probe_v2/validate.py
