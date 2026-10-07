@@ -1,0 +1,2140 @@
+{
+  "v6_resonator|novice": {
+    "fights": 20,
+    "seed_clusters": 10,
+    "elimination_wins": 12,
+    "elimination_win_rate": 0.6,
+    "timeouts": 0,
+    "mean_S": 5.4,
+    "mean_guns_destroyed": 8.6,
+    "mean_own_losses": 43.2,
+    "elimination_time": {
+      "n": 12,
+      "mean": 51.027777777777445,
+      "median": 50.24999999999971,
+      "min": 37.23333333333378,
+      "max": 71.73333333333183
+    },
+    "own_losses_per_enemy_killed": {
+      "n": 20,
+      "mean": 0.8944498202302814,
+      "median": 0.95,
+      "min": 0.46,
+      "max": 1.1111111111111112
+    },
+    "cluster_rows": [
+      {
+        "cluster": 0,
+        "win_rate": 1,
+        "S": 24.5
+      },
+      {
+        "cluster": 1,
+        "win_rate": 1,
+        "S": 14
+      },
+      {
+        "cluster": 2,
+        "win_rate": 1,
+        "S": 3.5
+      },
+      {
+        "cluster": 3,
+        "win_rate": 0.5,
+        "S": 6
+      },
+      {
+        "cluster": 4,
+        "win_rate": 0.5,
+        "S": 0
+      },
+      {
+        "cluster": 5,
+        "win_rate": 1,
+        "S": 15.5
+      },
+      {
+        "cluster": 6,
+        "win_rate": 0,
+        "S": -4
+      },
+      {
+        "cluster": 7,
+        "win_rate": 0,
+        "S": -5
+      },
+      {
+        "cluster": 8,
+        "win_rate": 0.5,
+        "S": 0
+      },
+      {
+        "cluster": 9,
+        "win_rate": 0.5,
+        "S": -0.5
+      }
+    ],
+    "own_deaths_by_phase_killer": {
+      "early_0_20": {
+        "0:ranged": {
+          "kills": 3,
+          "distance": {
+            "n": 3,
+            "mean": 268.4088254844712,
+            "median": 278.1923711860815,
+            "min": 243.60893555291713,
+            "max": 283.42516971441506
+          },
+          "victims": {
+            "melee": 3
+          }
+        },
+        "1:melee": {
+          "kills": 33,
+          "distance": {
+            "n": 33,
+            "mean": 47.07615620351164,
+            "median": 48.869824922659475,
+            "min": 30.403150210182336,
+            "max": 67.5114021992066
+          },
+          "victims": {
+            "melee": 33
+          }
+        },
+        "1:ranged": {
+          "kills": 34,
+          "distance": {
+            "n": 34,
+            "mean": 214.6132679744394,
+            "median": 242.43582607462338,
+            "min": 139.21128566554108,
+            "max": 268.28396944277625
+          },
+          "victims": {
+            "melee": 15,
+            "ranged": 19
+          }
+        },
+        "1:artillery": {
+          "kills": 197,
+          "distance": {
+            "n": 197,
+            "mean": 239.76838642146288,
+            "median": 233.33480916796125,
+            "min": 164.14949125754896,
+            "max": 323.7042053851402
+          },
+          "victims": {
+            "melee": 149,
+            "ranged": 48
+          }
+        }
+      },
+      "middle_20_60": {
+        "0:ranged": {
+          "kills": 1,
+          "distance": {
+            "n": 1,
+            "mean": 83.44645595472487,
+            "median": 83.44645595472487,
+            "min": 83.44645595472487,
+            "max": 83.44645595472487
+          },
+          "victims": {
+            "ranged": 1
+          }
+        },
+        "1:ranged": {
+          "kills": 36,
+          "distance": {
+            "n": 36,
+            "mean": 257.292425704065,
+            "median": 259.20093579401714,
+            "min": 209.35297465256377,
+            "max": 321.66873734532925
+          },
+          "victims": {
+            "ranged": 34,
+            "artillery": 2
+          }
+        },
+        "1:artillery": {
+          "kills": 560,
+          "distance": {
+            "n": 560,
+            "mean": 321.3185086182807,
+            "median": 329.06280636878137,
+            "min": 224.60343518308832,
+            "max": 363.71661094615814
+          },
+          "victims": {
+            "ranged": 415,
+            "artillery": 145
+          }
+        }
+      },
+      "late_60_end": {},
+      "gun_only": {
+        "1:artillery": {
+          "kills": 447,
+          "distance": {
+            "n": 447,
+            "mean": 329.68230644341855,
+            "median": 333.6928856275619,
+            "min": 224.60343518308832,
+            "max": 363.71661094615814
+          },
+          "victims": {
+            "ranged": 308,
+            "artillery": 139
+          }
+        }
+      }
+    },
+    "gun_killers": {
+      "0:ranged": {
+        "kills": 1,
+        "distance": {
+          "n": 1,
+          "mean": 239.47315777544722,
+          "median": 239.47315777544722,
+          "min": 239.47315777544722,
+          "max": 239.47315777544722
+        },
+        "max_simultaneous": {
+          "n": 1,
+          "mean": 1,
+          "median": 1,
+          "min": 1,
+          "max": 1
+        },
+        "shelling_other": 0,
+        "killer_angle": {
+          "n": 1,
+          "mean": 113.56948790413108,
+          "median": 113.56948790413108,
+          "min": 113.56948790413108,
+          "max": 113.56948790413108
+        },
+        "other_gun_cover": {
+          "n": 1,
+          "mean": 0,
+          "median": 0,
+          "min": 0,
+          "max": 0
+        }
+      },
+      "0:artillery": {
+        "kills": 171,
+        "distance": {
+          "n": 171,
+          "mean": 323.9882034870519,
+          "median": 320.8680526105542,
+          "min": 295.22470899818995,
+          "max": 379.5679087351327
+        },
+        "max_simultaneous": {
+          "n": 171,
+          "mean": 1.8245614035087718,
+          "median": 2,
+          "min": 0,
+          "max": 7
+        },
+        "shelling_other": 92,
+        "killer_angle": {
+          "n": 159,
+          "mean": 106.74555031309386,
+          "median": 110.78349051569344,
+          "min": 2.114543808922323,
+          "max": 179.42997248020836
+        },
+        "other_gun_cover": {
+          "n": 171,
+          "mean": 0.672514619883041,
+          "median": 0,
+          "min": 0,
+          "max": 7
+        }
+      }
+    },
+    "approaches": {
+      "count": 0,
+      "outcomes": {},
+      "roles": {},
+      "ever_reached_own_range": 0,
+      "ever_dealt_damage": 0,
+      "entry_cover": {
+        "n": 0,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "max": null
+      },
+      "simultaneous_approachers": {
+        "n": 0,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "max": null
+      },
+      "simultaneous_in_reach": {
+        "n": 0,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "max": null
+      },
+      "simultaneous_entry_inside_band": {
+        "n": 0,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "max": null
+      },
+      "approach_starts_previous_3s": {
+        "n": 0,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "max": null
+      },
+      "entry_angle": {
+        "n": 0,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "max": null
+      },
+      "duration": {
+        "n": 0,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "max": null
+      }
+    },
+    "dodge_calls": 0,
+    "dodge_same_tick_motion_toward_goal": 0,
+    "geometry": {
+      "gun_nearest_spacing": {
+        "n": 20,
+        "mean": 26.89822388394804,
+        "median": 25.581711478327556,
+        "min": 20.95924776999186,
+        "max": 40.46484071802478
+      },
+      "gun_band_overlap_count": {
+        "n": 20,
+        "mean": 8.297288224629588,
+        "median": 8.31889667698134,
+        "min": 7.7404284027660655,
+        "max": 8.661560967214525
+      },
+      "enemy_has_slot": {
+        "n": 20,
+        "mean": 0,
+        "median": 0.0,
+        "min": 0,
+        "max": 0
+      },
+      "enemy_slot_offset": {
+        "n": 0,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "max": null
+      }
+    }
+  },
+  "v6_resonator|regular": {
+    "fights": 20,
+    "seed_clusters": 10,
+    "elimination_wins": 0,
+    "elimination_win_rate": 0,
+    "timeouts": 20,
+    "mean_S": 8.15,
+    "mean_guns_destroyed": 0.4,
+    "mean_own_losses": 32.25,
+    "elimination_time": {
+      "n": 0,
+      "mean": null,
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "own_losses_per_enemy_killed": {
+      "n": 20,
+      "mean": 0.7979849012775841,
+      "median": 0.8,
+      "min": 0.475,
+      "max": 1.15
+    },
+    "cluster_rows": [
+      {
+        "cluster": 0,
+        "win_rate": 0,
+        "S": 2.5
+      },
+      {
+        "cluster": 1,
+        "win_rate": 0,
+        "S": 0.5
+      },
+      {
+        "cluster": 2,
+        "win_rate": 0,
+        "S": 9.5
+      },
+      {
+        "cluster": 3,
+        "win_rate": 0,
+        "S": 7.5
+      },
+      {
+        "cluster": 4,
+        "win_rate": 0,
+        "S": 8.5
+      },
+      {
+        "cluster": 5,
+        "win_rate": 0,
+        "S": 7
+      },
+      {
+        "cluster": 6,
+        "win_rate": 0,
+        "S": 11
+      },
+      {
+        "cluster": 7,
+        "win_rate": 0,
+        "S": 12
+      },
+      {
+        "cluster": 8,
+        "win_rate": 0,
+        "S": 11.5
+      },
+      {
+        "cluster": 9,
+        "win_rate": 0,
+        "S": 11.5
+      }
+    ],
+    "own_deaths_by_phase_killer": {
+      "early_0_20": {
+        "0:ranged": {
+          "kills": 2,
+          "distance": {
+            "n": 2,
+            "mean": 142.71904728573955,
+            "median": 142.71904728573955,
+            "min": 47.13723711866347,
+            "max": 238.30085745281562
+          },
+          "victims": {
+            "ranged": 1,
+            "melee": 1
+          }
+        },
+        "1:melee": {
+          "kills": 13,
+          "distance": {
+            "n": 13,
+            "mean": 43.65429967752447,
+            "median": 46.9511291035873,
+            "min": 30.158995038363432,
+            "max": 55.23771933914425
+          },
+          "victims": {
+            "melee": 13
+          }
+        },
+        "1:ranged": {
+          "kills": 35,
+          "distance": {
+            "n": 35,
+            "mean": 187.74004507008408,
+            "median": 178.18250581769595,
+            "min": 115.40421023043912,
+            "max": 273.61032891286555
+          },
+          "victims": {
+            "melee": 18,
+            "ranged": 17
+          }
+        },
+        "1:artillery": {
+          "kills": 179,
+          "distance": {
+            "n": 179,
+            "mean": 235.69203624592174,
+            "median": 229.85725145390848,
+            "min": 169.47392481848814,
+            "max": 318.7394520394791
+          },
+          "victims": {
+            "melee": 164,
+            "ranged": 15
+          }
+        }
+      },
+      "middle_20_60": {
+        "0:ranged": {
+          "kills": 1,
+          "distance": {
+            "n": 1,
+            "mean": 287.19197462030587,
+            "median": 287.19197462030587,
+            "min": 287.19197462030587,
+            "max": 287.19197462030587
+          },
+          "victims": {
+            "ranged": 1
+          }
+        },
+        "1:ranged": {
+          "kills": 111,
+          "distance": {
+            "n": 111,
+            "mean": 235.97854657168784,
+            "median": 231.88870639643312,
+            "min": 174.23361813421548,
+            "max": 314.18240288441314
+          },
+          "victims": {
+            "ranged": 111
+          }
+        },
+        "1:artillery": {
+          "kills": 153,
+          "distance": {
+            "n": 153,
+            "mean": 286.90641568563836,
+            "median": 292.4747139795835,
+            "min": 165.9139188097608,
+            "max": 344.18740950214607
+          },
+          "victims": {
+            "ranged": 147,
+            "artillery": 3,
+            "melee": 3
+          }
+        }
+      },
+      "late_60_end": {
+        "1:ranged": {
+          "kills": 1,
+          "distance": {
+            "n": 1,
+            "mean": 260.6179265789438,
+            "median": 260.6179265789438,
+            "min": 260.6179265789438,
+            "max": 260.6179265789438
+          },
+          "victims": {
+            "artillery": 1
+          }
+        },
+        "1:artillery": {
+          "kills": 150,
+          "distance": {
+            "n": 150,
+            "mean": 305.210023963154,
+            "median": 319.0331113790247,
+            "min": 172.4770405776669,
+            "max": 372.57141262950825
+          },
+          "victims": {
+            "ranged": 114,
+            "artillery": 35,
+            "melee": 1
+          }
+        }
+      },
+      "gun_only": {
+        "1:artillery": {
+          "kills": 110,
+          "distance": {
+            "n": 110,
+            "mean": 296.95446300100343,
+            "median": 306.05590601846825,
+            "min": 189.17312867382313,
+            "max": 365.18139805128646
+          },
+          "victims": {
+            "ranged": 84,
+            "artillery": 25,
+            "melee": 1
+          }
+        }
+      }
+    },
+    "gun_killers": {
+      "0:ranged": {
+        "kills": 1,
+        "distance": {
+          "n": 1,
+          "mean": 198.8222918249006,
+          "median": 198.8222918249006,
+          "min": 198.8222918249006,
+          "max": 198.8222918249006
+        },
+        "max_simultaneous": {
+          "n": 1,
+          "mean": 13,
+          "median": 13,
+          "min": 13,
+          "max": 13
+        },
+        "shelling_other": 1,
+        "killer_angle": {
+          "n": 1,
+          "mean": 117.35116358088526,
+          "median": 117.35116358088526,
+          "min": 117.35116358088526,
+          "max": 117.35116358088526
+        },
+        "other_gun_cover": {
+          "n": 1,
+          "mean": 3,
+          "median": 3,
+          "min": 3,
+          "max": 3
+        }
+      },
+      "0:artillery": {
+        "kills": 7,
+        "distance": {
+          "n": 7,
+          "mean": 299.14521575568176,
+          "median": 312.99551378255717,
+          "min": 238.47908920810656,
+          "max": 323.8972232393035
+        },
+        "max_simultaneous": {
+          "n": 7,
+          "mean": 6.714285714285714,
+          "median": 8,
+          "min": 1,
+          "max": 13
+        },
+        "shelling_other": 4,
+        "killer_angle": {
+          "n": 7,
+          "mean": 117.3404929555247,
+          "median": 90.59617856330117,
+          "min": 89.53411738473234,
+          "max": 167.58331129231487
+        },
+        "other_gun_cover": {
+          "n": 7,
+          "mean": 0.5714285714285714,
+          "median": 0,
+          "min": 0,
+          "max": 2
+        }
+      }
+    },
+    "approaches": {
+      "count": 3041,
+      "outcomes": {
+        "attacker_died": 2292,
+        "recrossed_same_tick_or_band_reentry": 150,
+        "left_gun_band": 599
+      },
+      "roles": {
+        "melee": 2029,
+        "ranged": 856,
+        "artillery": 156
+      },
+      "ever_reached_own_range": 312,
+      "ever_dealt_damage": 9,
+      "entry_cover": {
+        "n": 3041,
+        "mean": 3.753370601775732,
+        "median": 3,
+        "min": 0,
+        "max": 9
+      },
+      "simultaneous_approachers": {
+        "n": 3041,
+        "mean": 5.932259125287734,
+        "median": 7,
+        "min": 1,
+        "max": 11
+      },
+      "simultaneous_in_reach": {
+        "n": 3041,
+        "mean": 0.6372903650115094,
+        "median": 0,
+        "min": 0,
+        "max": 15
+      },
+      "simultaneous_entry_inside_band": {
+        "n": 3041,
+        "mean": 4.652745807300231,
+        "median": 4,
+        "min": 1,
+        "max": 18
+      },
+      "approach_starts_previous_3s": {
+        "n": 3041,
+        "mean": 4.229200920749753,
+        "median": 4,
+        "min": 1,
+        "max": 10
+      },
+      "entry_angle": {
+        "n": 3041,
+        "mean": 79.69014451000915,
+        "median": 76.47845202011499,
+        "min": 28.537007983392954,
+        "max": 179.93324331697806
+      },
+      "duration": {
+        "n": 3041,
+        "mean": 2.3759289707333138,
+        "median": 2.466666666666658,
+        "min": 0.0,
+        "max": 7.533333333333356
+      }
+    },
+    "dodge_calls": 80924,
+    "dodge_same_tick_motion_toward_goal": 78966,
+    "geometry": {
+      "gun_nearest_spacing": {
+        "n": 20,
+        "mean": 46.23479497138436,
+        "median": 47.107921010188704,
+        "min": 41.86642370038904,
+        "max": 47.35269299385234
+      },
+      "gun_band_overlap_count": {
+        "n": 20,
+        "mean": 8.834401637014198,
+        "median": 9.0,
+        "min": 8.021929278078197,
+        "max": 9
+      },
+      "enemy_has_slot": {
+        "n": 20,
+        "mean": 1,
+        "median": 1.0,
+        "min": 1,
+        "max": 1
+      },
+      "enemy_slot_offset": {
+        "n": 20,
+        "mean": 15.347529397573448,
+        "median": 15.259774824538189,
+        "min": 10.901454285521911,
+        "max": 24.628406236124796
+      }
+    }
+  },
+  "v6_morale|novice": {
+    "fights": 20,
+    "seed_clusters": 10,
+    "elimination_wins": 19,
+    "elimination_win_rate": 0.95,
+    "timeouts": 0,
+    "mean_S": 32.15,
+    "mean_guns_destroyed": 9.95,
+    "mean_own_losses": 17.8,
+    "elimination_time": {
+      "n": 19,
+      "mean": 33.66666666666727,
+      "median": 33.40000000000067,
+      "min": 28.033333333333886,
+      "max": 44.80000000000002
+    },
+    "own_losses_per_enemy_killed": {
+      "n": 20,
+      "mean": 0.3570204081632653,
+      "median": 0.3,
+      "min": 0.22,
+      "max": 1.0204081632653061
+    },
+    "cluster_rows": [
+      {
+        "cluster": 0,
+        "win_rate": 0.5,
+        "S": 18.5
+      },
+      {
+        "cluster": 1,
+        "win_rate": 1,
+        "S": 35.5
+      },
+      {
+        "cluster": 2,
+        "win_rate": 1,
+        "S": 38
+      },
+      {
+        "cluster": 3,
+        "win_rate": 1,
+        "S": 32.5
+      },
+      {
+        "cluster": 4,
+        "win_rate": 1,
+        "S": 29
+      },
+      {
+        "cluster": 5,
+        "win_rate": 1,
+        "S": 34.5
+      },
+      {
+        "cluster": 6,
+        "win_rate": 1,
+        "S": 32.5
+      },
+      {
+        "cluster": 7,
+        "win_rate": 1,
+        "S": 35
+      },
+      {
+        "cluster": 8,
+        "win_rate": 1,
+        "S": 30
+      },
+      {
+        "cluster": 9,
+        "win_rate": 1,
+        "S": 36
+      }
+    ],
+    "own_deaths_by_phase_killer": {
+      "early_0_20": {
+        "0:artillery": {
+          "kills": 13,
+          "distance": {
+            "n": 13,
+            "mean": 299.71964054444885,
+            "median": 299.1129377335854,
+            "min": 259.71716873564327,
+            "max": 326.68573907381614
+          },
+          "victims": {
+            "melee": 13
+          }
+        },
+        "1:melee": {
+          "kills": 28,
+          "distance": {
+            "n": 28,
+            "mean": 53.28369310546182,
+            "median": 53.45266759580829,
+            "min": 31.603107211084094,
+            "max": 67.51870502636048
+          },
+          "victims": {
+            "melee": 27,
+            "ranged": 1
+          }
+        },
+        "1:ranged": {
+          "kills": 23,
+          "distance": {
+            "n": 23,
+            "mean": 214.08871012165085,
+            "median": 225.01116607168808,
+            "min": 122.8169393180155,
+            "max": 298.8659533561155
+          },
+          "victims": {
+            "melee": 9,
+            "ranged": 14
+          }
+        },
+        "1:artillery": {
+          "kills": 205,
+          "distance": {
+            "n": 205,
+            "mean": 244.4741623595993,
+            "median": 235.01505841622034,
+            "min": 164.14135136771452,
+            "max": 336.46996506577136
+          },
+          "victims": {
+            "melee": 151,
+            "ranged": 54
+          }
+        }
+      },
+      "middle_20_60": {
+        "1:ranged": {
+          "kills": 2,
+          "distance": {
+            "n": 2,
+            "mean": 265.68904133047636,
+            "median": 265.68904133047636,
+            "min": 233.5301487188422,
+            "max": 297.84793394211044
+          },
+          "victims": {
+            "ranged": 2
+          }
+        },
+        "1:artillery": {
+          "kills": 85,
+          "distance": {
+            "n": 85,
+            "mean": 314.3800782783244,
+            "median": 321.91323978674046,
+            "min": 245.4053711049678,
+            "max": 357.81707589359024
+          },
+          "victims": {
+            "ranged": 71,
+            "artillery": 14
+          }
+        }
+      },
+      "late_60_end": {},
+      "gun_only": {
+        "1:artillery": {
+          "kills": 76,
+          "distance": {
+            "n": 76,
+            "mean": 315.1547171830416,
+            "median": 326.25031090814525,
+            "min": 245.4053711049678,
+            "max": 357.81707589359024
+          },
+          "victims": {
+            "ranged": 65,
+            "artillery": 11
+          }
+        }
+      }
+    },
+    "gun_killers": {
+      "0:ranged": {
+        "kills": 6,
+        "distance": {
+          "n": 6,
+          "mean": 283.4822733897495,
+          "median": 275.5718564884911,
+          "min": 255.57220172116902,
+          "max": 319.4079358756486
+        },
+        "max_simultaneous": {
+          "n": 6,
+          "mean": 2.6666666666666665,
+          "median": 3.0,
+          "min": 1,
+          "max": 4
+        },
+        "shelling_other": 3,
+        "killer_angle": {
+          "n": 4,
+          "mean": 107.69267269553286,
+          "median": 103.01300712022605,
+          "min": 82.05430370433636,
+          "max": 142.690372837343
+        },
+        "other_gun_cover": {
+          "n": 6,
+          "mean": 1.3333333333333333,
+          "median": 1.0,
+          "min": 0,
+          "max": 3
+        }
+      },
+      "0:artillery": {
+        "kills": 193,
+        "distance": {
+          "n": 193,
+          "mean": 329.29165606232715,
+          "median": 321.5940496588452,
+          "min": 301.0652478412347,
+          "max": 387.8071215430728
+        },
+        "max_simultaneous": {
+          "n": 193,
+          "mean": 1.689119170984456,
+          "median": 1,
+          "min": 0,
+          "max": 8
+        },
+        "shelling_other": 83,
+        "killer_angle": {
+          "n": 176,
+          "mean": 100.4929192729671,
+          "median": 98.52175598415928,
+          "min": 5.846215363534624,
+          "max": 175.16973630000615
+        },
+        "other_gun_cover": {
+          "n": 193,
+          "mean": 0.533678756476684,
+          "median": 0,
+          "min": 0,
+          "max": 7
+        }
+      }
+    },
+    "approaches": {
+      "count": 0,
+      "outcomes": {},
+      "roles": {},
+      "ever_reached_own_range": 0,
+      "ever_dealt_damage": 0,
+      "entry_cover": {
+        "n": 0,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "max": null
+      },
+      "simultaneous_approachers": {
+        "n": 0,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "max": null
+      },
+      "simultaneous_in_reach": {
+        "n": 0,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "max": null
+      },
+      "simultaneous_entry_inside_band": {
+        "n": 0,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "max": null
+      },
+      "approach_starts_previous_3s": {
+        "n": 0,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "max": null
+      },
+      "entry_angle": {
+        "n": 0,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "max": null
+      },
+      "duration": {
+        "n": 0,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "max": null
+      }
+    },
+    "dodge_calls": 0,
+    "dodge_same_tick_motion_toward_goal": 0,
+    "geometry": {
+      "gun_nearest_spacing": {
+        "n": 20,
+        "mean": 23.230370928507423,
+        "median": 22.06921376642422,
+        "min": 20.140196912534194,
+        "max": 30.891055626653323
+      },
+      "gun_band_overlap_count": {
+        "n": 20,
+        "mean": 8.519609498214363,
+        "median": 8.537752375289811,
+        "min": 8.043662825955124,
+        "max": 8.828295165394403
+      },
+      "enemy_has_slot": {
+        "n": 20,
+        "mean": 0,
+        "median": 0.0,
+        "min": 0,
+        "max": 0
+      },
+      "enemy_slot_offset": {
+        "n": 0,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "max": null
+      }
+    }
+  },
+  "v6_morale|regular": {
+    "fights": 20,
+    "seed_clusters": 10,
+    "elimination_wins": 0,
+    "elimination_win_rate": 0,
+    "timeouts": 20,
+    "mean_S": 8.3,
+    "mean_guns_destroyed": 0.8,
+    "mean_own_losses": 32.5,
+    "elimination_time": {
+      "n": 0,
+      "mean": null,
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "own_losses_per_enemy_killed": {
+      "n": 20,
+      "mean": 0.7957995459824728,
+      "median": 0.8643292682926829,
+      "min": 0.38095238095238093,
+      "max": 1.2
+    },
+    "cluster_rows": [
+      {
+        "cluster": 0,
+        "win_rate": 0,
+        "S": 20.5
+      },
+      {
+        "cluster": 1,
+        "win_rate": 0,
+        "S": 11.5
+      },
+      {
+        "cluster": 2,
+        "win_rate": 0,
+        "S": 14.5
+      },
+      {
+        "cluster": 3,
+        "win_rate": 0,
+        "S": 22
+      },
+      {
+        "cluster": 4,
+        "win_rate": 0,
+        "S": -7
+      },
+      {
+        "cluster": 5,
+        "win_rate": 0,
+        "S": 4.5
+      },
+      {
+        "cluster": 6,
+        "win_rate": 0,
+        "S": -1
+      },
+      {
+        "cluster": 7,
+        "win_rate": 0,
+        "S": 10
+      },
+      {
+        "cluster": 8,
+        "win_rate": 0,
+        "S": 5.5
+      },
+      {
+        "cluster": 9,
+        "win_rate": 0,
+        "S": 2.5
+      }
+    ],
+    "own_deaths_by_phase_killer": {
+      "early_0_20": {
+        "0:ranged": {
+          "kills": 1,
+          "distance": {
+            "n": 1,
+            "mean": 258.23931160949496,
+            "median": 258.23931160949496,
+            "min": 258.23931160949496,
+            "max": 258.23931160949496
+          },
+          "victims": {
+            "melee": 1
+          }
+        },
+        "1:melee": {
+          "kills": 11,
+          "distance": {
+            "n": 11,
+            "mean": 48.310521787958585,
+            "median": 47.85241853974485,
+            "min": 30.577217007436833,
+            "max": 64.57948305500352
+          },
+          "victims": {
+            "melee": 11
+          }
+        },
+        "1:ranged": {
+          "kills": 29,
+          "distance": {
+            "n": 29,
+            "mean": 173.57762049291364,
+            "median": 160.78325324181657,
+            "min": 121.05998381680169,
+            "max": 247.13750212303174
+          },
+          "victims": {
+            "melee": 21,
+            "ranged": 8
+          }
+        },
+        "1:artillery": {
+          "kills": 188,
+          "distance": {
+            "n": 188,
+            "mean": 244.93221268196862,
+            "median": 246.04210357405947,
+            "min": 168.6854650795771,
+            "max": 345.9133449233109
+          },
+          "victims": {
+            "melee": 166,
+            "ranged": 22
+          }
+        }
+      },
+      "middle_20_60": {
+        "1:ranged": {
+          "kills": 49,
+          "distance": {
+            "n": 49,
+            "mean": 240.52596309480705,
+            "median": 234.38960452059732,
+            "min": 178.45180010122888,
+            "max": 335.7420217943855
+          },
+          "victims": {
+            "ranged": 38,
+            "artillery": 11
+          }
+        },
+        "1:artillery": {
+          "kills": 149,
+          "distance": {
+            "n": 149,
+            "mean": 300.00022473448837,
+            "median": 301.66121770947876,
+            "min": 195.99605321777983,
+            "max": 366.0286456605023
+          },
+          "victims": {
+            "ranged": 124,
+            "artillery": 24,
+            "melee": 1
+          }
+        }
+      },
+      "late_60_end": {
+        "1:artillery": {
+          "kills": 223,
+          "distance": {
+            "n": 223,
+            "mean": 304.1917641919216,
+            "median": 309.1706726581698,
+            "min": 172.55520779094707,
+            "max": 375.27244481216064
+          },
+          "victims": {
+            "ranged": 188,
+            "artillery": 35
+          }
+        }
+      },
+      "gun_only": {
+        "1:artillery": {
+          "kills": 253,
+          "distance": {
+            "n": 253,
+            "mean": 307.5268026370542,
+            "median": 317.1950729173929,
+            "min": 172.55520779094707,
+            "max": 367.7923214266995
+          },
+          "victims": {
+            "ranged": 202,
+            "artillery": 51
+          }
+        }
+      }
+    },
+    "gun_killers": {
+      "0:ranged": {
+        "kills": 5,
+        "distance": {
+          "n": 5,
+          "mean": 225.2259768844877,
+          "median": 223.91587921600183,
+          "min": 172.37870967265846,
+          "max": 258.2650204439527
+        },
+        "max_simultaneous": {
+          "n": 5,
+          "mean": 15.2,
+          "median": 16,
+          "min": 6,
+          "max": 24
+        },
+        "shelling_other": 5,
+        "killer_angle": {
+          "n": 5,
+          "mean": 136.87740592718205,
+          "median": 135.01027136075476,
+          "min": 112.29974396279813,
+          "max": 164.27349099178628
+        },
+        "other_gun_cover": {
+          "n": 5,
+          "mean": 2.8,
+          "median": 3,
+          "min": 1,
+          "max": 5
+        }
+      },
+      "0:artillery": {
+        "kills": 11,
+        "distance": {
+          "n": 11,
+          "mean": 275.72724056482633,
+          "median": 260.9803362761635,
+          "min": 208.7741859908535,
+          "max": 323.0664478075972
+        },
+        "max_simultaneous": {
+          "n": 11,
+          "mean": 10.363636363636363,
+          "median": 10,
+          "min": 1,
+          "max": 25
+        },
+        "shelling_other": 7,
+        "killer_angle": {
+          "n": 11,
+          "mean": 126.2456734683136,
+          "median": 133.6051032822577,
+          "min": 88.10401340923082,
+          "max": 169.26598820803034
+        },
+        "other_gun_cover": {
+          "n": 11,
+          "mean": 1.4545454545454546,
+          "median": 2,
+          "min": 0,
+          "max": 4
+        }
+      }
+    },
+    "approaches": {
+      "count": 3055,
+      "outcomes": {
+        "attacker_died": 2372,
+        "left_gun_band": 563,
+        "recrossed_same_tick_or_band_reentry": 116,
+        "gun_died": 4
+      },
+      "roles": {
+        "melee": 2037,
+        "ranged": 903,
+        "artillery": 115
+      },
+      "ever_reached_own_range": 288,
+      "ever_dealt_damage": 16,
+      "entry_cover": {
+        "n": 3055,
+        "mean": 3.9708674304418987,
+        "median": 4,
+        "min": 0,
+        "max": 9
+      },
+      "simultaneous_approachers": {
+        "n": 3055,
+        "mean": 6.1708674304418984,
+        "median": 7,
+        "min": 1,
+        "max": 10
+      },
+      "simultaneous_in_reach": {
+        "n": 3055,
+        "mean": 0.995417348608838,
+        "median": 0,
+        "min": 0,
+        "max": 24
+      },
+      "simultaneous_entry_inside_band": {
+        "n": 3055,
+        "mean": 4.994762684124386,
+        "median": 5,
+        "min": 1,
+        "max": 22
+      },
+      "approach_starts_previous_3s": {
+        "n": 3055,
+        "mean": 4.322422258592471,
+        "median": 4,
+        "min": 1,
+        "max": 10
+      },
+      "entry_angle": {
+        "n": 3055,
+        "mean": 77.61423280821198,
+        "median": 72.99406385383706,
+        "min": 8.145339975011222,
+        "max": 179.93776305134438
+      },
+      "duration": {
+        "n": 3055,
+        "mean": 2.358865248226934,
+        "median": 2.4333333333333247,
+        "min": 0.0,
+        "max": 8.033333333332877
+      }
+    },
+    "dodge_calls": 88184,
+    "dodge_same_tick_motion_toward_goal": 85563,
+    "geometry": {
+      "gun_nearest_spacing": {
+        "n": 20,
+        "mean": 46.19445464973542,
+        "median": 47.12747526333318,
+        "min": 43.07537673860847,
+        "max": 47.456004142624664
+      },
+      "gun_band_overlap_count": {
+        "n": 20,
+        "mean": 8.646873668625837,
+        "median": 8.932002706359945,
+        "min": 7.394025923126452,
+        "max": 9
+      },
+      "enemy_has_slot": {
+        "n": 20,
+        "mean": 1,
+        "median": 1.0,
+        "min": 1,
+        "max": 1
+      },
+      "enemy_slot_offset": {
+        "n": 20,
+        "mean": 15.050701220331154,
+        "median": 14.932702740824848,
+        "min": 11.338415256192848,
+        "max": 20.6282748951354
+      }
+    }
+  },
+  "v5_resonator|novice": {
+    "fights": 20,
+    "seed_clusters": 10,
+    "elimination_wins": 18,
+    "elimination_win_rate": 0.9,
+    "timeouts": 0,
+    "mean_S": 6.05,
+    "mean_guns_destroyed": 9.7,
+    "mean_own_losses": 43.65,
+    "elimination_time": {
+      "n": 18,
+      "mean": 54.648148148147605,
+      "median": 55.483333333332745,
+      "min": 47.13333333333322,
+      "max": 63.966666666665596
+    },
+    "own_losses_per_enemy_killed": {
+      "n": 20,
+      "mean": 0.8794311594202898,
+      "median": 0.88,
+      "min": 0.7,
+      "max": 1.0869565217391304
+    },
+    "cluster_rows": [
+      {
+        "cluster": 0,
+        "win_rate": 0.5,
+        "S": 2.5
+      },
+      {
+        "cluster": 1,
+        "win_rate": 1,
+        "S": 14
+      },
+      {
+        "cluster": 2,
+        "win_rate": 1,
+        "S": 5.5
+      },
+      {
+        "cluster": 3,
+        "win_rate": 1,
+        "S": 4.5
+      },
+      {
+        "cluster": 4,
+        "win_rate": 1,
+        "S": 6.5
+      },
+      {
+        "cluster": 5,
+        "win_rate": 0.5,
+        "S": 0.5
+      },
+      {
+        "cluster": 6,
+        "win_rate": 1,
+        "S": 7
+      },
+      {
+        "cluster": 7,
+        "win_rate": 1,
+        "S": 6.5
+      },
+      {
+        "cluster": 8,
+        "win_rate": 1,
+        "S": 7.5
+      },
+      {
+        "cluster": 9,
+        "win_rate": 1,
+        "S": 6
+      }
+    ],
+    "own_deaths_by_phase_killer": {
+      "early_0_20": {
+        "1:melee": {
+          "kills": 42,
+          "distance": {
+            "n": 42,
+            "mean": 51.050530542035624,
+            "median": 53.74810216179157,
+            "min": 30.14135749653255,
+            "max": 65.90607776395214
+          },
+          "victims": {
+            "melee": 42
+          }
+        },
+        "1:ranged": {
+          "kills": 14,
+          "distance": {
+            "n": 14,
+            "mean": 186.5897376969123,
+            "median": 173.73916931343473,
+            "min": 146.57778408343728,
+            "max": 276.5457819354285
+          },
+          "victims": {
+            "melee": 14
+          }
+        },
+        "1:artillery": {
+          "kills": 142,
+          "distance": {
+            "n": 142,
+            "mean": 240.54176128673524,
+            "median": 233.08408882698984,
+            "min": 191.18798614144123,
+            "max": 319.37337211636014
+          },
+          "victims": {
+            "melee": 142
+          }
+        }
+      },
+      "middle_20_60": {
+        "1:ranged": {
+          "kills": 24,
+          "distance": {
+            "n": 24,
+            "mean": 263.98319102273064,
+            "median": 264.6333183780572,
+            "min": 219.02498983742512,
+            "max": 298.7599338787687
+          },
+          "victims": {
+            "ranged": 24
+          }
+        },
+        "1:artillery": {
+          "kills": 650,
+          "distance": {
+            "n": 650,
+            "mean": 299.02169289604467,
+            "median": 298.75490295307964,
+            "min": 228.82687539549565,
+            "max": 358.49990788204946
+          },
+          "victims": {
+            "ranged": 543,
+            "artillery": 105,
+            "melee": 2
+          }
+        }
+      },
+      "late_60_end": {
+        "1:artillery": {
+          "kills": 1,
+          "distance": {
+            "n": 1,
+            "mean": 316.628541672249,
+            "median": 316.628541672249,
+            "min": 316.628541672249,
+            "max": 316.628541672249
+          },
+          "victims": {
+            "artillery": 1
+          }
+        }
+      },
+      "gun_only": {
+        "1:artillery": {
+          "kills": 383,
+          "distance": {
+            "n": 383,
+            "mean": 299.67025838538495,
+            "median": 299.16478996857813,
+            "min": 228.82687539549565,
+            "max": 358.49990788204946
+          },
+          "victims": {
+            "ranged": 289,
+            "artillery": 94
+          }
+        }
+      }
+    },
+    "gun_killers": {
+      "0:ranged": {
+        "kills": 2,
+        "distance": {
+          "n": 2,
+          "mean": 252.45705113041862,
+          "median": 252.45705113041862,
+          "min": 252.05258689059917,
+          "max": 252.86151537023807
+        },
+        "max_simultaneous": {
+          "n": 2,
+          "mean": 2,
+          "median": 2.0,
+          "min": 2,
+          "max": 2
+        },
+        "shelling_other": 1,
+        "killer_angle": {
+          "n": 2,
+          "mean": 109.45938659845555,
+          "median": 109.45938659845555,
+          "min": 93.53194631853354,
+          "max": 125.38682687837756
+        },
+        "other_gun_cover": {
+          "n": 2,
+          "mean": 6.5,
+          "median": 6.5,
+          "min": 4,
+          "max": 9
+        }
+      },
+      "0:artillery": {
+        "kills": 192,
+        "distance": {
+          "n": 192,
+          "mean": 312.57555912096245,
+          "median": 317.5555880603272,
+          "min": 231.24855958801905,
+          "max": 367.2973014236862
+        },
+        "max_simultaneous": {
+          "n": 192,
+          "mean": 3.0260416666666665,
+          "median": 3.0,
+          "min": 1,
+          "max": 8
+        },
+        "shelling_other": 160,
+        "killer_angle": {
+          "n": 174,
+          "mean": 111.37059754556611,
+          "median": 113.4919856457511,
+          "min": 3.3337577074616425,
+          "max": 179.824241954026
+        },
+        "other_gun_cover": {
+          "n": 192,
+          "mean": 1.2291666666666667,
+          "median": 0.0,
+          "min": 0,
+          "max": 8
+        }
+      }
+    },
+    "approaches": {
+      "count": 0,
+      "outcomes": {},
+      "roles": {},
+      "ever_reached_own_range": 0,
+      "ever_dealt_damage": 0,
+      "entry_cover": {
+        "n": 0,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "max": null
+      },
+      "simultaneous_approachers": {
+        "n": 0,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "max": null
+      },
+      "simultaneous_in_reach": {
+        "n": 0,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "max": null
+      },
+      "simultaneous_entry_inside_band": {
+        "n": 0,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "max": null
+      },
+      "approach_starts_previous_3s": {
+        "n": 0,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "max": null
+      },
+      "entry_angle": {
+        "n": 0,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "max": null
+      },
+      "duration": {
+        "n": 0,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "max": null
+      }
+    },
+    "dodge_calls": 0,
+    "dodge_same_tick_motion_toward_goal": 0,
+    "geometry": {
+      "gun_nearest_spacing": {
+        "n": 20,
+        "mean": 23.608802795775087,
+        "median": 23.045125080660803,
+        "min": 20.429874304064466,
+        "max": 30.84613678806206
+      },
+      "gun_band_overlap_count": {
+        "n": 20,
+        "mean": 8.443518858216455,
+        "median": 8.505232764568646,
+        "min": 7.958825715347454,
+        "max": 8.895503211991434
+      },
+      "enemy_has_slot": {
+        "n": 20,
+        "mean": 0,
+        "median": 0.0,
+        "min": 0,
+        "max": 0
+      },
+      "enemy_slot_offset": {
+        "n": 0,
+        "mean": null,
+        "median": null,
+        "min": null,
+        "max": null
+      }
+    }
+  },
+  "v5_resonator|regular": {
+    "fights": 20,
+    "seed_clusters": 10,
+    "elimination_wins": 0,
+    "elimination_win_rate": 0,
+    "timeouts": 10,
+    "mean_S": -5.15,
+    "mean_guns_destroyed": 3.25,
+    "mean_own_losses": 48.4,
+    "elimination_time": {
+      "n": 0,
+      "mean": null,
+      "median": null,
+      "min": null,
+      "max": null
+    },
+    "own_losses_per_enemy_killed": {
+      "n": 20,
+      "mean": 1.1198925294613535,
+      "median": 1.1277056277056277,
+      "min": 1.0238095238095237,
+      "max": 1.1951219512195121
+    },
+    "cluster_rows": [
+      {
+        "cluster": 0,
+        "win_rate": 0,
+        "S": -6.5
+      },
+      {
+        "cluster": 1,
+        "win_rate": 0,
+        "S": -5.5
+      },
+      {
+        "cluster": 2,
+        "win_rate": 0,
+        "S": -2.5
+      },
+      {
+        "cluster": 3,
+        "win_rate": 0,
+        "S": -4.5
+      },
+      {
+        "cluster": 4,
+        "win_rate": 0,
+        "S": -6
+      },
+      {
+        "cluster": 5,
+        "win_rate": 0,
+        "S": -7.5
+      },
+      {
+        "cluster": 6,
+        "win_rate": 0,
+        "S": -5.5
+      },
+      {
+        "cluster": 7,
+        "win_rate": 0,
+        "S": -6.5
+      },
+      {
+        "cluster": 8,
+        "win_rate": 0,
+        "S": -5.5
+      },
+      {
+        "cluster": 9,
+        "win_rate": 0,
+        "S": -1.5
+      }
+    ],
+    "own_deaths_by_phase_killer": {
+      "early_0_20": {
+        "1:melee": {
+          "kills": 10,
+          "distance": {
+            "n": 10,
+            "mean": 45.45353004598282,
+            "median": 43.34503224521185,
+            "min": 31.374899461946924,
+            "max": 66.55258194318799
+          },
+          "victims": {
+            "melee": 10
+          }
+        },
+        "1:ranged": {
+          "kills": 21,
+          "distance": {
+            "n": 21,
+            "mean": 170.30928158857932,
+            "median": 161.91965572403822,
+            "min": 132.40394032873087,
+            "max": 250.16667220085395
+          },
+          "victims": {
+            "melee": 21
+          }
+        },
+        "1:artillery": {
+          "kills": 159,
+          "distance": {
+            "n": 159,
+            "mean": 235.97291673178435,
+            "median": 228.21674788543856,
+            "min": 168.93464044608876,
+            "max": 350.6814942266134
+          },
+          "victims": {
+            "melee": 159
+          }
+        }
+      },
+      "middle_20_60": {
+        "0:ranged": {
+          "kills": 2,
+          "distance": {
+            "n": 2,
+            "mean": 39.96482717061279,
+            "median": 39.96482717061279,
+            "min": 22.603504055228218,
+            "max": 57.326150285997365
+          },
+          "victims": {
+            "ranged": 2
+          }
+        },
+        "1:ranged": {
+          "kills": 130,
+          "distance": {
+            "n": 130,
+            "mean": 252.9002344050223,
+            "median": 256.54877517730085,
+            "min": 144.36290019212183,
+            "max": 336.1935029970864
+          },
+          "victims": {
+            "ranged": 107,
+            "artillery": 20,
+            "melee": 3
+          }
+        },
+        "1:artillery": {
+          "kills": 349,
+          "distance": {
+            "n": 349,
+            "mean": 288.7162166986126,
+            "median": 295.0581339301998,
+            "min": 178.01805774124625,
+            "max": 373.41397305531314
+          },
+          "victims": {
+            "melee": 7,
+            "ranged": 292,
+            "artillery": 50
+          }
+        }
+      },
+      "late_60_end": {
+        "1:ranged": {
+          "kills": 15,
+          "distance": {
+            "n": 15,
+            "mean": 229.80461642716907,
+            "median": 244.78658205981378,
+            "min": 158.29689099659322,
+            "max": 277.2411757274026
+          },
+          "victims": {
+            "artillery": 4,
+            "ranged": 11
+          }
+        },
+        "1:artillery": {
+          "kills": 282,
+          "distance": {
+            "n": 282,
+            "mean": 306.8920061059519,
+            "median": 305.9206051949752,
+            "min": 196.21687299097698,
+            "max": 362.65344070891376
+          },
+          "victims": {
+            "ranged": 183,
+            "artillery": 99
+          }
+        }
+      },
+      "gun_only": {
+        "1:artillery": {
+          "kills": 232,
+          "distance": {
+            "n": 232,
+            "mean": 306.48360081283437,
+            "median": 306.3763504657695,
+            "min": 196.21687299097698,
+            "max": 361.0514645830936
+          },
+          "victims": {
+            "ranged": 144,
+            "artillery": 88
+          }
+        }
+      }
+    },
+    "gun_killers": {
+      "0:ranged": {
+        "kills": 4,
+        "distance": {
+          "n": 4,
+          "mean": 214.88234050420846,
+          "median": 203.62217323504905,
+          "min": 199.83743672648075,
+          "max": 252.44757882025502
+        },
+        "max_simultaneous": {
+          "n": 4,
+          "mean": 8.5,
+          "median": 8.5,
+          "min": 6,
+          "max": 11
+        },
+        "shelling_other": 4,
+        "killer_angle": {
+          "n": 4,
+          "mean": 153.81305203873566,
+          "median": 153.198171853578,
+          "min": 138.17949402943643,
+          "max": 170.67637041835022
+        },
+        "other_gun_cover": {
+          "n": 4,
+          "mean": 1.75,
+          "median": 2.0,
+          "min": 1,
+          "max": 2
+        }
+      },
+      "0:artillery": {
+        "kills": 61,
+        "distance": {
+          "n": 61,
+          "mean": 292.57408228176104,
+          "median": 294.04747006254587,
+          "min": 214.3187856309084,
+          "max": 337.7947256364252
+        },
+        "max_simultaneous": {
+          "n": 61,
+          "mean": 5.918032786885246,
+          "median": 5,
+          "min": 1,
+          "max": 18
+        },
+        "shelling_other": 57,
+        "killer_angle": {
+          "n": 61,
+          "mean": 140.62848071795958,
+          "median": 149.84548391028915,
+          "min": 71.17436310016326,
+          "max": 178.66973830625108
+        },
+        "other_gun_cover": {
+          "n": 61,
+          "mean": 1,
+          "median": 0,
+          "min": 0,
+          "max": 5
+        }
+      }
+    },
+    "approaches": {
+      "count": 5273,
+      "outcomes": {
+        "attacker_died": 2968,
+        "left_gun_band": 2018,
+        "recrossed_same_tick_or_band_reentry": 175,
+        "gun_died": 110,
+        "attacker_and_gun_died_same_tick": 2
+      },
+      "roles": {
+        "melee": 1873,
+        "ranged": 2141,
+        "artillery": 1259
+      },
+      "ever_reached_own_range": 1749,
+      "ever_dealt_damage": 319,
+      "entry_cover": {
+        "n": 5273,
+        "mean": 2.8149061255452303,
+        "median": 2,
+        "min": 0,
+        "max": 9
+      },
+      "simultaneous_approachers": {
+        "n": 5273,
+        "mean": 3.7572539351412857,
+        "median": 3,
+        "min": 1,
+        "max": 14
+      },
+      "simultaneous_in_reach": {
+        "n": 5273,
+        "mean": 1.5463682912952779,
+        "median": 1,
+        "min": 0,
+        "max": 18
+      },
+      "simultaneous_entry_inside_band": {
+        "n": 5273,
+        "mean": 3.550350843921866,
+        "median": 3,
+        "min": 1,
+        "max": 17
+      },
+      "approach_starts_previous_3s": {
+        "n": 5273,
+        "mean": 3.4151336999810353,
+        "median": 3,
+        "min": 1,
+        "max": 14
+      },
+      "entry_angle": {
+        "n": 5265,
+        "mean": 86.17682846016228,
+        "median": 79.35601807455286,
+        "min": 3.551945930991824,
+        "max": 179.9535584964076
+      },
+      "duration": {
+        "n": 5273,
+        "mean": 1.5776408116821237,
+        "median": 1.1999999999999318,
+        "min": 0.0,
+        "max": 7.666666666666664
+      }
+    },
+    "dodge_calls": 95186,
+    "dodge_same_tick_motion_toward_goal": 91503,
+    "geometry": {
+      "gun_nearest_spacing": {
+        "n": 20,
+        "mean": 43.128269534857026,
+        "median": 43.01728521045388,
+        "min": 39.46348128754567,
+        "max": 46.37455557546676
+      },
+      "gun_band_overlap_count": {
+        "n": 20,
+        "mean": 7.650761518694125,
+        "median": 7.672595348840228,
+        "min": 7.039529732492759,
+        "max": 8.344885117742397
+      },
+      "enemy_has_slot": {
+        "n": 20,
+        "mean": 1,
+        "median": 1.0,
+        "min": 1,
+        "max": 1
+      },
+      "enemy_slot_offset": {
+        "n": 20,
+        "mean": 20.39185555616512,
+        "median": 19.683565807718008,
+        "min": 15.927903386580079,
+        "max": 27.512377626071423
+      }
+    }
+  }
+}
