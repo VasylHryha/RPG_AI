@@ -1,0 +1,54 @@
+{
+  "kind": "SYNTHETIC_VALIDATION_ONLY_NO_PILOTS",
+  "validated_head": "afbe66ee9e0989687f1e9be3115466fcb2c2ae7f",
+  "tests": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/test_capacity_pipeline.py"
+    ],
+    "returncode": 0,
+    "elapsed_seconds": 1.622603167
+  },
+  "test_log_sha256": "b548cefdc2945976877c7e149627dcea561b743f1bf6c648d2efdd09239c04b5",
+  "test_result": "17 passed in 1.36s",
+  "historical_summaries_preserved": [
+    {
+      "path": "evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/SERVICE_RUN_SUMMARIES.json",
+      "sha256": "808f1b0485e647980022a2ed52e644ec5e4990ac646da58fba9044829828616f",
+      "unchanged": true
+    },
+    {
+      "path": "evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/COVERAGE_RUN_SUMMARIES.json",
+      "sha256": "27b66095a240983cfff99763de95e35836d68681bfeee11d2f3c5401be5c2952",
+      "unchanged": true
+    },
+    {
+      "path": "evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/ECONOMY_RUN_SUMMARIES.json",
+      "sha256": "7bfd021374128dcf5ff84692264975cad4d47967cc4987e2a435ff796c7c3761",
+      "unchanged": true
+    },
+    {
+      "path": "evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/DEBT_RUN_SUMMARIES.json",
+      "sha256": "d09dedeb488edd077a13175a461cbe837b8e25160406016ce7e37c11c253d4bf",
+      "unchanged": true
+    },
+    {
+      "path": "evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/DEBT_COMPACT_SUMMARIES.json",
+      "sha256": "0d978e0f5039256a5bf350ec27b60a9a77e6d3843d1ad6e839ddcbe5ecf3647a",
+      "unchanged": true
+    }
+  ],
+  "completion_identity_inputs": 1487,
+  "markdown_design_and_plan_excluded": true,
+  "cap_config_excluded": true,
+  "cap_default_seconds": 5400,
+  "jobs": 22,
+  "max_workers": 10,
+  "primary_tracked_diff_empty": true,
+  "native_or_pilot_execution": false,
+  "actual_process_listing": false
+}
