@@ -796,3 +796,50 @@ No registration, judging seeds or recorded run.
 | R1 the 500 /s envelope was unsupported | A derived conservative bound (5,805 /s); the envelope set to 6,000; out-of-envelope pressure recorded as failure | I cited the victim-side HP cap for an outgoing, multi-victim, β-weighted quantity |
 | R2 no accuracy acceptance; trial-stage bounds; retry terminal rule | An acceptance grid with limits; stage monitoring; exact n, retry and failure rules | I specified stability without an accuracy criterion |
 | N1 the product gate was unclear | Clarified; fixture added | — |
+
+## 19. The success criterion is efficient killing, not survival (owner, 2026-10-07)
+
+**The owner's words** (on v6's survivor-score result): "surviving doesn't count as a win; it can be part of it, but you survive better if you efficiently kill enemies."
+
+**Why S alone is not enough.**
+- With equal armies (50 against 50), S = own survivors − enemy survivors equals kills − losses.
+- A controller that kills the enemy's non-gun units and then **stalls until the 150 s timeout** scores positive S while the enemy keeps its guns:
+  - v6 resonator against regular: 198/200 timeouts, 9.47 enemy guns alive;
+  - morale: 191/200 timeouts, 9.11.
+- This is the survivor-score advantage the owner rejects as a win.
+
+**The criterion from now on** (it replaces "mean S > 0" as the W4 condition and as the P1 target):
+- **The primary outcome is an elimination win:** the enemy army is destroyed (0 enemy survivors) before the timeout, with ≥ 1 own survivor.
+- **Reported with it:**
+  - the elimination-win rate per head;
+  - S (secondary);
+  - enemy guns destroyed;
+  - time to elimination;
+  - own losses (efficiency: own losses per enemy unit killed).
+- **A timeout is never a win**, whatever its S.
+- **"Beats the scripted level in development"** requires:
+  - an elimination-win rate **above 50%** against that head;
+  - mean S > 0;
+  - novice and regular both;
+  - failure-free.
+- **Tuning objective (stage B):**
+  - first the elimination-win rate on the tuning clusters (regular head, novice eligibility as before);
+  - then mean S as the tie-break;
+  - then own losses (fewer is better).
+- **P1 for any S5 registration** is restated on the elimination-win rate, with S as a reported secondary. The drafter writes it, and the owner approves it.
+
+**Consequence for v6:** v6 is **NOT_READY** under this criterion. It has 0 eliminations against regular, as v5 and morale do. Its development result stands as recorded (the survivor-score gate), and is not a win.
+
+**What winning requires** (from `astelia_cpp/S4_V5_TRACE_DIAGNOSTIC.md`):
+- against regular, every arm loses every melee unit by about 16–28 s;
+- the enemy's 10 guns out-range our direct units (320 against 278 px), and the regular profile has a line formation, shell dodge, lead and abilities;
+- against novice, the resonator removes 189/200 guns.
+
+**Next step, evidence first:** the host does not export who hit whom. Before designing v7, add an **observer-only killer telemetry**:
+- the source unit of every damage event and every kill;
+- no policy or engine-behaviour change;
+- actions byte-identical with telemetry on and off.
+
+Then run a short diagnostic: how guns die against novice, and why gun assaults fail against regular (timing, approach paths, cover, simultaneity).
+
+**v7 is then designed from that evidence.** The leading hypothesis to test, not assume: **collective commitment.** A phase-locked target group commits **together**, so the guns cannot destroy attackers one at a time. This is a resonator-level mechanism (group synchronization drives a coordinated assault).
