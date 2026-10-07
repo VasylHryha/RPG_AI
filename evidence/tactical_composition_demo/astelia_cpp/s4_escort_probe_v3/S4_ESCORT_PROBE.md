@@ -2,7 +2,7 @@ DONE
 
 Fresh P12 control first: {"status": "WITHIN_DECLARED_BOUNDS", "novice_sanity_flag": false, "reported_before_interventions": true, "cells": [{"head": "regular", "fights": 20, "elimination_wins": 3, "timeouts": 0, "mean_S": -17.55, "mean_enemy_guns_destroyed": 8.15, "mean_own_guns_lost": 9.05, "mean_own_losses": 49.05}, {"head": "novice", "fights": 20, "elimination_wins": 20, "timeouts": 0, "mean_S": 20.05, "mean_enemy_guns_destroyed": 10.0, "mean_own_guns_lost": 0.0, "mean_own_losses": 29.95}], "control_ids": ["P12_regular_c00_o0", "P12_regular_c00_o1", "P12_regular_c01_o0", "P12_regular_c01_o1", "P12_regular_c02_o0", "P12_regular_c02_o1", "P12_regular_c03_o0", "P12_regular_c03_o1", "P12_regular_c04_o0", "P12_regular_c04_o1", "P12_regular_c05_o0", "P12_regular_c05_o1", "P12_regular_c06_o0", "P12_regular_c06_o1", "P12_regular_c07_o0", "P12_regular_c07_o1", "P12_regular_c08_o0", "P12_regular_c08_o1", "P12_regular_c09_o0", "P12_regular_c09_o1", "P12_novice_c00_o0", "P12_novice_c00_o1", "P12_novice_c01_o0", "P12_novice_c01_o1", "P12_novice_c02_o0", "P12_novice_c02_o1", "P12_novice_c03_o0", "P12_novice_c03_o1", "P12_novice_c04_o0", "P12_novice_c04_o1", "P12_novice_c05_o0", "P12_novice_c05_o1", "P12_novice_c06_o0", "P12_novice_c06_o1", "P12_novice_c07_o0", "P12_novice_c07_o1", "P12_novice_c08_o0", "P12_novice_c08_o1", "P12_novice_c09_o0", "P12_novice_c09_o1"], "utc": "2026-10-07T15:02:33Z", "declaration_sha256": "5d7cd67cf04029855ba4b80b3439b6086248d3070eaf12b59d815139934193a9"}
 
-| Arm/head | Wins /20 | Timeouts | Mean S | Gun kills / own gun losses | Own losses | Our shells→enemy guns / enemy shells→our guns | Raw/clipped arrival |
+| Arm/head | Wins /20 | Timeouts | Mean S | Gun kills / own gun losses | Own losses | Gun victims per successful gun-targeted shell: ours / enemy | Raw/clipped arrival |
 |---|---|---|---|---|---|---|---|
 | P12 regular | 3 | 0 | -17.55 | 8.15 / 9.05 | 49.05 | 1.147118301314459 / 1.0549273021001615 | 0.3523569246079567 / 0.3523569246079567 |
 | P12 novice | 20 | 0 | 20.05 | 10 / 0 | 29.95 | 3.456639566395664 / 1.0 | 0.3587907391427041 / 0.3587907391427041 |
@@ -46,8 +46,35 @@ P17 novice: {"escort": {"counts": {"gun_prepare_ticks": 95531, "gun_focus_V_sum"
 | novice c08 | 2 | 2 | 2 | 0 | 0 |
 | novice c09 | 2 | 2 | 2 | 0 | 0 |
 
+Paired orientation outcomes and scores (win/nonwin, S); paired S differences use the same two orientations:
+
+| Head / cluster | P12 o0 / o1 | P16 o0 / o1 | P17 o0 / o1 | Mean S P12 / P16 / P17 | S difference P16 / P17 minus P12 |
+|---|---|---|---|---|---|
+| regular c00 | o0: nonwin, S=-24; o1: nonwin, S=-25 | o0: win, S=6; o1: win, S=9 | o0: nonwin, S=-35; o1: nonwin, S=-39 | -24.5 / 7.5 / -37.0 | 32.0 / -12.5 |
+| regular c01 | o0: nonwin, S=-25; o1: nonwin, S=-24 | o0: win, S=2; o1: win, S=5 | o0: nonwin, S=-29; o1: nonwin, S=-38 | -24.5 / 3.5 / -33.5 | 28.0 / -9.0 |
+| regular c02 | o0: nonwin, S=-29; o1: nonwin, S=-30 | o0: win, S=8; o1: win, S=3 | o0: nonwin, S=-37; o1: nonwin, S=-38 | -29.5 / 5.5 / -37.5 | 35.0 / -8.0 |
+| regular c03 | o0: nonwin, S=-21; o1: nonwin, S=-19 | o0: win, S=6; o1: win, S=3 | o0: nonwin, S=-39; o1: nonwin, S=-33 | -20.0 / 4.5 / -36.0 | 24.5 / -16.0 |
+| regular c04 | o0: win, S=5; o1: win, S=4 | o0: win, S=8; o1: win, S=7 | o0: nonwin, S=-38; o1: nonwin, S=-37 | 4.5 / 7.5 / -37.5 | 3.0 / -42.0 |
+| regular c05 | o0: nonwin, S=-21; o1: nonwin, S=-15 | o0: win, S=3; o1: win, S=1 | o0: nonwin, S=-36; o1: nonwin, S=-36 | -18.0 / 2.0 / -36.0 | 20.0 / -18.0 |
+| regular c06 | o0: win, S=10; o1: nonwin, S=-25 | o0: win, S=9; o1: win, S=5 | o0: nonwin, S=-37; o1: nonwin, S=-37 | -7.5 / 7.0 / -37.0 | 14.5 / -29.5 |
+| regular c07 | o0: nonwin, S=-8; o1: nonwin, S=-8 | o0: win, S=8; o1: win, S=6 | o0: nonwin, S=-36; o1: nonwin, S=-33 | -8.0 / 7.0 / -34.5 | 15.0 / -26.5 |
+| regular c08 | o0: nonwin, S=-24; o1: nonwin, S=-19 | o0: win, S=5; o1: win, S=3 | o0: nonwin, S=-35; o1: nonwin, S=-35 | -21.5 / 4.0 / -35.0 | 25.5 / -13.5 |
+| regular c09 | o0: nonwin, S=-25; o1: nonwin, S=-28 | o0: win, S=4; o1: nonwin, S=-3 | o0: nonwin, S=-36; o1: nonwin, S=-37 | -26.5 / 0.5 / -36.5 | 27.0 / -10.0 |
+| novice c00 | o0: win, S=26; o1: win, S=26 | o0: win, S=30; o1: win, S=27 | o0: win, S=10; o1: win, S=10 | 26.0 / 28.5 / 10.0 | 2.5 / -16.0 |
+| novice c01 | o0: win, S=14; o1: win, S=19 | o0: win, S=28; o1: win, S=23 | o0: win, S=9; o1: win, S=8 | 16.5 / 25.5 / 8.5 | 9.0 / -8.0 |
+| novice c02 | o0: win, S=18; o1: win, S=17 | o0: win, S=10; o1: win, S=21 | o0: win, S=11; o1: win, S=9 | 17.5 / 15.5 / 10.0 | -2.0 / -7.5 |
+| novice c03 | o0: win, S=25; o1: win, S=24 | o0: win, S=25; o1: win, S=30 | o0: win, S=10; o1: win, S=9 | 24.5 / 27.5 / 9.5 | 3.0 / -15.0 |
+| novice c04 | o0: win, S=25; o1: win, S=19 | o0: win, S=24; o1: win, S=17 | o0: win, S=14; o1: win, S=8 | 22.0 / 20.5 / 11.0 | -1.5 / -11.0 |
+| novice c05 | o0: win, S=15; o1: win, S=13 | o0: win, S=27; o1: win, S=29 | o0: win, S=9; o1: win, S=8 | 14.0 / 28.0 / 8.5 | 14.0 / -5.5 |
+| novice c06 | o0: win, S=29; o1: win, S=26 | o0: win, S=27; o1: win, S=18 | o0: win, S=9; o1: win, S=9 | 27.5 / 22.5 / 9.0 | -5.0 / -18.5 |
+| novice c07 | o0: win, S=22; o1: win, S=20 | o0: win, S=20; o1: win, S=18 | o0: win, S=8; o1: win, S=8 | 21.0 / 19.0 / 8.0 | -2.0 / -13.0 |
+| novice c08 | o0: win, S=19; o1: win, S=11 | o0: win, S=22; o1: win, S=19 | o0: win, S=9; o1: win, S=9 | 15.0 / 20.5 / 9.0 | 5.5 / -6.0 |
+| novice c09 | o0: win, S=12; o1: win, S=21 | o0: win, S=23; o1: win, S=15 | o0: win, S=8; o1: win, S=9 | 16.5 / 19.0 / 8.5 | 2.5 / -8.0 |
+
 Declared descriptive readings: [{"arm": "P16", "clearly_above_P12": true, "observed_owner_criterion": true, "spacing_lost": false, "reading": "Clearly-above-P12 descriptive candidate", "limits": "Ten paired development clusters; no population claim or v7 permission"}, {"arm": "P17", "clearly_above_P12": false, "observed_owner_criterion": false, "spacing_lost": false, "reading": "Descriptive; above-P12 rule not met", "limits": "Ten paired development clusters; no population claim or v7 permission"}]
 
 P12 is exactly the original native EscortProbeV1 arm12. P16 replaces only enemy-gun ordering with descending inclusive prepare-snapshot all-role splash V, then HP/id, retaining P11 reach/anchor/focus/spacing/pre-spacing multiplier. V is a static footprint, not actual impact victims. P17 adds only melee movement to the same d60 geometry, retaining targeting and all ranged/gun actions. Both batteries must be living and prepare accepted; unavailable direction keeps complete P12. Raw/clipped melee arrival is separate with its own prepare-living denominator, including unavailable/post-dead units; controls measure hypothetical melee point arrival. All-role actual splash multiplicity uses distinct opposing victims and success on any opposing role, with role breakdown and gun-only statistic separate. Clearly above P12 requires regular>=10 and>=P12+3; observed owner criterion requires BOTH heads>=11, BOTH means S>0 and no failures. Ten paired clusters, no population-rate, v7 authorization, judging, acceptance or resonator/source claim.
 
 See [POLICY.md](POLICY.md), [DECLARATION.json](DECLARATION.json), [VALIDATION.json](VALIDATION.json), [OWNER_RECHECK.md](OWNER_RECHECK.md) and [COMPACT.json](COMPACT.json). Raw claims/requests/results and interrupted streams stay local and gitignored. Resume with engineering.py, run.py, analyze.py, render.py in that order; every unexecuted combat block/resume rechecks pgrep and waits for0h. Verified completions are skipped; possibly executed/ambiguous fights are never replayed. No script edits are needed.
+
+Presentation corrections by Codex (stored-data recheck; no receipt or policy change): C1, first table labels gun-only successful-shell multiplicity explicitly; all-role impact multiplicity remains in escort_shells. C2, added the stored paired orientation outcomes/S, per-arm cluster mean S and paired S differences omitted from the original rendered table. C3, implementation preparation review in OWNER_RECHECK.md precedes combat; the completed run recheck is docs/reviews/tactical_0g_escort_probe_v3_recheck_codex.md. No measured value or declared reading changed.

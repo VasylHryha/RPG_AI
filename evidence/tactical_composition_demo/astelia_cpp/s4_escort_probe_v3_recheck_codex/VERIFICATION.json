@@ -1,0 +1,1360 @@
+{
+  "status": "PASS",
+  "raw_files_verified": 620,
+  "reviewed_run_commit": "d5044e8",
+  "current_head": "cdced329469bb75fbf445a36c872833d6b8ed6f5",
+  "historical_doc_pins": {
+    "docs/PLAN_CURRENT.md": "78b32718d6ddcffddec710cadf01b57a44dd4c315ad892680bf676233b5913f2",
+    "evidence/tactical_composition_demo/DESIGN_0G.md": "d91a3e138c5e22bd7e270feb62088a0774f88e6b74c8bba281d1a0992d8fbf76"
+  },
+  "binary_sha256": "83a6c10f24901760bc028c328895024dbc3a14cc9da4799928b6ad1f8699c871",
+  "recount_exact": [
+    "COMPACT.json",
+    "SUMMARY.json",
+    "ANALYSIS_VERIFICATION.json"
+  ],
+  "same_observation_comparisons": {
+    "gun_ticks": 730880,
+    "changed_gun_commands": 130487,
+    "non_gun_P16_commands": 672961
+  },
+  "P16_regular_wins": [
+    {
+      "cluster": 0,
+      "orientation": 0,
+      "time_s": 60.76666666666578,
+      "own": 6,
+      "enemy": 0
+    },
+    {
+      "cluster": 0,
+      "orientation": 1,
+      "time_s": 29.966666666667315,
+      "own": 9,
+      "enemy": 0
+    },
+    {
+      "cluster": 1,
+      "orientation": 0,
+      "time_s": 71.99999999999848,
+      "own": 2,
+      "enemy": 0
+    },
+    {
+      "cluster": 1,
+      "orientation": 1,
+      "time_s": 48.29999999999982,
+      "own": 5,
+      "enemy": 0
+    },
+    {
+      "cluster": 2,
+      "orientation": 0,
+      "time_s": 46.06666666666661,
+      "own": 8,
+      "enemy": 0
+    },
+    {
+      "cluster": 2,
+      "orientation": 1,
+      "time_s": 66.56666666666545,
+      "own": 3,
+      "enemy": 0
+    },
+    {
+      "cluster": 3,
+      "orientation": 0,
+      "time_s": 43.66666666666675,
+      "own": 6,
+      "enemy": 0
+    },
+    {
+      "cluster": 3,
+      "orientation": 1,
+      "time_s": 44.40000000000004,
+      "own": 3,
+      "enemy": 0
+    },
+    {
+      "cluster": 4,
+      "orientation": 0,
+      "time_s": 42.866666666666795,
+      "own": 8,
+      "enemy": 0
+    },
+    {
+      "cluster": 4,
+      "orientation": 1,
+      "time_s": 41.86666666666685,
+      "own": 7,
+      "enemy": 0
+    },
+    {
+      "cluster": 5,
+      "orientation": 0,
+      "time_s": 51.433333333332975,
+      "own": 3,
+      "enemy": 0
+    },
+    {
+      "cluster": 5,
+      "orientation": 1,
+      "time_s": 65.8666666666655,
+      "own": 1,
+      "enemy": 0
+    },
+    {
+      "cluster": 6,
+      "orientation": 0,
+      "time_s": 32.8000000000007,
+      "own": 9,
+      "enemy": 0
+    },
+    {
+      "cluster": 6,
+      "orientation": 1,
+      "time_s": 55.49999999999941,
+      "own": 5,
+      "enemy": 0
+    },
+    {
+      "cluster": 7,
+      "orientation": 0,
+      "time_s": 44.233333333333384,
+      "own": 8,
+      "enemy": 0
+    },
+    {
+      "cluster": 7,
+      "orientation": 1,
+      "time_s": 53.3666666666662,
+      "own": 6,
+      "enemy": 0
+    },
+    {
+      "cluster": 8,
+      "orientation": 0,
+      "time_s": 50.43333333333303,
+      "own": 5,
+      "enemy": 0
+    },
+    {
+      "cluster": 8,
+      "orientation": 1,
+      "time_s": 51.59999999999963,
+      "own": 3,
+      "enemy": 0
+    },
+    {
+      "cluster": 9,
+      "orientation": 0,
+      "time_s": 46.86666666666657,
+      "own": 4,
+      "enemy": 0
+    }
+  ],
+  "paired_clusters": [
+    {
+      "head": "regular",
+      "cluster": 0,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": false,
+            "S": -24
+          },
+          {
+            "orientation": 1,
+            "win": false,
+            "S": -25
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 6
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 9
+          }
+        ],
+        "P17": [
+          {
+            "orientation": 0,
+            "win": false,
+            "S": -35
+          },
+          {
+            "orientation": 1,
+            "win": false,
+            "S": -39
+          }
+        ]
+      },
+      "wins": {
+        "P12": 0,
+        "P16": 2,
+        "P17": 0
+      },
+      "mean_S": {
+        "P12": -24.5,
+        "P16": 7.5,
+        "P17": -37.0
+      },
+      "win_difference": {
+        "P16": 2,
+        "P17": 0
+      },
+      "mean_S_difference": {
+        "P16": 32.0,
+        "P17": -12.5
+      }
+    },
+    {
+      "head": "regular",
+      "cluster": 1,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": false,
+            "S": -25
+          },
+          {
+            "orientation": 1,
+            "win": false,
+            "S": -24
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 2
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 5
+          }
+        ],
+        "P17": [
+          {
+            "orientation": 0,
+            "win": false,
+            "S": -29
+          },
+          {
+            "orientation": 1,
+            "win": false,
+            "S": -38
+          }
+        ]
+      },
+      "wins": {
+        "P12": 0,
+        "P16": 2,
+        "P17": 0
+      },
+      "mean_S": {
+        "P12": -24.5,
+        "P16": 3.5,
+        "P17": -33.5
+      },
+      "win_difference": {
+        "P16": 2,
+        "P17": 0
+      },
+      "mean_S_difference": {
+        "P16": 28.0,
+        "P17": -9.0
+      }
+    },
+    {
+      "head": "regular",
+      "cluster": 2,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": false,
+            "S": -29
+          },
+          {
+            "orientation": 1,
+            "win": false,
+            "S": -30
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 8
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 3
+          }
+        ],
+        "P17": [
+          {
+            "orientation": 0,
+            "win": false,
+            "S": -37
+          },
+          {
+            "orientation": 1,
+            "win": false,
+            "S": -38
+          }
+        ]
+      },
+      "wins": {
+        "P12": 0,
+        "P16": 2,
+        "P17": 0
+      },
+      "mean_S": {
+        "P12": -29.5,
+        "P16": 5.5,
+        "P17": -37.5
+      },
+      "win_difference": {
+        "P16": 2,
+        "P17": 0
+      },
+      "mean_S_difference": {
+        "P16": 35.0,
+        "P17": -8.0
+      }
+    },
+    {
+      "head": "regular",
+      "cluster": 3,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": false,
+            "S": -21
+          },
+          {
+            "orientation": 1,
+            "win": false,
+            "S": -19
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 6
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 3
+          }
+        ],
+        "P17": [
+          {
+            "orientation": 0,
+            "win": false,
+            "S": -39
+          },
+          {
+            "orientation": 1,
+            "win": false,
+            "S": -33
+          }
+        ]
+      },
+      "wins": {
+        "P12": 0,
+        "P16": 2,
+        "P17": 0
+      },
+      "mean_S": {
+        "P12": -20.0,
+        "P16": 4.5,
+        "P17": -36.0
+      },
+      "win_difference": {
+        "P16": 2,
+        "P17": 0
+      },
+      "mean_S_difference": {
+        "P16": 24.5,
+        "P17": -16.0
+      }
+    },
+    {
+      "head": "regular",
+      "cluster": 4,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 5
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 4
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 8
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 7
+          }
+        ],
+        "P17": [
+          {
+            "orientation": 0,
+            "win": false,
+            "S": -38
+          },
+          {
+            "orientation": 1,
+            "win": false,
+            "S": -37
+          }
+        ]
+      },
+      "wins": {
+        "P12": 2,
+        "P16": 2,
+        "P17": 0
+      },
+      "mean_S": {
+        "P12": 4.5,
+        "P16": 7.5,
+        "P17": -37.5
+      },
+      "win_difference": {
+        "P16": 0,
+        "P17": -2
+      },
+      "mean_S_difference": {
+        "P16": 3.0,
+        "P17": -42.0
+      }
+    },
+    {
+      "head": "regular",
+      "cluster": 5,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": false,
+            "S": -21
+          },
+          {
+            "orientation": 1,
+            "win": false,
+            "S": -15
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 3
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 1
+          }
+        ],
+        "P17": [
+          {
+            "orientation": 0,
+            "win": false,
+            "S": -36
+          },
+          {
+            "orientation": 1,
+            "win": false,
+            "S": -36
+          }
+        ]
+      },
+      "wins": {
+        "P12": 0,
+        "P16": 2,
+        "P17": 0
+      },
+      "mean_S": {
+        "P12": -18.0,
+        "P16": 2.0,
+        "P17": -36.0
+      },
+      "win_difference": {
+        "P16": 2,
+        "P17": 0
+      },
+      "mean_S_difference": {
+        "P16": 20.0,
+        "P17": -18.0
+      }
+    },
+    {
+      "head": "regular",
+      "cluster": 6,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 10
+          },
+          {
+            "orientation": 1,
+            "win": false,
+            "S": -25
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 9
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 5
+          }
+        ],
+        "P17": [
+          {
+            "orientation": 0,
+            "win": false,
+            "S": -37
+          },
+          {
+            "orientation": 1,
+            "win": false,
+            "S": -37
+          }
+        ]
+      },
+      "wins": {
+        "P12": 1,
+        "P16": 2,
+        "P17": 0
+      },
+      "mean_S": {
+        "P12": -7.5,
+        "P16": 7.0,
+        "P17": -37.0
+      },
+      "win_difference": {
+        "P16": 1,
+        "P17": -1
+      },
+      "mean_S_difference": {
+        "P16": 14.5,
+        "P17": -29.5
+      }
+    },
+    {
+      "head": "regular",
+      "cluster": 7,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": false,
+            "S": -8
+          },
+          {
+            "orientation": 1,
+            "win": false,
+            "S": -8
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 8
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 6
+          }
+        ],
+        "P17": [
+          {
+            "orientation": 0,
+            "win": false,
+            "S": -36
+          },
+          {
+            "orientation": 1,
+            "win": false,
+            "S": -33
+          }
+        ]
+      },
+      "wins": {
+        "P12": 0,
+        "P16": 2,
+        "P17": 0
+      },
+      "mean_S": {
+        "P12": -8.0,
+        "P16": 7.0,
+        "P17": -34.5
+      },
+      "win_difference": {
+        "P16": 2,
+        "P17": 0
+      },
+      "mean_S_difference": {
+        "P16": 15.0,
+        "P17": -26.5
+      }
+    },
+    {
+      "head": "regular",
+      "cluster": 8,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": false,
+            "S": -24
+          },
+          {
+            "orientation": 1,
+            "win": false,
+            "S": -19
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 5
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 3
+          }
+        ],
+        "P17": [
+          {
+            "orientation": 0,
+            "win": false,
+            "S": -35
+          },
+          {
+            "orientation": 1,
+            "win": false,
+            "S": -35
+          }
+        ]
+      },
+      "wins": {
+        "P12": 0,
+        "P16": 2,
+        "P17": 0
+      },
+      "mean_S": {
+        "P12": -21.5,
+        "P16": 4.0,
+        "P17": -35.0
+      },
+      "win_difference": {
+        "P16": 2,
+        "P17": 0
+      },
+      "mean_S_difference": {
+        "P16": 25.5,
+        "P17": -13.5
+      }
+    },
+    {
+      "head": "regular",
+      "cluster": 9,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": false,
+            "S": -25
+          },
+          {
+            "orientation": 1,
+            "win": false,
+            "S": -28
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 4
+          },
+          {
+            "orientation": 1,
+            "win": false,
+            "S": -3
+          }
+        ],
+        "P17": [
+          {
+            "orientation": 0,
+            "win": false,
+            "S": -36
+          },
+          {
+            "orientation": 1,
+            "win": false,
+            "S": -37
+          }
+        ]
+      },
+      "wins": {
+        "P12": 0,
+        "P16": 1,
+        "P17": 0
+      },
+      "mean_S": {
+        "P12": -26.5,
+        "P16": 0.5,
+        "P17": -36.5
+      },
+      "win_difference": {
+        "P16": 1,
+        "P17": 0
+      },
+      "mean_S_difference": {
+        "P16": 27.0,
+        "P17": -10.0
+      }
+    },
+    {
+      "head": "novice",
+      "cluster": 0,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 26
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 26
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 30
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 27
+          }
+        ],
+        "P17": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 10
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 10
+          }
+        ]
+      },
+      "wins": {
+        "P12": 2,
+        "P16": 2,
+        "P17": 2
+      },
+      "mean_S": {
+        "P12": 26.0,
+        "P16": 28.5,
+        "P17": 10.0
+      },
+      "win_difference": {
+        "P16": 0,
+        "P17": 0
+      },
+      "mean_S_difference": {
+        "P16": 2.5,
+        "P17": -16.0
+      }
+    },
+    {
+      "head": "novice",
+      "cluster": 1,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 14
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 19
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 28
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 23
+          }
+        ],
+        "P17": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 9
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 8
+          }
+        ]
+      },
+      "wins": {
+        "P12": 2,
+        "P16": 2,
+        "P17": 2
+      },
+      "mean_S": {
+        "P12": 16.5,
+        "P16": 25.5,
+        "P17": 8.5
+      },
+      "win_difference": {
+        "P16": 0,
+        "P17": 0
+      },
+      "mean_S_difference": {
+        "P16": 9.0,
+        "P17": -8.0
+      }
+    },
+    {
+      "head": "novice",
+      "cluster": 2,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 18
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 17
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 10
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 21
+          }
+        ],
+        "P17": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 11
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 9
+          }
+        ]
+      },
+      "wins": {
+        "P12": 2,
+        "P16": 2,
+        "P17": 2
+      },
+      "mean_S": {
+        "P12": 17.5,
+        "P16": 15.5,
+        "P17": 10.0
+      },
+      "win_difference": {
+        "P16": 0,
+        "P17": 0
+      },
+      "mean_S_difference": {
+        "P16": -2.0,
+        "P17": -7.5
+      }
+    },
+    {
+      "head": "novice",
+      "cluster": 3,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 25
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 24
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 25
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 30
+          }
+        ],
+        "P17": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 10
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 9
+          }
+        ]
+      },
+      "wins": {
+        "P12": 2,
+        "P16": 2,
+        "P17": 2
+      },
+      "mean_S": {
+        "P12": 24.5,
+        "P16": 27.5,
+        "P17": 9.5
+      },
+      "win_difference": {
+        "P16": 0,
+        "P17": 0
+      },
+      "mean_S_difference": {
+        "P16": 3.0,
+        "P17": -15.0
+      }
+    },
+    {
+      "head": "novice",
+      "cluster": 4,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 25
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 19
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 24
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 17
+          }
+        ],
+        "P17": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 14
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 8
+          }
+        ]
+      },
+      "wins": {
+        "P12": 2,
+        "P16": 2,
+        "P17": 2
+      },
+      "mean_S": {
+        "P12": 22.0,
+        "P16": 20.5,
+        "P17": 11.0
+      },
+      "win_difference": {
+        "P16": 0,
+        "P17": 0
+      },
+      "mean_S_difference": {
+        "P16": -1.5,
+        "P17": -11.0
+      }
+    },
+    {
+      "head": "novice",
+      "cluster": 5,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 15
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 13
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 27
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 29
+          }
+        ],
+        "P17": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 9
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 8
+          }
+        ]
+      },
+      "wins": {
+        "P12": 2,
+        "P16": 2,
+        "P17": 2
+      },
+      "mean_S": {
+        "P12": 14.0,
+        "P16": 28.0,
+        "P17": 8.5
+      },
+      "win_difference": {
+        "P16": 0,
+        "P17": 0
+      },
+      "mean_S_difference": {
+        "P16": 14.0,
+        "P17": -5.5
+      }
+    },
+    {
+      "head": "novice",
+      "cluster": 6,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 29
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 26
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 27
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 18
+          }
+        ],
+        "P17": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 9
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 9
+          }
+        ]
+      },
+      "wins": {
+        "P12": 2,
+        "P16": 2,
+        "P17": 2
+      },
+      "mean_S": {
+        "P12": 27.5,
+        "P16": 22.5,
+        "P17": 9.0
+      },
+      "win_difference": {
+        "P16": 0,
+        "P17": 0
+      },
+      "mean_S_difference": {
+        "P16": -5.0,
+        "P17": -18.5
+      }
+    },
+    {
+      "head": "novice",
+      "cluster": 7,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 22
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 20
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 20
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 18
+          }
+        ],
+        "P17": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 8
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 8
+          }
+        ]
+      },
+      "wins": {
+        "P12": 2,
+        "P16": 2,
+        "P17": 2
+      },
+      "mean_S": {
+        "P12": 21.0,
+        "P16": 19.0,
+        "P17": 8.0
+      },
+      "win_difference": {
+        "P16": 0,
+        "P17": 0
+      },
+      "mean_S_difference": {
+        "P16": -2.0,
+        "P17": -13.0
+      }
+    },
+    {
+      "head": "novice",
+      "cluster": 8,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 19
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 11
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 22
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 19
+          }
+        ],
+        "P17": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 9
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 9
+          }
+        ]
+      },
+      "wins": {
+        "P12": 2,
+        "P16": 2,
+        "P17": 2
+      },
+      "mean_S": {
+        "P12": 15.0,
+        "P16": 20.5,
+        "P17": 9.0
+      },
+      "win_difference": {
+        "P16": 0,
+        "P17": 0
+      },
+      "mean_S_difference": {
+        "P16": 5.5,
+        "P17": -6.0
+      }
+    },
+    {
+      "head": "novice",
+      "cluster": 9,
+      "orientations": {
+        "P12": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 12
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 21
+          }
+        ],
+        "P16": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 23
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 15
+          }
+        ],
+        "P17": [
+          {
+            "orientation": 0,
+            "win": true,
+            "S": 8
+          },
+          {
+            "orientation": 1,
+            "win": true,
+            "S": 9
+          }
+        ]
+      },
+      "wins": {
+        "P12": 2,
+        "P16": 2,
+        "P17": 2
+      },
+      "mean_S": {
+        "P12": 16.5,
+        "P16": 19.0,
+        "P17": 8.5
+      },
+      "win_difference": {
+        "P16": 0,
+        "P17": 0
+      },
+      "mean_S_difference": {
+        "P16": 2.5,
+        "P17": -8.0
+      }
+    }
+  ],
+  "seconds": 495.529606416,
+  "combat_executed": false
+}
