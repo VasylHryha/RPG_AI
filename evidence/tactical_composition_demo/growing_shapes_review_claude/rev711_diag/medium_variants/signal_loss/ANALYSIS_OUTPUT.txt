@@ -1,0 +1,24 @@
+tr_i_k0.json.gz steps 8000 path-loss events 1
+ t=560.0->560.1 hops=2 n=46 lost=[{'edge': (15, 16), 'r_before': 0.953, 'r_after': None, 'deg_recv': 3, 'bonded': True, 'removed': True}]
+   O bond-component size 18 -> 3; roots in O-comp before 15 after 0; O bonds [16, 17] -> [16, 17]
+   path back at None
+ FINAL: n 44 O comp [0, 16, 17] sizes O-comp 3 root-comps 41 O-comp members bonds {0: [16, 17], 16: [0, 17], 17: [0, 16]} gap O-comp to rest 2.238
+ O component is a closed saturated ring: True
+tr_ii_k2.json.gz steps 8000 path-loss events 4
+ t=320.0->320.1 hops=2 n=39 lost=[]
+   O bond-component size 12 -> 12; roots in O-comp before 8 after 8; O bonds [13, 14] -> [13, 14]
+   path back at 336.1
+ t=432.0->432.1 hops=2 n=45 lost=[]
+   O bond-component size 12 -> 12; roots in O-comp before 5 after 5; O bonds [13, 14] -> [13, 14]
+   path back at 435.0
+ t=445.5->445.6 hops=4 n=46 lost=[{'edge': (41, 10), 'r_before': 1.442, 'r_after': 1.442, 'deg_recv': 6, 'bonded': False, 'removed': False}]
+   O bond-component size 12 -> 12; roots in O-comp before 0 after 0; O bonds [13, 14] -> [13, 14]
+   path back at 448.1
+ t=460.0->460.1 hops=2 n=46 lost=[{'edge': (12, 13), 'r_before': 0.777, 'r_after': None, 'deg_recv': 3, 'bonded': True, 'removed': True}]
+   O bond-component size 12 -> 3; roots in O-comp before 9 after 0; O bonds [13, 14] -> [13, 14]
+   path back at None
+ FINAL: n 47 O comp [6, 13, 14] sizes O-comp 3 root-comps 44 O-comp members bonds {13: [6, 14], 6: [13, 14], 14: [6, 13]} gap O-comp to rest 2.433
+ O component is a closed saturated ring: True
+tr_i_k3.json.gz steps 8000 path-loss events 0
+ FINAL: n 45 O comp [0, 1, 2, 3, 4, 5, 6, 7, 11, 12, 13, 14, 15, 16] sizes O-comp 14 root-comps 45 O-comp members bonds {0: [15, 16], 1: [2, 4], 2: [1, 3], 3: [2, 11], 4: [1, 5], 5: [4, 6], 6: [5, 7], 7: [6, 12], 11: [3, 12, 13], 12: [7, 11, 13], 13: [11, 12, 14], 14: [13, 15], 15: [0, 14, 16], 16: [0, 15]} gap O-comp to rest 1.724
+ O component is a closed saturated ring: False
