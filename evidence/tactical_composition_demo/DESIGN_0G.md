@@ -1224,3 +1224,28 @@ This is a stored-data analysis. It runs while the 0h pilots run.
 - **Resume behaviour:** the scripts resume by skipping verified completions. They never replay a possibly executed or ambiguous fight, and they fail closed on ambiguity.
 - Entropy is claimed only after clearance; the worker bounds and the stage limits are kept.
 - **Combat is executed by Claude** (the Codex sandbox cannot list processes).
+
+### 19.9 The escort probe result (`astelia_cpp/s4_escort_probe_v1/S4_ESCORT_PROBE.md`, `0f8e823`; Codex's owner recheck pending)
+
+| Against regular (20 fights each) | P11 (fresh control) | P12 (escort d = 60) | P13 (escort d = 120) |
+|---|---|---|---|
+| Elimination wins | 1 | **6** | **5** |
+| Timeouts | 11 | 0 | 0 |
+| Enemy guns destroyed | 6.95 | 8.25 | 8.0 |
+| Own guns lost | 9.9 | 8.75 | 9.3 |
+| Own losses (of 50) | 43.5 | 48.75 | 49.3 |
+| Escort arrival (clipped goal) | n/a | 37% | 7% |
+| Own ranged selecting a reachable gun threat | 54% | 3% | 0.5% |
+
+- **Novice:** 20/20 in every arm, but our losses rise from 11.25 to 31 (P12) and 39 (P13).
+- **Declared readings (§19.8.1):**
+  - **both escort arms are "clearly above P11"** (at least 5/20, and at least 3 more wins on the same seeds);
+  - "arrive and engage" is **false** for both;
+  - spacing is kept (enemy victims per shell 1.05).
+- **The escort helps, but not the way the hypothesis said.** Our ranged units almost stop selecting the enemy ranged threat, and make about no early kills. The likely mechanism is that **they shield**: they stand between the screen and our guns and take the fire. That is not yet shown; Codex's stored-data mechanism diagnostic is running.
+- **The progress so far against regular:**
+  - P5: 0/20;
+  - P11 spacing: 2/20 (fresh P11 control: 1/20);
+  - P12 spacing + escort: **6/20**.
+  - The owner's criterion is above 50%.
+- **Next:** the recheck and the mechanism diagnostic, then the smallest single change on P12 that the numbers support.
