@@ -65,3 +65,10 @@
 - **"Not resource-bound"** applies **only if** the arm actually used the extra resources (its median cost after 400 s > 80 for CAP128) **and** its index ≤ 1.15 × RD3's (≤ 2.47). If the resources were not used, the reading is "ceiling not reached; the bound is elsewhere" (descriptive).
 - Anything else is descriptive.
 - **Mass and cost** are reported by class, so a gain can be traced to served routes, fronts or redundancy.
+
+## Amendment 2, answering the Codex round-2 review (`docs/reviews/tactical_0h_capacity_diagnostic_spec_review_r2_codex.md`)
+
+- **The scope (blocker 1).** **The intervention is the resource ceiling: all three 64 literals (count 365, cost 370, D3 trigger 499), scaled together**, as Amendment 1 states. The words "the cost cap only" in my round-1 prompt to the reviewer were a stale instruction, and they are withdrawn. The spec governs.
+- **The readings (blocker 2).** The "not resource-bound" reading is **withdrawn**. The only categorical reading is:
+  - **"Capacity scales with the resource ceiling":** the index at CAP128 ≥ 3.22 (1.5 × RD3's 2.148), **and** CAP96's index lies between RD3's and CAP128's, **and** all runs complete with integrity.
+  - **Every other outcome is descriptive.** It is reported with the index, the per-site fractions, the realized cost and count over time, and the mass by class. **No conclusion about what does or does not bind is drawn from a weak or null result.**
