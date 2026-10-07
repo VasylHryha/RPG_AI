@@ -1,0 +1,184 @@
+{
+  "kind": "ONE_WORLD_PAIRED_SHARED_LOAD",
+  "world": "smoke_1",
+  "launch_gap_seconds": 0.0,
+  "cpu_ratio_inexact_over_exact": 0.7607310880137775,
+  "compute_cpu_seconds": {
+    "exact": 217.788005,
+    "inexact": 165.678106
+  },
+  "compute_wall_seconds": {
+    "exact": 69.90277312500001,
+    "inexact": 56.297945291
+  },
+  "load_samples": [
+    {
+      "epoch": 1791353743.023788,
+      "load_average": [
+        20.51318359375,
+        41.4794921875,
+        43.6845703125
+      ],
+      "running": {
+        "exact": true,
+        "inexact": true
+      }
+    },
+    {
+      "epoch": 1791353753.030918,
+      "load_average": [
+        20.5107421875,
+        40.77490234375,
+        43.40771484375
+      ],
+      "running": {
+        "exact": true,
+        "inexact": true
+      }
+    },
+    {
+      "epoch": 1791353763.039967,
+      "load_average": [
+        19.5576171875,
+        39.90771484375,
+        43.0693359375
+      ],
+      "running": {
+        "exact": true,
+        "inexact": true
+      }
+    },
+    {
+      "epoch": 1791353773.043534,
+      "load_average": [
+        18.52978515625,
+        39.0205078125,
+        42.7177734375
+      ],
+      "running": {
+        "exact": true,
+        "inexact": true
+      }
+    },
+    {
+      "epoch": 1791353783.0517812,
+      "load_average": [
+        18.75537109375,
+        38.39404296875,
+        42.45166015625
+      ],
+      "running": {
+        "exact": true,
+        "inexact": true
+      }
+    },
+    {
+      "epoch": 1791353793.063046,
+      "load_average": [
+        20.330078125,
+        38.083984375,
+        42.2939453125
+      ],
+      "running": {
+        "exact": true,
+        "inexact": true
+      }
+    },
+    {
+      "epoch": 1791353803.0731032,
+      "load_average": [
+        19.8046875,
+        37.388671875,
+        41.998046875
+      ],
+      "running": {
+        "exact": true,
+        "inexact": true
+      }
+    },
+    {
+      "epoch": 1791353813.0757692,
+      "load_average": [
+        18.3642578125,
+        36.50244140625,
+        41.6298828125
+      ],
+      "running": {
+        "exact": true,
+        "inexact": false
+      }
+    }
+  ],
+  "awake_seconds": 82.86354104199995,
+  "elapsed_seconds": 82.86348414421082,
+  "macos_build": {
+    "ProductName": "macOS",
+    "ProductVersion": "26.6.2",
+    "BuildVersion": "25G83"
+  },
+  "builds": {
+    "exact": {
+      "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+      "compiler_version": "Apple clang version 21.0.0 (clang-2100.3.34.2)\nTarget: arm64-apple-darwin25.6.0\nThread model: posix\nInstalledDir: /Library/Developer/CommandLineTools/usr/bin\n",
+      "platform": "Darwin",
+      "architecture": "arm64",
+      "flags": [
+        "-std=c++17",
+        "-O2",
+        "-fno-fast-math",
+        "-ffp-contract=off",
+        "-dynamiclib",
+        "-DC6_OPTION_B_INEXACT=0"
+      ],
+      "source_hashes": {
+        "native/c6_option_b/field.cpp": "a54b289f27d44fc83a713e435023945426469c3481ae3fc17d6d66a497b01936",
+        "native/c6_option_b/detection.cpp": "fd2ab679359cb00e857555ee7614adaa4d335464ea242abf0c869e6400b00b52"
+      },
+      "kernel": "exact",
+      "macos_build": {
+        "ProductName": "macOS",
+        "ProductVersion": "26.6.2",
+        "BuildVersion": "25G83"
+      },
+      "binary_sha256": "bb573e1e30441fd1146bdc17d97a4732f06388316acd7f4ef41004d0184bd6fa",
+      "build_seconds": 3.082137083
+    },
+    "inexact": {
+      "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+      "compiler_version": "Apple clang version 21.0.0 (clang-2100.3.34.2)\nTarget: arm64-apple-darwin25.6.0\nThread model: posix\nInstalledDir: /Library/Developer/CommandLineTools/usr/bin\n",
+      "platform": "Darwin",
+      "architecture": "arm64",
+      "flags": [
+        "-std=c++17",
+        "-O2",
+        "-fno-fast-math",
+        "-ffp-contract=off",
+        "-dynamiclib",
+        "-DC6_OPTION_B_INEXACT=1",
+        "-framework",
+        "Accelerate"
+      ],
+      "source_hashes": {
+        "native/c6_option_b/field.cpp": "a54b289f27d44fc83a713e435023945426469c3481ae3fc17d6d66a497b01936",
+        "native/c6_option_b/detection.cpp": "fd2ab679359cb00e857555ee7614adaa4d335464ea242abf0c869e6400b00b52"
+      },
+      "kernel": "inexact",
+      "macos_build": {
+        "ProductName": "macOS",
+        "ProductVersion": "26.6.2",
+        "BuildVersion": "25G83"
+      },
+      "binary_sha256": "07ad3daa3939a376604074accc55affe55a726c1098af91382a535ba2048c289",
+      "build_seconds": 4.002533625
+    }
+  },
+  "comparison": {
+    "passed": true,
+    "absolute_tolerance": 1e-08,
+    "maximum_error": 4.3069330960397275e-11,
+    "numeric_values_compared": 1460200,
+    "decision_values_compared": 1396,
+    "digest_values_changed": 4018,
+    "failures": []
+  }
+}

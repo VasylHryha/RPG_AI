@@ -1,0 +1,1125 @@
+{
+  "kind": "DIAGNOSTIC_NO_VERDICT_STORED_DATA_ONLY",
+  "aggregate": {
+    "worlds": 4,
+    "bools": 9256,
+    "ints": 501301,
+    "strings": 83977,
+    "digests": 24265,
+    "digests_changed": 24229,
+    "semantic_digests": 200,
+    "discrete_changes": 0,
+    "monitor": {
+      "floats": 7503,
+      "changed": 6048,
+      "gt_1e10": 4,
+      "gt_1e8": 0,
+      "max_abs": 5.066592563451509e-10,
+      "max_abs_at": [
+        "development_0",
+        "/checks/318/max_errors/position",
+        [
+          2.8739691635885124e-05,
+          2.874019829514147e-05
+        ]
+      ],
+      "max_rel": 0.05055094970607099,
+      "max_rel_at": [
+        "smoke_0",
+        "/checks/809/max_errors/position",
+        [
+          9.907616180352751e-11,
+          9.406776773112684e-11
+        ]
+      ]
+    },
+    "other": {
+      "floats": 9198703,
+      "changed": 5278428,
+      "gt_1e10": 0,
+      "gt_1e8": 0,
+      "max_abs": 3.788613867072854e-11,
+      "max_abs_at": [
+        "smoke_0",
+        "/turns/1/episodes/no_backreaction/2/qualification/candidates/0/recovery_by_dt/2/recovery_pattern_error",
+        [
+          0.025707121699369395,
+          0.025707121737255534
+        ]
+      ],
+      "max_rel": 2.0,
+      "max_rel_at": [
+        "smoke_0",
+        "/turns/0/response/intact/raw/2/response_real_imag/21/10/1",
+        [
+          -3.469446951953614e-17,
+          3.469446951953614e-17
+        ]
+      ]
+    },
+    "guard_contexts_without_stored_perturbations": 28,
+    "nonfinite_counts": {
+      "exact": 0,
+      "inexact": 0
+    }
+  },
+  "decision_families": {
+    "membership_jaccard >= 0.95": {
+      "count": 6490,
+      "contexts": {
+        "operation source (copy of qualification)": 7,
+        "rolling persistence": 6363,
+        "endpoint qualification": 21,
+        "post-operation qualification": 75,
+        "before-formation qualification": 20,
+        "initial source qualification": 4
+      },
+      "flip_count": 0,
+      "flips": [],
+      "failing_both": 2062,
+      "closest": {
+        "world": "development_1",
+        "path": "/turns/0/conditions/no_r/persistence_by_dt/0/2/stats/membership_jaccard",
+        "context": "rolling persistence",
+        "margin_exact": 0.006521739130434856,
+        "margin_inexact": 0.006521739130434856,
+        "change": 0.0,
+        "passes": true,
+        "ratio": null
+      },
+      "min_ratio": null,
+      "max_change": 0.0
+    },
+    "shape_cv <= 0.05": {
+      "count": 6490,
+      "contexts": {
+        "operation source (copy of qualification)": 7,
+        "rolling persistence": 6363,
+        "endpoint qualification": 21,
+        "post-operation qualification": 75,
+        "before-formation qualification": 20,
+        "initial source qualification": 4
+      },
+      "flip_count": 0,
+      "flips": [],
+      "failing_both": 630,
+      "closest": {
+        "world": "development_1",
+        "path": "/turns/0/conditions/no_r/persistence_by_dt/0/31/stats/shape_cv",
+        "context": "rolling persistence",
+        "margin_exact": 0.023715900455837022,
+        "margin_inexact": 0.023715900455838393,
+        "change": 1.3704315460216776e-15,
+        "passes": true,
+        "ratio": 17305425086487.232
+      },
+      "min_ratio": {
+        "world": "development_1",
+        "path": "/turns/1/conditions/intact/persistence_by_dt/2/66/stats/shape_cv",
+        "context": "rolling persistence",
+        "margin_exact": 0.04837779300294564,
+        "margin_inexact": 0.04837779300303851,
+        "change": 9.287015600989434e-14,
+        "passes": true,
+        "ratio": 520918614563.2348
+      },
+      "max_change": 9.287015600989434e-14
+    },
+    "lock_std <= 0.1 (group)": {
+      "count": 6490,
+      "contexts": {
+        "operation source (copy of qualification)": 7,
+        "rolling persistence": 6363,
+        "endpoint qualification": 21,
+        "post-operation qualification": 75,
+        "before-formation qualification": 20,
+        "initial source qualification": 4
+      },
+      "flip_count": 0,
+      "flips": [],
+      "failing_both": 2086,
+      "closest": {
+        "world": "smoke_0",
+        "path": "/turns/1/conditions/no_r/persistence_by_dt/0/1/stats/lock_std",
+        "context": "rolling persistence",
+        "margin_exact": 0.008487222076582965,
+        "margin_inexact": 0.008487222076584172,
+        "change": 1.2073675392798577e-15,
+        "passes": true,
+        "ratio": 7029526470162.701
+      },
+      "min_ratio": {
+        "world": "development_1",
+        "path": "/turns/1/conditions/intact/persistence_by_dt/2/62/stats/lock_std",
+        "context": "rolling persistence",
+        "margin_exact": 0.07475268584227832,
+        "margin_inexact": 0.0747526858430349,
+        "change": 7.565892357064286e-13,
+        "passes": true,
+        "ratio": 98802206421.13896
+      },
+      "max_change": 5.2726711885497934e-12
+    },
+    "freq_change <= 0.01": {
+      "count": 6490,
+      "contexts": {
+        "operation source (copy of qualification)": 7,
+        "rolling persistence": 6363,
+        "endpoint qualification": 21,
+        "post-operation qualification": 75,
+        "before-formation qualification": 20,
+        "initial source qualification": 4
+      },
+      "flip_count": 0,
+      "flips": [],
+      "failing_both": 895,
+      "closest": {
+        "world": "development_0",
+        "path": "/turns/1/conditions/intact/persistence_by_dt/0/29/stats/freq_change",
+        "context": "rolling persistence",
+        "margin_exact": -7.2639129242851874e-09,
+        "margin_inexact": -7.2639128410184606e-09,
+        "change": 8.326672684688674e-17,
+        "passes": false,
+        "ratio": 87236681.4375
+      },
+      "min_ratio": {
+        "world": "development_0",
+        "path": "/turns/1/conditions/intact/persistence_by_dt/2/29/stats/freq_change",
+        "context": "rolling persistence",
+        "margin_exact": -7.264641008544737e-09,
+        "margin_inexact": -7.264640592211102e-09,
+        "change": 4.163336342344337e-16,
+        "passes": false,
+        "ratio": 17449085.0875
+      },
+      "max_change": 4.0967229608668276e-14
+    },
+    "pattern_change <= 0.1": {
+      "count": 6490,
+      "contexts": {
+        "operation source (copy of qualification)": 7,
+        "rolling persistence": 6363,
+        "endpoint qualification": 21,
+        "post-operation qualification": 75,
+        "before-formation qualification": 20,
+        "initial source qualification": 4
+      },
+      "flip_count": 0,
+      "flips": [],
+      "failing_both": 2070,
+      "closest": {
+        "world": "smoke_0",
+        "path": "/turns/1/conditions/no_r/persistence_by_dt/0/2/stats/pattern_change",
+        "context": "rolling persistence",
+        "margin_exact": 0.00017827850011711832,
+        "margin_inexact": 0.00017827850011667423,
+        "change": 4.440892098500626e-16,
+        "passes": true,
+        "ratio": 401447493347.8125
+      },
+      "min_ratio": {
+        "world": "development_1",
+        "path": "/turns/1/conditions/intact/persistence_by_dt/2/64/stats/pattern_change",
+        "context": "rolling persistence",
+        "margin_exact": 0.05332091567293809,
+        "margin_inexact": 0.05332091567423927,
+        "change": 1.3011813848606835e-12,
+        "passes": true,
+        "ratio": 40978849139.19755
+      },
+      "max_change": 1.4308554341369017e-12
+    },
+    "recovery_jaccard >= 0.9": {
+      "count": 303,
+      "contexts": {
+        "operation source (copy of qualification)": 21,
+        "endpoint qualification": 42,
+        "post-operation qualification": 168,
+        "before-formation qualification": 60,
+        "initial source qualification": 12
+      },
+      "flip_count": 0,
+      "flips": [],
+      "failing_both": 0,
+      "closest": {
+        "world": "development_1",
+        "path": "/turns/0/conditions/intact/endpoint_qualification/candidates/0/recovery_by_dt/0/recovery_jaccard",
+        "context": "endpoint qualification",
+        "margin_exact": 0.05833333333333335,
+        "margin_inexact": 0.05833333333333335,
+        "change": 0.0,
+        "passes": true,
+        "ratio": null
+      },
+      "min_ratio": null,
+      "max_change": 0.0
+    },
+    "recovery_pattern_error <= 0.1": {
+      "count": 303,
+      "contexts": {
+        "operation source (copy of qualification)": 21,
+        "endpoint qualification": 42,
+        "post-operation qualification": 168,
+        "before-formation qualification": 60,
+        "initial source qualification": 12
+      },
+      "flip_count": 0,
+      "flips": [],
+      "failing_both": 3,
+      "closest": {
+        "world": "smoke_1",
+        "path": "/turns/0/episodes/no_backreaction/4/qualification/candidates/0/recovery_by_dt/0/recovery_pattern_error",
+        "context": "post-operation qualification",
+        "margin_exact": -0.009056182473356239,
+        "margin_inexact": -0.009056182473505453,
+        "change": 1.4921397450962104e-13,
+        "passes": false,
+        "ratio": 60692589304.176155
+      },
+      "min_ratio": {
+        "world": "smoke_0",
+        "path": "/turns/1/episodes/no_backreaction/2/qualification/candidates/0/recovery_by_dt/2/recovery_pattern_error",
+        "context": "post-operation qualification",
+        "margin_exact": 0.07429287830063061,
+        "margin_inexact": 0.07429287826274447,
+        "change": 3.788613867072854e-11,
+        "passes": true,
+        "ratio": 1960951443.1205554
+      },
+      "max_change": 3.788613867072854e-11
+    },
+    "causal intact > 1e-8 (per grid, strict)": {
+      "count": 600,
+      "contexts": {
+        "operation source (copy of qualification)": 42,
+        "endpoint qualification": 84,
+        "post-operation qualification": 330,
+        "before-formation qualification": 120,
+        "initial source qualification": 24
+      },
+      "flip_count": 0,
+      "flips": [],
+      "failing_both": 0,
+      "closest": {
+        "world": "development_1",
+        "path": "/turns/0/conditions/intact/endpoint_qualification/causal/g_to_m/intact/2",
+        "context": "endpoint qualification",
+        "margin_exact": 0.010317331299364779,
+        "margin_inexact": 0.010317331299365918,
+        "change": 1.1397133237167623e-15,
+        "passes": true,
+        "ratio": 9052567066355.37
+      },
+      "min_ratio": {
+        "world": "smoke_0",
+        "path": "/turns/1/episodes/no_backreaction/2/qualification/causal/m_to_g/intact/2",
+        "context": "post-operation qualification",
+        "margin_exact": 1.022057779265665,
+        "margin_inexact": 1.0220577792712664,
+        "change": 5.60129720383884e-12,
+        "passes": true,
+        "ratio": 182468050180.4474
+      },
+      "max_change": 5.60129720383884e-12
+    },
+    "causal spread <= 0.1*min(intact) (moving)": {
+      "count": 200,
+      "contexts": {
+        "operation source (copy of qualification)": 14,
+        "endpoint qualification": 28,
+        "post-operation qualification": 110,
+        "before-formation qualification": 40,
+        "initial source qualification": 8
+      },
+      "flip_count": 0,
+      "flips": [],
+      "failing_both": 0,
+      "closest": {
+        "world": "development_1",
+        "path": "/turns/0/conditions/intact/endpoint_qualification/causal/g_to_m/spread",
+        "context": "endpoint qualification",
+        "margin_exact": 0.0010317341275506312,
+        "margin_inexact": 0.001031734127554664,
+        "change": 4.032798400777082e-15,
+        "passes": true,
+        "ratio": 255835780769.9551
+      },
+      "min_ratio": {
+        "world": "development_0",
+        "path": "/turns/0/episodes/no_backreaction/1/qualification/causal/m_to_g/spread",
+        "context": "post-operation qualification",
+        "margin_exact": 0.12263292494270633,
+        "margin_inexact": 0.12263292494820487,
+        "change": 5.498532185121974e-12,
+        "passes": true,
+        "ratio": 22302847526.20503
+      },
+      "max_change": 5.498532185121974e-12
+    },
+    "causal ablation <= max(1e-12, 0.2*min(intact)) (moving)": {
+      "count": 200,
+      "contexts": {
+        "operation source (copy of qualification)": 14,
+        "endpoint qualification": 28,
+        "post-operation qualification": 110,
+        "before-formation qualification": 40,
+        "initial source qualification": 8
+      },
+      "flip_count": 0,
+      "flips": [],
+      "failing_both": 0,
+      "closest": {
+        "world": "development_1",
+        "path": "/turns/0/conditions/intact/endpoint_qualification/causal/g_to_m/ablated",
+        "context": "endpoint qualification",
+        "margin_exact": 0.0020634682598729558,
+        "margin_inexact": 0.002063468259873184,
+        "change": 2.2811613709095013e-16,
+        "passes": true,
+        "ratio": 9045691752400.002
+      },
+      "min_ratio": {
+        "world": "development_0",
+        "path": "/turns/0/episodes/no_backreaction/1/qualification/causal/m_to_g/ablated",
+        "context": "post-operation qualification",
+        "margin_exact": 0.24526609222246842,
+        "margin_inexact": 0.24526609222344595,
+        "change": 9.775236176068347e-13,
+        "passes": true,
+        "ratio": 250905541108.99832
+      },
+      "max_change": 9.775236176068347e-13
+    },
+    "descriptor gain refinement <= 0.001": {
+      "count": 28,
+      "contexts": {
+        "operation response descriptor": 21,
+        "before-response descriptor": 7
+      },
+      "flip_count": 0,
+      "flips": [],
+      "failing_both": 0,
+      "closest": {
+        "world": "development_0",
+        "path": "/turns/0/response/intact/gain_by_dt",
+        "context": "operation response descriptor",
+        "margin_exact": 0.0009999999912324855,
+        "margin_inexact": 0.0009999999912317361,
+        "change": 7.494005416219807e-16,
+        "passes": true,
+        "ratio": 1334399877891.8877
+      },
+      "min_ratio": {
+        "world": "development_1",
+        "path": "/turns/1/response/intact/gain_by_dt",
+        "context": "operation response descriptor",
+        "margin_exact": 0.0009999999925133498,
+        "margin_inexact": 0.0009999999925161948,
+        "change": 2.8449465006019636e-15,
+        "passes": true,
+        "ratio": 351500456090.0387
+      },
+      "max_change": 2.8449465006019636e-15
+    },
+    "grid error position <= 0.05": {
+      "count": 2480,
+      "contexts": {
+        "world check list": 2480
+      },
+      "flip_count": 0,
+      "flips": [],
+      "failing_both": 0,
+      "closest": {
+        "world": "development_0",
+        "path": "/checks/318/max_errors/position",
+        "context": "world check list",
+        "margin_exact": 0.049971260308364115,
+        "margin_inexact": 0.04997125980170486,
+        "change": 5.066592562164018e-10,
+        "passes": true,
+        "ratio": 98628929.98646931
+      },
+      "min_ratio": {
+        "world": "development_0",
+        "path": "/checks/318/max_errors/position",
+        "context": "world check list",
+        "margin_exact": 0.049971260308364115,
+        "margin_inexact": 0.04997125980170486,
+        "change": 5.066592562164018e-10,
+        "passes": true,
+        "ratio": 98628929.98646931
+      },
+      "max_change": 5.066592562164018e-10
+    },
+    "grid error phase <= 0.05": {
+      "count": 2480,
+      "contexts": {
+        "world check list": 2480
+      },
+      "flip_count": 0,
+      "flips": [],
+      "failing_both": 0,
+      "closest": {
+        "world": "development_0",
+        "path": "/checks/279/max_errors/phase",
+        "context": "world check list",
+        "margin_exact": 0.04999501744014463,
+        "margin_inexact": 0.04999501744092445,
+        "change": 7.7982065249671e-13,
+        "passes": true,
+        "ratio": 64110917401.428474
+      },
+      "min_ratio": {
+        "world": "development_0",
+        "path": "/checks/341/max_errors/phase",
+        "context": "world check list",
+        "margin_exact": 0.04999775284343695,
+        "margin_inexact": 0.049997752936406584,
+        "change": 9.296963199290076e-11,
+        "passes": true,
+        "ratio": 537785852.9896604
+      },
+      "max_change": 9.296963199290076e-11
+    },
+    "grid error field <= 0.05": {
+      "count": 2480,
+      "contexts": {
+        "world check list": 2480
+      },
+      "flip_count": 0,
+      "flips": [],
+      "failing_both": 0,
+      "closest": {
+        "world": "development_1",
+        "path": "/checks/378/max_errors/field",
+        "context": "world check list",
+        "margin_exact": 0.04999998999790868,
+        "margin_inexact": 0.0499999900012929,
+        "change": 3.3842165181319217e-12,
+        "passes": true,
+        "ratio": 14774465442.745531
+      },
+      "min_ratio": {
+        "world": "development_1",
+        "path": "/checks/378/max_errors/field",
+        "context": "world check list",
+        "margin_exact": 0.04999998999790868,
+        "margin_inexact": 0.0499999900012929,
+        "change": 3.3842165181319217e-12,
+        "passes": true,
+        "ratio": 14774465442.745531
+      },
+      "max_change": 3.3842165181319217e-12
+    },
+    "paired gain refinement <= 0.001": {
+      "count": 10,
+      "contexts": {
+        "operation response descriptor": 10
+      },
+      "flip_count": 0,
+      "flips": [],
+      "failing_both": 0,
+      "closest": {
+        "world": "development_0",
+        "path": "/turns/0/response/intact-no_r",
+        "context": "operation response descriptor",
+        "margin_exact": 0.0009999999909926357,
+        "margin_inexact": 0.0009999999909920112,
+        "change": 6.245004513516506e-16,
+        "passes": true,
+        "ratio": 1601279853086.1987
+      },
+      "min_ratio": {
+        "world": "development_0",
+        "path": "/turns/0/response/intact-no_backreaction",
+        "context": "operation response descriptor",
+        "margin_exact": 0.000999999991198707,
+        "margin_inexact": 0.0009999999911979576,
+        "change": 7.494005416219807e-16,
+        "passes": true,
+        "ratio": 1334399877846.8137
+      },
+      "max_change": 7.494005416219807e-16
+    }
+  },
+  "guard_families": {
+    "GridSet normalization: cohort radius of gyration > 0 (finite)": {
+      "count": 4207,
+      "contexts": {
+        "world check list": 4207
+      },
+      "flip_count": 0,
+      "flips": [],
+      "failing_both": 0,
+      "closest": {
+        "world": "smoke_1",
+        "path": "/checks/240/normalization_sizes/1",
+        "context": "world check list",
+        "margin_exact": 0.41694549842137757,
+        "margin_inexact": 0.41694549842137757,
+        "change": 0.0,
+        "passes": true,
+        "ratio": null
+      },
+      "min_ratio": {
+        "world": "development_0",
+        "path": "/checks/335/normalization_sizes/1",
+        "context": "world check list",
+        "margin_exact": 0.4251784577401634,
+        "margin_inexact": 0.4251784577401717,
+        "change": 8.326672684688674e-15,
+        "passes": true,
+        "ratio": 51062227835854.984
+      },
+      "max_change": 8.326672684688674e-15
+    },
+    "candidate minimum size: members >= 3 (integer)": {
+      "count": 120,
+      "contexts": {
+        "endpoint qualification": 21,
+        "post-operation qualification": 75,
+        "before-formation qualification": 20,
+        "initial source qualification": 4
+      },
+      "flip_count": 0,
+      "flips": [],
+      "failing_both": 0,
+      "closest": {
+        "world": "smoke_1",
+        "path": "/turns/0/episodes/no_backreaction/4/qualification/candidates/0/size",
+        "context": "post-operation qualification",
+        "margin_exact": 18,
+        "margin_inexact": 18,
+        "change": 0,
+        "passes": true,
+        "ratio": null
+      },
+      "min_ratio": null,
+      "max_change": 0.0
+    },
+    "candidate geometry: radius of gyration > 0 (final state, each grid, grid-0 members)": {
+      "count": 360,
+      "contexts": {
+        "endpoint qualification": 63,
+        "post-operation qualification": 225,
+        "before-formation qualification": 60,
+        "initial source qualification": 12
+      },
+      "flip_count": 0,
+      "flips": [],
+      "failing_both": 0,
+      "closest": {
+        "world": "development_0",
+        "path": "/turns/0/episodes/no_backreaction/4/qualification/candidates/0/grid/2/rg",
+        "context": "post-operation qualification",
+        "margin_exact": 0.41175326873676277,
+        "margin_inexact": 0.4117532687367582,
+        "change": 4.551914400963142e-15,
+        "passes": true,
+        "ratio": 90457164275681.39
+      },
+      "min_ratio": {
+        "world": "development_1",
+        "path": "/turns/0/episodes/no_r/3/qualification/candidates/0/grid/1/rg",
+        "context": "post-operation qualification",
+        "margin_exact": 0.4182718879340252,
+        "margin_inexact": 0.4182718879339454,
+        "change": 7.982503547054876e-14,
+        "passes": true,
+        "ratio": 5239858466312.183
+      },
+      "max_change": 7.982503547054876e-14
+    },
+    "candidate geometry: median nearest spacing > 0 (final state, each grid, grid-0 members)": {
+      "count": 360,
+      "contexts": {
+        "endpoint qualification": 63,
+        "post-operation qualification": 225,
+        "before-formation qualification": 60,
+        "initial source qualification": 12
+      },
+      "flip_count": 0,
+      "flips": [],
+      "failing_both": 0,
+      "closest": {
+        "world": "smoke_0",
+        "path": "/turns/1/episodes/no_r/3/qualification/candidates/0/grid/0/spacing",
+        "context": "post-operation qualification",
+        "margin_exact": 0.2064301137214126,
+        "margin_inexact": 0.2064301137214369,
+        "change": 2.4313884239290928e-14,
+        "passes": true,
+        "ratio": 8490215371998.2
+      },
+      "min_ratio": {
+        "world": "development_1",
+        "path": "/turns/0/episodes/intact/0/qualification/candidates/0/grid/2/spacing",
+        "context": "post-operation qualification",
+        "margin_exact": 0.21670256555478645,
+        "margin_inexact": 0.21670256555532066,
+        "change": 5.342115638740097e-13,
+        "passes": true,
+        "ratio": 405649334850.2174
+      },
+      "max_change": 5.342115638740097e-13
+    },
+    "recovery kick: median member spacing > 0 (each grid)": {
+      "count": 282,
+      "contexts": {
+        "endpoint qualification": 42,
+        "post-operation qualification": 168,
+        "before-formation qualification": 60,
+        "initial source qualification": 12
+      },
+      "flip_count": 0,
+      "flips": [],
+      "failing_both": 0,
+      "closest": {
+        "world": "smoke_0",
+        "path": "/turns/1/episodes/no_r/3/qualification/candidates/0/grid/0/kick_spacing",
+        "context": "post-operation qualification",
+        "margin_exact": 0.2064301137214126,
+        "margin_inexact": 0.2064301137214369,
+        "change": 2.4313884239290928e-14,
+        "passes": true,
+        "ratio": 8490215371998.2
+      },
+      "min_ratio": {
+        "world": "development_1",
+        "path": "/turns/0/episodes/intact/0/qualification/candidates/0/grid/2/kick_spacing",
+        "context": "post-operation qualification",
+        "margin_exact": 0.21670256555478645,
+        "margin_inexact": 0.21670256555532066,
+        "change": 5.342115638740097e-13,
+        "passes": true,
+        "ratio": 405649334850.2174
+      },
+      "max_change": 5.342115638740097e-13
+    },
+    "causal input lengths: intact and ablated each have 3 grids": {
+      "count": 186,
+      "contexts": {
+        "endpoint qualification": 28,
+        "post-operation qualification": 110,
+        "before-formation qualification": 40,
+        "initial source qualification": 8
+      },
+      "flip_count": 0,
+      "flips": [],
+      "failing_both": 0,
+      "closest": {
+        "world": "smoke_0",
+        "path": "/turns/0/conditions/intact/endpoint_qualification/causal/g_to_m/lengths",
+        "context": "endpoint qualification",
+        "margin_exact": 0.0,
+        "margin_inexact": 0.0,
+        "change": 0.0,
+        "passes": true,
+        "ratio": null
+      },
+      "min_ratio": null,
+      "max_change": 0.0
+    },
+    "causal inputs nonnegative and finite: >= 0": {
+      "count": 186,
+      "contexts": {
+        "endpoint qualification": 28,
+        "post-operation qualification": 110,
+        "before-formation qualification": 40,
+        "initial source qualification": 8
+      },
+      "flip_count": 0,
+      "flips": [],
+      "failing_both": 0,
+      "closest": {
+        "world": "smoke_0",
+        "path": "/turns/0/conditions/intact/endpoint_qualification/causal/g_to_m/nonnegative",
+        "context": "endpoint qualification",
+        "margin_exact": 0.0,
+        "margin_inexact": 0.0,
+        "change": 0.0,
+        "passes": true,
+        "ratio": null
+      },
+      "min_ratio": null,
+      "max_change": 0.0
+    },
+    "causal grid agreement: per-grid floor decisions identical": {
+      "count": 186,
+      "contexts": {
+        "endpoint qualification": 28,
+        "post-operation qualification": 110,
+        "before-formation qualification": 40,
+        "initial source qualification": 8
+      },
+      "flip_count": 0,
+      "flips": [],
+      "failing_both": 0,
+      "closest": {
+        "world": "development_1",
+        "path": "/turns/0/conditions/intact/endpoint_qualification/causal/g_to_m/agreement",
+        "context": "endpoint qualification",
+        "margin_exact": 0.010317331299364779,
+        "margin_inexact": 0.010317331299365918,
+        "change": 1.1397133237167623e-15,
+        "passes": true,
+        "ratio": 9052567066355.37
+      },
+      "min_ratio": {
+        "world": "development_0",
+        "path": "/turns/0/episodes/no_backreaction/1/qualification/causal/m_to_g/agreement",
+        "context": "post-operation qualification",
+        "margin_exact": 1.226330451112342,
+        "margin_inexact": 1.2263304511172297,
+        "change": 4.887645843609789e-12,
+        "passes": true,
+        "ratio": 250904114240.53406
+      },
+      "max_change": 4.887645843609789e-12
+    },
+    "selection tokens unique: no duplicate priorities": {
+      "count": 120,
+      "contexts": {
+        "endpoint qualification": 21,
+        "post-operation qualification": 75,
+        "before-formation qualification": 20,
+        "initial source qualification": 4
+      },
+      "flip_count": 0,
+      "flips": [],
+      "failing_both": 0,
+      "closest": {
+        "world": "smoke_0",
+        "path": "/turns/0/conditions/intact/endpoint_qualification/tokens_unique",
+        "context": "endpoint qualification",
+        "margin_exact": 0.0,
+        "margin_inexact": 0.0,
+        "change": 0.0,
+        "passes": true,
+        "ratio": null
+      },
+      "min_ratio": null,
+      "max_change": 0.0
+    },
+    "selection: recomputed select_accepted equals stored selected_members": {
+      "count": 120,
+      "contexts": {
+        "endpoint qualification": 21,
+        "post-operation qualification": 75,
+        "before-formation qualification": 20,
+        "initial source qualification": 4
+      },
+      "flip_count": 0,
+      "flips": [],
+      "failing_both": 0,
+      "closest": {
+        "world": "smoke_0",
+        "path": "/turns/0/conditions/intact/endpoint_qualification/selection",
+        "context": "endpoint qualification",
+        "margin_exact": 0,
+        "margin_inexact": 0,
+        "change": 0,
+        "passes": true,
+        "ratio": null
+      },
+      "min_ratio": null,
+      "max_change": 0.0
+    },
+    "recovery position-probe norm > 0": {
+      "count": 80,
+      "contexts": {
+        "post-operation qualification": 56,
+        "before-formation qualification": 20,
+        "initial source qualification": 4
+      },
+      "flip_count": 0,
+      "flips": [],
+      "failing_both": 0,
+      "closest": {
+        "world": "development_1",
+        "path": "/turns/0/episodes/no_backreaction/4/qualification/candidates/0/position_norm",
+        "context": "post-operation qualification",
+        "margin_exact": 1.1665584333959866,
+        "margin_inexact": 1.1665584333959866,
+        "change": 0.0,
+        "passes": true,
+        "ratio": null
+      },
+      "min_ratio": null,
+      "max_change": 0.0
+    },
+    "recovery phase-probe norm > 0 (normalize_phase)": {
+      "count": 80,
+      "contexts": {
+        "post-operation qualification": 56,
+        "before-formation qualification": 20,
+        "initial source qualification": 4
+      },
+      "flip_count": 0,
+      "flips": [],
+      "failing_both": 0,
+      "closest": {
+        "world": "development_0",
+        "path": "/turns/0/episodes/no_r/3/qualification/candidates/0/phase_norm",
+        "context": "post-operation qualification",
+        "margin_exact": 0.5765639023722214,
+        "margin_inexact": 0.5765639023722214,
+        "change": 0.0,
+        "passes": true,
+        "ratio": null
+      },
+      "min_ratio": null,
+      "max_change": 0.0
+    },
+    "causal phase-probe norm > 0 (normalize_phase)": {
+      "count": 79,
+      "contexts": {
+        "post-operation qualification": 55,
+        "before-formation qualification": 20,
+        "initial source qualification": 4
+      },
+      "flip_count": 0,
+      "flips": [],
+      "failing_both": 0,
+      "closest": {
+        "world": "smoke_0",
+        "path": "/turns/1/episodes/intact/4/qualification/causal/probe_norm",
+        "context": "post-operation qualification",
+        "margin_exact": 0.780156298999053,
+        "margin_inexact": 0.780156298999053,
+        "change": 0.0,
+        "passes": true,
+        "ratio": null
+      },
+      "min_ratio": null,
+      "max_change": 0.0
+    },
+    "recovery grid agreement: per-grid recovered decisions identical": {
+      "count": 94,
+      "contexts": {
+        "endpoint qualification": 14,
+        "post-operation qualification": 56,
+        "before-formation qualification": 20,
+        "initial source qualification": 4
+      },
+      "flip_count": 0,
+      "flips": [],
+      "failing_both": 0,
+      "closest": {
+        "world": "smoke_1",
+        "path": "/turns/0/episodes/no_backreaction/4/qualification/candidates/0/recovery_agreement",
+        "context": "post-operation qualification",
+        "margin_exact": 0.009056182473356239,
+        "margin_inexact": 0.009056182473505453,
+        "change": 1.4921397450962104e-13,
+        "passes": true,
+        "ratio": 60692589304.176155
+      },
+      "min_ratio": {
+        "world": "smoke_0",
+        "path": "/turns/1/episodes/no_backreaction/2/qualification/candidates/0/recovery_agreement",
+        "context": "post-operation qualification",
+        "margin_exact": 0.07429287830063061,
+        "margin_inexact": 0.07429287826274447,
+        "change": 3.788613867072854e-11,
+        "passes": true,
+        "ratio": 1960951443.1205554
+      },
+      "max_change": 3.788613867072854e-11
+    },
+    "persistence grid agreement: per-grid window masks identical": {
+      "count": 21,
+      "contexts": {
+        "other": 21
+      },
+      "flip_count": 0,
+      "flips": [],
+      "failing_both": 0,
+      "closest": {
+        "world": "development_0",
+        "path": "/turns/1/conditions/intact/persistence_agreement",
+        "context": "other",
+        "margin_exact": 7.2639129242851874e-09,
+        "margin_inexact": 7.2639128410184606e-09,
+        "change": 8.326672684688674e-17,
+        "passes": true,
+        "ratio": 87236681.4375
+      },
+      "min_ratio": {
+        "world": "development_0",
+        "path": "/turns/1/conditions/intact/persistence_agreement",
+        "context": "other",
+        "margin_exact": 7.2639129242851874e-09,
+        "margin_inexact": 7.2639128410184606e-09,
+        "change": 8.326672684688674e-17,
+        "passes": true,
+        "ratio": 87236681.4375
+      },
+      "max_change": 6.661338147750939e-15
+    }
+  },
+  "pair_level": {
+    "qualification window (grid dt)": {
+      "windows": 99,
+      "lock_tests": 27324,
+      "lock_flip_count": 0,
+      "frames": 3069,
+      "link_tests": 847044,
+      "link_flip_count": 0,
+      "closest_lock": {
+        "world": "smoke_1",
+        "path": "/turns/0/before_formation/3",
+        "pair_index": 21,
+        "exact": 0.1001632847400453,
+        "inexact": 0.1001632847400464,
+        "margin_exact": -0.0001632847400452886,
+        "margin_inexact": -0.0001632847400463988,
+        "change": 1.1102230246251565e-15
+      },
+      "closest_link": {
+        "world": "smoke_0",
+        "path": "/turns/1/episodes/no_r/0",
+        "pair_index": 232,
+        "margin_rel_exact": -6.290960976983961e-07,
+        "margin_rel_inexact": -6.290960933982497e-07,
+        "change_rel": 4.300146351127773e-15
+      },
+      "validation_summary": null
+    },
+    "rolling persistence (grid dt, reconstructed)": {
+      "windows": 2121,
+      "lock_tests": 585396,
+      "lock_flip_count": 0,
+      "frames": 2751,
+      "link_tests": 759276,
+      "link_flip_count": 0,
+      "closest_lock": {
+        "world": "smoke_1",
+        "path": "/turns/0/conditions/no_r/window/94",
+        "pair_index": 150,
+        "exact": 0.10000148720862774,
+        "inexact": 0.10000148720862774,
+        "margin_exact": -1.4872086277345486e-06,
+        "margin_inexact": -1.4872086277345486e-06,
+        "change": 0.0
+      },
+      "closest_link": {
+        "world": "smoke_0",
+        "path": "/turns/0/conditions/intact/frame/68",
+        "pair_index": 206,
+        "margin_rel_exact": -6.084962417007609e-06,
+        "margin_rel_inexact": -6.084962416839881e-06,
+        "change_rel": 1.6772777014940204e-16
+      },
+      "validation_summary": {
+        "cells": 21,
+        "all_valid": true,
+        "engines_validated": [
+          "exact",
+          "inexact"
+        ],
+        "max_abs_stat_difference": 0.0
+      }
+    }
+  },
+  "stored_record_validation": {
+    "smoke_0": {
+      "exact": {
+        "validate_world": "PASS",
+        "publication_valid_calls": 40,
+        "publication_valid_true": 40,
+        "chain_checked": true
+      },
+      "inexact": {
+        "validate_world": "PASS",
+        "publication_valid_calls": 40,
+        "publication_valid_true": 40,
+        "chain_checked": true
+      }
+    },
+    "smoke_1": {
+      "exact": {
+        "validate_world": "PASS",
+        "publication_valid_calls": 20,
+        "publication_valid_true": 20,
+        "chain_checked": false
+      },
+      "inexact": {
+        "validate_world": "PASS",
+        "publication_valid_calls": 20,
+        "publication_valid_true": 20,
+        "chain_checked": false
+      }
+    },
+    "development_0": {
+      "exact": {
+        "validate_world": "PASS",
+        "publication_valid_calls": 21,
+        "publication_valid_true": 21,
+        "chain_checked": false
+      },
+      "inexact": {
+        "validate_world": "PASS",
+        "publication_valid_calls": 21,
+        "publication_valid_true": 21,
+        "chain_checked": false
+      }
+    },
+    "development_1": {
+      "exact": {
+        "validate_world": "PASS",
+        "publication_valid_calls": 21,
+        "publication_valid_true": 21,
+        "chain_checked": false
+      },
+      "inexact": {
+        "validate_world": "PASS",
+        "publication_valid_calls": 21,
+        "publication_valid_true": 21,
+        "chain_checked": false
+      }
+    }
+  },
+  "recorded_outcomes_identical": true,
+  "worlds": [
+    "smoke_0",
+    "smoke_1",
+    "development_0",
+    "development_1"
+  ],
+  "all_contracts_passed": true,
+  "macos_build": {
+    "ProductName": "macOS",
+    "ProductVersion": "26.6.2",
+    "BuildVersion": "25G83"
+  },
+  "option_b_build": {
+    "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+    "compiler_version": "Apple clang version 21.0.0 (clang-2100.3.34.2)\nTarget: arm64-apple-darwin25.6.0\nThread model: posix\nInstalledDir: /Library/Developer/CommandLineTools/usr/bin\n",
+    "platform": "Darwin",
+    "architecture": "arm64",
+    "flags": [
+      "-std=c++17",
+      "-O2",
+      "-fno-fast-math",
+      "-ffp-contract=off",
+      "-dynamiclib",
+      "-DC6_OPTION_B_INEXACT=1",
+      "-framework",
+      "Accelerate"
+    ],
+    "source_hashes": {
+      "native/c6_option_b/field.cpp": "a54b289f27d44fc83a713e435023945426469c3481ae3fc17d6d66a497b01936",
+      "native/c6_option_b/detection.cpp": "fd2ab679359cb00e857555ee7614adaa4d335464ea242abf0c869e6400b00b52"
+    },
+    "kernel": "inexact",
+    "macos_build": {
+      "ProductName": "macOS",
+      "ProductVersion": "26.6.2",
+      "BuildVersion": "25G83"
+    },
+    "binary_sha256": "07ad3daa3939a376604074accc55affe55a726c1098af91382a535ba2048c289",
+    "build_seconds": 4.002533625
+  }
+}

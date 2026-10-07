@@ -1,0 +1,46 @@
+{
+  "passed": true,
+  "absolute_tolerance": 0.0,
+  "maximum_error": 0.0,
+  "numeric_values_compared": 2600554,
+  "decision_values_compared": 2501,
+  "digest_values_changed": 0,
+  "failures": [],
+  "macos_build": {
+    "ProductName": "macOS",
+    "ProductVersion": "26.6.2",
+    "BuildVersion": "25G83"
+  },
+  "option_b_build": {
+    "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+    "compiler_version": "Apple clang version 21.0.0 (clang-2100.3.34.2)\nTarget: arm64-apple-darwin25.6.0\nThread model: posix\nInstalledDir: /Library/Developer/CommandLineTools/usr/bin\n",
+    "platform": "Darwin",
+    "architecture": "arm64",
+    "flags": [
+      "-std=c++17",
+      "-O2",
+      "-fno-fast-math",
+      "-ffp-contract=off",
+      "-dynamiclib",
+      "-DC6_OPTION_B_INEXACT=1",
+      "-framework",
+      "Accelerate"
+    ],
+    "source_hashes": {
+      "native/c6_option_b/field.cpp": "a54b289f27d44fc83a713e435023945426469c3481ae3fc17d6d66a497b01936",
+      "native/c6_option_b/detection.cpp": "fd2ab679359cb00e857555ee7614adaa4d335464ea242abf0c869e6400b00b52"
+    },
+    "kernel": "inexact",
+    "macos_build": {
+      "ProductName": "macOS",
+      "ProductVersion": "26.6.2",
+      "BuildVersion": "25G83"
+    },
+    "binary_sha256": "07ad3daa3939a376604074accc55affe55a726c1098af91382a535ba2048c289",
+    "build_seconds": 4.002533625
+  },
+  "reference": "/Users/new/RiderProjects/ai_RPG_test/evidence/c6_option_b/adoption_0032/continuation_20261007/runs/verification/development_1/world.json.gz",
+  "reference_sha256": "98432df1512335aeb13c77ed6366611bf31c22d599c27c6a807fe52014046144",
+  "generated": "/Users/new/RiderProjects/ai_RPG_test/evidence/c6_option_b/adoption_0032/continuation_20261007/runs/references_inexact/development_1/world.json.gz",
+  "generated_sha256": "02c797fa721baba1184614b8b00e9f98aa9d2bee2b12e7f8a54fc7717d5b7258"
+}

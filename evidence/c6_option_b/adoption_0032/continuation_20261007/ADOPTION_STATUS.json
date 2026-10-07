@@ -1,0 +1,272 @@
+{
+  "status": "ADOPTED",
+  "reason": "All four 0032 contracts, four fresh bit-exact references and simultaneous timing pair passed; prior tests/diagnostics reused unchanged",
+  "macos_build": {
+    "ProductName": "macOS",
+    "ProductVersion": "26.6.2",
+    "BuildVersion": "25G83"
+  },
+  "builds": {
+    "exact": {
+      "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+      "compiler_version": "Apple clang version 21.0.0 (clang-2100.3.34.2)\nTarget: arm64-apple-darwin25.6.0\nThread model: posix\nInstalledDir: /Library/Developer/CommandLineTools/usr/bin\n",
+      "platform": "Darwin",
+      "architecture": "arm64",
+      "flags": [
+        "-std=c++17",
+        "-O2",
+        "-fno-fast-math",
+        "-ffp-contract=off",
+        "-dynamiclib",
+        "-DC6_OPTION_B_INEXACT=0"
+      ],
+      "source_hashes": {
+        "native/c6_option_b/field.cpp": "a54b289f27d44fc83a713e435023945426469c3481ae3fc17d6d66a497b01936",
+        "native/c6_option_b/detection.cpp": "fd2ab679359cb00e857555ee7614adaa4d335464ea242abf0c869e6400b00b52"
+      },
+      "kernel": "exact",
+      "macos_build": {
+        "ProductName": "macOS",
+        "ProductVersion": "26.6.2",
+        "BuildVersion": "25G83"
+      },
+      "binary_sha256": "bb573e1e30441fd1146bdc17d97a4732f06388316acd7f4ef41004d0184bd6fa",
+      "build_seconds": 3.082137083
+    },
+    "inexact": {
+      "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+      "compiler_version": "Apple clang version 21.0.0 (clang-2100.3.34.2)\nTarget: arm64-apple-darwin25.6.0\nThread model: posix\nInstalledDir: /Library/Developer/CommandLineTools/usr/bin\n",
+      "platform": "Darwin",
+      "architecture": "arm64",
+      "flags": [
+        "-std=c++17",
+        "-O2",
+        "-fno-fast-math",
+        "-ffp-contract=off",
+        "-dynamiclib",
+        "-DC6_OPTION_B_INEXACT=1",
+        "-framework",
+        "Accelerate"
+      ],
+      "source_hashes": {
+        "native/c6_option_b/field.cpp": "a54b289f27d44fc83a713e435023945426469c3481ae3fc17d6d66a497b01936",
+        "native/c6_option_b/detection.cpp": "fd2ab679359cb00e857555ee7614adaa4d335464ea242abf0c869e6400b00b52"
+      },
+      "kernel": "inexact",
+      "macos_build": {
+        "ProductName": "macOS",
+        "ProductVersion": "26.6.2",
+        "BuildVersion": "25G83"
+      },
+      "binary_sha256": "07ad3daa3939a376604074accc55affe55a726c1098af91382a535ba2048c289",
+      "build_seconds": 4.002533625
+    }
+  },
+  "source_pin": {
+    "status": "PASS",
+    "source_files_verified": 25,
+    "owner_identities_verified": 12,
+    "manifest_entries_verified": 23,
+    "checksum_entries_verified": 24,
+    "handoff_sha256": "719781cbd5a302f58f0f57c064b32ca0a49e49546a1f88160582ba6235ca575e",
+    "expected_record_sha256": "37e8249338a95e32de72f4e30091e104697606faebd53b22bda8b90124e3bceb",
+    "import_record_sha256": "3f34717f795415f5ed4b11df060cdfc3c36f0bd8b1d491853141778bbc2d3da2"
+  },
+  "prior_attempt_commit": "fceedec92bd6331686617812109aecb027eafd9f",
+  "tests_rerun": false,
+  "diagnostics_rerun": false,
+  "world_comparisons": {
+    "smoke_0": {
+      "status": "evaluated",
+      "passed": true,
+      "receipt": "evidence/c6_option_b/adoption_0032/continuation_20261007/runs/verification/smoke_0/COMPARISON.json"
+    },
+    "smoke_1": {
+      "status": "evaluated",
+      "passed": true,
+      "receipt": "evidence/c6_option_b/adoption_0032/continuation_20261007/runs/verification/smoke_1/COMPARISON.json"
+    },
+    "development_0": {
+      "status": "evaluated",
+      "passed": true,
+      "receipt": "evidence/c6_option_b/adoption_0032/continuation_20261007/runs/verification/development_0/COMPARISON.json"
+    },
+    "development_1": {
+      "status": "evaluated",
+      "passed": true,
+      "receipt": "evidence/c6_option_b/adoption_0032/continuation_20261007/runs/verification/development_1/COMPARISON.json"
+    }
+  },
+  "fresh_references": {
+    "smoke_0": {
+      "path": "evidence/c6_option_b/adoption_0032/continuation_20261007/runs/references_inexact/smoke_0/world.json.gz",
+      "sha256": "f29484eafa98c375cb7542a1da087af7ce44ac1416b3f3bc24933c34c7ae4b16",
+      "bytes": 25837086,
+      "macos_build": {
+        "ProductName": "macOS",
+        "ProductVersion": "26.6.2",
+        "BuildVersion": "25G83"
+      },
+      "option_b_build": {
+        "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+        "compiler_version": "Apple clang version 21.0.0 (clang-2100.3.34.2)\nTarget: arm64-apple-darwin25.6.0\nThread model: posix\nInstalledDir: /Library/Developer/CommandLineTools/usr/bin\n",
+        "platform": "Darwin",
+        "architecture": "arm64",
+        "flags": [
+          "-std=c++17",
+          "-O2",
+          "-fno-fast-math",
+          "-ffp-contract=off",
+          "-dynamiclib",
+          "-DC6_OPTION_B_INEXACT=1",
+          "-framework",
+          "Accelerate"
+        ],
+        "source_hashes": {
+          "native/c6_option_b/field.cpp": "a54b289f27d44fc83a713e435023945426469c3481ae3fc17d6d66a497b01936",
+          "native/c6_option_b/detection.cpp": "fd2ab679359cb00e857555ee7614adaa4d335464ea242abf0c869e6400b00b52"
+        },
+        "kernel": "inexact",
+        "macos_build": {
+          "ProductName": "macOS",
+          "ProductVersion": "26.6.2",
+          "BuildVersion": "25G83"
+        },
+        "binary_sha256": "07ad3daa3939a376604074accc55affe55a726c1098af91382a535ba2048c289",
+        "build_seconds": 4.002533625
+      },
+      "bit_exact_receipt": "evidence/c6_option_b/adoption_0032/continuation_20261007/runs/references_inexact/smoke_0/BIT_EXACT.json"
+    },
+    "smoke_1": {
+      "path": "evidence/c6_option_b/adoption_0032/continuation_20261007/runs/references_inexact/smoke_1/world.json.gz",
+      "sha256": "f0801afc1d82fd1fc1ba4aa6d6c2d8995dfac88554a12166024ca8cf0b93aec0",
+      "bytes": 12312586,
+      "macos_build": {
+        "ProductName": "macOS",
+        "ProductVersion": "26.6.2",
+        "BuildVersion": "25G83"
+      },
+      "option_b_build": {
+        "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+        "compiler_version": "Apple clang version 21.0.0 (clang-2100.3.34.2)\nTarget: arm64-apple-darwin25.6.0\nThread model: posix\nInstalledDir: /Library/Developer/CommandLineTools/usr/bin\n",
+        "platform": "Darwin",
+        "architecture": "arm64",
+        "flags": [
+          "-std=c++17",
+          "-O2",
+          "-fno-fast-math",
+          "-ffp-contract=off",
+          "-dynamiclib",
+          "-DC6_OPTION_B_INEXACT=1",
+          "-framework",
+          "Accelerate"
+        ],
+        "source_hashes": {
+          "native/c6_option_b/field.cpp": "a54b289f27d44fc83a713e435023945426469c3481ae3fc17d6d66a497b01936",
+          "native/c6_option_b/detection.cpp": "fd2ab679359cb00e857555ee7614adaa4d335464ea242abf0c869e6400b00b52"
+        },
+        "kernel": "inexact",
+        "macos_build": {
+          "ProductName": "macOS",
+          "ProductVersion": "26.6.2",
+          "BuildVersion": "25G83"
+        },
+        "binary_sha256": "07ad3daa3939a376604074accc55affe55a726c1098af91382a535ba2048c289",
+        "build_seconds": 4.002533625
+      },
+      "bit_exact_receipt": "evidence/c6_option_b/adoption_0032/continuation_20261007/runs/references_inexact/smoke_1/BIT_EXACT.json"
+    },
+    "development_0": {
+      "path": "evidence/c6_option_b/adoption_0032/continuation_20261007/runs/references_inexact/development_0/world.json.gz",
+      "sha256": "326d6494f035ac4bba959eff4531915bb45e328f5caaa114748f941f2c9b9f4d",
+      "bytes": 23343602,
+      "macos_build": {
+        "ProductName": "macOS",
+        "ProductVersion": "26.6.2",
+        "BuildVersion": "25G83"
+      },
+      "option_b_build": {
+        "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+        "compiler_version": "Apple clang version 21.0.0 (clang-2100.3.34.2)\nTarget: arm64-apple-darwin25.6.0\nThread model: posix\nInstalledDir: /Library/Developer/CommandLineTools/usr/bin\n",
+        "platform": "Darwin",
+        "architecture": "arm64",
+        "flags": [
+          "-std=c++17",
+          "-O2",
+          "-fno-fast-math",
+          "-ffp-contract=off",
+          "-dynamiclib",
+          "-DC6_OPTION_B_INEXACT=1",
+          "-framework",
+          "Accelerate"
+        ],
+        "source_hashes": {
+          "native/c6_option_b/field.cpp": "a54b289f27d44fc83a713e435023945426469c3481ae3fc17d6d66a497b01936",
+          "native/c6_option_b/detection.cpp": "fd2ab679359cb00e857555ee7614adaa4d335464ea242abf0c869e6400b00b52"
+        },
+        "kernel": "inexact",
+        "macos_build": {
+          "ProductName": "macOS",
+          "ProductVersion": "26.6.2",
+          "BuildVersion": "25G83"
+        },
+        "binary_sha256": "07ad3daa3939a376604074accc55affe55a726c1098af91382a535ba2048c289",
+        "build_seconds": 4.002533625
+      },
+      "bit_exact_receipt": "evidence/c6_option_b/adoption_0032/continuation_20261007/runs/references_inexact/development_0/BIT_EXACT.json"
+    },
+    "development_1": {
+      "path": "evidence/c6_option_b/adoption_0032/continuation_20261007/runs/references_inexact/development_1/world.json.gz",
+      "sha256": "02c797fa721baba1184614b8b00e9f98aa9d2bee2b12e7f8a54fc7717d5b7258",
+      "bytes": 23335088,
+      "macos_build": {
+        "ProductName": "macOS",
+        "ProductVersion": "26.6.2",
+        "BuildVersion": "25G83"
+      },
+      "option_b_build": {
+        "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+        "compiler_version": "Apple clang version 21.0.0 (clang-2100.3.34.2)\nTarget: arm64-apple-darwin25.6.0\nThread model: posix\nInstalledDir: /Library/Developer/CommandLineTools/usr/bin\n",
+        "platform": "Darwin",
+        "architecture": "arm64",
+        "flags": [
+          "-std=c++17",
+          "-O2",
+          "-fno-fast-math",
+          "-ffp-contract=off",
+          "-dynamiclib",
+          "-DC6_OPTION_B_INEXACT=1",
+          "-framework",
+          "Accelerate"
+        ],
+        "source_hashes": {
+          "native/c6_option_b/field.cpp": "a54b289f27d44fc83a713e435023945426469c3481ae3fc17d6d66a497b01936",
+          "native/c6_option_b/detection.cpp": "fd2ab679359cb00e857555ee7614adaa4d335464ea242abf0c869e6400b00b52"
+        },
+        "kernel": "inexact",
+        "macos_build": {
+          "ProductName": "macOS",
+          "ProductVersion": "26.6.2",
+          "BuildVersion": "25G83"
+        },
+        "binary_sha256": "07ad3daa3939a376604074accc55affe55a726c1098af91382a535ba2048c289",
+        "build_seconds": 4.002533625
+      },
+      "bit_exact_receipt": "evidence/c6_option_b/adoption_0032/continuation_20261007/runs/references_inexact/development_1/BIT_EXACT.json"
+    }
+  },
+  "timing": {
+    "status": "evaluated",
+    "passed": true,
+    "receipt": "evidence/c6_option_b/adoption_0032/continuation_20261007/runs/TIMING.json",
+    "cpu_ratio_inexact_over_exact": 0.7607310880137775
+  },
+  "continuation_task_compute_elapsed_seconds": 1378.877358198166,
+  "machine_load_1m_range": [
+    14.03271484375,
+    75.8603515625
+  ],
+  "load_sample_count": 130,
+  "c6_status": "BLOCKED / R006 STOP",
+  "future_panel_risk": "unquantified"
+}

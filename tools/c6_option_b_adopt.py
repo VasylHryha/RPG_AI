@@ -37,6 +37,7 @@ def main():
     ap=argparse.ArgumentParser(description=__doc__)
     ap.add_argument('--output',type=Path,required=True)
     ap.add_argument('--task-start',type=float,required=True,help='wall-clock start of builds/tests/compute batch')
+    ap.add_argument('--reuse-diagnostics',type=Path,help='completed prior run directory; validate and reuse its diagnostics without rerunning')
     args=ap.parse_args();out=args.output.resolve();out.mkdir(parents=True,exist_ok=False)
     deadline=args.task_start+3600;started=time.time();awake=time.monotonic()
     identity={'kind':'ENGINEERING_ADOPTION_0032','macos_build':B.require_platform(),
@@ -48,7 +49,7 @@ def main():
                    ROOT/'geomind/c6_option_b.py',ROOT/'geomind/c6_option_b_parallel.py']},
               'protected':{str(p.relative_to(ROOT)):sha(p) for p in [ROOT/'STATUS.json',ROOT/'docs/PLAN_CURRENT.md']},
               'exact_references':{},'task_start_epoch':args.task_start,
-              'launch':['caffeinate','-dims',sys.executable,str(Path(__file__)),*sys.argv[1:]],
+              'launch':['caffeinate','-i','-s',sys.executable,str(Path(__file__)),*sys.argv[1:]],
               'initial_projection_seconds':3300,'compute_deadline_epoch':deadline}
     for name,(rel,expected,size) in REFERENCES.items():
         path=ROOT/rel;receipt=json.loads((path.parent/'COSTS.json').read_text())
@@ -100,14 +101,31 @@ def main():
         os.environ['C6_OPTION_B_KERNEL']='inexact'
         # These are the unchanged registered diagnostic functions, called here
         # only as engineering fixtures, without the blocked development gate.
-        from tools.c6_r4_design_gate import reference_battery,equivariance
-        st=time.perf_counter()
-        with O.backend('native'):
-            rb=reference_battery(P.load_settings(),time.perf_counter()+max(.1,deadline-time.time()))
-            eq=equivariance(P.load_settings())
-        diagnostic=dict(b_reference_equivalence=rb,b_transform_equivariance=eq,
-                        macos_build=identity['macos_build'],option_b_build=identity['builds']['inexact'],
-                        seconds=time.perf_counter()-st)
+        if args.reuse_diagnostics:
+            prior=args.reuse_diagnostics.resolve()
+            old=json.loads((prior/'IDENTITY.json').read_text())
+            for key in ('macos_build','builds','reference_build','source_pin','exact_references'):
+                if old[key]!=identity[key]:raise RuntimeError('prior diagnostic identity mismatch: '+key)
+            # Only this orchestration script changed to permit receipt reuse.
+            runner=str(Path(__file__).relative_to(ROOT))
+            if {k:v for k,v in old['dependencies'].items() if k!=runner}!={k:v for k,v in identity['dependencies'].items() if k!=runner}:
+                raise RuntimeError('prior diagnostic dependency mismatch')
+            diagnostic=json.loads((prior/'DIAGNOSTICS.json').read_text())
+            if diagnostic['macos_build']!=identity['macos_build'] or diagnostic['option_b_build']!=identity['builds']['inexact']:
+                raise RuntimeError('prior diagnostic build mismatch')
+            rb=diagnostic['b_reference_equivalence'];eq=diagnostic['b_transform_equivariance']
+            write(out/'DIAGNOSTICS_REUSED.json',dict(source=str(prior/'DIAGNOSTICS.json'),
+                sha256=sha(prior/'DIAGNOSTICS.json'),identity_sha256=sha(prior/'IDENTITY.json'),
+                rerun=False,diagnostic=diagnostic))
+        else:
+            from tools.c6_r4_design_gate import reference_battery,equivariance
+            st=time.perf_counter()
+            with O.backend('native'):
+                rb=reference_battery(P.load_settings(),time.perf_counter()+max(.1,deadline-time.time()))
+                eq=equivariance(P.load_settings())
+            diagnostic=dict(b_reference_equivalence=rb,b_transform_equivariance=eq,
+                            macos_build=identity['macos_build'],option_b_build=identity['builds']['inexact'],
+                            seconds=time.perf_counter()-st)
         write(out/'DIAGNOSTICS.json',diagnostic)
         if not rb['passed'] or not eq['passed']:raise RuntimeError('registered numeric diagnostics failed')
         results={}
