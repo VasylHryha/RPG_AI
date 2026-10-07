@@ -45,7 +45,7 @@
 - **Not solved: coverage.** The far sensors (sites 4–6) are served under 10% of the time.
 - **What we learned tonight:**
   - **Ordering is not the lever.** COV-A (longest wait) and DEBT (cumulative debt) give **identical** per-site service, and every scheduler only redistributes a fixed total.
-  - **The total service index** (Σ of 8 per-site fractions) is RD3 2.15, COV-A 1.75, DEBT 1.82. **Freeing material raises it** (COV-B recycling 2.50) and **removing material lowers it** (ECO-R thinning 1.16; ECO-R also broke the response, 0/8 gate).
+  - **The total service index** (Σ of 8 per-site fractions) is RD3 2.15, COV-A 1.74, DEBT 1.74 (identical; Codex N4 corrected the earlier 1.82). **Freeing material raises it** (COV-B recycling 2.50) and **removing material lowers it** (ECO-R thinning 1.16; ECO-R also broke the response, 0/8 gate).
   - **ECO-F (front retraction) was inert:** every "front" body is a sensor root (the reach-3 zones cover 97% of the arena), so there was never an eligible donor.
   - **The waste:** 60–68% of the cost sits in root mass near sensors without a link to O, mostly B-path-born.
 - **The capacity diagnostic** (resource ceiling ×1.5 and ×2; night run, 20 runs plus 2 off controls; integrity PASS; `CAPACITY_DIAGNOSTIC_REPORT.md`, commit `f33d194`): the reading is **CAPACITY_SCALES_WITH_RESOURCE_CEILING**, as declared in Amendment 2.
@@ -59,6 +59,11 @@
   - **What it means:** in this *dynamic* medium the resource ceiling does bind. That holds even though a *static* eight-spoke star would cost only 22.4. More material buys far-site service, and the gate does not degrade.
   - **Diminishing returns:** most of the gain arrives by 96. Doubling to 128 adds little more, and no site reaches full service (site 5 stays under 15%).
   - **The tension with your research update** ("do not raise the budget yet"): the data show that the budget is a real lever, not that allocation is solved. More budget may only mask waste: 60–68% of the cost sits in fronts. Codex's recheck of this result is in `docs/reviews/tactical_0h_capacity_result_recheck_codex.md`.
+  - **Codex's result recheck** (`docs/reviews/tactical_0h_capacity_result_recheck_codex.md`, PASS_WITH_NOTES): every number recomputes, and the reading follows Amendment 2 exactly. Its notes:
+    - **The extra material goes into service redundancy, not fronts.** In the late window, redundant cost goes 23.8 → 56.8 → 76.2 while front cost *falls*, 37.7 → 35.1 → 28.7. The front "tax" stays about 29–38 regardless of the ceiling, and the gain comes from more parallel route material. This agrees with ECO-R, where thinning redundancy collapsed the response.
+    - **The gain is mixed:** D3 pruning starts later and much less often (34 → 17 → 1 removals), and cost refusals start later. The count ceiling never bound (at most 67 bodies at 96).
+    - **Pooled numbers hide starvation:** at ceiling 96, site 5 gets **zero** service in the empty start. At least one site gets zero service in 8 of 10 runs at 96 and in 5 of 10 at 128. The 10/10 gate shape does not mean full coverage.
+    - **No contradiction with your research update:** the static 22.4 star shows feasibility, not that the dynamic growth can reach it. "Allocation is the problem" still stands; the ceiling simply binds for the current law.
   - **What the stored data already rule out** (`FRONT_ALLOCATION_DIAGNOSTIC.md`):
     - **"One active front per site"** (the research update's rank 1) can free little. An unserved site has 1.15 front components on average, and only 13–18% of the owned front cost lies outside its largest component.
     - **Service-debt ordering** was tested (DEBT) and matched COV-A exactly.
@@ -70,7 +75,8 @@
       - **Recycling root mass is already tested:** COV-B's donor may be any non-service body, roots included. That allocation route plateaued at index 2.50, against 3.21 at ceiling 96.
     - (c) **both:** run (b) at 64 as one exploratory pilot, and keep 96 as the measured fallback.
 
-    My recommendation is (c). Option (b) attacks the measured waste at its cause, and (a) is already known to work if (b) fails.
+    My recommendation is (c). Option (b) attacks the fixed front tax at its cause: about 30 of 64 cost units sit in root mass without a link to O. Option (a) is already known to help if (b) fails, though it is not full coverage (site 5 starves in the empty start).
+    - **Where Codex and I differ:** Codex ranks one-active-front first, conditional on a stored check of duplicated fronts. That check already exists (`FRONT_ALLOCATION_DIAGNOSTIC.md`: 1.15 components per unserved site), which Codex had not been given. Its caveat is fair: one blob can hide several competing tips. If you prefer that route, a stored tip-level count comes before any pilot.
 - **Your research update** was assessed: adopted except one correction (the fronts are root mass, not bridge tips). See `docs/reviews/rrg_next_steps_assessment_claude.md`.
 
 ## 4. C6
