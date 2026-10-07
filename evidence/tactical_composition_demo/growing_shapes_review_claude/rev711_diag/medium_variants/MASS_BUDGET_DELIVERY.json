@@ -1,0 +1,43 @@
+{
+  "status": "VERIFIED_PAYLOAD",
+  "base_commit": "69e13a2bbd1475a3a40e2ec43010ebdb3104c55f",
+  "reviewed_evidence_commit": "e4c6d75d348731d707a1f7dab16250c6a396dc43",
+  "mode": "STORED_DATA_ONLY",
+  "transport": "Normal-hook scoped commit in isolated checkout, then verified bundle; primary .git is read-only",
+  "payload_files": {
+    "docs/reviews/tactical_0h_coverage_pilot_recheck_codex.md": {
+      "bytes": 8614,
+      "sha256": "455a5281e4c584d6851acd181a4a5fe415204de03ad8e47e3efa61bf47614ff8"
+    },
+    "docs/reviews/tactical_0h_mass_budget_recheck_codex.md": {
+      "bytes": 7673,
+      "sha256": "a34de7cd63f62b0555bb99725c1d3b9c4d1bc60043c8cc7b7c602746eb9037e9"
+    },
+    "evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/COVERAGE_PILOT_REPORT.md": {
+      "bytes": 5958,
+      "sha256": "337d1946cebb6fdfa039b44a5532010de065a8973ed7585cb798ac3f9b322a4b"
+    },
+    "evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/COVERAGE_RECHECK_VERIFICATION.json": {
+      "bytes": 5442,
+      "sha256": "f21612a76e715c6a93c289802e7cdae7835cbd88d449b35c22c82cd29a8dd297"
+    },
+    "evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/recheck_coverage_stored_codex.py": {
+      "bytes": 15715,
+      "sha256": "7234406ea5acf99cc31e25183a1728de4908991383ac103634bc740f4c3c243d"
+    },
+    "evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/MASS_BUDGET_DIAGNOSTIC.md": {
+      "bytes": 16709,
+      "sha256": "604b68d9cba260c469f57a015b059a58a51c9d36ca5c58bcc79f66c9f6fab640"
+    },
+    "evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/MASS_BUDGET_DIAGNOSTIC.json": {
+      "bytes": 8134447,
+      "sha256": "78f90ce27707c4c4ec342da8df44bcd49e8946312ce0d37e6b39fdb45392a882"
+    },
+    "evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/analyze_mass_budget_codex.py": {
+      "bytes": 25193,
+      "sha256": "cb74e3a889bd90eb8e95c758de7a79dea0317baee3df076d1e5ed96a16cb19cc"
+    }
+  },
+  "excluded": "Raw/local build files, plan, designs, original receipts, unrelated changes. docs/PLAN_CURRENT.md is never staged or hashed.",
+  "validation": "Coverage audit PASS; separate mass recheck APPROVE_WITH_NOTES; original inventories verified before decoding; bounded pure diagnostic checks, no simulation or full project suite."
+}
