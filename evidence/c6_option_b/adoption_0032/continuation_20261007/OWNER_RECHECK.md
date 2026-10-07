@@ -9,7 +9,7 @@ Owner request, verbatim:
 > Recheck what you did please, check if it is the best we can do, we want 10 out of 10 or above 9 - it's fine to break the things or fully rework. Check for issues, conflicts, gaps.
 
 Reviewed report: `evidence/c6_option_b/ADOPTION_0032_CONTINUATION.md`
-Report SHA256: `776141e1f591e05f91ae598a7535c84665017e39d5d019d1668a501120763d98`
+Final report SHA256: `c432ef8d76e514858efab3574b9c6a74dbae282100f063b51ec30352b2f5d9be`
 Reviewed runner SHA256 is bound by `runs/IDENTITY.json`; all recorded runner and analyzer dependency hashes were independently checked against the current files.
 
 ## Prelaunch static recheck and disposition
@@ -31,7 +31,9 @@ One provenance caveat was raised before launch: the earlier identity's dependenc
 
 ## Findings and dispositions
 
-No new blocking findings. The prelaunch reuse provenance caveat is resolved as described above. No code or report corrections are needed after this recheck.
+No blocking findings. The prelaunch reuse provenance caveat is resolved as described above. The initial report/evidence recheck required no code or report corrections.
+
+Transport follow-up: the reviewed report was subsequently updated to disclose the shared commit-chain delivery. The full logical payload is indexed against `9ac8012`; commit `abdf890` contains 53 adoption files plus an unrelated tactical review, while `d906e33` adds final wording, this review and the initial scope receipt. All 54 logical payload entries match the task delta and their recorded local hashes/bytes. Shared history is preserved. Finding F1: wording called the transport-review elapsed checkpoint a final elapsed duration. The implementer corrected both report mentions to identify elapsed checkpoints explicitly. Disposition: FIXED, verified by reading the final diff. The final report hash above includes that correction. No adoption measurements or code changed; `DELIVERY_RECHECK.md` records the transport review.
 
 The disclosed limits remain: one timing pair under shared machine load cannot establish a general performance estimate; future-panel risk is unquantified; unstored data and 28 guard contexts remain outside the evidence. The report preserves those limits and keeps C6 BLOCKED / R006 STOP.
 
