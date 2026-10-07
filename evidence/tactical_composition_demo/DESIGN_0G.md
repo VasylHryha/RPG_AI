@@ -1454,3 +1454,99 @@ This is a stored-data analysis. It runs while the 0h pilots run.
 **Next:**
 1. Codex's owner recheck of the replication.
 2. **The v7 revision (§20)** against R2–R9, with P16 as the witness. **The P16 mechanism to carry into v7:** **target choice by local enemy density** (splash value), the commit post, spacing and the escort.
+
+### 20.1 Revision of v7 against the Codex review (`docs/reviews/tactical_0g_s20_v7_design_review_codex.md`, CHANGES_REQUIRED, R1–R9), with P16 as the witness
+
+**20.1 overrides 20 where they differ.**
+
+**R1 (authority) is resolved** by the owner's decision (§19.11) and the replication (§19.13): P16 is the >50% scripted witness. §20's earlier appeal to the weaker §19.5 trigger is withdrawn.
+
+**Self-audit (the drafter's causes):**
+- **R2 and R3:** I described v7 as "preferred distances and scores" inside v6's force sum. The witness, however, replaces whole commands with a single focus and a radial post, so the two could not be equivalent.
+- **R4:** I compared a re-tuned package with a frozen comparator, so timing was confounded with geometry.
+- **R5–R9:** missing action order, the minRange guard, sample-size language, optimizer sealing and the parameter-use ledger. I had not read far enough into the witness sources.
+
+**The v7 action map (the "witness + gate" form recommended by R2):**
+- **Every unit keeps v6's complex state z_i,** with v6's dynamics unchanged (§18–18.2), integrated every tick exactly as v6 does, from v6's own internal target memory. **The internal target memory is v6's choice, as in every probe** (R4's semantics: the probe overrides affect actions only).
+- **The gate (a declared per-unit mode, R3):**
+  - mode_i becomes **commit** when c_i = clip(Re z_i, −1, 1) > +0.2;
+  - it becomes **escape** when c_i < −0.2;
+  - otherwise it keeps its previous value. The initial mode is commit if c_i ≥ 0.
+  - The mode is cloned with the controller and dropped at death.
+  - **The per-unit mode replaces v6's per-pair modes for this decision only.** v6's pair modes still run inside v6's own command computation, unchanged.
+- **The action of unit i in tick t:**
+  - **commit:** **exactly P16's action for i** in that tick: the same code path and the same observation. Gun target by splash value, then HP, then id; the radial post max(minRange, range − 12); P11's spacing with its preserved multiplier convention; the P12 escort for ranged units; v6 for melee.
+  - **escape:** **exactly v6's prepared action for i** in that tick (target, goal, multiplier, stop).
+  - The two are computed from the same snapshot, and only the selection differs. P16's shared anchor and the escort assignments are computed over **all** living units, whatever their modes, exactly as P16 computes them. So a committed unit's action equals P16's whenever every unit is committed.
+- **The matched controls (R4):**
+  - **P16 is the always-commit arm** (every mode = commit). With these semantics it is the same code with the gate fixed. A check proves byte-identical actions on recorded observations.
+  - **v6 at the same tuned knobs is the always-escape arm,** reported.
+  - **v7-ω0** (the same tuned knobs with ω_ranged = 0, everything else equal) is the rotation intervention.
+  - All three run on the same validation seeds.
+
+**What it answers (R4, narrowed):**
+- **"Does a per-unit damage-driven oscillator gate, at its tuned setting, improve on always committing (P16)?"** That is conditional on P16's action map.
+- **v7 against v7-ω0** gives the contribution of rotation, conditional on that setting.
+- **Not claimed:** the necessity of oscillation, synchrony as a cause, or any B→R→B recursion (§18.1 F6 and `research/rrg/CURRENT.md` limits apply).
+- Selected μ ≪ 0 or ω → 0 are reported as optimizer diagnostics, not as proofs.
+
+**Tuning (R8, sealed):**
+- **Tuned:** v7's 11 v6 knobs (K, K_t, κ, β, μ, ω_ranged, G, w, f_c, m_k, λ_th), within the §18 bounds. **They act only through z (the gate) and through the escape actions.** P16's geometry constants are fixed; they come from the witness.
+- **The search:** stage B only. CMA-ES with population 16 and 16 generations, starting from the v6 attempt-2 knobs (σ as in §18).
+- **The tuning panel:** 8 fresh development clusters × 2 orientations, against **regular and novice**, a new ledger, and the same panel for every candidate.
+- **Candidate order** (CMA-ES uses ranks only, so a lexicographic order is exact):
+  1. **eligibility:** novice elimination-win rate ≥ 0.5 on the tuning panel; ineligible candidates rank last;
+  2. the regular elimination-win rate, higher first;
+  3. regular mean S, higher first;
+  4. regular own losses, lower first;
+  5. the candidate index (a deterministic tie-break).
+  - **The incumbent:** the best by this order over all generations. Ties keep the earlier one.
+  - If no candidate is eligible, report NOT_READY with the best ineligible one.
+- **Cost:** 256 candidates × 32 fights = 8,192 fights. That is about 5–10 min at the measured rates; the projection is reported first.
+- No validation outcome is used in selection.
+
+**Validation (R7):**
+- **The panel:** 20 fresh clusters × 2 orientations × {v7, P16, v6 at the v7 knobs, v7-ω0} × {regular, novice} = 320 fights, in a new ledger.
+- **The unit of analysis is the cluster.** For each cluster, average its two outcomes. Report paired differences against P16 per cluster, the discordant counts, and the cluster-bootstrap descriptive interval (10,000 resamples, fixed seed). This is descriptive only; no inferential verdict is made.
+- **The readings (declared now):**
+  - **"The gate adds over P16":** v7 regular wins ≥ P16's + 4 (of 40) **and** v7 better in ≥ 12 of 20 clusters.
+  - **"Matches":** within ±3 wins.
+  - **"Worse":** ≤ P16 − 4.
+  - **"v7 meets the observed owner criterion":** ≥ 21/40 regular wins, mean S > 0 on both heads, novice ≥ 21/40, no failures.
+  - **A floor:** none of these readings applies if P16 itself falls below 21/40 on this panel. The panel is then reported as not supporting a comparison.
+
+**R5 (spacing):** spacing is P16's, unchanged: P11 for guns and P12 for ranged. It is a **soft repulsion with P11's preserved multiplier convention, not a separation guarantee.** Achieved spacing and shell multiplicity are reported. Escaping units use v6's command and no added spacing.
+
+**R6 (minRange):** the post is P16's max(minRange, range − 12). The 12 px is a **witness-derived nominal margin, not a shot-range guarantee.** Goals may leave the legal annulus exactly as in P16. Raw and clipped goal distances and the in-band time are audited.
+
+**R9 (ledger and claims):**
+
+| Role | Mode | Action source | Knobs used |
+|---|---|---|---|
+| Artillery | commit | P16 (splash-value focus; post; P11 spacing) | none in the action (z only) |
+| Artillery | escape | v6 command | G, w, f_c, m_k, λ_th (v6 law) |
+| Ranged | commit | P16 = P12 escort while both sides have guns; otherwise v6 | none in the escort action; v6 law in the fallthrough |
+| Ranged | escape | v6 command | v6 law |
+| Melee | commit / escape | v6 command | v6 law |
+| All | gate | z dynamics | μ, ω_ranged (artillery and ranged; melee ω = 0), K, K_t, κ, β |
+
+- **Units:** model units are 100 px in z's neighbour geometry; P16's shifts are in px. The new score coefficient (splash value, then HP, then id) is P16's ordering, not a weight.
+- **The novelty claim is narrowed:** **a local oscillator gate decides when each unit executes a witnessed action map.** The geometry itself is not the oscillator's.
+
+**Checks before any fight:**
+1. On recorded P16 observations, with all modes forced to commit, v7's actions equal P16's byte for byte.
+2. With all modes forced to escape, v7's actions equal v6's at the same knobs.
+3. Mixed modes: each unit's action equals its source arm's action for that unit.
+4. Gate hysteresis: no switch inside [−0.2, 0.2]; initialization by sign; clone and isolation.
+5. The z integration is byte-identical to v6's at the same knobs and observations.
+6. Fake-record fixtures for the tuning order: eligibility, ties, no eligible candidate.
+7. v6, P16 and morale are byte-identical to their delivered versions.
+
+**Stop rows:**
+
+| Yes/no | Action | Role |
+|---|---|---|
+| Does a pre-fight check fail? | Fix before any fight | implementer |
+| Does the projection exceed 1 h before 22:00? | Ask the owner | Claude (executor) |
+| Is a rule, constant, knob bound or ledger changed after a tuning or validation fight? | INVALID; a new revision on fresh seeds | implementer |
+| Does P16 fall below 21/40 on the validation panel? | Report "the panel does not support a comparison" | drafter |
