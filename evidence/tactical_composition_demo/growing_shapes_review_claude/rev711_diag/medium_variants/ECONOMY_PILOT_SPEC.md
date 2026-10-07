@@ -52,3 +52,44 @@ The medium does not run out of budget: it **parks** budget in stalled fronts (ha
 - **"Coverage improves":** pooled sites 3–6 ≥ 2 × RD3 (0.172 or more), and ≥ 4/5 empty-start passes, and all 10 runs complete.
 - **"Regression":** ≤ 3/5 empty-start passes.
 - Anything else is descriptive.
+
+## Amendment 1, answering the Codex spec review (`docs/reviews/tactical_0h_economy_pilot_spec_review_codex.md`, CHANGES_REQUIRED)
+
+This amendment overrides the sections above where they differ.
+
+**Self-audit (cause):** I named "the B-path deficit decreased at the last check" without fixing which snapshots are compared, at which stage, or how a reset persists. RD3 computes the deficit only for active unserved sites, before births, so no existing quantity matched my sentence.
+
+**ECO-F, the stall clock (replaces the clock text above):**
+- **The measurement:** at the **end** of every growth check, after all of that check's removals and births, the kernel computes for **every physical site s, active or not**, the directed forward-to-backward deficit d_s(k). This is the same computation B-path uses, applied to s's effective roots (RD3's all-site root definition) on the end-of-check strong graph. d_s(k) = ∞ when s has no effective roots or there is no O.
+- **The clock f_s (seconds),** kernel-owned and clone-copied, **updated only at the end of each growth check:**
+  1. **if s is served** at the end of check k: f_s = 0;
+  2. **else, if this is s's first finite deficit,** or d_s(k−1) = ∞ (roots newly gained), or d_s(k) < d_s(k−1) − 1e-9: f_s = 0 (progress);
+  3. **else, if d_s(k) is finite** (stalled): f_s += 20 s (one growth interval);
+  4. **else** (no roots): f_s unchanged.
+  - Then the kernel stores d_s(k) as the history for check k+1.
+  - There is no per-boundary update and no persistence ambiguity. Progress made before a root loss does not carry over: regaining roots counts as progress by rule 2.
+- **The removal point:** in each growth check, **after** the measured locks and D1/D4, and **before** D3, B-out, B-path and B1. This way the freed cost is available before D3 and before births.
+  - For each site with f_s ≥ 60 s, in ascending site id, remove at most one front body of s, then set f_s = 0.
+  - **If s has no eligible donor,** also set f_s = 0 and log `D5f_none`.
+  - **With no O,** ECO-F removes nothing, and the clocks follow rules 1–4 with d = ∞.
+- **The tip:** over s's **entire** current front, before the donor exclusions, the body with the smallest Euclidean distance to O. Ties go to the lowest id.
+- **The donor:** the lowest-ranked body of s's front (by the check's measured lock, then id), with age ≥ 200 steps.
+  - **Excluded:** every site's effective roots, and s's tip.
+  - **A body in several sites' fronts** is removed at most once, in ascending site order.
+  - **The classes are recomputed after each actual removal.**
+- **Recorded trade-off:** keeping the roots and the tip does not guarantee that existing routes survive the neighbour and degree rewiring. ECO-F has **no** prospective veto; that would be ECO-R's mechanism.
+
+**ECO-R:** unchanged. The review's implementation notes are adopted:
+- the original served set must remain served, idle sites included, in a pure-geometry rebuild that touches no live state;
+- trials, failures, no-candidate checks and prospective-check time are recorded;
+- removal stops at the first passing donor, and there is at most one removal.
+- **The 56 trigger is a declared heuristic, not a guaranteed headroom.** There is no repeated thinning to force it.
+
+**Reading rules:**
+- **The doubling target is exact:** pooled coverage of sites 3–6 ≥ 2 × 0.08601377266387726 = 0.17202754532775452.
+- Amendment 1 of the coverage spec's incompleteness rule applies to both readings, and both readings need each arm's observer on/off identity and clone isolation.
+- All eight sites and both starts are always reported.
+
+**Cap:** the implementation's cap is 3600 s. If the projection exceeds it, the scheduler stops, and Claude resolves it with the owner (decision 0031). The cap is never raised implicitly.
+
+**Hash manifests** exclude `docs/PLAN_CURRENT.md`, `DESIGN_0G.md` and `DESIGN_0H_REV7.md`.
