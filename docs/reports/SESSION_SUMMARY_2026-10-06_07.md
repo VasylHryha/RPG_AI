@@ -52,10 +52,10 @@
 | **Revision 7.12 design (C2)** | Codex APPROVE_WITH_NOTES | `DESIGN_0H_REV7.md` §19, 19.6 |
 | **Validation, at your request** (5 seed sets, controls) | **C2 8/10 against the centre pin's 3/10**; opposite and perpendicular pins 3/6 (like the centre); **F5 flips from seed to seed, so one key per start is unreliable**. Codex recheck: CHANGES_REQUIRED on wording and the multi-key gate (fixes pending) | `rev711_diag/validation_712/OPIN_VALIDATION_REPORT.md`, `docs/reviews/tactical_0h_opin_validation_recheck_codex.md` |
 | **Research** (two memos) | the pin is a **placement effect**, not new bridging. Chain-forming systems use contact inhibition, saturating bonds, guidance fields or flow reinforcement | `rev711_diag/OPIN_RESEARCH_MEMO.md`, `CHAIN_GROWTH_RESEARCH_MEMO.md` |
-| **Medium-law experiments** (scratch) | bonds on every pair 1/10; **chain bonds (at most 2) 5/10**, where cells always reach O but half lose the signal; chain bonds + pin 8/10; a strong guidance pull 0/10 (everything collapses on O); a weak pull and screening are running | `rev711_diag/medium_variants/README.md` |
+| **Medium-law experiments** (scratch) | bonds on every pair 1/10; chain bonds (at most 2) 5/10; **chain bonds + partial screening 6/10, the best medium-only result**; chain bonds + pin 8/10; weak pull (0.1) 4/10 (paths everywhere, weak signal); strong pull (0.3) 0/10. **The variants now always reach O; the remaining failure is keeping the signal from the roots to O** | `rev711_diag/medium_variants/README.md` |
 
-**Where 0h stands:** the O pin works (8/10) but is a placement trick. Chain bonds are the first medium change that reaches O by itself.
-- **Next:** the screening and weak-pull results.
+**Where 0h stands:** the O pin works (8/10) but is a placement trick. Chain bonds with partial screening (6/10) are the best medium change; it always reaches O, but sometimes loses the signal from the roots.
+- **Next:** why the signal is lost (the chain detaching from the roots, or crowding at O), then combine the best medium rule with the multi-key test.
 - **Then:** fix the validation-report wording and the multi-key F5 gate (Codex R1–R6), and choose the 7.12 content with you.
 
 ## 4. C6: the faster engine
