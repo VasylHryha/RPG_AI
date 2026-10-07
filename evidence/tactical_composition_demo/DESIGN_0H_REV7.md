@@ -995,3 +995,44 @@ meaning a time scale of **τ_link ≤ 2 s** per edge.
 - **N5, earlier dispositions.**
   - 19.1's "passed two Codex owner rechecks" is corrected to: both rechecks returned **CHANGES_REQUIRED**, and revision 3 records the fixes. Neither approved revision 3.
   - **C3** is reported only as training connectivity, not as an F5 failure or an exclusion of every group policy.
+
+### 19.7 Proposed amendment: a multi-key F5 gate (answers Codex owner-recheck R1, `docs/reviews/tactical_0h_opin_validation_recheck_codex.md`; **pending the owner's approval**)
+
+**Why:** in the O-pin validation pilots (`rev711_diag/validation_712/`), F5 outcomes changed between key sets under every rule tested, including the 7.11 law itself (origin pin: empty start 2/5, seeded start 1/5). A gate that uses one key per start measures one trajectory, not the rule. 19.7 replaces the single-key F5 verdict. It does not change F5's measurement.
+
+**The rule (Codex's recommendation, adopted unchanged):**
+- **Five new key sets, g = 1…5,** reserved in `REV7_SEED_INVENTORY.json` before any launch:
+  - growth, recovery and medium keys: the F5 recipes with the suffix `/gate{g}`;
+  - training worlds 14,000,000 + 100,000·g + e, for e = 0…49;
+  - **fresh assay pairs per key set:** recipient 14,000,000 + 100,000·g + 1,000 + j and donor 14,000,000 + 100,000·g + 1,010 + j, for j = 0…9.
+  - These ranges are disjoint from every registered pool (the highest is F8, 12,100,000–12,100,039) and from the pilot ranges (13,000,000–13,400,049). The implementer checks disjointness mechanically at registration.
+  - **Key set 0 (the original fixture keys) and the 13-million pilot keys are not used.** Key 0 informed the design, and the pilot keys produced the evidence for this amendment.
+- **Per key set and per start, F5 is computed exactly as Harness.F5:** the CHECKPOINTS 40/45/50, the 160-decision guard, A ≥ 0.3, B ≥ 0.3, max E ≥ 0.5, and the start-specific birth requirement (B-out in (i), B-path in (ii)), plus the existing validity checks.
+- **Gate: F5 PASSES only if all ten runs pass:** every key set in the empty start and every key set in the seeded start, judged separately.
+  - No averaging of A, B or E across key sets.
+  - No pooling of the two starts.
+  - No dropping, replacing or adding key sets, and no running until a target count is reached.
+  - **INVALID** in any run blocks the gate; the implementer fixes and reruns on the same keys only for an instrumentation defect proved before the results are read.
+- **Downstream fixtures (declared before any result):**
+  - **F7 (control M matching, a PASS/FAIL gate):** run once per key set against that key set's intact empty-start run. All five must pass.
+  - **F6 and F8 (descriptive):** run on **key set g = 1 only**, named here before any result, whatever its F5 outcome. No passing checkpoint is selected afterwards.
+  - F9, N1 and F1–F4: unchanged (they do not use F5 state).
+  - Controls M and U, and every development requirement: unchanged.
+- **Cost:** F5 becomes 10 growth runs instead of 2, plus 5 F7 runs instead of 1. At about 16 min per run on a quiet machine, that is about 4 h serial, or about 1 h with five in parallel. The busy laptop is slower. Decision 0031 applies.
+
+**What the gate means, and what it does not:**
+- It is an **engineering consistency gate:** the rule produces the F5 shape in five fresh, independent configurations of each start.
+- It is **not** a population reliability estimate. Even 5/5 gives an exact one-sided 95% binomial lower bound of only about 0.549, assuming independent, representative trials.
+- If the owner wants a population claim, the owner first sets the minimum acceptable reliability. The drafter then preregisters a sample size and confidence criterion for it.
+- A 3/5 or 4/5 rule would be a deliberate relaxation. It would need its own rationale and the owner's approval; adding keys alone does not justify it.
+- None of the existing pilot runs counts as qualification evidence for this gate.
+
+**Stop rows (replace 19.5's row "Does F5 fail in either start under 7.12?"):**
+
+| Yes/no | Action | Role |
+|---|---|---|
+| Has the owner approved 19.7? | If no: the single-key F5 of 19.5 stays in force; nothing under 19.7 runs | owner |
+| Are the gate key sets, worlds and assay pairs reserved in the inventory and disjoint from every registered and pilot range before launch? | If no: no run | implementer |
+| Is any of the ten F5 runs INVALID? | Block the gate; fix only a defect proved before results are read | implementer |
+| Does any of the ten F5 runs FAIL? | Block development; write a failure report covering every failing key set | drafter |
+| Does any of the five F7 runs FAIL? | Block development; failure report | drafter |

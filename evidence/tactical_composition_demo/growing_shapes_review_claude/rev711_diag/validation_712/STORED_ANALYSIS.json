@@ -1,0 +1,3058 @@
+{
+ "kind": "STORED_DATA_ANALYSIS_NO_VERDICT",
+ "late_window_s": [
+  640.0,
+  800.0
+ ],
+ "note": "E = averaged assay path exposure per site (reachability, not site-specific causal response); connectivity = fraction of steps a site is active and has a strong path to O",
+ "rows": [
+  {
+   "trace": "../pilot_baseline_assay_i.json.gz",
+   "trace_sha256": "0e5f5ef6f35aae42ef8130c339393bcae31e0bc4fc5842ef0b173ea740d5f2d9",
+   "log": "../assay_pilot_baseline_i.log",
+   "tag": "baseline_assay",
+   "start": "i",
+   "keyset": 0,
+   "A": 0.19031953755626294,
+   "B": 0.2090518472328278,
+   "E": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "gate_shape": false,
+   "assay_sites_with_E_ge_0_5": 0,
+   "assay_sites_with_E_zero": 8,
+   "late_connectivity_per_site": {
+    "0": 0.0,
+    "1": 0.0,
+    "2": 0.0,
+    "3": 0.0,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 0.0
+   },
+   "whole_run_connectivity_per_site": {
+    "0": 0.0,
+    "1": 0.042,
+    "2": 0.049,
+    "3": 0.042,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 0.0
+   },
+   "late_any_path": 0.0,
+   "first_path_time": 220.1,
+   "first_path_site": 3,
+   "last_path_time": 456.7,
+   "longest_path_span": [
+    440.1,
+    456.7
+   ],
+   "longest_path_steps": 167,
+   "output_birth": [
+    {
+     "time": 20.0,
+     "role": "output",
+     "request": 0
+    }
+   ],
+   "final_O": [
+    0.0,
+    0.0
+   ],
+   "final_nearest_dO": [
+    2.449,
+    2.489,
+    2.675,
+    2.704
+   ],
+   "final_n": 45,
+   "births": {
+    "B-out": 1,
+    "B-path": 40,
+    "B1": 4
+   },
+   "birth_outcomes": {
+    "B-out:accepted": 1,
+    "B-path:accepted": 40,
+    "B-path:cost": 94,
+    "B-path:no_root": 5,
+    "B-path:quota": 59,
+    "B1:accepted": 4,
+    "B1:deferred_output_first": 7
+   },
+   "deaths": {},
+   "last_accepted_birth_time": 440.0,
+   "first_cost_refusal_time": 440.0
+  },
+  {
+   "trace": "../pilot_baseline_assay_ii.json.gz",
+   "trace_sha256": "c75bc54e65795a631c91a8903caf71d57ab737c2df6c543a838bcca009c2ab0c",
+   "log": "../assay_pilot_baseline_ii.log",
+   "tag": "baseline_assay",
+   "start": "ii",
+   "keyset": 0,
+   "A": 1.4505015648748454,
+   "B": 1.3031787239861423,
+   "E": [
+    0.5,
+    0.7,
+    0.8,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "gate_shape": true,
+   "assay_sites_with_E_ge_0_5": 3,
+   "assay_sites_with_E_zero": 5,
+   "late_connectivity_per_site": {
+    "0": 1.0,
+    "1": 1.0,
+    "2": 1.0,
+    "3": 0.0,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 0.0
+   },
+   "whole_run_connectivity_per_site": {
+    "0": 0.735,
+    "1": 0.694,
+    "2": 0.605,
+    "3": 0.003,
+    "4": 0.0,
+    "5": 0.001,
+    "6": 0.004,
+    "7": 0.426
+   },
+   "late_any_path": 0.8,
+   "first_path_time": 140.1,
+   "first_path_site": 0,
+   "last_path_time": 800.0,
+   "longest_path_span": [
+    272.1,
+    608.0
+   ],
+   "longest_path_steps": 3360,
+   "output_birth": [],
+   "final_O": [
+    -0.5,
+    0.0
+   ],
+   "final_nearest_dO": [
+    0.448,
+    0.556,
+    0.568,
+    0.793
+   ],
+   "final_n": 45,
+   "births": {
+    "B-out": 0,
+    "B-path": 29,
+    "B1": 9
+   },
+   "birth_outcomes": {
+    "B-path:accepted": 29,
+    "B-path:no_root": 83,
+    "B-path:quota": 36,
+    "B1:accepted": 9,
+    "B1:cost": 70,
+    "B1:deferred_output_first": 4,
+    "B1:quota": 1
+   },
+   "deaths": {},
+   "last_accepted_birth_time": 420.0,
+   "first_cost_refusal_time": 420.0
+  },
+  {
+   "trace": "../pilot_c2opin_assay_i.json.gz",
+   "trace_sha256": "d546306e6d02ac1f2a118e570581f434c6e617bcf57125944479b91d9a15f9bf",
+   "log": "../assay_pilot_c2_opin_i.log",
+   "tag": "c2opin_assay",
+   "start": "i",
+   "keyset": 0,
+   "A": 1.0418222610259926,
+   "B": 1.2708760083009119,
+   "E": [
+    0.0,
+    0.7,
+    0.8,
+    0.6,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "gate_shape": true,
+   "assay_sites_with_E_ge_0_5": 3,
+   "assay_sites_with_E_zero": 5,
+   "late_connectivity_per_site": {
+    "0": 0.0,
+    "1": 1.0,
+    "2": 1.0,
+    "3": 1.0,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 0.0
+   },
+   "whole_run_connectivity_per_site": {
+    "0": 0.0,
+    "1": 0.884,
+    "2": 0.802,
+    "3": 0.892,
+    "4": 0.003,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 0.0
+   },
+   "late_any_path": 0.9,
+   "first_path_time": 80.1,
+   "first_path_site": 1,
+   "last_path_time": 800.0,
+   "longest_path_span": [
+    118.3,
+    704.0
+   ],
+   "longest_path_steps": 5858,
+   "output_birth": [
+    {
+     "time": 40.0,
+     "role": "output",
+     "request": 7,
+     "pin": "root_relative"
+    }
+   ],
+   "final_O": [
+    0.0696,
+    0.9976
+   ],
+   "final_nearest_dO": [
+    0.382,
+    0.393,
+    0.396,
+    0.474
+   ],
+   "final_n": 45,
+   "births": {
+    "B-out": 1,
+    "B-path": 26,
+    "B1": 18
+   },
+   "birth_outcomes": {
+    "B-out:accepted": 1,
+    "B-out:no_root": 1,
+    "B-path:accepted": 26,
+    "B-path:cost": 42,
+    "B-path:no_output": 3,
+    "B-path:no_root": 34,
+    "B-path:quota": 26,
+    "B1:accepted": 18,
+    "B1:cost": 47,
+    "B1:deferred_output_first": 4,
+    "B1:quota": 7
+   },
+   "deaths": {},
+   "last_accepted_birth_time": 360.0,
+   "first_cost_refusal_time": 340.0
+  },
+  {
+   "trace": "../pilot_c2opin_assay_ii.json.gz",
+   "trace_sha256": "e93fb103b05097c992e0b0192f354f6724e221516101048c9717291aaed0c3ca",
+   "log": "../assay_pilot_c2_opin_ii.log",
+   "tag": "c2opin_assay",
+   "start": "ii",
+   "keyset": 0,
+   "A": 1.518784250132054,
+   "B": 1.2524449455656252,
+   "E": [
+    0.5,
+    0.7,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.7
+   ],
+   "gate_shape": true,
+   "assay_sites_with_E_ge_0_5": 3,
+   "assay_sites_with_E_zero": 5,
+   "late_connectivity_per_site": {
+    "0": 1.0,
+    "1": 1.0,
+    "2": 0.0,
+    "3": 0.0,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 1.0
+   },
+   "whole_run_connectivity_per_site": {
+    "0": 0.986,
+    "1": 0.754,
+    "2": 0.0,
+    "3": 0.0,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.018,
+    "7": 0.932
+   },
+   "late_any_path": 0.8,
+   "first_path_time": 20.1,
+   "first_path_site": 6,
+   "last_path_time": 800.0,
+   "longest_path_span": [
+    320.1,
+    608.0
+   ],
+   "longest_path_steps": 2880,
+   "output_birth": [
+    {
+     "time": 20.0,
+     "role": "output",
+     "request": 0,
+     "pin": "root_relative"
+    }
+   ],
+   "final_O": [
+    0.8209,
+    -0.571
+   ],
+   "final_nearest_dO": [
+    0.407,
+    0.426,
+    0.475,
+    0.616
+   ],
+   "final_n": 45,
+   "births": {
+    "B-out": 1,
+    "B-path": 24,
+    "B1": 16
+   },
+   "birth_outcomes": {
+    "B-out:accepted": 1,
+    "B-path:accepted": 24,
+    "B-path:cost": 76,
+    "B-path:no_root": 15,
+    "B-path:quota": 30,
+    "B1:accepted": 16,
+    "B1:cost": 30,
+    "B1:deferred_output_first": 3,
+    "B1:quota": 4
+   },
+   "deaths": {
+    "D3": 2
+   },
+   "last_accepted_birth_time": 400.0,
+   "first_cost_refusal_time": 280.0
+  },
+  {
+   "trace": "pilot_baseline_assay_alt1_i.json.gz",
+   "trace_sha256": "7fd6b30362c2ea829554f5dbd26e349071f9acad4d4bdd279adb8b6d5fd181e7",
+   "log": "batt_base_i_k1.log",
+   "tag": "baseline_assay_alt1",
+   "start": "i",
+   "keyset": 1,
+   "A": 1.0923567363395534,
+   "B": 1.106137641137603,
+   "E": [
+    0.0,
+    0.7,
+    0.8,
+    0.6,
+    0.7,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "gate_shape": true,
+   "assay_sites_with_E_ge_0_5": 4,
+   "assay_sites_with_E_zero": 4,
+   "late_connectivity_per_site": {
+    "0": 0.0,
+    "1": 1.0,
+    "2": 1.0,
+    "3": 1.0,
+    "4": 1.0,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 0.0
+   },
+   "whole_run_connectivity_per_site": {
+    "0": 0.004,
+    "1": 0.77,
+    "2": 0.82,
+    "3": 0.763,
+    "4": 0.418,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 0.0
+   },
+   "late_any_path": 0.9,
+   "first_path_time": 80.1,
+   "first_path_site": 1,
+   "last_path_time": 800.0,
+   "longest_path_span": [
+    169.4,
+    720.0
+   ],
+   "longest_path_steps": 5507,
+   "output_birth": [
+    {
+     "time": 20.0,
+     "role": "output",
+     "request": 0
+    }
+   ],
+   "final_O": [
+    0.0,
+    0.0
+   ],
+   "final_nearest_dO": [
+    0.387,
+    0.51,
+    0.55,
+    0.624
+   ],
+   "final_n": 45,
+   "births": {
+    "B-out": 1,
+    "B-path": 23,
+    "B1": 22
+   },
+   "birth_outcomes": {
+    "B-out:accepted": 1,
+    "B-path:accepted": 23,
+    "B-path:cost": 60,
+    "B-path:no_root": 43,
+    "B-path:quota": 44,
+    "B1:accepted": 22,
+    "B1:cost": 50,
+    "B1:deferred_output_first": 38,
+    "B1:quota": 10
+   },
+   "deaths": {
+    "D3": 1
+   },
+   "last_accepted_birth_time": 460.0,
+   "first_cost_refusal_time": 360.0
+  },
+  {
+   "trace": "pilot_c2opin_assay_alt1_i.json.gz",
+   "trace_sha256": "ab5f709643670ba4aee3f627775aacecb721461e05c1b718c8676b66da12b68e",
+   "log": "batt_c2_i_d1.0_k1.log",
+   "tag": "c2opin_assay_alt1",
+   "start": "i",
+   "keyset": 1,
+   "A": 1.1154045651588287,
+   "B": 1.023582966097228,
+   "E": [
+    0.5,
+    0.7,
+    0.8,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "gate_shape": true,
+   "assay_sites_with_E_ge_0_5": 3,
+   "assay_sites_with_E_zero": 5,
+   "late_connectivity_per_site": {
+    "0": 1.0,
+    "1": 1.0,
+    "2": 1.0,
+    "3": 0.0,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 0.0
+   },
+   "whole_run_connectivity_per_site": {
+    "0": 0.927,
+    "1": 0.93,
+    "2": 0.511,
+    "3": 0.0,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 0.129
+   },
+   "late_any_path": 1.0,
+   "first_path_time": 40.1,
+   "first_path_site": 0,
+   "last_path_time": 800.0,
+   "longest_path_span": [
+    80.1,
+    800.0
+   ],
+   "longest_path_steps": 7200,
+   "output_birth": [
+    {
+     "time": 40.0,
+     "role": "output",
+     "request": 15,
+     "pin": "root_relative"
+    }
+   ],
+   "final_O": [
+    0.9865,
+    0.1636
+   ],
+   "final_nearest_dO": [
+    0.391,
+    0.399,
+    0.401,
+    0.537
+   ],
+   "final_n": 45,
+   "births": {
+    "B-out": 1,
+    "B-path": 28,
+    "B1": 17
+   },
+   "birth_outcomes": {
+    "B-out:accepted": 1,
+    "B-out:no_root": 1,
+    "B-path:accepted": 28,
+    "B-path:cost": 75,
+    "B-path:no_output": 7,
+    "B-path:no_root": 25,
+    "B-path:quota": 39,
+    "B1:accepted": 17,
+    "B1:cost": 51,
+    "B1:deferred_output_first": 8,
+    "B1:quota": 8
+   },
+   "deaths": {
+    "D3": 1
+   },
+   "last_accepted_birth_time": 320.0,
+   "first_cost_refusal_time": 320.0
+  },
+  {
+   "trace": "pilot_baseline_assay_alt1_ii.json.gz",
+   "trace_sha256": "3c2f21260f2246fe14b4dc4d3525d7876ecaf44c72f6188295d994c61629d701",
+   "log": "batt_base_ii_k1.log",
+   "tag": "baseline_assay_alt1",
+   "start": "ii",
+   "keyset": 1,
+   "A": 0.9111047762569563,
+   "B": 0.7169818405422551,
+   "E": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "gate_shape": false,
+   "assay_sites_with_E_ge_0_5": 0,
+   "assay_sites_with_E_zero": 8,
+   "late_connectivity_per_site": {
+    "0": 0.0,
+    "1": 0.0,
+    "2": 0.0,
+    "3": 0.0,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 0.0
+   },
+   "whole_run_connectivity_per_site": {
+    "0": 0.007,
+    "1": 0.003,
+    "2": 0.0,
+    "3": 0.0,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 0.005
+   },
+   "late_any_path": 0.0,
+   "first_path_time": 220.1,
+   "first_path_site": 0,
+   "last_path_time": 441.1,
+   "longest_path_span": [
+    440.1,
+    441.1
+   ],
+   "longest_path_steps": 11,
+   "output_birth": [],
+   "final_O": [
+    -0.5,
+    0.0
+   ],
+   "final_nearest_dO": [
+    2.082,
+    2.283,
+    2.301,
+    2.312
+   ],
+   "final_n": 44,
+   "births": {
+    "B-out": 0,
+    "B-path": 38,
+    "B1": 0
+   },
+   "birth_outcomes": {
+    "B-path:accepted": 38,
+    "B-path:cost": 105,
+    "B-path:no_root": 30,
+    "B-path:quota": 79,
+    "B1:cost": 1,
+    "B1:deferred_output_first": 12
+   },
+   "deaths": {
+    "D3": 1
+   },
+   "last_accepted_birth_time": 520.0,
+   "first_cost_refusal_time": 460.0
+  },
+  {
+   "trace": "pilot_c2opin_assay_alt1_ii.json.gz",
+   "trace_sha256": "327c0c808e51e7c4a574d13f62a7058c09b99cc27f13db9cd6a2806cdde6fb9d",
+   "log": "batt_c2_ii_d1.0_k1.log",
+   "tag": "c2opin_assay_alt1",
+   "start": "ii",
+   "keyset": 1,
+   "A": 1.6574830199581063,
+   "B": 1.491223383361865,
+   "E": [
+    0.3333,
+    0.4667,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.4667
+   ],
+   "gate_shape": false,
+   "assay_sites_with_E_ge_0_5": 0,
+   "assay_sites_with_E_zero": 5,
+   "late_connectivity_per_site": {
+    "0": 0.934,
+    "1": 0.942,
+    "2": 0.0,
+    "3": 0.0,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 0.942
+   },
+   "whole_run_connectivity_per_site": {
+    "0": 0.602,
+    "1": 0.638,
+    "2": 0.0,
+    "3": 0.0,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 0.634
+   },
+   "late_any_path": 0.954,
+   "first_path_time": 20.1,
+   "first_path_site": 0,
+   "last_path_time": 792.6,
+   "longest_path_span": [
+    490.5,
+    792.6
+   ],
+   "longest_path_steps": 3022,
+   "output_birth": [
+    {
+     "time": 20.0,
+     "role": "output",
+     "request": 0,
+     "pin": "root_relative"
+    }
+   ],
+   "final_O": [
+    0.9998,
+    -0.0203
+   ],
+   "final_nearest_dO": [
+    1.452,
+    1.492,
+    1.673,
+    1.79
+   ],
+   "final_n": 45,
+   "births": {
+    "B-out": 1,
+    "B-path": 31,
+    "B1": 7
+   },
+   "birth_outcomes": {
+    "B-out:accepted": 1,
+    "B-path:accepted": 31,
+    "B-path:cost": 84,
+    "B-path:no_root": 33,
+    "B-path:quota": 41,
+    "B1:accepted": 7,
+    "B1:cost": 38,
+    "B1:deferred_output_first": 6,
+    "B1:quota": 2
+   },
+   "deaths": {},
+   "last_accepted_birth_time": 360.0,
+   "first_cost_refusal_time": 380.0
+  },
+  {
+   "trace": "pilot_baseline_assay_alt2_i.json.gz",
+   "trace_sha256": "32dc502ab5ca5da3daef0b252e26b12e7095f4897dd7b5e359da0cac308869f4",
+   "log": "batt_base_i_k2.log",
+   "tag": "baseline_assay_alt2",
+   "start": "i",
+   "keyset": 2,
+   "A": 1.2455622534028508,
+   "B": 0.9160921192440519,
+   "E": [
+    0.5,
+    0.7,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.6,
+    0.7
+   ],
+   "gate_shape": true,
+   "assay_sites_with_E_ge_0_5": 4,
+   "assay_sites_with_E_zero": 4,
+   "late_connectivity_per_site": {
+    "0": 1.0,
+    "1": 1.0,
+    "2": 0.0,
+    "3": 0.0,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 1.0,
+    "7": 1.0
+   },
+   "whole_run_connectivity_per_site": {
+    "0": 0.66,
+    "1": 0.602,
+    "2": 0.0,
+    "3": 0.0,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.424,
+    "7": 0.586
+   },
+   "late_any_path": 1.0,
+   "first_path_time": 220.1,
+   "first_path_site": 1,
+   "last_path_time": 800.0,
+   "longest_path_span": [
+    360.1,
+    800.0
+   ],
+   "longest_path_steps": 4400,
+   "output_birth": [
+    {
+     "time": 20.0,
+     "role": "output",
+     "request": 0
+    }
+   ],
+   "final_O": [
+    0.0,
+    0.0
+   ],
+   "final_nearest_dO": [
+    0.351,
+    0.373,
+    0.398,
+    0.42
+   ],
+   "final_n": 45,
+   "births": {
+    "B-out": 1,
+    "B-path": 37,
+    "B1": 7
+   },
+   "birth_outcomes": {
+    "B-out:accepted": 1,
+    "B-path:accepted": 37,
+    "B-path:cost": 49,
+    "B-path:no_root": 27,
+    "B-path:quota": 59,
+    "B1:accepted": 7,
+    "B1:cost": 45,
+    "B1:deferred_output_first": 15,
+    "B1:quota": 2
+   },
+   "deaths": {},
+   "last_accepted_birth_time": 420.0,
+   "first_cost_refusal_time": 420.0
+  },
+  {
+   "trace": "pilot_c2opin_assay_alt2_i.json.gz",
+   "trace_sha256": "9c8a15ab49d320022f04165e891ea890fb1999a7f2033f9495350b07a28e4bc7",
+   "log": "batt_c2_i_d1.0_k2.log",
+   "tag": "c2opin_assay_alt2",
+   "start": "i",
+   "keyset": 2,
+   "A": 1.1159308510566839,
+   "B": 1.244594989569458,
+   "E": [
+    0.0,
+    0.7,
+    0.8,
+    0.6,
+    0.154,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "gate_shape": true,
+   "assay_sites_with_E_ge_0_5": 3,
+   "assay_sites_with_E_zero": 4,
+   "late_connectivity_per_site": {
+    "0": 0.0,
+    "1": 1.0,
+    "2": 1.0,
+    "3": 1.0,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 0.0
+   },
+   "whole_run_connectivity_per_site": {
+    "0": 0.036,
+    "1": 0.902,
+    "2": 0.855,
+    "3": 0.852,
+    "4": 0.015,
+    "5": 0.005,
+    "6": 0.0,
+    "7": 0.0
+   },
+   "late_any_path": 1.0,
+   "first_path_time": 75.1,
+   "first_path_site": 1,
+   "last_path_time": 800.0,
+   "longest_path_span": [
+    448.1,
+    800.0
+   ],
+   "longest_path_steps": 3520,
+   "output_birth": [
+    {
+     "time": 60.0,
+     "role": "output",
+     "request": 22,
+     "pin": "root_relative"
+    }
+   ],
+   "final_O": [
+    0.0759,
+    0.9971
+   ],
+   "final_nearest_dO": [
+    0.343,
+    0.355,
+    0.367,
+    0.409
+   ],
+   "final_n": 45,
+   "births": {
+    "B-out": 1,
+    "B-path": 26,
+    "B1": 18
+   },
+   "birth_outcomes": {
+    "B-out:accepted": 1,
+    "B-out:no_root": 2,
+    "B-path:accepted": 26,
+    "B-path:cost": 53,
+    "B-path:no_output": 13,
+    "B-path:no_root": 47,
+    "B-path:quota": 19,
+    "B1:accepted": 18,
+    "B1:cost": 60,
+    "B1:deferred_output_first": 9,
+    "B1:quota": 2
+   },
+   "deaths": {},
+   "last_accepted_birth_time": 380.0,
+   "first_cost_refusal_time": 400.0
+  },
+  {
+   "trace": "pilot_baseline_assay_alt2_ii.json.gz",
+   "trace_sha256": "e2a985b1abe6a382708333045616badfff50918e269548412590cbc4ead66e4c",
+   "log": "batt_base_ii_k2.log",
+   "tag": "baseline_assay_alt2",
+   "start": "ii",
+   "keyset": 2,
+   "A": 1.3914601564707962,
+   "B": 1.2276126709797344,
+   "E": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "gate_shape": false,
+   "assay_sites_with_E_ge_0_5": 0,
+   "assay_sites_with_E_zero": 8,
+   "late_connectivity_per_site": {
+    "0": 0.0,
+    "1": 0.0,
+    "2": 0.0,
+    "3": 0.0,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 0.0
+   },
+   "whole_run_connectivity_per_site": {
+    "0": 0.006,
+    "1": 0.0,
+    "2": 0.0,
+    "3": 0.0,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.031,
+    "7": 0.022
+   },
+   "late_any_path": 0.0,
+   "first_path_time": 160.1,
+   "first_path_site": 0,
+   "last_path_time": 430.0,
+   "longest_path_span": [
+    420.1,
+    430.0
+   ],
+   "longest_path_steps": 100,
+   "output_birth": [],
+   "final_O": [
+    -0.5,
+    0.0
+   ],
+   "final_nearest_dO": [
+    1.665,
+    1.752,
+    1.867,
+    1.872
+   ],
+   "final_n": 44,
+   "births": {
+    "B-out": 0,
+    "B-path": 36,
+    "B1": 3
+   },
+   "birth_outcomes": {
+    "B-path:accepted": 36,
+    "B-path:cost": 123,
+    "B-path:no_root": 17,
+    "B-path:quota": 60,
+    "B1:accepted": 3,
+    "B1:deferred_output_first": 2
+   },
+   "deaths": {
+    "D3": 2
+   },
+   "last_accepted_birth_time": 420.0,
+   "first_cost_refusal_time": 440.0
+  },
+  {
+   "trace": "pilot_c2opin_assay_alt2_ii.json.gz",
+   "trace_sha256": "69b1a6df70ea51663658a72378db7ef828dff9494be23263205322746ae92f7d",
+   "log": "batt_c2_ii_d1.0_k2.log",
+   "tag": "c2opin_assay_alt2",
+   "start": "ii",
+   "keyset": 2,
+   "A": 1.484971546649945,
+   "B": 1.3119885032382352,
+   "E": [
+    0.5,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.6,
+    0.7
+   ],
+   "gate_shape": true,
+   "assay_sites_with_E_ge_0_5": 3,
+   "assay_sites_with_E_zero": 5,
+   "late_connectivity_per_site": {
+    "0": 1.0,
+    "1": 0.0,
+    "2": 0.0,
+    "3": 0.0,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 1.0,
+    "7": 1.0
+   },
+   "whole_run_connectivity_per_site": {
+    "0": 0.731,
+    "1": 0.005,
+    "2": 0.0,
+    "3": 0.0,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.755,
+    "7": 0.671
+   },
+   "late_any_path": 1.0,
+   "first_path_time": 20.1,
+   "first_path_site": 0,
+   "last_path_time": 800.0,
+   "longest_path_span": [
+    352.1,
+    800.0
+   ],
+   "longest_path_steps": 4480,
+   "output_birth": [
+    {
+     "time": 20.0,
+     "role": "output",
+     "request": 0,
+     "pin": "root_relative"
+    }
+   ],
+   "final_O": [
+    0.8335,
+    -0.5525
+   ],
+   "final_nearest_dO": [
+    0.591,
+    0.591,
+    0.684,
+    0.986
+   ],
+   "final_n": 45,
+   "births": {
+    "B-out": 1,
+    "B-path": 29,
+    "B1": 9
+   },
+   "birth_outcomes": {
+    "B-out:accepted": 1,
+    "B-path:accepted": 29,
+    "B-path:cost": 47,
+    "B-path:no_root": 65,
+    "B-path:quota": 28,
+    "B1:accepted": 9,
+    "B1:cost": 51,
+    "B1:deferred_output_first": 2,
+    "B1:quota": 5
+   },
+   "deaths": {},
+   "last_accepted_birth_time": 420.0,
+   "first_cost_refusal_time": 420.0
+  },
+  {
+   "trace": "pilot_baseline_assay_alt3_i.json.gz",
+   "trace_sha256": "b0c5ed0f7563a22191a8a2dacd5f0bd27357c19e39513392dd6a1beaa865ba64",
+   "log": "batt2_base_i_k3.log",
+   "tag": "baseline_assay_alt3",
+   "start": "i",
+   "keyset": 3,
+   "A": 1.4532443343380617,
+   "B": 1.2487370125162107,
+   "E": [
+    0.2521,
+    0.3571,
+    0.0485,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.3552
+   ],
+   "gate_shape": false,
+   "assay_sites_with_E_ge_0_5": 0,
+   "assay_sites_with_E_zero": 4,
+   "late_connectivity_per_site": {
+    "0": 0.559,
+    "1": 0.608,
+    "2": 0.035,
+    "3": 0.0,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 0.75
+   },
+   "whole_run_connectivity_per_site": {
+    "0": 0.382,
+    "1": 0.37,
+    "2": 0.144,
+    "3": 0.0,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 0.312
+   },
+   "late_any_path": 0.547,
+   "first_path_time": 240.1,
+   "first_path_site": 7,
+   "last_path_time": 727.6,
+   "longest_path_span": [
+    480.1,
+    727.6
+   ],
+   "longest_path_steps": 2476,
+   "output_birth": [
+    {
+     "time": 20.0,
+     "role": "output",
+     "request": 0
+    }
+   ],
+   "final_O": [
+    0.0,
+    0.0
+   ],
+   "final_nearest_dO": [
+    1.783,
+    1.894,
+    2.08,
+    2.117
+   ],
+   "final_n": 45,
+   "births": {
+    "B-out": 1,
+    "B-path": 40,
+    "B1": 8
+   },
+   "birth_outcomes": {
+    "B-out:accepted": 1,
+    "B-path:accepted": 40,
+    "B-path:cost": 34,
+    "B-path:no_root": 45,
+    "B-path:quota": 75,
+    "B1:accepted": 8,
+    "B1:cost": 32,
+    "B1:deferred_output_first": 29
+   },
+   "deaths": {
+    "D3": 4
+   },
+   "last_accepted_birth_time": 680.0,
+   "first_cost_refusal_time": 460.0
+  },
+  {
+   "trace": "pilot_c2opin_assay_alt3_i.json.gz",
+   "trace_sha256": "585b76118c5763a083d0252a77fcca83b0221aa43a185574d44a8075866e60ae",
+   "log": "batt2_c2_i_d1.0_k3_root.log",
+   "tag": "c2opin_assay_alt3",
+   "start": "i",
+   "keyset": 3,
+   "A": 1.1638851484132298,
+   "B": 1.267809935978565,
+   "E": [
+    0.3333,
+    0.7,
+    0.8,
+    0.2,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "gate_shape": true,
+   "assay_sites_with_E_ge_0_5": 2,
+   "assay_sites_with_E_zero": 4,
+   "late_connectivity_per_site": {
+    "0": 0.875,
+    "1": 1.0,
+    "2": 1.0,
+    "3": 0.038,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 0.0
+   },
+   "whole_run_connectivity_per_site": {
+    "0": 0.882,
+    "1": 0.924,
+    "2": 0.548,
+    "3": 0.009,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 0.339
+   },
+   "late_any_path": 1.0,
+   "first_path_time": 49.8,
+   "first_path_site": 0,
+   "last_path_time": 800.0,
+   "longest_path_span": [
+    416.1,
+    800.0
+   ],
+   "longest_path_steps": 3840,
+   "output_birth": [
+    {
+     "time": 40.0,
+     "role": "output",
+     "request": 10,
+     "pin": "root_relative"
+    }
+   ],
+   "final_O": [
+    0.989,
+    0.1479
+   ],
+   "final_nearest_dO": [
+    0.463,
+    0.481,
+    0.568,
+    0.792
+   ],
+   "final_n": 45,
+   "births": {
+    "B-out": 1,
+    "B-path": 30,
+    "B1": 21
+   },
+   "birth_outcomes": {
+    "B-out:accepted": 1,
+    "B-out:no_root": 1,
+    "B-path:accepted": 30,
+    "B-path:cost": 64,
+    "B-path:no_output": 5,
+    "B-path:no_root": 20,
+    "B-path:quota": 35,
+    "B1:accepted": 21,
+    "B1:cost": 28,
+    "B1:deferred_output_first": 6,
+    "B1:quota": 4
+   },
+   "deaths": {
+    "D3": 7
+   },
+   "last_accepted_birth_time": 800.0,
+   "first_cost_refusal_time": 320.0
+  },
+  {
+   "trace": "pilot_baseline_assay_alt3_ii.json.gz",
+   "trace_sha256": "8e559c60be99b5f5aa7002ad90f95d3096e17dee015d1916d1b95511d1eea016",
+   "log": "batt2_base_ii_k3.log",
+   "tag": "baseline_assay_alt3",
+   "start": "ii",
+   "keyset": 3,
+   "A": 0.23588342667332998,
+   "B": 0.19680016661634966,
+   "E": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "gate_shape": false,
+   "assay_sites_with_E_ge_0_5": 0,
+   "assay_sites_with_E_zero": 8,
+   "late_connectivity_per_site": {
+    "0": 0.0,
+    "1": 0.0,
+    "2": 0.0,
+    "3": 0.0,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 0.0
+   },
+   "whole_run_connectivity_per_site": {
+    "0": 0.002,
+    "1": 0.003,
+    "2": 0.0,
+    "3": 0.0,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 0.003
+   },
+   "late_any_path": 0.0,
+   "first_path_time": 220.1,
+   "first_path_site": 1,
+   "last_path_time": 380.1,
+   "longest_path_span": [
+    340.1,
+    340.7
+   ],
+   "longest_path_steps": 7,
+   "output_birth": [],
+   "final_O": [
+    -0.5,
+    0.0
+   ],
+   "final_nearest_dO": [
+    2.29,
+    2.453,
+    2.46,
+    2.589
+   ],
+   "final_n": 45,
+   "births": {
+    "B-out": 0,
+    "B-path": 35,
+    "B1": 3
+   },
+   "birth_outcomes": {
+    "B-path:accepted": 35,
+    "B-path:cost": 122,
+    "B-path:no_root": 8,
+    "B-path:quota": 70,
+    "B1:accepted": 3,
+    "B1:deferred_output_first": 8
+   },
+   "deaths": {},
+   "last_accepted_birth_time": 400.0,
+   "first_cost_refusal_time": 400.0
+  },
+  {
+   "trace": "pilot_c2opin_assay_alt3_ii.json.gz",
+   "trace_sha256": "68186ac1da3fd8868baedc6fdd837d74bb5078bb74db2ecfb48624421277473c",
+   "log": "batt2_c2_ii_d1.0_k3_root.log",
+   "tag": "c2opin_assay_alt3",
+   "start": "ii",
+   "keyset": 3,
+   "A": 0.42778198173283555,
+   "B": 0.2993606470014011,
+   "E": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "gate_shape": false,
+   "assay_sites_with_E_ge_0_5": 0,
+   "assay_sites_with_E_zero": 8,
+   "late_connectivity_per_site": {
+    "0": 0.0,
+    "1": 0.0,
+    "2": 0.0,
+    "3": 0.0,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 0.0
+   },
+   "whole_run_connectivity_per_site": {
+    "0": 0.082,
+    "1": 0.157,
+    "2": 0.0,
+    "3": 0.0,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 0.175
+   },
+   "late_any_path": 0.0,
+   "first_path_time": 20.1,
+   "first_path_site": 0,
+   "last_path_time": 362.4,
+   "longest_path_span": [
+    197.8,
+    260.4
+   ],
+   "longest_path_steps": 627,
+   "output_birth": [
+    {
+     "time": 20.0,
+     "role": "output",
+     "request": 0,
+     "pin": "root_relative"
+    }
+   ],
+   "final_O": [
+    0.9485,
+    -0.3168
+   ],
+   "final_nearest_dO": [
+    2.338,
+    2.365,
+    2.47,
+    2.548
+   ],
+   "final_n": 45,
+   "births": {
+    "B-out": 1,
+    "B-path": 28,
+    "B1": 10
+   },
+   "birth_outcomes": {
+    "B-out:accepted": 1,
+    "B-path:accepted": 28,
+    "B-path:cost": 128,
+    "B-path:no_root": 17,
+    "B-path:quota": 33,
+    "B1:accepted": 10,
+    "B1:deferred_output_first": 2
+   },
+   "deaths": {},
+   "last_accepted_birth_time": 360.0,
+   "first_cost_refusal_time": 380.0
+  },
+  {
+   "trace": "pilot_baseline_assay_alt4_i.json.gz",
+   "trace_sha256": "98b836bf039cea53edd2433cd46711d4a740c230f25d5e9546e79394d1664086",
+   "log": "batt2_base_i_k4.log",
+   "tag": "baseline_assay_alt4",
+   "start": "i",
+   "keyset": 4,
+   "A": 0.7633100878872907,
+   "B": 0.5822721462495934,
+   "E": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "gate_shape": false,
+   "assay_sites_with_E_ge_0_5": 0,
+   "assay_sites_with_E_zero": 8,
+   "late_connectivity_per_site": {
+    "0": 0.0,
+    "1": 0.0,
+    "2": 0.0,
+    "3": 0.0,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 0.0
+   },
+   "whole_run_connectivity_per_site": {
+    "0": 0.008,
+    "1": 0.007,
+    "2": 0.007,
+    "3": 0.0,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 0.0
+   },
+   "late_any_path": 0.0,
+   "first_path_time": 200.1,
+   "first_path_site": 0,
+   "last_path_time": 440.6,
+   "longest_path_span": [
+    320.1,
+    321.1
+   ],
+   "longest_path_steps": 11,
+   "output_birth": [
+    {
+     "time": 20.0,
+     "role": "output",
+     "request": 0
+    }
+   ],
+   "final_O": [
+    0.0,
+    0.0
+   ],
+   "final_nearest_dO": [
+    2.179,
+    2.284,
+    2.373,
+    2.448
+   ],
+   "final_n": 44,
+   "births": {
+    "B-out": 1,
+    "B-path": 40,
+    "B1": 6
+   },
+   "birth_outcomes": {
+    "B-out:accepted": 1,
+    "B-path:accepted": 40,
+    "B-path:cost": 92,
+    "B-path:no_root": 8,
+    "B-path:quota": 63,
+    "B1:accepted": 6,
+    "B1:deferred_output_first": 18
+   },
+   "deaths": {
+    "D3": 3
+   },
+   "last_accepted_birth_time": 640.0,
+   "first_cost_refusal_time": 420.0
+  },
+  {
+   "trace": "pilot_c2opin_assay_alt4_i.json.gz",
+   "trace_sha256": "724fdff90228d797b954501a6a6108084d054b8e8b7591f3eb7cd6aabb04fa35",
+   "log": "batt2_c2_i_d1.0_k4_root.log",
+   "tag": "c2opin_assay_alt4",
+   "start": "i",
+   "keyset": 4,
+   "A": 1.1639638572454978,
+   "B": 1.3635200387380868,
+   "E": [
+    0.3333,
+    0.7,
+    0.8,
+    0.4,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "gate_shape": true,
+   "assay_sites_with_E_ge_0_5": 2,
+   "assay_sites_with_E_zero": 4,
+   "late_connectivity_per_site": {
+    "0": 1.0,
+    "1": 1.0,
+    "2": 1.0,
+    "3": 0.556,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 0.0
+   },
+   "whole_run_connectivity_per_site": {
+    "0": 0.823,
+    "1": 0.83,
+    "2": 0.739,
+    "3": 0.134,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 0.077
+   },
+   "late_any_path": 0.8,
+   "first_path_time": 40.1,
+   "first_path_site": 0,
+   "last_path_time": 800.0,
+   "longest_path_span": [
+    432.1,
+    688.0
+   ],
+   "longest_path_steps": 2560,
+   "output_birth": [
+    {
+     "time": 40.0,
+     "role": "output",
+     "request": 9,
+     "pin": "root_relative"
+    }
+   ],
+   "final_O": [
+    0.9909,
+    0.1344
+   ],
+   "final_nearest_dO": [
+    0.415,
+    0.52,
+    0.585,
+    0.759
+   ],
+   "final_n": 45,
+   "births": {
+    "B-out": 1,
+    "B-path": 28,
+    "B1": 16
+   },
+   "birth_outcomes": {
+    "B-out:accepted": 1,
+    "B-out:no_root": 1,
+    "B-path:accepted": 28,
+    "B-path:cost": 73,
+    "B-path:no_output": 5,
+    "B-path:no_root": 4,
+    "B-path:quota": 29,
+    "B1:accepted": 16,
+    "B1:cost": 16,
+    "B1:deferred_output_first": 2,
+    "B1:quota": 2
+   },
+   "deaths": {},
+   "last_accepted_birth_time": 340.0,
+   "first_cost_refusal_time": 340.0
+  },
+  {
+   "trace": "pilot_baseline_assay_alt4_ii.json.gz",
+   "trace_sha256": "ba5393c4c38d6cd0750a044d859daef5f5857a5859b6531dd943819bc35b7c83",
+   "log": "batt2_base_ii_k4.log",
+   "tag": "baseline_assay_alt4",
+   "start": "ii",
+   "keyset": 4,
+   "A": 0.6573655668709637,
+   "B": 0.4770397013665603,
+   "E": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "gate_shape": false,
+   "assay_sites_with_E_ge_0_5": 0,
+   "assay_sites_with_E_zero": 8,
+   "late_connectivity_per_site": {
+    "0": 0.0,
+    "1": 0.0,
+    "2": 0.0,
+    "3": 0.0,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 0.0
+   },
+   "whole_run_connectivity_per_site": {
+    "0": 0.011,
+    "1": 0.01,
+    "2": 0.0,
+    "3": 0.0,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 0.013
+   },
+   "late_any_path": 0.0,
+   "first_path_time": 200.1,
+   "first_path_site": 0,
+   "last_path_time": 540.2,
+   "longest_path_span": [
+    440.1,
+    441.5
+   ],
+   "longest_path_steps": 15,
+   "output_birth": [],
+   "final_O": [
+    -0.5,
+    0.0
+   ],
+   "final_nearest_dO": [
+    2.239,
+    2.293,
+    2.334,
+    2.511
+   ],
+   "final_n": 45,
+   "births": {
+    "B-out": 0,
+    "B-path": 38,
+    "B1": 3
+   },
+   "birth_outcomes": {
+    "B-path:accepted": 38,
+    "B-path:cost": 78,
+    "B-path:no_root": 31,
+    "B-path:quota": 51,
+    "B1:accepted": 3,
+    "B1:cost": 1,
+    "B1:deferred_output_first": 21
+   },
+   "deaths": {
+    "D3": 3
+   },
+   "last_accepted_birth_time": 760.0,
+   "first_cost_refusal_time": 480.0
+  },
+  {
+   "trace": "pilot_c2opin_assay_alt4_ii.json.gz",
+   "trace_sha256": "a7ced37e1aa915d930c0cb5e67f08963cb837ea24b606eb92ebde30953209c1e",
+   "log": "batt2_c2_ii_d1.0_k4_root.log",
+   "tag": "c2opin_assay_alt4",
+   "start": "ii",
+   "keyset": 4,
+   "A": 1.6262704914374089,
+   "B": 1.4934043977165996,
+   "E": [
+    0.5,
+    0.7,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.7
+   ],
+   "gate_shape": true,
+   "assay_sites_with_E_ge_0_5": 3,
+   "assay_sites_with_E_zero": 5,
+   "late_connectivity_per_site": {
+    "0": 1.0,
+    "1": 1.0,
+    "2": 0.0,
+    "3": 0.0,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 1.0
+   },
+   "whole_run_connectivity_per_site": {
+    "0": 0.729,
+    "1": 0.784,
+    "2": 0.0,
+    "3": 0.0,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 0.745
+   },
+   "late_any_path": 0.7,
+   "first_path_time": 20.1,
+   "first_path_site": 0,
+   "last_path_time": 800.0,
+   "longest_path_span": [
+    432.1,
+    656.0
+   ],
+   "longest_path_steps": 2240,
+   "output_birth": [
+    {
+     "time": 20.0,
+     "role": "output",
+     "request": 0,
+     "pin": "root_relative"
+    }
+   ],
+   "final_O": [
+    0.9563,
+    0.2924
+   ],
+   "final_nearest_dO": [
+    0.404,
+    0.405,
+    0.534,
+    0.676
+   ],
+   "final_n": 45,
+   "births": {
+    "B-out": 1,
+    "B-path": 28,
+    "B1": 11
+   },
+   "birth_outcomes": {
+    "B-out:accepted": 1,
+    "B-path:accepted": 28,
+    "B-path:cost": 61,
+    "B-path:no_root": 27,
+    "B-path:quota": 28,
+    "B1:accepted": 11,
+    "B1:cost": 21,
+    "B1:deferred_output_first": 4,
+    "B1:quota": 4
+   },
+   "deaths": {
+    "D3": 1
+   },
+   "last_accepted_birth_time": 460.0,
+   "first_cost_refusal_time": 400.0
+  },
+  {
+   "trace": "pilot_c2opin_opposite_assay_i.json.gz",
+   "trace_sha256": "212200ba5c0bd699960aeb568429b56c253cbe15661fed654f6c25b7a084d297",
+   "log": "batt2_c2_i_d1.0_k0_opposite.log",
+   "tag": "c2opin_opposite_assay",
+   "start": "i",
+   "keyset": 0,
+   "A": 1.3182028182597996,
+   "B": 1.091492788851644,
+   "E": [
+    0.0004,
+    0.0,
+    0.0,
+    0.0,
+    0.0756,
+    0.485,
+    0.5769,
+    0.3408
+   ],
+   "gate_shape": true,
+   "assay_sites_with_E_ge_0_5": 1,
+   "assay_sites_with_E_zero": 3,
+   "late_connectivity_per_site": {
+    "0": 0.0,
+    "1": 0.0,
+    "2": 0.0,
+    "3": 0.0,
+    "4": 0.03,
+    "5": 0.974,
+    "6": 0.984,
+    "7": 0.547
+   },
+   "whole_run_connectivity_per_site": {
+    "0": 0.001,
+    "1": 0.003,
+    "2": 0.002,
+    "3": 0.003,
+    "4": 0.011,
+    "5": 0.241,
+    "6": 0.412,
+    "7": 0.201
+   },
+   "late_any_path": 0.887,
+   "first_path_time": 340.1,
+   "first_path_site": 3,
+   "last_path_time": 800.0,
+   "longest_path_span": [
+    713.8,
+    800.0
+   ],
+   "longest_path_steps": 863,
+   "output_birth": [
+    {
+     "time": 40.0,
+     "role": "output",
+     "request": 7,
+     "pin": "root_relative"
+    }
+   ],
+   "final_O": [
+    -0.0696,
+    -0.9976
+   ],
+   "final_nearest_dO": [
+    1.19,
+    1.273,
+    1.582,
+    1.672
+   ],
+   "final_n": 45,
+   "births": {
+    "B-out": 1,
+    "B-path": 43,
+    "B1": 6
+   },
+   "birth_outcomes": {
+    "B-out:accepted": 1,
+    "B-out:no_root": 1,
+    "B-path:accepted": 43,
+    "B-path:cost": 62,
+    "B-path:no_output": 3,
+    "B-path:no_root": 11,
+    "B-path:quota": 73,
+    "B1:accepted": 6,
+    "B1:cost": 16,
+    "B1:deferred_output_first": 29
+   },
+   "deaths": {
+    "D3": 4
+   },
+   "last_accepted_birth_time": 800.0,
+   "first_cost_refusal_time": 440.0
+  },
+  {
+   "trace": "pilot_c2opin_opposite_assay_alt1_i.json.gz",
+   "trace_sha256": "e4e78ce652f4dac07ae399c38a78f0ed9ea8a57bfa764f82b4647968b71c2b93",
+   "log": "batt3_c2_i_k1_opposite.log",
+   "tag": "c2opin_opposite_assay_alt1",
+   "start": "i",
+   "keyset": 1,
+   "A": 0.8706198458665284,
+   "B": 0.7106914316342113,
+   "E": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.7,
+    0.5,
+    0.0,
+    0.0
+   ],
+   "gate_shape": true,
+   "assay_sites_with_E_ge_0_5": 2,
+   "assay_sites_with_E_zero": 6,
+   "late_connectivity_per_site": {
+    "0": 0.0,
+    "1": 0.0,
+    "2": 0.0,
+    "3": 0.0,
+    "4": 1.0,
+    "5": 1.0,
+    "6": 0.0,
+    "7": 0.0
+   },
+   "whole_run_connectivity_per_site": {
+    "0": 0.0,
+    "1": 0.0,
+    "2": 0.009,
+    "3": 0.114,
+    "4": 0.842,
+    "5": 0.854,
+    "6": 0.036,
+    "7": 0.002
+   },
+   "late_any_path": 0.8,
+   "first_path_time": 112.4,
+   "first_path_site": 3,
+   "last_path_time": 800.0,
+   "longest_path_span": [
+    115.6,
+    432.0
+   ],
+   "longest_path_steps": 3165,
+   "output_birth": [
+    {
+     "time": 40.0,
+     "role": "output",
+     "request": 15,
+     "pin": "root_relative"
+    }
+   ],
+   "final_O": [
+    -0.9865,
+    -0.1636
+   ],
+   "final_nearest_dO": [
+    0.329,
+    0.343,
+    0.343,
+    0.407
+   ],
+   "final_n": 45,
+   "births": {
+    "B-out": 1,
+    "B-path": 29,
+    "B1": 16
+   },
+   "birth_outcomes": {
+    "B-out:accepted": 1,
+    "B-out:no_root": 1,
+    "B-path:accepted": 29,
+    "B-path:cost": 64,
+    "B-path:no_output": 7,
+    "B-path:no_root": 50,
+    "B-path:quota": 45,
+    "B1:accepted": 16,
+    "B1:cost": 61,
+    "B1:deferred_output_first": 31,
+    "B1:quota": 2
+   },
+   "deaths": {
+    "D3": 1
+   },
+   "last_accepted_birth_time": 340.0,
+   "first_cost_refusal_time": 340.0
+  },
+  {
+   "trace": "pilot_c2opin_opposite_assay_alt2_i.json.gz",
+   "trace_sha256": "ebcdd8007b5f9f5ba84b8188cc446cacd8e01de9041a996d02094fa57e838c83",
+   "log": "batt3_c2_i_k2_opposite.log",
+   "tag": "c2opin_opposite_assay_alt2",
+   "start": "i",
+   "keyset": 2,
+   "A": 1.294275618125462,
+   "B": 1.0325597533477942,
+   "E": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0167,
+    0.0
+   ],
+   "gate_shape": false,
+   "assay_sites_with_E_ge_0_5": 0,
+   "assay_sites_with_E_zero": 7,
+   "late_connectivity_per_site": {
+    "0": 0.0,
+    "1": 0.0,
+    "2": 0.0,
+    "3": 0.0,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 0.0
+   },
+   "whole_run_connectivity_per_site": {
+    "0": 0.036,
+    "1": 0.025,
+    "2": 0.0,
+    "3": 0.0,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.02,
+    "7": 0.059
+   },
+   "late_any_path": 0.0,
+   "first_path_time": 260.1,
+   "first_path_site": 1,
+   "last_path_time": 505.8,
+   "longest_path_span": [
+    420.1,
+    452.4
+   ],
+   "longest_path_steps": 324,
+   "output_birth": [
+    {
+     "time": 60.0,
+     "role": "output",
+     "request": 22,
+     "pin": "root_relative"
+    }
+   ],
+   "final_O": [
+    -0.0759,
+    -0.9971
+   ],
+   "final_nearest_dO": [
+    2.062,
+    2.107,
+    2.122,
+    2.32
+   ],
+   "final_n": 45,
+   "births": {
+    "B-out": 1,
+    "B-path": 38,
+    "B1": 6
+   },
+   "birth_outcomes": {
+    "B-out:accepted": 1,
+    "B-out:no_root": 2,
+    "B-path:accepted": 38,
+    "B-path:cost": 119,
+    "B-path:no_output": 13,
+    "B-path:no_root": 4,
+    "B-path:quota": 66,
+    "B1:accepted": 6,
+    "B1:deferred_output_first": 32,
+    "B1:quota": 1
+   },
+   "deaths": {},
+   "last_accepted_birth_time": 440.0,
+   "first_cost_refusal_time": 460.0
+  },
+  {
+   "trace": "pilot_c2opin_opposite_assay_ii.json.gz",
+   "trace_sha256": "c7a0c6ad0777dccafae330cd1b8b10aec0acfa1edf97903319430d8c245aaf60",
+   "log": "batt2_c2_ii_d1.0_k0_opposite.log",
+   "tag": "c2opin_opposite_assay",
+   "start": "ii",
+   "keyset": 0,
+   "A": 1.3905736526422248,
+   "B": 1.1992911824965056,
+   "E": [
+    0.5,
+    0.4667,
+    0.0067,
+    0.005,
+    0.0,
+    0.1667,
+    0.6,
+    0.7
+   ],
+   "gate_shape": true,
+   "assay_sites_with_E_ge_0_5": 3,
+   "assay_sites_with_E_zero": 1,
+   "late_connectivity_per_site": {
+    "0": 1.0,
+    "1": 0.833,
+    "2": 0.01,
+    "3": 0.005,
+    "4": 0.008,
+    "5": 0.27,
+    "6": 1.0,
+    "7": 1.0
+   },
+   "whole_run_connectivity_per_site": {
+    "0": 0.462,
+    "1": 0.336,
+    "2": 0.005,
+    "3": 0.013,
+    "4": 0.005,
+    "5": 0.044,
+    "6": 0.439,
+    "7": 0.375
+   },
+   "late_any_path": 1.0,
+   "first_path_time": 220.1,
+   "first_path_site": 6,
+   "last_path_time": 800.0,
+   "longest_path_span": [
+    512.1,
+    800.0
+   ],
+   "longest_path_steps": 2880,
+   "output_birth": [
+    {
+     "time": 20.0,
+     "role": "output",
+     "request": 0,
+     "pin": "root_relative"
+    }
+   ],
+   "final_O": [
+    -0.8209,
+    0.571
+   ],
+   "final_nearest_dO": [
+    0.829,
+    1.007,
+    1.089,
+    1.169
+   ],
+   "final_n": 45,
+   "births": {
+    "B-out": 1,
+    "B-path": 35,
+    "B1": 7
+   },
+   "birth_outcomes": {
+    "B-out:accepted": 1,
+    "B-path:accepted": 35,
+    "B-path:cost": 19,
+    "B-path:no_root": 55,
+    "B-path:quota": 55,
+    "B1:accepted": 7,
+    "B1:cost": 29,
+    "B1:deferred_output_first": 4
+   },
+   "deaths": {
+    "D3": 4
+   },
+   "last_accepted_birth_time": 760.0,
+   "first_cost_refusal_time": 440.0
+  },
+  {
+   "trace": "pilot_c2opin_opposite_assay_alt1_ii.json.gz",
+   "trace_sha256": "0609f15b0aaba68367d23f8152b0f1c1959cd0c51e41d6b706e635cec5bc9bf2",
+   "log": "batt3_c2_ii_k1_opposite.log",
+   "tag": "c2opin_opposite_assay_alt1",
+   "start": "ii",
+   "keyset": 1,
+   "A": 1.1439046723441364,
+   "B": 0.9439720724109393,
+   "E": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "gate_shape": false,
+   "assay_sites_with_E_ge_0_5": 0,
+   "assay_sites_with_E_zero": 8,
+   "late_connectivity_per_site": {
+    "0": 0.0,
+    "1": 0.0,
+    "2": 0.0,
+    "3": 0.0,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 0.0
+   },
+   "whole_run_connectivity_per_site": {
+    "0": 0.174,
+    "1": 0.128,
+    "2": 0.067,
+    "3": 0.0,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 0.135
+   },
+   "late_any_path": 0.0,
+   "first_path_time": 300.1,
+   "first_path_site": 0,
+   "last_path_time": 561.4,
+   "longest_path_span": [
+    465.2,
+    544.2
+   ],
+   "longest_path_steps": 791,
+   "output_birth": [
+    {
+     "time": 20.0,
+     "role": "output",
+     "request": 0,
+     "pin": "root_relative"
+    }
+   ],
+   "final_O": [
+    -0.9998,
+    0.0203
+   ],
+   "final_nearest_dO": [
+    2.027,
+    2.046,
+    2.106,
+    2.365
+   ],
+   "final_n": 44,
+   "births": {
+    "B-out": 1,
+    "B-path": 37,
+    "B1": 1
+   },
+   "birth_outcomes": {
+    "B-out:accepted": 1,
+    "B-path:accepted": 37,
+    "B-path:cost": 86,
+    "B-path:no_root": 35,
+    "B-path:quota": 86,
+    "B1:accepted": 1,
+    "B1:cost": 18,
+    "B1:deferred_output_first": 50
+   },
+   "deaths": {
+    "D3": 1
+   },
+   "last_accepted_birth_time": 440.0,
+   "first_cost_refusal_time": 460.0
+  },
+  {
+   "trace": "pilot_c2opin_opposite_assay_alt2_ii.json.gz",
+   "trace_sha256": "5b2d34f0d22f2384a180218d316a252428f43dbd93473833280baea4530e8cd5",
+   "log": "batt3_c2_ii_k2_opposite.log",
+   "tag": "c2opin_opposite_assay_alt2",
+   "start": "ii",
+   "keyset": 2,
+   "A": 0.13961992746097396,
+   "B": 0.1094401436963521,
+   "E": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "gate_shape": false,
+   "assay_sites_with_E_ge_0_5": 0,
+   "assay_sites_with_E_zero": 8,
+   "late_connectivity_per_site": {
+    "0": 0.0,
+    "1": 0.0,
+    "2": 0.0,
+    "3": 0.0,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 0.0
+   },
+   "whole_run_connectivity_per_site": {
+    "0": 0.0,
+    "1": 0.0,
+    "2": 0.0,
+    "3": 0.0,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 0.0
+   },
+   "late_any_path": 0.0,
+   "first_path_time": null,
+   "first_path_site": null,
+   "last_path_time": null,
+   "longest_path_span": null,
+   "longest_path_steps": 0,
+   "output_birth": [
+    {
+     "time": 20.0,
+     "role": "output",
+     "request": 0,
+     "pin": "root_relative"
+    }
+   ],
+   "final_O": [
+    -0.8335,
+    0.5525
+   ],
+   "final_nearest_dO": [
+    2.554,
+    2.581,
+    2.668,
+    2.8
+   ],
+   "final_n": 45,
+   "births": {
+    "B-out": 1,
+    "B-path": 40,
+    "B1": 1
+   },
+   "birth_outcomes": {
+    "B-out:accepted": 1,
+    "B-path:accepted": 40,
+    "B-path:cost": 126,
+    "B-path:no_root": 7,
+    "B-path:quota": 83,
+    "B1:accepted": 1,
+    "B1:deferred_output_first": 41
+   },
+   "deaths": {
+    "D1": 1,
+    "D3": 2
+   },
+   "last_accepted_birth_time": 680.0,
+   "first_cost_refusal_time": 420.0
+  },
+  {
+   "trace": "pilot_c2opin_perp_assay_i.json.gz",
+   "trace_sha256": "aac924665369e633cbfe1724c43b9a62bcf7336e3871c3ce2bc6c811f58384d5",
+   "log": "batt2_c2_i_d1.0_k0_perp.log",
+   "tag": "c2opin_perp_assay",
+   "start": "i",
+   "keyset": 0,
+   "A": 0.9593644270716543,
+   "B": 1.1512408580526383,
+   "E": [
+    0.1704,
+    0.7,
+    0.8,
+    0.6,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "gate_shape": true,
+   "assay_sites_with_E_ge_0_5": 3,
+   "assay_sites_with_E_zero": 4,
+   "late_connectivity_per_site": {
+    "0": 0.432,
+    "1": 1.0,
+    "2": 1.0,
+    "3": 1.0,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 0.0
+   },
+   "whole_run_connectivity_per_site": {
+    "0": 0.101,
+    "1": 0.444,
+    "2": 0.358,
+    "3": 0.375,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 0.0
+   },
+   "late_any_path": 0.9,
+   "first_path_time": 220.1,
+   "first_path_site": 3,
+   "last_path_time": 800.0,
+   "longest_path_span": [
+    486.6,
+    704.0
+   ],
+   "longest_path_steps": 2175,
+   "output_birth": [
+    {
+     "time": 40.0,
+     "role": "output",
+     "request": 7,
+     "pin": "root_relative"
+    }
+   ],
+   "final_O": [
+    -0.9976,
+    0.0696
+   ],
+   "final_nearest_dO": [
+    0.451,
+    0.469,
+    0.507,
+    0.728
+   ],
+   "final_n": 45,
+   "births": {
+    "B-out": 1,
+    "B-path": 41,
+    "B1": 3
+   },
+   "birth_outcomes": {
+    "B-out:accepted": 1,
+    "B-out:no_root": 1,
+    "B-path:accepted": 41,
+    "B-path:cost": 39,
+    "B-path:no_output": 3,
+    "B-path:no_root": 22,
+    "B-path:quota": 61,
+    "B1:accepted": 3,
+    "B1:cost": 28,
+    "B1:deferred_output_first": 12
+   },
+   "deaths": {},
+   "last_accepted_birth_time": 440.0,
+   "first_cost_refusal_time": 460.0
+  },
+  {
+   "trace": "pilot_c2opin_perp_assay_alt1_i.json.gz",
+   "trace_sha256": "d71dce7b87fe5ddb0c0c0b86792f2ea9293a23dcf6ded91334d00b4e4f3e1567",
+   "log": "batt3_c2_i_k1_perp.log",
+   "tag": "c2opin_perp_assay_alt1",
+   "start": "i",
+   "keyset": 1,
+   "A": 1.2493582413827735,
+   "B": 1.3493752442868083,
+   "E": [
+    0.0,
+    0.2317,
+    0.8,
+    0.6,
+    0.3642,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "gate_shape": true,
+   "assay_sites_with_E_ge_0_5": 2,
+   "assay_sites_with_E_zero": 4,
+   "late_connectivity_per_site": {
+    "0": 0.0,
+    "1": 0.158,
+    "2": 1.0,
+    "3": 1.0,
+    "4": 0.429,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 0.0
+   },
+   "whole_run_connectivity_per_site": {
+    "0": 0.0,
+    "1": 0.642,
+    "2": 0.889,
+    "3": 0.838,
+    "4": 0.084,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 0.0
+   },
+   "late_any_path": 0.8,
+   "first_path_time": 80.1,
+   "first_path_site": 1,
+   "last_path_time": 800.0,
+   "longest_path_span": [
+    117.4,
+    608.0
+   ],
+   "longest_path_steps": 4907,
+   "output_birth": [
+    {
+     "time": 40.0,
+     "role": "output",
+     "request": 15,
+     "pin": "root_relative"
+    }
+   ],
+   "final_O": [
+    -0.1636,
+    0.9865
+   ],
+   "final_nearest_dO": [
+    0.369,
+    0.383,
+    0.39,
+    0.456
+   ],
+   "final_n": 45,
+   "births": {
+    "B-out": 1,
+    "B-path": 27,
+    "B1": 20
+   },
+   "birth_outcomes": {
+    "B-out:accepted": 1,
+    "B-out:no_root": 1,
+    "B-path:accepted": 27,
+    "B-path:cost": 81,
+    "B-path:no_output": 7,
+    "B-path:no_root": 25,
+    "B-path:quota": 35,
+    "B1:accepted": 20,
+    "B1:cost": 31,
+    "B1:deferred_output_first": 22,
+    "B1:quota": 5
+   },
+   "deaths": {
+    "D3": 3
+   },
+   "last_accepted_birth_time": 780.0,
+   "first_cost_refusal_time": 360.0
+  },
+  {
+   "trace": "pilot_c2opin_perp_assay_alt2_i.json.gz",
+   "trace_sha256": "f35333ed624d9d51d27d1c93d098474ef40d383a8e4fe0ea858d96a4a97f8a3a",
+   "log": "batt3_c2_i_k2_perp.log",
+   "tag": "c2opin_perp_assay_alt2",
+   "start": "i",
+   "keyset": 2,
+   "A": 1.2620448327299116,
+   "B": 1.3366028313355434,
+   "E": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "gate_shape": false,
+   "assay_sites_with_E_ge_0_5": 0,
+   "assay_sites_with_E_zero": 8,
+   "late_connectivity_per_site": {
+    "0": 0.0,
+    "1": 0.0,
+    "2": 0.0,
+    "3": 0.0,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 0.0
+   },
+   "whole_run_connectivity_per_site": {
+    "0": 0.0,
+    "1": 0.0,
+    "2": 0.005,
+    "3": 0.244,
+    "4": 0.248,
+    "5": 0.172,
+    "6": 0.0,
+    "7": 0.0
+   },
+   "late_any_path": 0.0,
+   "first_path_time": 157.1,
+   "first_path_site": 3,
+   "last_path_time": 400.3,
+   "longest_path_span": [
+    157.1,
+    256.0
+   ],
+   "longest_path_steps": 990,
+   "output_birth": [
+    {
+     "time": 60.0,
+     "role": "output",
+     "request": 22,
+     "pin": "root_relative"
+    }
+   ],
+   "final_O": [
+    -0.9971,
+    0.0759
+   ],
+   "final_nearest_dO": [
+    1.65,
+    1.808,
+    1.878,
+    2.004
+   ],
+   "final_n": 44,
+   "births": {
+    "B-out": 1,
+    "B-path": 29,
+    "B1": 15
+   },
+   "birth_outcomes": {
+    "B-out:accepted": 1,
+    "B-out:no_root": 2,
+    "B-path:accepted": 29,
+    "B-path:cost": 129,
+    "B-path:no_output": 13,
+    "B-path:no_root": 6,
+    "B-path:quota": 38,
+    "B1:accepted": 15,
+    "B1:deferred_output_first": 15,
+    "B1:quota": 3
+   },
+   "deaths": {
+    "D1": 1
+   },
+   "last_accepted_birth_time": 400.0,
+   "first_cost_refusal_time": 400.0
+  },
+  {
+   "trace": "pilot_c2opin_perp_assay_ii.json.gz",
+   "trace_sha256": "757b2fb6d2eebe25537047f341fdbf0b8be5e7cd839b121284d26afeb63a9fbe",
+   "log": "batt2_c2_ii_d1.0_k0_perp.log",
+   "tag": "c2opin_perp_assay",
+   "start": "ii",
+   "keyset": 0,
+   "A": 0.8421878041598913,
+   "B": 0.6194984052620012,
+   "E": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "gate_shape": false,
+   "assay_sites_with_E_ge_0_5": 0,
+   "assay_sites_with_E_zero": 8,
+   "late_connectivity_per_site": {
+    "0": 0.0,
+    "1": 0.0,
+    "2": 0.0,
+    "3": 0.0,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 0.0
+   },
+   "whole_run_connectivity_per_site": {
+    "0": 0.005,
+    "1": 0.005,
+    "2": 0.0,
+    "3": 0.0,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 0.005
+   },
+   "late_any_path": 0.0,
+   "first_path_time": 100.1,
+   "first_path_site": 0,
+   "last_path_time": 421.5,
+   "longest_path_span": [
+    420.1,
+    421.5
+   ],
+   "longest_path_steps": 15,
+   "output_birth": [
+    {
+     "time": 20.0,
+     "role": "output",
+     "request": 0,
+     "pin": "root_relative"
+    }
+   ],
+   "final_O": [
+    0.571,
+    0.8209
+   ],
+   "final_nearest_dO": [
+    2.286,
+    2.398,
+    2.454,
+    2.461
+   ],
+   "final_n": 44,
+   "births": {
+    "B-out": 1,
+    "B-path": 32,
+    "B1": 5
+   },
+   "birth_outcomes": {
+    "B-out:accepted": 1,
+    "B-path:accepted": 32,
+    "B-path:cost": 96,
+    "B-path:no_root": 26,
+    "B-path:quota": 39,
+    "B1:accepted": 5,
+    "B1:deferred_output_first": 3,
+    "B1:quota": 1
+   },
+   "deaths": {},
+   "last_accepted_birth_time": 420.0,
+   "first_cost_refusal_time": 440.0
+  },
+  {
+   "trace": "pilot_c2opin_perp_assay_alt1_ii.json.gz",
+   "trace_sha256": "d085f104be824e8990f40dbd7629c1c4b9c328e3051f2a541ef8eb43739bb518",
+   "log": "batt3_c2_ii_k1_perp.log",
+   "tag": "c2opin_perp_assay_alt1",
+   "start": "ii",
+   "keyset": 1,
+   "A": 1.7510920963700722,
+   "B": 1.3487719217680583,
+   "E": [
+    0.5,
+    0.7,
+    0.8,
+    0.0044,
+    0.0,
+    0.0,
+    0.0,
+    0.7
+   ],
+   "gate_shape": true,
+   "assay_sites_with_E_ge_0_5": 4,
+   "assay_sites_with_E_zero": 3,
+   "late_connectivity_per_site": {
+    "0": 1.0,
+    "1": 1.0,
+    "2": 1.0,
+    "3": 0.009,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 1.0
+   },
+   "whole_run_connectivity_per_site": {
+    "0": 0.564,
+    "1": 0.591,
+    "2": 0.389,
+    "3": 0.015,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 0.663
+   },
+   "late_any_path": 1.0,
+   "first_path_time": 160.1,
+   "first_path_site": 0,
+   "last_path_time": 800.0,
+   "longest_path_span": [
+    340.1,
+    800.0
+   ],
+   "longest_path_steps": 4600,
+   "output_birth": [
+    {
+     "time": 20.0,
+     "role": "output",
+     "request": 0,
+     "pin": "root_relative"
+    }
+   ],
+   "final_O": [
+    0.0203,
+    0.9998
+   ],
+   "final_nearest_dO": [
+    0.399,
+    0.473,
+    0.483,
+    0.745
+   ],
+   "final_n": 46,
+   "births": {
+    "B-out": 1,
+    "B-path": 35,
+    "B1": 11
+   },
+   "birth_outcomes": {
+    "B-out:accepted": 1,
+    "B-path:accepted": 35,
+    "B-path:cost": 32,
+    "B-path:no_root": 53,
+    "B-path:quota": 63,
+    "B1:accepted": 11,
+    "B1:cost": 35,
+    "B1:quota": 2
+   },
+   "deaths": {
+    "D3": 7
+   },
+   "last_accepted_birth_time": 740.0,
+   "first_cost_refusal_time": 420.0
+  },
+  {
+   "trace": "pilot_c2opin_perp_assay_alt2_ii.json.gz",
+   "trace_sha256": "4644907ce33621ec5e884865d7c1710b93e1cded42fbc5383c6a89cefd80d5a0",
+   "log": "batt3_c2_ii_k2_perp.log",
+   "tag": "c2opin_perp_assay_alt2",
+   "start": "ii",
+   "keyset": 2,
+   "A": 1.0269993315469934,
+   "B": 0.8274379074114563,
+   "E": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "gate_shape": false,
+   "assay_sites_with_E_ge_0_5": 0,
+   "assay_sites_with_E_zero": 8,
+   "late_connectivity_per_site": {
+    "0": 0.0,
+    "1": 0.0,
+    "2": 0.0,
+    "3": 0.0,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 0.0
+   },
+   "whole_run_connectivity_per_site": {
+    "0": 0.029,
+    "1": 0.039,
+    "2": 0.026,
+    "3": 0.0,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.032,
+    "7": 0.018
+   },
+   "late_any_path": 0.0,
+   "first_path_time": 140.1,
+   "first_path_site": 0,
+   "last_path_time": 483.3,
+   "longest_path_span": [
+    351.0,
+    362.9
+   ],
+   "longest_path_steps": 120,
+   "output_birth": [
+    {
+     "time": 20.0,
+     "role": "output",
+     "request": 0,
+     "pin": "root_relative"
+    }
+   ],
+   "final_O": [
+    0.5525,
+    0.8335
+   ],
+   "final_nearest_dO": [
+    2.125,
+    2.217,
+    2.314,
+    2.324
+   ],
+   "final_n": 45,
+   "births": {
+    "B-out": 1,
+    "B-path": 33,
+    "B1": 5
+   },
+   "birth_outcomes": {
+    "B-out:accepted": 1,
+    "B-path:accepted": 33,
+    "B-path:cost": 126,
+    "B-path:no_root": 21,
+    "B-path:quota": 50,
+    "B1:accepted": 5,
+    "B1:deferred_output_first": 5
+   },
+   "deaths": {},
+   "last_accepted_birth_time": 400.0,
+   "first_cost_refusal_time": 420.0
+  },
+  {
+   "trace": "pilot_c2opin_d0.5_assay_i.json.gz",
+   "trace_sha256": "622d2d7f7c9d7233deb2a58bc6e1eb9a25e3e11d0adbe64b33f89223978f990a",
+   "log": "batt_c2_i_d0.5_k0.log",
+   "tag": "c2opin_d0.5_assay",
+   "start": "i",
+   "keyset": 0,
+   "A": 0.8487187672210807,
+   "B": 1.1724919102140758,
+   "E": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "gate_shape": false,
+   "assay_sites_with_E_ge_0_5": 0,
+   "assay_sites_with_E_zero": 8,
+   "late_connectivity_per_site": {
+    "0": 0.0,
+    "1": 0.0,
+    "2": 0.0,
+    "3": 0.0,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 0.0
+   },
+   "whole_run_connectivity_per_site": {
+    "0": 0.0,
+    "1": 0.077,
+    "2": 0.114,
+    "3": 0.151,
+    "4": 0.0,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 0.0
+   },
+   "late_any_path": 0.0,
+   "first_path_time": 80.1,
+   "first_path_site": 1,
+   "last_path_time": 602.7,
+   "longest_path_span": [
+    300.1,
+    370.5
+   ],
+   "longest_path_steps": 705,
+   "output_birth": [
+    {
+     "time": 40.0,
+     "role": "output",
+     "request": 7,
+     "pin": "root_relative"
+    }
+   ],
+   "final_O": [
+    0.0348,
+    0.4988
+   ],
+   "final_nearest_dO": [
+    1.925,
+    2.025,
+    2.033,
+    2.301
+   ],
+   "final_n": 44,
+   "births": {
+    "B-out": 1,
+    "B-path": 37,
+    "B1": 8
+   },
+   "birth_outcomes": {
+    "B-out:accepted": 1,
+    "B-out:no_root": 1,
+    "B-path:accepted": 37,
+    "B-path:cost": 95,
+    "B-path:no_output": 3,
+    "B-path:no_root": 4,
+    "B-path:quota": 49,
+    "B1:accepted": 8,
+    "B1:deferred_output_first": 2,
+    "B1:quota": 1
+   },
+   "deaths": {
+    "D3": 2
+   },
+   "last_accepted_birth_time": 600.0,
+   "first_cost_refusal_time": 420.0
+  },
+  {
+   "trace": "pilot_c2opin_d1.5_assay_i.json.gz",
+   "trace_sha256": "f8aa1a4ced918b5d9f0aded862cb8e72367754e5f87b5e64698447a568acc062",
+   "log": "batt_c2_i_d1.5_k0.log",
+   "tag": "c2opin_d1.5_assay",
+   "start": "i",
+   "keyset": 0,
+   "A": 1.1495571130238298,
+   "B": 1.204109703899822,
+   "E": [
+    0.0,
+    0.4667,
+    0.8,
+    0.6,
+    0.7,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "gate_shape": true,
+   "assay_sites_with_E_ge_0_5": 3,
+   "assay_sites_with_E_zero": 4,
+   "late_connectivity_per_site": {
+    "0": 0.0,
+    "1": 0.5,
+    "2": 1.0,
+    "3": 1.0,
+    "4": 1.0,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 0.0
+   },
+   "whole_run_connectivity_per_site": {
+    "0": 0.0,
+    "1": 0.237,
+    "2": 0.692,
+    "3": 0.594,
+    "4": 0.537,
+    "5": 0.0,
+    "6": 0.0,
+    "7": 0.0
+   },
+   "late_any_path": 0.9,
+   "first_path_time": 41.3,
+   "first_path_site": 1,
+   "last_path_time": 800.0,
+   "longest_path_span": [
+    380.1,
+    640.0
+   ],
+   "longest_path_steps": 2600,
+   "output_birth": [
+    {
+     "time": 40.0,
+     "role": "output",
+     "request": 7,
+     "pin": "root_relative"
+    }
+   ],
+   "final_O": [
+    0.1044,
+    1.4964
+   ],
+   "final_nearest_dO": [
+    0.347,
+    0.361,
+    0.373,
+    0.514
+   ],
+   "final_n": 45,
+   "births": {
+    "B-out": 1,
+    "B-path": 34,
+    "B1": 10
+   },
+   "birth_outcomes": {
+    "B-out:accepted": 1,
+    "B-out:no_root": 1,
+    "B-path:accepted": 34,
+    "B-path:cost": 37,
+    "B-path:no_output": 3,
+    "B-path:no_root": 24,
+    "B-path:quota": 38,
+    "B1:accepted": 10,
+    "B1:cost": 26,
+    "B1:deferred_output_first": 2
+   },
+   "deaths": {},
+   "last_accepted_birth_time": 480.0,
+   "first_cost_refusal_time": 440.0
+  }
+ ]
+}

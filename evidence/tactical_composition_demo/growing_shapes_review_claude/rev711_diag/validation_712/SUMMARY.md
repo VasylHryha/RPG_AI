@@ -29,11 +29,11 @@
 | origin | (i) | 2 | - | - | 1.246 | 0.916 | 0.70 | 0.500 | PASS | `batt_base_i_k2.log` |
 | origin | (i) | 3 | - | - | 1.453 | 1.249 | 0.36 | 0.237 | fail | `batt2_base_i_k3.log` |
 | origin | (i) | 4 | - | - | 0.763 | 0.582 | 0.00 | 0.000 | fail | `batt2_base_i_k4.log` |
-| origin | (ii) | 0 | - | - | 1.451 | 1.303 | 0.80 | 0.323 | PASS | `assay_pilot_baseline_ii.log` |
-| origin | (ii) | 1 | - | - | 0.911 | 0.717 | 0.00 | 0.000 | fail | `batt_base_ii_k1.log` |
-| origin | (ii) | 2 | - | - | 1.391 | 1.228 | 0.00 | 0.000 | fail | `batt_base_ii_k2.log` |
-| origin | (ii) | 3 | - | - | 0.236 | 0.197 | 0.00 | 0.000 | fail | `batt2_base_ii_k3.log` |
-| origin | (ii) | 4 | - | - | 0.657 | 0.477 | 0.00 | 0.000 | fail | `batt2_base_ii_k4.log` |
+| legacy seeded pin (−0.5, 0) | (ii) | 0 | - | - | 1.451 | 1.303 | 0.80 | 0.323 | PASS | `assay_pilot_baseline_ii.log` |
+| legacy seeded pin (−0.5, 0) | (ii) | 1 | - | - | 0.911 | 0.717 | 0.00 | 0.000 | fail | `batt_base_ii_k1.log` |
+| legacy seeded pin (−0.5, 0) | (ii) | 2 | - | - | 1.391 | 1.228 | 0.00 | 0.000 | fail | `batt_base_ii_k2.log` |
+| legacy seeded pin (−0.5, 0) | (ii) | 3 | - | - | 0.236 | 0.197 | 0.00 | 0.000 | fail | `batt2_base_ii_k3.log` |
+| legacy seeded pin (−0.5, 0) | (ii) | 4 | - | - | 0.657 | 0.477 | 0.00 | 0.000 | fail | `batt2_base_ii_k4.log` |
 
 | Rule | Direction | Distance | Start | Passes |
 |---|---|---|---|---|
@@ -46,4 +46,6 @@
 | C2 | root | 1.0 | (ii) | 3/5 |
 | C2 | root | 1.5 | (i) | 1/1 |
 | origin | - | - | (i) | 2/5 |
-| origin | - | - | (ii) | 1/5 |
+| legacy seeded pin (−0.5, 0) | - | - | (ii) | 1/5 |
+
+**Naming (revision 2, Codex R4):** "origin" rows are the 7.11 origin pin in the empty start (i). In the seeded start (ii) the 7.11 control is the literal start's O at (−0.5, 0), labelled here as the legacy seeded pin. Per-site E, connectivity and event histories for every row: `STORED_ANALYSIS.json`; provenance: `PROVENANCE.md`.
