@@ -11,6 +11,7 @@ import time
 
 OUT=Path(__file__).resolve().parent
 LOCAL=OUT/'_local'
+CAP=12600  # owner approval 2026-10-07 ~14:20 (decision 0031, >1 h daytime): full plan now, about 2-3 h; cap 3.5 h
 PATTERN=r'(^|/)[Pp]ython[^ ]* [^ ]*s4_spacing_probe_v1/|^[^ ]*ai_RPG_test/[^ ]*astelia_native[^ ]*( |$)'  # Claude 2026-10-07: matches this repo's 0g probe python and native hosts only; never another project's tactics_lab_host, and never a concurrent worker's own pgrep (which made the first launch stop falsely)
 
 
@@ -64,7 +65,7 @@ def schedule(pool,jobs,ticket,baseline,started,cpu_estimate=660.,future_groups=(
     # 10 concurrent slots is a cap, not a promise of 10 effective CPUs.
     elapsed=time.monotonic()-started
     projected=elapsed+sum(math.ceil(n/min(10,os.cpu_count() or 1)) for n in (len(jobs),*future_groups))*cpu_estimate
-    if projected>=3600: raise RuntimeError(f'STOP projection {projected:.1f}s exceeds 1 hour')
+    if projected>=CAP: raise RuntimeError(f'STOP projection {projected:.1f}s exceeds the approved cap {CAP}s')
     check_frozen(baseline)
     results=list(pool.map(lambda job:worker(job,ticket),jobs))
     check_frozen(baseline)
@@ -87,9 +88,9 @@ def main():
     started=time.monotonic();baseline=code_hashes()
     ticket=LOCAL/'RUN_TICKET.json'
     initial_projection=sum(math.ceil(n/min(10,os.cpu_count() or 1)) for n in (2,19,10))*660
-    if initial_projection>=3600:
+    if initial_projection>=CAP:
         (OUT/'SERVICE_PREFLIGHT.json').write_text(json.dumps(dict(status='PROJECTION_STOP',projection_seconds=initial_projection,checks=checks),indent=2)+'\n');return 2
-    data=dict(status='RUNNING',started_epoch=time.time(),deadline_epoch=time.time()+3600,code_hashes=baseline,projection_seconds=initial_projection)
+    data=dict(status='RUNNING',started_epoch=time.time(),deadline_epoch=time.time()+CAP,code_hashes=baseline,projection_seconds=initial_projection)
     if ticket.exists():  # resume: keep every earlier attempt's ticket unchanged under a new name
         n=1
         while (LOCAL/f'RUN_TICKET_attempt{n}.json').exists(): n+=1
