@@ -1,17 +1,17 @@
 {
-  "status": "UNAVAILABLE",
+  "status": "CLEAR",
   "attempts": [
     {
-      "utc": "2026-10-07T10:27:54Z",
+      "utc": "2026-10-07T11:15:58Z",
       "argv": [
         "pgrep",
         "-fl",
         "(^|/|[[:space:]])[Pp]ython[^[:space:]]*[[:space:]].*(rev711_diag.*pilot|pilot.*rev711_diag|medium_variants.*telemetry|telemetry.*medium_variants)"
       ],
-      "returncode": 3,
+      "returncode": 1,
       "stdout": "",
-      "stderr": "sysmon request failed with error: sysmond service not found\npgrep: Cannot get process list\n"
+      "stderr": ""
     }
   ],
-  "wait_wall_seconds": 0.02446913719177246
+  "wait_wall_seconds": 0.03881669044494629
 }

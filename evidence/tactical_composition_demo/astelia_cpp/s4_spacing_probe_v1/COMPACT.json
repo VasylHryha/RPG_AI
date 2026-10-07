@@ -1,450 +1,1309 @@
 {
-  "status": "NOT_RUN",
-  "completed_fights": 0,
-  "declared_fights": 120,
-  "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat.",
+  "status": "DONE",
+  "scope": "descriptive development only",
   "P5_sanity": {
-    "status": "NOT_RUN",
-    "reported_first": true,
-    "regular_own_gun_losses": null,
-    "regular_enemy_gun_kills": null,
-    "reason": "P5 control block not completed"
+    "status": "WITHIN_DECLARED_BOUNDS",
+    "regular_mean_enemy_guns_destroyed": 3.4,
+    "regular_mean_own_gun_losses": 10.0,
+    "reported_before_other_arms": true,
+    "control_completed": 40
   },
   "rows": [
     {
       "arm": "P5",
       "head": "regular",
-      "completed_fights": 0,
-      "measurements": {
-        "elimination_wins": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
+      "fights": 20,
+      "elimination_wins": 0,
+      "timeouts": 17,
+      "mean_S": -19.95,
+      "mean_enemy_guns_destroyed": 3.4,
+      "mean_own_guns_lost": 10,
+      "mean_gun_exchange": -6.6,
+      "mean_own_losses": 42.9,
+      "own_losses_per_enemy_kill": 1.869281045751634,
+      "elimination_times_s": [],
+      "first_enemy_gun_kill_s": {
+        "n": 20,
+        "mean": 14.246666666666627,
+        "median": 14.049999999999962,
+        "min": 13.799999999999962,
+        "max": 15.466666666666622
+      },
+      "first_enemy_gun_kill_censored": 0,
+      "sides": [
+        {
+          "counts": {
+            "living_ticks": 109462,
+            "any_target_range_ticks": 60783,
+            "gun_target_range_ticks": 39563,
+            "windup_ticks": 34553,
+            "launch_ticks": 1667,
+            "move_command_ticks": 108810,
+            "command_range_ticks": 60131,
+            "hold_range_ticks": 652,
+            "command_launch_ticks": 1645,
+            "hold_launch_ticks": 22,
+            "command_launch_range_ticks": 1645,
+            "hold_launch_range_ticks": 22,
+            "movement_known_ticks": 109262,
+            "moving_ticks": 105615,
+            "moving_launch_ticks": 1556,
+            "stationary_launch_ticks": 107,
+            "target_switches": 1825,
+            "incoming_damage_1_ranged": 3868,
+            "incoming_damage_1_artillery": 31815,
+            "death_interval_ticks": 200,
+            "incoming_damage_1_melee": 354,
+            "other_target_shell_gun_victims": 0,
+            "other_target_shell_gun_damage": 0,
+            "shells_hitting_0_guns": 742,
+            "launches": 1667,
+            "other_launches": 581,
+            "launches_with_airborne_target_switch": 478,
+            "gun_target_shell_gun_victims": 1094,
+            "gun_target_shell_gun_damage": 15461,
+            "shells_hitting_1_guns": 758,
+            "gun_launches": 1086,
+            "gun_launches_hit_any_gun": 925,
+            "gun_launches_hit_intended_gun": 918,
+            "shells_hitting_2_guns": 165,
+            "gun_launches_with_airborne_target_switch": 303,
+            "gun_launches_with_airborne_target_switch_hit": 153,
+            "gun_launches_target_dead_before_scheduled_impact": 165,
+            "gun_launches_no_gun_hit_target_dead_before_scheduled_impact": 159,
+            "incoming_damage_0_ranged": 163,
+            "shells_hitting_3_guns": 2
+          },
+          "gun_targeted_launches": 1086,
+          "successful_gun_targeted_shells": 925,
+          "gun_victims": 1094,
+          "gun_victims_per_successful_shell": 1.1827027027027026,
+          "artillery_hp_to_opposing_guns": 15461,
+          "incidental_hp": 0,
+          "already_dead_before_impact": 165,
+          "airborne_at_end": 0
         },
-        "timeouts": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "S": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "enemy_guns_destroyed": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "own_guns_lost": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "own_losses": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "gun_victims_per_successful_shell_both_sides": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "nearest_own_gun_median_px": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "nearest_own_gun_p10_px": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "enemy_over_own_artillery_hp_ratio": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "already_dead_before_impact_both_sides": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "killers": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "realization_audits": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
+        {
+          "counts": {
+            "living_ticks": 566316,
+            "any_target_range_ticks": 79460,
+            "gun_target_range_ticks": 38861,
+            "windup_ticks": 402300,
+            "launch_ticks": 2194,
+            "move_command_ticks": 566316,
+            "command_range_ticks": 79460,
+            "hold_range_ticks": 0,
+            "command_launch_ticks": 2194,
+            "hold_launch_ticks": 0,
+            "command_launch_range_ticks": 2193,
+            "hold_launch_range_ticks": 0,
+            "movement_known_ticks": 566248,
+            "moving_ticks": 281507,
+            "moving_launch_ticks": 1632,
+            "stationary_launch_ticks": 561,
+            "target_switches": 3319,
+            "incoming_damage_0_artillery": 15461,
+            "death_interval_ticks": 68,
+            "incoming_damage_0_ranged": 376,
+            "other_target_shell_gun_victims": 526,
+            "other_target_shell_gun_damage": 7890,
+            "shells_hitting_0_guns": 1563,
+            "launches": 2194,
+            "other_launches": 1668,
+            "launches_with_airborne_target_switch": 1282,
+            "shells_hitting_5_guns": 65,
+            "other_launches_hit_gun": 158,
+            "shells_hitting_4_guns": 84,
+            "shells_hitting_7_guns": 49,
+            "shells_hitting_6_guns": 57,
+            "gun_target_shell_gun_victims": 1680,
+            "gun_target_shell_gun_damage": 23925,
+            "gun_launches": 526,
+            "gun_launches_hit_any_gun": 473,
+            "gun_launches_hit_intended_gun": 396,
+            "gun_launches_with_airborne_target_switch": 304,
+            "gun_launches_with_airborne_target_switch_hit": 255,
+            "gun_launches_target_dead_before_scheduled_impact": 124,
+            "shells_hitting_3_guns": 114,
+            "shells_hitting_2_guns": 102,
+            "shells_hitting_1_guns": 139,
+            "gun_launches_no_gun_hit_target_dead_before_scheduled_impact": 49,
+            "shells_hitting_8_guns": 14,
+            "shells_hitting_9_guns": 7
+          },
+          "gun_targeted_launches": 526,
+          "successful_gun_targeted_shells": 473,
+          "gun_victims": 1680,
+          "gun_victims_per_successful_shell": 3.551797040169133,
+          "artillery_hp_to_opposing_guns": 31815,
+          "incidental_hp": 7890,
+          "already_dead_before_impact": 124,
+          "airborne_at_end": 0
         }
+      ],
+      "enemy_over_own_artillery_hp_ratio": 2.057758230386133,
+      "nearest": [
+        {
+          "n": 108613,
+          "median": 19.99999999999992,
+          "p10": 19.16059733599432
+        },
+        {
+          "n": 566248,
+          "median": 47.43338991296156,
+          "p10": 19.999999999194586
+        }
+      ],
+      "early_10_20_nearest": [
+        {
+          "n": 47508,
+          "median": 19.80824333306822,
+          "p10": 18.793057475743755
+        },
+        {
+          "n": 52791,
+          "median": 47.34880662227318,
+          "p10": 31.15842502152507
+        }
+      ],
+      "nearest_singleton_ticks": [
+        649,
+        0
+      ],
+      "gun_phase_ticks": [
+        109262,
+        566248
+      ],
+      "gun_range_ticks": [
+        39563,
+        38861
+      ],
+      "gun_range_fraction": [
+        0.3620929508886896,
+        0.06862893996976589
+      ],
+      "audit": {},
+      "raw_shift_px": {
+        "n": 0,
+        "median": null,
+        "p10": null
+      },
+      "raw_goal_focus_radius_px": {
+        "n": 0,
+        "median": null,
+        "p10": null
+      },
+      "killers_by_source_team_role": {
+        "0_artillery": 255,
+        "0_ranged": 140,
+        "1_artillery": 606,
+        "1_melee": 34,
+        "1_ranged": 268,
+        "0_melee": 14
+      },
+      "own_gun_killers_by_team_role": {
+        "1_artillery": 151,
+        "1_ranged": 40,
+        "1_melee": 7,
+        "0_ranged": 2
       }
     },
     {
       "arm": "P5",
       "head": "novice",
-      "completed_fights": 0,
-      "measurements": {
-        "elimination_wins": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
+      "fights": 20,
+      "elimination_wins": 20,
+      "timeouts": 0,
+      "mean_S": 38.55,
+      "mean_enemy_guns_destroyed": 10,
+      "mean_own_guns_lost": 1.3,
+      "mean_gun_exchange": 8.7,
+      "mean_own_losses": 11.45,
+      "own_losses_per_enemy_kill": 0.229,
+      "elimination_times_s": [
+        28.233333333333896,
+        29.300000000000615,
+        33.600000000000655,
+        29.033333333333935,
+        28.500000000000576,
+        29.166666666667275,
+        27.166666666667176,
+        32.53333333333405,
+        28.53333333333391,
+        27.53333333333386,
+        31.300000000000715,
+        26.40000000000047,
+        26.86666666666716,
+        29.73333333333397,
+        30.86666666666736,
+        30.966666666667365,
+        26.366666666667136,
+        25.700000000000436,
+        28.73333333333392,
+        26.80000000000049
+      ],
+      "first_enemy_gun_kill_s": {
+        "n": 20,
+        "mean": 11.46999999999997,
+        "median": 11.549999999999969,
+        "min": 10.433333333333307,
+        "max": 11.766666666666636
+      },
+      "first_enemy_gun_kill_censored": 0,
+      "sides": [
+        {
+          "counts": {
+            "living_ticks": 162947,
+            "any_target_range_ticks": 98957,
+            "gun_target_range_ticks": 37461,
+            "windup_ticks": 67423,
+            "launch_ticks": 2791,
+            "move_command_ticks": 162291,
+            "command_range_ticks": 98301,
+            "hold_range_ticks": 656,
+            "command_launch_ticks": 2773,
+            "hold_launch_ticks": 18,
+            "command_launch_range_ticks": 2773,
+            "hold_launch_range_ticks": 18,
+            "movement_known_ticks": 162921,
+            "moving_ticks": 160631,
+            "moving_launch_ticks": 2734,
+            "stationary_launch_ticks": 56,
+            "target_switches": 4181,
+            "incoming_damage_1_artillery": 6405,
+            "incoming_damage_1_ranged": 8721,
+            "incoming_damage_0_ranged": 144,
+            "incoming_damage_1_melee": 609,
+            "death_interval_ticks": 26,
+            "other_target_shell_gun_victims": 0,
+            "other_target_shell_gun_damage": 0,
+            "shells_hitting_0_guns": 1999,
+            "launches": 2791,
+            "other_launches": 1758,
+            "gun_target_shell_gun_victims": 2600,
+            "gun_target_shell_gun_damage": 36200,
+            "shells_hitting_4_guns": 146,
+            "gun_launches": 1033,
+            "gun_launches_hit_any_gun": 792,
+            "gun_launches_hit_intended_gun": 692,
+            "launches_with_airborne_target_switch": 1190,
+            "shells_hitting_3_guns": 76,
+            "gun_launches_with_airborne_target_switch": 432,
+            "gun_launches_with_airborne_target_switch_hit": 196,
+            "shells_hitting_5_guns": 75,
+            "shells_hitting_2_guns": 127,
+            "gun_launches_target_dead_before_scheduled_impact": 335,
+            "shells_hitting_1_guns": 232,
+            "gun_launches_no_gun_hit_target_dead_before_scheduled_impact": 238,
+            "incoming_damage_0_artillery": 50,
+            "shells_hitting_6_guns": 41,
+            "shells_hitting_7_guns": 79,
+            "shells_hitting_8_guns": 16
+          },
+          "gun_targeted_launches": 1033,
+          "successful_gun_targeted_shells": 792,
+          "gun_victims": 2600,
+          "gun_victims_per_successful_shell": 3.282828282828283,
+          "artillery_hp_to_opposing_guns": 36200,
+          "incidental_hp": 0,
+          "already_dead_before_impact": 335,
+          "airborne_at_end": 0
         },
-        "timeouts": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "S": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "enemy_guns_destroyed": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "own_guns_lost": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "own_losses": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "gun_victims_per_successful_shell_both_sides": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "nearest_own_gun_median_px": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "nearest_own_gun_p10_px": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "enemy_over_own_artillery_hp_ratio": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "already_dead_before_impact_both_sides": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "killers": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "realization_audits": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
+        {
+          "counts": {
+            "living_ticks": 77904,
+            "any_target_range_ticks": 36661,
+            "gun_target_range_ticks": 21415,
+            "windup_ticks": 20926,
+            "launch_ticks": 1019,
+            "move_command_ticks": 42745,
+            "command_range_ticks": 1502,
+            "hold_range_ticks": 35159,
+            "command_launch_ticks": 53,
+            "hold_launch_ticks": 966,
+            "command_launch_range_ticks": 53,
+            "hold_launch_range_ticks": 966,
+            "movement_known_ticks": 77704,
+            "moving_ticks": 54208,
+            "moving_launch_ticks": 361,
+            "stationary_launch_ticks": 656,
+            "target_switches": 1481,
+            "incoming_damage_0_artillery": 36200,
+            "death_interval_ticks": 200,
+            "other_target_shell_gun_victims": 71,
+            "other_target_shell_gun_damage": 1065,
+            "shells_hitting_0_guns": 890,
+            "launches": 1019,
+            "other_launches": 937,
+            "shells_hitting_2_guns": 12,
+            "other_launches_hit_gun": 47,
+            "launches_with_airborne_target_switch": 320,
+            "shells_hitting_5_guns": 19,
+            "gun_target_shell_gun_victims": 358,
+            "gun_target_shell_gun_damage": 5340,
+            "shells_hitting_3_guns": 21,
+            "gun_launches": 82,
+            "gun_launches_hit_any_gun": 82,
+            "gun_launches_hit_intended_gun": 70,
+            "gun_launches_with_airborne_target_switch": 27,
+            "gun_launches_with_airborne_target_switch_hit": 27,
+            "shells_hitting_1_guns": 39,
+            "shells_hitting_6_guns": 19,
+            "shells_hitting_7_guns": 6,
+            "gun_launches_target_dead_before_scheduled_impact": 11,
+            "shells_hitting_4_guns": 13
+          },
+          "gun_targeted_launches": 82,
+          "successful_gun_targeted_shells": 82,
+          "gun_victims": 358,
+          "gun_victims_per_successful_shell": 4.365853658536586,
+          "artillery_hp_to_opposing_guns": 6405,
+          "incidental_hp": 1065,
+          "already_dead_before_impact": 11,
+          "airborne_at_end": 0
         }
+      ],
+      "enemy_over_own_artillery_hp_ratio": 0.17693370165745856,
+      "nearest": [
+        {
+          "n": 94309,
+          "median": 19.98283069576771,
+          "p10": 18.83272626352351
+        },
+        {
+          "n": 77117,
+          "median": 20.000000000000046,
+          "p10": 19.88320934172132
+        }
+      ],
+      "early_10_20_nearest": [
+        {
+          "n": 34309,
+          "median": 19.41687668341747,
+          "p10": 18.426829471875678
+        },
+        {
+          "n": 17117,
+          "median": 20.00068851413621,
+          "p10": 19.997541567592275
+        }
+      ],
+      "nearest_singleton_ticks": [
+        0,
+        587
+      ],
+      "gun_phase_ticks": [
+        94309,
+        77704
+      ],
+      "gun_range_ticks": [
+        37461,
+        21415
+      ],
+      "gun_range_fraction": [
+        0.3972155361630385,
+        0.275597137856481
+      ],
+      "audit": {},
+      "raw_shift_px": {
+        "n": 0,
+        "median": null,
+        "p10": null
+      },
+      "raw_goal_focus_radius_px": {
+        "n": 0,
+        "median": null,
+        "p10": null
+      },
+      "killers_by_source_team_role": {
+        "0_artillery": 748,
+        "1_artillery": 194,
+        "1_ranged": 51,
+        "0_ranged": 199,
+        "1_melee": 18,
+        "0_melee": 19
+      },
+      "own_gun_killers_by_team_role": {
+        "1_ranged": 17,
+        "1_artillery": 7,
+        "1_melee": 1,
+        "0_artillery": 1
       }
     },
     {
       "arm": "P10",
       "head": "regular",
-      "completed_fights": 0,
-      "measurements": {
-        "elimination_wins": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
+      "fights": 20,
+      "elimination_wins": 0,
+      "timeouts": 17,
+      "mean_S": -14.95,
+      "mean_enemy_guns_destroyed": 6.2,
+      "mean_own_guns_lost": 10,
+      "mean_gun_exchange": -3.8,
+      "mean_own_losses": 39.95,
+      "own_losses_per_enemy_kill": 1.598,
+      "elimination_times_s": [],
+      "first_enemy_gun_kill_s": {
+        "n": 20,
+        "mean": 15.69999999999996,
+        "median": 15.649999999999956,
+        "min": 15.03333333333329,
+        "max": 16.733333333333324
+      },
+      "first_enemy_gun_kill_censored": 0,
+      "sides": [
+        {
+          "counts": {
+            "living_ticks": 143004,
+            "any_target_range_ticks": 93003,
+            "gun_target_range_ticks": 66238,
+            "windup_ticks": 52626,
+            "launch_ticks": 2552,
+            "move_command_ticks": 140987,
+            "command_range_ticks": 90986,
+            "hold_range_ticks": 2017,
+            "command_launch_ticks": 2503,
+            "hold_launch_ticks": 49,
+            "command_launch_range_ticks": 2503,
+            "hold_launch_range_ticks": 49,
+            "movement_known_ticks": 142804,
+            "moving_ticks": 134738,
+            "moving_launch_ticks": 2323,
+            "stationary_launch_ticks": 224,
+            "target_switches": 3792,
+            "incoming_damage_1_artillery": 19851,
+            "incoming_damage_1_ranged": 14083,
+            "incoming_damage_0_ranged": 1553,
+            "incoming_damage_1_melee": 632,
+            "death_interval_ticks": 200,
+            "other_target_shell_gun_victims": 0,
+            "other_target_shell_gun_damage": 0,
+            "shells_hitting_0_guns": 869,
+            "launches": 2552,
+            "other_launches": 727,
+            "launches_with_airborne_target_switch": 571,
+            "gun_target_shell_gun_victims": 1799,
+            "gun_target_shell_gun_damage": 25440,
+            "shells_hitting_1_guns": 1567,
+            "gun_launches": 1825,
+            "gun_launches_hit_any_gun": 1683,
+            "gun_launches_hit_intended_gun": 1674,
+            "gun_launches_with_airborne_target_switch": 301,
+            "gun_launches_with_airborne_target_switch_hit": 176,
+            "shells_hitting_2_guns": 116,
+            "gun_launches_target_dead_before_scheduled_impact": 140,
+            "gun_launches_no_gun_hit_target_dead_before_scheduled_impact": 131,
+            "incoming_damage_0_artillery": 81
+          },
+          "gun_targeted_launches": 1825,
+          "successful_gun_targeted_shells": 1683,
+          "gun_victims": 1799,
+          "gun_victims_per_successful_shell": 1.0689245395127749,
+          "artillery_hp_to_opposing_guns": 25440,
+          "incidental_hp": 0,
+          "already_dead_before_impact": 140,
+          "airborne_at_end": 0
         },
-        "timeouts": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "S": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "enemy_guns_destroyed": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "own_guns_lost": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "own_losses": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "gun_victims_per_successful_shell_both_sides": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "nearest_own_gun_median_px": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "nearest_own_gun_p10_px": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "enemy_over_own_artillery_hp_ratio": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "already_dead_before_impact_both_sides": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "killers": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "realization_audits": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
+        {
+          "counts": {
+            "living_ticks": 416057,
+            "any_target_range_ticks": 92751,
+            "gun_target_range_ticks": 74979,
+            "windup_ticks": 267983,
+            "launch_ticks": 2523,
+            "move_command_ticks": 416056,
+            "command_range_ticks": 92750,
+            "hold_range_ticks": 1,
+            "command_launch_ticks": 2523,
+            "hold_launch_ticks": 0,
+            "command_launch_range_ticks": 2521,
+            "hold_launch_range_ticks": 0,
+            "movement_known_ticks": 415933,
+            "moving_ticks": 169304,
+            "moving_launch_ticks": 1954,
+            "stationary_launch_ticks": 564,
+            "target_switches": 3404,
+            "incoming_damage_0_artillery": 25440,
+            "death_interval_ticks": 124,
+            "incoming_damage_0_ranged": 331,
+            "other_target_shell_gun_victims": 652,
+            "other_target_shell_gun_damage": 9635,
+            "shells_hitting_0_guns": 1242,
+            "launches": 2523,
+            "other_launches": 1624,
+            "launches_with_airborne_target_switch": 1278,
+            "shells_hitting_2_guns": 88,
+            "other_launches_hit_gun": 563,
+            "shells_hitting_1_guns": 1192,
+            "gun_target_shell_gun_victims": 719,
+            "gun_target_shell_gun_damage": 10216,
+            "gun_launches": 899,
+            "gun_launches_target_dead_before_scheduled_impact": 170,
+            "gun_launches_no_gun_hit_target_dead_before_scheduled_impact": 170,
+            "gun_launches_with_airborne_target_switch": 325,
+            "gun_launches_hit_any_gun": 718,
+            "gun_launches_hit_intended_gun": 718,
+            "gun_launches_with_airborne_target_switch_hit": 161,
+            "shells_hitting_3_guns": 1
+          },
+          "gun_targeted_launches": 899,
+          "successful_gun_targeted_shells": 718,
+          "gun_victims": 719,
+          "gun_victims_per_successful_shell": 1.001392757660167,
+          "artillery_hp_to_opposing_guns": 19851,
+          "incidental_hp": 9635,
+          "already_dead_before_impact": 170,
+          "airborne_at_end": 0
         }
+      ],
+      "enemy_over_own_artillery_hp_ratio": 0.7803066037735849,
+      "nearest": [
+        {
+          "n": 141023,
+          "median": 62.79875403561791,
+          "p10": 25.89165929116989
+        },
+        {
+          "n": 414495,
+          "median": 47.56924011320339,
+          "p10": 38.254160100558536
+        }
+      ],
+      "early_10_20_nearest": [
+        {
+          "n": 54806,
+          "median": 85.3714471011219,
+          "p10": 50.83785468049892
+        },
+        {
+          "n": 55648,
+          "median": 47.280458565126054,
+          "p10": 29.54282925775277
+        }
+      ],
+      "nearest_singleton_ticks": [
+        1781,
+        1438
+      ],
+      "gun_phase_ticks": [
+        142804,
+        415933
+      ],
+      "gun_range_ticks": [
+        66238,
+        74979
+      ],
+      "gun_range_fraction": [
+        0.46383854793983365,
+        0.18026701415853033
+      ],
+      "audit": {
+        "prepare_gun_ticks": 143004,
+        "clipped_goal_ticks": 1267,
+        "shift_ticks": 122083,
+        "zero_multiplier_shift_ticks": 267,
+        "raw_goal_out_of_focus_band_ticks": 44958,
+        "coincident_pair_terms": 0,
+        "neighbour_terms": 450528,
+        "clipped_action_reconciled_ticks": 143004
+      },
+      "raw_shift_px": {
+        "n": 143004,
+        "median": 33.45267083422952,
+        "p10": 0.0
+      },
+      "raw_goal_focus_radius_px": {
+        "n": 143004,
+        "median": 308.05532576095294,
+        "p10": 250.34640498966203
+      },
+      "killers_by_source_team_role": {
+        "0_artillery": 245,
+        "1_artillery": 523,
+        "0_ranged": 175,
+        "1_ranged": 332,
+        "1_melee": 15,
+        "0_melee": 9
+      },
+      "own_gun_killers_by_team_role": {
+        "1_melee": 3,
+        "1_artillery": 89,
+        "1_ranged": 99,
+        "0_ranged": 8,
+        "0_artillery": 1
       }
     },
     {
       "arm": "P10",
       "head": "novice",
-      "completed_fights": 0,
-      "measurements": {
-        "elimination_wins": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
+      "fights": 20,
+      "elimination_wins": 20,
+      "timeouts": 0,
+      "mean_S": 38.25,
+      "mean_enemy_guns_destroyed": 10,
+      "mean_own_guns_lost": 1.4,
+      "mean_gun_exchange": 8.6,
+      "mean_own_losses": 11.75,
+      "own_losses_per_enemy_kill": 0.235,
+      "elimination_times_s": [
+        31.433333333334055,
+        31.06666666666737,
+        21.433333333333557,
+        27.73333333333387,
+        24.966666666667066,
+        22.533333333333612,
+        32.76666666666737,
+        27.0000000000005,
+        29.166666666667275,
+        27.13333333333384,
+        28.366666666667236,
+        26.93333333333383,
+        22.933333333333632,
+        25.33333333333375,
+        38.33333333333372,
+        28.93333333333393,
+        25.80000000000044,
+        28.46666666666724,
+        31.566666666667395,
+        28.166666666667226
+      ],
+      "first_enemy_gun_kill_s": {
+        "n": 20,
+        "mean": 12.391666666666634,
+        "median": 12.516666666666634,
+        "min": 11.766666666666636,
+        "max": 13.16666666666663
+      },
+      "first_enemy_gun_kill_censored": 0,
+      "sides": [
+        {
+          "counts": {
+            "living_ticks": 157051,
+            "any_target_range_ticks": 88361,
+            "gun_target_range_ticks": 32642,
+            "windup_ticks": 68841,
+            "launch_ticks": 2495,
+            "move_command_ticks": 156787,
+            "command_range_ticks": 88097,
+            "hold_range_ticks": 264,
+            "command_launch_ticks": 2486,
+            "hold_launch_ticks": 9,
+            "command_launch_range_ticks": 2486,
+            "hold_launch_range_ticks": 9,
+            "movement_known_ticks": 157023,
+            "moving_ticks": 154616,
+            "moving_launch_ticks": 2444,
+            "stationary_launch_ticks": 50,
+            "target_switches": 7258,
+            "incoming_damage_0_ranged": 1576,
+            "incoming_damage_1_artillery": 4467,
+            "incoming_damage_1_ranged": 8056,
+            "incoming_damage_1_melee": 368,
+            "incoming_damage_0_artillery": 315,
+            "death_interval_ticks": 28,
+            "other_target_shell_gun_victims": 0,
+            "other_target_shell_gun_damage": 0,
+            "shells_hitting_0_guns": 1739,
+            "launches": 2495,
+            "other_launches": 1593,
+            "gun_target_shell_gun_victims": 2599,
+            "gun_target_shell_gun_damage": 36192,
+            "shells_hitting_4_guns": 111,
+            "gun_launches": 902,
+            "gun_launches_hit_any_gun": 756,
+            "gun_launches_hit_intended_gun": 681,
+            "launches_with_airborne_target_switch": 1068,
+            "gun_launches_with_airborne_target_switch": 342,
+            "gun_launches_with_airborne_target_switch_hit": 198,
+            "shells_hitting_5_guns": 105,
+            "shells_hitting_6_guns": 79,
+            "gun_launches_target_dead_before_scheduled_impact": 215,
+            "gun_launches_no_gun_hit_target_dead_before_scheduled_impact": 144,
+            "shells_hitting_2_guns": 162,
+            "shells_hitting_1_guns": 158,
+            "shells_hitting_3_guns": 82,
+            "shells_hitting_7_guns": 44,
+            "shells_hitting_8_guns": 15
+          },
+          "gun_targeted_launches": 902,
+          "successful_gun_targeted_shells": 756,
+          "gun_victims": 2599,
+          "gun_victims_per_successful_shell": 3.437830687830688,
+          "artillery_hp_to_opposing_guns": 36192,
+          "incidental_hp": 0,
+          "already_dead_before_impact": 215,
+          "airborne_at_end": 0
         },
-        "timeouts": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "S": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "enemy_guns_destroyed": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "own_guns_lost": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "own_losses": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "gun_victims_per_successful_shell_both_sides": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "nearest_own_gun_median_px": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "nearest_own_gun_p10_px": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "enemy_over_own_artillery_hp_ratio": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "already_dead_before_impact_both_sides": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "killers": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "realization_audits": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
+        {
+          "counts": {
+            "living_ticks": 84180,
+            "any_target_range_ticks": 42952,
+            "gun_target_range_ticks": 31373,
+            "windup_ticks": 24468,
+            "launch_ticks": 1191,
+            "move_command_ticks": 42705,
+            "command_range_ticks": 1477,
+            "hold_range_ticks": 41475,
+            "command_launch_ticks": 41,
+            "hold_launch_ticks": 1150,
+            "command_launch_range_ticks": 41,
+            "hold_launch_range_ticks": 1150,
+            "movement_known_ticks": 83980,
+            "moving_ticks": 55539,
+            "moving_launch_ticks": 391,
+            "stationary_launch_ticks": 799,
+            "target_switches": 1667,
+            "incoming_damage_0_artillery": 36192,
+            "death_interval_ticks": 200,
+            "other_target_shell_gun_victims": 115,
+            "other_target_shell_gun_damage": 1725,
+            "shells_hitting_0_guns": 897,
+            "launches": 1191,
+            "other_launches": 989,
+            "launches_with_airborne_target_switch": 432,
+            "shells_hitting_1_guns": 288,
+            "other_launches_hit_gun": 109,
+            "gun_target_shell_gun_victims": 185,
+            "gun_target_shell_gun_damage": 2742,
+            "gun_launches": 202,
+            "gun_launches_hit_any_gun": 185,
+            "gun_launches_hit_intended_gun": 185,
+            "gun_launches_with_airborne_target_switch": 70,
+            "gun_launches_with_airborne_target_switch_hit": 54,
+            "gun_launches_target_dead_before_scheduled_impact": 16,
+            "gun_launches_no_gun_hit_target_dead_before_scheduled_impact": 16,
+            "incoming_damage_0_ranged": 8,
+            "shells_hitting_2_guns": 6
+          },
+          "gun_targeted_launches": 202,
+          "successful_gun_targeted_shells": 185,
+          "gun_victims": 185,
+          "gun_victims_per_successful_shell": 1.0,
+          "artillery_hp_to_opposing_guns": 4467,
+          "incidental_hp": 1725,
+          "already_dead_before_impact": 16,
+          "airborne_at_end": 0
         }
+      ],
+      "enemy_over_own_artillery_hp_ratio": 0.12342506631299735,
+      "nearest": [
+        {
+          "n": 98129,
+          "median": 48.55274727903837,
+          "p10": 24.6572734747259
+        },
+        {
+          "n": 83358,
+          "median": 20.00000000000003,
+          "p10": 19.865802359627818
+        }
+      ],
+      "early_10_20_nearest": [
+        {
+          "n": 38129,
+          "median": 85.09426837972244,
+          "p10": 72.29140032487072
+        },
+        {
+          "n": 23358,
+          "median": 20.00000000000004,
+          "p10": 19.97218378376781
+        }
+      ],
+      "nearest_singleton_ticks": [
+        0,
+        622
+      ],
+      "gun_phase_ticks": [
+        98129,
+        83980
+      ],
+      "gun_range_ticks": [
+        32642,
+        31373
+      ],
+      "gun_range_fraction": [
+        0.3326437648401594,
+        0.37357704215289356
+      ],
+      "audit": {
+        "prepare_gun_ticks": 98146,
+        "clipped_goal_ticks": 0,
+        "shift_ticks": 97752,
+        "zero_multiplier_shift_ticks": 252,
+        "raw_goal_out_of_focus_band_ticks": 40649,
+        "coincident_pair_terms": 0,
+        "neighbour_terms": 379188,
+        "clipped_action_reconciled_ticks": 98146
+      },
+      "raw_shift_px": {
+        "n": 98146,
+        "median": 48.604514430620824,
+        "p10": 4.0361285212599345
+      },
+      "raw_goal_focus_radius_px": {
+        "n": 98146,
+        "median": 310.9677585221077,
+        "p10": 236.53030523239448
+      },
+      "killers_by_source_team_role": {
+        "0_artillery": 703,
+        "0_ranged": 247,
+        "1_artillery": 215,
+        "1_ranged": 34,
+        "1_melee": 17,
+        "0_melee": 19
+      },
+      "own_gun_killers_by_team_role": {
+        "1_artillery": 13,
+        "1_ranged": 14,
+        "0_ranged": 1
       }
     },
     {
       "arm": "P11",
       "head": "regular",
-      "completed_fights": 0,
-      "measurements": {
-        "elimination_wins": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
+      "fights": 20,
+      "elimination_wins": 2,
+      "timeouts": 12,
+      "mean_S": -9.65,
+      "mean_enemy_guns_destroyed": 7.55,
+      "mean_own_guns_lost": 9.95,
+      "mean_gun_exchange": -2.4,
+      "mean_own_losses": 41.1,
+      "own_losses_per_enemy_kill": 1.3068362480127187,
+      "elimination_times_s": [
+        69.59999999999862,
+        73.46666666666506
+      ],
+      "first_enemy_gun_kill_s": {
+        "n": 20,
+        "mean": 15.039999999999958,
+        "median": 15.049999999999958,
+        "min": 14.033333333333294,
+        "max": 16.199999999999964
+      },
+      "first_enemy_gun_kill_censored": 0,
+      "sides": [
+        {
+          "counts": {
+            "living_ticks": 155109,
+            "any_target_range_ticks": 105394,
+            "gun_target_range_ticks": 80420,
+            "windup_ticks": 59957,
+            "launch_ticks": 2909,
+            "move_command_ticks": 151820,
+            "command_range_ticks": 102105,
+            "hold_range_ticks": 3289,
+            "command_launch_ticks": 2802,
+            "hold_launch_ticks": 107,
+            "command_launch_range_ticks": 2802,
+            "hold_launch_range_ticks": 107,
+            "movement_known_ticks": 154910,
+            "moving_ticks": 139258,
+            "moving_launch_ticks": 2478,
+            "stationary_launch_ticks": 420,
+            "target_switches": 3087,
+            "incoming_damage_1_artillery": 18011,
+            "incoming_damage_1_ranged": 15630,
+            "incoming_damage_0_ranged": 1565,
+            "incoming_damage_1_melee": 904,
+            "death_interval_ticks": 199,
+            "other_target_shell_gun_victims": 0,
+            "other_target_shell_gun_damage": 0,
+            "shells_hitting_0_guns": 951,
+            "launches": 2909,
+            "other_launches": 685,
+            "launches_with_airborne_target_switch": 675,
+            "gun_target_shell_gun_victims": 2153,
+            "gun_target_shell_gun_damage": 30345,
+            "shells_hitting_1_guns": 1765,
+            "gun_launches": 2224,
+            "gun_launches_hit_any_gun": 1958,
+            "gun_launches_hit_intended_gun": 1939,
+            "gun_launches_with_airborne_target_switch": 435,
+            "gun_launches_with_airborne_target_switch_hit": 179,
+            "shells_hitting_2_guns": 191,
+            "gun_launches_target_dead_before_scheduled_impact": 279,
+            "gun_launches_no_gun_hit_target_dead_before_scheduled_impact": 260,
+            "incoming_damage_0_artillery": 60,
+            "shells_hitting_3_guns": 2
+          },
+          "gun_targeted_launches": 2224,
+          "successful_gun_targeted_shells": 1958,
+          "gun_victims": 2153,
+          "gun_victims_per_successful_shell": 1.099591419816139,
+          "artillery_hp_to_opposing_guns": 30345,
+          "incidental_hp": 0,
+          "already_dead_before_impact": 279,
+          "airborne_at_end": 0
         },
-        "timeouts": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "S": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "enemy_guns_destroyed": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "own_guns_lost": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "own_losses": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "gun_victims_per_successful_shell_both_sides": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "nearest_own_gun_median_px": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "nearest_own_gun_p10_px": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "enemy_over_own_artillery_hp_ratio": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "already_dead_before_impact_both_sides": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "killers": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "realization_audits": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
+        {
+          "counts": {
+            "living_ticks": 301348,
+            "any_target_range_ticks": 89933,
+            "gun_target_range_ticks": 70182,
+            "windup_ticks": 164340,
+            "launch_ticks": 2353,
+            "move_command_ticks": 301348,
+            "command_range_ticks": 89933,
+            "hold_range_ticks": 0,
+            "command_launch_ticks": 2353,
+            "hold_launch_ticks": 0,
+            "command_launch_range_ticks": 2352,
+            "hold_launch_range_ticks": 0,
+            "movement_known_ticks": 301197,
+            "moving_ticks": 154006,
+            "moving_launch_ticks": 1792,
+            "stationary_launch_ticks": 555,
+            "target_switches": 3085,
+            "incoming_damage_0_artillery": 30345,
+            "death_interval_ticks": 151,
+            "incoming_damage_0_ranged": 433,
+            "other_target_shell_gun_victims": 635,
+            "other_target_shell_gun_damage": 9458,
+            "shells_hitting_0_guns": 1332,
+            "launches": 2353,
+            "other_launches": 1675,
+            "launches_with_airborne_target_switch": 1139,
+            "shells_hitting_1_guns": 830,
+            "other_launches_hit_gun": 452,
+            "shells_hitting_2_guns": 171,
+            "shells_hitting_3_guns": 17,
+            "gun_target_shell_gun_victims": 600,
+            "gun_target_shell_gun_damage": 8553,
+            "gun_launches": 678,
+            "gun_launches_hit_any_gun": 569,
+            "gun_launches_hit_intended_gun": 565,
+            "gun_launches_with_airborne_target_switch": 265,
+            "gun_launches_with_airborne_target_switch_hit": 160,
+            "gun_launches_target_dead_before_scheduled_impact": 111,
+            "gun_launches_no_gun_hit_target_dead_before_scheduled_impact": 107,
+            "shells_hitting_4_guns": 3
+          },
+          "gun_targeted_launches": 678,
+          "successful_gun_targeted_shells": 569,
+          "gun_victims": 600,
+          "gun_victims_per_successful_shell": 1.054481546572935,
+          "artillery_hp_to_opposing_guns": 18011,
+          "incidental_hp": 9458,
+          "already_dead_before_impact": 111,
+          "airborne_at_end": 0
         }
+      ],
+      "enemy_over_own_artillery_hp_ratio": 0.5935409457900808,
+      "nearest": [
+        {
+          "n": 151546,
+          "median": 50.54412966870029,
+          "p10": 21.215834678362327
+        },
+        {
+          "n": 290734,
+          "median": 47.59999999999994,
+          "p10": 32.61991285247418
+        }
+      ],
+      "early_10_20_nearest": [
+        {
+          "n": 57907,
+          "median": 56.96052959522252,
+          "p10": 35.6602632171845
+        },
+        {
+          "n": 53941,
+          "median": 47.312904754944284,
+          "p10": 26.538984306332672
+        }
+      ],
+      "nearest_singleton_ticks": [
+        771,
+        10463
+      ],
+      "gun_phase_ticks": [
+        152317,
+        301197
+      ],
+      "gun_range_ticks": [
+        80420,
+        70182
+      ],
+      "gun_range_fraction": [
+        0.5279778356979195,
+        0.23301028894710107
+      ],
+      "audit": {
+        "prepare_gun_ticks": 152506,
+        "clipped_goal_ticks": 70,
+        "shift_ticks": 113839,
+        "zero_multiplier_shift_ticks": 239,
+        "raw_goal_out_of_focus_band_ticks": 31811,
+        "coincident_pair_terms": 0,
+        "neighbour_terms": 349502,
+        "clipped_action_reconciled_ticks": 152506
+      },
+      "raw_shift_px": {
+        "n": 152506,
+        "median": 7.910084257187897,
+        "p10": 0.0
+      },
+      "raw_goal_focus_radius_px": {
+        "n": 152506,
+        "median": 308.00000000000006,
+        "p10": 279.65718562677836
+      },
+      "killers_by_source_team_role": {
+        "0_artillery": 327,
+        "1_ranged": 432,
+        "1_artillery": 467,
+        "1_melee": 18,
+        "0_ranged": 191,
+        "0_melee": 16
+      },
+      "own_gun_killers_by_team_role": {
+        "1_artillery": 64,
+        "1_melee": 5,
+        "0_ranged": 6,
+        "1_ranged": 124
       }
     },
     {
       "arm": "P11",
       "head": "novice",
-      "completed_fights": 0,
-      "measurements": {
-        "elimination_wins": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
+      "fights": 20,
+      "elimination_wins": 20,
+      "timeouts": 0,
+      "mean_S": 38.7,
+      "mean_enemy_guns_destroyed": 10,
+      "mean_own_guns_lost": 1.3,
+      "mean_gun_exchange": 8.7,
+      "mean_own_losses": 11.3,
+      "own_losses_per_enemy_kill": 0.226,
+      "elimination_times_s": [
+        26.26666666666713,
+        31.06666666666737,
+        28.26666666666723,
+        28.700000000000585,
+        26.566666666667146,
+        30.366666666667335,
+        30.900000000000695,
+        30.966666666667365,
+        26.13333333333379,
+        27.366666666667186,
+        29.33333333333395,
+        27.53333333333386,
+        25.966666666667116,
+        23.533333333333662,
+        28.86666666666726,
+        26.300000000000466,
+        25.86666666666711,
+        29.100000000000605,
+        28.46666666666724,
+        27.40000000000052
+      ],
+      "first_enemy_gun_kill_s": {
+        "n": 20,
+        "mean": 11.809999999999969,
+        "median": 11.766666666666636,
+        "min": 10.66666666666664,
+        "max": 12.733333333333299
+      },
+      "first_enemy_gun_kill_censored": 0,
+      "sides": [
+        {
+          "counts": {
+            "living_ticks": 158707,
+            "any_target_range_ticks": 92738,
+            "gun_target_range_ticks": 34034,
+            "windup_ticks": 68402,
+            "launch_ticks": 2648,
+            "move_command_ticks": 157605,
+            "command_range_ticks": 91636,
+            "hold_range_ticks": 1102,
+            "command_launch_ticks": 2615,
+            "hold_launch_ticks": 33,
+            "command_launch_range_ticks": 2615,
+            "hold_launch_range_ticks": 33,
+            "movement_known_ticks": 158681,
+            "moving_ticks": 154645,
+            "moving_launch_ticks": 2525,
+            "stationary_launch_ticks": 123,
+            "target_switches": 5358,
+            "incoming_damage_1_artillery": 3344,
+            "incoming_damage_1_ranged": 9035,
+            "incoming_damage_0_ranged": 1888,
+            "incoming_damage_1_melee": 573,
+            "incoming_damage_0_artillery": 345,
+            "death_interval_ticks": 26,
+            "other_target_shell_gun_victims": 0,
+            "other_target_shell_gun_damage": 0,
+            "shells_hitting_0_guns": 1873,
+            "launches": 2648,
+            "other_launches": 1711,
+            "launches_with_airborne_target_switch": 1082,
+            "gun_target_shell_gun_victims": 2600,
+            "gun_target_shell_gun_damage": 36200,
+            "shells_hitting_4_guns": 94,
+            "gun_launches": 937,
+            "gun_launches_hit_any_gun": 775,
+            "gun_launches_hit_intended_gun": 657,
+            "gun_launches_with_airborne_target_switch": 375,
+            "gun_launches_with_airborne_target_switch_hit": 221,
+            "shells_hitting_5_guns": 100,
+            "gun_launches_target_dead_before_scheduled_impact": 270,
+            "gun_launches_no_gun_hit_target_dead_before_scheduled_impact": 156,
+            "shells_hitting_1_guns": 220,
+            "shells_hitting_6_guns": 73,
+            "shells_hitting_3_guns": 101,
+            "shells_hitting_2_guns": 110,
+            "shells_hitting_7_guns": 73,
+            "shells_hitting_8_guns": 4
+          },
+          "gun_targeted_launches": 937,
+          "successful_gun_targeted_shells": 775,
+          "gun_victims": 2600,
+          "gun_victims_per_successful_shell": 3.3548387096774195,
+          "artillery_hp_to_opposing_guns": 36200,
+          "incidental_hp": 0,
+          "already_dead_before_impact": 270,
+          "airborne_at_end": 0
         },
-        "timeouts": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "S": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "enemy_guns_destroyed": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "own_guns_lost": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "own_losses": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "gun_victims_per_successful_shell_both_sides": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "nearest_own_gun_median_px": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "nearest_own_gun_p10_px": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "enemy_over_own_artillery_hp_ratio": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "already_dead_before_impact_both_sides": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "killers": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
-        },
-        "realization_audits": {
-          "status": "not_run",
-          "value": null,
-          "reason": "Mandatory pgrep process-list gate UNAVAILABLE; no clearance for combat."
+        {
+          "counts": {
+            "living_ticks": 79339,
+            "any_target_range_ticks": 38106,
+            "gun_target_range_ticks": 25977,
+            "windup_ticks": 21724,
+            "launch_ticks": 1053,
+            "move_command_ticks": 42557,
+            "command_range_ticks": 1324,
+            "hold_range_ticks": 36782,
+            "command_launch_ticks": 41,
+            "hold_launch_ticks": 1012,
+            "command_launch_range_ticks": 41,
+            "hold_launch_range_ticks": 1012,
+            "movement_known_ticks": 79139,
+            "moving_ticks": 55345,
+            "moving_launch_ticks": 381,
+            "stationary_launch_ticks": 668,
+            "target_switches": 1607,
+            "incoming_damage_0_artillery": 36200,
+            "death_interval_ticks": 200,
+            "other_target_shell_gun_victims": 62,
+            "other_target_shell_gun_damage": 930,
+            "shells_hitting_0_guns": 882,
+            "launches": 1053,
+            "other_launches": 937,
+            "shells_hitting_1_guns": 118,
+            "other_launches_hit_gun": 57,
+            "launches_with_airborne_target_switch": 368,
+            "shells_hitting_2_guns": 53,
+            "gun_target_shell_gun_victims": 162,
+            "gun_target_shell_gun_damage": 2414,
+            "gun_launches": 116,
+            "gun_launches_hit_any_gun": 114,
+            "gun_launches_hit_intended_gun": 111,
+            "gun_launches_with_airborne_target_switch": 43,
+            "gun_launches_with_airborne_target_switch_hit": 41,
+            "gun_launches_target_dead_before_scheduled_impact": 4,
+            "gun_launches_no_gun_hit_target_dead_before_scheduled_impact": 1
+          },
+          "gun_targeted_launches": 116,
+          "successful_gun_targeted_shells": 114,
+          "gun_victims": 162,
+          "gun_victims_per_successful_shell": 1.4210526315789473,
+          "artillery_hp_to_opposing_guns": 3344,
+          "incidental_hp": 930,
+          "already_dead_before_impact": 4,
+          "airborne_at_end": 0
         }
+      ],
+      "enemy_over_own_artillery_hp_ratio": 0.0923756906077348,
+      "nearest": [
+        {
+          "n": 93676,
+          "median": 35.0635824295143,
+          "p10": 20.845364822603848
+        },
+        {
+          "n": 78446,
+          "median": 20.000000000000032,
+          "p10": 19.859195463534494
+        }
+      ],
+      "early_10_20_nearest": [
+        {
+          "n": 33676,
+          "median": 54.122468814814575,
+          "p10": 47.118656531054995
+        },
+        {
+          "n": 18446,
+          "median": 20.000000000000043,
+          "p10": 19.989228478153592
+        }
+      ],
+      "nearest_singleton_ticks": [
+        0,
+        693
+      ],
+      "gun_phase_ticks": [
+        93676,
+        79139
+      ],
+      "gun_range_ticks": [
+        34034,
+        25977
+      ],
+      "gun_range_fraction": [
+        0.3633161108501644,
+        0.3282452393889233
+      ],
+      "audit": {
+        "prepare_gun_ticks": 93690,
+        "clipped_goal_ticks": 0,
+        "shift_ticks": 92074,
+        "zero_multiplier_shift_ticks": 924,
+        "raw_goal_out_of_focus_band_ticks": 27484,
+        "coincident_pair_terms": 0,
+        "neighbour_terms": 288808,
+        "clipped_action_reconciled_ticks": 93690
+      },
+      "raw_shift_px": {
+        "n": 93690,
+        "median": 20.85614502959435,
+        "p10": 1.839912071176328
+      },
+      "raw_goal_focus_radius_px": {
+        "n": 93690,
+        "median": 308.4900473778617,
+        "p10": 273.08758212147364
+      },
+      "killers_by_source_team_role": {
+        "0_artillery": 751,
+        "1_artillery": 184,
+        "1_melee": 23,
+        "0_ranged": 209,
+        "0_melee": 15,
+        "1_ranged": 44
+      },
+      "own_gun_killers_by_team_role": {
+        "1_ranged": 21,
+        "1_artillery": 4,
+        "1_melee": 1
       }
     }
   ],
-  "reading": "No \u00a719.6 outcome reading applies: complete combat measurements are unavailable.",
-  "engineering_parity": "NOT_RUN",
-  "entropy_claimed": false
+  "reading": [
+    {
+      "arm": "P10",
+      "distance_realization": "both_increased",
+      "reading": "\u00a719.6 favorable splash/exchange but no eliminations; supports this setting, insufficient for elimination, necessity unproven"
+    },
+    {
+      "arm": "P11",
+      "distance_realization": "both_increased",
+      "reading": "Regular elimination and better-than-P5 candidate pattern; no resonator/causal claim"
+    }
+  ]
 }
