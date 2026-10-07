@@ -1,0 +1,88 @@
+[s4-collective-probe-v1 abad882] Record declared scripted collective-commitment probe with realization audits
+ Committer: new <new@MacBook-Pro-new.local>
+Your name and email address were configured automatically based
+on your username and hostname. Please check that they are accurate.
+You can suppress this message by setting them explicitly. Run the
+following command and follow the instructions in your editor to edit
+your configuration file:
+
+    git config --global --edit
+
+After doing this, you may fix the identity used for this commit with:
+
+    git commit --amend --reset-author
+
+ 73 files changed, 76432 insertions(+)
+ create mode 100644 docs/reviews/tactical_0g_s194_probe_review_codex.md
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/S4_COLLECTIVE_PROBE.md
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/ANALYSIS_SOURCE_PINS.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/ANALYSIS_VERIFICATION.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/AUDIT_CORRECTION.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/BEFORE_BOUNDARY_FIX_ANALYSIS_SOURCE_PINS.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/BEFORE_BOUNDARY_FIX_ANALYSIS_VERIFICATION.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/BEFORE_BOUNDARY_FIX_AUDIT_CORRECTION.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/BEFORE_BOUNDARY_FIX_COMPACT.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/BEFORE_BOUNDARY_FIX_RESULTS_RECHECK.md
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/BEFORE_BOUNDARY_FIX_REVIEW_TIMING.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/BEFORE_BOUNDARY_FIX_SUMMARY.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/BOUNDARY_VERIFICATION.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/BUILD_IDENTITY.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/BUILD_TIMING.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/CHECK_TIMING.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/COMPACT.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/DECLARATION.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/DELIVERY_TIMING.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/DEVELOPMENT_SEED_LEDGER.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/FAILED_FIRST_CHECK_TIMING.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/FAILED_FIRST_DELIVERY_TIMING.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/FIGHTS.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/FINAL_ANALYSIS_SOURCE_PINS.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/GIT_WRITABILITY.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/HISTORICAL_FIXTURES.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/LOCAL_LOGS.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/NOVICE_REQUEST_TEMPLATE.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/OWNER_RECHECK.md
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/P5_PARITY.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/P5_SANITY.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/POLICY.md
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/PRESERVATION.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/PROJECTION.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/RAW_FILES_LOCAL.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/REGULAR_REQUEST_TEMPLATE.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/RESULTS_BEFORE_FIX_RESULTS_RECHECK.md
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/RESULTS_BEFORE_FIX_REVIEW_TIMING.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/RESULTS_RECHECK.md
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/REVIEW_TIMING.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/RUN_START.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/RUN_TIMING.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/STAGE_analyze_00.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/STAGE_boundary_00.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/STAGE_build_00.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/STAGE_check_00.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/STAGE_check_01.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/STAGE_report_00.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/STAGE_report_01.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/STAGE_report_02.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/STAGE_report_03.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/STAGE_run_00.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/SUMMARY.json
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/analyze.py
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/bootstrap.py
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/boundary_audit.py
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/build.py
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/check.py
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/collective.cpp
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/collective.h
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/deliver.py
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/deliver_final.py
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/dispatch.cpp
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/fixture.cpp
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/host.cpp
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/recount.py
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/recount_final.py
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/render.py
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/report.py
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/run.py
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/stage.py
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/stage_final.py
+ create mode 100644 evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/test_probe.py

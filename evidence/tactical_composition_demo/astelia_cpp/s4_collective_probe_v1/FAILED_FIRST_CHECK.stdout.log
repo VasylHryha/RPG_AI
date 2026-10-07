@@ -1,0 +1,65 @@
+...F
+=================================== FAILURES ===================================
+________________________________ test_p5_parity ________________________________
+
+    def test_p5_parity():
+     d=json.loads((HERE/'DECLARATION.json').read_text());rows=[]
+     for head in ('regular','novice'):
+      req=json.loads((HERE/(head.upper()+'_REQUEST_TEMPLATE.json')).read_text());req['options']['seed']=d['engineering_seed'];req['options']['duration']=2;req['options']['ai'][0]['skeleton']='focus_probe_v1'
+>     old=subprocess.run([str(CPP/'build/astelia_native_focus_probe_v1'),'--metrics'],input=json.dumps(req)+'\n',capture_output=True,check=True,timeout=30)
+
+evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/test_probe.py:20: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py:507: in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py:1134: in communicate
+    stdout, stderr = self._communicate(input, endtime, timeout)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <Popen: returncode: -9 args: ['/Users/new/RiderProjects/ai_RPG_test/evidence...>
+input = '{"trace": false, "debug": false, "mode": "alone", "opponent": "alone", "s3": true, "diagnostics": false, "options": {...eton": "focus_probe_v1"}, {"level": "regular"}]}, "endCounts": true, "killerTelemetry": true, "decisionTrace": true}\n'
+endtime = 37.932615208, orig_timeout = 30
+
+    def _communicate(self, input, endtime, orig_timeout):
+        if self.stdin and not self._communication_started:
+            # Flush stdio buffer.  This might block, if the user has
+            # been writing to .stdin in an uncontrolled fashion.
+            try:
+                self.stdin.flush()
+            except BrokenPipeError:
+                pass  # communicate() must ignore BrokenPipeError.
+            if not input:
+                try:
+                    self.stdin.close()
+                except BrokenPipeError:
+                    pass  # communicate() must ignore BrokenPipeError.
+    
+        stdout = None
+        stderr = None
+    
+        # Only create this mapping if we haven't already.
+        if not self._communication_started:
+            self._fileobj2output = {}
+            if self.stdout:
+                self._fileobj2output[self.stdout] = []
+            if self.stderr:
+                self._fileobj2output[self.stderr] = []
+    
+        if self.stdout:
+            stdout = self._fileobj2output[self.stdout]
+        if self.stderr:
+            stderr = self._fileobj2output[self.stderr]
+    
+        self._save_input(input)
+    
+        if self._input:
+>           input_view = memoryview(self._input)
+E           TypeError: memoryview: a bytes-like object is required, not 'str'
+
+/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py:1959: TypeError
+=========================== short test summary info ============================
+FAILED evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/test_probe.py::test_p5_parity
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 3 passed in 7.67s
+
+

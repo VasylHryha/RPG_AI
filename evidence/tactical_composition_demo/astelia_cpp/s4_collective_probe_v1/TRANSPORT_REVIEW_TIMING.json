@@ -1,0 +1,39 @@
+{
+  "status": "APPROVE_WITH_NOTES",
+  "awake_seconds": 5.369122959,
+  "elapsed_seconds": 5.369122959,
+  "attempts": [
+    {
+      "status": "CHANGES_REQUIRED",
+      "awake_seconds": 1.5345649590000001,
+      "scope": "first check stopped on expected live DELIVERY_TIMING sidecar difference"
+    },
+    {
+      "status": "RESERVED",
+      "awake_seconds": 0.5,
+      "scope": "caffeinated diagnostic factory/trailer/scope/log read"
+    },
+    {
+      "status": "PASS",
+      "awake_seconds": 3.334558,
+      "scope": "all73 fetched hashes,size limit,index,bundle verification"
+    }
+  ],
+  "cap_seconds": 20,
+  "details": {
+    "files": 73,
+    "max_committed_file_bytes": 661594,
+    "all_fetched_blob_hashes_match": true,
+    "live_sidecar_differences": [
+      {
+        "path": "evidence/tactical_composition_demo/astelia_cpp/s4_collective_probe_v1/DELIVERY_TIMING.json",
+        "committed_sha256": "5c491eb4eaee4740e91f8f4838929bc8d8f9140fcc0f0ffd0d5dacb499eaadbe",
+        "live_sha256": "d43c7b14b8221480c614bae647026d3e7d921ab8cac8a2ff34227d2754abbbbb"
+      }
+    ],
+    "main_index_sha256": "9bd8aa7bd3ee9489cf2d623e7b37ed6bef6cef8f588868774e7445b8734c6bfa",
+    "main_index_unchanged_during_audit": true,
+    "exact_scope_trailer_normalhook_checked_in_diagnostic": true
+  },
+  "error": null
+}
