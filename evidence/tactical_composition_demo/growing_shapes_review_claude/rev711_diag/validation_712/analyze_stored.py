@@ -44,11 +44,14 @@ def analyze(trace, log):
     sites = sorted({s for x in steps for s in x['active']} | set(range(len(d['assay']['E']))))
     late = [x for x in steps if x['t'] > LATE]
     def site_conn(window):
+        # conditional connectivity: among the samples in which site s is active, the fraction with a path from s
         out = {}
         for s in sites:
             act = [x for x in window if s in x['active']]
             out[s] = round(sum(s in x['paths'] for x in act) / len(act), 3) if act else None
         return out
+    def site_active(window):
+        return {s: sum(s in x['active'] for x in window) for s in sites}
     present = [x['t'] for x in steps if x['paths']]
     best = cur = 0; t0 = span = None
     for x in steps:
@@ -70,7 +73,8 @@ def analyze(trace, log):
         gate_shape=d['assay']['A'] >= 0.3 and d['assay']['B'] >= 0.3 and max(d['assay']['E']) >= 0.5,
         assay_sites_with_E_ge_0_5=sum(v >= 0.5 for v in d['assay']['E']),
         assay_sites_with_E_zero=sum(v == 0 for v in d['assay']['E']),
-        late_connectivity_per_site=site_conn(late), whole_run_connectivity_per_site=site_conn(steps),
+        late_connectivity_per_site=site_conn(late), late_active_samples_per_site=site_active(late), late_samples=len(late),
+        whole_run_connectivity_per_site=site_conn(steps), whole_run_active_samples_per_site=site_active(steps),
         late_any_path=round(sum(bool(x['paths']) for x in late) / len(late), 3),
         first_path_time=present[0] if present else None, first_path_site=first_path_site,
         last_path_time=present[-1] if present else None, longest_path_span=span, longest_path_steps=best,
@@ -88,7 +92,9 @@ if __name__ == '__main__':
     (HERE / 'STORED_ANALYSIS.json').write_text(json.dumps(dict(
         kind='STORED_DATA_ANALYSIS_NO_VERDICT', late_window_s=[LATE, 800.0],
         note='E = averaged assay path exposure per site (reachability, not site-specific causal response); '
-             'connectivity = fraction of steps a site is active and has a strong path to O',
+             '*_connectivity_per_site = among the samples in which that site is active, the fraction in which it has a strong path to O '
+             '(conditional on activity; the active-sample counts are given alongside); late_any_path = fraction of all late samples with any path. '
+             'first_cost_refusal_time is the first refused birth on cost; it is not permanent exhaustion (later births can be accepted)',
         rows=rows), indent=1))
     for r in rows:
         print(r['tag'], r['start'], 'PASS' if r['gate_shape'] else 'fail', r['E'], r['late_connectivity_per_site'],

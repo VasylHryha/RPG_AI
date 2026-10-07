@@ -1013,12 +1013,36 @@ meaning a time scale of **τ_link ≤ 2 s** per edge.
   - No pooling of the two starts.
   - No dropping, replacing or adding key sets, and no running until a target count is reached.
   - **INVALID** in any run blocks the gate; the implementer fixes and reruns on the same keys only for an instrumentation defect proved before the results are read.
-- **Downstream fixtures (declared before any result):**
-  - **F7 (control M matching, a PASS/FAIL gate):** run once per key set against that key set's intact empty-start run. All five must pass.
-  - **F6 and F8 (descriptive):** run on **key set g = 1 only**, named here before any result, whatever its F5 outcome. No passing checkpoint is selected afterwards.
-  - F9, N1 and F1–F4: unchanged (they do not use F5 state).
-  - Controls M and U, and every development requirement: unchanged.
-- **Cost:** F5 becomes 10 growth runs instead of 2, plus 5 F7 runs instead of 1. At about 16 min per run on a quiet machine, that is about 4 h serial, or about 1 h with five in parallel. The busy laptop is slower. Decision 0031 applies.
+- **Downstream fixtures (declared before any result; amended after the Codex round-2 recheck R2-F1, `docs/reviews/tactical_0h_opin_validation_recheck2_codex.md`).**
+  - **Precedence:** 19.7 replaces only the single-key F5 verdict and its stop row. **The Harness guards stay as they are,** with "F5" and "F7" read as the aggregate verdicts below:
+    - F6–F9 run only if F5 passes;
+    - F8 and F9 run only if F7 also passes;
+    - N1 and F1–F4 must pass first, unchanged.
+  - **Aggregate verdicts:**
+    - **F5 PASS** = all ten runs (5 key sets × 2 starts) PASS;
+    - **F7 PASS** = all five per-key F7 runs PASS;
+    - any INVALID makes the aggregate INVALID.
+  - **Order:**
+    1. All ten F5 runs.
+    2. If F5 passes: the five F7 runs.
+    3. If F7 passes: F6, F8 and F9.
+    - **If F5 or F7 fails, no downstream fixture runs,** as now. Development stays blocked, and the drafter writes the failure report. No diagnostic run after a failed gate is part of this amendment; one would need its own owner-approved exception.
+  - **F7 (control M) per key set g** mirrors today's `keys('i','M')` with the gate suffix:
+    - growth `growth/F5/i/M/gate{g}`;
+    - recovery `recovery/F5/i/M/gate{g}`;
+    - matched `matched/F5/i/gate{g}`;
+    - the medium key shared with that key set's intact empty-start run, `medium/F5/i/gate{g}`;
+    - **the same training worlds as its intact comparator,** 14,000,000 + 100,000·g + e, e = 0…49;
+    - M is matched against **that key set's** intact empty-start run.
+    - These four recipes per key set are reserved together with the F5 recipes.
+  - **What is retained:**
+    - each key set's intact empty-start run object, from its F5 run until its F7 run (or until F5 fails);
+    - for **key set g = 1 only**, named before any result: the six checkpoint clones (both starts, checkpoints 40/45/50) and the empty-start live clone at episode 50, with histories, timers, clock and RNG.
+    - All of it is held through all per-key processing and is never regenerated or substituted.
+  - **F6 and F8 (descriptive) use the g = 1 state only.** F6 reads its six checkpoints; F8 starts from its live clone. They keep their existing worlds and keys: F6 pairs 10,000,788–807; F8 worlds 12,100,000–039 and keys `growth/F8/reward` and `recovery/F8/reward`. That is a declared policy, not a freshness claim. No passing key set or checkpoint is selected afterwards.
+  - **F9:** unchanged. It uses no F5 state, but it keeps its existing guard.
+  - Controls M and U in development, and every development requirement: unchanged.
+- **Cost:** F5 becomes 10 growth runs instead of 2, plus 5 F7 runs instead of 1 (F7 only if F5 passes). At about 16 min per run on a quiet machine, that is about 4 h serial, or about 1 h with five in parallel. The busy laptop is slower. Decision 0031 applies.
 
 **What the gate means, and what it does not:**
 - It is an **engineering consistency gate:** the rule produces the F5 shape in five fresh, independent configurations of each start.
@@ -1032,7 +1056,9 @@ meaning a time scale of **τ_link ≤ 2 s** per edge.
 | Yes/no | Action | Role |
 |---|---|---|
 | Has the owner approved 19.7? | If no: the single-key F5 of 19.5 stays in force; nothing under 19.7 runs | owner |
-| Are the gate key sets, worlds and assay pairs reserved in the inventory and disjoint from every registered and pilot range before launch? | If no: no run | implementer |
+| Are the gate key sets (F5 and F7 recipes), worlds and assay pairs reserved in the inventory and disjoint from every registered and pilot range before launch? | If no: no run | implementer |
 | Is any of the ten F5 runs INVALID? | Block the gate; fix only a defect proved before results are read | implementer |
 | Does any of the ten F5 runs FAIL? | Block development; write a failure report covering every failing key set | drafter |
 | Does any of the five F7 runs FAIL? | Block development; failure report | drafter |
+| Is any of the five F7 runs INVALID? | Block the gate; fix only a defect proved before results are read; rerun on the same keys | implementer |
+| Is a downstream record invalid (a missing decision record, or retained g = 1 state that does not match its stored fingerprint)? | INVALID; fix; rerun from the same retained state; no key replacement | implementer |
