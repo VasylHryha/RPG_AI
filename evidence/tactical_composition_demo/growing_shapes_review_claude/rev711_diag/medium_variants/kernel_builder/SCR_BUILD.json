@@ -1,0 +1,90 @@
+{
+  "variant": "SCR",
+  "base_commit": "fd2182681ee8ed7b7b3a0772d69de898a8aa17c2",
+  "screening_binary_reproduced": true,
+  "build": {
+    "version": "rev7_rhs_v1",
+    "source_sha256": {
+      "rev7_medium.cpp": "09556abccc15408d066ddab2821a13b446c22667741efd2a6b411f8d0534013a",
+      "rev7_medium_c.cpp": "306d9da2f3ce65f7e6aab7ad10e10bd0ad8d2dd048ce0d4d6f6971ab2288379c",
+      "rev7_medium.hpp": "941bc518a09ff23d8489553dc529291eb61e277bd11964ca54e097ce8658103a",
+      "medium_c.h": "7838d1f6a8085b36a9d84a929b1635526c519505e8b1eac1e47cebb78066ee43",
+      "rev7_native.py": "4e122334bceeb572890b41a2b90536b09f9fd2bc15a4d8d60c87b4b236e5fa5c",
+      "rev7_rhs.py": "bcd9c6a3fe773bf601bf41b8a0b05b5ea878e209b9dac31ce99ba5b05035e8c2",
+      "medium.py": "c4e034f3708a424d63da571f083f0d3e44699fd5ba77694258a7c8988ef17fc4",
+      "build_rev7.py": "a39243e1807bc26f3a1505a1412dfe62070dd2c36f9132fcd43af880fbc76289",
+      "../native_guard.py": "d2b023e1dbc296feef3adb0840c2fd2ad4c2eda6fd396d2c5103ea5e6f815a7b"
+    },
+    "binary_sha256": "b0b35a16ba134c57e56a44c9cb128b7a7ce2ae9cd4aaf836b8b1e82392c9578d",
+    "command": [
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/kernel_builder/_worktrees/SCR/scratch_clang",
+      "-std=c++17",
+      "-O3",
+      "-Wall",
+      "-Wextra",
+      "-Wpedantic",
+      "-fno-fast-math",
+      "-ffp-contract=off",
+      "-fPIC",
+      "-dynamiclib",
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/kernel_builder/_worktrees/SCR/evidence/tactical_composition_demo/growing_shapes/medium/rev7_medium.cpp",
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/kernel_builder/_worktrees/SCR/evidence/tactical_composition_demo/growing_shapes/medium/rev7_medium_c.cpp",
+      "-o",
+      "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/kernel_builder/_worktrees/SCR/evidence/tactical_composition_demo/growing_shapes/medium/_rev7_build/rev7_medium.dylib"
+    ],
+    "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)"
+  },
+  "world_build": {
+    "commands": [
+      [
+        "c++",
+        "-std=c++17",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-pedantic",
+        "-fPIC",
+        "-dynamiclib",
+        "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/kernel_builder/_worktrees/SCR/evidence/tactical_composition_demo/growing_shapes/world/world.cpp",
+        "-o",
+        "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/kernel_builder/_worktrees/SCR/evidence/tactical_composition_demo/growing_shapes/world/_build/libgs_world.dylib"
+      ],
+      [
+        "c++",
+        "-std=c++17",
+        "-O2",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-pedantic",
+        "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/kernel_builder/_worktrees/SCR/evidence/tactical_composition_demo/growing_shapes/world/world.cpp",
+        "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/kernel_builder/_worktrees/SCR/evidence/tactical_composition_demo/growing_shapes/world/native_contract.cpp",
+        "-o",
+        "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/growing_shapes_review_claude/rev711_diag/medium_variants/kernel_builder/_worktrees/SCR/evidence/tactical_composition_demo/growing_shapes/world/_build/native_contract"
+      ]
+    ],
+    "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)",
+    "sanitized": false,
+    "source_sha256": {
+      "world.h": "cae3bb890fcfbcdab72cf64121be3e2362b0e26408ce320f61cde5c302528667",
+      "world.cpp": "93fff84417baa32ff411eebfaa7b956be9036647a4662fcf6e4efa4b057de28a",
+      "native_contract.cpp": "59102395fc5bc4387ec30c7f3d2450f7bfcbf714b9fdc941dfa16c8bd6b15a15",
+      "build.py": "0c5674717cd9a048e0510a940056d19568c4281a220196f315a956101dee2882",
+      "world.py": "e6e8c93ecc052ad235578852cc2eb363b619f17d8ea80054be0cd7c8fa3143d7",
+      "../native_guard.py": "d2b023e1dbc296feef3adb0840c2fd2ad4c2eda6fd396d2c5103ea5e6f815a7b"
+    },
+    "binary_sha256": {
+      "libgs_world.dylib": "32ee5a226a6135591adee19600996b11518f7cebc3fe3f8c0a3acb19664a398c",
+      "native_contract": "d8be414b3c54258d18dc92f36224e706314892d91e93ee652ba49641a3c19a4e"
+    }
+  },
+  "harness_sha256": "3505625bdd45391e4fc83e70e91838bab517942922d6db8019c86ad878905a92",
+  "design_sha256": "d4bb361086ef76a9ab80fc9ac4ba5145d5536d8b45af2197cc78a6982f4465ef",
+  "variant_patch_sha256": "7c647df4501b8492b98682ac1683cd29a5935d761264eb245021f785e683a9ad",
+  "service_graph_sha256": null,
+  "rd3_body_sha256": null,
+  "python_diff": "",
+  "identity_policy": "SCRATCH; Execution/assert_inputs stubs confined to copied pilot harness",
+  "untracked_inputs": "world and medium binaries/manifests built locally; all source inputs matched historical source hashes"
+}

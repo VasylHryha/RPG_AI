@@ -1,0 +1,4 @@
+            _service=service_snapshot(self)
+            _chosen,_lost=ranked_choice(_service,[e.id for e in eligible],measured)
+            if _lost:self.emit('forced_service_cut',[_chosen],sites=_lost)
+            self.remove(_chosen,'D3',lock=measured[_chosen])

@@ -1,0 +1,32 @@
+{
+  "version": "rev7_rhs_v1",
+  "source_sha256": {
+    "rev7_medium.cpp": "09556abccc15408d066ddab2821a13b446c22667741efd2a6b411f8d0534013a",
+    "rev7_medium_c.cpp": "306d9da2f3ce65f7e6aab7ad10e10bd0ad8d2dd048ce0d4d6f6971ab2288379c",
+    "rev7_medium.hpp": "941bc518a09ff23d8489553dc529291eb61e277bd11964ca54e097ce8658103a",
+    "medium_c.h": "7838d1f6a8085b36a9d84a929b1635526c519505e8b1eac1e47cebb78066ee43",
+    "rev7_native.py": "4e122334bceeb572890b41a2b90536b09f9fd2bc15a4d8d60c87b4b236e5fa5c",
+    "rev7_rhs.py": "bcd9c6a3fe773bf601bf41b8a0b05b5ea878e209b9dac31ce99ba5b05035e8c2",
+    "medium.py": "c4e034f3708a424d63da571f083f0d3e44699fd5ba77694258a7c8988ef17fc4",
+    "build_rev7.py": "a39243e1807bc26f3a1505a1412dfe62070dd2c36f9132fcd43af880fbc76289",
+    "../native_guard.py": "d2b023e1dbc296feef3adb0840c2fd2ad4c2eda6fd396d2c5103ea5e6f815a7b"
+  },
+  "binary_sha256": "b0b35a16ba134c57e56a44c9cb128b7a7ce2ae9cd4aaf836b8b1e82392c9578d",
+  "command": [
+    "/usr/bin/clang++",
+    "-std=c++17",
+    "-O3",
+    "-Wall",
+    "-Wextra",
+    "-Wpedantic",
+    "-fno-fast-math",
+    "-ffp-contract=off",
+    "-fPIC",
+    "-dynamiclib",
+    "/private/tmp/claude-501/-Users-new-RiderProjects-ai-RPG-test/266628b5-c225-443d-b8f6-8f99d66d38db/scratchpad/kernel_pilot_scr/evidence/tactical_composition_demo/growing_shapes/medium/rev7_medium.cpp",
+    "/private/tmp/claude-501/-Users-new-RiderProjects-ai-RPG-test/266628b5-c225-443d-b8f6-8f99d66d38db/scratchpad/kernel_pilot_scr/evidence/tactical_composition_demo/growing_shapes/medium/rev7_medium_c.cpp",
+    "-o",
+    "/private/tmp/claude-501/-Users-new-RiderProjects-ai-RPG-test/266628b5-c225-443d-b8f6-8f99d66d38db/scratchpad/kernel_pilot_scr/evidence/tactical_composition_demo/growing_shapes/medium/_rev7_build/rev7_medium.dylib"
+  ],
+  "compiler": "Apple clang version 21.0.0 (clang-2100.3.34.2)"
+}
