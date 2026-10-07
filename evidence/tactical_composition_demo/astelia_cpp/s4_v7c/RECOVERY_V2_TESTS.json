@@ -1,0 +1,23 @@
+{
+  "argv": [
+    ".venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_v7c/test_analysis_recovery_v1.py",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_v7c/test_analysis_recovery_v2.py",
+    "--basetemp",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_v7c/test_runs/v2_final",
+    "-o",
+    "cache_dir=evidence/tactical_composition_demo/astelia_cpp/s4_v7c/test_runs/cache_v2_final"
+  ],
+  "started_utc": "2026-10-07T19:40:23.967552+00:00",
+  "returncode": 0,
+  "wall_seconds": 0.7692957500000001,
+  "status": "PASS",
+  "scope": "fake receipt/manifest/runtime tests only; v1 regression and final v2 including midnight continuation",
+  "executed_fights": 0,
+  "analysis_started": false,
+  "render_started": false
+}

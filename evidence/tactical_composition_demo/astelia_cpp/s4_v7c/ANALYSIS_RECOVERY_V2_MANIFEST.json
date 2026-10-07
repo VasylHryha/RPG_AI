@@ -1,0 +1,71 @@
+{
+  "schema": 2,
+  "base_head": "cbe2da2b326ab9f495598ccffc1d6a1630352da2",
+  "scope": "stored-only analysis/render recovery; no combat authorization",
+  "created_utc": "2026-10-07T19:41:17.214519+00:00",
+  "v1_commit": "c8241f2d1861bc012d42443da523f887e518a8ba",
+  "boot_evidence_commit": "4147896779296f3b2c56f69c7580868a35c2b890",
+  "original_delivery_commit": "f31583b2e9aa3a89aad901a1123b299810495fc2",
+  "validation_resealed": false,
+  "original_hashes_preserved": true,
+  "budget_id": "s4_v7c_stored_night_v2",
+  "combat_cap_seconds": 3600,
+  "night_cap_seconds": 7200,
+  "night_stages": [
+    "analyze_validate",
+    "render_validate"
+  ],
+  "authority": {
+    "decision": "docs/decisions/0031-owner-run-approval-policy.md",
+    "night_rule": "Any run started 22:00 or later: Claude runs what the plan needs.",
+    "owner_instruction": "Owner instructed Claude to continue; recovery v2 explicitly authorizes a separate 7200 s allowance for stored-only analyze_validate and render_validate.",
+    "timezone": "Europe/Kiev",
+    "authorized_not_before_local": "2026-10-07T22:00:00+03:00",
+    "continuation": "The explicit owner grant covers this two-stage stored-only batch across midnight; one shared allowance, no date-based renewal."
+  },
+  "supersedes_accounting_only": "INTERRUPTION_95d7e6ccbe1043eda90e3b0ea8fe7055.json",
+  "interruption_accounting": {
+    "attempt_file": "ATTEMPT_eb681c6dfe8240248636f44adbcd5a4d.json",
+    "utc_start": "2026-10-07T18:06:31Z",
+    "boot_epoch_seconds": 1791399114.777526,
+    "boot_bound_utc": "2026-10-07T18:51:54.777526Z",
+    "charged_seconds": 2723.777526,
+    "charged_seconds_rounded": 2723.8,
+    "basis": "Exact recorded start to boot bound; no recovery-observation downtime charged. V1 record untouched."
+  },
+  "hashes": {
+    "ANALYSIS_RECOVERY_V1_MANIFEST.json": "1a0c64bbbef84333feffd701ca530b1d2ae6eec0737a7c65e7d83375136a6335",
+    "ANALYSIS_RECOVERY_V2.md": "3d9d72b0941733b16d7969d14a373fd08501ee8d2bd3a0ee89638bea4d98d55b",
+    "ATTEMPT_dc296a269683490a8bcf6899a51f335a.json": "1e531f577e42e514d2a63003085afb144e2b973f8a048523bfa5f40bf8fdf7aa",
+    "ATTEMPT_eb681c6dfe8240248636f44adbcd5a4d.json": "0f8ba0348120c933243dd9b8bc39f1061d9155b9bda16d5246eeabfde7ac2f86",
+    "DECLARATION.json": "5d8ac75687155a47ade9476835c2d06138c83f4e1b5d684da2c500f74c2a5fa0",
+    "HOST_BOOT_EVIDENCE_20261007.json": "cdcc5bf21202d573188b7364f1942bc2f07b5e17cd7e68de319d57554838261b",
+    "INTERRUPTION_95d7e6ccbe1043eda90e3b0ea8fe7055.json": "4ba5f05f2852631eaf052bb0bac1601016a2e06dd552ff734dd2720b02243df0",
+    "RECOVERY_V2_CLAUDE_RECHECK.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "RECOVERY_V2_CLAUDE_RECHECK.stdout.log": "ca901b5be3db10d7195703bfaf9ad3b674be07855555b3cb8f6ed0555be38a59",
+    "RECOVERY_V2_OWNER_RECHECK.md": "5ab5dc4f661d922441811f2699b1fcd77bdc4e26f7d6375d2e3be46a8a23b369",
+    "RECOVERY_V2_PRESERVATION.json": "e4e0230230ad2903bea65107ac719688d7cb68b5eb65d9b6b31580dc0343b782",
+    "RECOVERY_V2_RECHECK_REQUEST.md": "26a8781dccf4b745b7a80a8a9560217d207f87f063242476612224588f80804c",
+    "RECOVERY_V2_TESTS.json": "311ede3b571001c4e166291b537d10d4c9e69436168a908177830c8a4c28c82d",
+    "RECOVERY_V2_TESTS.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "RECOVERY_V2_TESTS.stdout.log": "ad1d6f21806481a475b1863ffc625bfc351bb2bf8fb90faf52c63a7899389b1c",
+    "RECOVERY_V2_TESTS_BEFORE_CONTINUATION_FIX.json": "2328a4c7457ae3b38ca6a09f84a79066f5b97d28ba5bb5e3d70fe6eb366b845c",
+    "RECOVERY_V2_TESTS_BEFORE_CONTINUATION_FIX.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "RECOVERY_V2_TESTS_BEFORE_CONTINUATION_FIX.stdout.log": "f7660503b2c3331265f6f412704c8b788df2422ab269cf0b7761f56c44e8686a",
+    "RECOVERY_V2_TESTS_FAILED_SETUP.json": "ae6f21294012d0f90dbda0ab5b52ce47bd233239cadaddacf11b749b5598cee7",
+    "RECOVERY_V2_TESTS_FAILED_SETUP.stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "RECOVERY_V2_TESTS_FAILED_SETUP.stdout.log": "1da32b500e5ced1fa8ed1bbcd57632fd0719aad6fc131a11f8bc6f0a5d9fc005",
+    "SEAL.json": "62b1baa32b5af8616020f9127008f7d4ff0e503ce319aefa7b311079820677ff",
+    "analysis_recovery_v2.py": "d5252cb5b0e30cf8608361221445b09222e884e563581ca06bd1e65db41ead0d",
+    "analyze.py": "5dc0bc0b42348b3d899c4f843ed82fcd51751d7ee3d7b9e197dcd2a2e59e06d3",
+    "common.py": "7574bde27ca17da3a2260ff8e511891aba6544661a5fcc23554ec0c55b36cb58",
+    "deliver_analysis_recovery_v2.py": "064f054e916f62fa9e61d001fe98843431299dab3ded7da66dfa5729ee2f68fa",
+    "render.py": "bedad12e37d0b5ff4c0959af43b1e134b2d6f555b25d1d9d4b923672283dd2bf",
+    "run.py": "9e4db041089b0a2145be5ccc25be618a89ee30a02e687901186b46e60d92f710",
+    "test_analysis_recovery_v2.py": "0f2ff12200ddc44af805ea712c23a59f79215450c150a74766970e94ec60462f",
+    "verify_analysis_recovery_v2.py": "d18e9ba2510f81f5e967fefad527307c1c6e5969e2c697b0762bb137c5369f62"
+  },
+  "repo_hashes": {
+    "docs/decisions/0031-owner-run-approval-policy.md": "e5ada8c719648d51cd3cde66962fe4721fdc56a3fa2d2a93f65eb1ad9ffb8d4e"
+  }
+}
