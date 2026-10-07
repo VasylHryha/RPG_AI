@@ -102,14 +102,17 @@ def main():
         with concurrent.futures.ThreadPoolExecutor(max_workers=10) as pool:
             # On key 0 is Part A's single SCR empty run; off is the extra required
             # complete integrity control. No reported key is rerun.
-            pair=schedule(pool,[('SCR','i',0,'off'),('SCR','i',0,'on')],ticket,baseline,started,future_groups=(19,10))
-            if pair[0]['state_trajectory_sha256']!=pair[1]['state_trajectory_sha256']: raise RuntimeError('observer changes state trajectory')
-            integrity['observer_on_off']='PASS';integrity['clone_isolation']='PASS'
-            if pair[1]['summary']!=expected_log(pair[1]): raise RuntimeError('SCR integrity summary mismatch')
-            results.append(pair[1])
-            measured=max(max(r['cpu_seconds'],r['elapsed_seconds']) for r in pair)
+            # Resume order (Claude 2026-10-07): SCR i/k0 'on' already completed in attempt 1 and reproduced its committed
+            # log exactly; the 'off' integrity control joins Part A's phase (20 jobs still fit two batches of 10).
+            on0=schedule(pool,[('SCR','i',0,'on')],ticket,baseline,started,future_groups=(20,10))[0]
+            if on0['summary']!=expected_log(on0): raise RuntimeError('SCR integrity summary mismatch')
+            measured=max(on0['cpu_seconds'],on0['elapsed_seconds'])
             remainder=[(v,s,k,'on') for v in ('SCR','V1') for s in ('i','ii') for k in range(5) if (v,s,k)!=('SCR','i',0)]
-            a=schedule(pool,remainder,ticket,baseline,started,max(660,measured),future_groups=(10,));results+=a
+            a=schedule(pool,[('SCR','i',0,'off')]+remainder,ticket,baseline,started,max(660,measured),future_groups=(10,))
+            off0,a=a[0],a[1:]
+            if off0['state_trajectory_sha256']!=on0['state_trajectory_sha256']: raise RuntimeError('observer changes state trajectory')
+            integrity['observer_on_off']='PASS';integrity['clone_isolation']='PASS'
+            results.append(on0);results+=a
             mismatches=[(r['variant'],r['start'],r['keyset']) for r in results if r['summary']!=expected_log(r)]
             if mismatches: raise RuntimeError('committed log reproduction mismatch '+repr(mismatches))
             integrity['scr_v1_reproduction']='PASS'
