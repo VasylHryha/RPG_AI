@@ -129,6 +129,39 @@ def test_projection_requires_complete_sample_uses_measured_sizes(sandbox,monkeyp
     c.projected(inv)
     with pytest.raises(RuntimeError,match='exceeds owner'):c.resource_gate(inv)
 
+@pytest.mark.parametrize('complete_count',[20,21,200])
+def test_resource_gate_measured_reserve_floor_boundary_and_resume(sandbox,monkeypatch,complete_count):
+    inv=c.seal(20)
+    for row in inv['rows'][:complete_count]:
+        out=sandbox/(row['group']+'.jsonl');fake_output(out,row)
+        values=c.measurements(out,row)
+        # Synthetic receipt costs model MB-sized fights and large raw-record
+        # reserves without writing GBs or launching the collector.
+        values.update(disk_bytes=8_000_000+row['index']*600_000,
+                      maximum_record_bytes=37690,mean_record_bytes=4000,
+                      record_bytes=4000*values['record_count'])
+        c.atomic(sandbox/(row['group']+'.receipt.json'),dict(**values,request=row['request'],output=str(out),
+                 inventory_sha256=c.sha(sandbox/'INVENTORY.json'),raw_sha256=c.sha(out),wall_seconds=1,cpu_seconds=.5,rss_bytes=1024))
+    projected=c.projected(inv)
+    maximum=max(m['disk_bytes'] for m in projected['measurements']['strata'].values())
+    remaining=200-complete_count
+    expected=maximum*remaining*2+5_000_000_000
+    assert projected['hard_150s']['disk_allowance_bytes']>54_000_000_000>expected
+    monkeypatch.setattr(c.shutil,'disk_usage',lambda p:SimpleNamespace(free=54_000_000_000))
+    assert c.resource_gate(inv)==projected
+    gate=c.read(sandbox/'RESOURCE_GATE.json')
+    assert gate==dict(status='PASS',inventory_sha256=projected['inventory_sha256'],
+                     projection_sha256=c.sha(sandbox/'PROJECTION.json'),maximum_cell_disk_bytes=maximum,
+                     remaining_fights=remaining,disk_safety_factor=2,disk_free_floor_bytes=5_000_000_000,
+                     disk_reserve_bytes=expected,free_disk_bytes=54_000_000_000)
+    monkeypatch.setattr(c.shutil,'disk_usage',lambda p:SimpleNamespace(free=expected))
+    assert c.resource_gate(inv)==projected
+    monkeypatch.setattr(c.shutil,'disk_usage',lambda p:SimpleNamespace(free=expected-1))
+    with pytest.raises(RuntimeError,match='measured-size disk reserve unavailable'):c.resource_gate(inv)
+    refused=c.read(sandbox/'RESOURCE_GATE.json')
+    assert refused['status']=='REFUSED' and refused['disk_reserve_bytes']==expected
+    assert refused['free_disk_bytes']==expected-1 and refused['reason']=='measured-size disk reserve unavailable'
+
 @pytest.mark.parametrize('mean,maximum',[(None,12),(0,12),(20,10),(10,1048577),(float('nan'),30)])
 def test_projection_measured_inputs_rejected(mean,maximum):
     with pytest.raises(ValueError):projection(40,mean,maximum)

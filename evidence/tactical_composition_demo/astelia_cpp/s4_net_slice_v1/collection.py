@@ -26,6 +26,8 @@ ROOT=HERE/'_local/collection'
 BINARY=HERE/'_local/build/net_host'
 CAP_PATH=HERE.parent/'s4_shape_lab_v1/raw/LAB_CAP.json'
 STRATA=list(itertools.product(('D1-static','D2-shellfire'),(1,2,10),(0,1)))
+DISK_SAFETY_FACTOR=2
+DISK_FREE_FLOOR_BYTES=5_000_000_000  # 5 GB, decimal bytes; retained after collection.
 
 def sha(path):
     with Path(path).open('rb') as f:
@@ -50,9 +52,19 @@ def cap():
 def admission():
     build=read(HERE/'BUILD.json')
     if build['status']!='PASS' or sha(BINARY)!=build['binaries']['net_host']:raise RuntimeError('binary build admission drift')
-    for path,digest in {**build['sources'],**build['reused_object_sha256']}.items():
+    sources=dict(build['sources']);amendment=HERE/'BUILD_TOOLING_AMENDMENT.json'
+    if amendment.exists():
+        update=read(amendment)
+        if update['build_sha256']!=sha(HERE/'BUILD.json') or set(update['source_hashes'])!={'collection.py','test_collection.py'}:
+            raise RuntimeError('invalid collection tooling build amendment')
+        for name,hashes in update['source_hashes'].items():
+            path=str(HERE/name)
+            if sources.get(path)!=hashes['before']:raise RuntimeError('tooling build amendment baseline drift')
+            sources[path]=hashes['after']
+    for path,digest in {**sources,**build['reused_object_sha256']}.items():
         if sha(path)!=digest:raise RuntimeError('build source/object drift: '+path)
     files=[BINARY,HERE/'frozen/collection_CONTRACT.md',HERE/'requests.py',HERE/'collection.py',HERE/'project.py',HERE/'protocol.py',HERE/'process_gate.py']
+    if amendment.exists():files.append(amendment)
     return {str(p.relative_to(HERE)):sha(p) for p in files}
 
 def inventory(collection_entropy,reporting_entropy,count=200,sample_count=20):
@@ -245,14 +257,25 @@ def resource_gate(inv):
     stored=read(ROOT/'PROJECTION.json');fresh=projected(inv,persist=False)
     if stored!=fresh:raise RuntimeError('sample or cap changed; run project again before collection')
     state=ledger(inv)
-    remaining_wall=0;remaining_disk=0
+    remaining_wall=0;remaining_fights=0
     for r in inv['rows']:
         if completed(r):continue
-        m=fresh['measurements']['strata']['|'.join(map(str,(r['cell'],r['guns'],r['orientation'])))];remaining_wall+=m['wall_seconds'];remaining_disk+=m['disk_bytes']
+        m=fresh['measurements']['strata']['|'.join(map(str,(r['cell'],r['guns'],r['orientation'])))];remaining_wall+=m['wall_seconds'];remaining_fights+=1
     if state['charged_wall_seconds']+remaining_wall>cap()['cap_seconds']:raise RuntimeError('projected collection exceeds owner local LAB_CAP.json; owner cap decision required')
-    reserve=fresh['hard_150s']['disk_allowance_bytes']
-    if shutil.disk_usage(ROOT).free<max(reserve,remaining_disk):raise RuntimeError('measured-size disk reserve unavailable')
-    if fresh['measurements']['maximum_rss_bytes']>512*1024**2:raise RuntimeError('sample exceeds 512 MiB RSS allowance')
+    # Collection stores raw fights only. Converted datasets/training have their
+    # own gate; reserve from the largest measured sample cell, not record caps.
+    maximum_cell_disk=max(m['disk_bytes'] for m in fresh['measurements']['strata'].values())
+    reserve=math.ceil(maximum_cell_disk*remaining_fights*DISK_SAFETY_FACTOR)+DISK_FREE_FLOOR_BYTES
+    free=shutil.disk_usage(ROOT).free
+    gate=dict(status='PASS' if free>=reserve else 'REFUSED',inventory_sha256=fresh['inventory_sha256'],
+              projection_sha256=sha(ROOT/'PROJECTION.json'),maximum_cell_disk_bytes=maximum_cell_disk,
+              remaining_fights=remaining_fights,disk_safety_factor=DISK_SAFETY_FACTOR,
+              disk_free_floor_bytes=DISK_FREE_FLOOR_BYTES,disk_reserve_bytes=reserve,free_disk_bytes=free)
+    if fresh['measurements']['maximum_rss_bytes']>512*1024**2:
+        gate.update(status='REFUSED',reason='sample exceeds 512 MiB RSS allowance')
+    elif free<reserve:gate['reason']='measured-size disk reserve unavailable'
+    atomic(ROOT/'RESOURCE_GATE.json',gate)
+    if gate['status']=='REFUSED':raise RuntimeError(gate['reason'])
     return fresh
 
 def run(stage,fights):
