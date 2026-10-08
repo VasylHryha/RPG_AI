@@ -123,7 +123,7 @@ The full account of 6–7 October is in `docs/reports/SESSION_SUMMARY_2026-10-06
 | B7 | **Shape lab + six-fight series** (owner 2026-10-08: damaged units rotate, never leave; define good work per shape; see each shape alone and combined; series of 6 with survivors healed and a random POOL tactic per fight; target 40/40 then the series). Scorecard `c82ce59`, per-shape replay layers, spec `SHAPE_LAB_SPEC.md` (`ac17d7b`) | **Build DONE** (`ad8539d`; 8 checks and 17 tests PASS). The conservative projection (48.9 h serial) exceeded 1 h; **owner approved: measure, then run with a cap of 3 h** (local cap file + calibration step, Codex RUNNING; Claude executes calibrate/run/report) | Codex, Claude | today |
 | B8 | **Per-role ideal runs and split-and-compare** (owner): teacher arms (Astelia elite, later forward-model search), shadow actions of our shapes on the teacher's states, then copy per role as labelled changes (spec Amendment 2, `81f6104`); research note `docs/research/GAME_AI_BEST_PRACTICE_RESEARCH.md` revision 3 (`0141ca2`): Codex rounds 1–2 CHANGES_REQUIRED, all fixed; **round 3 PASS_WITH_NOTES** (N1 gun-first vs fewer-deaths tie rule, N2 early-terminal horizon bound, N3–N4 cleanup; before any evaluator is built). Impact ranking (spec Amendment 6) queued after the lab run | after B7 build | Claude, Codex | today |
 | B9 | **0g order after V1** (owner-approved spec order react → V1 → V2 kept; owner's R3 recheck `~/Downloads/RRG_0G_LOW_LOSS_STREAK_FINAL_RECHECK_R3_2026-10-08.md` adopted): (0) finish V1 with its declared rule; (0b) true time-on-target cohort witness only if V1 shows launch sync with dispersed landings; (1) **V2 geometry: copy the engine artillery planner** (historical +22% damage per shell, same fire rate, −17% fight time), timing held fixed; (2) ranged engagement floor (dodge keeps precedence); (3) predicted-lethal rotation (counterfactual trigger after dodge; participation rule; never leave); (4) time-to-next-legal-fire kite band; (5) dodge-profile aim; (6) raid intercept only if wolfpack/storm still dominate; (7) look-ahead teacher labelled script/search. History note: 2-gun waits helped and 4-gun waits hurt, so if V1 is negative the next oscillator try is small cohorts. Decisions 0033/0034 apply | V1 RUNNING | Claude, Codex | today |
-| B10 | **The 0g AI is a trained network (owner, 2026-10-08).** Plain NN (N1) and RRG resonator net (N2) in parallel on the same elite-teacher data; stage 1 imitation + DAgger, stage 2 ES on the paired series; the scripts are teachers/data/comparators only. Design revisions 1–2 (`9452fe6`, `b5d0659`), Codex reviews r1/r2 CHANGES_REQUIRED; **owner: build now, contract first** (`668cce4`). Deliverable 1 `s4_net_slice_v1` (`54fe0d9`: contract in code; 44 checks, 183 native assertions). **Cross-family owner recheck (Claude) CHANGES_REQUIRED** (`c7a2ce0`: H1 permission timing, M1 readings, M2 coreStep fixture, M3 in-flight shells, M4 DAgger round 0, M5/M6 control fairness, M7 drills) → Codex deliverable 1b fixes RUNNING. Teacher projection: 200 fights ≈ 0.4M rows, 1.7 GB (5.5 GB with DAgger); timing sample of ≤20 fights needed before collection | 1b RUNNING | Claude, Codex | today |
+| B10 | **The 0g AI is a trained network (owner, 2026-10-08).** Plain NN (N1), recurrent control (N1r) and RRG resonator net (N2) in parallel on the same teacher data; stage 1 imitation + DAgger, stage 2 ES on the paired series; scripts are teachers/data/comparators only. Design r1–r2, owner: build now, contract first. Deliverable 1 (`54fe0d9`) → cross-family recheck CHANGES_REQUIRED → 1b (`5d21429`) → recheck r2 PASS_WITH_NOTES (`a0e4258`) → orchestrator (`6fd3f55`), disk fix (`15ee789`). **Collection DONE:** 200 guns-drill teacher fights in 435 s, 2.3 GB local. **Stage 1 code** (`5c0ef3e`): conversion (180 fights; train 144/val 24/test 12), BC trainer, export parity, DAgger, mechanism runner. Held-out baselines near ceiling (move zero-offset 93%, target nearest 100%, aim 94%) → imitation accuracy alone cannot discriminate; mechanism fights decide. **BC admission REFUSED** (`3c6ed79`): projection 2,198 min (N1 0.02 s/step, N1r 1.6, N2 3.5; full-prefix replay is quadratic). Next: cross-family recheck of stage 1 (Claude, running) + Codex speed fix (R2D2 stored state + burn-in, concurrent arms) → re-sample → BC → DAgger ×2 → mechanism 12 pairs | BC fix NEXT | Claude, Codex | today |
 | B6 | S5 registration (W4: CLOSED) | DECIDED: no registration until a development version beats regular; then register with morale as a labelled comparator | Claude drafts | **[OWNER] approves the registered run** |
 
 
@@ -254,3 +254,58 @@ No native fights, new pick, result analysis or acceptance. Actual calibration
 and outcomes remain Claude's work. `.git` read-only; new v5b files uncommitted,
 inventoried in `DELIVERY.json`; v5 and other labs untouched. This plan append
 must remain unstaged and is excluded from the delivery scope.
+
+
+**B10 network-slice round-2 collection continuation (Codex, 2026-10-08):**
+N1 teacher/shared spacing decision, N2 frozen-law assertions, N3 overflow by kind,
+N4 measured row-size projection, N5 margin wording and sealed sequential batch
+orchestration implemented in s4_net_slice_v1 only; no fights. One quick separate
+same-family owner verbatim recheck COMPLETE: PASS_WITH_NOTES
+(OWNER_RECHECK_COLLECTION.md), R1–R3 fixed in DISPOSITION_COLLECTION.md.
+Focused validation/build outcomes in REPORT_COLLECTION.md. The mutable v1
+LAB_CAP.json is the time authority; sample/project/collect remain Claude's
+execution commands. This tracking append must remain unstaged and is excluded
+from the path-limited delivery. Other labs preserved.
+
+**B10 network-slice measured disk reserve tooling fix (Codex, 2026-10-08):**
+Owner-authorized decision 0033 / N4 scope only. `s4_net_slice_v1/collection.py`
+uses max measured sample-cell disk × remaining sealed fights × 2 plus decimal
+5 GB floor; local RESOURCE_GATE.json records computed reserve and disposition.
+One quick separate Codex recheck COMPLETE, no blocking findings; contract-scope
+clarification addressed in DISK_RESERVE_FIX.md. Exact local collection.py-only
+seal repin documented in DISK_RESERVE_REPIN.json; inventory/entropy/binary/
+contract/request generator/sample/projection unchanged. No collection/fights.
+Focused test outcome recorded in DISK_RESERVE_FIX.md. `.git` read-only; this
+tracking append remains unstaged and excluded from later path-limited commit.
+
+Final identity check found a real additional BUILD.json tooling pin defect;
+immutable historical build now has an exact hash-bound noncompiled tooling
+amendment, itself sealed, covering only collection.py/test_collection.py.
+Bounded reviewer follow-up and admission-only focused test tracked in
+DISK_RESERVE_FIX.md; original successful 37 focused checks are not repeated.
+
+
+**B11 network slice Stage1 BC implementation (Codex, 2026-10-08):**
+Owner-authorized new-file slice scope. Implemented compact verified collection
+receipt;180 streamed whole-fight mmap conversions (20report draws excluded);
+matched N1/N1r/N2 BC/BPTT, head diagnostics/checkpoints/export parity tooling;
+DAgger rounds/round0-balanced refits; paired mechanism/ablations with exact native
+impact diagnostics in a separate binary. Original dataset/inventory/entropy/ledger/
+net_host/contract unchanged. Separate Codex reviewer received verbatim:
+> Recheck what you did please, check if it is the best we can do, we want 10 out of 10 or above 9 - it's fine to break the things or fully rework. Check for issues, conflicts, gaps.
+Findings/dispositions: s4_net_slice_v1/OWNER_RECHECK_STAGE1.md; implementation
+PASS_WITH_NOTES, including visitor history/global weighting/crash/cap boundaries,
+exact shell metrics, native hypot boundary adapter and empty-gun tail scheduling.
+Distinct focused revisions recorded transparently:123full corrective PASS,31final
+Stage1 scheduling PASS,1initial targeted cap PASS,2corrective cap PASS/0.69s,
+4final invocation-budget PASS/0.67s. Both physical runners share an invocation
+origin, subtract historical child charge once and consume all current waits/children
+through elapsed time, including live owner cap reductions. No pass-count summation. Full converted
+dataset preflight/static budget:7,720steps/954,000rows per arm,10epochs.
+Actual training admission BLOCKED_PROCESS_DISCOVERY: pgrep reports sysmond
+service unavailable; ps denied EPERM. No gate bypass; sample0steps, projection
+unavailable, no fits/checkpoints/trained diagnostics/export parity. No DAgger or
+mechanism execution/entropy allocated. REPORT_STAGE1.md and STAGE1_GUIDE.md
+carry measured baselines, preserved failed-conversion diagnosis and Claude's
+process/resource-gated handoff commands. This append is unstaged, preserves the
+pre-existing plan changes and is excluded from any slice-only commit. .git read-only.
