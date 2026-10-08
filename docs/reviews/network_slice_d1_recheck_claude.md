@@ -273,3 +273,70 @@ Do not count the authorized ≤20-fight timing sample as the M2 lifecycle fixtur
 - My single focused run reproduced the committed fixture behaviour: 44 cases and the isolated native seams. It ran in scratch and left the repository unchanged.
 - Claims about uncovered paths come from reading the source, not from executions.
 - This file is new and uncommitted. If the authorized writer commits it, commit only this path, with the `Assisted-by: Claude:claude-opus-5-5` trailer and normal hooks.
+
+---
+
+## Round 2 — deliverable 1b re-review
+
+PASS_WITH_NOTES
+
+Reviewer family: Claude
+Reviewed commit: 5d21429 (diff `c7a2ce0..HEAD` of `s4_net_slice_v1/`)
+Date: 2026-10-08
+Review type: focused cross-family re-review of the fixes. I ran no fights, collection, training or `--collect`, and edited no existing file except this review, where I appended this section.
+
+**Verification.**
+- The `net_host` and `native_fixture` binaries match the `BUILD.json` binary hashes.
+- All pinned sources match the current bytes except `test_slice.py` and `verify_focused.py`. Both post-build changes are disclosed in DELIVERY.json.
+- I ran the focused suite once, in a scratch copy, so the committed receipts were not rewritten: **57 passed** in 6.6 s. The single warning comes from the deployment decoder converting a gradient-bearing tensor in `dynamics.add_drift`. It is harmless and does not affect fitting.
+- The repository is unchanged apart from this file.
+
+### Disposition
+
+| Finding | Status | Evidence |
+|---|---|---|
+| H1 | **Resolved** (rule b: an opportunity must exist at the decision tick) | Decode emits `start_opportunity`/`release_opportunity` and ANDs them into start/release (schema.cpp decode). `Cast::project` honours a cached permission only together with its bit (cast.cpp:6,8). The aim lock uses the same pair (host.cpp:40). `labels.opportunities` drives the masks, and the join rejects a permission without an opportunity (schema.py:110–116, labels.py:23–25). Native parity fixtures show that cooldown and winding decisions cannot authorize a later opportunity (integration.cpp:76–77), and the actual `coreStep` "cooldown" case starts at 7, not 1 (integration.cpp:45). The automatic ready+6 bound stays a separate shared rule. |
+| M1 | **Resolved** | Paired whole-draw t-intervals; two ordered primary axes with participation as a diagnostic; .005/.015/.030 spending split across the two axes; margin .10 (protocol.py:82–120). An equal student with SD≈.2 reads NONINFERIOR at 200, and ±.2 shifts read POSITIVE/NEGATIVE (test_slice.py:303–306). |
+| M2 | **Resolved** | integration.cpp runs eight scripted 60-tick lifecycles through the actual overlay `coreStep`: permission, auto-hold, cooldown, aim veto, no-launch, walk-across, death and body. The aim gate now runs at act entry before walking (build.py:47–48; host.cpp:50). The first ready tick can release because Cast adds `advance=dt·rate` (cast.cpp:3). Projection logs `release_pending`, and only a native consume logs `released`; the fixture asserts this (integration.cpp:40). |
+| M3 | **Resolved** | The `own_shell` kind with its damage is on the wire (schema.cpp:60; columns 22–23, width still 1008). The teacher passes both teams' live non-slow shells to `project()` (teacher.cpp:11) and records an input-count diagnostic (teacher.cpp:22). |
+| M4 | **Resolved** | Round 0 is the teacher pool. Weights are per gun-decision row and per stratum; an empty stratum raises (protocol.py:14–25). |
+| M5 | **Resolved** | N1r has a separate neighbour mean of 8 plus a per-candidate cosine of 12, with no alias (host.cpp:28; models.py `recurrent_message`). Native/Python sequence parity holds. Parameter counts: 72,153 versus N2's 71,880. |
+| M6 | **Resolved for the network arms** | N1/N1r get the same phase-free C4 drift as N2's baseline: A=B=.5, share=.125, J=0 (host.cpp:25,31; dynamics.py `baseline_drift`). N2 adds only its J modulation. See note N1 on the teacher arm. |
+| M7 | **Resolved** | In D1, enemy guns hold with castOk=false; in D2 they use native `decideUnit`; there is no opponent planner (host.cpp:16,45; CONTRACT.md:7,9). Infantry stands behind the guns: own at x=240, D1 enemy at x=900 (requests.py). `cell`, `threat_source` and `threat_timing` are in the request, every row and the terminal record (rpc.cpp:19–23). Real-scaffold dispatch fixtures for D1 and D2 pass (integration.cpp:52–62). |
+| L1 | Resolved | The latest cached aim stays provisional until lock (host.cpp:40); fixture at integration.cpp:69–70. |
+| L2 | Resolved | Sequence parity compares every action field plus drift and phase. It also covers death pruning and the persistent-ID topology remap (`dynamics.remap_graph`). |
+| L3 | Resolved | The launch-reset channel is in the ledger. `frozen_phase` and the new `no_reset` keep the phase at launch (host.cpp:48); fixture at integration.cpp:72. K0 and `no_geometry_to_mode` keep the reset, and their scope says so. |
+| L4 | Resolved (value-level) | ES now has: an evaluated incumbent, retained on ties and on survival deterioration; a common ten-draw panel enforced across arms; and gradients built from the clipped perturbations actually evaluated (protocol.py:44–79). The matched-kick harness is `probes.py`, with explicitly limited claims. The real ES evaluator is deferred, as declared. |
+| L5 | Resolved, but see N4 | The row cap is now 1 MiB, and the terminal record reports `maximum_record_bytes` (rpc.cpp:22–23). |
+| L6 | Resolved | Two native worlds that differ only in enemy energy, cost, skills or RNG produce byte-identical wire and policy output (integration.cpp:75). |
+| L7 | Resolved | The tactic claim is removed. `own_guns_alive` is added. B10 in PLAN_CURRENT tracks this review cycle. |
+
+The same-family regressions B1 and B2 are fixed and covered. B1 is the non-gun cache lookup at act entry: role guards were added (host.cpp:50–51). B2 is the missing real-dispatch coverage: the `drillDispatch` fixtures now provide it.
+
+I found no regression in neutrality or the information boundary. The new `own_shell` and `damage` fields are own or public knowledge. Enemy preparation is still exposed only through `cast`.
+
+### New notes (no blocking defect)
+
+- **N1 — Medium, decide before the 200-fight collection: the teacher arm has no shared drift.**
+  - All three network arms now add the phase-free C4 drift on every decision. Through B/r repulsion at the drills' 30 px spacing, this pushes guns apart, even on Hold.
+  - The teacher (`weights==nullptr`) adds none (host.cpp:24–25,31).
+  - The teacher is both the label source and the noninferiority reference. Network-versus-teacher readings will therefore partly measure this scaffold prior rather than imitation quality.
+  - Either apply the same shared drift in the teacher arm, for both collection and reference, so that all arms share the deployment physics, or declare the confound in the reading section.
+  - This choice changes which states the teacher visits, so it must be made before collection.
+- **N2 — Low: N2's baseline values are not enforced.** N2's A/B/share are assumed equal to the shared baseline (sigmoid(0)=.5, .25·sigmoid(0)=.125) only because the gradient mask keeps the raw values at zero. Add an assertion in `Weights` or in the collection admission that the raw law A, B and share are 0 for slice exports.
+- **N3 — Low: own shells compete for the 8 threat slots.** Up to ten own shells now share the 8 threat slots with enemy threats; urgency ranks "inside" threats first, then by time. In D2, log threat overflow by kind in the timing sample, so that dropped enemy threats are visible.
+- **N4 — Low: the projected disk need is far above real use.** TEACHER_DATA_PROJECTION.json budgets about 1.27 TB at the hard bound, because every row is assumed at the 1 MiB cap. That trips the disk stop row, although real rows are likely tens of KB. Replace the reserve with the measured `maximum_record_bytes` and the measured mean row size from the timing sample before the resource gate.
+- **N5 — Low: POSITIVE is stricter than "better".** POSITIVE requires a lower bound above +.10, so a true +.10 effect reads NONINFERIOR. The rule is fine as declared, but the reports should say "superior beyond the margin".
+
+### May teacher collection proceed?
+
+- **Code:** yes. The native host, teacher, collector, lifecycle and drills are fit for the ≤20-fight timing sample.
+- **Process:** not yet. **No batch collection orchestrator exists.** README/REPORT give only a single-fight manual command, with SEED/FIGHT/CELL/GUNS/ORIENTATION supplied by an "authorized executor". The repository has no inventory, entropy or orchestration script.
+- **Build before the timing sample.** This is small tooling and needs a single quick check under decision 0033 §9. It must:
+  1. allocate seeds and fight IDs from fresh, recorded collection entropy, disjoint from fixture and reporting entropy;
+  2. seal a balanced inventory over cell × guns × orientation, with whole-group `split()` assignment recorded before any run;
+  3. include an admission gate that hashes the binary, frozen contract and request generator, and refuses on drift;
+  4. run fights sequentially with atomic per-fight output, a resumable ledger, and per-fight wall/CPU/RSS/disk plus `maximum_record_bytes`;
+  5. take an explicit cap: 20 fights for the timing sample, 200 for collection.
+- **Then:** run the timing sample, re-project resources from its measurements, apply the owner's one-hour rule, decide N1, and only then collect the 200 fights.
+- **Next deliverable:** the dataset packer and the stage-1 trainer, as already declared.
