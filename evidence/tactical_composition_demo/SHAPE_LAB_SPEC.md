@@ -301,3 +301,40 @@ Any search or tuning objective is defined explicitly (terms, units, weights, ter
 **The closest known methods, and the difference:**
 - **Time-on-target fire**, the engine's `holdFire.sync`, and pulse-coupled oscillator synchrony (Mirollo–Strogatz; identical all-to-all oscillators only).
 - **The difference:** heterogeneous guns, local coupling only, with release gated by readiness and legality inside a battle.
+
+## 15. Amendment 8 (owner, 2026-10-08): two shape categories, evaluated differently, then combined
+
+**The owner:** split the shapes into **survival** (keep units alive: dodge, move, and so on) and **damage** (deal more damage), evaluate each differently, then combine and unify them.
+
+**The categories:**
+- **Survival:** react (dodge), spacing, predicted-lethal rotation (never leaving the fight), the kite-band retreat, the escort screen, raid intercept.
+- **Damage:** gun focus (splash value), volley timing (V1) and geometry (V2), dodge-profile aim, the ranged engagement floor, focus with overkill reservation.
+
+**Primary scorecards** (paired, decision 0033 sizing):
+- **Survival:**
+  - own deaths per fight, on won and lost fights separately;
+  - damage taken per enemy attack event;
+  - own units hit per landed enemy shell;
+  - deaths by role.
+- **Damage:**
+  - enemy units killed per minute of contact;
+  - damage per own shot and per own shell;
+  - shells per kill;
+  - time to kill all enemy guns;
+  - the enemy's dodge success against our shells.
+
+**Guards:**
+- a survival shape must not cut our damage per minute materially;
+- a damage shape must not raise our deaths per fight materially.
+
+Both guards are reported with denominators and checked at the same paired looks. History motivates them: holding fire against dodgers cost 2.03 in the owner's formation sandbox, and the V1 drill shows 33 → 24 shells per gun-minute.
+
+**Combination:**
+- **Judged on** the ten-fight series (streak primary; alive versus dead, since survivors heal) and C3 wins.
+- **The unit-level combiner:** when to act survival versus damage, without ever leaving the fight. It is a later RRG test (resonance or synchrony as the switch), against a fixed scripted rule. v7's commit/escape gate was a failed combiner, because its "safe" mode left the fight.
+
+**Labels:** every report states each change's category (survival or damage) and source (script or RRG mechanism; §14).
+
+**Current classification of results:**
+- the copied dodge = survival, script (deaths −8.7 per fight paired; damage guard not yet reported);
+- V1 volley = damage, with a script arm and an RRG arm (running).
