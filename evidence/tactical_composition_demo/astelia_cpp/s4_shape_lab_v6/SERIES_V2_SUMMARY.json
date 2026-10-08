@@ -1,0 +1,974 @@
+{
+  "complete": true,
+  "primary": "streak",
+  "series": [
+    {
+      "arm": "V2",
+      "series": 0,
+      "complete": true,
+      "streak": 1,
+      "fights_reached": 2,
+      "failure_tactic": "loose skirmish"
+    },
+    {
+      "arm": "V2",
+      "series": 1,
+      "complete": true,
+      "streak": 1,
+      "fights_reached": 2,
+      "failure_tactic": "loose skirmish"
+    },
+    {
+      "arm": "V2",
+      "series": 2,
+      "complete": true,
+      "streak": 1,
+      "fights_reached": 2,
+      "failure_tactic": "swarm"
+    },
+    {
+      "arm": "V2",
+      "series": 3,
+      "complete": true,
+      "streak": 1,
+      "fights_reached": 2,
+      "failure_tactic": "loose free"
+    },
+    {
+      "arm": "V2",
+      "series": 4,
+      "complete": true,
+      "streak": 1,
+      "fights_reached": 2,
+      "failure_tactic": "crescent"
+    },
+    {
+      "arm": "V2",
+      "series": 5,
+      "complete": true,
+      "streak": 2,
+      "fights_reached": 3,
+      "failure_tactic": "wedge hold"
+    },
+    {
+      "arm": "V2",
+      "series": 6,
+      "complete": true,
+      "streak": 1,
+      "fights_reached": 2,
+      "failure_tactic": "swarm"
+    },
+    {
+      "arm": "V2",
+      "series": 7,
+      "complete": true,
+      "streak": 1,
+      "fights_reached": 2,
+      "failure_tactic": "wedge hold"
+    },
+    {
+      "arm": "V2",
+      "series": 8,
+      "complete": true,
+      "streak": 2,
+      "fights_reached": 3,
+      "failure_tactic": "wolfpack"
+    },
+    {
+      "arm": "V2",
+      "series": 9,
+      "complete": true,
+      "streak": 1,
+      "fights_reached": 2,
+      "failure_tactic": "loose skirmish"
+    },
+    {
+      "arm": "base",
+      "series": 0,
+      "complete": true,
+      "streak": 1,
+      "fights_reached": 2,
+      "failure_tactic": "loose skirmish"
+    },
+    {
+      "arm": "base",
+      "series": 1,
+      "complete": true,
+      "streak": 1,
+      "fights_reached": 2,
+      "failure_tactic": "loose skirmish"
+    },
+    {
+      "arm": "base",
+      "series": 2,
+      "complete": true,
+      "streak": 1,
+      "fights_reached": 2,
+      "failure_tactic": "swarm"
+    },
+    {
+      "arm": "base",
+      "series": 3,
+      "complete": true,
+      "streak": 1,
+      "fights_reached": 2,
+      "failure_tactic": "loose free"
+    },
+    {
+      "arm": "base",
+      "series": 4,
+      "complete": true,
+      "streak": 2,
+      "fights_reached": 3,
+      "failure_tactic": "wedge flank"
+    },
+    {
+      "arm": "base",
+      "series": 5,
+      "complete": true,
+      "streak": 2,
+      "fights_reached": 3,
+      "failure_tactic": "wedge hold"
+    },
+    {
+      "arm": "base",
+      "series": 6,
+      "complete": true,
+      "streak": 1,
+      "fights_reached": 2,
+      "failure_tactic": "swarm"
+    },
+    {
+      "arm": "base",
+      "series": 7,
+      "complete": true,
+      "streak": 0,
+      "fights_reached": 1,
+      "failure_tactic": "wolfpack"
+    },
+    {
+      "arm": "base",
+      "series": 8,
+      "complete": true,
+      "streak": 2,
+      "fights_reached": 3,
+      "failure_tactic": "wolfpack"
+    },
+    {
+      "arm": "base",
+      "series": 9,
+      "complete": true,
+      "streak": 1,
+      "fights_reached": 2,
+      "failure_tactic": "loose skirmish"
+    }
+  ],
+  "arms": {
+    "base": {
+      "n_series": 10,
+      "mean_streak": {
+        "n": 10,
+        "mean": 1.2
+      },
+      "streak_distribution": {
+        "1": 6,
+        "2": 3,
+        "0": 1
+      },
+      "streak_reach": [
+        {
+          "k": 1,
+          "n": 9,
+          "denominator": 10
+        },
+        {
+          "k": 2,
+          "n": 3,
+          "denominator": 10
+        },
+        {
+          "k": 3,
+          "n": 0,
+          "denominator": 10
+        },
+        {
+          "k": 4,
+          "n": 0,
+          "denominator": 10
+        },
+        {
+          "k": 5,
+          "n": 0,
+          "denominator": 10
+        },
+        {
+          "k": 6,
+          "n": 0,
+          "denominator": 10
+        },
+        {
+          "k": 7,
+          "n": 0,
+          "denominator": 10
+        },
+        {
+          "k": 8,
+          "n": 0,
+          "denominator": 10
+        },
+        {
+          "k": 9,
+          "n": 0,
+          "denominator": 10
+        },
+        {
+          "k": 10,
+          "n": 0,
+          "denominator": 10
+        }
+      ],
+      "roster_before": [
+        {
+          "fight": 1,
+          "roles": {
+            "melee": {
+              "n": 10,
+              "mean": 10.0
+            },
+            "ranged": {
+              "n": 10,
+              "mean": 30.0
+            },
+            "artillery": {
+              "n": 10,
+              "mean": 10.0
+            }
+          }
+        },
+        {
+          "fight": 2,
+          "roles": {
+            "melee": {
+              "n": 9,
+              "mean": 0.6666666666666666
+            },
+            "ranged": {
+              "n": 9,
+              "mean": 6.555555555555555
+            },
+            "artillery": {
+              "n": 9,
+              "mean": 9.444444444444445
+            }
+          }
+        },
+        {
+          "fight": 3,
+          "roles": {
+            "melee": {
+              "n": 3,
+              "mean": 0.0
+            },
+            "ranged": {
+              "n": 3,
+              "mean": 0.0
+            },
+            "artillery": {
+              "n": 3,
+              "mean": 6.666666666666667
+            }
+          }
+        },
+        {
+          "fight": 4,
+          "roles": {
+            "melee": {
+              "n": 0,
+              "mean": null
+            },
+            "ranged": {
+              "n": 0,
+              "mean": null
+            },
+            "artillery": {
+              "n": 0,
+              "mean": null
+            }
+          }
+        },
+        {
+          "fight": 5,
+          "roles": {
+            "melee": {
+              "n": 0,
+              "mean": null
+            },
+            "ranged": {
+              "n": 0,
+              "mean": null
+            },
+            "artillery": {
+              "n": 0,
+              "mean": null
+            }
+          }
+        },
+        {
+          "fight": 6,
+          "roles": {
+            "melee": {
+              "n": 0,
+              "mean": null
+            },
+            "ranged": {
+              "n": 0,
+              "mean": null
+            },
+            "artillery": {
+              "n": 0,
+              "mean": null
+            }
+          }
+        },
+        {
+          "fight": 7,
+          "roles": {
+            "melee": {
+              "n": 0,
+              "mean": null
+            },
+            "ranged": {
+              "n": 0,
+              "mean": null
+            },
+            "artillery": {
+              "n": 0,
+              "mean": null
+            }
+          }
+        },
+        {
+          "fight": 8,
+          "roles": {
+            "melee": {
+              "n": 0,
+              "mean": null
+            },
+            "ranged": {
+              "n": 0,
+              "mean": null
+            },
+            "artillery": {
+              "n": 0,
+              "mean": null
+            }
+          }
+        },
+        {
+          "fight": 9,
+          "roles": {
+            "melee": {
+              "n": 0,
+              "mean": null
+            },
+            "ranged": {
+              "n": 0,
+              "mean": null
+            },
+            "artillery": {
+              "n": 0,
+              "mean": null
+            }
+          }
+        },
+        {
+          "fight": 10,
+          "roles": {
+            "melee": {
+              "n": 0,
+              "mean": null
+            },
+            "ranged": {
+              "n": 0,
+              "mean": null
+            },
+            "artillery": {
+              "n": 0,
+              "mean": null
+            }
+          }
+        }
+      ],
+      "fights": {
+        "n": 22,
+        "wins": 12,
+        "losses": 10,
+        "timeouts": 0,
+        "own_deaths_per_fight": {
+          "n": 22,
+          "mean": 22.727272727272727
+        },
+        "own_losses_on_wins": {
+          "n": 12,
+          "mean": 30.0
+        },
+        "own_losses_on_losses": {
+          "n": 10,
+          "mean": 14.0
+        },
+        "own_losses_on_timeouts": {
+          "n": 0,
+          "mean": null
+        },
+        "own_losses_on_nonwins": {
+          "n": 10,
+          "mean": 14.0
+        },
+        "exchange_rate": 1.584,
+        "zero_own_deaths": false,
+        "kills_per_minute": 53.30342120022429,
+        "damage_per_shell": 23.292134831460675,
+        "damage_per_shot": 5.644581695676586,
+        "false_extractions": {
+          "status": "not_evaluated",
+          "reason": "No untreated continuation; no causal false-extraction estimate."
+        },
+        "mechanism": {
+          "targets_per_shell": {
+            "n": 22,
+            "mean": 1.7805463911614856
+          },
+          "shells_per_kill": {
+            "n": 22,
+            "mean": 7.357023587550026
+          },
+          "fire_rate_shells_per_gun_minute": {
+            "n": 22,
+            "mean": 32.729290629022586
+          },
+          "firepower_utilization": {
+            "n": 16,
+            "mean": 0.22920734437220094
+          },
+          "in_range_seconds": {
+            "n": 22,
+            "mean": 268.02121212126053
+          },
+          "ready_to_fire_seconds": {
+            "n": 22,
+            "mean": 275.99545454551395
+          },
+          "shots_fired": {
+            "n": 22,
+            "mean": 80.95454545454545
+          },
+          "reaction_override_seconds": {
+            "n": 22,
+            "mean": 125.61666666665664
+          },
+          "ranged_deaths": {
+            "n": 22,
+            "mean": 13.636363636363637
+          },
+          "rotation_activations": {
+            "n": 22,
+            "mean": 0.0
+          },
+          "counterfactual_predicted_deaths": {
+            "n": 22,
+            "mean": 0.0
+          },
+          "triggered_unit_survival": {
+            "n": 0,
+            "mean": null
+          },
+          "rotation_trigger_contract_violations": {
+            "n": 22,
+            "mean": 0.0
+          },
+          "rotation_seconds": {
+            "n": 22,
+            "mean": 0.0
+          }
+        },
+        "totals": {
+          "own_lost": 500,
+          "enemy_kills": 792,
+          "enemy_damage": 103912,
+          "own_shells": 3916,
+          "shots_fired": 1781,
+          "shell_damage": 91212,
+          "shot_damage": 10053,
+          "t_end": 891.5000000000008,
+          "rotation_activations": 0,
+          "triggered_units": 0,
+          "triggered_unit_survivors": 0,
+          "rotation_trigger_contract_violations": 0,
+          "counterfactual_predicted_deaths": 0,
+          "planner_assignments": 0,
+          "ranged_seconds": 9451.666666666684,
+          "eligible_seconds": 1595.7333333332554,
+          "ready_to_fire_seconds": 6071.900000001307,
+          "in_range_seconds": 5896.466666667731,
+          "reaction_override_seconds": 2763.566666666446,
+          "ranged_deaths": 300,
+          "engagement_floor_ticks": 0,
+          "rotation_seconds": 0.0
+        },
+        "survivors_by_role": {
+          "melee": {
+            "n": 22,
+            "mean": 0.2727272727272727
+          },
+          "ranged": {
+            "n": 22,
+            "mean": 2.6818181818181817
+          },
+          "artillery": {
+            "n": 22,
+            "mean": 4.7727272727272725
+          }
+        }
+      }
+    },
+    "V2": {
+      "n_series": 10,
+      "mean_streak": {
+        "n": 10,
+        "mean": 1.2
+      },
+      "streak_distribution": {
+        "1": 8,
+        "2": 2
+      },
+      "streak_reach": [
+        {
+          "k": 1,
+          "n": 10,
+          "denominator": 10
+        },
+        {
+          "k": 2,
+          "n": 2,
+          "denominator": 10
+        },
+        {
+          "k": 3,
+          "n": 0,
+          "denominator": 10
+        },
+        {
+          "k": 4,
+          "n": 0,
+          "denominator": 10
+        },
+        {
+          "k": 5,
+          "n": 0,
+          "denominator": 10
+        },
+        {
+          "k": 6,
+          "n": 0,
+          "denominator": 10
+        },
+        {
+          "k": 7,
+          "n": 0,
+          "denominator": 10
+        },
+        {
+          "k": 8,
+          "n": 0,
+          "denominator": 10
+        },
+        {
+          "k": 9,
+          "n": 0,
+          "denominator": 10
+        },
+        {
+          "k": 10,
+          "n": 0,
+          "denominator": 10
+        }
+      ],
+      "roster_before": [
+        {
+          "fight": 1,
+          "roles": {
+            "melee": {
+              "n": 10,
+              "mean": 10.0
+            },
+            "ranged": {
+              "n": 10,
+              "mean": 30.0
+            },
+            "artillery": {
+              "n": 10,
+              "mean": 10.0
+            }
+          }
+        },
+        {
+          "fight": 2,
+          "roles": {
+            "melee": {
+              "n": 10,
+              "mean": 0.6
+            },
+            "ranged": {
+              "n": 10,
+              "mean": 7.1
+            },
+            "artillery": {
+              "n": 10,
+              "mean": 8.8
+            }
+          }
+        },
+        {
+          "fight": 3,
+          "roles": {
+            "melee": {
+              "n": 2,
+              "mean": 0.0
+            },
+            "ranged": {
+              "n": 2,
+              "mean": 0.0
+            },
+            "artillery": {
+              "n": 2,
+              "mean": 6.0
+            }
+          }
+        },
+        {
+          "fight": 4,
+          "roles": {
+            "melee": {
+              "n": 0,
+              "mean": null
+            },
+            "ranged": {
+              "n": 0,
+              "mean": null
+            },
+            "artillery": {
+              "n": 0,
+              "mean": null
+            }
+          }
+        },
+        {
+          "fight": 5,
+          "roles": {
+            "melee": {
+              "n": 0,
+              "mean": null
+            },
+            "ranged": {
+              "n": 0,
+              "mean": null
+            },
+            "artillery": {
+              "n": 0,
+              "mean": null
+            }
+          }
+        },
+        {
+          "fight": 6,
+          "roles": {
+            "melee": {
+              "n": 0,
+              "mean": null
+            },
+            "ranged": {
+              "n": 0,
+              "mean": null
+            },
+            "artillery": {
+              "n": 0,
+              "mean": null
+            }
+          }
+        },
+        {
+          "fight": 7,
+          "roles": {
+            "melee": {
+              "n": 0,
+              "mean": null
+            },
+            "ranged": {
+              "n": 0,
+              "mean": null
+            },
+            "artillery": {
+              "n": 0,
+              "mean": null
+            }
+          }
+        },
+        {
+          "fight": 8,
+          "roles": {
+            "melee": {
+              "n": 0,
+              "mean": null
+            },
+            "ranged": {
+              "n": 0,
+              "mean": null
+            },
+            "artillery": {
+              "n": 0,
+              "mean": null
+            }
+          }
+        },
+        {
+          "fight": 9,
+          "roles": {
+            "melee": {
+              "n": 0,
+              "mean": null
+            },
+            "ranged": {
+              "n": 0,
+              "mean": null
+            },
+            "artillery": {
+              "n": 0,
+              "mean": null
+            }
+          }
+        },
+        {
+          "fight": 10,
+          "roles": {
+            "melee": {
+              "n": 0,
+              "mean": null
+            },
+            "ranged": {
+              "n": 0,
+              "mean": null
+            },
+            "artillery": {
+              "n": 0,
+              "mean": null
+            }
+          }
+        }
+      ],
+      "fights": {
+        "n": 22,
+        "wins": 12,
+        "losses": 10,
+        "timeouts": 0,
+        "own_deaths_per_fight": {
+          "n": 22,
+          "mean": 22.727272727272727
+        },
+        "own_losses_on_wins": {
+          "n": 12,
+          "mean": 31.416666666666668
+        },
+        "own_losses_on_losses": {
+          "n": 10,
+          "mean": 12.3
+        },
+        "own_losses_on_timeouts": {
+          "n": 0,
+          "mean": null
+        },
+        "own_losses_on_nonwins": {
+          "n": 10,
+          "mean": 12.3
+        },
+        "exchange_rate": 1.8,
+        "zero_own_deaths": false,
+        "kills_per_minute": 65.1806550253476,
+        "damage_per_shell": 26.072014351614555,
+        "damage_per_shot": 4.851745576279292,
+        "false_extractions": {
+          "status": "not_evaluated",
+          "reason": "No untreated continuation; no causal false-extraction estimate."
+        },
+        "mechanism": {
+          "targets_per_shell": {
+            "n": 22,
+            "mean": 2.2200752300805253
+          },
+          "shells_per_kill": {
+            "n": 22,
+            "mean": 5.327021210941575
+          },
+          "fire_rate_shells_per_gun_minute": {
+            "n": 22,
+            "mean": 33.66773231327811
+          },
+          "firepower_utilization": {
+            "n": 17,
+            "mean": 0.21985819471235618
+          },
+          "in_range_seconds": {
+            "n": 22,
+            "mean": 282.4696969697349
+          },
+          "ready_to_fire_seconds": {
+            "n": 22,
+            "mean": 271.3333333333925
+          },
+          "shots_fired": {
+            "n": 22,
+            "mean": 95.04545454545455
+          },
+          "reaction_override_seconds": {
+            "n": 22,
+            "mean": 122.93636363635528
+          },
+          "ranged_deaths": {
+            "n": 22,
+            "mean": 13.636363636363637
+          },
+          "rotation_activations": {
+            "n": 22,
+            "mean": 0.0
+          },
+          "counterfactual_predicted_deaths": {
+            "n": 22,
+            "mean": 0.0
+          },
+          "triggered_unit_survival": {
+            "n": 0,
+            "mean": null
+          },
+          "rotation_trigger_contract_violations": {
+            "n": 22,
+            "mean": 0.0
+          },
+          "rotation_seconds": {
+            "n": 22,
+            "mean": 0.0
+          }
+        },
+        "totals": {
+          "own_lost": 500,
+          "enemy_kills": 900,
+          "enemy_damage": 115119,
+          "own_shells": 3902,
+          "shots_fired": 2091,
+          "shell_damage": 101733,
+          "shot_damage": 10145,
+          "t_end": 828.466666666672,
+          "rotation_activations": 0,
+          "triggered_units": 0,
+          "triggered_unit_survivors": 0,
+          "rotation_trigger_contract_violations": 0,
+          "counterfactual_predicted_deaths": 0,
+          "planner_assignments": 3923,
+          "ranged_seconds": 9981.399999999978,
+          "eligible_seconds": 1583.4333333332563,
+          "ready_to_fire_seconds": 5969.3333333346345,
+          "in_range_seconds": 6214.333333334168,
+          "reaction_override_seconds": 2704.599999999816,
+          "ranged_deaths": 300,
+          "engagement_floor_ticks": 0,
+          "rotation_seconds": 0.0
+        },
+        "survivors_by_role": {
+          "melee": {
+            "n": 22,
+            "mean": 0.2727272727272727
+          },
+          "ranged": {
+            "n": 22,
+            "mean": 3.227272727272727
+          },
+          "artillery": {
+            "n": 22,
+            "mean": 4.545454545454546
+          }
+        }
+      }
+    }
+  },
+  "paired_streak_difference": {
+    "V2 minus base": {
+      "n": 10,
+      "mean": 0.0
+    }
+  },
+  "paired_reached_fights": {
+    "base minus V2": {
+      "n": 21,
+      "unmatched_pairs": 2,
+      "differences": {
+        "win": {
+          "n": 21,
+          "mean": 0.0
+        },
+        "own_lost": {
+          "n": 21,
+          "mean": 0.47619047619047616
+        },
+        "enemy_kills": {
+          "n": 21,
+          "mean": -4.619047619047619
+        },
+        "kills_per_own_death": {
+          "n": 21,
+          "mean": -0.49442715104523494
+        },
+        "damage_per_shell": {
+          "n": 21,
+          "mean": -5.539758194461539
+        },
+        "damage_per_shot": {
+          "n": 14,
+          "mean": 0.7323988312337154
+        },
+        "kills_per_minute": {
+          "n": 21,
+          "mean": -13.766933672412113
+        },
+        "shots_fired": {
+          "n": 21,
+          "mean": -11.761904761904763
+        },
+        "firepower_utilization": {
+          "n": 14,
+          "mean": -0.0022397478638379043
+        },
+        "in_range_seconds": {
+          "n": 21,
+          "mean": -9.396825396814814
+        },
+        "rotation_activations": {
+          "n": 21,
+          "mean": 0.0
+        }
+      },
+      "axis_plot": {
+        "own_deaths_saved": {
+          "n": 21,
+          "mean": -0.47619047619047616
+        },
+        "enemy_kills_gained": {
+          "n": 21,
+          "mean": -4.619047619047619
+        },
+        "enemy_damage_gained": {
+          "n": 21,
+          "mean": -443.76190476190476
+        }
+      }
+    }
+  },
+  "reached_limit": "Only jointly reached positions; arm-specific survivor composition differs."
+}
