@@ -136,10 +136,10 @@ def stream_compare(row,model,weights,ablation,deadline=None):
                 chunk_ticks=CHUNK,scope='complete sequence; persistent Host and Python Replay state across bounded chunks')
 
 
-def sample_parity_timing(model,deadline):
+def sample_parity_timing(model,deadline,model_root=None,attempt=3):
     from stage1_native_v2 import admit_driver
     admit_driver()
-    output=HERE/'_local/stage1_v2'/('TIMING_02_'+model.kind+'.weights.json')
+    output=(model_root or HERE/'_local/stage1_v2')/(f'TIMING_{attempt:02}_'+model.kind+'.weights.json')
     weights=export(model,output)
     admission_start=time.monotonic()
     rows=[r for r in admit()['rows'] if r['split']=='test']

@@ -38,7 +38,7 @@ CONFIG=dict(epochs=10,window_ticks=90,batch_windows=4,learning_rate=.001,
             checkpoint='minimum validation weighted masked loss; earliest exact tie',
             history='R2D2 stored-state epoch refresh, 30-tick current-weight burn-in, 90-tick TBPTT',
             burn_in_ticks=BURN_IN,refresh='one chronological training-fight pass each epoch; state stale at most one epoch',
-            epoch_shuffle_seed=41999,n1_seeds=N1_SEEDS,concurrent_fits=False,
+            epoch_shuffle_seed=41999,n1_seeds=N1_SEEDS,concurrent_fits=True,
             calibration_steps_per_arm=3,training_cap_seconds=3600,peak_rss_cap_bytes=512*1024**2)
 
 
@@ -381,15 +381,26 @@ def law_statistics(model,fights,deadline=None):
 
 
 
-def run(run_if_admitted=False,aggregate=None):
+def run(run_if_admitted=False,aggregate=None,epochs=None,resume=False):
     global OUT,PREFIX,ROW_WEIGHTS,HEAD_MASS,STEPS_PER_EPOCH,STORED
+    from stage1_training_control import training_cap,measured_cores,project,FITS,last_checkpoint,validate_resume,TrainingDeadline
+    from stage1_training_worker import execute,completed_outcome
+    if epochs is not None and (type(epochs) is not int or epochs<=0):
+        raise ValueError('epochs must be a positive integer')
     if aggregate:
         r=read(aggregate)['round']; OUT=HERE/f'_local/stage1_v2/dagger_r{r}'; PREFIX=f'DAGGER_V2_R{r}'
-    projection_path=HERE/('TRAINING_PROJECTION_02.json' if not aggregate else PREFIX+'_PROJECTION_02.json')
-    budget_path=HERE/('STAGE1_BUDGET_02.json' if not aggregate else PREFIX+'_BUDGET_02.json')
-    # Refuse before any write, expensive read/preparation or sample.
-    if projection_path.exists() or budget_path.exists():
-        raise RuntimeError('attempt 02 already recorded or interrupted; preserve receipts, no automatic repeated sample')
+    projection_path=HERE/('TRAINING_PROJECTION_03.json' if not aggregate else PREFIX+'_PROJECTION_03.json')
+    budget_path=HERE/('STAGE1_BUDGET_03.json' if not aggregate else PREFIX+'_BUDGET_03.json')
+    result_path=HERE/(PREFIX+'_RESULTS.json')
+    if result_path.exists():
+        raise RuntimeError('training results already recorded; preserve evidence')
+    if not resume and (projection_path.exists() or budget_path.exists()):
+        raise RuntimeError('attempt 03 already recorded or interrupted; use --resume, never overwrite or re-sample')
+    if resume and not (projection_path.exists() and budget_path.exists()):
+        raise RuntimeError('resume requires completed attempt-03 sample and budget; inspect interrupted sample')
+    if not resume and any((OUT/(name+suffix)).exists() for kind,seed,name in FITS for suffix in ('.pt','.weights.json','.outcome.json')):
+        raise RuntimeError('pre-existing fit artifacts; preserve and inspect')
+    authority=training_cap(HERE); topology=measured_cores()
     environment(); fights=index(aggregate); plan=schedule(fights); lookup={m['group']:m for m in fights}
     OUT.mkdir(parents=True,exist_ok=True)
     ROW_WEIGHTS={m['group']:m.get('row_weight',1.) for m in fights}
@@ -397,134 +408,120 @@ def run(run_if_admitted=False,aggregate=None):
     STEPS_PER_EPOCH=len(plan)
     weights,modes,counts=fire_stats(fights); pins=sources()
     declared_rows=sum(m['counts']['decision_rows'] for m in fights if m['split']=='train')
-    budget=dict(**CONFIG,attempt=2,steps_per_epoch=len(plan),gradient_steps_per_arm=10*len(plan),decision_rows_per_arm=10*declared_rows,
-                training_only_fire_class_weights=weights,fire_counts=counts,majority_modes=modes,
-                dataset_index_sha256=sha(aggregate or DATA/'INDEX.json'),sources=pins)
-    atomic(budget_path,budget)
-    begin=time.monotonic(); sample_deadline=begin+3600; sampled={}; refresh={}; diagnostics={}; parity_timing={}
-    # Preserve original early/middle/late-prefix nine-step sample selection.
-    ordered=sorted(plan,key=lambda rows:sum((s+3*(e-s))*lookup[g]['guns']**2 for g,s,e in rows))
-    selected=[ordered[min(len(ordered)-1,int((len(ordered)-1)*q))] for q in (.1,.5,.9)]
-    try:
-        prep_begin=time.monotonic()
-        for m in fights:
-            if m['split'] in ('train','validation','test'):
-                if time.monotonic()>=sample_deadline:
-                    raise TimeoutError('sample time cap during preprocessing')
-                prepare(m['group']); check_rss()
-        preparation_seconds=time.monotonic()-prep_begin
-        for kind in KINDS:
-            model,optimizer=make(kind); stats=[]; sampled[kind]=stats
-            STORED=StoredStates() if kind!='N1' else None
-            cpu=time.process_time()
-            refresh[kind]=dict(wall_seconds=STORED.refresh(model,windows(fights),prepare,sample_deadline) if STORED else 0.)
-            refresh[kind]['cpu_seconds']=time.process_time()-cpu
-            for rows in selected:
-                if time.monotonic()>=sample_deadline:
-                    raise TimeoutError('sample wall cap')
-                value=step(model,optimizer,rows,weights); value['windows']=rows; value['work_units']=work(rows,kind,lookup)
-                stats.append(value)
-                print(kind,'sample',len(stats),round(value['wall_seconds'],3),'s',flush=True)
-            # Offline chronological diagnostics and parity timing have zero
-            # optimizer steps and launch no physical fights.
-            timings={}
-            for split in ('validation','test'):
-                start=time.monotonic(); evaluate(model,fights,split,weights,modes,deadline=sample_deadline)
-                timings[split]=time.monotonic()-start
-            if kind=='N2':
-                start=time.monotonic(); law_statistics(model,fights,deadline=sample_deadline)
-                timings['law']=time.monotonic()-start
-            diagnostics[kind]=timings
-            from stage1_export import sample_parity_timing
-            parity_timing[kind]=sample_parity_timing(model,sample_deadline)
-            check_rss()
-            del optimizer,model; STORED=None
-    except Exception as error:
-        atomic(projection_path,dict(status='REFUSED_SAMPLE',attempt=2,reason=str(error),samples=sampled,refresh_pass=refresh,
-                        budget_sha256=sha(budget_path),wall_seconds=time.monotonic()-begin,training_run=False))
-        raise
-    projections={}
-    for kind,stats in sampled.items():
-        rate=max(s['wall_seconds']/s['work_units'] for s in stats)
-        train_work=10*sum(work(rows,kind,lookup) for rows in plan)
-        diag=11*diagnostics[kind]['validation']+diagnostics[kind]['test']+diagnostics[kind].get('law',0)
-        refresh_cost=10*refresh[kind]['wall_seconds']
-        parity_cost=parity_timing[kind]['projected_seconds']
-        cost=rate*train_work+diag+refresh_cost+parity_cost
-        projections[kind]=dict(training_seconds=rate*train_work,diagnostics_seconds=diag,refresh_seconds=refresh_cost,
-                               export_parity_seconds=parity_cost,total_seconds=cost,seconds_per_work_unit=rate,
-                               seeds=3 if kind=='N1' else 1)
-    for p in projections.values():
-        p['all_seed_total_seconds']=p['seeds']*p['total_seconds']
-    # All extra N1 seeds have the same rows/steps/epochs and validation selection.
-    total=preparation_seconds+3*projections['N1']['total_seconds']+sum(projections[k]['total_seconds'] for k in ('N1r','N2'))
-    def minimum_change():
-        candidates=[]
-        for epochs in range(9,0,-1):
-            seconds=preparation_seconds
-            for kind,p in projections.items():
-                fixed=diagnostics[kind]['validation']+diagnostics[kind]['test']+diagnostics[kind].get('law',0)+p['export_parity_seconds']
-                scalable=p['training_seconds']+p['refresh_seconds']+10*diagnostics[kind]['validation']
-                seconds+=p['seeds']*(fixed+epochs*scalable/10)
-            if seconds<3600:
-                return dict(epochs_for_all_arms_and_seeds=epochs,projected_seconds=seconds,applied=False,responsible_role='owner')
-        return dict(epochs_for_all_arms_and_seeds=None,reason='even one epoch exceeds cap; needs owner window/data budget decision',applied=False,responsible_role='owner')
-    projection=dict(status='ADMITTED' if total<3600 else 'OVER_60_MINUTES',attempt=2,
-                    prior_refused_attempt_sha256=sha(HERE/'TRAINING_PROJECTION.json'),
-                    total_projected_seconds=total,total_projected_minutes=total/60,
-                    method='sequential float64 fits; max nine-step measured rate; measured per-epoch refresh and chronological diagnostics; measured worst-sequence parity rate',
-                    samples=sampled,refresh_pass=refresh,diagnostic_timing=diagnostics,parity_timing=parity_timing,
-                    preprocessing_seconds=preparation_seconds,per_arm=projections,budget_sha256=sha(budget_path),training_run=False,
-                    smallest_declared_change=minimum_change() if total>=3600 else None,
-                    sample_wall_seconds=time.monotonic()-begin,cap_seconds=3600)
-    atomic(projection_path,projection); print('Projected fits, refresh, diagnostics, three N1 seeds and export parity:',round(total/60,2),'minutes',flush=True)
-    if total>=3600 or not run_if_admitted:
+    if resume:
+        budget=read(budget_path)
+        validate_resume(budget,pins,sha(aggregate or DATA/'INDEX.json'),epochs)
+        recorded=read(projection_path)
+        if recorded['budget_sha256']!=sha(budget_path) or recorded['status']=='REFUSED_SAMPLE':
+            raise RuntimeError('resume sample/budget invalid')
+        sampled=recorded['samples']; refresh=recorded['refresh_pass']; diagnostics=recorded['diagnostic_timing']
+        parity_timing=recorded['parity_timing']; preparation_seconds=recorded['preprocessing_seconds']
+    else:
+        epoch_count=CONFIG['epochs'] if epochs is None else epochs
+        budget={**CONFIG,'epochs':epoch_count,'attempt':3,'concurrent_fits':True,
+                'training_cap_seconds':authority['cap_seconds'],'training_cap_authority':authority,'topology':topology,
+                'steps_per_epoch':len(plan),'gradient_steps_per_arm':epoch_count*len(plan),
+                'decision_rows_per_epoch':declared_rows,'decision_rows_per_arm':epoch_count*declared_rows,
+                'work_units_per_epoch':{k:sum(work(rows,k,lookup) for rows in plan) for k in KINDS},
+                'training_only_fire_class_weights':weights,'fire_counts':counts,'majority_modes':modes,
+                'dataset_index_sha256':sha(aggregate or DATA/'INDEX.json'),'sources':pins,
+                'timing_reuse':False,'timing_reuse_reason':'attempt-03 trainer identity changed; fresh bounded nine-step sample',
+                'aggregate':str(aggregate.resolve()) if aggregate else None,'output':str(OUT.resolve()),
+                'live_cap_check_interval_seconds':1}
+        atomic(budget_path,budget)
+        begin=time.monotonic(); sample_cap=min(3600,authority['cap_seconds']); sample_deadline=TrainingDeadline(HERE,begin+sample_cap,sample_cap); sampled={}; refresh={}; diagnostics={}; parity_timing={}
+        # Preserve original early/middle/late-prefix nine-step sample selection.
+        ordered=sorted(plan,key=lambda rows:sum((s+3*(e-s))*lookup[g]['guns']**2 for g,s,e in rows))
+        selected=[ordered[min(len(ordered)-1,int((len(ordered)-1)*q))] for q in (.1,.5,.9)]
+        try:
+            prep_begin=time.monotonic()
+            for m in fights:
+                if m['split'] in ('train','validation','test'):
+                    if time.monotonic()>=sample_deadline:
+                        raise TimeoutError('sample time cap during preprocessing')
+                    prepare(m['group']); check_rss()
+            preparation_seconds=time.monotonic()-prep_begin
+            for kind in KINDS:
+                model,optimizer=make(kind); stats=[]; sampled[kind]=stats
+                STORED=StoredStates() if kind!='N1' else None
+                cpu=time.process_time()
+                refresh[kind]=dict(wall_seconds=STORED.refresh(model,windows(fights),prepare,sample_deadline) if STORED else 0.)
+                refresh[kind]['cpu_seconds']=time.process_time()-cpu
+                for rows in selected:
+                    if time.monotonic()>=sample_deadline:
+                        raise TimeoutError('sample wall cap')
+                    value=step(model,optimizer,rows,weights); value['windows']=rows; value['work_units']=work(rows,kind,lookup)
+                    stats.append(value)
+                    print(kind,'sample',len(stats),round(value['wall_seconds'],3),'s',flush=True)
+                # Offline chronological diagnostics and parity timing have zero
+                # optimizer steps and launch no physical fights.
+                timings={}
+                for split in ('validation','test'):
+                    start=time.monotonic(); evaluate(model,fights,split,weights,modes,deadline=sample_deadline)
+                    timings[split]=time.monotonic()-start
+                if kind=='N2':
+                    start=time.monotonic(); law_statistics(model,fights,deadline=sample_deadline)
+                    timings['law']=time.monotonic()-start
+                diagnostics[kind]=timings
+                from stage1_export import sample_parity_timing
+                parity_timing[kind]=sample_parity_timing(model,sample_deadline,model_root=OUT,attempt=3)
+                check_rss()
+                del optimizer,model; STORED=None
+        except Exception as error:
+            atomic(projection_path,dict(status='REFUSED_SAMPLE',attempt=3,reason=str(error),samples=sampled,refresh_pass=refresh,
+                            budget_sha256=sha(budget_path),wall_seconds=time.monotonic()-begin,training_run=False))
+            raise
+    if sources()!=pins:
+        raise RuntimeError('source drift during timing sample')
+    sample=dict(samples=sampled,refresh_pass=refresh,diagnostic_timing=diagnostics,
+                parity_timing=parity_timing,preprocessing_seconds=preparation_seconds)
+    completed={}
+    for kind,seed,name in FITS:
+        state=last_checkpoint(OUT/'epochs'/name,sha(budget_path))
+        completed[name]=state['epoch'] if state else 0
+    sealed={name:completed_outcome(sys.modules[__name__],OUT,name,sha(budget_path)) for kind,seed,name in FITS}
+    parity_path=HERE/(PREFIX+'_EXPORT_PARITY.json')
+    if parity_path.exists():
+        existing_parity=read(parity_path)
+        if existing_parity['status']!='PASS' or any(sealed[n] is None or existing_parity['models'][n]['export_sha256']!=sealed[n]['export_sha256'] for k,s,n in FITS):
+            raise RuntimeError('recorded export parity drift')
+    calculated=project(sample,budget,topology,completed,sealed_arms=[n for n,v in sealed.items() if v],sealed_parity=parity_path.exists())
+    total=calculated['total_projected_seconds']
+    projection=dict(**sample,**calculated,status='ADMITTED' if total<=authority['cap_seconds'] else 'OVER_TRAIN_CAP',
+                    attempt=3,budget_sha256=sha(budget_path),training_run=False,
+                    cap_seconds=authority['cap_seconds'],training_cap_authority=authority,
+                    completed_epochs=completed,timing_sources=pins,
+                    prior_proxy_receipt_sha256=sha(HERE/'TRAINING_PROJECTION_02.json') if not aggregate else None)
+    if not aggregate:
+        prior=read(HERE/'TRAINING_PROJECTION_02.json')
+        projection['historical_attempt_02_proxy']=dict(status=prior['status'],total_projected_seconds=prior['total_projected_seconds'],
+                         total_projected_minutes=prior['total_projected_minutes'],receipt_sha256=sha(HERE/'TRAINING_PROJECTION_02.json'))
+    if resume:
+        directory=OUT/'resumptions'; directory.mkdir(exist_ok=True)
+        invocation=directory/f'{len(list(directory.glob("*.json")))+1:03}.json'
+        atomic(invocation,projection)
+    else:
+        projection['sample_wall_seconds']=time.monotonic()-begin
+        atomic(projection_path,projection)
+    print('Projected job:',round(total/60,2),'minutes; owner cap:',authority['cap_seconds']/60,'minutes',flush=True)
+    if total>authority['cap_seconds'] or not run_if_admitted:
         return projection
-    deadline=time.monotonic()+3600; outcomes={}
-    fits=[('N1',seed,'N1' if i==0 else f'N1_seed{seed}') for i,seed in enumerate(N1_SEEDS)]+[(k,SEEDS[k],k) for k in ('N1r','N2')]
-    for kind,seed,name in fits:
-        model,optimizer=make(kind,seed); best=math.inf; best_epoch=None; history=[]; rows_seen=0; fit_start=time.monotonic(); fit_cpu=time.process_time()
-        resources=Counter(); peak=0
-        for epoch in range(10):
-            if sources()!=pins or sha(aggregate or DATA/'INDEX.json')!=budget['dataset_index_sha256']:
-                raise RuntimeError('training source/index drift')
-            epoch_plan=schedule(fights,epoch)
-            STORED=StoredStates() if kind!='N1' else None
-            if STORED:
-                cpu=time.process_time(); seconds=STORED.refresh(model,windows(fights),prepare,deadline)
-                resources['refresh_wall_seconds']+=seconds; resources['refresh_cpu_seconds']+=time.process_time()-cpu
-            with (OUT/(name+'.steps.jsonl')).open('a') as log:
-                for step_id,rows in enumerate(epoch_plan):
-                    if time.monotonic()>=deadline:
-                        raise TimeoutError('training wall cap; partial checkpoints preserved')
-                    measured=step(model,optimizer,rows,weights); rows_seen+=measured['decision_rows']
-                    import json
-                    log.write(json.dumps(dict(epoch=epoch+1,step=step_id,windows=rows,**measured),allow_nan=False)+'\n'); log.flush()
-                    peak=max(peak,measured['rss_bytes'])
-                    for k in ('wall_seconds','cpu_seconds','phase_rhs_evaluations'):
-                        resources[k]+=measured[k]
-            STORED=None
-            diagnostic=evaluate(model,fights,'validation',weights,modes,deadline)
-            value=diagnostic['weighted_masked_loss']; history.append(dict(epoch=epoch+1,validation=value))
-            if value<best:
-                best=value; best_epoch=epoch+1
-                torch.save(dict(kind=kind,model=model.state_dict(),epoch=best_epoch,seed=seed,budget=budget),OUT/(name+'.pt'))
-            print(name,'epoch',epoch+1,'validation',value,flush=True)
-        if rows_seen!=budget['decision_rows_per_arm']:
-            raise RuntimeError('unequal decision-row budget')
-        model.load_state_dict(torch.load(OUT/(name+'.pt'),weights_only=False)['model'])
-        export(model,OUT/(name+'.weights.json'))
-        test_diagnostic=evaluate(model,fights,'test',weights,modes,deadline)
-        validation_diagnostic=evaluate(model,fights,'validation',weights,modes,deadline)
-        law=law_statistics(model,fights,deadline)
-        outcomes[name]=dict(kind=kind,seed=seed,checkpoint_epoch=best_epoch,history=history,gradient_steps=10*len(plan),decision_rows=rows_seen,
-                             resources={**resources,'peak_rss_bytes':peak,'checkpoint_bytes':(OUT/(name+'.pt')).stat().st_size,
-                                        'export_bytes':(OUT/(name+'.weights.json')).stat().st_size},learned_law=law,
-                             wall_seconds=time.monotonic()-fit_start,cpu_seconds=time.process_time()-fit_cpu,checkpoint_sha256=sha(OUT/(name+'.pt')),
-                             export_sha256=sha(OUT/(name+'.weights.json')),test=test_diagnostic,validation=validation_diagnostic)
-        del optimizer,model
+    # Cap may only tighten after admission; a later increase requires a new invocation.
+    active_cap=min(authority['cap_seconds'],training_cap(HERE)['cap_seconds'])
+    if total>active_cap:
+        raise RuntimeError('owner training cap tightened after admission')
+    job_begin=time.monotonic(); job_cpu=time.process_time()
+    deadline=TrainingDeadline(HERE,job_begin+active_cap,active_cap)
+    # Workers import the canonical module, even when this coordinator is __main__.
+    outcomes=execute(sys.modules[__name__],budget_path,aggregate,OUT,projection,deadline)
     from stage1_export import parity
-    export_parity=parity(model_root=OUT,prefix=PREFIX,deadline=deadline)
+    parity_path=HERE/(PREFIX+'_EXPORT_PARITY.json')
+    if parity_path.exists():
+        export_parity=read(parity_path)
+        if export_parity['status']!='PASS' or any(export_parity['models'][n]['export_sha256']!=outcomes[n]['export_sha256'] for k,s,n in FITS):
+            raise RuntimeError('recorded export parity drift')
+    else:
+        export_parity=parity(model_root=OUT,prefix=PREFIX,deadline=deadline)
     seed_noise={}
     for head in HEADS:
         metric='balanced_accuracy' if head in ('start','release') else 'top1'
@@ -532,19 +529,23 @@ def run(run_if_admitted=False,aggregate=None):
         finite=[v for v in values if v is not None]
         seed_noise[head]=dict(metric=metric,values=values,min=min(finite) if finite else None,max=max(finite) if finite else None,
                              sample_sd=float(np.std(finite,ddof=1)) if len(finite)>1 else None)
-    if sources()!=pins:
-        raise RuntimeError('source drift before training results')
-    result=dict(status='TRAINED_BC',models=outcomes,export_parity=export_parity,
+    validate_resume(budget,sources(),sha(aggregate or DATA/'INDEX.json'),budget['epochs'])
+    result=dict(status='TRAINED_BC',attempt=3,models=outcomes,export_parity=export_parity,
                 budget_sha256=sha(budget_path),projection_sha256=sha(projection_path),sources=pins,physical_fights=0,
+                admission=projection,invocation_wall_seconds=time.monotonic()-job_begin,
+                coordinator_cpu_seconds=time.process_time()-job_cpu,
+                arm_resource_scope='per-arm counters declare completed checkpoint/current invocation scope; interrupted uncheckpointed work excluded',
                 n1_seed_noise=dict(primary_seed=41001,seeds=list(N1_SEEDS),heads=seed_noise,scope='descriptive three-seed noise yardstick; no hypothesis test'),
                 interpretation='BC differences on a stateless teacher do not establish RRG mechanism; compare against three N1 seeds; fixed J prior is a motion confound',
                 dagger_run=bool(aggregate),mechanism_run=False)
-    atomic(HERE/(PREFIX+'_RESULTS.json'),result)
+    atomic(result_path,result)
     return result
 
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser(); p.add_argument('--run-if-admitted',action='store_true'); p.add_argument('--aggregate',type=Path); a=p.parse_args()
+    p=argparse.ArgumentParser(); p.add_argument('--run-if-admitted',action='store_true'); p.add_argument('--aggregate',type=Path)
+    p.add_argument('--epochs',type=int); p.add_argument('--resume',action='store_true'); a=p.parse_args()
     from stage1_jobs import job_lock
-    with job_lock('training'):
-        run(a.run_if_admitted,a.aggregate)
+    from stage1_training_control import training_cap
+    with job_lock('training',deadline=time.monotonic()+training_cap(HERE)['cap_seconds']):
+        run(a.run_if_admitted,a.aggregate,a.epochs,a.resume)

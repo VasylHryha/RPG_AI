@@ -1,76 +1,38 @@
-# Stage 1 BC and future runs
+# Stage 1 BC: host handoff for attempt 03
 
-The implementation is delivered in new files; current runtime disposition is in REPORT_STAGE1.md. Collected data, inventory, entropy, ledger, contract and original net_host are unchanged. No DAgger or mechanism fights ran. Use the pinned CPU environment; no workspace lock/environment change.
+Work in `/Users/new/RiderProjects/ai_RPG_test`. Use the existing sealed collection v2 and converted mmap data with pinned `_local/mlenv/bin/python`. Read `CONTRACT_AMENDMENT_STAGE1_V2.md`. Attempts 01/02 and all collected data remain unchanged. This handoff runs no collection, conversion, DAgger or mechanism fights.
 
-`stage1_data.py receipt` verifies all 200 immutable fight files/receipts and produces compact COLLECTION_RECEIPT.json. `convert` streams 180 eligible fights into local mmap arrays; 20 report-only fights are excluded. Each fight retains its sealed whole-fight split, physical tick geometry, persistent IDs, accepted visitor assignment history, launch acknowledgements, decision features/labels/masks and teacher-target-conditioned legal support. No native launch becomes an earlier training label. Conversion caches fail on arithmetic/data drift; interrupted attempts remain separate.
+Both recurrent arms use stored-state epoch refresh with 30-tick current-weight no-grad burn-in and the unchanged 90-tick gradient window. State is stale for at most one epoch and exact at unchanged weights; the fixtures check full replay equality. All neighbor gradients remain attached within the window. Six-tick held features, accepted assignment history, death pruning and launch resets stay explicit. Prepared geometry remains weight-independent. Features remain mmap float32; phases, memory, forcing, weights and computation remain float64. Current v2 scheduling has 516 steps and 71,508 decision rows per epoch; the host budget computes and records these totals directly from the sealed index. N2 A/B/J/share stay untrained by BC.
 
-Pinned Python 3.11 hypot and native libm can differ at exact boundaries. stage1_arithmetic.py gives the pinned schema/join functions private namespaces with native hypot; it changes no global math or ancestor bytes, adds no epsilon, and changes no observations. Native threshold semantics apply to masks, support, encoded readiness, inference and graphs. Exact boundary and outside-range fixtures document this. Old conversion attempt data is preserved under _local/stage1/attempts/conversion_001.
+Training uses `_local/TRAIN_CAP.json` with `{"cap_seconds": N, "approved_by": "owner", "date": "YYYY-MM-DD"}`. Claude writes it only after owner approval. Missing file means a 3600-second default. Invalid files fail closed. Admission requires projection <= cap. Python/native children retain the 512 MiB per-process limit; five concurrent arms can require five times that memory plus the coordinator. Collection keeps its separate `LAB_CAP.json` authority. The offline admission sample stops at one hour or the smaller training cap.
 
-`stage1_train.py --run-if-admitted` first measures nine optimizer steps total (three per arm, same early/middle/late-prefix batches). Sample models/optimizer states are discarded. It projects all three sequential ten-epoch fits plus ten validation passes and test diagnostics. Total projection >=3600 seconds stops after the sample for Claude's owner discussion; measured RSS >512 MiB or numerical failure also refuses. No training starts without repository process discovery. Actual wall/CPU/RSS/latency/RHS/disk measurements are recorded. Source and data hashes bind the declared budget.
+The training command creates `TRAINING_PROJECTION_03.json` and `STAGE1_BUDGET_03.json`, preserving attempts 01/02. `--epochs N` applies the identical positive epoch count to every arm and all three N1 seeds. The budget records epochs, per-arm steps and rows. It never reduces epochs automatically. Do not repeat the initial command if attempt 03 exists; use `--resume` instead. An incomplete or failed timing sample refuses resume and needs inspection; never delete its receipts.
 
-Every arm receives the same 90-tick, four-world/window schedule: currently 772 steps/epoch, ten epochs, 7,720 gradient steps and 954,000 gun-decision rows per arm. Zero-row windows after every gun dies are excluded; partial last-live windows remain. Exact scheduled row totals are checked. N1r/N2 reconstruct the complete chronological prefix under current weights with no_grad and detach once at the window boundary. All neighbor gradients remain attached inside the window. Six-tick held features, recorded previous accepted assignments, death pruning and actual-launch resets are explicit. Adam has zero weight decay, clipping norm1 and the contract's masked CE/BCE head weights; positive fire weights come from training only. N2 A/B/J/share raw coordinates and inherited optimizer moments remain zero. CPU Torch threads4/interop1/workers0; no concurrent fits.
+The projection uses the maximum measured step wall after excluding each arm's declared first-step warm-up. All samples, including warm-up, remain in the receipt. It adds measured chronological refresh, per-epoch validation, final validation/test/law diagnostics and full export parity. It also preserves the actual attempt-02 refused proxy total/hash and recomputes the old work-unit proxy from the new sample for comparison. Code identity changed, so the next host invocation takes nine fresh discarded steps (three per arm); attempt-02 timings are never used to admit training. Resume reuses attempt-03 measurements only if source and data identities still match.
 
-Checkpoint selection is minimum validation weighted masked loss with earliest ties. All ten epochs run for the matched budget. Per-head held-out diagnostics compare target against nearest and measured teacher repeat, fire against hold/permit, and move/aim against zero-offset and training majority. Unsupported/numerical failures stop; ceiling/undefined diagnostic heads do not establish usefulness or prevent mechanism review by themselves.
+Each N1 seed, N1r and N2 runs in its own process with torch threads 2, interop threads 1 and nice increment 10. Both `sysctl -n hw.perflevel0.physicalcpu` and `sysctl -n hw.ncpu` are recorded. The worker slots use two performance cores each, at most five processes; missing performance-core measurement falls back to one process. Longest-first lanes run sequentially within each lane and concurrently across lanes. Wall projection is the maximum lane sum, with preparation allowances and a sequential parity tail. It is a projection from isolated timing, not a measured concurrent wall guarantee; contention is unmeasured. The coordinator enters the repository process gate once, holding the stage-1 and collector locks throughout sampling, training and parity. Workers inherit those locks, so coordinator death does not unlock a still-running arm. Other tools must honor their own repository ownership gates.
 
-`stage1_native.py build` creates a separate local stage1_host against admitted objects. Original binary is never overwritten. A read-only shell-impact hook observes the exact native post-walk/pre-damage point and reports terminal native raw HP-capped attack totals, including shells after all own guns die. The hook adds no policy behavior. `stage1_export.py` exports selected checkpoints and checks float64 native/PyTorch held-out full sequences (actions, recurrent memory, phases, drift, launch reset) at atol=rtol=1e-9; all N2 ablations are included. This is inference/state parity, not fight usefulness or scientific acceptance. Focused tests also exercise a death mid-sequence.
+Completed epochs are atomic, fsync-backed transactions in `_local/stage1_v2/epochs/<arm>/epoch_NNNN.pt`: current model, optimizer, RNG state, row/step ledger, validation history and the earliest best validation model. Final `<arm>.pt` retains the selected best weights. A killed run resumes after the last completed epoch; unfinished epoch work is discarded and rerun, with no completed epoch repeated or skipped. Resume preserves the original budget and projection, records a new local resumption receipt, validates identities, and projects only remaining work. Sealed arm outcomes and sealed export parity are reused after their hashes match. Full arm wall/CPU includes worker preparation and finalization; coordinator-observed subprocess wall is also retained. Cumulative checkpoint accounting excludes interrupted, uncheckpointed work and declares that scope. The cap applies per invocation; live owner reductions are checked at least once per second between bounded work units, and increases require a new invocation. A single in-progress optimizer step is not preempted; the coordinator terminates workers if its deadline expires.
 
-DAgger seals ten trajectories per visitor per round, two visits to each sparse D1/1 and D2/1 cell, then six two/ten-gun visits. Student actions are never mixed with teacher actions; the constrained teacher shadows the same decision tick without physical advancement. Previous assignment history remains the actual visitor's. All arms refit the same union including round0, using fixed global masked-head denominators with round/visitor balanced gun-row weights. Validation uses its own corresponding balanced strata; test/report data never enter fitting/selection. Two rounds only; 30 physical attempts and 225,000 decision-row queries per round, including unsuccessful attempts. Successful crash boundaries are reconciled by immutable complete receipts or refused for inspection, never silently relaunched.
-
-Mechanism checks use 10–20 fresh independent draws per arm; all arms share each draw's seed/cell/placement/orientation. Default12 covers every cell × guns × orientation stratum. Arms are the constrained teacher, BC N1/N1r/N2, and six N2 ablations. Source/weight/driver inventories are sealed before launch. One native process; repository ownership gate and the owner's live LAB_CAP.json control execution. Partial/failed attempts are preserved and charged. Reports retain all paired fights, both axes, deaths, kills, ratio of totals (null for zero deaths), fire/participation, raw illegal attempts per decision separately from ordinary finite movement projection and cast vetoes, native damage/hits, launch/landing spreads, exact original-target dodge success with death censoring, unresolved shells and matched recorded-context kicks. Productive-cell guard is launch/opportunity >=.25 and enemy kills>0. No 10–20-pair formal outcome reading is produced: those require the contract's50/100/200 looks. No hierarchy or complete H-M proof is claimed.
-
-From repository root, first complete BC timing/training in an environment where process discovery works:
-
-```sh
-SLICE=evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1
-PY="$SLICE/_local/mlenv/bin/python"
-"$PY" "$SLICE/stage1_train.py" --run-if-admitted
-```
-
-If projection exceeds one hour, stop; Claude asks the owner. DAgger and mechanism commands below require trained, selected, parity-verified checkpoints. They are handoff commands, not execution already performed:
-
-```sh
-"$PY" "$SLICE/stage1_dagger.py" --round 1 --refit-if-admitted
-"$PY" "$SLICE/stage1_dagger.py" --round 2 --refit-if-admitted
-"$PY" "$SLICE/stage1_mechanism.py" --pairs 12
-```
-
-The mechanism command deliberately evaluates the initial BC stage1 exports, as requested, even if DAgger refits subsequently exist. Each DAgger refit has its own <=20-step resource sample and separate one-hour gate. Never bypass an unavailable process gate or fabricate a training projection.
-
-## Current correction: collection v2 and admission attempt 02
-
-The preceding instructions and numbers describe the historical deterministic collection and superseded full-prefix implementation. Use this section for the current host handoff. Read CONTRACT_AMENDMENT_STAGE1_V2.md first. Old held-out numbers are duplicate-trajectory in-distribution replay diagnostics; they do not demonstrate held-out generalization. D1 sparse teacher completion failed the old ES eligibility requirement.
-
-Method: **R2D2 stored recurrent state + burn-in** (Kapturowski, Ostrovski, Quan, Munos, Dabney, *Recurrent Experience Replay in Distributed Reinforcement Learning*, ICLR 2019; [paper](https://openreview.net/pdf/387fb2fcee8f74c53cf707a9856f40c458f33933.pdf)), with **truncated backpropagation through time**. This offline adaptation refreshes state under current weights once per epoch, snapshots the entire state, and uses 30-tick no-grad burn-in followed by the unchanged 90-tick gradient window. The paper discusses stored-state staleness/representational drift and combining stored states with burn-in. Our epoch refresh is a declared implementation choice; it is exact only at unchanged weights, and the fixture proves that case. Both N1r and N2 follow the same procedure. Float64 remains throughout; threads 2, no parallel fits. Five fits include the three predefined N1 seeds. The new projection measures and charges refresh, diagnostics, all seeds and full export parity, with the same 60-minute gate. The host has not yet measured attempt 02.
-
-Collection sample typically took minutes in v1, but v2 timing is unknown. Projection will measure it before allowing full collection. Training may consume up to one hour **after** admission; the offline admission sample has its own one-hour hard stop. Tell the owner the measured projection before proceeding if it refuses. Never use old collection or converted indexes with the corrected trainer.
-
-Run from repository root, in this order. These are commands for Claude on the host, not runs performed in this sandbox:
+For the existing collected/converted data, Claude should only run the training commands below. Do not recollect, reconvert, run DAgger or run mechanism fights as part of this change. First sample and inspect attempt 03 without starting final fits:
 
 ```sh
 cd /Users/new/RiderProjects/ai_RPG_test
 SLICE=evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1
 PY="$SLICE/_local/mlenv/bin/python"
-"$PY" "$SLICE/collection_v2.py" sample --fights 20
-"$PY" "$SLICE/collection_v2.py" project
-"$PY" "$SLICE/collection_v2.py" collect --fights 200
-"$PY" "$SLICE/stage1_data_v2.py" receipt
-"$PY" "$SLICE/stage1_data_v2.py" convert
-"$PY" "$SLICE/stage1_native_v2.py" admit
-"$PY" "$SLICE/stage1_train.py" --run-if-admitted
+"$PY" "$SLICE/stage1_train.py" --epochs 10
+cat "$SLICE/TRAINING_PROJECTION_03.json"
 ```
 
-The training command creates TRAINING_PROJECTION_02.json and STAGE1_BUDGET_02.json, preserving attempt 01. It proceeds only on admission. An existing attempt-02 budget/projection refuses repeated sampling; do not delete it. If projection is over an hour, report per-arm wall costs (N1 also has three seeds) and the smallest common epoch reduction in the receipt to the owner; do not apply it yourself.
-
-Only after STAGE1_V2_RESULTS.json is TRAINED_BC and its export parity is PASS:
+After the owner approves a cap, Claude writes the approved seconds and date (these values must come from that approval):
 
 ```sh
-"$PY" "$SLICE/stage1_dagger.py" --round 1 --refit-if-admitted
-"$PY" "$SLICE/stage1_dagger.py" --round 2 --refit-if-admitted
-"$PY" "$SLICE/stage1_mechanism.py" --pairs 12
+TRAIN_CAP_SECONDS=10800  # use only if the owner approved 10800 seconds
+TRAIN_CAP_DATE=2026-10-08  # actual approval date
+"$PY" -c 'import json,os,sys; from pathlib import Path; p=Path(sys.argv[1]); p.parent.mkdir(parents=True,exist_ok=True); t=p.with_suffix(".tmp"); t.write_text(json.dumps({"cap_seconds":int(sys.argv[2]),"approved_by":"owner","date":sys.argv[3]},indent=2)+"\n"); os.replace(t,p)' "$SLICE/_local/TRAIN_CAP.json" "$TRAIN_CAP_SECONDS" "$TRAIN_CAP_DATE"
+"$PY" "$SLICE/stage1_train.py" --resume --epochs 10 --run-if-admitted
 ```
 
-Jobs write into `_local/stage1_v2/jobs`, and refits into `_local/stage1_v2/dagger_rN`; old jobs stay untouched. Each completed student log receives an offline own-Host-path parity receipt before refit/report use. Mechanism still uses initial BC primary-seed exports. Reading: imitation and descriptive arm differences, with minority-class diagnostics, N1 seed noise, N2 learned-law statistics and the fixed J motion prior explicit. This is not scientific acceptance or a complete H-M claim.
+If that host job is interrupted, use the same resume command. It refuses source/data drift or a changed epoch count; do not delete receipts or alter the matched budget to get through the gate. The 10800-second example is not an approval and was not written here.
 
-The separate v2 driver was built here without fights; `admit` verifies its new STAGE1_NATIVE_BUILD_V2.json and binary. For a fresh checkout where local v2 native objects/binary are absent, run `"$PY" "$SLICE/stage1_native_v2.py" build` once before `admit`. Preserve any existing build receipt; inspect drift before rebuilding.
-
-Full-sequence parity streams 12-tick chunks, sending the shared joint snapshot once per tick. A persistent native Host and Python Replay carry phases, memory, six-tick features/forcing, assignments, graph IDs and cached intents across every chunk; a chunk boundary never resets state. Native JS arena GC runs after each response with no retained JS snapshot roots, while numeric Host state remains. Exact native child CPU and peak RSS come from wait4 and enforce the 512 MiB child cap; Python RSS is checked too. PreparedFight leaves features mmap-backed and converts only joint decision rows to float64. Stored held-feature snapshots use the original float32 feature representation losslessly, then restore float64; phases, memory, forcing and all computation remain float64. This does not quantize weights or recurrent state.
+Final selected exports undergo complete held-out native/PyTorch Host-path parity, including all six N2 ablations, at atol=rtol=1e-9. A persistent Host and Python Replay retain state across bounded 12-tick chunks; chunk boundaries never reset state. Native CPU and peak RSS come from wait4. Training produces `STAGE1_V2_RESULTS.json` only after parity passes. Per-head diagnostics, N1 seed variation, N2 learned-law statistics and fixed J motion prior remain descriptive. BC differences on a stateless teacher do not establish an RRG mechanism, usefulness, scientific acceptance or a complete H-M claim. Future DAgger/mechanism execution requires its own authorization and is outside this handoff.

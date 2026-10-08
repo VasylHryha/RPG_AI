@@ -105,8 +105,8 @@ def test_fire_minority_class_weighting_and_repeat_refusal(tmp_path,monkeypatch):
     weighted=tr.fire_loss(logits,truth,(10.,1.))
     assert weighted[0]==pytest.approx(10*weighted[1])
     monkeypatch.setattr(tr,'HERE',tmp_path)
-    (tmp_path/'TRAINING_PROJECTION_02.json').write_text('{}')
-    marker=tmp_path/'STAGE1_BUDGET_02.json'; marker.write_text('original')
+    (tmp_path/'TRAINING_PROJECTION_03.json').write_text('{}')
+    marker=tmp_path/'STAGE1_BUDGET_03.json'; marker.write_text('original')
     monkeypatch.setattr(tr,'environment',lambda:pytest.fail('must refuse before environment/sampling'))
     with pytest.raises(RuntimeError,match='already recorded'):
         tr.run()

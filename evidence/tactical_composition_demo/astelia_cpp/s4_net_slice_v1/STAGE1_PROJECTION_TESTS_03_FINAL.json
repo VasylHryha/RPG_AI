@@ -1,0 +1,49 @@
+{
+  "status": "PASS",
+  "exit_code": 0,
+  "wall_seconds": 5.176883667,
+  "command": [
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "--confcutdir=/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1",
+    "--basetemp=/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/stage1_projection_pytest_03_final",
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/test_stage1.py",
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/test_stage1_v2.py",
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/test_stage1_projection.py"
+  ],
+  "physical_fights": 0,
+  "training_steps": 0,
+  "scope": "stage-1 fixtures; checkpoint/scheduler fixtures use mock optimizer/processes",
+  "reason": "failure-required rerun after correcting inherited attempt-02 refusal fixture to attempt 03; original failed evidence retained",
+  "test_sources": {
+    "test_stage1.py": "44a340ca0300ec05e6451912e509cb6bc9dd71407fd4a6d85fb78244bdeb9807",
+    "test_stage1_v2.py": "efbd66e152feba1daeb912adb7b7d363813a9fe3f352eceaecc4e391cc4e00d3",
+    "test_stage1_projection.py": "a6d6534db2bb37b6549fc79b330bd39557e94b2087c864de5ea131928266627f"
+  },
+  "implementation_sources": {
+    "stage1_arithmetic.py": "d97e96306d5408b67dd7d63d782ade9693280c021fd5792109ec6cc5163744b3",
+    "stage1_baselines.py": "ddd99721814dba08aea168b9992a146acb3aac07c5fb3ed93dd5beece9c7e359",
+    "stage1_runtime.py": "b56e8d63aeccdf40d7b871ecc28ea4456591958037f7c2ba26c685f015bd6fc8",
+    "stage1_logged_parity.py": "89f3b78aef7b54fea00ab33d910035032a348326aa94d5b31fc23023aa7ab97f",
+    "stage1_verify.py": "62e27ba555e340196015aad9ed9934ae5f958875746d7f3737e45db33f78685e",
+    "stage1_training_control.py": "db92a5b7f16e19a6ae8d6ac3928b7d9fb63b566cb723f6cbaf2e2517ccbd984f",
+    "stage1_metrics.py": "5dd33fefa90201944a291222cb7d720a37391eae3dc3bcc2035a322674f8f314",
+    "stage1_uniqueness.py": "105844bdf1fc1a6d5de326dad5ec2cc7e325f359c65f82bce24ec2427672e95c",
+    "stage1_training_worker.py": "bab1e9302162f7382d495751a9398b6dd28ebc3f9b1597ae9411014f2fcb4a64",
+    "stage1_data_v2.py": "1d444679881c82bb83d7f0c1b6d4f9ede97ddab4749ff0a8251361ef851742a1",
+    "stage1_mechanism.py": "43927a3e00c52c5f465b59544fb76f30b17f4a93396d197ad20809d721c12956",
+    "stage1_stored.py": "52b8179550882833f22c66aa64853e4d8c8022db51209bce0edc0c80d9f1a4a4",
+    "stage1_data.py": "e33d89278ebb75ad3d8f95695f9ea0637c29fb4e048447be4bef5e00af28a18e",
+    "stage1_jobs.py": "3f2614fae30ea6d89497bb5e570464e207e694bffe72864e794485e37cb9803b",
+    "stage1_native_v2.py": "0bef41f9303d21e02bb897a3f87350130ddd38159e47f0bd2e2bcec7c66c8209",
+    "stage1_verify_v2.py": "499532207783bcc68c68050b2089faa7f7e0cd4a6597e3df42e53e73fa036054",
+    "stage1_export.py": "247966e90885f31915df0eeb4703d4ddd56305f4ebd9a16bd50045c066dba897",
+    "stage1_stream.py": "4ecd2e9fc8ef283e9f159b50deb1ae5ef570f54175256ede148af57fc4e22b68",
+    "stage1_train.py": "2c6794e0da752b79f512d026b7a5a5b1b345a2842933bf2696159fcabc1042af",
+    "stage1_dagger.py": "ebedaeee5e9db07fef872b48f0d84ec52cc1323dbb2dd0b9a44d7702f9dd7266",
+    "stage1_native.py": "4f3a407addc6c496d95b37b0032b279f28cc6c04d2f20c0e3cd058b7d11f6af9"
+  }
+}

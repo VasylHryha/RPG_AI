@@ -1,0 +1,35 @@
+...............................................F
+=================================== FAILURES ===================================
+____________ test_fire_minority_class_weighting_and_repeat_refusal _____________
+
+tmp_path = PosixPath('/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/stage1_projection_pytest_03/test_fire_minority_class_weigh0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x110979190>
+
+    def test_fire_minority_class_weighting_and_repeat_refusal(tmp_path,monkeypatch):
+        import stage1_train as tr
+        logits=torch.zeros(2,dtype=torch.float64); truth=torch.tensor([0.,1.])
+        weighted=tr.fire_loss(logits,truth,(10.,1.))
+        assert weighted[0]==pytest.approx(10*weighted[1])
+        monkeypatch.setattr(tr,'HERE',tmp_path)
+        (tmp_path/'TRAINING_PROJECTION_02.json').write_text('{}')
+        marker=tmp_path/'STAGE1_BUDGET_02.json'; marker.write_text('original')
+        monkeypatch.setattr(tr,'environment',lambda:pytest.fail('must refuse before environment/sampling'))
+        with pytest.raises(RuntimeError,match='already recorded'):
+>           tr.run()
+
+evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/test_stage1_v2.py:112: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/stage1_train.py:404: in run
+    environment(); fights=index(aggregate); plan=schedule(fights); lookup={m['group']:m for m in fights}
+    ^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+>   monkeypatch.setattr(tr,'environment',lambda:pytest.fail('must refuse before environment/sampling'))
+                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: must refuse before environment/sampling
+
+evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/test_stage1_v2.py:110: Failed
+=========================== short test summary info ============================
+FAILED evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/test_stage1_v2.py::test_fire_minority_class_weighting_and_repeat_refusal
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 47 passed in 3.68s

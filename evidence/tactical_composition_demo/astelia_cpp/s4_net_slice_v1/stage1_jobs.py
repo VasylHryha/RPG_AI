@@ -15,6 +15,7 @@ import process_gate as gate
 from collection import HERE, read, sha, atomic, cap
 
 JOBS=HERE/'_local/stage1_v2/jobs'
+ACTIVE_LOCK_FDS=()
 
 
 @dataclass(frozen=True)
@@ -47,7 +48,8 @@ def clear(deadline, path):
 
 
 @contextmanager
-def job_lock(name):
+def job_lock(name,deadline=None):
+    global ACTIVE_LOCK_FDS
     JOBS.mkdir(parents=True,exist_ok=True)
     with (JOBS/'SLICE_JOB.lock').open('a') as f:
         try:
@@ -61,8 +63,12 @@ def job_lock(name):
                 fcntl.flock(cf,fcntl.LOCK_EX|fcntl.LOCK_NB)
             except BlockingIOError:
                 raise RuntimeError('teacher collector owns the collection lock')
-            clear(time.monotonic()+cap()['cap_seconds'],JOBS/(name+'_PROCESS_GATE.json'))
-            yield
+            clear(deadline if deadline is not None else time.monotonic()+cap()['cap_seconds'],JOBS/(name+'_PROCESS_GATE.json'))
+            ACTIVE_LOCK_FDS=(f.fileno(),cf.fileno())
+            try:
+                yield
+            finally:
+                ACTIVE_LOCK_FDS=()
 
 
 def pins(weights):
