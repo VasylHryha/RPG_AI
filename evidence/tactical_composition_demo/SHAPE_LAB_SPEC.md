@@ -189,3 +189,31 @@ Each is one labelled change, measured in D1/D2 (guns against guns, and under fir
 - **Kuramoto synchronization;**
 - **Astelia's own `holdFire.sync`.**
 - **The difference:** the timing emerges from local coupling between guns, not from a central scheduler.
+
+## 12. Amendment 5 (2026-10-08): the interface prerequisite for react, aim and volleys (from Codex's research recheck F2)
+
+`docs/reviews/game_ai_research_recheck_codex.md` (F2, High) found three gaps in the delivered controller interface (`astelia_cpp/src/native/controller.h`):
+- **The observation** has time, arena size and unit records only. It has **no incoming shells, shots or slow fields, and no enemy cast preparation**.
+- **`UnitDecision`** has movement, target and failure fields only. It has **no explicit aim point, no hold/release, and no joint volley**.
+- **So our shapes cannot see a shell coming**, which also explains our zero dodges, and they cannot time a volley. Copying the teacher's react, aim or volley primitives therefore first needs a new interface.
+
+**Required before the react change (new files only; pinned interfaces unchanged):**
+1. **An observation adapter** exposes immutable, legally observable projectile and cast data for our side: in-flight shells (position, predicted landing point, landing time, radius), aimed shots, slow fields, and enemy guns winding up (target, release time). It exposes the same information the scripted side's `dodge.cpp` uses, no more.
+2. **A command adapter** carries an explicit aim point, a hold/release intent per gun, and volley membership.
+3. **The arbitration rules:**
+   - react takes temporary precedence over movement;
+   - it is defined which attacks stay possible during a dodge;
+   - a unit returns to its useful position after a dodge;
+   - reacting affects volley readiness;
+   - copied rotation stays inside the owner's participation rule. The teacher's `saveWounded` backs toward home without a range limit, so it is not assumed to comply.
+4. **Recording:** primitive activation, the candidate and executed intent, the arbitration winner and reason, readiness and volley membership, next to targets and goals. This feeds the §9 shadow comparison.
+5. **Shadow state:** the teacher's and the student's state and random draws are separate, and are advanced consistently on the same decision state. The byte-identical shadow-on/off check (§9) still applies.
+
+**The order of changes** (owner, §§10–11) is unchanged: react → V1 timing → V2 geometry. Each is one labelled change measured in the drills and the series.
+
+**Series evaluation (F3):** the streak is the primary series measure. Secondary measures:
+- the probability of reaching each fight;
+- survivors by role before each fight;
+- losses on won and lost fights, reported separately with their denominators.
+
+Any search or tuning objective is defined explicitly (terms, units, weights, terminal rules) before use.
