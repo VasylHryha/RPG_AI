@@ -176,3 +176,128 @@ def test_prepare_interruption_preserves_entropy(tmp_path,monkeypatch):
     result=run.prepare()
     assert result['jobs'][0]['seed']==transaction['pairs'][0]['seed']==calls[0]
     assert len(result['jobs'])==618
+
+
+def test_wire_compacts_without_resealing(tmp_path):
+    path=tmp_path/'sealed.json'
+    common.write(path,{'options':{'duration':3},'note':'line\nbreak'})
+    before=path.read_bytes();digest=common.sha(path)
+    wire=run.wire_request(path,digest)
+    assert wire.count(b'\n')==1 and wire.endswith(b'\n')
+    assert json.loads(wire)==json.loads(before) and path.read_bytes()==before
+    assert '--metrics' not in run.host_command()
+    with pytest.raises(RuntimeError,match='sealed request drift'):
+        run.wire_request(path,'wrong')
+
+
+def repair_fixture(tmp_path,monkeypatch):
+    import hashlib
+    monkeypatch.setattr(run,'HERE',tmp_path)
+    monkeypatch.setattr(run,'LOCAL',tmp_path)
+    monkeypatch.setattr(run,'RAW',tmp_path/'raw')
+    monkeypatch.setattr(run,'REQUESTS',tmp_path/'requests')
+    monkeypatch.setattr(run,'LEDGER',tmp_path/'ledger.json')
+    monkeypatch.setattr(run,'RECOVERY',tmp_path/'recovery.json')
+    request=run.REQUESTS/'pilot_O.json';common.write(request,{'fixture':True})
+    job=dict(tag='pilot_O',arm='O',stage='pilot',request_sha256=common.sha(request))
+    key='s4_army_slice_v1/a0_run.py'
+    original=subprocess.check_output(['git','show',
+        'efcf591:evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/a0_run.py'],cwd=common.CPP)
+    current=common.code_hashes()
+    old={**current,key:hashlib.sha256(original).hexdigest()}
+    binary=dict(binary_sha256='same engine',engine='army_a0_script',scope='native_complete_engine',
+                sanitized=False,portable=False,manifest_sha256='new',sources=current)
+    common.write(run.LEDGER,dict(code_hashes=old,binary={**binary,'manifest_sha256':'old','sources':old},jobs=[job]))
+    common.write(tmp_path/'A0_DECLARATION.json',dict(ledger_sha256=common.sha(run.LEDGER)))
+    monkeypatch.setattr(run,'code_hashes',lambda:current)
+    monkeypatch.setattr(run,'load',lambda *args:SimpleNamespace(admit=lambda path:binary))
+    run.RAW.mkdir()
+    payload=b'{"error":"invalid JSON"}\n{"error":"invalid JSON number"}\n{"error":"trailing JSON input"}\n'
+    (run.RAW/'pilot_O_old.stdout').write_bytes(payload)
+    (run.RAW/'pilot_O_old.stderr').write_bytes(b'')
+    with gzip.open(run.RAW/'pilot_O.jsonl.gz','wb') as f:f.write(payload)
+    common.write(run.RAW/'pilot_O_old_ATTEMPT.json',dict(job=job,returncode=0))
+    return job,current,binary
+
+
+def test_explicit_tooling_repair_keeps_all_seals_and_failed_evidence(tmp_path,monkeypatch):
+    job,current,binary=repair_fixture(tmp_path,monkeypatch)
+    paths=[run.LEDGER,tmp_path/'A0_DECLARATION.json',*run.RAW.iterdir(),*run.REQUESTS.iterdir()]
+    before={p:p.read_bytes() for p in paths}
+    recovery=run.repair_tooling()
+    assert recovery['retry_allowed'] and recovery['cause']
+    assert run.identity()['jobs']==[job]
+    assert run.repair_tooling()==recovery
+    assert all(p.read_bytes()==b for p,b in before.items())
+    (run.RAW/'pilot_O_old.stdout').write_bytes(b'changed')
+    with pytest.raises(RuntimeError,match='failed evidence drift'):run.identity()
+
+
+@pytest.mark.parametrize('defect',('valid_row','binary_change','completed','other_code'))
+def test_repair_refuses_valid_data_or_non_tooling_drift(defect,tmp_path,monkeypatch):
+    job,current,binary=repair_fixture(tmp_path,monkeypatch)
+    if defect=='valid_row':
+        payload=b'{"observerV1":true}\n'
+        (run.RAW/'pilot_O_old.stdout').write_bytes(payload)
+        with gzip.open(run.RAW/'pilot_O.jsonl.gz','wb') as f:f.write(payload)
+    elif defect=='binary_change':binary['binary_sha256']='different'
+    elif defect=='completed':common.write(run.RAW/'pilot_O_COMPLETE.json',{})
+    else:current['other.py']='changed'
+    with pytest.raises(RuntimeError):run.repair_tooling()
+    assert not run.RECOVERY.exists()
+
+
+def test_execute_retry_has_new_raw_id_and_logs_cause(tmp_path,monkeypatch,capsys):
+    import time
+    job,_,_=repair_fixture(tmp_path,monkeypatch)
+    recovery=run.repair_tooling()
+    preserved={p:p.read_bytes() for p in run.RAW.iterdir()}
+    stream(tmp_path)
+    with gzip.open(tmp_path/'stream.gz','rt') as f:rows=f.read()
+    script='import sys; import json; json.loads(sys.stdin.read()); sys.stdout.write('+repr(rows)+')'
+    monkeypatch.setattr(run,'host_command',lambda:[sys.executable,'-c',script])
+    monkeypatch.setattr(run,'live_memory',lambda pid:0)
+    result=run.execute(job,time.monotonic()+10)
+    assert result['stats']['enemy_kills']==50
+    receipt=common.read(run.RAW/'pilot_O_COMPLETE.json')
+    assert receipt['raw_file']!='pilot_O.jsonl.gz'
+    attempt=common.read(run.RAW/('pilot_O_'+receipt['attempt_id']+'_ATTEMPT.json'))
+    assert attempt['retry_of']=={'pilot_O_old_ATTEMPT.json':common.sha(run.RAW/'pilot_O_old_ATTEMPT.json')}
+    assert attempt['retry_causes']=={'pilot_O_old_ATTEMPT.json':recovery['cause']}
+    assert attempt['status']=='DONE' and recovery['cause'] in capsys.readouterr().out
+    assert all(p.read_bytes()==b for p,b in preserved.items())
+    assert run.execute(job,time.monotonic()+10)==result
+
+
+def test_failed_new_attempt_is_preserved_and_requires_diagnosis(tmp_path,monkeypatch):
+    import time
+    job,_,_=repair_fixture(tmp_path,monkeypatch)
+    run.repair_tooling()
+    monkeypatch.setattr(run,'host_command',lambda:[sys.executable,'-c',
+        'import sys; sys.stdin.read(); print(\'{"error":"unknown failure"}\')'])
+    monkeypatch.setattr(run,'live_memory',lambda pid:0)
+    with pytest.raises(RuntimeError,match='unknown failure'):run.execute(job,time.monotonic()+10)
+    attempts=[p for p in run.RAW.glob('*_ATTEMPT.json') if 'old' not in p.name]
+    assert len(attempts)==1 and common.read(attempts[0])['status']=='FAILED'
+    before={p:p.read_bytes() for p in run.RAW.iterdir()}
+    with pytest.raises(RuntimeError,match='unresolved prior attempt'):run.execute(job,time.monotonic()+10)
+    assert all(p.read_bytes()==b for p,b in before.items())
+
+
+def test_wall_cap_retry_records_its_own_cause(tmp_path,monkeypatch,capsys):
+    import time
+    job,_,_=repair_fixture(tmp_path,monkeypatch)
+    recovery=run.repair_tooling()
+    common.write(run.RAW/'pilot_O_cap_ATTEMPT.json',dict(status='INTERRUPTED',
+        error='TimeoutError: owner wall cap reached'))
+    stream(tmp_path)
+    with gzip.open(tmp_path/'stream.gz','rt') as f:rows=f.read()
+    monkeypatch.setattr(run,'host_command',lambda:[sys.executable,'-c',
+        'import sys; sys.stdin.read(); sys.stdout.write('+repr(rows)+')'])
+    monkeypatch.setattr(run,'live_memory',lambda pid:0)
+    run.execute(job,time.monotonic()+10)
+    receipt=common.read(run.RAW/'pilot_O_COMPLETE.json')
+    attempt=common.read(run.RAW/('pilot_O_'+receipt['attempt_id']+'_ATTEMPT.json'))
+    assert attempt['retry_causes']=={
+        'pilot_O_old_ATTEMPT.json':recovery['cause'],
+        'pilot_O_cap_ATTEMPT.json':'TimeoutError: owner wall cap reached'}

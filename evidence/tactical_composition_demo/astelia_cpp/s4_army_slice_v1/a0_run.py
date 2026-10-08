@@ -3,6 +3,7 @@ import argparse
 import contextlib
 import fcntl
 import gzip
+import hashlib
 import json
 import math
 import os
@@ -19,6 +20,80 @@ REQUESTS = LOCAL/'requests'
 RAW = LOCAL/'raw'
 _DEADLINE = None
 _VERIFIED = {}
+RECOVERY = HERE/'A0_TOOLING_RECOVERY.json'
+WIRE_FORM = 'json.loads sealed UTF-8 file; json.dumps separators=(",", ":"), allow_nan=False; UTF-8 plus one newline'
+
+
+def wire_request(path, expected_sha256):
+    payload=Path(path).read_bytes()
+    if hashlib.sha256(payload).hexdigest()!=expected_sha256:
+        raise RuntimeError('sealed request drift')
+    return (json.dumps(json.loads(payload),separators=(',',':'),allow_nan=False)+'\n').encode()
+
+
+def host_command():
+    # Observer/summary telemetry is stdout. --metrics adds stderr counters, which
+    # measure() does not consume; keep stderr empty so diagnostics fail closed.
+    return ['nice','-n','15',str(BINARY)]
+
+
+def repair_tooling():
+    """Explicit owner-authorized repair before ANY valid data; never reseal seeds."""
+    if RECOVERY.exists():
+        identity()
+        return read(RECOVERY)
+    ledger=read(LEDGER)
+    if read(HERE/'A0_DECLARATION.json')['ledger_sha256']!=sha(LEDGER):
+        raise RuntimeError('ledger drift')
+    original=subprocess.check_output(['git','show',
+        'efcf591:evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/a0_run.py'],cwd=CPP)
+    key='s4_army_slice_v1/a0_run.py'
+    current=code_hashes()
+    if (ledger['code_hashes'].get(key)!=hashlib.sha256(original).hexdigest() or
+        {k:v for k,v in current.items() if k!=key}!=
+        {k:v for k,v in ledger['code_hashes'].items() if k!=key}):
+        raise RuntimeError('repair permits only the efcf591 runner tooling change')
+    admission=load('a0_repair_admission',CPP/'build_admission.py')
+    binary=admission.admit(BINARY)
+    for field in ('binary_sha256','engine','scope','sanitized','portable'):
+        if binary[field]!=ledger['binary'][field]:
+            raise RuntimeError('repair cannot change native binary behavior: '+field)
+    if list(RAW.glob('*_COMPLETE.json')):
+        raise RuntimeError('repair forbidden after completed fight data')
+    files=list(RAW.iterdir())
+    if not files or any(not p.is_file() for p in files):
+        raise RuntimeError('expected failed pilot evidence files')
+    jobs={j['tag']:j for j in ledger['jobs']}
+    attempts=list(RAW.glob('*_ATTEMPT.json'))
+    if not attempts:raise RuntimeError('missing failed attempt evidence')
+    expected_files=set()
+    for path in attempts:
+        row=read(path);job=row['job'];tag=job['tag']
+        if job!=jobs.get(tag) or job['stage']!='pilot' or row['returncode']!=0:
+            raise RuntimeError('not the known pre-fight JSON tooling failure')
+        prefix=path.name.removesuffix('_ATTEMPT.json')
+        stdout=RAW/(prefix+'.stdout');stderr=RAW/(prefix+'.stderr')
+        packed=RAW/(tag+'.jsonl.gz')
+        with gzip.open(packed,'rb') as f:payload=f.read()
+        if payload!=stdout.read_bytes() or stderr.read_bytes():
+            raise RuntimeError('failed output identity mismatch')
+        rows=[json.loads(line) for line in payload.splitlines()]
+        if not rows or any(set(r)!={'error'} or r['error'] not in
+                ('invalid JSON','invalid JSON number','trailing JSON input') for r in rows):
+            raise RuntimeError('valid/unknown host output prohibits tooling recovery')
+        expected_files.update((path,stdout,stderr,packed))
+    if set(files)!=expected_files:raise RuntimeError('unclassified raw evidence prohibits recovery')
+    for job in ledger['jobs']:
+        if sha(REQUESTS/(job['tag']+'.json'))!=job['request_sha256']:
+            raise RuntimeError('request drift')
+    record=dict(status='TOOLING_FAILURE_BEFORE_VALID_FIGHT_DATA',
+        cause='efcf591 sent pretty-printed sealed JSON to a one-document-per-line host',
+        authorization='owner A0 quick fix; decision 0036',ledger_sha256=sha(LEDGER),
+        original_code_hashes=ledger['code_hashes'],code_hashes=current,binary=binary,
+        preserved_files={str(p.relative_to(HERE)):sha(p) for p in sorted(files)},
+        retry_allowed=True,wire_form=WIRE_FORM,host_command=host_command())
+    write(RECOVERY,record,exclusive=True)
+    return record
 
 def check_deadline():
     if _DEADLINE is not None and time.monotonic()>=_DEADLINE:
@@ -104,9 +179,17 @@ def prepare():
 
 def identity():
     ledger=read(LEDGER)
-    if ledger['code_hashes']!=code_hashes():raise RuntimeError('A0 code drift; use a fresh revised folder/entropy, keep old evidence')
+    recovery=read(RECOVERY) if RECOVERY.exists() else None
+    if recovery:
+        if (recovery['ledger_sha256']!=sha(LEDGER) or
+                recovery['original_code_hashes']!=ledger['code_hashes']):
+            raise RuntimeError('tooling recovery ledger drift')
+        for name,digest in recovery['preserved_files'].items():
+            if sha(HERE/name)!=digest:raise RuntimeError('failed evidence drift')
+    expected=recovery or ledger
+    if expected['code_hashes']!=code_hashes():raise RuntimeError('A0 code drift; rebuild then repair-tooling for known pre-data failure, otherwise revise prospectively')
     admission=load('a0_binary_admission',CPP/'build_admission.py')
-    if ledger['binary']!=admission.admit(BINARY):raise RuntimeError('A0 binary drift')
+    if expected['binary']!=admission.admit(BINARY):raise RuntimeError('A0 binary drift')
     if read(HERE/'A0_DECLARATION.json')['ledger_sha256']!=sha(LEDGER):raise RuntimeError('ledger drift')
     for job in ledger['jobs']:
         if sha(REQUESTS/(job['tag']+'.json'))!=job['request_sha256']:raise RuntimeError('request drift')
@@ -116,10 +199,10 @@ def completed(job):
     check_deadline()
     path=RAW/(job['tag']+'_COMPLETE.json')
     if not path.exists():return None
-    raw=RAW/(job['tag']+'.jsonl.gz')
+    row=read(path)
+    raw=RAW/row.get('raw_file',job['tag']+'.jsonl.gz')
     key=(str(path),path.stat().st_mtime_ns,path.stat().st_size,raw.stat().st_mtime_ns,raw.stat().st_size,sha(LEDGER))
     if key in _VERIFIED:return _VERIFIED[key]
-    row=read(path)
     if row['job']!=job or row['ledger_sha256']!=sha(LEDGER) or row['raw_sha256']!=sha(raw):
         raise RuntimeError('completion identity drift')
     if measure(raw,_DEADLINE)!=row['stats']:raise RuntimeError('completion statistics drift')
@@ -153,14 +236,29 @@ def execute(job,deadline):
     if prior:return prior
     if time.monotonic()>=deadline:raise TimeoutError('owner wall cap reached before fight')
     RAW.mkdir(parents=True,exist_ok=True)
-    # Only the lock holder can retry a partial fight; attempt receipts are retained.
     tag=job['tag'];attempt=secrets.token_hex(8)
+    previous=list(RAW.glob(tag+'_*_ATTEMPT.json'))
+    recovery=read(RECOVERY) if RECOVERY.exists() else None
+    retry_causes={}
+    for path in previous:
+        covered=recovery and recovery['preserved_files'].get(str(path.relative_to(HERE)))==sha(path)
+        if not covered and read(path).get('status')!='INTERRUPTED':
+            raise RuntimeError('unresolved prior attempt; explicit tooling diagnosis required: '+path.name)
+        retry_causes[path.name]=recovery['cause'] if covered else read(path)['error']
+    retry_of={p.name:sha(p) for p in previous}
+    if previous:print(json.dumps(dict(job=tag,retry_of=retry_of,retry_causes=retry_causes)),flush=True)
+    start=time.monotonic();peak=live_memory(None);child=None
+    wire=wire_request(REQUESTS/(tag+'.json'),job['request_sha256'])
     plain=RAW/(tag+'_'+attempt+'.stdout');err=RAW/(tag+'_'+attempt+'.stderr')
-    start=time.monotonic();peak=live_memory(None)
-    with plain.open('wb') as output,err.open('wb') as errors:
-        child=subprocess.Popen(['nice','-n','15',str(BINARY)],stdin=subprocess.PIPE,stdout=output,stderr=errors)
-        try:
-            child.stdin.write((REQUESTS/(tag+'.json')).read_bytes());child.stdin.close()
+    packed=RAW/(tag+'_'+attempt+'.jsonl.gz')
+    attempt_row=dict(attempt_id=attempt,job=job,retry_of=retry_of,retry_causes=retry_causes,
+        recovery_sha256=sha(RECOVERY) if recovery else None,
+        wire_form=WIRE_FORM,wire_sha256=hashlib.sha256(wire).hexdigest(),
+        host_command=host_command(),status='RUNNING')
+    try:
+        with plain.open('xb') as output,err.open('xb') as errors:
+            child=subprocess.Popen(host_command(),stdin=subprocess.PIPE,stdout=output,stderr=errors)
+            child.stdin.write(wire);child.stdin.close()
             while child.poll() is None:
                 if time.monotonic()>=deadline:raise TimeoutError('owner wall cap reached')
                 try:peak=max(peak,live_memory(child.pid))
@@ -169,27 +267,28 @@ def execute(job,deadline):
                 if plain.stat().st_size>512*1024**2:raise RuntimeError('per-fight raw stream exceeds 512 MiB local limit')
                 time.sleep(.5)
             if child.returncode:raise RuntimeError('host exited '+str(child.returncode))
-            if err.stat().st_size:raise RuntimeError('host stderr must be reviewed')
-        except BaseException:
-            child.kill();child.wait();raise
-        finally:
-            write(RAW/(tag+'_'+attempt+'_ATTEMPT.json'),dict(job=job,returncode=child.poll(),seconds=time.monotonic()-start,peak_rss_bytes=peak))
-    packed=RAW/(tag+'.jsonl.gz')
-    with plain.open('rb') as src,gzip.open(packed,'wb') as dst:
-        for chunk in iter(lambda:src.read(1024**2),b''):
-            check_deadline();dst.write(chunk)
-    stats=measure(packed,_DEADLINE)
-    digest=sha(packed);check_deadline()
-    receipt=dict(job=job,stats=stats,seconds=time.monotonic()-start,peak_rss_bytes=peak,
-                 ledger_sha256=sha(LEDGER),raw_sha256=digest)
-    write(RAW/(tag+'_COMPLETE.json'),receipt,exclusive=True)
-    plain.unlink()
-    check_deadline()
-    path=RAW/(tag+'_COMPLETE.json')
-    key=(str(path),path.stat().st_mtime_ns,path.stat().st_size,packed.stat().st_mtime_ns,packed.stat().st_size,sha(LEDGER))
-    result=dict(**job,stats=stats,seconds=receipt['seconds'],receipt_sha256=sha(path))
-    _VERIFIED[key]=result
-    return result
+            if err.stat().st_size:raise RuntimeError('host stderr must be reviewed (no --metrics)')
+        with plain.open('rb') as src,packed.open('xb') as out,gzip.GzipFile(fileobj=out,mode='wb') as dst:
+            for chunk in iter(lambda:src.read(1024**2),b''):
+                check_deadline();dst.write(chunk)
+        stats=measure(packed,_DEADLINE)
+        digest=sha(packed);check_deadline()
+        receipt=dict(job=job,stats=stats,seconds=time.monotonic()-start,peak_rss_bytes=peak,
+            ledger_sha256=sha(LEDGER),raw_sha256=digest,raw_file=packed.name,
+            attempt_id=attempt,wire_form=WIRE_FORM,wire_sha256=attempt_row['wire_sha256'],
+            recovery_sha256=attempt_row['recovery_sha256'])
+        write(RAW/(tag+'_COMPLETE.json'),receipt,exclusive=True)
+        attempt_row['status']='DONE'
+    except BaseException as error:
+        if child is not None and child.poll() is None:child.kill();child.wait()
+        attempt_row.update(status='INTERRUPTED' if isinstance(error,TimeoutError) else 'FAILED',
+            error=f'{type(error).__name__}: {error}')
+        raise
+    finally:
+        attempt_row.update(returncode=child.poll() if child else None,
+            seconds=time.monotonic()-start,peak_rss_bytes=peak)
+        write(RAW/(tag+'_'+attempt+'_ATTEMPT.json'),attempt_row,exclusive=True)
+    return completed(job)
 
 def records(jobs):
     return [r for job in jobs if (r:=completed(job)) is not None]
@@ -257,11 +356,12 @@ def run(stage,look):
 
 def main():
     parser=argparse.ArgumentParser()
-    parser.add_argument('command',choices=('prepare','pilot','run','report'))
+    parser.add_argument('command',choices=('prepare','repair-tooling','pilot','run','report'))
     parser.add_argument('--look',type=int,choices=(50,100),default=50)
     args=parser.parse_args()
     with lock():
-        if args.command=='prepare':prepare()
+        if args.command=='repair-tooling':print(json.dumps(repair_tooling(),indent=2))
+        elif args.command=='prepare':prepare()
         elif args.command in ('pilot','run'):run('pilot' if args.command=='pilot' else 'outcome',args.look)
         else:
             ledger=identity();jobs=[j for j in ledger['jobs'] if j['stage']=='outcome' and j['index']<args.look]

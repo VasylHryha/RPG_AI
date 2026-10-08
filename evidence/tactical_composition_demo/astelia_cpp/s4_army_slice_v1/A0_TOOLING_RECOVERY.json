@@ -1,7 +1,41 @@
 {
-  "status": "BUILT_NOT_FIGHT_VERIFIED",
-  "seconds": 23.101381042,
-  "identity": {
+  "status": "TOOLING_FAILURE_BEFORE_VALID_FIGHT_DATA",
+  "cause": "efcf591 sent pretty-printed sealed JSON to a one-document-per-line host",
+  "authorization": "owner A0 quick fix; decision 0036",
+  "ledger_sha256": "c5a820a7719d9cc2c24b95b15fbad72d6b27b0b61bb83395a5a90ea779d7ec59",
+  "original_code_hashes": {
+    "build_admission.py": "75fe338c7f5c56cd586d9398a56b2fdc29e6a7d51aa59021ffd2c5b58398a5f5",
+    "s4_army_slice_v1/a0_build.py": "4b4ecec444ae25e2458514403c471c45d816126386b7510b9df7aa54b8b10c2b",
+    "s4_army_slice_v1/a0_common.py": "3a76464aadd4f9dc905ca1018dd3e714763b1ef79023fa0d80534bc01cbaa40d",
+    "s4_army_slice_v1/a0_fixture.cpp": "54748a4e2ebaf985d7bb71d214a4ef0b051fe6d6173f866398a4cb1dfe0afa32",
+    "s4_army_slice_v1/a0_metrics.py": "b21ff3eb7f04a6f138c40becb5d3a7350426d14b43a8600473f523d596505e83",
+    "s4_army_slice_v1/a0_oracle.cpp": "38033c8f96366563ff558351f10b18193e35c21577ecefb7c36751993e1d3a17",
+    "s4_army_slice_v1/a0_oracle.h": "79b8bedfd277bd0fec3119e786bf9e019982c635de34f6335add30c3802dae45",
+    "s4_army_slice_v1/a0_run.py": "ce130774f5f00e33af635684909012a91050ab8aa3661201c45976ac7223f581",
+    "s4_net_slice_v1/process_gate.py": "f3e4de5b31c8a51862d55e8cd57dd1bf97661f3844cb185f68bf995fcf557abd",
+    "s4_react_adapter_v1/requests.py": "9696146c8f0b515426d3a38245073361c1ec525cd4288fa3bc64105c383ffe34",
+    "s4_shape_lab_v1/build.py": "6a4c504784e8f8748c2f20cd3779198e94abb7656c18d9487f75da391bc6d87f",
+    "s4_shape_lab_v2/lab.py": "68cb24555885e216435901334d0d0f88b77187071c8a8477ba0c6d86a137e3fa",
+    "s4_v7c/REGULAR_REQUEST_TEMPLATE.json": "31e0c5e0c81730cb679df6deacc6888792c57e31d9d51599bcd47cd5dbdcd908",
+    "s4_v7c/THETA_ORIGIN.json": "648ac5d756e5a34a30850a7d23da592da9c6be38c8fad5a86be349a4db349ca8"
+  },
+  "code_hashes": {
+    "build_admission.py": "75fe338c7f5c56cd586d9398a56b2fdc29e6a7d51aa59021ffd2c5b58398a5f5",
+    "s4_army_slice_v1/a0_build.py": "4b4ecec444ae25e2458514403c471c45d816126386b7510b9df7aa54b8b10c2b",
+    "s4_army_slice_v1/a0_common.py": "3a76464aadd4f9dc905ca1018dd3e714763b1ef79023fa0d80534bc01cbaa40d",
+    "s4_army_slice_v1/a0_fixture.cpp": "54748a4e2ebaf985d7bb71d214a4ef0b051fe6d6173f866398a4cb1dfe0afa32",
+    "s4_army_slice_v1/a0_metrics.py": "b21ff3eb7f04a6f138c40becb5d3a7350426d14b43a8600473f523d596505e83",
+    "s4_army_slice_v1/a0_oracle.cpp": "38033c8f96366563ff558351f10b18193e35c21577ecefb7c36751993e1d3a17",
+    "s4_army_slice_v1/a0_oracle.h": "79b8bedfd277bd0fec3119e786bf9e019982c635de34f6335add30c3802dae45",
+    "s4_army_slice_v1/a0_run.py": "2c77d9d61c452f4db9d396879519776b2552bd28c6a8e4e28c23297361d6aa27",
+    "s4_net_slice_v1/process_gate.py": "f3e4de5b31c8a51862d55e8cd57dd1bf97661f3844cb185f68bf995fcf557abd",
+    "s4_react_adapter_v1/requests.py": "9696146c8f0b515426d3a38245073361c1ec525cd4288fa3bc64105c383ffe34",
+    "s4_shape_lab_v1/build.py": "6a4c504784e8f8748c2f20cd3779198e94abb7656c18d9487f75da391bc6d87f",
+    "s4_shape_lab_v2/lab.py": "68cb24555885e216435901334d0d0f88b77187071c8a8477ba0c6d86a137e3fa",
+    "s4_v7c/REGULAR_REQUEST_TEMPLATE.json": "31e0c5e0c81730cb679df6deacc6888792c57e31d9d51599bcd47cd5dbdcd908",
+    "s4_v7c/THETA_ORIGIN.json": "648ac5d756e5a34a30850a7d23da592da9c6be38c8fad5a86be349a4db349ca8"
+  },
+  "binary": {
     "manifest_sha256": "0dbac5466985698bda529183f616fdf643eaa66ee868bcaa880ebfa609f46883",
     "binary_sha256": "81f348e7b80c3d8be1d5d88c2f68c1a247ff467db7a763e9bbb1629b8e40f2ae",
     "sources": {
@@ -166,5 +200,18 @@
     "sanitized": false,
     "portable": false
   },
-  "fights": 0
+  "preserved_files": {
+    "_local/raw/pilot_regular_000_O.jsonl.gz": "b6a87455a740881ec7f5d2ca15169cbdaeb18a6b8d7b17941603ac818f20bbd4",
+    "_local/raw/pilot_regular_000_O_7aeb9d5bb546c930.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "_local/raw/pilot_regular_000_O_7aeb9d5bb546c930.stdout": "570ebe1c4cdcc3cb1192e564af8752067155b5ddc49f7d4cbde6bcc63e55d45c",
+    "_local/raw/pilot_regular_000_O_7aeb9d5bb546c930_ATTEMPT.json": "726cedc895d0023e1b7349e94e0c5e8c52b1b182ce8ca2c8f07f88dc49b8b4fd"
+  },
+  "retry_allowed": true,
+  "wire_form": "json.loads sealed UTF-8 file; json.dumps separators=(\",\", \":\"), allow_nan=False; UTF-8 plus one newline",
+  "host_command": [
+    "nice",
+    "-n",
+    "15",
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/_local/build/tactics_react_host_a0"
+  ]
 }
