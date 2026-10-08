@@ -1,0 +1,176 @@
+{
+  "tag": "D1_forcedP16+react+battery_oscillator_k2_r400_p001",
+  "meta": {
+    "group": "D1",
+    "stage": "mechanism",
+    "arm": "forcedP16+react+battery_oscillator",
+    "variant": "k2_r400",
+    "pair": 1,
+    "seed": 3821765192,
+    "orientation": 1,
+    "opponent": null,
+    "units_before": 10,
+    "knobs": [
+      2,
+      400
+    ]
+  },
+  "summary": {
+    "mode": "alone",
+    "melee": 0,
+    "ranged": 0,
+    "artillery": 3650,
+    "total": 3650,
+    "wasted": 378,
+    "monsterDeaths": 3,
+    "hunterKills": 30,
+    "aliveSeconds": 293.7999999999948,
+    "enemyDamage": 963,
+    "survivors": 7,
+    "enemySurvivors": 0,
+    "t": 37.566666666667096,
+    "controllerFailures": [
+      0,
+      0
+    ],
+    "controllerStatus": "completed",
+    "crossTeamDealt": [
+      3650,
+      963
+    ],
+    "crossTeamTaken": [
+      963,
+      3650
+    ],
+    "friendlyDealt": [
+      0,
+      0
+    ],
+    "friendlyTaken": [
+      0,
+      0
+    ],
+    "artilleryAlive": [
+      7,
+      0
+    ],
+    "complexDiagnostics": {
+      "side": 0,
+      "samples": 8817,
+      "lowAmplitudeSamples": 2370,
+      "fractionBelow02": 0.2687989111942838,
+      "argRateSamples": 6433,
+      "argRateAbsSum": 1672.288793029456,
+      "argRateAbsMean": 0.25995473232231553,
+      "argRateNullReason": null,
+      "argValidityThreshold": 0.2,
+      "retryCount": 0,
+      "numericalFailureTicks": 0,
+      "mu": -1.3995913367114279,
+      "omega_ranged": 1.5775291057474368,
+      "omega_melee": 0
+    }
+  },
+  "stats": {
+    "win": true,
+    "timeout": false,
+    "own_initial": 10,
+    "own_lost": 3,
+    "t_end": 37.566666666667096,
+    "own_shells": 105,
+    "own_shells_landed": 104,
+    "own_shells_unresolved": 1,
+    "hits": 270,
+    "artillery_kills": 30,
+    "landing_spread_s": 0.0779374394786449,
+    "landing_spreads_s": [
+      0.012597170057784268,
+      0.1671770611512482,
+      0.1325044324836231,
+      0.012292542658839167,
+      0.006787886134551613,
+      0.002176184848231344,
+      2.191134406714923e-05,
+      0.32366711091296096,
+      0.09701058885219993,
+      0.11061366040572906,
+      0.10186218965969118,
+      0.04567902178927241,
+      0.049207093972921,
+      0.053542408945890685,
+      0.05392232896266336
+    ],
+    "multi_shell_volleys": 15,
+    "single_shell_volleys": 39,
+    "enemy_dodge_eligible": 270,
+    "enemy_dodge_escaped": 0,
+    "enemy_dodge_censored": 78,
+    "enemy_dodge_launch_exposed": 348,
+    "enemy_dodge_success": 0.0,
+    "hits_per_own_shell": 2.5961538461538463,
+    "shells_per_kill": 3.466666666666667,
+    "gun_seconds": 293.90000000000794,
+    "idle_seconds": 111.0666666666669,
+    "idle_seconds_per_gun": 11.10666666666669,
+    "fired_shells_per_gun_minute": 21.435862538277746,
+    "low_gun_behaviour": {},
+    "unassigned_own_artillery_damage": 0
+  },
+  "survivors": [
+    {
+      "id": 41,
+      "role": "artillery"
+    },
+    {
+      "id": 42,
+      "role": "artillery"
+    },
+    {
+      "id": 43,
+      "role": "artillery"
+    },
+    {
+      "id": 44,
+      "role": "artillery"
+    },
+    {
+      "id": 45,
+      "role": "artillery"
+    },
+    {
+      "id": 46,
+      "role": "artillery"
+    },
+    {
+      "id": 47,
+      "role": "artillery"
+    }
+  ],
+  "native_metrics": {
+    "executed_fights": 1,
+    "executed_steps": 1127,
+    "branch_steps": 0,
+    "forks": 0,
+    "search_calls": 0,
+    "inference_calls": 0,
+    "candidate_models": 0,
+    "artillery_rollouts": 0,
+    "artillery_predictions": 0,
+    "artillery_candidates": 0,
+    "prediction_steps": 0,
+    "prediction_unit_steps": 0,
+    "branch_unit_actions": 0,
+    "branch_projectile_steps": 0,
+    "unit_actions": 27106,
+    "projectile_steps": 0,
+    "cache_hits": 0,
+    "scope": "native_complete_engine",
+    "fork_settings": []
+  },
+  "seconds": 0.6453219169999995,
+  "raw_sha256": "fa60dd58f086d62fe51b01ff80b5f2ba167fa6383c895cdbd14458cdfd671da3",
+  "request_sha256": "71ac6a38d4a81976406fe720e03bbd8bbecb7737f405990455e85bd5b8a4af25",
+  "claim_sha256": "e95497c8d4b26c10474938381ef21623cfa630c53b0b7b7d4f2bbc3aeddac44e",
+  "declaration_sha256": "cbb32aec7034c02107d8f797245434c9dc759ce1b3b0e05e89b1265eff8fbb7a",
+  "stderr_sha256": "38f3e858007d386883af258c548a61f7dbf685c1d3755b8ffb1d895fb5ae04bb"
+}

@@ -1,0 +1,48 @@
+         48517227 function calls (48516209 primitive calls) in 119.976 seconds
+
+   Ordered by: cumulative time
+   List reduced from 310 to 40 due to restriction <40>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000  120.003  120.003 lab.py:596(calibrate)
+   1013/5    0.028    0.000  119.985   23.997 diagnose_v5.py:41(counted)
+        3    0.023    0.008  119.891   39.964 lab.py:533(stage_summary)
+        3    0.000    0.000  119.868   39.956 report.py:35(stage_data)
+        3    0.000    0.000  119.808   39.936 lab.py:445(records_for)
+        3    0.007    0.002  119.808   39.936 lab.py:446(<dictcomp>)
+      503    4.057    0.008  119.240    0.237 lab.py:63(verified_record)
+        1    0.000    0.000  104.607  104.607 lab.py:550(ensure_stage)
+  1472008    1.652    0.000   71.559    0.000 __init__.py:299(loads)
+        2    0.001    0.000   69.601   34.800 lab.py:387(selected_knobs)
+  1472008    2.320    0.000   69.313    0.000 decoder.py:332(decode)
+  1472008   65.449    0.000   65.449    0.000 decoder.py:343(raw_decode)
+      502    8.011    0.016   52.398    0.104 metrics.py:13(measure)
+        1    0.001    0.001   50.313   50.313 lab.py:539(require_review)
+      505    0.132    0.000   16.528    0.033 lab.py:331(identity)
+        1    0.000    0.000   15.395   15.395 lab.py:450(samples_for)
+        1    0.000    0.000   15.395   15.395 lab.py:455(<listcomp>)
+        1    0.000    0.000   15.395   15.395 lab.py:362(plan)
+   148466    0.278    0.000   13.846    0.000 build_admission.py:9(sha)
+   382813    0.519    0.000   13.327    0.000 gzip.py:302(read1)
+     1010    0.285    0.000   12.708    0.013 build_admission.py:13(admit)
+   382813    0.611    0.000   12.617    0.000 {method 'read1' of '_io.BufferedReader' objects}
+   382813    1.271    0.000   12.006    0.000 _compression.py:66(readinto)
+   382813    1.395    0.000   10.385    0.000 gzip.py:462(read)
+   148467    0.254    0.000   10.103    0.000 pathlib.py:1245(read_bytes)
+   153510    1.375    0.000    7.863    0.000 {built-in method io.open}
+   152505    0.051    0.000    7.759    0.000 pathlib.py:1236(open)
+   152505    0.063    0.000    6.041    0.000 pathlib.py:1108(_opener)
+   152505    5.905    0.000    5.978    0.000 {built-in method posix.open}
+   381809    5.114    0.000    5.114    0.000 {method 'decompress' of 'zlib.Decompress' objects}
+   534295    3.966    0.000    3.966    0.000 {method 'read' of '_io.BufferedReader' objects}
+   148467    3.371    0.000    3.371    0.000 {built-in method _hashlib.openssl_sha256}
+   386831    1.164    0.000    2.707    0.000 gzip.py:85(read)
+   269162    0.386    0.000    1.752    0.000 pathlib.py:672(_parse_args)
+     3028    0.029    0.000    1.515    0.001 lab.py:51(read)
+   133318    0.133    0.000    1.350    0.000 pathlib.py:1069(__new__)
+   733309    1.314    0.000    1.314    0.000 metrics.py:23(<listcomp>)
+   269165    0.830    0.000    1.282    0.000 pathlib.py:64(parse_parts)
+     4038    0.017    0.000    1.261    0.000 pathlib.py:1252(read_text)
+   134328    0.095    0.000    1.206    0.000 pathlib.py:692(_from_parts)
+
+
