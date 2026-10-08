@@ -6,7 +6,7 @@
 namespace net_slice {
 using astelia::UnitId;
 constexpr unsigned width=1008,outputs=81;
-struct Encoding {std::vector<double> x;std::vector<UnitId> enemies;unsigned friendsOverflow=0,enemiesOverflow=0,threatOverflow=0;};
+struct Encoding {std::vector<double> x;std::vector<UnitId> enemies;unsigned friendsOverflow=0,enemiesOverflow=0,threatOverflow=0,ownShellOverflow=0,enemyThreatOverflow=0;};
 void validate(js::V);
 Encoding encode(js::V);
 js::V decode(js::V,const std::vector<double>&);

@@ -81,7 +81,7 @@ def build():
         argv=[record['link'][0],*common,*objects,*reused,'-o',str(target)];subprocess.run(argv,check=True,timeout=120);links.append(argv)
     if admit(parent)!=identity:raise RuntimeError('parent drift during build')
     # Living docs never pinned. Local frozen bytes and new source bytes are pinned.
-    for p in [*HERE.glob('*.h'),*HERE.glob('*.cpp'),*HERE.glob('*.py'),HERE/'CONTRACT.md',HERE/'requirements.lock',* (HERE/'frozen').glob('*')]:sources[str(p)]=sha(p)
+    for p in [*HERE.glob('*.h'),*HERE.glob('*.cpp'),*HERE.glob('*.py'),HERE/'requirements.lock',* (HERE/'frozen').glob('*')]:sources[str(p)]=sha(p)
     payload={'status':'PASS','seconds':time.monotonic()-start,'fights':0,'commands':commands,'links':links,'sources':sources,'reused_object_sha256':reused,'parent_identity':identity,'binaries':{p.name:sha(p) for p in (OUT/'net_host',OUT/'native_fixture')}}
     (HERE/'BUILD.json').write_text(json.dumps(payload,indent=2)+'\n');print('Native build PASS',payload['seconds'])
 if __name__=='__main__':build()

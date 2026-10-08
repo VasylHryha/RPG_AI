@@ -10,7 +10,7 @@ HERE=Path(__file__).resolve().parent
 if __name__=='__main__':
     env={**os.environ,'OMP_NUM_THREADS':'4','MKL_NUM_THREADS':'4','OPENBLAS_NUM_THREADS':'4','PYTHONDONTWRITEBYTECODE':'1','PYTEST_DISABLE_PLUGIN_AUTOLOAD':'1'}
     start=time.monotonic();count=len(list(HERE.glob('TEST_ATTEMPT_*.json')))+1;prefix=HERE/f'TEST_ATTEMPT_{count:02}'
-    cmd=[sys.executable,'-m','pytest','-q','--confcutdir='+str(HERE),'--basetemp='+str(HERE/'_local/pytest'),str(HERE/'test_slice.py')]
+    cmd=[sys.executable,'-m','pytest','-q','--confcutdir='+str(HERE),'--basetemp='+str(HERE/'_local/pytest'),str(HERE/'test_slice.py'),str(HERE/'test_collection.py')]
     if '--resume-after-schema' in sys.argv:cmd+=['-k','not test_encoder_parity and not test_enemy_boundary']
     if '--resume-d1b-cosine' in sys.argv:cmd+=['-k','test_unaliased_recurrent_target_channels']
     with prefix.with_suffix('.stdout.log').open('w') as out,prefix.with_suffix('.stderr.log').open('w') as err:p=subprocess.run(cmd,cwd=HERE,env=env,stdout=out,stderr=err)

@@ -45,6 +45,3 @@ SLICE=evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1
 ```
 
 .git is read-only (`test -w .git` false). No staging or commit attempted. UNCOMMITTED_D1B.txt lists every task file; intended provenance trailer: Assisted-by: Codex:GPT-6.
-
-
-Round-2 continuation supersedes this report's resource projection and manual collection instructions. See REPORT_COLLECTION.md: teacher now shares phase-free drift; sealed sample/project/collect orchestration is delivered. POSITIVE means better than the teacher by more than the margin. Prior report/projection/build/test bytes are frozen under deliverable1b_*.

@@ -1,4 +1,5 @@
 #include "teacher.h"
+#include "models.h"
 #include "public_mechanics.h"
 #include <algorithm>
 namespace slice_teacher {
@@ -22,5 +23,11 @@ Labels query(const std::vector<js::V>& snapshots){Labels result;if(snapshots.emp
  auto model=project(input);result.diagnostics.push_back(js::obj({{"unit",n(snapshots[0],"self")},{"stage","teacher_planner_input"},{"value",js::obj({{"shells",double(input.shells.size())},{"projected_shells",double(model.shells.size())}})}}));copiedPlanner(model,0);for(auto q:model.packs[0].artilleryQueue){if(q.at>model.time+1e-9)throw std::logic_error("delayed teacher schedule");auto id=model.units[q.gun.slot].id;if(!wires.count(id))throw std::logic_error("teacher assignment outside joint guns");auto s=wires.at(id);auto y=ys.at(id);double best=INFINITY;unsigned selected=0;Vec2 aim;
   for(unsigned k=0;k<33;++k){auto probe=y;std::fill(probe.begin()+48,probe.end(),-1e6);probe[48+k]=1;auto c=intent(decode(s,probe));if(c.hasAim&&c.aimIndex==k){double d=std::hypot(c.aim.x-q.point.x,c.aim.y-q.point.y);if(d<best){best=d;selected=k;aim=c.aim;}}}
   if(std::isfinite(best)){result.diagnostics.push_back(js::obj({{"unit",double(id)},{"stage","teacher_planner"},{"value",js::obj({{"raw_aim",js::arr({q.point.x,q.point.y})},{"snap_distance",best},{"family",double(uint8_t(q.family))},{"variant",double(q.variant)},{"ready_only",true}})}}));if(best>1e-8)++result.aimSupportSnaps;std::fill(y.begin()+48,y.end(),-1e6);y[48+selected]=1;auto c=intent(decode(s,y));c.volley=uint64_t(n(s,"tick"));result.actions[id]=c;}}
+ // The categorical label remains the pre-drift move. All deployed arms add the
+ // same deterministic baseline after categorical decoding, including shadow labels.
+ std::vector<UnitId> ids;std::vector<Vec2> positions;std::vector<double> speeds;
+ for(auto p:result.actions){ids.push_back(p.first);for(auto u:js::get(wires.at(p.first),"units").p->items)if(n(u,"id")==p.first){positions.push_back({n(u,"x"),n(u,"y")});speeds.push_back(n(u,"speed"));}}
+ Law common;common.J=0;auto drift=motion(std::vector<double>(ids.size(),0),positions,ids,common,speeds,"intact");
+ for(size_t i=0;i<ids.size();++i){auto& c=result.actions.at(ids[i]);auto s=wires.at(ids[i]);c.goal=c.goal+drift[i];if(std::hypot(drift[i].x,drift[i].y)>1e-12)c.multiplier=1;auto delta=c.goal-positions[i];double length=std::hypot(delta.x,delta.y);if(length>speeds[i]&&length>0)c.goal=positions[i]+delta*(speeds[i]/length);c.goal.x=astelia::clamp(c.goal.x,0,n(s,"width"));c.goal.y=astelia::clamp(c.goal.y,0,n(s,"height"));result.diagnostics.push_back(js::obj({{"unit",double(ids[i])},{"stage","teacher_spacing"},{"value",js::obj({{"drift",js::arr({drift[i].x,drift[i].y})},{"categorical_move",double(c.moveIndex)}})}}));}
  return result;}
 }

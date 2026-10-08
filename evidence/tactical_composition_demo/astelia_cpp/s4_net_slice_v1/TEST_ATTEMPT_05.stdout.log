@@ -1,0 +1,10 @@
+........................................................................ [ 79%]
+...................                                                      [100%]
+=============================== warnings summary ===============================
+evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/test_slice.py::test_recurrent_sequence_parity[intact-N2]
+  /Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/dynamics.py:77: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+  Consider using tensor.detach() first. (Triggered internally at /Users/runner/work/pytorch/pytorch/torch/csrc/autograd/generated/python_variable_methods.cpp:821.)
+    goal=[a+float(d) for a,d in zip(out['goal'],drift)]
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+91 passed, 1 warning in 9.29s

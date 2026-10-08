@@ -1,6 +1,6 @@
 {
   "expected_40s": {
-    "status": "SIZES_REQUIRED",
+    "status": "PROJECTION_NOT_MEASUREMENT",
     "fights": 200,
     "orientations": "included equally within 200",
     "guns_cap": 10,
@@ -14,11 +14,8 @@
     "joint_bytes": 2549760000,
     "with_DAgger_bytes": 5494528000,
     "raw_JSON_record_cap_bytes": 1048576,
-    "measured_mean_record_bytes": null,
-    "measured_maximum_record_bytes": null,
-    "raw_JSON_with_DAgger_bytes": null,
-    "raw_JSON_reserve_bytes": null,
-    "disk_allowance_bytes": null,
+    "raw_JSON_with_DAgger_bytes": 327155712000,
+    "disk_allowance_bytes": 341365993472,
     "peak_memory_bytes": 536870912,
     "batch_joint_windows": 4,
     "window_ticks": 90,
@@ -44,10 +41,10 @@
       "reporting": "800 * measured CPU s/fight"
     },
     "timing_required": "Separate authorized <=20-fight / <=20-step sample on actual paths before collection/training; no measurements invented",
-    "approval_threshold": "Collection time authority: s4_shape_lab_v1/raw/LAB_CAP.json; training remains separate"
+    "approval_threshold": "Any >3600s wall before22:00 returns owner resource gate; no runtime permission inferred"
   },
   "hard_150s": {
-    "status": "SIZES_REQUIRED",
+    "status": "PROJECTION_NOT_MEASUREMENT",
     "fights": 200,
     "orientations": "included equally within 200",
     "guns_cap": 10,
@@ -61,11 +58,8 @@
     "joint_bytes": 9561600000,
     "with_DAgger_bytes": 20604480000,
     "raw_JSON_record_cap_bytes": 1048576,
-    "measured_mean_record_bytes": null,
-    "measured_maximum_record_bytes": null,
-    "raw_JSON_with_DAgger_bytes": null,
-    "raw_JSON_reserve_bytes": null,
-    "disk_allowance_bytes": null,
+    "raw_JSON_with_DAgger_bytes": 1226833920000,
+    "disk_allowance_bytes": 1271264105472,
     "peak_memory_bytes": 536870912,
     "batch_joint_windows": 4,
     "window_ticks": 90,
@@ -91,7 +85,7 @@
       "reporting": "800 * measured CPU s/fight"
     },
     "timing_required": "Separate authorized <=20-fight / <=20-step sample on actual paths before collection/training; no measurements invented",
-    "approval_threshold": "Collection time authority: s4_shape_lab_v1/raw/LAB_CAP.json; training remains separate"
+    "approval_threshold": "Any >3600s wall before22:00 returns owner resource gate; no runtime permission inferred"
   },
   "collection_authorized": false,
   "training_authorized": false,

@@ -80,7 +80,7 @@ def encode(s):
     if s['side']:borders[:2]=borders[1::-1]
     features += [s['t']/150,s['dt']*30,*[x/1000 for x in borders],*counts,*cent]
     assert len(features)==WIDTH
-    return features,{'enemy_ids':eid,'friend_overflow':fo,'enemy_overflow':eo,'threat_overflow':max(0,len(threats)-8)}
+    return features,{'enemy_ids':eid,'friend_overflow':fo,'enemy_overflow':eo,'threat_overflow':max(0,len(threats)-8),'own_shell_overflow':sum(t['kind']=='own_shell' for t in threats[8:]),'enemy_threat_overflow':sum(t['kind']!='own_shell' for t in threats[8:])}
 
 def candidates(s,target):
     me=check(s);step=me['speed'];aimradius=min(200,me['splash'])

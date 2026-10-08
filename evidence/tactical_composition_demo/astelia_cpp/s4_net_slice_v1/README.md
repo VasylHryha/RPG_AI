@@ -1,27 +1,18 @@
-# NS1 deliverable 1b
+# NS1 pre-data batch collection tooling
 
-Read CONTRACT.md and REPORT.md. This is the corrected pre-data slice; frozen/deliverable1_* retains D1 history and frozen/network_slice_d1_recheck_claude.md is the review input. OWNER_RECHECK_D1B.md records the separate same-family source check and fix dispositions. PLAN_CURRENT_APPEND.md is unchanged for Claude; docs/PLAN_CURRENT.md is untouched.
+Round-2 N1–N5 and the missing orchestrator are implemented. Read CONTRACT.md, DECISION_N1.md and REPORT_COLLECTION.md. Prior deliverable1b documents/receipts are preserved under frozen/deliverable1b_* and Claude round2 is copied under frozen. No fights, collection, training or ES run by the implementer. Fixture exports remain untrained.
 
-No fights, teacher collection, training, optimizer fitting or ES evaluation ran. Fixtures contain isolated seams and ten bounded scripted60-tick coreStep scenarios, with no fight outcome reads. Exports remain untrained fixture weights. The next execution gate is cross-family re-review plus a sealed collection/resource/timing inventory.
-
-Rebuild and focused verification (already performed for this delivery; do not routinely repeat):
+Claude's execution commands, from repository root:
 
 ```sh
 SLICE=evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1
-python3 "$SLICE/build.py"
-"$SLICE/_local/mlenv/bin/python" "$SLICE/verify_focused.py"
-python3 "$SLICE/project.py" --output "$SLICE/TEACHER_DATA_PROJECTION.json"
+python3 "$SLICE/collection.py" sample --fights 20
+python3 "$SLICE/collection.py" project
+python3 "$SLICE/collection.py" collect --fights 200
 ```
 
-The isolated environment is described in ENVIRONMENT.json and requirements.lock; setup_env.py recreates it with the pinned offline distributions or online package sources. Ancestor sources/objects are read-only; generated overlays and binaries stay under _local/build. BUILD.json pins slice source and frozen document bytes, not living external documents. Historical build/test attempts are retained separately.
+The first sample command seals recorded entropy, all200 requests and whole-group splits before any run. One worker; sample draws already completed are reused by collect. The timing sample excludes independently allocated report draws. A12–20-fight sample is supported; sealed sample size cannot change. Caps include unsuccessful physical launches:20 sample and200 total. The local owner LAB_CAP.json in s4_shape_lab_v1/raw is read live as time authority. collect requires sample/project, enough disk/time/RSS headroom, repository process gate CLEAR and unchanged build/source/contract/request hashes. Foreign heavy processes are ignored with recorded reasons; unresolved ownership fails closed; vanished-process discovery retries once.
 
-After Claude re-review and the authorized collection executor supplies a fresh sealed SEED/FIGHT/CELL/GUNS/ORIENTATION (reporting identities excluded), the exact one-request teacher collection commands are:
+Raw files, inventory, ledger, process gate, measured SAMPLE.json and PROJECTION.json live under _local/collection. Complete receipts and data are immutable; partial attempts remain separate. Resuming uses the same command and sealed inventory, never fresh entropy. Do not edit receipts or seals to bypass drift. No dataset packer/trainer is delivered yet. Reporting splits must be excluded from all fitting/selection.
 
-```sh
-SLICE=evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1
-: "${SEED:?sealed collection seed required}" "${FIGHT:?sealed collection fight ID required}" "${CELL:?D1-static or D2-shellfire required}" "${GUNS:?1, 2 or 10 required}" "${ORIENTATION:?0 or 1 required}"
-"$SLICE/_local/mlenv/bin/python" "$SLICE/requests.py" --cell "$CELL" --guns "$GUNS" --seed "$SEED" --fight "$FIGHT" --orientation "$ORIENTATION" > "$SLICE/_local/teacher_request.json"
-"$SLICE/_local/build/net_host" --collect < "$SLICE/_local/teacher_request.json" > "$SLICE/_local/teacher_${FIGHT}.jsonl"
-```
-
-Use the separately approved <=20-fight actual-path timing sample first, measure terminal maximum_record_bytes/RSS/CPU/wall/disk, and revise the symbolic projection before full collection. This delivery allocates no entropy and does not supply a split/collection executor, trainer or approved runtime budget. The raised1MiB worst-case raw reserve is substantial; projection is a bound, not measured disk use. Never reuse fixtures or reporting data as training collection.
+Build and focused verification are already performed for this delivery; results are in REPORT_COLLECTION.md. Rebuild only if sources drift, before a new seal. build.py pins frozen copies of documents, not living external files. Standalone arithmetic also accepts `project.py --mean-record-bytes VALUE --maximum-record-bytes VALUE`; these values must come from the actual-path sample. No measured size means SIZES_REQUIRED, not the1MiB storage estimate.

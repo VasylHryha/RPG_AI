@@ -27,7 +27,3 @@ Completed change batch: H1 decision-tick opportunities and shared prep arithmeti
 Separate same-family request was sent verbatim to d1b_recheck; findings and original snapshot verdict are in OWNER_RECHECK_D1B.md. B1 role guard was fixed; B2 added real D1/D2 dispatch plus infantry fixtures. Both fixes are included before the single final focused batch. Claude cross-family acceptance and collection/resource inventory are later gates. No second same-family review or numerical quality score.
 
 Final build/test/projection results are recorded in REPORT.md and DELIVERY.json. Unrelated dirty lab state is preserved. .git writability determines whether a scoped normal-hook commit is possible.
-
-## Round-2 collection continuation
-
-N1 teacher/shared baseline, N2 frozen-law admission, N3 per-kind overflow, N4 measured-size projection, N5 explicit margin wording and sealed sequential batch tooling implemented in place before data. Single separate same-family quick recheck requested with the owner's exact wording under decision0033. Findings/dispositions in OWNER_RECHECK_COLLECTION.md and DISPOSITION_COLLECTION.md; focused tests and build follow after the complete change batch. No fights/entropy allocation or other lab changes. docs/PLAN_CURRENT.md tracking append is unstaged and excluded from delivery.

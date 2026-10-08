@@ -36,6 +36,7 @@ class Policy(nn.Module):
         return y,None
     def joint(self,x,pos,ids,theta,previous,dt=1/30,ablation='intact',fixed=None,held_force=None,assignments=None):
         if self.kind!='N2':raise ValueError('N2 only')
+        assert_shared_baseline(self)
         if assignments is None:raise ValueError("previous assignments required")
         if ablation=="no_geometry_to_mode" and held_force is None:raise ValueError("freeze geometry forcing in complete probe")
         A,B,J=torch.sigmoid(self.law[:3]);K=2*torch.sigmoid(self.law[3]);omega=2*torch.tanh(self.law[4]);share=.25*torch.sigmoid(self.law[5])
@@ -63,7 +64,12 @@ class Policy(nn.Module):
         drift=movement(phase,pos,ids,A,B,J,share,x[:,10]*200,ablation)
         return y,phase,drift
 
+def assert_shared_baseline(model):
+    if model.kind=='N2' and bool((model.law.detach()[[0,1,2,5]]!=0).any()):
+        raise ValueError('frozen movement baseline drift')
+
 def export(model,path):
+    assert_shared_baseline(model)
     payload={'version':'NS1','kind':model.kind,'dtype':'float64','parameters':{k: {'shape':list(v.shape),'values':v.detach().reshape(-1).tolist()} for k,v in model.state_dict().items()}}
     Path(path).write_text(json.dumps(payload,allow_nan=False,separators=(',',':'))+'\n')
     return payload
