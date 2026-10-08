@@ -14,7 +14,7 @@ import collection
 import process_gate as gate
 from collection import HERE, read, sha, atomic, cap
 
-JOBS=HERE/'_local/stage1/jobs'
+JOBS=HERE/'_local/stage1_v2/jobs'
 
 
 @dataclass(frozen=True)
@@ -66,15 +66,16 @@ def job_lock(name):
 
 
 def pins(weights):
-    from stage1_data import admit
-    from stage1_native import admit_driver
+    from stage1_data_v2 import admit
+    from stage1_native_v2 import admit_driver
     admit(); build=admit_driver()
-    return dict(collection_seal_sha256=sha(HERE/'_local/collection/SEAL.json'),
-                collection_receipt_sha256=sha(HERE/'COLLECTION_RECEIPT.json'),
-                driver_binary_sha256=build['binary_sha256'],driver_build_sha256=sha(HERE/'STAGE1_NATIVE_BUILD.json'),
+    return dict(collection_seal_sha256=sha(HERE/'_local/collection_v2/SEAL.json'),
+                collection_receipt_sha256=sha(HERE/'COLLECTION_RECEIPT_V2.json'),
+                driver_binary_sha256=build['binary_sha256'],driver_build_sha256=sha(HERE/'STAGE1_NATIVE_BUILD_V2.json'),
                 weights={k:sha(v) for k,v in weights.items()},
                 tooling_sources={p.name:sha(p) for p in HERE.glob('stage1_*.py')},
-                driver_source_sha256=sha(HERE/'stage1_driver.cpp'))
+                draw_sources={n:sha(HERE/n) for n in ('requests_v2.py','collection_v2.py','CONTRACT_AMENDMENT_STAGE1_V2.md')},
+                driver_source_sha256=sha(HERE/'stage1_driver.cpp'),stream_source_sha256=sha(HERE/'stage1_stream.cpp'))
 
 
 def completed(directory, row, inventory_hash):

@@ -9,18 +9,21 @@ import hashlib
 from pathlib import Path
 import secrets
 import time
-from collection import HERE, ROOT, read, sha, atomic, cap
+from collection import HERE, read, sha, atomic, cap
+from collection_v2 import ROOT
 from protocol import split
-from requests import drill
-from stage1_data import DATA, admit, convert_fight,validate_arithmetic
+from requests_v2 import drill
+from stage1_data_v2 import DATA, admit, convert_fight,validate_arithmetic
 from stage1_jobs import JOBS, job_lock, pins, execute, physical_budget
-from stage1_native import BINARY
+from stage1_native_v2 import BINARY
 
 ARMS=('N1','N1r','N2')
 # Sparse = one-gun cell: two visits each. Six other visits include two-gun
 # recovery and ten-gun joint control, with both orientations represented.
-CELLS=(('D1-static',1),('D1-static',1),('D2-shellfire',1),('D2-shellfire',1),
-       ('D1-static',2),('D2-shellfire',2),('D1-static',10),('D2-shellfire',10),('D1-static',10),('D2-shellfire',10))
+CELLS=(('D1-static',1),('D2-shellfire',1),('D1-static',2),('D2-shellfire',2),
+       ('D1-static',10),('D2-shellfire',10),('D1-static',1),('D2-shellfire',1),('D1-static',2),('D2-shellfire',10))
+# Train 0..6 covers all six cell/gun pairs. Validation 7..8 rotates
+# sparse/medium/joint coverage between the two rounds; test is excluded.
 
 
 def inventory(round_id,entropy,weights,excluded):
@@ -31,6 +34,8 @@ def inventory(round_id,entropy,weights,excluded):
         counter=0
         # Preassign 7/2/1 train/validation/test draws identically across visitors.
         desired='train' if i<7 else 'validation' if i<9 else 'test'
+        if round_id==2 and i==8:
+            cell,guns='D1-static',10
         while True:
             h=hashlib.sha256(f'NS1-dagger:{round_id}:{entropy}:{i}:{counter}'.encode()).hexdigest()
             counter+=1; seed=int(h[:8],16); group='NS1-DA-'+h[8:40]
@@ -48,9 +53,9 @@ def inventory(round_id,entropy,weights,excluded):
             request['shadow']=True; request['ablation']='intact'
             rows.append(dict(fight=fight,group=fight,paired_group=group,split=desired,round=round_id,visitor=arm,
                              cell=cell,guns=guns,orientation=i%2,request=request))
-    return dict(version='NS1-DAgger-1',round=round_id,entropy=entropy,rows=rows,
+    return dict(version='NS1-DAgger-2',round=round_id,entropy=entropy,rows=rows,
                 max_physical_attempts=30,max_decision_row_queries=225000,
-                sparse_definition='two visits to each D1/1 and D2/1 cell per visitor; other six visits cover 2/10 guns',
+                sparse_definition='train covers all six cell/gun types; sparse repeated visits retained; validation sparse+2 guns in round1 and sparse+10 guns in round2',
                 pins=pins(weights))
 
 
@@ -99,7 +104,7 @@ def aggregate(round_id):
         if m['split']=='validation':
             m['row_weight']=1/((round_id+1)*(1 if m['round']==0 else 3)*val[m['round'],m['visitor']])
     value=dict(round=round_id,fights=union,round0_retained=True,
-               collection_receipt_sha256=sha(HERE/'COLLECTION_RECEIPT.json'),source_sha256=sha(HERE/'stage1_data.py'),
+               collection_receipt_sha256=sha(HERE/'COLLECTION_RECEIPT_V2.json'),source_sha256=sha(HERE/'stage1_data_v2.py'),
                round_inventory_sha256={str(r):sha(JOBS/f'dagger_r{r}'/'INVENTORY.json') for r in range(1,round_id+1)})
     atomic(JOBS/f'dagger_r{round_id}'/'AGGREGATE.json',value)
     return value
@@ -107,8 +112,8 @@ def aggregate(round_id):
 
 def run(round_id,refit=False):
     directory=JOBS/f'dagger_r{round_id}'; directory.mkdir(parents=True,exist_ok=True)
-    model_root=HERE/'_local/stage1' if round_id==1 else HERE/'_local/stage1/dagger_r1'
-    result_path=HERE/'STAGE1_RESULTS.json' if round_id==1 else HERE/'DAGGER_R1_RESULTS.json'
+    model_root=HERE/'_local/stage1_v2' if round_id==1 else HERE/'_local/stage1_v2/dagger_r1'
+    result_path=HERE/'STAGE1_V2_RESULTS.json' if round_id==1 else HERE/'DAGGER_V2_R1_RESULTS.json'
     result=read(result_path)
     if result['status']!='TRAINED_BC' or result['export_parity']['status']!='PASS':
         raise RuntimeError('selected trained, parity-verified prior fit required')
@@ -131,10 +136,17 @@ def run(round_id,refit=False):
         if pins(weights)!=inv['pins']:
             raise RuntimeError('DAgger pins drift')
         r=execute(directory,row,digest,BINARY,30,deadline); queries+=r['decision_count']; receipts.append(r)
+        from stage1_logged_parity import verify
+        check=verify(directory/(row['fight']+'.jsonl'),weights[row['visitor']])
+        parity_path=directory/(row['fight']+'.parity.json')
+        if parity_path.exists() and read(parity_path)!=check:
+            raise RuntimeError('existing own-Host parity drift')
+        if not parity_path.exists():
+            atomic(parity_path,check)
         if queries>225000:
             raise RuntimeError('DAgger query cap')
     union=aggregate(round_id)
-    atomic(HERE/f'DAGGER_R{round_id}_COLLECTION.json',dict(status='COLLECTED',inventory_sha256=digest,
+    atomic(HERE/f'DAGGER_V2_R{round_id}_COLLECTION.json',dict(status='COLLECTED',inventory_sha256=digest,
            fights=30,queries=queries,aggregate_sha256=sha(directory/'AGGREGATE.json'),
            raw_sha256={r['request']['fight']:r['raw_sha256'] for r in receipts},refit_run=False))
     if refit:

@@ -35,3 +35,42 @@ If projection exceeds one hour, stop; Claude asks the owner. DAgger and mechanis
 ```
 
 The mechanism command deliberately evaluates the initial BC stage1 exports, as requested, even if DAgger refits subsequently exist. Each DAgger refit has its own <=20-step resource sample and separate one-hour gate. Never bypass an unavailable process gate or fabricate a training projection.
+
+## Current correction: collection v2 and admission attempt 02
+
+The preceding instructions and numbers describe the historical deterministic collection and superseded full-prefix implementation. Use this section for the current host handoff. Read CONTRACT_AMENDMENT_STAGE1_V2.md first. Old held-out numbers are duplicate-trajectory in-distribution replay diagnostics; they do not demonstrate held-out generalization. D1 sparse teacher completion failed the old ES eligibility requirement.
+
+Method: **R2D2 stored recurrent state + burn-in** (Kapturowski, Ostrovski, Quan, Munos, Dabney, *Recurrent Experience Replay in Distributed Reinforcement Learning*, ICLR 2019; [paper](https://openreview.net/pdf/387fb2fcee8f74c53cf707a9856f40c458f33933.pdf)), with **truncated backpropagation through time**. This offline adaptation refreshes state under current weights once per epoch, snapshots the entire state, and uses 30-tick no-grad burn-in followed by the unchanged 90-tick gradient window. The paper discusses stored-state staleness/representational drift and combining stored states with burn-in. Our epoch refresh is a declared implementation choice; it is exact only at unchanged weights, and the fixture proves that case. Both N1r and N2 follow the same procedure. Float64 remains throughout; threads 2, no parallel fits. Five fits include the three predefined N1 seeds. The new projection measures and charges refresh, diagnostics, all seeds and full export parity, with the same 60-minute gate. The host has not yet measured attempt 02.
+
+Collection sample typically took minutes in v1, but v2 timing is unknown. Projection will measure it before allowing full collection. Training may consume up to one hour **after** admission; the offline admission sample has its own one-hour hard stop. Tell the owner the measured projection before proceeding if it refuses. Never use old collection or converted indexes with the corrected trainer.
+
+Run from repository root, in this order. These are commands for Claude on the host, not runs performed in this sandbox:
+
+```sh
+cd /Users/new/RiderProjects/ai_RPG_test
+SLICE=evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1
+PY="$SLICE/_local/mlenv/bin/python"
+"$PY" "$SLICE/collection_v2.py" sample --fights 20
+"$PY" "$SLICE/collection_v2.py" project
+"$PY" "$SLICE/collection_v2.py" collect --fights 200
+"$PY" "$SLICE/stage1_data_v2.py" receipt
+"$PY" "$SLICE/stage1_data_v2.py" convert
+"$PY" "$SLICE/stage1_native_v2.py" admit
+"$PY" "$SLICE/stage1_train.py" --run-if-admitted
+```
+
+The training command creates TRAINING_PROJECTION_02.json and STAGE1_BUDGET_02.json, preserving attempt 01. It proceeds only on admission. An existing attempt-02 budget/projection refuses repeated sampling; do not delete it. If projection is over an hour, report per-arm wall costs (N1 also has three seeds) and the smallest common epoch reduction in the receipt to the owner; do not apply it yourself.
+
+Only after STAGE1_V2_RESULTS.json is TRAINED_BC and its export parity is PASS:
+
+```sh
+"$PY" "$SLICE/stage1_dagger.py" --round 1 --refit-if-admitted
+"$PY" "$SLICE/stage1_dagger.py" --round 2 --refit-if-admitted
+"$PY" "$SLICE/stage1_mechanism.py" --pairs 12
+```
+
+Jobs write into `_local/stage1_v2/jobs`, and refits into `_local/stage1_v2/dagger_rN`; old jobs stay untouched. Each completed student log receives an offline own-Host-path parity receipt before refit/report use. Mechanism still uses initial BC primary-seed exports. Reading: imitation and descriptive arm differences, with minority-class diagnostics, N1 seed noise, N2 learned-law statistics and the fixed J motion prior explicit. This is not scientific acceptance or a complete H-M claim.
+
+The separate v2 driver was built here without fights; `admit` verifies its new STAGE1_NATIVE_BUILD_V2.json and binary. For a fresh checkout where local v2 native objects/binary are absent, run `"$PY" "$SLICE/stage1_native_v2.py" build` once before `admit`. Preserve any existing build receipt; inspect drift before rebuilding.
+
+Full-sequence parity streams 12-tick chunks, sending the shared joint snapshot once per tick. A persistent native Host and Python Replay carry phases, memory, six-tick features/forcing, assignments, graph IDs and cached intents across every chunk; a chunk boundary never resets state. Native JS arena GC runs after each response with no retained JS snapshot roots, while numeric Host state remains. Exact native child CPU and peak RSS come from wait4 and enforce the 512 MiB child cap; Python RSS is checked too. PreparedFight leaves features mmap-backed and converts only joint decision rows to float64. Stored held-feature snapshots use the original float32 feature representation losslessly, then restore float64; phases, memory, forcing and all computation remain float64. This does not quantize weights or recurrent state.

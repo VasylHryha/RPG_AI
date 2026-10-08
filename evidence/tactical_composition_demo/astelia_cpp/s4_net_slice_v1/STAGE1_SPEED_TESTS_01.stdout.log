@@ -1,0 +1,20 @@
+E
+==================================== ERRORS ====================================
+__ ERROR at setup of test_streaming_converter_schema_masks_and_native_parity ___
+
+self = PosixPath('/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/stage1_v2/pytest')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+>           os.mkdir(self, mode)
+E           FileNotFoundError: [Errno 2] No such file or directory: '/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/stage1_v2/pytest'
+
+../../.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/python3.11/pathlib.py:1116: FileNotFoundError
+=========================== short test summary info ============================
+ERROR evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/test_stage1.py::test_streaming_converter_schema_masks_and_native_parity
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 error in 1.12s

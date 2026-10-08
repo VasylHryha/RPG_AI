@@ -10,10 +10,11 @@ from models import recurrent_message, assert_shared_baseline
 from stage1_arithmetic import encode,decode,graph,add_drift,baseline_drift
 
 
-def n1r_message(memory,pos,ids,assignments,candidates):
-    adjacent=memory.new_zeros((len(ids),len(ids)))
-    for i,peers in enumerate(graph(pos,ids)):
-        adjacent[i,peers]=1/max(1,len(peers))
+def n1r_message(memory,pos,ids,assignments,candidates,adjacent=None):
+    if adjacent is None:
+        adjacent=memory.new_zeros((len(ids),len(ids)))
+        for i,peers in enumerate(graph(pos,ids)):
+            adjacent[i,peers]=1/max(1,len(peers))
     candidate=torch.as_tensor(candidates,dtype=torch.int64)
     assign=torch.as_tensor(assignments,dtype=torch.int64)
     matches=(candidate[:,:,None]==assign[None,None,:]) & (candidate[:,:,None]!=0)
@@ -26,14 +27,17 @@ def n1r_message(memory,pos,ids,assignments,candidates):
 
 
 def n2_tick(model, x, pos, ids, theta, candidates, assignments, dt,
-            ablation='intact', fixed=None, held_force=None):
+            ablation='intact', fixed=None, held_force=None, geometry=None, emit_logits=True):
     assert_shared_baseline(model)
-    ns = fixed if ablation in ('topology_only','no_geometry_to_mode') else graph(pos,ids)
-    adjacent = x.new_zeros((len(ids),len(ids)))
-    for i,peers in enumerate(ns):
-        adjacent[i,peers] = 1/max(1,len(peers))
-    distance2 = ((pos[:,None]-pos[None,:])/100).square().sum(-1)
-    weight = adjacent if ablation=='no_geometry_to_mode' else adjacent*torch.exp(-distance2)
+    if geometry is None:
+        ns = fixed if ablation in ('topology_only','no_geometry_to_mode') else graph(pos,ids)
+        adjacent = x.new_zeros((len(ids),len(ids)))
+        for i,peers in enumerate(ns):
+            adjacent[i,peers] = 1/max(1,len(peers))
+        distance2 = ((pos[:,None]-pos[None,:])/100).square().sum(-1)
+        weight = adjacent if ablation=='no_geometry_to_mode' else adjacent*torch.exp(-distance2)
+    else:
+        adjacent,weight=geometry
     force = torch.tanh(model.force(x)).squeeze(-1) if held_force is None else held_force
     K = model.law[3].sigmoid()*2
     omega = model.law[4].tanh()*2
@@ -51,10 +55,13 @@ def n2_tick(model, x, pos, ids, theta, candidates, assignments, dt,
         for _ in range(max(1,math.ceil(dt*4/.25))):
             k1=rhs(theta); k2=rhs(checked(theta+h*k1/2)); k3=rhs(checked(theta+h*k2/2)); k4=rhs(checked(theta+h*k3))
             theta=checked(theta+h*(k1+2*k2+2*k3+k4)/6)
+    if not emit_logits:
+        return None,theta
     # Messages always use current geometry, including frozen phase graph arms.
-    live = x.new_zeros((len(ids),len(ids)))
-    for i,peers in enumerate(graph(pos,ids)):
-        live[i,peers] = 1/max(1,len(peers))
+    live = adjacent if geometry is not None else x.new_zeros((len(ids),len(ids)))
+    if geometry is None:
+        for i,peers in enumerate(graph(pos,ids)):
+            live[i,peers] = 1/max(1,len(peers))
     z=torch.stack((theta.sin(),theta.cos()),-1)
     state=torch.cat((z,live@z),-1)
     candidate=torch.as_tensor(candidates,dtype=torch.int64)
@@ -77,10 +84,12 @@ class Replay:
     def __init__(self, model, ablation='intact'):
         self.model=model; self.ablation=ablation
         self.phase={}; self.memory={}; self.held={}; self.assign={}; self.cache={}
-        self.fixed=None; self.fixed_ids=None; self.initial_force={}
+        self.fixed=None; self.fixed_ids=None; self.initial_force={}; self.pending={}
 
     def tick(self, ids, x, pos, candidates, assignments, dt, decision, launches=()):
         if not ids:
+            for table in (self.phase,self.memory,self.held,self.assign,self.cache,self.initial_force,self.pending):
+                table.clear()
             return None
         phase=torch.stack([self.phase.get(i,x.new_tensor((i%16)*math.pi/8)) for i in ids])
         mem=torch.stack([self.memory.get(i,x.new_zeros(8)) for i in ids])
@@ -106,18 +115,33 @@ class Replay:
         for j,i in enumerate(ids):
             self.phase[i]=phase[j]*0 if i in launches and self.ablation not in ('frozen_phase','no_reset') else phase[j]
             self.memory[i]=mem[j]
-        for table in (self.phase,self.memory,self.held,self.assign,self.cache,self.initial_force):
+        for table in (self.phase,self.memory,self.held,self.assign,self.cache,self.initial_force,self.pending):
             for id in list(table):
                 if id not in ids:
                     del table[id]
         return y
+
+    def snapshot(self):
+        import copy
+        result={}
+        for key,value in self.__dict__.items():
+            if key in ('model','ablation'):
+                continue
+            result[key]={k:v.detach().clone() if torch.is_tensor(v) else copy.deepcopy(v) for k,v in value.items()} if isinstance(value,dict) else copy.deepcopy(value)
+        return result
+
+    def restore(self,state):
+        import copy
+        for key,value in state.items():
+            setattr(self,key,copy.deepcopy(value))
+        return self
 
     def detach(self):
         for table in (self.phase,self.memory,self.held,self.initial_force):
             for key in table:
                 table[key]=table[key].detach()
 
-    def deployment(self, frames, launches=None):
+    def deployment(self, frames, launches=None, start_tick=0,deadline=None):
         """Replay public observations with student assignments, not teacher targets.
 
         Native fixture sequence does not run a cast machine. Launch acknowledgements
@@ -125,14 +149,19 @@ class Replay:
         """
         from stage1_arithmetic import movement
         results=[]
-        for tick,frame in enumerate(frames,1):
+        for tick,frame in enumerate(frames,start_tick+1):
+            if deadline is not None:
+                import time
+                if time.monotonic()>=deadline:
+                    raise TimeoutError('offline parity cap')
             ids=[s['self'] for s in frame]
             if not ids:
+                self.tick([],None,None,[],[],0,False)
                 results.append(dict(phases=[],actions=[],drift=[],memory=[])); continue
             x=torch.tensor([encode(s)[0] for s in frame],dtype=torch.float64)
             pos=torch.tensor([[next(u for u in s['units'] if u['id']==s['self'])[k] for k in ('x','y')] for s in frame],dtype=torch.float64)
             candidates=[encode(s)[1]['enemy_ids']+[0]*(12-len(encode(s)[1]['enemy_ids'])) for s in frame]
-            launched=[] if launches is None else launches[tick-1]
+            launched=[] if launches is None else launches[tick-start_tick-1]
             y=self.tick(ids,x,pos,candidates,[self.assign.get(i,0) for i in ids],frame[0]['dt'],(tick-1)%6==0)
             phases=torch.stack([self.phase[i] for i in ids])
             speeds=x[:,10]*200
@@ -143,6 +172,10 @@ class Replay:
                 drift=baseline_drift(pos,ids,speeds)
             if (tick-1)%6==0:
                 for id,s,yy,d in zip(ids,frame,y,drift):
+                    if id in self.pending:
+                        yy=yy.clone(); yy[33:46]=-1e6
+                        target=self.pending[id]; enemies=encode(s)[1]['enemy_ids']
+                        yy[34+enemies.index(target) if target in enemies else 33]=1e6
                     a=add_drift(decode(s,yy.detach().tolist()),d.detach(),s)
                     self.cache[id]=a; self.assign[id]=a['target']
             results.append(dict(phases=[[i,float(self.phase[i].detach())] for i in ids],

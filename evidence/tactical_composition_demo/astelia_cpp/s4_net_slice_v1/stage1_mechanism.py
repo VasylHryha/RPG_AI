@@ -11,10 +11,10 @@ from pathlib import Path
 import secrets
 import time
 from collection import HERE, read, sha, atomic, cap
-from requests import drill
-from stage1_data import admit, frame_rows
+from requests_v2 import drill
+from stage1_data_v2 import admit, frame_rows
 from stage1_jobs import JOBS, pins, execute, job_lock, physical_budget
-from stage1_native import BINARY
+from stage1_native_v2 import BINARY
 
 ABLATIONS=('K0','frozen_phase','topology_only','no_geometry_to_mode','no_mode_to_geometry','no_reset')
 ARMS=('teacher','N1','N1r','N2',*(f'N2_{a}' for a in ABLATIONS))
@@ -40,7 +40,7 @@ def inventory(entropy,pairs,weights,excluded):
             fight=draw+'-'+arm; request=drill(cell,guns,seed,orientation,kind,weights.get(kind),fight)
             request['ablation']=arm[3:] if arm.startswith('N2_') else 'intact'
             rows.append(dict(fight=fight,draw=draw,arm=arm,cell=cell,guns=guns,orientation=orientation,request=request))
-    return dict(version='NS1-mechanism-1',entropy=entropy,pairs=pairs,arms=ARMS,rows=rows,
+    return dict(version='NS1-mechanism-2',entropy=entropy,pairs=pairs,arms=ARMS,rows=rows,
                 pins=pins(weights),max_physical_attempts=pairs*len(ARMS),
                 reading='mechanism descriptive only; formal outcome reading requires 50/100/200 independent pairs')
 
@@ -85,7 +85,22 @@ def report(rows):
                                launches_lost=intact['counts'].get('launches',0)-r['counts'].get('launches',0)))
         contrasts[ab]=dict(paired=paired,reading='OBSERVED_TASK_HARM' if sum(p['deaths_added'] for p in paired)>0 or sum(p['kills_lost'] for p in paired)>0 else 'NO_OBSERVED_TASK_HARM',
                            interpretation='descriptive at mechanism sample size; no-harm is inconclusive about use')
-    return dict(arms=results,all_fights=rows,within_n2=contrasts,ablation_scope='observed harm or no observed harm is descriptive; neither alone proves H-M/use/non-use',
+    direct={}
+    for baseline in ('N1','N1r'):
+        paired=[]
+        for r in (r for r in rows if r['arm']=='N2'):
+            other=lookup[r['draw'],baseline]
+            ratio=lambda n,d:n/d if d else None
+            phase=lambda v:ratio(v['counts'].get('phase_order_sum',0),v['counts'].get('phase_order_ticks',0))
+            motion=lambda v:ratio(v['counts'].get('command_realized_dot_sum',0),v['counts'].get('command_realized_pairs',0))
+            delta=lambda a,b:a-b if a is not None and b is not None else None
+            paired.append(dict(draw=r['draw'],deaths= r['own_gun_deaths']-other['own_gun_deaths'],
+                kills=r['enemy_kills']-other['enemy_kills'],launches=r['counts'].get('launches',0)-other['counts'].get('launches',0),
+                launch_opportunity_fraction=delta(r['launch_opportunity_fraction'],other['launch_opportunity_fraction']),
+                phase_order=delta(phase(r),phase(other)),command_realized_motion=delta(motion(r),motion(other))))
+        direct['N2-minus-'+baseline]=dict(paired=paired,reading='DESCRIPTIVE',
+            cause_limits='stateless imitation teacher, seed noise and fixed untrained J=0.5 motion prior; no RRG mechanism conclusion')
+    return dict(arms=results,all_fights=rows,within_n2=contrasts,direct_network_contrasts=direct,ablation_scope='observed harm or no observed harm is descriptive; neither alone proves H-M/use/non-use',
                 formal_outcome_reading='NOT_EVALUATED',hierarchy='NOT_TESTED')
 
 
@@ -114,10 +129,10 @@ def recorded_kicks(path,weights):
 
 
 def run(pairs):
-    result=read(HERE/'STAGE1_RESULTS.json')
+    result=read(HERE/'STAGE1_V2_RESULTS.json')
     if result['status']!='TRAINED_BC' or result['export_parity']['status']!='PASS':
         raise RuntimeError('trained BC exports and parity required')
-    weights={k:HERE/'_local/stage1'/(k+'.weights.json') for k in ('N1','N1r','N2')}
+    weights={k:HERE/'_local/stage1_v2'/(k+'.weights.json') for k in ('N1','N1r','N2')}
     for k,p in weights.items():
         if sha(p)!=result['models'][k]['export_sha256']:
             raise RuntimeError('selected stage-1 export drift')
@@ -136,10 +151,19 @@ def run(pairs):
         if pins(weights)!=inv['pins']:
             raise RuntimeError('mechanism admission drift')
         execute(directory,row,sha(path),BINARY,pairs*len(ARMS),deadline)
+        if row['arm']!='teacher':
+            from stage1_logged_parity import verify
+            kind='N2' if row['arm'].startswith('N2_') else row['arm']
+            check=verify(directory/(row['fight']+'.jsonl'),weights[kind],row['request']['ablation'])
+            parity_path=directory/(row['fight']+'.parity.json')
+            if parity_path.exists() and read(parity_path)!=check:
+                raise RuntimeError('own-Host parity evidence drift')
+            if not parity_path.exists():
+                atomic(parity_path,check)
         values.append(metrics(directory/(row['fight']+'.jsonl'),row))
     contexts=[recorded_kicks(directory/(r['fight']+'.jsonl'),weights['N2']) for r in inv['rows'] if r['arm']=='N2' and r['guns']>1]
     value=dict(status='MECHANISM_ONLY',inventory_sha256=sha(path),pairs_per_arm=pairs,matched_recorded_context_kicks=contexts,**report(values))
-    atomic(HERE/'STAGE1_MECHANISM_RESULTS.json',value)
+    atomic(HERE/'STAGE1_V2_MECHANISM_RESULTS.json',value)
     return value
 
 

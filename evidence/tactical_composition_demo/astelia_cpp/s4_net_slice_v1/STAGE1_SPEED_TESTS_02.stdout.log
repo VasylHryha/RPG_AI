@@ -1,0 +1,30 @@
+...................................F
+=================================== FAILURES ===================================
+__ test_stored_burnin_full_prefix_exact_with_boundary_launch_and_deaths[N1r] ___
+
+kind = 'N1r'
+
+    @pytest.mark.parametrize('kind',['N1r','N2'])
+    def test_stored_burnin_full_prefix_exact_with_boundary_launch_and_deaths(kind):
+        torch.manual_seed(111); model=Policy(kind); meta,a=fixture(); f=PreparedFight(meta,a)
+        states=StoredStates(); states.refresh(model,[('fixture',0,90),('fixture',90,180)],lambda _:f)
+        fast=states.start(model,f,90); full=Replay(model)
+        with torch.no_grad():
+            for t in range(90):
+                f.tick(full,t)
+            for t in range(90,180):
+                y0=f.tick(full,t); y1=f.tick(fast,t)
+                torch.testing.assert_close(y0,y1,atol=1e-9,rtol=0)
+                gs=f.active[t]
+>               torch.testing.assert_close(torch.stack([full.phase[i] for i in f.ids[t]]),fast.phase[gs],atol=1e-9,rtol=0)
+E               AssertionError: Tensor-likes are not close!
+E               
+E               Mismatched elements: 2 / 2 (100.0%)
+E               Greatest absolute difference: 1.9634954084936207 at index (1,) (up to 1e-09 allowed)
+E               Greatest relative difference: 1.0 at index (0,) (up to 0 allowed)
+
+evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/test_stage1_v2.py:41: AssertionError
+=========================== short test summary info ============================
+FAILED evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/test_stage1_v2.py::test_stored_burnin_full_prefix_exact_with_boundary_launch_and_deaths[N1r]
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 35 passed in 3.19s

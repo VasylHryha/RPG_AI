@@ -6,17 +6,21 @@ recorded actual-launch acknowledgements. No fights or teacher-data changes.
 import argparse
 import json
 import math
+import time
 import subprocess
 import torch
-from collection import HERE, ROOT, read, sha, atomic
-from stage1_data import frame_rows, admit
+from collection_v2 import HERE, ROOT, read, sha, atomic
+from stage1_data_v2 import frame_rows, admit
 from stage1_native import BINARY, admit_driver
 from stage1_runtime import Replay
 from models import Policy, export
 
 
-def rpc(value):
-    p=subprocess.run([str(BINARY)],input=json.dumps(value,allow_nan=False)+'\n',capture_output=True,text=True,timeout=180)
+def rpc(value,deadline=None):
+    remaining=180 if deadline is None else min(180,deadline-time.monotonic())
+    if remaining<=0:
+        raise TimeoutError('parity wall cap')
+    p=subprocess.run([str(BINARY)],input=json.dumps(value,allow_nan=False)+'\n',capture_output=True,text=True,timeout=remaining)
     if p.returncode:
         raise RuntimeError('native parity RPC failed: '+p.stderr)
     return json.loads(p.stdout)
@@ -74,49 +78,115 @@ def teacher_baseline():
     value=dict(status='PASS',scope='six same-state held-out TEST joint decisions; no fights, no fitting',keys=keys,
                heads={k:{**v,'repeat_agreement':v['repeat_correct']/v['active'] if v['active'] else None,
                          'collected_agreement':v['collected_correct']/v['active'] if v['active'] else None} for k,v in counts.items()},
-               binary_sha256=sha(BINARY),collection_receipt_sha256=sha(HERE/'COLLECTION_RECEIPT.json'))
-    atomic(HERE/'TEACHER_REPEAT_BASELINE.json',value)
+               binary_sha256=sha(BINARY),collection_receipt_sha256=sha(HERE/'COLLECTION_RECEIPT_V2.json'))
+    atomic(HERE/'TEACHER_REPEAT_BASELINE_V2.json',value)
     return value
 
 
+def sequence(row):
+    frames=[]; launches=[]
+    for f in frame_rows(ROOT/(row['group']+'.jsonl')):
+        if f.get('terminal'):
+            break
+        frames.append([{**f['joint'],'self':i} for i in f['gun_ids']])
+        launches.append([e['unit'] for e in f['events'] if e['stage']=='launch'])
+    return frames,launches
+
+
 def held_sequences():
-    # One whole-sequence prefix per cell/guns/orientation from sealed TEST only.
-    rows=[r for r in admit()['rows'] if r['split']=='test']; result=[]
-    for row in rows:
-        frames=[]; launches=[]
-        # Up to90 consecutive physical ticks; this is parity, not model selection.
-        for f in frame_rows(ROOT/(row['group']+'.jsonl')):
-            if f.get('terminal') or len(frames)>=90:
-                break
-            frames.append([{**f['joint'],'self':i} for i in f['gun_ids']])
-            launches.append([e['unit'] for e in f['events'] if e['stage']=='launch'])
-        result.append((row,frames,launches))
-    return result
+    # Stream one complete sealed test fight at a time; no prefix cutoff.
+    for row in admit()['rows']:
+        if row['split']=='test':
+            frames,launches=sequence(row)
+            yield row,frames,launches
 
 
-def parity(calibration=False,model_root=None,prefix='STAGE1'):
-    from stage1_train import environment,make
-    environment(); admit_driver(); results={}; sequence=held_sequences()
-    model_root=model_root or HERE/'_local/stage1'
-    for kind in ('N1','N1r','N2'):
-        if calibration:
-            model,_=make(kind)
-            output=HERE/'_local/stage1'/('CALIBRATION_'+kind+'.weights.json')
-        else:
-            ckpt=model_root/(kind+'.pt')
-            model=Policy(kind); model.load_state_dict(torch.load(ckpt,weights_only=False)['model'])
-            output=model_root/(kind+'.weights.json')
-        weights=export(model,output); errors=[]
+def stream_compare(row,model,weights,ablation,deadline=None):
+    from stage1_stream import Session,CHUNK
+    from stage1_train import check_rss
+    replay=Replay(model,ablation); chunks=[]; ticks=launches=deaths=0; previous=set(); maximum=0.
+    start=time.monotonic(); session=Session(weights,ablation,deadline)
+    def consume(chunk):
+        nonlocal ticks,launches,deaths,maximum,previous
+        wires=[dict(joint=f['joint'],ids=f['gun_ids'],launches=[e['unit'] for e in f['events'] if e['stage']=='launch']) for f in chunk]
+        native=session.call(dict(operation='stage1_stream_frames',frames=wires))
+        snapshots=[[{**w['joint'],'self':i} for i in w['ids']] for w in wires]
         with torch.no_grad():
-            for row,frames,launches in sequence:
-                for ab in (('intact','K0','frozen_phase','topology_only','no_geometry_to_mode','no_mode_to_geometry','no_reset') if kind=='N2' else ('intact',)):
-                    native=rpc(dict(operation='stage1_sequence',weights=weights,frames=frames,launches=launches,ablation=ab))
-                    python=Replay(model,ab).deployment(frames,launches)
-                    errors.append(dict(group=row['group'],ablation=ab,ticks=len(frames),maximum_absolute_error=compare(native,python)))
-        results[kind]=dict(export_sha256=sha(output),checks=errors,status='PASS')
-    value=dict(status='PASS',scope='initialization exports only; NOT TRAINED' if calibration else 'selected BC exports',
-               dtype='float64',atol=1e-9,rtol=1e-9,models=results,driver_sha256=sha(BINARY),physical_fights=0)
-    atomic(HERE/('STAGE1_INITIALIZATION_PARITY.json' if calibration else prefix+'_EXPORT_PARITY.json'),value)
+            expected=replay.deployment(snapshots,[w['launches'] for w in wires],start_tick=ticks,deadline=deadline)
+        maximum=max(maximum,compare(native,expected))
+        for w in wires:
+            current=set(w['ids']); deaths+=len(previous-current); previous=current
+            launches+=len(w['launches'])
+        ticks+=len(chunk); check_rss()
+    try:
+        for frame in frame_rows(ROOT/(row['group']+'.jsonl')):
+            if frame.get('terminal'):
+                break
+            chunks.append(frame)
+            if len(chunks)==CHUNK:
+                consume(chunks); chunks=[]
+        if chunks:
+            consume(chunks)
+        resources=session.close()
+    except Exception:
+        session.close(kill=True)
+        raise
+    return dict(group=row['group'],ablation=ablation,ticks=ticks,launches=launches,deaths=deaths,
+                maximum_absolute_error=maximum,wall_seconds=time.monotonic()-start,native_resources=resources,
+                chunk_ticks=CHUNK,scope='complete sequence; persistent Host and Python Replay state across bounded chunks')
+
+
+def sample_parity_timing(model,deadline):
+    from stage1_native_v2 import admit_driver
+    admit_driver()
+    output=HERE/'_local/stage1_v2'/('TIMING_02_'+model.kind+'.weights.json')
+    weights=export(model,output)
+    admission_start=time.monotonic()
+    rows=[r for r in admit()['rows'] if r['split']=='test']
+    admission_seconds=time.monotonic()-admission_start
+    rates={}; checks=[]
+    for guns in (1,2,10):
+        subset=[r for r in rows if r['guns']==guns]
+        row=max(subset,key=lambda r:read(ROOT/(r['group']+'.receipt.json'))['record_count'])
+        arm_rates=[]
+        for ab in (('intact','K0','frozen_phase','topology_only','no_geometry_to_mode','no_mode_to_geometry','no_reset') if model.kind=='N2' else ('intact',)):
+            if time.monotonic()>=deadline:
+                raise TimeoutError('sample time cap during parity timing')
+            check=stream_compare(row,model,weights,ab,deadline)
+            arm_rates.append(check['wall_seconds']/max(1,check['ticks'])); checks.append(check)
+        rates[guns]=max(arm_rates)
+    count=7 if model.kind=='N2' else 1
+    projected=admission_seconds+count*sum(read(ROOT/(r['group']+'.receipt.json'))['record_count']*rates[r['guns']] for r in rows)
+    return dict(projected_seconds=projected,admission_seconds=admission_seconds,seconds_per_tick_by_guns=rates,checks=checks,
+                scope='discarded nine-step sample model; longest held-out fight per gun count; not trained parity')
+
+
+def parity(calibration=False,model_root=None,prefix='STAGE1_V2',deadline=None):
+    from stage1_train import environment,make
+    from stage1_native_v2 import BINARY as stream_binary,admit_driver as admit_stream
+    environment(); admit_stream(); results={}
+    model_root=model_root or HERE/'_local/stage1_v2'
+    for name,kind in [('N1','N1'),('N1_seed41101','N1'),('N1_seed41201','N1'),('N1r','N1r'),('N2','N2')]:
+        if calibration:
+            seed=int(name.split('seed')[1]) if 'seed' in name else None
+            model,_=make(kind,seed)
+            output=HERE/'_local/stage1_v2'/('CALIBRATION_'+name+'.weights.json')
+        else:
+            model=Policy(kind); model.load_state_dict(torch.load(model_root/(name+'.pt'),weights_only=False)['model'])
+            output=model_root/(name+'.weights.json')
+        weights=export(model,output); errors=[]
+        for row in admit()['rows']:
+            if row['split']!='test':
+                continue
+            for ab in (('intact','K0','frozen_phase','topology_only','no_geometry_to_mode','no_mode_to_geometry','no_reset') if kind=='N2' else ('intact',)):
+                errors.append(stream_compare(row,model,weights,ab,deadline))
+        results[name]=dict(export_sha256=sha(output),checks=errors,status='PASS')
+    value=dict(status='PASS',scope='initialization exports only; NOT TRAINED' if calibration else 'selected exports: complete test sequences with supplied launch acknowledgements; actual Host-path parity additionally required on student logs',
+               dtype='float64',atol=1e-9,rtol=1e-9,models=results,driver_sha256=sha(stream_binary),physical_fights=0)
+    result_path=HERE/('STAGE1_V2_INITIALIZATION_PARITY.json' if calibration else prefix+'_EXPORT_PARITY.json')
+    if result_path.exists():
+        raise RuntimeError('preserve existing parity evidence; no overwrite')
+    atomic(result_path,value)
     return value
 
 
