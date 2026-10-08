@@ -66,6 +66,12 @@ h2 { font-family: var(--display); font-weight: 600; font-size: 1.25rem; margin: 
 dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; margin: 0; font-size: .88rem }
 dt { color: var(--muted) } dd { margin: 0; font-family: var(--mono); font-variant-numeric: tabular-nums }
 .note { font-size: .8rem; color: var(--muted); margin: 0; max-width: 90ch }
+.label { font: 600 .75rem var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted) }
+.layers { font-size: .88rem; gap: 6px 16px }
+.layers label { display: flex; gap: 6px; align-items: center; cursor: pointer }
+.layers input { accent-color: var(--accent) }
+.shapes { display: grid; gap: 8px; font-size: .88rem; margin: 0; padding: 0; list-style: none }
+.shapes b { font-weight: 600 }
 </style>
 
 <div class="wrap">
@@ -87,6 +93,19 @@ dt { color: var(--muted) } dd { margin: 0; font-family: var(--mono); font-varian
         <input id="scrub" type="range" min="0" max="1000" value="0" aria-label="Fight time">
         <span class="clock" id="clock">0.0 s</span>
       </div>
+      <div class="controls" role="group" aria-label="Show one shape">
+        <span class="label">Show</span>
+        <button type="button" data-role="all" aria-pressed="true">All</button>
+        <button type="button" data-role="2">Guns</button>
+        <button type="button" data-role="1">Ranged</button>
+        <button type="button" data-role="0">Melee</button>
+      </div>
+      <div class="controls layers" role="group" aria-label="Decision layers">
+        <label><input type="checkbox" id="L-aim" checked> Aim (target lines)</label>
+        <label><input type="checkbox" id="L-goal"> Move goals</label>
+        <label><input type="checkbox" id="L-gun" checked> Gun focus: post and splash value</label>
+        <label><input type="checkbox" id="L-escort"> Escort assignments</label>
+      </div>
       <div class="counts" id="counts"></div>
       <canvas id="timeline" width="1400" height="220" aria-label="Units and guns alive over time; click to jump"></canvas>
     </div>
@@ -107,7 +126,18 @@ dt { color: var(--muted) } dd { margin: 0; font-family: var(--mono); font-varian
           <div class="row"><svg class="shape" viewBox="0 0 18 18" aria-hidden="true"><polygon points="9,3 15,15 3,15" fill="currentColor"/></svg><span>Ranged</span></div>
           <div class="row"><svg class="shape" viewBox="0 0 18 18" aria-hidden="true"><rect x="4" y="4" width="10" height="10" fill="currentColor"/></svg><span>Gun (artillery)</span></div>
           <p class="note">Faint lines join our units to their targets. The red bar under a unit is damage taken. In the timeline, thick lines are guns alive and thin lines are all units alive; click it to jump.</p>
+          <p class="note">Layers: a diamond is a gun's firing post; a dashed red ring marks an enemy gun one of our guns is aiming at, with its splash value V (how many enemies its shell would hit). Dashed lines with an × are each unit's move goal (green commit, amber escape). Escort lines run from a ranged unit to its escort point, then dotted to the gun it guards.</p>
         </div>
+      </section>
+      <section class="card">
+        <h2>The shapes inside v7</h2>
+        <ul class="shapes">
+          <li><b>Gun focus (P16):</b> each gun picks the enemy gun whose shell would hit the most enemies (splash value V, shown on the map), then lowest HP. It stands at a post just inside its range.</li>
+          <li><b>Gun spacing (P11):</b> guns push apart to about 60 px so one enemy shell hits fewer of them.</li>
+          <li><b>Escort screen (P12):</b> while both sides have guns, each committed ranged unit stands 60 px from its assigned gun, toward the nearest threat.</li>
+          <li><b>Melee and the rest (v6 law):</b> melee, and ranged after the guns are gone, follow the v6 resonator's target and distance rules.</li>
+          <li><b>Gate (oscillator):</b> one per unit. Damage taken pushes it toward escape, damage dealt toward commit. Escape hands the unit to v6's pull-back action.</li>
+        </ul>
       </section>
       <section class="card">
         <h2>The pattern across these six</h2>
@@ -136,7 +166,7 @@ const STORIES = {
 const ROLE_NAME = ['melee', 'ranged', 'guns'];
 const field = document.getElementById('field'), ctx = field.getContext('2d');
 const tl = document.getElementById('timeline'), tctx = tl.getContext('2d');
-let data = null, fight = null, t = 0, playing = false, speed = 4, last = null, series = null;
+let data = null, fight = null, t = 0, playing = false, speed = 4, last = null, series = null, roleFilter = 'all';
 
 function css(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim() }
 function endT() { return fight.frames[fight.frames.length - 1][0] }
@@ -187,21 +217,62 @@ function draw() {
   const nb = new Map(b[1].map(u => [u[0], u]));
   const units = a[1].map(u => { const v = nb.get(u[0]); return v ? [u[0], u[1], u[2], u[3] + (v[3] - u[3]) * k, u[4] + (v[4] - u[4]) * k, ...u.slice(5)] : u });
   const pos = new Map(units.map(u => [u[0], u]));
-  ctx.lineWidth = 1; ctx.globalAlpha = 0.16; ctx.strokeStyle = css('--ink');
-  for (const u of units) { const tg = pos.get(u[6]); if (u[1] === 0 && tg) { ctx.beginPath(); ctx.moveTo(u[3], u[4]); ctx.lineTo(tg[3], tg[4]); ctx.stroke() } }
-  ctx.globalAlpha = 1;
+  const shown = u => u[1] === 0 && (roleFilter === 'all' || u[2] === +roleFilter);
+  const dec = a[2] || b[2];
+  const on = id => document.getElementById(id).checked;
+  const line = (x1, y1, x2, y2) => { ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke() };
+  if (on('L-aim')) {
+    ctx.lineWidth = 1.5; ctx.globalAlpha = roleFilter === 'all' ? 0.18 : 0.55; ctx.strokeStyle = css('--ink');
+    for (const u of units) { const tg = pos.get(u[6]); if (shown(u) && tg) line(u[3], u[4], tg[3], tg[4]) }
+    ctx.globalAlpha = 1;
+  }
+  if (dec && on('L-goal')) {
+    ctx.lineWidth = 1.5; ctx.setLineDash([6, 6]); ctx.strokeStyle = css('--accent'); ctx.globalAlpha = 0.7;
+    for (const [id, gx, gy, , gate] of dec.goal) {
+      const u = pos.get(id); if (!u || !shown(u)) continue;
+      ctx.strokeStyle = gate === 0 ? css('--escape') : css('--commit');
+      line(u[3], u[4], gx, gy); ctx.setLineDash([]); line(gx - 5, gy - 5, gx + 5, gy + 5); line(gx - 5, gy + 5, gx + 5, gy - 5); ctx.setLineDash([6, 6]);
+    }
+    ctx.setLineDash([]); ctx.globalAlpha = 1;
+  }
+  if (dec && on('L-gun') && (roleFilter === 'all' || roleFilter === '2')) {
+    const marked = new Map();
+    for (const [id, target, V, px, py] of dec.guns) {
+      const g = pos.get(id); if (!g) continue;
+      if (px != null) { ctx.strokeStyle = css('--commit'); ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(px, py - 7); ctx.lineTo(px + 7, py); ctx.lineTo(px, py + 7); ctx.lineTo(px - 7, py); ctx.closePath(); ctx.stroke() }
+      const tg = pos.get(target); if (tg && V != null) marked.set(target, V);
+    }
+    ctx.font = '600 22px ' + css('--mono');
+    for (const [id, V] of marked) {
+      const tg = pos.get(id); if (!tg) continue;
+      ctx.strokeStyle = css('--enemy-art'); ctx.lineWidth = 1.5; ctx.setLineDash([4, 4]); ctx.beginPath(); ctx.arc(tg[3], tg[4], 40 + 10, 0, 2 * Math.PI); ctx.stroke(); ctx.setLineDash([]);
+      ctx.fillStyle = css('--ink'); ctx.fillText('V' + V, tg[3] + 16, tg[4] - 16);
+    }
+  }
+  if (dec && on('L-escort') && (roleFilter === 'all' || roleFilter === '1')) {
+    ctx.lineWidth = 1.5; ctx.globalAlpha = 0.75;
+    for (const [id, gun, ex, ey] of dec.escorts) {
+      const u = pos.get(id), g = pos.get(gun); if (!u) continue;
+      ctx.strokeStyle = css('--commit'); line(u[3], u[4], ex, ey);
+      ctx.fillStyle = css('--commit'); ctx.beginPath(); ctx.arc(ex, ey, 4, 0, 2 * Math.PI); ctx.fill();
+      if (g) { ctx.strokeStyle = css('--muted'); ctx.setLineDash([2, 5]); line(ex, ey, g[3], g[4]); ctx.setLineDash([]) }
+    }
+    ctx.globalAlpha = 1;
+  }
   const counts = { 0: [0, 0, 0], 1: [0, 0, 0] }; let escaping = 0;
   for (const u of units) {
     const [, team, role, x, y, hp, , gate] = u; counts[team][role]++;
     const r = role === 2 ? 10 : 8;
     if (team === 0) { if (gate === 0) escaping++; ctx.fillStyle = gate === 0 ? css('--escape') : css('--commit') }
     else ctx.fillStyle = role === 2 ? css('--enemy-art') : css('--enemy');
+    ctx.globalAlpha = roleFilter === 'all' || (team === 0 && role === +roleFilter) ? 1 : 0.25;
     ctx.beginPath();
     if (role === 0) ctx.arc(x, y, r, 0, 2 * Math.PI);
     else if (role === 1) { ctx.moveTo(x, y - r); ctx.lineTo(x + r, y + r * 0.8); ctx.lineTo(x - r, y + r * 0.8); ctx.closePath() }
     else ctx.rect(x - r, y - r, 2 * r, 2 * r);
     ctx.fill();
     ctx.fillStyle = css('--bad'); ctx.fillRect(x - r, y + r + 3, 2 * r * (1 - hp), 3);
+    ctx.globalAlpha = 1;
   }
   document.getElementById('clock').textContent = t.toFixed(1) + ' s';
   document.getElementById('scrub').value = Math.round(1000 * t / endT());
@@ -241,6 +312,10 @@ document.getElementById('play').addEventListener('click', () => { if (fight && t
 for (const btn of document.querySelectorAll('[data-speed]')) btn.addEventListener('click', () => {
   speed = +btn.dataset.speed; for (const o of document.querySelectorAll('[data-speed]')) o.setAttribute('aria-pressed', String(o === btn));
 });
+for (const btn of document.querySelectorAll('[data-role]')) btn.addEventListener('click', () => {
+  roleFilter = btn.dataset.role; for (const o of document.querySelectorAll('[data-role]')) o.setAttribute('aria-pressed', String(o === btn)); draw();
+});
+for (const id of ['L-aim', 'L-goal', 'L-gun', 'L-escort']) document.getElementById(id).addEventListener('change', draw);
 document.getElementById('scrub').addEventListener('input', e => { if (fight) { t = endT() * e.target.value / 1000; draw() } });
 tl.addEventListener('click', e => {
   if (!fight) return; const r = tl.getBoundingClientRect(), px = (e.clientX - r.left) / r.width * tl.width;

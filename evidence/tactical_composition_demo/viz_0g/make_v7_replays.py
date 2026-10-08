@@ -15,6 +15,7 @@ def one(suffix, why, per_fight):
     rec = per_fight[tag]
     frames, modes, maxhp, last_obs = [], {}, {}, None
     next_t, width, height = 0.0, 1400, 800
+    pending_step = [None]
     deaths = []
     def emit(obs):
         us = []
@@ -23,7 +24,8 @@ def one(suffix, why, per_fight):
             maxhp.setdefault(uid, max(hp, 1e-9))
             us.append([uid, team, role, round(x), round(y), round(hp / maxhp[uid], 2), -1 if u[13] is None else u[13],
                        modes.get(uid) if team == 0 else None])
-        frames.append([round(obs['t'], 2), us])
+        frames.append([round(obs['t'], 2), us, None])
+        pending_step[0] = obs['step']
     with gzip.open(RAW / f'{tag}.jsonl.gz', 'rt') as f:
         for line in f:
             r = json.loads(line)
@@ -38,6 +40,12 @@ def one(suffix, why, per_fight):
             elif r.get('v7Telemetry'):
                 width, height = r.get('width', width), r.get('height', height)
                 for q in r['choices']: modes[q['id']] = 1 if q['mode'] == 'commit' else 0
+                if r['step'] == pending_step[0] and frames and frames[-1][2] is None:
+                    # decisions taken on this sampled step: per-unit move goal and target, gun focus/post/V, escort assignment
+                    frames[-1][2] = {
+                        'goal': [[q['id'], round(q['command'][0]), round(q['command'][1]), q['command'][4] if q['command'][4] is not None else -1, 1 if q['mode'] == 'commit' else 0] for q in r['choices']],
+                        'guns': [[g['id'], -1 if g['target'] is None else g['target'], g.get('targetV'), round(g['post'][0]) if g.get('post') else None, round(g['post'][1]) if g.get('post') else None] for g in r['guns']],
+                        'escorts': [[e['id'], e['gun'], round(e['clipped'][0]), round(e['clipped'][1])] for e in r['escorts']]}
             elif 'survivors' in r and 'enemySurvivors' in r:
                 terminal = r
     if frames[-1][0] != round(last_obs['t'], 2): emit(last_obs)
@@ -57,6 +65,7 @@ if __name__ == '__main__':
     fights = [one(s, w, per_fight) for s, w in PICKS]
     data = {'note': 'stored v7c validation fights (v7 vs regular, theta* ordinal 161); read from raw ledgers, no fights run',
             'unit_fields': ['id', 'team', 'role(0 melee,1 ranged,2 gun)', 'x', 'y', 'hp_fraction', 'target', 'gate(1 commit,0 escape)'],
+            'decision_fields': {'goal': ['id', 'goal_x', 'goal_y', 'target', 'gate'], 'guns': ['id', 'target', 'splash_value_V', 'post_x', 'post_y'], 'escorts': ['id', 'assigned_gun', 'escort_x', 'escort_y']},
             'fps': FPS, 'fights': fights}
     json.dump(data, open(sys.argv[1], 'w'), separators=(',', ':'))
     for f in fights:
