@@ -14,6 +14,8 @@ MAX_RAW_BYTES = 1024**3
 
 def stream_host(binary, request, raw, err, deadline, monitor, receipt, profile=False, compact=False):
     child = None
+    fixture = getattr(monitor, 'fixture_only', False)
+    if fixture and not profile:raise RuntimeError('fixture requires native RSS profile')
     receipt.update(uncompressed_bytes=0, peak_rss_bytes=0)
     try:
         with contextlib.ExitStack() as stack:
@@ -21,14 +23,16 @@ def stream_host(binary, request, raw, err, deadline, monitor, receipt, profile=F
             out=stack.enter_context(lzma.LZMAFile(target, mode='wb', preset=1) if compact else gzip.GzipFile(fileobj=target, mode='wb', compresslevel=1, mtime=0))
             errors=stack.enter_context(err.open('xb'))
             selector=stack.enter_context(selectors.DefaultSelector())
+            from recording import MAX_RECORD
             if compact:
-                from recording import Writer, MAX_RECORD
+                from recording import Writer
                 writer=Writer(out)
             pending=bytearray()
             env = dict(os.environ)
             env.pop('STAGEA_MEMORY_PROFILE', None)
             if profile: env['STAGEA_MEMORY_PROFILE'] = '1'
-            child = subprocess.Popen(['nice', '-n', '15', str(binary)], stdin=subprocess.PIPE,
+            argv = [str(binary)] if fixture else ['nice', '-n', '15', str(binary)]
+            child = subprocess.Popen(argv, stdin=subprocess.PIPE,
                                      stdout=subprocess.PIPE, stderr=errors, start_new_session=True, env=env)
             child.stdin.write((json.dumps(request, separators=(',', ':'), allow_nan=False)+'\n').encode())
             child.stdin.close()
@@ -51,20 +55,22 @@ def stream_host(binary, request, raw, err, deadline, monitor, receipt, profile=F
                     receipt['uncompressed_bytes'] += len(chunk)
                     if receipt['uncompressed_bytes'] > MAX_RAW_BYTES:
                         raise RuntimeError('raw fight exceeds 1 GiB local bound')
-                    if compact:
+                    if compact or fixture:
                         pending.extend(chunk)
                         while True:
                             end=pending.find(b'\n')
                             if end<0:break
                             if end>MAX_RECORD:raise RuntimeError('host row exceeds compact buffer bound')
                             row=json.loads(pending[:end]);del pending[:end+1]
-                            writer.write(row)
+                            if fixture and row.get('stageAMemory'):monitor.memory_report(row)
+                            if compact:writer.write(row)
                         if len(pending)>MAX_RECORD:raise RuntimeError('host row exceeds compact buffer bound')
-                    else:out.write(chunk)
+                    if not compact:out.write(chunk)
             child.wait()
             if child.returncode or err.stat().st_size:
                 raise RuntimeError('host failed; inspect stderr')
-            if compact and pending:raise RuntimeError('truncated host JSON row')
+            if (compact or fixture) and pending:raise RuntimeError('truncated host JSON row')
+            if fixture and not monitor.peak:raise RuntimeError('missing native RSS profile')
             target.flush()
     finally:
         if child is not None:

@@ -60,7 +60,7 @@ def memory_ledger_path():
         if sha(LOCAL/name)!=digest:raise RuntimeError('failed attempt evidence drift')
     return path
 
-def ledger_path():
+def slim_ledger_path():
     previous=memory_ledger_path()
     active=LOCAL/'DATA_SLIM_RECOVERY_ACTIVE.json'
     if not active.exists():return previous
@@ -71,6 +71,44 @@ def ledger_path():
     path=LOCAL/r['ledger_file']
     if sha(path)!=r['ledger_sha256']:raise RuntimeError('slim recovery ledger drift')
     return path
+
+def ledger_path():
+    previous=slim_ledger_path()
+    active=LOCAL/'DATA_FIX3_RECOVERY_ACTIVE.json'
+    if not active.exists():return previous
+    r=read(active)
+    if str(previous.relative_to(LOCAL))!=r['previous_ledger_file'] or sha(previous)!=r['previous_ledger_sha256']:raise RuntimeError('fix3 recovery baseline drift')
+    for name,digest in r['failed_evidence'].items():
+        if sha(LOCAL/name)!=digest:raise RuntimeError('failed attempt evidence drift')
+    path=LOCAL/r['ledger_file']
+    if sha(path)!=r['ledger_sha256']:raise RuntimeError('fix3 recovery ledger drift')
+    return path
+
+def recover_fix3():
+    if (LOCAL/'DATA_FIX3_RECOVERY_ACTIVE.json').exists():return check()
+    previous=slim_ledger_path();old=read(previous)
+    if any((LOCAL/'raw'/(j['tag']+'_COMPLETE.json')).exists() for j in old['jobs']):raise RuntimeError('fix3 recovery requires zero completed collection fights')
+    for j in old['jobs']:
+        if sha(LOCAL/'requests'/(j['tag']+'.json'))!=j['request_sha256']:raise RuntimeError('sealed request drift')
+    failed=dict(old.get('recovery',{}).get('failed_evidence',{}))
+    for p in sorted((LOCAL/'attempts').glob('*.json')):
+        attempt=read(p)
+        if attempt.get('status')!='STOP_RESUMABLE':continue
+        failed[str(p.relative_to(LOCAL))]=sha(p)
+        if attempt.get('raw_file'):
+            raw=LOCAL/attempt['raw_file']
+            for artifact in (raw,raw.with_suffix('.stderr'),raw.with_suffix('.metrics.gz')):
+                if artifact.exists():failed[str(artifact.relative_to(LOCAL))]=sha(artifact)
+    for p in HERE.glob('COLLECT_RUN_*.json'):
+        if read(p).get('status')=='STOP_RESUMABLE':failed['../'+p.name]=sha(p)
+    run_id=secrets.token_hex(8);path=LOCAL/('DATA_LEDGER_FIX3_'+run_id+'.json')
+    from recording import CADENCE
+    recovery=dict(reason='physical tick starts at dt after native clock advance; validation and fixture launch correction',previous_ledger_file=str(previous.relative_to(LOCAL)),previous_ledger_sha256=sha(previous),failed_evidence=failed)
+    write(path,dict(old,binary=identity(),sources=sources(),recording_cadence=CADENCE,recovery=recovery),exclusive=True)
+    note=dict(status='RECOVERY_REGISTERED_NO_RETRY',recovery_id=run_id,ledger_file=path.name,ledger_sha256=sha(path),requests_unchanged=True,fresh_attempt_ids_required=True,**recovery)
+    write(LOCAL/('FIX3_RECOVERY_'+run_id+'.json'),note,exclusive=True)
+    write(LOCAL/'DATA_FIX3_RECOVERY_ACTIVE.json',note,exclusive=True)
+    return check()
 
 def recover_slim():
     if (LOCAL/'DATA_SLIM_RECOVERY_ACTIVE.json').exists():return check()
@@ -130,9 +168,9 @@ def check():
 def validate_raw(path,deadline,duration=150,dt=1/30):
     # One bounded reparse validates inference/labels, physical history and metrics.
     from data import pack,labels
-    from recording import rows
+    from recording import rows,PhysicalTicks
     import metrics
-    n=0;previous=None;trajectory=hashlib.sha256()
+    ticks=PhysicalTicks(dt);parity_ticks=PhysicalTicks(dt);pending_parity=None;trajectory=hashlib.sha256();observer_steps=0
     filtered=Path(str(path)+'.validation.gz');memory=[]
     try:
         with gzip.open(filtered,'wt',compresslevel=1) as met:
@@ -140,18 +178,29 @@ def validate_raw(path,deadline,duration=150,dt=1/30):
                 if time.monotonic()>=deadline:raise TimeoutError('cap during raw revalidation')
                 if 'error' in row:raise RuntimeError('host error '+str(row['error']))
                 if row.get('stageA'):
+                    ticks.add(row)
                     x,ids,enemies=pack(row,'N1');labels(row,ids,enemies)
                     if len(row['labels'])!=len(ids) or len({r['id'] for r in row['labels']})!=len(ids):raise RuntimeError('label identity coverage')
-                    if abs(row['dt']-dt)>1e-12 or abs(row['t']-(previous+dt if previous is not None else 0))>1e-7:raise RuntimeError('incomplete physical-tick history')
-                    previous=row['t'];n+=1
+                    if parity_ticks.count:
+                        public={k:v for k,v in row.items() if k not in ('labels','networkState','networkKind')}
+                        if pending_parity!=public:raise RuntimeError('parity/recorded input mismatch')
+                        pending_parity=None
                     trajectory.update(json.dumps({k:v for k,v in row.items() if k not in ('history','pairModes','labels','networkState','networkKind')},sort_keys=True,separators=(',',':')).encode())
                 elif row.get('stageAMemory'):memory.append(row)
-                elif not row.get('stageAParity'):met.write(json.dumps(row,separators=(',',':'))+'\n')
+                elif row.get('stageAParity'):
+                    if pending_parity is not None:raise RuntimeError('missing collected parity tick')
+                    parity_ticks.add(row['input']);pending_parity=row['input']
+                else:
+                    if row.get('observerV1'):observer_steps=row['step']
+                    met.write(json.dumps(row,separators=(',',':'))+'\n')
         stats=metrics.measure(filtered,deadline,duration=duration,dt=dt)
-        if n and abs(previous+dt-stats['t_end'])>1e-7:raise RuntimeError('terminal/physical history time mismatch')
+        ticks.finish(stats['t_end'])
+        parity_ticks.finish(stats['t_end'])
+        if ticks.count and ticks.count!=observer_steps:raise RuntimeError('incomplete physical-tick history')
+        if parity_ticks.count and (parity_ticks.count!=ticks.count or pending_parity is not None):raise RuntimeError('incomplete parity history')
     finally:
         if filtered.exists():filtered.unlink()
-    return dict(stats=stats,frames=n,trajectory_sha256=trajectory.hexdigest(),memory_profile=memory)
+    return dict(stats=stats,frames=ticks.count,trajectory_sha256=trajectory.hexdigest(),memory_profile=memory)
 
 def execute(job,deadline,monitor,ledger_hash,memory_profile=False,full_detail=False):
     path=LOCAL/'raw'/(job['tag']+'_COMPLETE.json')
@@ -169,7 +218,7 @@ def execute(job,deadline,monitor,ledger_hash,memory_profile=False,full_detail=Fa
     compact=not full_detail and not request.get('stageA',{}).get('weights') and job.get('split')!='outcome'
     run_id=secrets.token_hex(8);suffix='.slim.xz' if compact else '.jsonl.gz'
     raw=LOCAL/'raw'/(job['tag']+'_'+run_id+suffix);raw.parent.mkdir(parents=True,exist_ok=True)
-    err=raw.with_suffix('.stderr');start=time.monotonic();receipt=dict(job=job,status='RUNNING',ledger_sha256=ledger_hash,attempt_id=run_id,raw_file=str(raw.relative_to(LOCAL)),recording='STAGEASLIM1' if compact else 'full-detail JSON',physical_dt=dt)
+    err=raw.with_suffix('.stderr');start=time.monotonic();receipt=dict(job=job,status='RUNNING',ledger_sha256=ledger_hash,attempt_id=run_id,raw_file=str(raw.relative_to(LOCAL)),recording='STAGEASLIM1' if compact else 'full-detail JSON',physical_dt=dt,recording_cadence=__import__('recording').CADENCE)
     try:
         monitor.live_memory(None)
         from streaming import stream_host
@@ -258,10 +307,14 @@ def diagnostic(tag):
         return execute(job,deadline,monitor,sha(ledger_path()),full_detail=True)
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('command',choices=('prepare','recover-memory','recover-slim','sample','run','audit','diagnostic'));p.add_argument('--tag');a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('command',choices=('prepare','recover-memory','recover-slim','recover-fix3','fixture-sample','sample','run','audit','diagnostic'));p.add_argument('--tag');a=p.parse_args()
     if a.command=='prepare':prepare()
     elif a.command=='recover-memory':recover_memory()
     elif a.command=='recover-slim':recover_slim()
+    elif a.command=='recover-fix3':recover_fix3()
+    elif a.command=='fixture-sample':
+        from fixture_host import sample
+        sample()
     elif a.command=='diagnostic':
         if not a.tag:p.error('diagnostic requires --tag from the sealed ledger')
         diagnostic(a.tag)

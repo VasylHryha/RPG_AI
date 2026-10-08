@@ -60,7 +60,7 @@ js::V snapshot(react_v1::Controller& c){
  for(auto& x:s.shots)shots.push_back(js::arr({x.position.x/o.width,x.position.y/o.height,x.direction.x,x.direction.y,o.t-x.born,x.speed/100,x.left/100}));
  for(auto& x:s.fields)fields.push_back(js::arr({x.position.x/o.width,x.position.y/o.height,x.radius/100,x.from-o.t,x.until-o.t}));
  for(auto& x:s.casts)casts.push_back(js::arr({double(x.gun)/256,double(x.target)/256,x.landing.x/o.width,x.landing.y/o.height,x.releaseAt-o.t,x.landingAt-o.t,x.radius/100}));
- return js::obj({{"stageA",true},{"t",o.t},{"dt",o.dt},{"width",o.width},{"height",o.height},{"units",js::arr(std::move(units))},{"own",js::arr(std::move(own))},{"shells",js::arr(std::move(shells))},{"shots",js::arr(std::move(shots))},{"fields",js::arr(std::move(fields))},{"casts",js::arr(std::move(casts))},{"history",history},{"pairModes",pairs}});
+ return js::obj({{"stageA",true},{"recordingCadence","physical_tick_after_clock_advance"},{"t",o.t},{"dt",o.dt},{"width",o.width},{"height",o.height},{"units",js::arr(std::move(units))},{"own",js::arr(std::move(own))},{"shells",js::arr(std::move(shells))},{"shots",js::arr(std::move(shots))},{"fields",js::arr(std::move(fields))},{"casts",js::arr(std::move(casts))},{"history",history},{"pairModes",pairs}});
 }
 struct Packed {Matrix tokens,query,pos;Vec speeds,assignments;std::vector<UnitId> ids,enemies,tokenIds;std::vector<size_t> enemy;};
 Packed pack(js::V row,const std::string& kind){

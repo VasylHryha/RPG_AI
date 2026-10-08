@@ -162,3 +162,91 @@ def test_compact_pipe_writer_and_failed_evidence(tmp_path,monkeypatch):
     with pytest.raises(RuntimeError,match='truncated host'):
         streaming.stream_host(script,{},failed,tmp_path/'err2',time.monotonic()+10,Monitor(),{},compact=True)
     assert failed.exists() and len(list(rows(failed)))==1
+
+
+@pytest.mark.parametrize('compact', (False, True))
+def test_physical_clock_and_parity_validation(tmp_path, compact):
+    # Native snapshot time is after clock advance; observer zero has no policy row.
+    dt=1/30;source=fixture()[:3]
+    for i,row in enumerate(source):
+        row['t']=(i+1)*dt
+        row['recordingCadence']='physical_tick_after_clock_advance'
+    observers=metric_rows(duration=.1)
+    for row in observers:
+        if row.get('observerV1'):row.update(dodges=[],launches=[])
+    def record(stage_rows, parity=False):
+        records=[observers[0]]
+        for i,row in enumerate(stage_rows):
+            if parity:records.append(dict(stageAParity=True,input={k:v for k,v in row.items() if k!='labels'},output=[]))
+            records.extend((row,observers[i+1]))
+        records.extend(observers[len(stage_rows)+1:])
+        path=tmp_path/('test.slim.xz' if compact else 'test.jsonl.gz')
+        if compact:
+            with lzma.open(path,'wb',preset=1) as out:
+                w=Writer(out)
+                for row in records:w.write(row)
+        else:metric_file(path,records)
+        return path
+    result=collect.validate_raw(record(source,parity=True),time.monotonic()+10,duration=.1)
+    assert result['frames']==3 and result['stats']['t_end']==.1
+    for idx,value in ((0,0),(1,3*dt),(2,float('nan'))):
+        broken=copy.deepcopy(source);broken[idx]['t']=value
+        if not compact or np.isfinite(value):
+            with pytest.raises(RuntimeError,match='physical-tick history'):
+                collect.validate_raw(record(broken),time.monotonic()+10,duration=.1)
+    broken=copy.deepcopy(source);broken[1]['recordingCadence']='decision_5hz'
+    with pytest.raises(RuntimeError,match='physical-tick history'):
+        collect.validate_raw(record(broken),time.monotonic()+10,duration=.1)
+    with pytest.raises(RuntimeError,match='terminal/physical'):
+        collect.validate_raw(record(source[:-1]),time.monotonic()+10,duration=.1)
+    path=record(source,parity=True);corrupt=list(rows(path))
+    next(r for r in corrupt if r.get('stageAParity'))['input']['width']+=1
+    if compact:
+        with lzma.open(path,'wb',preset=1) as out:
+            writer=Writer(out)
+            for row in corrupt:writer.write(row)
+    else:metric_file(path,corrupt)
+    with pytest.raises(RuntimeError,match='parity/recorded input mismatch'):
+        collect.validate_raw(path,time.monotonic()+10,duration=.1)
+
+
+def test_fixture_is_bounded_and_production_admission_still_gates(tmp_path,monkeypatch):
+    import fixture_host, jobs
+    monkeypatch.setenv('STAGEA_HOST_TEST','1')
+    monkeypatch.setattr(fixture_host,'LOCAL',tmp_path)
+    with pytest.raises(RuntimeError,match='fixture job required'):
+        fixture_host.execute_fixture(dict(tag='train_0000',split='train'))
+    with pytest.raises(RuntimeError,match='fixture job required'):
+        fixture_host.execute_fixture(dict(tag='../train_0000',split='integration'))
+    request=tmp_path/'requests/host_fixture_test.json'
+    write(request,dict(options={'duration':150},stageA={'collect':True}))
+    with pytest.raises(RuntimeError,match='duration'):
+        fixture_host.execute_fixture(dict(tag='host_fixture_test',split='integration',request_sha256=sha(request)))
+    import contextlib
+    @contextlib.contextmanager
+    def lock():yield
+    class Gate:
+        def process_gate(self,**kw):raise RuntimeError('production process gate called')
+    monkeypatch.setattr(jobs,'locked',lock)
+    monkeypatch.setattr(jobs,'load',lambda *args:Gate())
+    with pytest.raises(RuntimeError,match='production process gate called'):
+        with jobs.admitted(10):pass
+
+
+def test_fix3_recovery_preserves_prior_slim_and_failed_clock_attempt(tmp_path,monkeypatch):
+    monkeypatch.setattr(collect,'LOCAL',tmp_path)
+    monkeypatch.setattr(collect,'HERE',tmp_path)
+    monkeypatch.setattr(collect,'identity',lambda:{'binary':'fix3'})
+    monkeypatch.setattr(collect,'sources',lambda:{'code':'fix3'})
+    req=tmp_path/'requests/train_0000.json';write(req,{'sealed':True})
+    old=dict(jobs=[dict(tag='train_0000',request_sha256=sha(req))],timing_sample=['train_0000'],binary={},sources={})
+    baseline=tmp_path/'DATA_LEDGER.json';write(baseline,old);baseline_sha=sha(baseline)
+    raw=tmp_path/'raw/clock.jsonl.gz';raw.parent.mkdir();raw.write_bytes(b'failed clock evidence')
+    failure=tmp_path/'attempts/clock.json';write(failure,dict(status='STOP_RESUMABLE',raw_file='raw/clock.jsonl.gz',error='incomplete physical-tick history'))
+    failure_sha=sha(failure)
+    result=collect.recover_fix3()
+    assert result['jobs']==old['jobs'] and result['timing_sample']==old['timing_sample']
+    assert sha(baseline)==baseline_sha and sha(failure)==failure_sha
+    assert collect.recover_fix3()==result
+    raw.write_bytes(b'changed')
+    with pytest.raises(RuntimeError,match='failed attempt evidence drift'):collect.check()

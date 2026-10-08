@@ -6,14 +6,14 @@ from pathlib import Path
 import pytest
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from common import LOCAL, sha, write
-from collect import a0, execute, identity, disk_projection
-from jobs import admitted
-from collect import COLLECTION_LIMIT_BYTES, disk_gate
+from collect import a0, identity, disk_projection
+from fixture_host import execute_fixture
+from collect import COLLECTION_LIMIT_BYTES
 from recording import rows
 
 RSS_BOUND_BYTES = 512 * 1024**2
 
-@pytest.mark.skipif(os.environ.get('STAGEA_HOST_TEST') != '1', reason='host process discovery required')
+@pytest.mark.skipif(os.environ.get('STAGEA_HOST_TEST') != '1', reason='opt-in real binary fixtures')
 def test_full_150s_recording_peak_rss():
     identity()
     # Distinct development fixture entropy, never a training/panel request.
@@ -31,9 +31,8 @@ def test_full_150s_recording_peak_rss():
     path = LOCAL/'requests'/(tag+'.json')
     write(path, request, exclusive=True)
     job = dict(tag=tag, seed=seed, request_sha256=sha(path), split='memory_fixture', arm='O')
-    with admitted(300) as (deadline, monitor):
-        result = execute(job, deadline, monitor, 'MEMORY_FIXTURE_ONLY', memory_profile=True)
-    disk=disk_gate([result],180,180)
+    result = execute_fixture(job, seconds=300)
+    disk=disk_projection([result],180,180)
     restored=next(row for row in rows(LOCAL/result['raw_file']) if row.get('stageA'))
     checks = dict(compact_recording=result['recording']=='STAGEASLIM1',
                   whole_collection_fits=disk['projected_collection_bytes']<=COLLECTION_LIMIT_BYTES,

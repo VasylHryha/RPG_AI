@@ -6,17 +6,22 @@ import time
 from common import CPP,HERE,LOCAL,load
 ACTIVE_FDS=()
 @contextlib.contextmanager
-def admitted(seconds):
+def locked():
     global ACTIVE_FDS
-    gate=load('stagea_process_gate',CPP/'s4_net_slice_v1/process_gate.py');gate.GATE_PATH=LOCAL/'PROCESS_GATE.json'
     shared=CPP/'s4_net_slice_v1/_local/collection/RUN.lock';shared.parent.mkdir(parents=True,exist_ok=True);LOCAL.mkdir(parents=True,exist_ok=True)
     with shared.open('a') as a,(LOCAL/'RUN.lock').open('a') as b:
         for f in (a,b):fcntl.flock(f,fcntl.LOCK_EX|fcntl.LOCK_NB)
+        ACTIVE_FDS=(a.fileno(),b.fileno())
+        try:yield
+        finally:ACTIVE_FDS=()
+
+@contextlib.contextmanager
+def admitted(seconds):
+    gate=load('stagea_process_gate',CPP/'s4_net_slice_v1/process_gate.py');gate.GATE_PATH=LOCAL/'PROCESS_GATE.json'
+    with locked():
         deadline=time.monotonic()+seconds;gate.process_gate(wait=False,deadline=deadline)
         monitor=load('stagea_a0monitor',HERE.parent/'rev2/a0_run.py');monitor.live_memory(None)
-        ACTIVE_FDS=(a.fileno(),b.fileno())
-        try:yield deadline,monitor
-        finally:ACTIVE_FDS=()
+        yield deadline,monitor
 
 def inherited(fds):
     paths=(CPP/'s4_net_slice_v1/_local/collection/RUN.lock',LOCAL/'RUN.lock')

@@ -3,9 +3,31 @@ import gzip
 import json
 import lzma
 import struct
+import math
 import numpy as np
 
-MAGIC = b'STAGEASLIM1\n'
+# coreStep advances the clock before snapshot/prepare, once per physical tick.
+CADENCE = 'physical_tick_after_clock_advance'
+
+class PhysicalTicks:
+    def __init__(self, dt):
+        if not math.isfinite(dt) or not 0 < dt <= .2:raise RuntimeError('invalid physical dt')
+        self.dt, self.time, self.count = dt, 0., 0
+
+    def add(self, row):
+        expected = self.time + self.dt
+        if (row.get('recordingCadence', CADENCE) != CADENCE or
+            not math.isfinite(row['t']) or not math.isfinite(row['dt']) or
+            abs(row['dt']-self.dt)>1e-12 or abs(row['t']-expected)>1e-7):
+            raise RuntimeError('incomplete physical-tick history')
+        self.time = expected
+        self.count += 1
+
+    def finish(self, terminal_time):
+        if self.count and abs(self.time-terminal_time)>1e-7:
+            raise RuntimeError('terminal/physical history time mismatch')
+
+MAGIC = b'STAGEASLIM1\n' 
 MAX_RECORD = 4 * 1024**2
 ARRAYS = ('units', 'own', 'shells', 'shots', 'fields', 'casts', 'networkState')
 DROPPED = {
