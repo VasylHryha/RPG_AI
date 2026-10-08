@@ -1,0 +1,37 @@
+{
+  "status": "FOCUSED_PASS_HOST_INTEGRATION_NOT_RUN",
+  "tests_passed": 11,
+  "tests_skipped": 1,
+  "pytest_seconds": 3.06,
+  "build_seconds": 24.32778008400055,
+  "fights": 0,
+  "optimizer_steps": 0,
+  "native_rpc_combat_steps": 0,
+  "host_test_skip_reason": "Owner prohibits sandbox fights; STAGEA_HOST_TEST is unset. Process discovery is unavailable here.",
+  "command": "PYTHONPYCACHEPREFIX=evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stagea/_local/pycache evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/bin/python -m pytest -q -x evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stagea/test_stagea.py evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stagea/test_stagea_host.py",
+  "coverage": [
+    "all five native/Python full synthetic sequences with deaths, token refresh, identity pruning and deterministic new-fight resets",
+    "near-tie fire and none-target parity",
+    "raw/history input separation and overflow rejection",
+    "J gradient and J=0 gradient control (no optimizer)",
+    "checkpoint identity/atomic transaction",
+    "per-unit cached-bank exact conflict regression",
+    "living-doc exclusion from source manifests",
+    "first optional aim label retained after no-aim occurrence; subsequent conflicting aim detected"
+  ],
+  "scope": "Build and zero-combat focused tooling validation only. No collected data, trained policy quality, full validation-data parity or host fight integration claimed.",
+  "invocations": [
+    {
+      "passed": 11,
+      "skipped": 1,
+      "seconds": 6.37,
+      "reason": "complete initial review-fix batch"
+    },
+    {
+      "passed": 11,
+      "skipped": 1,
+      "seconds": 3.06,
+      "reason": "final reviewer identified optional-aim conflict edge; source and regression changed before rerun"
+    }
+  ]
+}
