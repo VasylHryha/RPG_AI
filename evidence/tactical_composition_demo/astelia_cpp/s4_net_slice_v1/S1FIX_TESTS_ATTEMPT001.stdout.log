@@ -1,0 +1,116 @@
+.................F
+=================================== FAILURES ===================================
+____ test_native_first_physical_refresh_reaction_then_lock_dead_and_expiry _____
+
+    def test_native_first_physical_refresh_reaction_then_lock_dead_and_expiry():
+        s=copy.deepcopy(read(HERE/'fixtures/S1FIX_REPLAY.json')['states'][0]);start=s['tick'];views=s['views']
+        # First state starts a real copied-planner group in public scratch geometry.
+        initial=native([dict(wrapper=True,frames=[frame(views,start)])])[0][0]
+        cmd=initial['commands'];assert len(cmd)>=2
+        aa=actions(initial);cast={str(c['id']):pending(aa[c['id']],start) for c in cmd}
+        release=copy.deepcopy(views);rt=start+20
+        for v in release:
+            v.update(t=v['t']+20*v['dt'],tick=rt)
+            for u in v['units']:
+                if str(u['id']) in cast:u.update(prep=u['windup']-v['dt'],target=cast[str(u['id'])]['target'])
+        # A blast covering one commanded gun exercises reaction-declined refresh.
+        id=cmd[0]['id'];me=next(u for u in release[0]['units'] if u['id']==id)
+        blast=threat('shell');blast.update(x=me['x'],y=me['y'],at=release[0]['t']+.3,radius=40)
+        for v in release:v['threats']=[blast]
+        later=copy.deepcopy(release)
+        for v in later:
+            v.update(t=v['t']+v['dt'],tick=rt+1)
+            for u in v['units']:
+                if u['team']==1:u['y']+=3
+        requests=dict(wrapper=True,frames=[frame(views,start),frame(release,rt,cast,True),frame(later,rt+1,cast)])
+>       rows=native([requests])[0]
+             ^^^^^^^^^^^^^^^^^^
+
+evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/s1fix_test.py:71: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/s1fix_test.py:18: in native
+    result=subprocess.run([str(build.BINARY),'--fixture'],input=''.join(json.dumps(r)+'\n' for r in requests),capture_output=True,text=True,check=True,timeout=60)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+input = '{"wrapper": true, "frames": [{"tick": 1, "views": [{"version": "NS1", "fight": "s1_D2-10_00_wrapper", "tick": 1, "sid...52141147], "started": 1, "originDecision": 1, "originVolley": 1, "aimLocked": false}}, "native_projection": false}]}\n'
+capture_output = True, timeout = 60, check = True
+popenargs = (['/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/s1fix/native/s1fix_host', '--fixture'],)
+kwargs = {'stderr': -1, 'stdin': -1, 'stdout': -1, 'text': True}
+process = <Popen: returncode: 1 args: ['/Users/new/RiderProjects/ai_RPG_test/evidence/...>
+stdout = '', stderr = 'react self absent\n', retcode = 1
+
+    def run(*popenargs,
+            input=None, capture_output=False, timeout=None, check=False, **kwargs):
+        """Run command with arguments and return a CompletedProcess instance.
+    
+        The returned instance will have attributes args, returncode, stdout and
+        stderr. By default, stdout and stderr are not captured, and those attributes
+        will be None. Pass stdout=PIPE and/or stderr=PIPE in order to capture them,
+        or pass capture_output=True to capture both.
+    
+        If check is True and the exit code was non-zero, it raises a
+        CalledProcessError. The CalledProcessError object will have the return code
+        in the returncode attribute, and output & stderr attributes if those streams
+        were captured.
+    
+        If timeout is given, and the process takes too long, a TimeoutExpired
+        exception will be raised.
+    
+        There is an optional argument "input", allowing you to
+        pass bytes or a string to the subprocess's stdin.  If you use this argument
+        you may not also use the Popen constructor's "stdin" argument, as
+        it will be used internally.
+    
+        By default, all communication is in bytes, and therefore any "input" should
+        be bytes, and the stdout and stderr will be bytes. If in text mode, any
+        "input" should be a string, and stdout and stderr will be strings decoded
+        according to locale encoding, or by "encoding" if set. Text mode is
+        triggered by setting any of text, encoding, errors or universal_newlines.
+    
+        The other arguments are the same as for the Popen constructor.
+        """
+        if input is not None:
+            if kwargs.get('stdin') is not None:
+                raise ValueError('stdin and input arguments may not both be used.')
+            kwargs['stdin'] = PIPE
+    
+        if capture_output:
+            if kwargs.get('stdout') is not None or kwargs.get('stderr') is not None:
+                raise ValueError('stdout and stderr arguments may not be used '
+                                 'with capture_output.')
+            kwargs['stdout'] = PIPE
+            kwargs['stderr'] = PIPE
+    
+        with Popen(*popenargs, **kwargs) as process:
+            try:
+                stdout, stderr = process.communicate(input, timeout=timeout)
+            except TimeoutExpired as exc:
+                process.kill()
+                if _mswindows:
+                    # Windows accumulates the output in a single blocking
+                    # read() call run on child threads, with the timeout
+                    # being done in a join() on those threads.  communicate()
+                    # _after_ kill() is required to collect that and add it
+                    # to the exception.
+                    exc.stdout, exc.stderr = process.communicate()
+                else:
+                    # POSIX _communicate already populated the output so
+                    # far into the TimeoutExpired exception.
+                    process.wait()
+                raise
+            except:  # Including KeyboardInterrupt, communicate handled that.
+                process.kill()
+                # We don't call process.wait() as .__exit__ does that for us.
+                raise
+            retcode = process.poll()
+            if check and retcode:
+>               raise CalledProcessError(retcode, process.args,
+                                         output=stdout, stderr=stderr)
+E               subprocess.CalledProcessError: Command '['/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/s1fix/native/s1fix_host', '--fixture']' returned non-zero exit status 1.
+
+../../.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/python3.11/subprocess.py:571: CalledProcessError
+=========================== short test summary info ============================
+FAILED evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/s1fix_test.py::test_native_first_physical_refresh_reaction_then_lock_dead_and_expiry
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 17 passed in 0.95s

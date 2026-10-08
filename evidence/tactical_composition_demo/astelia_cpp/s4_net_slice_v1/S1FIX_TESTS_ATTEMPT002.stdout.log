@@ -1,0 +1,41 @@
+.................F
+=================================== FAILURES ===================================
+____ test_native_first_physical_refresh_reaction_then_lock_dead_and_expiry _____
+
+    def test_native_first_physical_refresh_reaction_then_lock_dead_and_expiry():
+        s=copy.deepcopy(read(HERE/'fixtures/S1FIX_REPLAY.json')['states'][0]);start=s['tick'];views=s['views']
+        # First state starts a real copied-planner group in public scratch geometry.
+        initial=native([dict(wrapper=True,frames=[frame(views,start)])])[0][0]
+        cmd=initial['commands'];assert len(cmd)>=2
+        aa=actions(initial);cast={str(c['id']):pending(aa[c['id']],start) for c in cmd}
+        release=copy.deepcopy(views);rt=start+20
+        for v in release:
+            v.update(t=v['t']+20*v['dt'],tick=rt)
+            for u in v['units']:
+                if str(u['id']) in cast:u.update(prep=u['windup']-v['dt'],target=cast[str(u['id'])]['target'])
+        # A blast covering one commanded gun exercises reaction-declined refresh.
+        id=cmd[0]['id'];me=next(u for u in release[0]['units'] if u['id']==id)
+        blast=threat('shell');blast.update(x=me['x'],y=me['y'],at=release[0]['t']+.3,radius=40)
+        for v in release:v['threats']=[blast]
+        later=copy.deepcopy(release)
+        for v in later:
+            v.update(t=v['t']+v['dt'],tick=rt+1)
+            for u in v['units']:
+                if u['team']==1:u['y']+=3
+        requests=dict(wrapper=True,frames=[frame(views,start),frame(release,rt,cast,True),frame(later,rt+1,cast)])
+        rows=native([requests])[0]
+        refresh=[e for e in rows[1]['events'] if e['stage']=='s1_refresh'];assert len(refresh)==len(cmd)
+        assert not any(e['stage']=='s1_refresh' for e in rows[2]['events'])
+        c1={c['id']:c for c in rows[1]['commands']};c2={c['id']:c for c in rows[2]['commands']}
+        for c in cmd:
+            assert c1[c['id']]['shape']==c['shape'] and c1[c['id']]['focus']==c['focus']
+            assert c1[c['id']]['absolute']==c2[c['id']]['absolute']
+            assert c1[c['id']]['refreshed']
+>       assert not actions(rows[1])[id]['release']
+E       assert not True
+
+evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/s1fix_test.py:79: AssertionError
+=========================== short test summary info ============================
+FAILED evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/s1fix_test.py::test_native_first_physical_refresh_reaction_then_lock_dead_and_expiry
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 17 passed in 0.94s

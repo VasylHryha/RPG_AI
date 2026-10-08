@@ -1,0 +1,22 @@
+{
+  "status": "PASS",
+  "exit_code": 0,
+  "wall_seconds": 0.385563333,
+  "command": [
+    "evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/s1fix_test.py",
+    "-k",
+    "fresh_inventory or pins or new_process_gate or live_remaining_resource_gate"
+  ],
+  "physical_fights": 0,
+  "why": "Review M1 changed resource admission only; native wrapper/support tests already passed for identical native code",
+  "sources": {
+    "s1fix_pilot.py": "02c79cb7bd4dc37ab6f6ab2c8c09701ab1405da557a655a1738c8f9f1e1d6697",
+    "s1fix_test.py": "659775ebacb744c1ea9b3a79e62fb1b21063c933f6ce27e885b30be23f9db62b",
+    "S1FIX_BUILD.json": "8406dae5508d8c89e5f65b6861fa4f81b1b1035fe6df9a07d33a869667ea09d3"
+  }
+}
