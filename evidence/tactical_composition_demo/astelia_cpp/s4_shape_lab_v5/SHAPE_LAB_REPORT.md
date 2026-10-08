@@ -1,0 +1,5876 @@
+Prepared development test / observations
+
+V1: base script, central-sync script, local battery oscillator (RRG mechanism). No acceptance claim.
+
+Read mechanism first, choose once, then C3 at 50/100/200 total pairs and ten paired series. Wins require strict elimination before 150 s. Won/non-win losses have separate n.
+
+Volley membership: central starts sharing one preparation tick; oscillator/base share one release tick (1/30 s). Multi-shell volleys only for spread; singleton count disclosed. This is firing synchrony, not time-on-target/V2 geometry.
+
+Dodge success is the fraction of all launch-exposed enemies for resolved shells which escape the blast, with pre-landing deaths counted as non-escapes and shown. Hits/shell uses landed shells, zero-hit shells included, unresolved shells censored. Shells/kill uses artillery kills only. Idle is legal suppression by timing (engine preparation-ready for central sync, fully prepared for oscillator). Low-gun intervals and null ratios are shown.
+
+```json
+{
+  "status": "DEVELOPMENT_ONLY",
+  "labels": {
+    "forcedP16+react": "script",
+    "forcedP16+react+central_sync": "script",
+    "forcedP16+react+battery_oscillator": "RRG mechanism (local battery timing only)"
+  },
+  "mechanism": {
+    "stage": "mechanism",
+    "complete": false,
+    "grid": {
+      "k0.5_r200": {
+        "arms": {
+          "forcedP16+react": {
+            "n": 0,
+            "wins": 0,
+            "own_losses_on_wins": {
+              "n": 0,
+              "mean": null
+            },
+            "own_losses_on_nonwins": {
+              "n": 0,
+              "mean": null
+            },
+            "mechanism": {
+              "landing_spread_s": {
+                "n": 0,
+                "mean": null
+              },
+              "enemy_dodge_success": {
+                "n": 0,
+                "mean": null
+              },
+              "hits_per_own_shell": {
+                "n": 0,
+                "mean": null
+              },
+              "shells_per_kill": {
+                "n": 0,
+                "mean": null
+              },
+              "idle_seconds_per_gun": {
+                "n": 0,
+                "mean": null
+              },
+              "fired_shells_per_gun_minute": {
+                "n": 0,
+                "mean": null
+              }
+            },
+            "denominators": {
+              "own_shells": 0,
+              "own_shells_landed": 0,
+              "own_shells_unresolved": 0,
+              "hits": 0,
+              "artillery_kills": 0,
+              "enemy_dodge_eligible": 0,
+              "enemy_dodge_launch_exposed": 0,
+              "enemy_dodge_censored": 0,
+              "gun_seconds": 0,
+              "idle_seconds": 0,
+              "multi_shell_volleys": 0,
+              "single_shell_volleys": 0,
+              "unassigned_own_artillery_damage": 0
+            },
+            "low_gun_behaviour": []
+          },
+          "forcedP16+react+central_sync": {
+            "n": 0,
+            "wins": 0,
+            "own_losses_on_wins": {
+              "n": 0,
+              "mean": null
+            },
+            "own_losses_on_nonwins": {
+              "n": 0,
+              "mean": null
+            },
+            "mechanism": {
+              "landing_spread_s": {
+                "n": 0,
+                "mean": null
+              },
+              "enemy_dodge_success": {
+                "n": 0,
+                "mean": null
+              },
+              "hits_per_own_shell": {
+                "n": 0,
+                "mean": null
+              },
+              "shells_per_kill": {
+                "n": 0,
+                "mean": null
+              },
+              "idle_seconds_per_gun": {
+                "n": 0,
+                "mean": null
+              },
+              "fired_shells_per_gun_minute": {
+                "n": 0,
+                "mean": null
+              }
+            },
+            "denominators": {
+              "own_shells": 0,
+              "own_shells_landed": 0,
+              "own_shells_unresolved": 0,
+              "hits": 0,
+              "artillery_kills": 0,
+              "enemy_dodge_eligible": 0,
+              "enemy_dodge_launch_exposed": 0,
+              "enemy_dodge_censored": 0,
+              "gun_seconds": 0,
+              "idle_seconds": 0,
+              "multi_shell_volleys": 0,
+              "single_shell_volleys": 0,
+              "unassigned_own_artillery_damage": 0
+            },
+            "low_gun_behaviour": []
+          },
+          "forcedP16+react+battery_oscillator": {
+            "n": 0,
+            "wins": 0,
+            "own_losses_on_wins": {
+              "n": 0,
+              "mean": null
+            },
+            "own_losses_on_nonwins": {
+              "n": 0,
+              "mean": null
+            },
+            "mechanism": {
+              "landing_spread_s": {
+                "n": 0,
+                "mean": null
+              },
+              "enemy_dodge_success": {
+                "n": 0,
+                "mean": null
+              },
+              "hits_per_own_shell": {
+                "n": 0,
+                "mean": null
+              },
+              "shells_per_kill": {
+                "n": 0,
+                "mean": null
+              },
+              "idle_seconds_per_gun": {
+                "n": 0,
+                "mean": null
+              },
+              "fired_shells_per_gun_minute": {
+                "n": 0,
+                "mean": null
+              }
+            },
+            "denominators": {
+              "own_shells": 0,
+              "own_shells_landed": 0,
+              "own_shells_unresolved": 0,
+              "hits": 0,
+              "artillery_kills": 0,
+              "enemy_dodge_eligible": 0,
+              "enemy_dodge_launch_exposed": 0,
+              "enemy_dodge_censored": 0,
+              "gun_seconds": 0,
+              "idle_seconds": 0,
+              "multi_shell_volleys": 0,
+              "single_shell_volleys": 0,
+              "unassigned_own_artillery_damage": 0
+            },
+            "low_gun_behaviour": []
+          }
+        },
+        "paired": {},
+        "drills": {
+          "D1": {
+            "arms": {
+              "forcedP16+react": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              },
+              "forcedP16+react+central_sync": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              },
+              "forcedP16+react+battery_oscillator": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              }
+            },
+            "paired": {}
+          },
+          "V1D2": {
+            "arms": {
+              "forcedP16+react": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              },
+              "forcedP16+react+central_sync": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              },
+              "forcedP16+react+battery_oscillator": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              }
+            },
+            "paired": {}
+          }
+        },
+        "complete": false
+      },
+      "k0.5_r400": {
+        "arms": {
+          "forcedP16+react": {
+            "n": 0,
+            "wins": 0,
+            "own_losses_on_wins": {
+              "n": 0,
+              "mean": null
+            },
+            "own_losses_on_nonwins": {
+              "n": 0,
+              "mean": null
+            },
+            "mechanism": {
+              "landing_spread_s": {
+                "n": 0,
+                "mean": null
+              },
+              "enemy_dodge_success": {
+                "n": 0,
+                "mean": null
+              },
+              "hits_per_own_shell": {
+                "n": 0,
+                "mean": null
+              },
+              "shells_per_kill": {
+                "n": 0,
+                "mean": null
+              },
+              "idle_seconds_per_gun": {
+                "n": 0,
+                "mean": null
+              },
+              "fired_shells_per_gun_minute": {
+                "n": 0,
+                "mean": null
+              }
+            },
+            "denominators": {
+              "own_shells": 0,
+              "own_shells_landed": 0,
+              "own_shells_unresolved": 0,
+              "hits": 0,
+              "artillery_kills": 0,
+              "enemy_dodge_eligible": 0,
+              "enemy_dodge_launch_exposed": 0,
+              "enemy_dodge_censored": 0,
+              "gun_seconds": 0,
+              "idle_seconds": 0,
+              "multi_shell_volleys": 0,
+              "single_shell_volleys": 0,
+              "unassigned_own_artillery_damage": 0
+            },
+            "low_gun_behaviour": []
+          },
+          "forcedP16+react+central_sync": {
+            "n": 0,
+            "wins": 0,
+            "own_losses_on_wins": {
+              "n": 0,
+              "mean": null
+            },
+            "own_losses_on_nonwins": {
+              "n": 0,
+              "mean": null
+            },
+            "mechanism": {
+              "landing_spread_s": {
+                "n": 0,
+                "mean": null
+              },
+              "enemy_dodge_success": {
+                "n": 0,
+                "mean": null
+              },
+              "hits_per_own_shell": {
+                "n": 0,
+                "mean": null
+              },
+              "shells_per_kill": {
+                "n": 0,
+                "mean": null
+              },
+              "idle_seconds_per_gun": {
+                "n": 0,
+                "mean": null
+              },
+              "fired_shells_per_gun_minute": {
+                "n": 0,
+                "mean": null
+              }
+            },
+            "denominators": {
+              "own_shells": 0,
+              "own_shells_landed": 0,
+              "own_shells_unresolved": 0,
+              "hits": 0,
+              "artillery_kills": 0,
+              "enemy_dodge_eligible": 0,
+              "enemy_dodge_launch_exposed": 0,
+              "enemy_dodge_censored": 0,
+              "gun_seconds": 0,
+              "idle_seconds": 0,
+              "multi_shell_volleys": 0,
+              "single_shell_volleys": 0,
+              "unassigned_own_artillery_damage": 0
+            },
+            "low_gun_behaviour": []
+          },
+          "forcedP16+react+battery_oscillator": {
+            "n": 0,
+            "wins": 0,
+            "own_losses_on_wins": {
+              "n": 0,
+              "mean": null
+            },
+            "own_losses_on_nonwins": {
+              "n": 0,
+              "mean": null
+            },
+            "mechanism": {
+              "landing_spread_s": {
+                "n": 0,
+                "mean": null
+              },
+              "enemy_dodge_success": {
+                "n": 0,
+                "mean": null
+              },
+              "hits_per_own_shell": {
+                "n": 0,
+                "mean": null
+              },
+              "shells_per_kill": {
+                "n": 0,
+                "mean": null
+              },
+              "idle_seconds_per_gun": {
+                "n": 0,
+                "mean": null
+              },
+              "fired_shells_per_gun_minute": {
+                "n": 0,
+                "mean": null
+              }
+            },
+            "denominators": {
+              "own_shells": 0,
+              "own_shells_landed": 0,
+              "own_shells_unresolved": 0,
+              "hits": 0,
+              "artillery_kills": 0,
+              "enemy_dodge_eligible": 0,
+              "enemy_dodge_launch_exposed": 0,
+              "enemy_dodge_censored": 0,
+              "gun_seconds": 0,
+              "idle_seconds": 0,
+              "multi_shell_volleys": 0,
+              "single_shell_volleys": 0,
+              "unassigned_own_artillery_damage": 0
+            },
+            "low_gun_behaviour": []
+          }
+        },
+        "paired": {},
+        "drills": {
+          "D1": {
+            "arms": {
+              "forcedP16+react": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              },
+              "forcedP16+react+central_sync": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              },
+              "forcedP16+react+battery_oscillator": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              }
+            },
+            "paired": {}
+          },
+          "V1D2": {
+            "arms": {
+              "forcedP16+react": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              },
+              "forcedP16+react+central_sync": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              },
+              "forcedP16+react+battery_oscillator": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              }
+            },
+            "paired": {}
+          }
+        },
+        "complete": false
+      },
+      "k0.5_r-1": {
+        "arms": {
+          "forcedP16+react": {
+            "n": 0,
+            "wins": 0,
+            "own_losses_on_wins": {
+              "n": 0,
+              "mean": null
+            },
+            "own_losses_on_nonwins": {
+              "n": 0,
+              "mean": null
+            },
+            "mechanism": {
+              "landing_spread_s": {
+                "n": 0,
+                "mean": null
+              },
+              "enemy_dodge_success": {
+                "n": 0,
+                "mean": null
+              },
+              "hits_per_own_shell": {
+                "n": 0,
+                "mean": null
+              },
+              "shells_per_kill": {
+                "n": 0,
+                "mean": null
+              },
+              "idle_seconds_per_gun": {
+                "n": 0,
+                "mean": null
+              },
+              "fired_shells_per_gun_minute": {
+                "n": 0,
+                "mean": null
+              }
+            },
+            "denominators": {
+              "own_shells": 0,
+              "own_shells_landed": 0,
+              "own_shells_unresolved": 0,
+              "hits": 0,
+              "artillery_kills": 0,
+              "enemy_dodge_eligible": 0,
+              "enemy_dodge_launch_exposed": 0,
+              "enemy_dodge_censored": 0,
+              "gun_seconds": 0,
+              "idle_seconds": 0,
+              "multi_shell_volleys": 0,
+              "single_shell_volleys": 0,
+              "unassigned_own_artillery_damage": 0
+            },
+            "low_gun_behaviour": []
+          },
+          "forcedP16+react+central_sync": {
+            "n": 0,
+            "wins": 0,
+            "own_losses_on_wins": {
+              "n": 0,
+              "mean": null
+            },
+            "own_losses_on_nonwins": {
+              "n": 0,
+              "mean": null
+            },
+            "mechanism": {
+              "landing_spread_s": {
+                "n": 0,
+                "mean": null
+              },
+              "enemy_dodge_success": {
+                "n": 0,
+                "mean": null
+              },
+              "hits_per_own_shell": {
+                "n": 0,
+                "mean": null
+              },
+              "shells_per_kill": {
+                "n": 0,
+                "mean": null
+              },
+              "idle_seconds_per_gun": {
+                "n": 0,
+                "mean": null
+              },
+              "fired_shells_per_gun_minute": {
+                "n": 0,
+                "mean": null
+              }
+            },
+            "denominators": {
+              "own_shells": 0,
+              "own_shells_landed": 0,
+              "own_shells_unresolved": 0,
+              "hits": 0,
+              "artillery_kills": 0,
+              "enemy_dodge_eligible": 0,
+              "enemy_dodge_launch_exposed": 0,
+              "enemy_dodge_censored": 0,
+              "gun_seconds": 0,
+              "idle_seconds": 0,
+              "multi_shell_volleys": 0,
+              "single_shell_volleys": 0,
+              "unassigned_own_artillery_damage": 0
+            },
+            "low_gun_behaviour": []
+          },
+          "forcedP16+react+battery_oscillator": {
+            "n": 0,
+            "wins": 0,
+            "own_losses_on_wins": {
+              "n": 0,
+              "mean": null
+            },
+            "own_losses_on_nonwins": {
+              "n": 0,
+              "mean": null
+            },
+            "mechanism": {
+              "landing_spread_s": {
+                "n": 0,
+                "mean": null
+              },
+              "enemy_dodge_success": {
+                "n": 0,
+                "mean": null
+              },
+              "hits_per_own_shell": {
+                "n": 0,
+                "mean": null
+              },
+              "shells_per_kill": {
+                "n": 0,
+                "mean": null
+              },
+              "idle_seconds_per_gun": {
+                "n": 0,
+                "mean": null
+              },
+              "fired_shells_per_gun_minute": {
+                "n": 0,
+                "mean": null
+              }
+            },
+            "denominators": {
+              "own_shells": 0,
+              "own_shells_landed": 0,
+              "own_shells_unresolved": 0,
+              "hits": 0,
+              "artillery_kills": 0,
+              "enemy_dodge_eligible": 0,
+              "enemy_dodge_launch_exposed": 0,
+              "enemy_dodge_censored": 0,
+              "gun_seconds": 0,
+              "idle_seconds": 0,
+              "multi_shell_volleys": 0,
+              "single_shell_volleys": 0,
+              "unassigned_own_artillery_damage": 0
+            },
+            "low_gun_behaviour": []
+          }
+        },
+        "paired": {},
+        "drills": {
+          "D1": {
+            "arms": {
+              "forcedP16+react": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              },
+              "forcedP16+react+central_sync": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              },
+              "forcedP16+react+battery_oscillator": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              }
+            },
+            "paired": {}
+          },
+          "V1D2": {
+            "arms": {
+              "forcedP16+react": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              },
+              "forcedP16+react+central_sync": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              },
+              "forcedP16+react+battery_oscillator": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              }
+            },
+            "paired": {}
+          }
+        },
+        "complete": false
+      },
+      "k1_r200": {
+        "arms": {
+          "forcedP16+react": {
+            "n": 0,
+            "wins": 0,
+            "own_losses_on_wins": {
+              "n": 0,
+              "mean": null
+            },
+            "own_losses_on_nonwins": {
+              "n": 0,
+              "mean": null
+            },
+            "mechanism": {
+              "landing_spread_s": {
+                "n": 0,
+                "mean": null
+              },
+              "enemy_dodge_success": {
+                "n": 0,
+                "mean": null
+              },
+              "hits_per_own_shell": {
+                "n": 0,
+                "mean": null
+              },
+              "shells_per_kill": {
+                "n": 0,
+                "mean": null
+              },
+              "idle_seconds_per_gun": {
+                "n": 0,
+                "mean": null
+              },
+              "fired_shells_per_gun_minute": {
+                "n": 0,
+                "mean": null
+              }
+            },
+            "denominators": {
+              "own_shells": 0,
+              "own_shells_landed": 0,
+              "own_shells_unresolved": 0,
+              "hits": 0,
+              "artillery_kills": 0,
+              "enemy_dodge_eligible": 0,
+              "enemy_dodge_launch_exposed": 0,
+              "enemy_dodge_censored": 0,
+              "gun_seconds": 0,
+              "idle_seconds": 0,
+              "multi_shell_volleys": 0,
+              "single_shell_volleys": 0,
+              "unassigned_own_artillery_damage": 0
+            },
+            "low_gun_behaviour": []
+          },
+          "forcedP16+react+central_sync": {
+            "n": 0,
+            "wins": 0,
+            "own_losses_on_wins": {
+              "n": 0,
+              "mean": null
+            },
+            "own_losses_on_nonwins": {
+              "n": 0,
+              "mean": null
+            },
+            "mechanism": {
+              "landing_spread_s": {
+                "n": 0,
+                "mean": null
+              },
+              "enemy_dodge_success": {
+                "n": 0,
+                "mean": null
+              },
+              "hits_per_own_shell": {
+                "n": 0,
+                "mean": null
+              },
+              "shells_per_kill": {
+                "n": 0,
+                "mean": null
+              },
+              "idle_seconds_per_gun": {
+                "n": 0,
+                "mean": null
+              },
+              "fired_shells_per_gun_minute": {
+                "n": 0,
+                "mean": null
+              }
+            },
+            "denominators": {
+              "own_shells": 0,
+              "own_shells_landed": 0,
+              "own_shells_unresolved": 0,
+              "hits": 0,
+              "artillery_kills": 0,
+              "enemy_dodge_eligible": 0,
+              "enemy_dodge_launch_exposed": 0,
+              "enemy_dodge_censored": 0,
+              "gun_seconds": 0,
+              "idle_seconds": 0,
+              "multi_shell_volleys": 0,
+              "single_shell_volleys": 0,
+              "unassigned_own_artillery_damage": 0
+            },
+            "low_gun_behaviour": []
+          },
+          "forcedP16+react+battery_oscillator": {
+            "n": 0,
+            "wins": 0,
+            "own_losses_on_wins": {
+              "n": 0,
+              "mean": null
+            },
+            "own_losses_on_nonwins": {
+              "n": 0,
+              "mean": null
+            },
+            "mechanism": {
+              "landing_spread_s": {
+                "n": 0,
+                "mean": null
+              },
+              "enemy_dodge_success": {
+                "n": 0,
+                "mean": null
+              },
+              "hits_per_own_shell": {
+                "n": 0,
+                "mean": null
+              },
+              "shells_per_kill": {
+                "n": 0,
+                "mean": null
+              },
+              "idle_seconds_per_gun": {
+                "n": 0,
+                "mean": null
+              },
+              "fired_shells_per_gun_minute": {
+                "n": 0,
+                "mean": null
+              }
+            },
+            "denominators": {
+              "own_shells": 0,
+              "own_shells_landed": 0,
+              "own_shells_unresolved": 0,
+              "hits": 0,
+              "artillery_kills": 0,
+              "enemy_dodge_eligible": 0,
+              "enemy_dodge_launch_exposed": 0,
+              "enemy_dodge_censored": 0,
+              "gun_seconds": 0,
+              "idle_seconds": 0,
+              "multi_shell_volleys": 0,
+              "single_shell_volleys": 0,
+              "unassigned_own_artillery_damage": 0
+            },
+            "low_gun_behaviour": []
+          }
+        },
+        "paired": {},
+        "drills": {
+          "D1": {
+            "arms": {
+              "forcedP16+react": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              },
+              "forcedP16+react+central_sync": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              },
+              "forcedP16+react+battery_oscillator": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              }
+            },
+            "paired": {}
+          },
+          "V1D2": {
+            "arms": {
+              "forcedP16+react": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              },
+              "forcedP16+react+central_sync": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              },
+              "forcedP16+react+battery_oscillator": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              }
+            },
+            "paired": {}
+          }
+        },
+        "complete": false
+      },
+      "k1_r400": {
+        "arms": {
+          "forcedP16+react": {
+            "n": 0,
+            "wins": 0,
+            "own_losses_on_wins": {
+              "n": 0,
+              "mean": null
+            },
+            "own_losses_on_nonwins": {
+              "n": 0,
+              "mean": null
+            },
+            "mechanism": {
+              "landing_spread_s": {
+                "n": 0,
+                "mean": null
+              },
+              "enemy_dodge_success": {
+                "n": 0,
+                "mean": null
+              },
+              "hits_per_own_shell": {
+                "n": 0,
+                "mean": null
+              },
+              "shells_per_kill": {
+                "n": 0,
+                "mean": null
+              },
+              "idle_seconds_per_gun": {
+                "n": 0,
+                "mean": null
+              },
+              "fired_shells_per_gun_minute": {
+                "n": 0,
+                "mean": null
+              }
+            },
+            "denominators": {
+              "own_shells": 0,
+              "own_shells_landed": 0,
+              "own_shells_unresolved": 0,
+              "hits": 0,
+              "artillery_kills": 0,
+              "enemy_dodge_eligible": 0,
+              "enemy_dodge_launch_exposed": 0,
+              "enemy_dodge_censored": 0,
+              "gun_seconds": 0,
+              "idle_seconds": 0,
+              "multi_shell_volleys": 0,
+              "single_shell_volleys": 0,
+              "unassigned_own_artillery_damage": 0
+            },
+            "low_gun_behaviour": []
+          },
+          "forcedP16+react+central_sync": {
+            "n": 0,
+            "wins": 0,
+            "own_losses_on_wins": {
+              "n": 0,
+              "mean": null
+            },
+            "own_losses_on_nonwins": {
+              "n": 0,
+              "mean": null
+            },
+            "mechanism": {
+              "landing_spread_s": {
+                "n": 0,
+                "mean": null
+              },
+              "enemy_dodge_success": {
+                "n": 0,
+                "mean": null
+              },
+              "hits_per_own_shell": {
+                "n": 0,
+                "mean": null
+              },
+              "shells_per_kill": {
+                "n": 0,
+                "mean": null
+              },
+              "idle_seconds_per_gun": {
+                "n": 0,
+                "mean": null
+              },
+              "fired_shells_per_gun_minute": {
+                "n": 0,
+                "mean": null
+              }
+            },
+            "denominators": {
+              "own_shells": 0,
+              "own_shells_landed": 0,
+              "own_shells_unresolved": 0,
+              "hits": 0,
+              "artillery_kills": 0,
+              "enemy_dodge_eligible": 0,
+              "enemy_dodge_launch_exposed": 0,
+              "enemy_dodge_censored": 0,
+              "gun_seconds": 0,
+              "idle_seconds": 0,
+              "multi_shell_volleys": 0,
+              "single_shell_volleys": 0,
+              "unassigned_own_artillery_damage": 0
+            },
+            "low_gun_behaviour": []
+          },
+          "forcedP16+react+battery_oscillator": {
+            "n": 0,
+            "wins": 0,
+            "own_losses_on_wins": {
+              "n": 0,
+              "mean": null
+            },
+            "own_losses_on_nonwins": {
+              "n": 0,
+              "mean": null
+            },
+            "mechanism": {
+              "landing_spread_s": {
+                "n": 0,
+                "mean": null
+              },
+              "enemy_dodge_success": {
+                "n": 0,
+                "mean": null
+              },
+              "hits_per_own_shell": {
+                "n": 0,
+                "mean": null
+              },
+              "shells_per_kill": {
+                "n": 0,
+                "mean": null
+              },
+              "idle_seconds_per_gun": {
+                "n": 0,
+                "mean": null
+              },
+              "fired_shells_per_gun_minute": {
+                "n": 0,
+                "mean": null
+              }
+            },
+            "denominators": {
+              "own_shells": 0,
+              "own_shells_landed": 0,
+              "own_shells_unresolved": 0,
+              "hits": 0,
+              "artillery_kills": 0,
+              "enemy_dodge_eligible": 0,
+              "enemy_dodge_launch_exposed": 0,
+              "enemy_dodge_censored": 0,
+              "gun_seconds": 0,
+              "idle_seconds": 0,
+              "multi_shell_volleys": 0,
+              "single_shell_volleys": 0,
+              "unassigned_own_artillery_damage": 0
+            },
+            "low_gun_behaviour": []
+          }
+        },
+        "paired": {},
+        "drills": {
+          "D1": {
+            "arms": {
+              "forcedP16+react": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              },
+              "forcedP16+react+central_sync": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              },
+              "forcedP16+react+battery_oscillator": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              }
+            },
+            "paired": {}
+          },
+          "V1D2": {
+            "arms": {
+              "forcedP16+react": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              },
+              "forcedP16+react+central_sync": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              },
+              "forcedP16+react+battery_oscillator": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              }
+            },
+            "paired": {}
+          }
+        },
+        "complete": false
+      },
+      "k1_r-1": {
+        "arms": {
+          "forcedP16+react": {
+            "n": 0,
+            "wins": 0,
+            "own_losses_on_wins": {
+              "n": 0,
+              "mean": null
+            },
+            "own_losses_on_nonwins": {
+              "n": 0,
+              "mean": null
+            },
+            "mechanism": {
+              "landing_spread_s": {
+                "n": 0,
+                "mean": null
+              },
+              "enemy_dodge_success": {
+                "n": 0,
+                "mean": null
+              },
+              "hits_per_own_shell": {
+                "n": 0,
+                "mean": null
+              },
+              "shells_per_kill": {
+                "n": 0,
+                "mean": null
+              },
+              "idle_seconds_per_gun": {
+                "n": 0,
+                "mean": null
+              },
+              "fired_shells_per_gun_minute": {
+                "n": 0,
+                "mean": null
+              }
+            },
+            "denominators": {
+              "own_shells": 0,
+              "own_shells_landed": 0,
+              "own_shells_unresolved": 0,
+              "hits": 0,
+              "artillery_kills": 0,
+              "enemy_dodge_eligible": 0,
+              "enemy_dodge_launch_exposed": 0,
+              "enemy_dodge_censored": 0,
+              "gun_seconds": 0,
+              "idle_seconds": 0,
+              "multi_shell_volleys": 0,
+              "single_shell_volleys": 0,
+              "unassigned_own_artillery_damage": 0
+            },
+            "low_gun_behaviour": []
+          },
+          "forcedP16+react+central_sync": {
+            "n": 0,
+            "wins": 0,
+            "own_losses_on_wins": {
+              "n": 0,
+              "mean": null
+            },
+            "own_losses_on_nonwins": {
+              "n": 0,
+              "mean": null
+            },
+            "mechanism": {
+              "landing_spread_s": {
+                "n": 0,
+                "mean": null
+              },
+              "enemy_dodge_success": {
+                "n": 0,
+                "mean": null
+              },
+              "hits_per_own_shell": {
+                "n": 0,
+                "mean": null
+              },
+              "shells_per_kill": {
+                "n": 0,
+                "mean": null
+              },
+              "idle_seconds_per_gun": {
+                "n": 0,
+                "mean": null
+              },
+              "fired_shells_per_gun_minute": {
+                "n": 0,
+                "mean": null
+              }
+            },
+            "denominators": {
+              "own_shells": 0,
+              "own_shells_landed": 0,
+              "own_shells_unresolved": 0,
+              "hits": 0,
+              "artillery_kills": 0,
+              "enemy_dodge_eligible": 0,
+              "enemy_dodge_launch_exposed": 0,
+              "enemy_dodge_censored": 0,
+              "gun_seconds": 0,
+              "idle_seconds": 0,
+              "multi_shell_volleys": 0,
+              "single_shell_volleys": 0,
+              "unassigned_own_artillery_damage": 0
+            },
+            "low_gun_behaviour": []
+          },
+          "forcedP16+react+battery_oscillator": {
+            "n": 0,
+            "wins": 0,
+            "own_losses_on_wins": {
+              "n": 0,
+              "mean": null
+            },
+            "own_losses_on_nonwins": {
+              "n": 0,
+              "mean": null
+            },
+            "mechanism": {
+              "landing_spread_s": {
+                "n": 0,
+                "mean": null
+              },
+              "enemy_dodge_success": {
+                "n": 0,
+                "mean": null
+              },
+              "hits_per_own_shell": {
+                "n": 0,
+                "mean": null
+              },
+              "shells_per_kill": {
+                "n": 0,
+                "mean": null
+              },
+              "idle_seconds_per_gun": {
+                "n": 0,
+                "mean": null
+              },
+              "fired_shells_per_gun_minute": {
+                "n": 0,
+                "mean": null
+              }
+            },
+            "denominators": {
+              "own_shells": 0,
+              "own_shells_landed": 0,
+              "own_shells_unresolved": 0,
+              "hits": 0,
+              "artillery_kills": 0,
+              "enemy_dodge_eligible": 0,
+              "enemy_dodge_launch_exposed": 0,
+              "enemy_dodge_censored": 0,
+              "gun_seconds": 0,
+              "idle_seconds": 0,
+              "multi_shell_volleys": 0,
+              "single_shell_volleys": 0,
+              "unassigned_own_artillery_damage": 0
+            },
+            "low_gun_behaviour": []
+          }
+        },
+        "paired": {},
+        "drills": {
+          "D1": {
+            "arms": {
+              "forcedP16+react": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              },
+              "forcedP16+react+central_sync": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              },
+              "forcedP16+react+battery_oscillator": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              }
+            },
+            "paired": {}
+          },
+          "V1D2": {
+            "arms": {
+              "forcedP16+react": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              },
+              "forcedP16+react+central_sync": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              },
+              "forcedP16+react+battery_oscillator": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              }
+            },
+            "paired": {}
+          }
+        },
+        "complete": false
+      },
+      "k2_r200": {
+        "arms": {
+          "forcedP16+react": {
+            "n": 0,
+            "wins": 0,
+            "own_losses_on_wins": {
+              "n": 0,
+              "mean": null
+            },
+            "own_losses_on_nonwins": {
+              "n": 0,
+              "mean": null
+            },
+            "mechanism": {
+              "landing_spread_s": {
+                "n": 0,
+                "mean": null
+              },
+              "enemy_dodge_success": {
+                "n": 0,
+                "mean": null
+              },
+              "hits_per_own_shell": {
+                "n": 0,
+                "mean": null
+              },
+              "shells_per_kill": {
+                "n": 0,
+                "mean": null
+              },
+              "idle_seconds_per_gun": {
+                "n": 0,
+                "mean": null
+              },
+              "fired_shells_per_gun_minute": {
+                "n": 0,
+                "mean": null
+              }
+            },
+            "denominators": {
+              "own_shells": 0,
+              "own_shells_landed": 0,
+              "own_shells_unresolved": 0,
+              "hits": 0,
+              "artillery_kills": 0,
+              "enemy_dodge_eligible": 0,
+              "enemy_dodge_launch_exposed": 0,
+              "enemy_dodge_censored": 0,
+              "gun_seconds": 0,
+              "idle_seconds": 0,
+              "multi_shell_volleys": 0,
+              "single_shell_volleys": 0,
+              "unassigned_own_artillery_damage": 0
+            },
+            "low_gun_behaviour": []
+          },
+          "forcedP16+react+central_sync": {
+            "n": 0,
+            "wins": 0,
+            "own_losses_on_wins": {
+              "n": 0,
+              "mean": null
+            },
+            "own_losses_on_nonwins": {
+              "n": 0,
+              "mean": null
+            },
+            "mechanism": {
+              "landing_spread_s": {
+                "n": 0,
+                "mean": null
+              },
+              "enemy_dodge_success": {
+                "n": 0,
+                "mean": null
+              },
+              "hits_per_own_shell": {
+                "n": 0,
+                "mean": null
+              },
+              "shells_per_kill": {
+                "n": 0,
+                "mean": null
+              },
+              "idle_seconds_per_gun": {
+                "n": 0,
+                "mean": null
+              },
+              "fired_shells_per_gun_minute": {
+                "n": 0,
+                "mean": null
+              }
+            },
+            "denominators": {
+              "own_shells": 0,
+              "own_shells_landed": 0,
+              "own_shells_unresolved": 0,
+              "hits": 0,
+              "artillery_kills": 0,
+              "enemy_dodge_eligible": 0,
+              "enemy_dodge_launch_exposed": 0,
+              "enemy_dodge_censored": 0,
+              "gun_seconds": 0,
+              "idle_seconds": 0,
+              "multi_shell_volleys": 0,
+              "single_shell_volleys": 0,
+              "unassigned_own_artillery_damage": 0
+            },
+            "low_gun_behaviour": []
+          },
+          "forcedP16+react+battery_oscillator": {
+            "n": 0,
+            "wins": 0,
+            "own_losses_on_wins": {
+              "n": 0,
+              "mean": null
+            },
+            "own_losses_on_nonwins": {
+              "n": 0,
+              "mean": null
+            },
+            "mechanism": {
+              "landing_spread_s": {
+                "n": 0,
+                "mean": null
+              },
+              "enemy_dodge_success": {
+                "n": 0,
+                "mean": null
+              },
+              "hits_per_own_shell": {
+                "n": 0,
+                "mean": null
+              },
+              "shells_per_kill": {
+                "n": 0,
+                "mean": null
+              },
+              "idle_seconds_per_gun": {
+                "n": 0,
+                "mean": null
+              },
+              "fired_shells_per_gun_minute": {
+                "n": 0,
+                "mean": null
+              }
+            },
+            "denominators": {
+              "own_shells": 0,
+              "own_shells_landed": 0,
+              "own_shells_unresolved": 0,
+              "hits": 0,
+              "artillery_kills": 0,
+              "enemy_dodge_eligible": 0,
+              "enemy_dodge_launch_exposed": 0,
+              "enemy_dodge_censored": 0,
+              "gun_seconds": 0,
+              "idle_seconds": 0,
+              "multi_shell_volleys": 0,
+              "single_shell_volleys": 0,
+              "unassigned_own_artillery_damage": 0
+            },
+            "low_gun_behaviour": []
+          }
+        },
+        "paired": {},
+        "drills": {
+          "D1": {
+            "arms": {
+              "forcedP16+react": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              },
+              "forcedP16+react+central_sync": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              },
+              "forcedP16+react+battery_oscillator": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              }
+            },
+            "paired": {}
+          },
+          "V1D2": {
+            "arms": {
+              "forcedP16+react": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              },
+              "forcedP16+react+central_sync": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              },
+              "forcedP16+react+battery_oscillator": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              }
+            },
+            "paired": {}
+          }
+        },
+        "complete": false
+      },
+      "k2_r400": {
+        "arms": {
+          "forcedP16+react": {
+            "n": 0,
+            "wins": 0,
+            "own_losses_on_wins": {
+              "n": 0,
+              "mean": null
+            },
+            "own_losses_on_nonwins": {
+              "n": 0,
+              "mean": null
+            },
+            "mechanism": {
+              "landing_spread_s": {
+                "n": 0,
+                "mean": null
+              },
+              "enemy_dodge_success": {
+                "n": 0,
+                "mean": null
+              },
+              "hits_per_own_shell": {
+                "n": 0,
+                "mean": null
+              },
+              "shells_per_kill": {
+                "n": 0,
+                "mean": null
+              },
+              "idle_seconds_per_gun": {
+                "n": 0,
+                "mean": null
+              },
+              "fired_shells_per_gun_minute": {
+                "n": 0,
+                "mean": null
+              }
+            },
+            "denominators": {
+              "own_shells": 0,
+              "own_shells_landed": 0,
+              "own_shells_unresolved": 0,
+              "hits": 0,
+              "artillery_kills": 0,
+              "enemy_dodge_eligible": 0,
+              "enemy_dodge_launch_exposed": 0,
+              "enemy_dodge_censored": 0,
+              "gun_seconds": 0,
+              "idle_seconds": 0,
+              "multi_shell_volleys": 0,
+              "single_shell_volleys": 0,
+              "unassigned_own_artillery_damage": 0
+            },
+            "low_gun_behaviour": []
+          },
+          "forcedP16+react+central_sync": {
+            "n": 0,
+            "wins": 0,
+            "own_losses_on_wins": {
+              "n": 0,
+              "mean": null
+            },
+            "own_losses_on_nonwins": {
+              "n": 0,
+              "mean": null
+            },
+            "mechanism": {
+              "landing_spread_s": {
+                "n": 0,
+                "mean": null
+              },
+              "enemy_dodge_success": {
+                "n": 0,
+                "mean": null
+              },
+              "hits_per_own_shell": {
+                "n": 0,
+                "mean": null
+              },
+              "shells_per_kill": {
+                "n": 0,
+                "mean": null
+              },
+              "idle_seconds_per_gun": {
+                "n": 0,
+                "mean": null
+              },
+              "fired_shells_per_gun_minute": {
+                "n": 0,
+                "mean": null
+              }
+            },
+            "denominators": {
+              "own_shells": 0,
+              "own_shells_landed": 0,
+              "own_shells_unresolved": 0,
+              "hits": 0,
+              "artillery_kills": 0,
+              "enemy_dodge_eligible": 0,
+              "enemy_dodge_launch_exposed": 0,
+              "enemy_dodge_censored": 0,
+              "gun_seconds": 0,
+              "idle_seconds": 0,
+              "multi_shell_volleys": 0,
+              "single_shell_volleys": 0,
+              "unassigned_own_artillery_damage": 0
+            },
+            "low_gun_behaviour": []
+          },
+          "forcedP16+react+battery_oscillator": {
+            "n": 0,
+            "wins": 0,
+            "own_losses_on_wins": {
+              "n": 0,
+              "mean": null
+            },
+            "own_losses_on_nonwins": {
+              "n": 0,
+              "mean": null
+            },
+            "mechanism": {
+              "landing_spread_s": {
+                "n": 0,
+                "mean": null
+              },
+              "enemy_dodge_success": {
+                "n": 0,
+                "mean": null
+              },
+              "hits_per_own_shell": {
+                "n": 0,
+                "mean": null
+              },
+              "shells_per_kill": {
+                "n": 0,
+                "mean": null
+              },
+              "idle_seconds_per_gun": {
+                "n": 0,
+                "mean": null
+              },
+              "fired_shells_per_gun_minute": {
+                "n": 0,
+                "mean": null
+              }
+            },
+            "denominators": {
+              "own_shells": 0,
+              "own_shells_landed": 0,
+              "own_shells_unresolved": 0,
+              "hits": 0,
+              "artillery_kills": 0,
+              "enemy_dodge_eligible": 0,
+              "enemy_dodge_launch_exposed": 0,
+              "enemy_dodge_censored": 0,
+              "gun_seconds": 0,
+              "idle_seconds": 0,
+              "multi_shell_volleys": 0,
+              "single_shell_volleys": 0,
+              "unassigned_own_artillery_damage": 0
+            },
+            "low_gun_behaviour": []
+          }
+        },
+        "paired": {},
+        "drills": {
+          "D1": {
+            "arms": {
+              "forcedP16+react": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              },
+              "forcedP16+react+central_sync": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              },
+              "forcedP16+react+battery_oscillator": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              }
+            },
+            "paired": {}
+          },
+          "V1D2": {
+            "arms": {
+              "forcedP16+react": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              },
+              "forcedP16+react+central_sync": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              },
+              "forcedP16+react+battery_oscillator": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              }
+            },
+            "paired": {}
+          }
+        },
+        "complete": false
+      },
+      "k2_r-1": {
+        "arms": {
+          "forcedP16+react": {
+            "n": 0,
+            "wins": 0,
+            "own_losses_on_wins": {
+              "n": 0,
+              "mean": null
+            },
+            "own_losses_on_nonwins": {
+              "n": 0,
+              "mean": null
+            },
+            "mechanism": {
+              "landing_spread_s": {
+                "n": 0,
+                "mean": null
+              },
+              "enemy_dodge_success": {
+                "n": 0,
+                "mean": null
+              },
+              "hits_per_own_shell": {
+                "n": 0,
+                "mean": null
+              },
+              "shells_per_kill": {
+                "n": 0,
+                "mean": null
+              },
+              "idle_seconds_per_gun": {
+                "n": 0,
+                "mean": null
+              },
+              "fired_shells_per_gun_minute": {
+                "n": 0,
+                "mean": null
+              }
+            },
+            "denominators": {
+              "own_shells": 0,
+              "own_shells_landed": 0,
+              "own_shells_unresolved": 0,
+              "hits": 0,
+              "artillery_kills": 0,
+              "enemy_dodge_eligible": 0,
+              "enemy_dodge_launch_exposed": 0,
+              "enemy_dodge_censored": 0,
+              "gun_seconds": 0,
+              "idle_seconds": 0,
+              "multi_shell_volleys": 0,
+              "single_shell_volleys": 0,
+              "unassigned_own_artillery_damage": 0
+            },
+            "low_gun_behaviour": []
+          },
+          "forcedP16+react+central_sync": {
+            "n": 0,
+            "wins": 0,
+            "own_losses_on_wins": {
+              "n": 0,
+              "mean": null
+            },
+            "own_losses_on_nonwins": {
+              "n": 0,
+              "mean": null
+            },
+            "mechanism": {
+              "landing_spread_s": {
+                "n": 0,
+                "mean": null
+              },
+              "enemy_dodge_success": {
+                "n": 0,
+                "mean": null
+              },
+              "hits_per_own_shell": {
+                "n": 0,
+                "mean": null
+              },
+              "shells_per_kill": {
+                "n": 0,
+                "mean": null
+              },
+              "idle_seconds_per_gun": {
+                "n": 0,
+                "mean": null
+              },
+              "fired_shells_per_gun_minute": {
+                "n": 0,
+                "mean": null
+              }
+            },
+            "denominators": {
+              "own_shells": 0,
+              "own_shells_landed": 0,
+              "own_shells_unresolved": 0,
+              "hits": 0,
+              "artillery_kills": 0,
+              "enemy_dodge_eligible": 0,
+              "enemy_dodge_launch_exposed": 0,
+              "enemy_dodge_censored": 0,
+              "gun_seconds": 0,
+              "idle_seconds": 0,
+              "multi_shell_volleys": 0,
+              "single_shell_volleys": 0,
+              "unassigned_own_artillery_damage": 0
+            },
+            "low_gun_behaviour": []
+          },
+          "forcedP16+react+battery_oscillator": {
+            "n": 0,
+            "wins": 0,
+            "own_losses_on_wins": {
+              "n": 0,
+              "mean": null
+            },
+            "own_losses_on_nonwins": {
+              "n": 0,
+              "mean": null
+            },
+            "mechanism": {
+              "landing_spread_s": {
+                "n": 0,
+                "mean": null
+              },
+              "enemy_dodge_success": {
+                "n": 0,
+                "mean": null
+              },
+              "hits_per_own_shell": {
+                "n": 0,
+                "mean": null
+              },
+              "shells_per_kill": {
+                "n": 0,
+                "mean": null
+              },
+              "idle_seconds_per_gun": {
+                "n": 0,
+                "mean": null
+              },
+              "fired_shells_per_gun_minute": {
+                "n": 0,
+                "mean": null
+              }
+            },
+            "denominators": {
+              "own_shells": 0,
+              "own_shells_landed": 0,
+              "own_shells_unresolved": 0,
+              "hits": 0,
+              "artillery_kills": 0,
+              "enemy_dodge_eligible": 0,
+              "enemy_dodge_launch_exposed": 0,
+              "enemy_dodge_censored": 0,
+              "gun_seconds": 0,
+              "idle_seconds": 0,
+              "multi_shell_volleys": 0,
+              "single_shell_volleys": 0,
+              "unassigned_own_artillery_damage": 0
+            },
+            "low_gun_behaviour": []
+          }
+        },
+        "paired": {},
+        "drills": {
+          "D1": {
+            "arms": {
+              "forcedP16+react": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              },
+              "forcedP16+react+central_sync": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              },
+              "forcedP16+react+battery_oscillator": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              }
+            },
+            "paired": {}
+          },
+          "V1D2": {
+            "arms": {
+              "forcedP16+react": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              },
+              "forcedP16+react+central_sync": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              },
+              "forcedP16+react+battery_oscillator": {
+                "n": 0,
+                "wins": 0,
+                "own_losses_on_wins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "own_losses_on_nonwins": {
+                  "n": 0,
+                  "mean": null
+                },
+                "mechanism": {
+                  "landing_spread_s": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "enemy_dodge_success": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "hits_per_own_shell": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "shells_per_kill": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "idle_seconds_per_gun": {
+                    "n": 0,
+                    "mean": null
+                  },
+                  "fired_shells_per_gun_minute": {
+                    "n": 0,
+                    "mean": null
+                  }
+                },
+                "denominators": {
+                  "own_shells": 0,
+                  "own_shells_landed": 0,
+                  "own_shells_unresolved": 0,
+                  "hits": 0,
+                  "artillery_kills": 0,
+                  "enemy_dodge_eligible": 0,
+                  "enemy_dodge_launch_exposed": 0,
+                  "enemy_dodge_censored": 0,
+                  "gun_seconds": 0,
+                  "idle_seconds": 0,
+                  "multi_shell_volleys": 0,
+                  "single_shell_volleys": 0,
+                  "unassigned_own_artillery_damage": 0
+                },
+                "low_gun_behaviour": []
+              }
+            },
+            "paired": {}
+          }
+        },
+        "complete": false
+      }
+    },
+    "declaration_sha256": "cbb32aec7034c02107d8f797245434c9dc759ce1b3b0e05e89b1265eff8fbb7a",
+    "pick": "One-time Claude choice on mechanism only; outcome has no grid search"
+  },
+  "outcomes": {
+    "50": {
+      "arms": {
+        "forcedP16+react": {
+          "n": 0,
+          "wins": 0,
+          "own_losses_on_wins": {
+            "n": 0,
+            "mean": null
+          },
+          "own_losses_on_nonwins": {
+            "n": 0,
+            "mean": null
+          },
+          "mechanism": {
+            "landing_spread_s": {
+              "n": 0,
+              "mean": null
+            },
+            "enemy_dodge_success": {
+              "n": 0,
+              "mean": null
+            },
+            "hits_per_own_shell": {
+              "n": 0,
+              "mean": null
+            },
+            "shells_per_kill": {
+              "n": 0,
+              "mean": null
+            },
+            "idle_seconds_per_gun": {
+              "n": 0,
+              "mean": null
+            },
+            "fired_shells_per_gun_minute": {
+              "n": 0,
+              "mean": null
+            }
+          },
+          "denominators": {
+            "own_shells": 0,
+            "own_shells_landed": 0,
+            "own_shells_unresolved": 0,
+            "hits": 0,
+            "artillery_kills": 0,
+            "enemy_dodge_eligible": 0,
+            "enemy_dodge_launch_exposed": 0,
+            "enemy_dodge_censored": 0,
+            "gun_seconds": 0,
+            "idle_seconds": 0,
+            "multi_shell_volleys": 0,
+            "single_shell_volleys": 0,
+            "unassigned_own_artillery_damage": 0
+          },
+          "low_gun_behaviour": []
+        },
+        "forcedP16+react+central_sync": {
+          "n": 0,
+          "wins": 0,
+          "own_losses_on_wins": {
+            "n": 0,
+            "mean": null
+          },
+          "own_losses_on_nonwins": {
+            "n": 0,
+            "mean": null
+          },
+          "mechanism": {
+            "landing_spread_s": {
+              "n": 0,
+              "mean": null
+            },
+            "enemy_dodge_success": {
+              "n": 0,
+              "mean": null
+            },
+            "hits_per_own_shell": {
+              "n": 0,
+              "mean": null
+            },
+            "shells_per_kill": {
+              "n": 0,
+              "mean": null
+            },
+            "idle_seconds_per_gun": {
+              "n": 0,
+              "mean": null
+            },
+            "fired_shells_per_gun_minute": {
+              "n": 0,
+              "mean": null
+            }
+          },
+          "denominators": {
+            "own_shells": 0,
+            "own_shells_landed": 0,
+            "own_shells_unresolved": 0,
+            "hits": 0,
+            "artillery_kills": 0,
+            "enemy_dodge_eligible": 0,
+            "enemy_dodge_launch_exposed": 0,
+            "enemy_dodge_censored": 0,
+            "gun_seconds": 0,
+            "idle_seconds": 0,
+            "multi_shell_volleys": 0,
+            "single_shell_volleys": 0,
+            "unassigned_own_artillery_damage": 0
+          },
+          "low_gun_behaviour": []
+        },
+        "forcedP16+react+battery_oscillator": {
+          "n": 0,
+          "wins": 0,
+          "own_losses_on_wins": {
+            "n": 0,
+            "mean": null
+          },
+          "own_losses_on_nonwins": {
+            "n": 0,
+            "mean": null
+          },
+          "mechanism": {
+            "landing_spread_s": {
+              "n": 0,
+              "mean": null
+            },
+            "enemy_dodge_success": {
+              "n": 0,
+              "mean": null
+            },
+            "hits_per_own_shell": {
+              "n": 0,
+              "mean": null
+            },
+            "shells_per_kill": {
+              "n": 0,
+              "mean": null
+            },
+            "idle_seconds_per_gun": {
+              "n": 0,
+              "mean": null
+            },
+            "fired_shells_per_gun_minute": {
+              "n": 0,
+              "mean": null
+            }
+          },
+          "denominators": {
+            "own_shells": 0,
+            "own_shells_landed": 0,
+            "own_shells_unresolved": 0,
+            "hits": 0,
+            "artillery_kills": 0,
+            "enemy_dodge_eligible": 0,
+            "enemy_dodge_launch_exposed": 0,
+            "enemy_dodge_censored": 0,
+            "gun_seconds": 0,
+            "idle_seconds": 0,
+            "multi_shell_volleys": 0,
+            "single_shell_volleys": 0,
+            "unassigned_own_artillery_damage": 0
+          },
+          "low_gun_behaviour": []
+        }
+      },
+      "paired": {},
+      "stage": "outcome",
+      "look": 50,
+      "complete": false,
+      "declaration_sha256": "cbb32aec7034c02107d8f797245434c9dc759ce1b3b0e05e89b1265eff8fbb7a",
+      "per_tactic": {}
+    },
+    "100": {
+      "arms": {
+        "forcedP16+react": {
+          "n": 0,
+          "wins": 0,
+          "own_losses_on_wins": {
+            "n": 0,
+            "mean": null
+          },
+          "own_losses_on_nonwins": {
+            "n": 0,
+            "mean": null
+          },
+          "mechanism": {
+            "landing_spread_s": {
+              "n": 0,
+              "mean": null
+            },
+            "enemy_dodge_success": {
+              "n": 0,
+              "mean": null
+            },
+            "hits_per_own_shell": {
+              "n": 0,
+              "mean": null
+            },
+            "shells_per_kill": {
+              "n": 0,
+              "mean": null
+            },
+            "idle_seconds_per_gun": {
+              "n": 0,
+              "mean": null
+            },
+            "fired_shells_per_gun_minute": {
+              "n": 0,
+              "mean": null
+            }
+          },
+          "denominators": {
+            "own_shells": 0,
+            "own_shells_landed": 0,
+            "own_shells_unresolved": 0,
+            "hits": 0,
+            "artillery_kills": 0,
+            "enemy_dodge_eligible": 0,
+            "enemy_dodge_launch_exposed": 0,
+            "enemy_dodge_censored": 0,
+            "gun_seconds": 0,
+            "idle_seconds": 0,
+            "multi_shell_volleys": 0,
+            "single_shell_volleys": 0,
+            "unassigned_own_artillery_damage": 0
+          },
+          "low_gun_behaviour": []
+        },
+        "forcedP16+react+central_sync": {
+          "n": 0,
+          "wins": 0,
+          "own_losses_on_wins": {
+            "n": 0,
+            "mean": null
+          },
+          "own_losses_on_nonwins": {
+            "n": 0,
+            "mean": null
+          },
+          "mechanism": {
+            "landing_spread_s": {
+              "n": 0,
+              "mean": null
+            },
+            "enemy_dodge_success": {
+              "n": 0,
+              "mean": null
+            },
+            "hits_per_own_shell": {
+              "n": 0,
+              "mean": null
+            },
+            "shells_per_kill": {
+              "n": 0,
+              "mean": null
+            },
+            "idle_seconds_per_gun": {
+              "n": 0,
+              "mean": null
+            },
+            "fired_shells_per_gun_minute": {
+              "n": 0,
+              "mean": null
+            }
+          },
+          "denominators": {
+            "own_shells": 0,
+            "own_shells_landed": 0,
+            "own_shells_unresolved": 0,
+            "hits": 0,
+            "artillery_kills": 0,
+            "enemy_dodge_eligible": 0,
+            "enemy_dodge_launch_exposed": 0,
+            "enemy_dodge_censored": 0,
+            "gun_seconds": 0,
+            "idle_seconds": 0,
+            "multi_shell_volleys": 0,
+            "single_shell_volleys": 0,
+            "unassigned_own_artillery_damage": 0
+          },
+          "low_gun_behaviour": []
+        },
+        "forcedP16+react+battery_oscillator": {
+          "n": 0,
+          "wins": 0,
+          "own_losses_on_wins": {
+            "n": 0,
+            "mean": null
+          },
+          "own_losses_on_nonwins": {
+            "n": 0,
+            "mean": null
+          },
+          "mechanism": {
+            "landing_spread_s": {
+              "n": 0,
+              "mean": null
+            },
+            "enemy_dodge_success": {
+              "n": 0,
+              "mean": null
+            },
+            "hits_per_own_shell": {
+              "n": 0,
+              "mean": null
+            },
+            "shells_per_kill": {
+              "n": 0,
+              "mean": null
+            },
+            "idle_seconds_per_gun": {
+              "n": 0,
+              "mean": null
+            },
+            "fired_shells_per_gun_minute": {
+              "n": 0,
+              "mean": null
+            }
+          },
+          "denominators": {
+            "own_shells": 0,
+            "own_shells_landed": 0,
+            "own_shells_unresolved": 0,
+            "hits": 0,
+            "artillery_kills": 0,
+            "enemy_dodge_eligible": 0,
+            "enemy_dodge_launch_exposed": 0,
+            "enemy_dodge_censored": 0,
+            "gun_seconds": 0,
+            "idle_seconds": 0,
+            "multi_shell_volleys": 0,
+            "single_shell_volleys": 0,
+            "unassigned_own_artillery_damage": 0
+          },
+          "low_gun_behaviour": []
+        }
+      },
+      "paired": {},
+      "stage": "outcome",
+      "look": 100,
+      "complete": false,
+      "declaration_sha256": "cbb32aec7034c02107d8f797245434c9dc759ce1b3b0e05e89b1265eff8fbb7a",
+      "per_tactic": {}
+    },
+    "200": {
+      "arms": {
+        "forcedP16+react": {
+          "n": 0,
+          "wins": 0,
+          "own_losses_on_wins": {
+            "n": 0,
+            "mean": null
+          },
+          "own_losses_on_nonwins": {
+            "n": 0,
+            "mean": null
+          },
+          "mechanism": {
+            "landing_spread_s": {
+              "n": 0,
+              "mean": null
+            },
+            "enemy_dodge_success": {
+              "n": 0,
+              "mean": null
+            },
+            "hits_per_own_shell": {
+              "n": 0,
+              "mean": null
+            },
+            "shells_per_kill": {
+              "n": 0,
+              "mean": null
+            },
+            "idle_seconds_per_gun": {
+              "n": 0,
+              "mean": null
+            },
+            "fired_shells_per_gun_minute": {
+              "n": 0,
+              "mean": null
+            }
+          },
+          "denominators": {
+            "own_shells": 0,
+            "own_shells_landed": 0,
+            "own_shells_unresolved": 0,
+            "hits": 0,
+            "artillery_kills": 0,
+            "enemy_dodge_eligible": 0,
+            "enemy_dodge_launch_exposed": 0,
+            "enemy_dodge_censored": 0,
+            "gun_seconds": 0,
+            "idle_seconds": 0,
+            "multi_shell_volleys": 0,
+            "single_shell_volleys": 0,
+            "unassigned_own_artillery_damage": 0
+          },
+          "low_gun_behaviour": []
+        },
+        "forcedP16+react+central_sync": {
+          "n": 0,
+          "wins": 0,
+          "own_losses_on_wins": {
+            "n": 0,
+            "mean": null
+          },
+          "own_losses_on_nonwins": {
+            "n": 0,
+            "mean": null
+          },
+          "mechanism": {
+            "landing_spread_s": {
+              "n": 0,
+              "mean": null
+            },
+            "enemy_dodge_success": {
+              "n": 0,
+              "mean": null
+            },
+            "hits_per_own_shell": {
+              "n": 0,
+              "mean": null
+            },
+            "shells_per_kill": {
+              "n": 0,
+              "mean": null
+            },
+            "idle_seconds_per_gun": {
+              "n": 0,
+              "mean": null
+            },
+            "fired_shells_per_gun_minute": {
+              "n": 0,
+              "mean": null
+            }
+          },
+          "denominators": {
+            "own_shells": 0,
+            "own_shells_landed": 0,
+            "own_shells_unresolved": 0,
+            "hits": 0,
+            "artillery_kills": 0,
+            "enemy_dodge_eligible": 0,
+            "enemy_dodge_launch_exposed": 0,
+            "enemy_dodge_censored": 0,
+            "gun_seconds": 0,
+            "idle_seconds": 0,
+            "multi_shell_volleys": 0,
+            "single_shell_volleys": 0,
+            "unassigned_own_artillery_damage": 0
+          },
+          "low_gun_behaviour": []
+        },
+        "forcedP16+react+battery_oscillator": {
+          "n": 0,
+          "wins": 0,
+          "own_losses_on_wins": {
+            "n": 0,
+            "mean": null
+          },
+          "own_losses_on_nonwins": {
+            "n": 0,
+            "mean": null
+          },
+          "mechanism": {
+            "landing_spread_s": {
+              "n": 0,
+              "mean": null
+            },
+            "enemy_dodge_success": {
+              "n": 0,
+              "mean": null
+            },
+            "hits_per_own_shell": {
+              "n": 0,
+              "mean": null
+            },
+            "shells_per_kill": {
+              "n": 0,
+              "mean": null
+            },
+            "idle_seconds_per_gun": {
+              "n": 0,
+              "mean": null
+            },
+            "fired_shells_per_gun_minute": {
+              "n": 0,
+              "mean": null
+            }
+          },
+          "denominators": {
+            "own_shells": 0,
+            "own_shells_landed": 0,
+            "own_shells_unresolved": 0,
+            "hits": 0,
+            "artillery_kills": 0,
+            "enemy_dodge_eligible": 0,
+            "enemy_dodge_launch_exposed": 0,
+            "enemy_dodge_censored": 0,
+            "gun_seconds": 0,
+            "idle_seconds": 0,
+            "multi_shell_volleys": 0,
+            "single_shell_volleys": 0,
+            "unassigned_own_artillery_damage": 0
+          },
+          "low_gun_behaviour": []
+        }
+      },
+      "paired": {},
+      "stage": "outcome",
+      "look": 200,
+      "complete": false,
+      "declaration_sha256": "cbb32aec7034c02107d8f797245434c9dc759ce1b3b0e05e89b1265eff8fbb7a",
+      "per_tactic": {}
+    }
+  },
+  "series": {
+    "complete": false,
+    "primary": "streak",
+    "series": [],
+    "arms": {
+      "forcedP16+react": {
+        "n_series": 0,
+        "mean_streak": {
+          "n": 0,
+          "mean": null
+        },
+        "streak_distribution": {},
+        "reach": [
+          {
+            "fight": 1,
+            "n": 0,
+            "denominator": 0,
+            "roles_before": {
+              "melee": {
+                "n": 0,
+                "mean": null
+              },
+              "ranged": {
+                "n": 0,
+                "mean": null
+              },
+              "artillery": {
+                "n": 0,
+                "mean": null
+              }
+            }
+          },
+          {
+            "fight": 2,
+            "n": 0,
+            "denominator": 0,
+            "roles_before": {
+              "melee": {
+                "n": 0,
+                "mean": null
+              },
+              "ranged": {
+                "n": 0,
+                "mean": null
+              },
+              "artillery": {
+                "n": 0,
+                "mean": null
+              }
+            }
+          },
+          {
+            "fight": 3,
+            "n": 0,
+            "denominator": 0,
+            "roles_before": {
+              "melee": {
+                "n": 0,
+                "mean": null
+              },
+              "ranged": {
+                "n": 0,
+                "mean": null
+              },
+              "artillery": {
+                "n": 0,
+                "mean": null
+              }
+            }
+          },
+          {
+            "fight": 4,
+            "n": 0,
+            "denominator": 0,
+            "roles_before": {
+              "melee": {
+                "n": 0,
+                "mean": null
+              },
+              "ranged": {
+                "n": 0,
+                "mean": null
+              },
+              "artillery": {
+                "n": 0,
+                "mean": null
+              }
+            }
+          },
+          {
+            "fight": 5,
+            "n": 0,
+            "denominator": 0,
+            "roles_before": {
+              "melee": {
+                "n": 0,
+                "mean": null
+              },
+              "ranged": {
+                "n": 0,
+                "mean": null
+              },
+              "artillery": {
+                "n": 0,
+                "mean": null
+              }
+            }
+          },
+          {
+            "fight": 6,
+            "n": 0,
+            "denominator": 0,
+            "roles_before": {
+              "melee": {
+                "n": 0,
+                "mean": null
+              },
+              "ranged": {
+                "n": 0,
+                "mean": null
+              },
+              "artillery": {
+                "n": 0,
+                "mean": null
+              }
+            }
+          },
+          {
+            "fight": 7,
+            "n": 0,
+            "denominator": 0,
+            "roles_before": {
+              "melee": {
+                "n": 0,
+                "mean": null
+              },
+              "ranged": {
+                "n": 0,
+                "mean": null
+              },
+              "artillery": {
+                "n": 0,
+                "mean": null
+              }
+            }
+          },
+          {
+            "fight": 8,
+            "n": 0,
+            "denominator": 0,
+            "roles_before": {
+              "melee": {
+                "n": 0,
+                "mean": null
+              },
+              "ranged": {
+                "n": 0,
+                "mean": null
+              },
+              "artillery": {
+                "n": 0,
+                "mean": null
+              }
+            }
+          },
+          {
+            "fight": 9,
+            "n": 0,
+            "denominator": 0,
+            "roles_before": {
+              "melee": {
+                "n": 0,
+                "mean": null
+              },
+              "ranged": {
+                "n": 0,
+                "mean": null
+              },
+              "artillery": {
+                "n": 0,
+                "mean": null
+              }
+            }
+          },
+          {
+            "fight": 10,
+            "n": 0,
+            "denominator": 0,
+            "roles_before": {
+              "melee": {
+                "n": 0,
+                "mean": null
+              },
+              "ranged": {
+                "n": 0,
+                "mean": null
+              },
+              "artillery": {
+                "n": 0,
+                "mean": null
+              }
+            }
+          }
+        ],
+        "fights": {
+          "n": 0,
+          "wins": 0,
+          "own_losses_on_wins": {
+            "n": 0,
+            "mean": null
+          },
+          "own_losses_on_nonwins": {
+            "n": 0,
+            "mean": null
+          },
+          "mechanism": {
+            "landing_spread_s": {
+              "n": 0,
+              "mean": null
+            },
+            "enemy_dodge_success": {
+              "n": 0,
+              "mean": null
+            },
+            "hits_per_own_shell": {
+              "n": 0,
+              "mean": null
+            },
+            "shells_per_kill": {
+              "n": 0,
+              "mean": null
+            },
+            "idle_seconds_per_gun": {
+              "n": 0,
+              "mean": null
+            },
+            "fired_shells_per_gun_minute": {
+              "n": 0,
+              "mean": null
+            }
+          },
+          "denominators": {
+            "own_shells": 0,
+            "own_shells_landed": 0,
+            "own_shells_unresolved": 0,
+            "hits": 0,
+            "artillery_kills": 0,
+            "enemy_dodge_eligible": 0,
+            "enemy_dodge_launch_exposed": 0,
+            "enemy_dodge_censored": 0,
+            "gun_seconds": 0,
+            "idle_seconds": 0,
+            "multi_shell_volleys": 0,
+            "single_shell_volleys": 0,
+            "unassigned_own_artillery_damage": 0
+          },
+          "low_gun_behaviour": []
+        },
+        "per_tactic": {}
+      },
+      "forcedP16+react+central_sync": {
+        "n_series": 0,
+        "mean_streak": {
+          "n": 0,
+          "mean": null
+        },
+        "streak_distribution": {},
+        "reach": [
+          {
+            "fight": 1,
+            "n": 0,
+            "denominator": 0,
+            "roles_before": {
+              "melee": {
+                "n": 0,
+                "mean": null
+              },
+              "ranged": {
+                "n": 0,
+                "mean": null
+              },
+              "artillery": {
+                "n": 0,
+                "mean": null
+              }
+            }
+          },
+          {
+            "fight": 2,
+            "n": 0,
+            "denominator": 0,
+            "roles_before": {
+              "melee": {
+                "n": 0,
+                "mean": null
+              },
+              "ranged": {
+                "n": 0,
+                "mean": null
+              },
+              "artillery": {
+                "n": 0,
+                "mean": null
+              }
+            }
+          },
+          {
+            "fight": 3,
+            "n": 0,
+            "denominator": 0,
+            "roles_before": {
+              "melee": {
+                "n": 0,
+                "mean": null
+              },
+              "ranged": {
+                "n": 0,
+                "mean": null
+              },
+              "artillery": {
+                "n": 0,
+                "mean": null
+              }
+            }
+          },
+          {
+            "fight": 4,
+            "n": 0,
+            "denominator": 0,
+            "roles_before": {
+              "melee": {
+                "n": 0,
+                "mean": null
+              },
+              "ranged": {
+                "n": 0,
+                "mean": null
+              },
+              "artillery": {
+                "n": 0,
+                "mean": null
+              }
+            }
+          },
+          {
+            "fight": 5,
+            "n": 0,
+            "denominator": 0,
+            "roles_before": {
+              "melee": {
+                "n": 0,
+                "mean": null
+              },
+              "ranged": {
+                "n": 0,
+                "mean": null
+              },
+              "artillery": {
+                "n": 0,
+                "mean": null
+              }
+            }
+          },
+          {
+            "fight": 6,
+            "n": 0,
+            "denominator": 0,
+            "roles_before": {
+              "melee": {
+                "n": 0,
+                "mean": null
+              },
+              "ranged": {
+                "n": 0,
+                "mean": null
+              },
+              "artillery": {
+                "n": 0,
+                "mean": null
+              }
+            }
+          },
+          {
+            "fight": 7,
+            "n": 0,
+            "denominator": 0,
+            "roles_before": {
+              "melee": {
+                "n": 0,
+                "mean": null
+              },
+              "ranged": {
+                "n": 0,
+                "mean": null
+              },
+              "artillery": {
+                "n": 0,
+                "mean": null
+              }
+            }
+          },
+          {
+            "fight": 8,
+            "n": 0,
+            "denominator": 0,
+            "roles_before": {
+              "melee": {
+                "n": 0,
+                "mean": null
+              },
+              "ranged": {
+                "n": 0,
+                "mean": null
+              },
+              "artillery": {
+                "n": 0,
+                "mean": null
+              }
+            }
+          },
+          {
+            "fight": 9,
+            "n": 0,
+            "denominator": 0,
+            "roles_before": {
+              "melee": {
+                "n": 0,
+                "mean": null
+              },
+              "ranged": {
+                "n": 0,
+                "mean": null
+              },
+              "artillery": {
+                "n": 0,
+                "mean": null
+              }
+            }
+          },
+          {
+            "fight": 10,
+            "n": 0,
+            "denominator": 0,
+            "roles_before": {
+              "melee": {
+                "n": 0,
+                "mean": null
+              },
+              "ranged": {
+                "n": 0,
+                "mean": null
+              },
+              "artillery": {
+                "n": 0,
+                "mean": null
+              }
+            }
+          }
+        ],
+        "fights": {
+          "n": 0,
+          "wins": 0,
+          "own_losses_on_wins": {
+            "n": 0,
+            "mean": null
+          },
+          "own_losses_on_nonwins": {
+            "n": 0,
+            "mean": null
+          },
+          "mechanism": {
+            "landing_spread_s": {
+              "n": 0,
+              "mean": null
+            },
+            "enemy_dodge_success": {
+              "n": 0,
+              "mean": null
+            },
+            "hits_per_own_shell": {
+              "n": 0,
+              "mean": null
+            },
+            "shells_per_kill": {
+              "n": 0,
+              "mean": null
+            },
+            "idle_seconds_per_gun": {
+              "n": 0,
+              "mean": null
+            },
+            "fired_shells_per_gun_minute": {
+              "n": 0,
+              "mean": null
+            }
+          },
+          "denominators": {
+            "own_shells": 0,
+            "own_shells_landed": 0,
+            "own_shells_unresolved": 0,
+            "hits": 0,
+            "artillery_kills": 0,
+            "enemy_dodge_eligible": 0,
+            "enemy_dodge_launch_exposed": 0,
+            "enemy_dodge_censored": 0,
+            "gun_seconds": 0,
+            "idle_seconds": 0,
+            "multi_shell_volleys": 0,
+            "single_shell_volleys": 0,
+            "unassigned_own_artillery_damage": 0
+          },
+          "low_gun_behaviour": []
+        },
+        "per_tactic": {}
+      },
+      "forcedP16+react+battery_oscillator": {
+        "n_series": 0,
+        "mean_streak": {
+          "n": 0,
+          "mean": null
+        },
+        "streak_distribution": {},
+        "reach": [
+          {
+            "fight": 1,
+            "n": 0,
+            "denominator": 0,
+            "roles_before": {
+              "melee": {
+                "n": 0,
+                "mean": null
+              },
+              "ranged": {
+                "n": 0,
+                "mean": null
+              },
+              "artillery": {
+                "n": 0,
+                "mean": null
+              }
+            }
+          },
+          {
+            "fight": 2,
+            "n": 0,
+            "denominator": 0,
+            "roles_before": {
+              "melee": {
+                "n": 0,
+                "mean": null
+              },
+              "ranged": {
+                "n": 0,
+                "mean": null
+              },
+              "artillery": {
+                "n": 0,
+                "mean": null
+              }
+            }
+          },
+          {
+            "fight": 3,
+            "n": 0,
+            "denominator": 0,
+            "roles_before": {
+              "melee": {
+                "n": 0,
+                "mean": null
+              },
+              "ranged": {
+                "n": 0,
+                "mean": null
+              },
+              "artillery": {
+                "n": 0,
+                "mean": null
+              }
+            }
+          },
+          {
+            "fight": 4,
+            "n": 0,
+            "denominator": 0,
+            "roles_before": {
+              "melee": {
+                "n": 0,
+                "mean": null
+              },
+              "ranged": {
+                "n": 0,
+                "mean": null
+              },
+              "artillery": {
+                "n": 0,
+                "mean": null
+              }
+            }
+          },
+          {
+            "fight": 5,
+            "n": 0,
+            "denominator": 0,
+            "roles_before": {
+              "melee": {
+                "n": 0,
+                "mean": null
+              },
+              "ranged": {
+                "n": 0,
+                "mean": null
+              },
+              "artillery": {
+                "n": 0,
+                "mean": null
+              }
+            }
+          },
+          {
+            "fight": 6,
+            "n": 0,
+            "denominator": 0,
+            "roles_before": {
+              "melee": {
+                "n": 0,
+                "mean": null
+              },
+              "ranged": {
+                "n": 0,
+                "mean": null
+              },
+              "artillery": {
+                "n": 0,
+                "mean": null
+              }
+            }
+          },
+          {
+            "fight": 7,
+            "n": 0,
+            "denominator": 0,
+            "roles_before": {
+              "melee": {
+                "n": 0,
+                "mean": null
+              },
+              "ranged": {
+                "n": 0,
+                "mean": null
+              },
+              "artillery": {
+                "n": 0,
+                "mean": null
+              }
+            }
+          },
+          {
+            "fight": 8,
+            "n": 0,
+            "denominator": 0,
+            "roles_before": {
+              "melee": {
+                "n": 0,
+                "mean": null
+              },
+              "ranged": {
+                "n": 0,
+                "mean": null
+              },
+              "artillery": {
+                "n": 0,
+                "mean": null
+              }
+            }
+          },
+          {
+            "fight": 9,
+            "n": 0,
+            "denominator": 0,
+            "roles_before": {
+              "melee": {
+                "n": 0,
+                "mean": null
+              },
+              "ranged": {
+                "n": 0,
+                "mean": null
+              },
+              "artillery": {
+                "n": 0,
+                "mean": null
+              }
+            }
+          },
+          {
+            "fight": 10,
+            "n": 0,
+            "denominator": 0,
+            "roles_before": {
+              "melee": {
+                "n": 0,
+                "mean": null
+              },
+              "ranged": {
+                "n": 0,
+                "mean": null
+              },
+              "artillery": {
+                "n": 0,
+                "mean": null
+              }
+            }
+          }
+        ],
+        "fights": {
+          "n": 0,
+          "wins": 0,
+          "own_losses_on_wins": {
+            "n": 0,
+            "mean": null
+          },
+          "own_losses_on_nonwins": {
+            "n": 0,
+            "mean": null
+          },
+          "mechanism": {
+            "landing_spread_s": {
+              "n": 0,
+              "mean": null
+            },
+            "enemy_dodge_success": {
+              "n": 0,
+              "mean": null
+            },
+            "hits_per_own_shell": {
+              "n": 0,
+              "mean": null
+            },
+            "shells_per_kill": {
+              "n": 0,
+              "mean": null
+            },
+            "idle_seconds_per_gun": {
+              "n": 0,
+              "mean": null
+            },
+            "fired_shells_per_gun_minute": {
+              "n": 0,
+              "mean": null
+            }
+          },
+          "denominators": {
+            "own_shells": 0,
+            "own_shells_landed": 0,
+            "own_shells_unresolved": 0,
+            "hits": 0,
+            "artillery_kills": 0,
+            "enemy_dodge_eligible": 0,
+            "enemy_dodge_launch_exposed": 0,
+            "enemy_dodge_censored": 0,
+            "gun_seconds": 0,
+            "idle_seconds": 0,
+            "multi_shell_volleys": 0,
+            "single_shell_volleys": 0,
+            "unassigned_own_artillery_damage": 0
+          },
+          "low_gun_behaviour": []
+        },
+        "per_tactic": {}
+      }
+    },
+    "paired_streak_difference": {
+      "forcedP16+react+central_sync minus forcedP16+react": {
+        "n": 0,
+        "mean": null
+      },
+      "forcedP16+react+battery_oscillator minus forcedP16+react": {
+        "n": 0,
+        "mean": null
+      },
+      "forcedP16+react+battery_oscillator minus forcedP16+react+central_sync": {
+        "n": 0,
+        "mean": null
+      }
+    },
+    "paired_reached_fights": {},
+    "reached_limit": "Only jointly reached positions; carried cohorts differ and conditioning on survival is descriptive."
+  },
+  "pick": null,
+  "reading": [
+    "RRG earns this job: c clearly better than a on mechanism and outcome, not clearly worse than b",
+    "The script is better: b clearly better than c",
+    "Otherwise: no difference at this size; park"
+  ]
+}
+```

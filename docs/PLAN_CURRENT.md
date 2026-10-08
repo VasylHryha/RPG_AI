@@ -213,3 +213,22 @@ verified. Live process gate deferred to Claude's host execution. `.git` read-onl
 new v4 files uncommitted; inventory in DELIVERY.json. This plan append remains
 unstaged and is excluded from the delivery commit. Claude's stage commands and
 stop/continue read gates are in v4 README.md. V1-v3/adapter inputs unchanged.
+
+**B10 Amendment 7 V1 battery lab v5 preparation (Codex, 2026-10-08):** PREPARED,
+no fights, in `evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/`.
+Three timing-only forcedP16+react arms: base script; copied engine fireGate /
+smartVolley plus coreStep waves script; local coupled battery oscillator. Grid
+k={.5,1,2}, R_c={200,400,infinity}, twenty paired mechanism draws per candidate,
+shared baselines (220 actual future mechanism fights), explicit 1/2-gun drills,
+one immutable mechanism-only pick before C3 50/100/200 and ten paired series.
+Separate Codex owner verbatim recheck COMPLETE, PASS_WITH_NOTES
+(`OWNER_RECHECK.md`), five findings fixed plus a collection-syntax addendum.
+Disposition in `DISPOSITION.md`. Final native build 21.275 s; focused batch
+20 PASS (native143+469 assertions), no coreStep/fights. Collection and scratch
+setup interruptions preserved separately; successful seven checks not repeated,
+remaining thirteen resumed without source changes. Prepared320 unique draws,
+zero known prior seed overlap, sealed identities PASS. Same10800 s cap and
+repository-scoped gate; live discovery UNAVAILABLE in sandbox, host CLEAR
+required before fights. No pick/calibration/outcome reading. V1–v4 and adapter
+unchanged. .git read-only: new v5 files uncommitted; inventory DELIVERY.json.
+This tracking append must remain unstaged and is excluded from delivery scope.

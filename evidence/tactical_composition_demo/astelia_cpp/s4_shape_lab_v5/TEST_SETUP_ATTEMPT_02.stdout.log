@@ -1,0 +1,20 @@
+.......E
+==================================== ERRORS ====================================
+_ ERROR at setup of test_mechanism_denominators_spread_idle_and_low_gun_intervals _
+
+self = PosixPath('/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/.pytest_cache/test_tmp')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+>           self._accessor.mkdir(self, mode)
+E           FileNotFoundError: [Errno 2] No such file or directory: '/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/.pytest_cache/test_tmp'
+
+/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/pathlib.py:1313: FileNotFoundError
+=========================== short test summary info ============================
+ERROR evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/test_lab.py::test_mechanism_denominators_spread_idle_and_low_gun_intervals
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+7 passed, 1 error in 0.86s

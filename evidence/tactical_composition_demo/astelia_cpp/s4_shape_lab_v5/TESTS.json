@@ -1,0 +1,21 @@
+{
+  "status": "PASS",
+  "seconds": 0.591405833,
+  "command": [
+    ".venv/bin/python",
+    "-B",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/test_lab.py",
+    "--basetemp=evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/.pytest_cache/test_tmp",
+    "-k",
+    "not native_unit_fixtures_and_request_construction and not arms_paired_world_and_heavy_diagnostics_off and not grid_declared_and_requests_reject_extra_knobs and not series_heals_survivors_and_preserves_pair_draws and not native_overlay_seams_and_light_streams"
+  ],
+  "returncode": 0,
+  "fights": 0,
+  "previous_successful_tests": 7,
+  "resume": "Only tests not previously passed; missing basetemp parent repaired, source unchanged",
+  "prior_setup_receipt": "TEST_SETUP_ATTEMPT_02.json"
+}

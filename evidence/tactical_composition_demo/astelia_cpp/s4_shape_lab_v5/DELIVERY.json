@@ -1,0 +1,419 @@
+{
+  "status": "PREPARED_NO_FIGHTS_UNCOMMITTED",
+  "fights": 0,
+  "commit": "Not attempted: .git read-only in session",
+  "required_provenance_trailer": "Assisted-by: Codex:GPT-6",
+  "commit_scope": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5",
+  "excluded_from_staging": [
+    "docs/PLAN_CURRENT.md",
+    "build/",
+    "raw/",
+    ".pytest_cache/"
+  ],
+  "source_change_note": "V1-v4 and adapter untouched; only new v5 delivery plus unstaged mandatory plan tracking",
+  "tests": {
+    "passed": 20,
+    "native_assertions": 612,
+    "setup_interruption_preserved": true,
+    "successful_checks_not_repeated": true
+  },
+  "review": "PASS_WITH_NOTES; separate Codex static and final evidence review",
+  "prepared_draws": 320,
+  "prior_seed_overlap": 0,
+  "cap_seconds": 10800,
+  "mechanism_grid_fights_declared": 220,
+  "files": [
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/.gitignore",
+      "sha256": "eafb1b84bf0a870ad62c6084323d4a01f7d3dd0c0e274c748fb23fe4e5b806fb",
+      "bytes": 44
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/ADAPTER_FIXTURE.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/ADAPTER_FIXTURE.stdout.log",
+      "sha256": "b643efd7cfb6c3d1c2100cf61cf609aedfa19f9e400e14ba61de5a2981b58bfe",
+      "bytes": 116
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/BATTERY_FIXTURE.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/BATTERY_FIXTURE.stdout.log",
+      "sha256": "c5368169149b9f63af1e58cc5c995e01c7e2bf3c205658bde018c2d4f17084eb",
+      "bytes": 46
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/BUILD.json",
+      "sha256": "09fa50167b227a2591cd1952f0606b1d8b795222f4cd06894a9227b303e58ce1",
+      "bytes": 40083
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/BUILD.stderr.log",
+      "sha256": "0462428d501b6edc16fb83d3f4e89d3ebd0cef583e278324382b7f31b3157276",
+      "bytes": 817
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/BUILD.stdout.log",
+      "sha256": "09fa50167b227a2591cd1952f0606b1d8b795222f4cd06894a9227b303e58ce1",
+      "bytes": 40083
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/BUILD_ATTEMPT_01.stderr.log",
+      "sha256": "0462428d501b6edc16fb83d3f4e89d3ebd0cef583e278324382b7f31b3157276",
+      "bytes": 817
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/BUILD_ATTEMPT_01.stdout.log",
+      "sha256": "cf59e9a424ed7e7599073c551bef5c6d9fb0a726f681453e018ea406e000e45b",
+      "bytes": 40089
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/CENTRAL_STATES.json",
+      "sha256": "1437d753d8dad25d1be43e7b8afec4aebe44b77467010db8d64eb6077218d671",
+      "bytes": 1062
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/DECLARATION.json",
+      "sha256": "cbb32aec7034c02107d8f797245434c9dc759ce1b3b0e05e89b1265eff8fbb7a",
+      "bytes": 30245
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/DISPOSITION.md",
+      "sha256": "20b53db229f993944dcf230dccd7b77b5e645cca47bbcccf311f6fa8d58cb7db",
+      "bytes": 2058
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/NATIVE_FIXTURES.json",
+      "sha256": "607614e5f31c30bc5e268ac46cc962d33015c29fd64fc307e621ef7c17e66f9e",
+      "bytes": 284
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/OBSERVATIONS.json",
+      "sha256": "ca64ca6b36f36782b56e89a4509ea60aa257d280982c6e310f9d76c0d7823c19",
+      "bytes": 175554
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/OWNER_RECHECK.md",
+      "sha256": "274b887d5316c76644bed8e731fd637d4869621d46928b1b5f88237b7479eca2",
+      "bytes": 9851
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/PREPARE.json",
+      "sha256": "76afbe59a7d0c39353c86f47a6c21f551bbeb298245d2cb012b0ad060949da6e",
+      "bytes": 434
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/PREPARE.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/PREPARE.stdout.log",
+      "sha256": "c9afdb813b7b26e58767656fb6521234f6d235c69eaddd8744c9c352bbe4e6ee",
+      "bytes": 25
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/PREPARE_VERIFICATION.json",
+      "sha256": "9105446e4608d6a4bcd27239b646f4288d947becedb4be6ddf1ec12172c2305c",
+      "bytes": 677
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/PROCESS_GATE.json",
+      "sha256": "f2294f66073bf300b62b9b96aa0e15c9595512c7ac0d13ca7e9fd04737e2f2d0",
+      "bytes": 459
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/README.md",
+      "sha256": "42855166394cc78f2fca70280841554ea87777fe96d8c9082bb1b051a2f69ef0",
+      "bytes": 7947
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/REPLAY_INDEX.json",
+      "sha256": "c8f96f9beab1b4161768ad23f297531a6f766d43fc0a9fab89ab891f12c450be",
+      "bytes": 90
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/REPORT.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/REPORT.stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/SHAPE_LAB_REPORT.md",
+      "sha256": "662091b948e21216d58d4908d61dd88f7ad39d45c3a4a914c5181077d36e9145",
+      "bytes": 176565
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/TESTS.json",
+      "sha256": "71e4c0464d9ec875bb6e2fb4affc377592280a4548024c3de9de2a32ef3f7074",
+      "bytes": 831
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/TESTS.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/TESTS.stdout.log",
+      "sha256": "439cd345b30b1a1a647de9dd4e27174a0a32f471d87f07e6fba48c8244ea7cc7",
+      "bytes": 113
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/TEST_COLLECTION_ATTEMPT_01.json",
+      "sha256": "26cc015cce71f79b917348a477da6703d7b268d16cc4f0dd5ccffa4a60341461",
+      "bytes": 366
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/TEST_COLLECTION_ATTEMPT_01.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/TEST_COLLECTION_ATTEMPT_01.stdout.log",
+      "sha256": "b537295a8f4a276c0026ce4ad6aa77a0eaa7a651c10522531f128538a36dd1e5",
+      "bytes": 2753
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/TEST_SETUP_ATTEMPT_02.json",
+      "sha256": "4c0496fedd10b3d11e8e6a6e376321b86a7658d386ef5389969e0e17d98c9ef8",
+      "bytes": 366
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/TEST_SETUP_ATTEMPT_02.stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/TEST_SETUP_ATTEMPT_02.stdout.log",
+      "sha256": "eced37fad2e364323db4672896f24215b1cbf084bf89e3447bf1a88af6ac20ac",
+      "bytes": 1224
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/build.py",
+      "sha256": "7b9b7fd886ac88c2b58be6e6f8ef88892c34f7da1b6c48a1914042ec319004da",
+      "bytes": 7299
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/fixture.cpp",
+      "sha256": "24eb8a40838a9220980a98ab1d6510ace4d3d49810cdde8159aa59c3c604c131",
+      "bytes": 6901
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/lab.py",
+      "sha256": "1a021e901144d005583131ed3233340160854e4020a65bb2b84316f071845baf",
+      "bytes": 37191
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/metrics.py",
+      "sha256": "d30a591cfa2bcd421ddbbe53419ff839cebfd7e6a26e26a740f857411980ba90",
+      "bytes": 6916
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/replays.py",
+      "sha256": "5ff222a07bec888aded30bceab0dbec817c6264508f51c2bf4c529f04d42495d",
+      "bytes": 4368
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/report.py",
+      "sha256": "c41523d797a6c3cbb20ca1c1001bdedfecb29da25de2f868b87bd3689527234a",
+      "bytes": 5416
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/requests.py",
+      "sha256": "0b32d169d720d8d3b5bb1a17a24b220beff8152cf621c792034a24cd69d26dcc",
+      "bytes": 2019
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/test_lab.py",
+      "sha256": "d65c2220bf44662622131fcdcb95c1fd1cb27938d4c8ca6d4895e965e1d27769",
+      "bytes": 13038
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/timing.cpp",
+      "sha256": "4d7fe035b7965e7f6d67ab14246f9e91fb612402c4b3f9e23ff32ad57cf025ca",
+      "bytes": 9813
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/timing.h",
+      "sha256": "985ffab8edbcc2c50e838adbd099212e90037bc8f8183fc476ba03040507eaf4",
+      "bytes": 1601
+    }
+  ],
+  "ignored_local_runtime": [
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/build/adapter_fixture",
+      "sha256": "06761a486bac047a287a0e6374b8342e0494d79ffee82317b0e69a9a96f7f298",
+      "bytes": 1283456
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/build/adapter_fixture.build.json",
+      "sha256": "d039b117e3724d32bbbcaab3e36d089f6e610e12a117d6be9c2598b5b491c863",
+      "bytes": 56093
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/build/adapter_fixture.cpp",
+      "sha256": "4b2c657883a5b337557ce870ce6143a21bae7d06952991356042a6927f21e81f",
+      "bytes": 12933
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/build/adapter_fixture.o",
+      "sha256": "4428d3b9b3f2537051e41dfb3a080fee711e5faa533ff22387cecea35d196f30",
+      "bytes": 178248
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/build/admitted_overlay_0.o",
+      "sha256": "4226fe4ffdffe043a8f82a5e4afda5d37ff5ba25fdf09ad1eddab1c64948d4af",
+      "bytes": 36560
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/build/admitted_overlay_1.o",
+      "sha256": "117b9340487a0147418651d5b494745121a10a0d005bd7ab7bf2a1f17eecc0a6",
+      "bytes": 42680
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/build/admitted_overlay_2.o",
+      "sha256": "96885ee23accd2079b013c34783be5da332ca2cfebee1fadba3542834317edb5",
+      "bytes": 38592
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/build/admitted_overlay_3.o",
+      "sha256": "9afbb799608a676ae31ef2af4832e45bc22584f2a76081ca8d392cf2144c2e54",
+      "bytes": 57048
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/build/admitted_overlay_4.o",
+      "sha256": "23719efc59edbe55fe7d43a1ccecb2872c7982b1f0b7e9a9e1f3c36ed1625f1f",
+      "bytes": 54192
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/build/battery_fixture",
+      "sha256": "b9a125c5f001c779f642e50de06e962efd754ad4c8fd02a567c7af186f3cda69",
+      "bytes": 1282064
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/build/battery_fixture.build.json",
+      "sha256": "518aaf6b2297eddf16b4bec4e1bc899503c623af255cee7c8b8f7a300f5a309c",
+      "bytes": 56085
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/build/central_gate.cpp",
+      "sha256": "c8ab10312055a221c48489915f15ddc6d386ab4c7af45b92f43414cfea394c26",
+      "bytes": 2002
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/build/central_gate.o",
+      "sha256": "6d2209d88310d8b130b0b08cdd7c9a85df58e072c109e4a4f326637e47a763f0",
+      "bytes": 29416
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/build/dispatch.cpp",
+      "sha256": "27458b4701a4517673ed6da7c9886ab07a8d24fc6ed9ea528d79838d7eebf5f8",
+      "bytes": 742
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/build/dispatch.o",
+      "sha256": "bee2582d0ad4366f707919c3c876f9c7739c980b9634bf136a582b0b9cbc4211",
+      "bytes": 55064
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/build/fixture.o",
+      "sha256": "c176edb6e76a631e15e24329619f426c4ef3508e5659ed2df6634f754013799a",
+      "bytes": 167080
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/build/lean_host.cpp",
+      "sha256": "5f2692f32b565e064a555650a832ef49d5b395a8fc343a90d10824e5b8b5df13",
+      "bytes": 21089
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/build/lean_host.o",
+      "sha256": "19c469364ee628504f7090efacb6ac790bf4e520969f7bbb0358f595697383fb",
+      "bytes": 230248
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/build/lean_observer.cpp",
+      "sha256": "ad0e35d727327bfa7feb055b44ad447cdfe9ce8dbf7226fcd14657798e632a6b",
+      "bytes": 923
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/build/lean_observer.o",
+      "sha256": "dd2c4962019ec3d26fd90171b9ec0763f11c46ad76b3945a1383e937b95c170e",
+      "bytes": 7464
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/build/react.cpp",
+      "sha256": "7fccff7a58f4003b218bca8fbcc8efb17a5ad73ff2ab743c2163c813fe9a2c60",
+      "bytes": 16662
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/build/react.h",
+      "sha256": "8cfbb39edf9bb3021004d605eed506aad4faba653723155a560197c6f37bdcbf",
+      "bytes": 3293
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/build/react.o",
+      "sha256": "23c8eebc405a95f8895431397255ee046863aebe429b9a41b0b323adfcd9c4a0",
+      "bytes": 213696
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/build/react_combat.cpp",
+      "sha256": "9d9965caa68588f466a75eb4328b8e04fd1237cb72339675ce866ef98e037cb4",
+      "bytes": 13019
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/build/react_combat.o",
+      "sha256": "f57b06d7f5fff3f9ddd6e7123718ef014a5ce42fd7d56eefbdd06b8f67525a8e",
+      "bytes": 48032
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/build/react_rules.cpp",
+      "sha256": "ea1762d018b5f04a2bf9c480fbbb17993371cc467e57d98370b29953fd0337c2",
+      "bytes": 6756
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/build/react_rules.o",
+      "sha256": "db945714c5020fadcd905806faaab77c76a894141bbd8b6a1b968b7b4789f017",
+      "bytes": 37632
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/build/tactics_react_host_v5",
+      "sha256": "b6adf6b0996be6359faabef795ddcee128c41a09dae5525b941a2cf302e3b453",
+      "bytes": 1351224
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/build/tactics_react_host_v5.build.json",
+      "sha256": "4698247f4588535f6946f2f2372937647b94a40a6fb1f59157419bc7009936fb",
+      "bytes": 56093
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/build/timing.o",
+      "sha256": "9bf62ec501a96ea7c162e0fea51afdc3ec66db478ca9973188a116354c25cd71",
+      "bytes": 129352
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/build/v5_abilities.cpp",
+      "sha256": "e255ecbd199d0775115ea83c49f80b45259a15be935199d7cc4d179e7a0cbc3f",
+      "bytes": 7084
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/build/v5_abilities.o",
+      "sha256": "6a4b2ff8234320218f8c25576c2088d55ea5afac4a59dc3ee62bc8fab4dab9fc",
+      "bytes": 35128
+    },
+    {
+      "path": "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5/raw/SEED_LEDGER.json",
+      "sha256": "6b40df517bca784ba4dcc77fc399ad51149a25adbf2bd77a89f937531060ed47",
+      "bytes": 31504
+    }
+  ]
+}
