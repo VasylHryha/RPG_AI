@@ -1,0 +1,26 @@
+#include "teacher.h"
+#include "public_mechanics.h"
+#include <algorithm>
+namespace slice_teacher {
+using namespace net_slice;
+namespace {double n(js::V v,const char* k){return js::num(js::get(v,k));}
+net_public::Snapshot view(js::V s){net_public::Snapshot o;o.units.t=n(s,"t");o.units.dt=n(s,"dt");o.units.width=n(s,"width");o.units.height=n(s,"height");for(auto u:js::get(s,"units").p->items){control::ObservedUnit row;row.id=UnitId(n(u,"id"));row.team=uint8_t(n(u,"team"));row.role=ObservedRole(int(n(u,"role")));row.x=n(u,"x");row.y=n(u,"y");row.vx=n(u,"vx");row.vy=n(u,"vy");row.hp=n(u,"hp");row.maxhp=n(u,"maxhp");row.radius=n(u,"radius");row.speed=n(u,"speed");row.range=n(u,"range");row.minRange=n(u,"min_range");row.dmg=n(u,"damage");row.cd=n(u,"cooldown");row.cdMax=n(u,"cooldown_max");row.target=UnitId(n(u,"target"));o.units.units.push_back(row);if(row.team==n(s,"side"))o.own.push_back({row.id,n(u,"guard_until"),n(u,"prep"),n(u,"windup"),n(u,"time_rate"),n(u,"energy"),n(u,"cost"),js::truth(js::get(u,"busy"))});}
+ for(auto t:js::get(s,"threats").p->items){auto k=js::str(js::get(t,"kind"));Vec2 p{n(t,"x"),n(t,"y")};if(k=="shell")o.shells.push_back({p,p,n(t,"at"),n(t,"radius"),js::truth(js::get(t,"slow"))});if(k=="shot")o.shots.push_back({p,{n(t,"dx"),n(t,"dy")},n(t,"born"),n(t,"speed"),n(t,"left")});if(k=="field")o.fields.push_back({p,n(t,"radius"),n(t,"from"),n(t,"until")});if(k=="cast")o.casts.push_back({UnitId(n(t,"caster")),UnitId(n(t,"target")),p,n(t,"release_at"),n(t,"landing_at"),n(t,"radius")});}return o;}
+}
+Labels query(const std::vector<js::V>& snapshots){Labels result;if(snapshots.empty())return result;PlannerInput input;std::map<UnitId,js::V> wires;std::map<UnitId,std::vector<double>> ys;
+ for(auto s:snapshots){validate(s);const auto id=UnitId(n(s,"self"));auto o=view(s);if(input.units.units.empty()){input.units=o.units;if(n(s,"side")){for(auto& u:input.units.units)u.team=1-u.team;}}auto enc=encode(s);js::V me;for(auto u:js::get(s,"units").p->items)if(n(u,"id")==id)me=u;wires[id]=s;
+  std::vector<double> y(81,-1e6);y[33]=0;if(!enc.enemies.empty())y[34]=1;if(n(me,"prep")>0){std::fill(y.begin()+33,y.begin()+46,-1e6);auto found=std::find(enc.enemies.begin(),enc.enemies.end(),UnitId(n(me,"target")));y[found==enc.enemies.end()?33:34+size_t(found-enc.enemies.begin())]=1;}auto initial=decode(s,y);auto c=intent(initial);
+  result.diagnostics.push_back(js::obj({{"unit",double(id)},{"stage","teacher_candidate"},{"value",net_slice::json(c)}}));
+  auto reaction=net_public::react(o,id);Vec2 goal{n(me,"x"),n(me,"y")};if(reaction.active)goal=reaction.goal;else if(c.target){for(auto u:o.units.units)if(u.id==c.target){Vec2 delta{u.x-goal.x,u.y-goal.y};double d=std::hypot(delta.x,delta.y),wanted=std::clamp(d,n(me,"min_range")+1,n(me,"range")-1);if(d>0)goal=goal+delta*((d-wanted)/d);}}
+  auto p=net_public::participate(o.units,id,{goal.x,goal.y,1,0,c.target});goal={p.x,p.y};for(unsigned k=0;k<33;++k){auto probe=y;std::fill(probe.begin(),probe.begin()+33,-1e6);probe[k]=0;auto decoded=decode(s,probe);auto g=js::get(decoded,"goal");double dx=js::num(g.p->items[0])-goal.x,dy=js::num(g.p->items[1])-goal.y;y[k]=-dx*dx-dy*dy;}
+  const bool body=n(me,"guard_until")>n(s,"t")||js::truth(js::get(me,"busy"));const bool ready=n(me,"prep")>0&&n(me,"prep")+n(s,"dt")*n(me,"time_rate")>=n(me,"windup")-1e-9;
+  bool targetReach=false;for(auto u:o.units.units)if(u.id==c.target){double d=std::hypot(u.x-n(me,"x"),u.y-n(me,"y"));targetReach=d>=n(me,"min_range")&&d<=n(me,"range");}
+  const bool start=targetReach&&!body&&!reaction.active&&n(me,"prep")<=0&&n(me,"cooldown")<=0&&n(me,"energy")>=n(me,"cost")&&c.target;
+  y[46]=start?1:-1;y[47]=!body&&!reaction.active&&ready?1:-1;y[48]=0;ys[id]=y;c=intent(decode(s,y));result.actions[id]=c;
+  input.guns.push_back({id,c.target,n(me,"windup"),n(me,"lob"),n(me,"splash"),ready&&!body&&!reaction.active&&c.target!=0});}
+ // Same sanitized v6 world/defaults. Ready after scratch preparation only; no physical time or queues copied.
+ auto model=project(input);copiedPlanner(model,0);for(auto q:model.packs[0].artilleryQueue){if(q.at>model.time+1e-9)throw std::logic_error("delayed teacher schedule");auto id=model.units[q.gun.slot].id;if(!wires.count(id))throw std::logic_error("teacher assignment outside joint guns");auto s=wires.at(id);auto y=ys.at(id);double best=INFINITY;unsigned selected=0;Vec2 aim;
+  for(unsigned k=0;k<33;++k){auto probe=y;std::fill(probe.begin()+48,probe.end(),-1e6);probe[48+k]=1;auto c=intent(decode(s,probe));if(c.hasAim&&c.aimIndex==k){double d=std::hypot(c.aim.x-q.point.x,c.aim.y-q.point.y);if(d<best){best=d;selected=k;aim=c.aim;}}}
+  if(std::isfinite(best)){result.diagnostics.push_back(js::obj({{"unit",double(id)},{"stage","teacher_planner"},{"value",js::obj({{"raw_aim",js::arr({q.point.x,q.point.y})},{"snap_distance",best},{"family",double(uint8_t(q.family))},{"variant",double(q.variant)},{"ready_only",true}})}}));if(best>1e-8)++result.aimSupportSnaps;std::fill(y.begin()+48,y.end(),-1e6);y[48+selected]=1;auto c=intent(decode(s,y));c.volley=uint64_t(n(s,"tick"));result.actions[id]=c;}}
+ return result;}
+}

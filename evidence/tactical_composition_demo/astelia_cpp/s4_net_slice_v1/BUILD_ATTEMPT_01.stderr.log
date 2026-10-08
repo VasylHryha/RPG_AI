@@ -1,0 +1,36 @@
+/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/build/teacher_projection.cpp:6:105: error: use of undeclared identifier 'pos'; did you mean 'cos'?
+    6 |  for(const auto& observed:input.units.units){const auto ref=model.add(observed.team,Role(observed.role),pos(observed));refs[observed.id]=ref;auto& u=model.units[ref.slot];auto& s=model.state[ref.slot];
+      |                                                                                                         ^~~
+      |                                                                                                         cos
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/math.h:467:20: note: 'cos' declared here
+  467 | using std::__math::cos;
+      |                    ^
+/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/build/teacher_projection.cpp:6:105: error: no matching function for call to 'cos'
+    6 |  for(const auto& observed:input.units.units){const auto ref=model.add(observed.team,Role(observed.role),pos(observed));refs[observed.id]=ref;auto& u=model.units[ref.slot];auto& s=model.state[ref.slot];
+      |                                                                                                         ^~~
+/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__math/trigonometric_functions.h:36:37: note: candidate template ignored: requirement 'is_integral<astelia::control::ObservedUnit>::value' was not satisfied [with _A1 = astelia::control::ObservedUnit]
+   36 | inline _LIBCPP_HIDE_FROM_ABI double cos(_A1 __x) _NOEXCEPT {
+      |                                     ^
+/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/build/teacher_projection.cpp:6:105: error: no viable conversion from 'double' to 'Vec2'
+    6 |  for(const auto& observed:input.units.units){const auto ref=model.add(observed.team,Role(observed.role),pos(observed));refs[observed.id]=ref;auto& u=model.units[ref.slot];auto& s=model.state[ref.slot];
+      |                                                                                                         ^~~~~~~~~~~~~
+/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/src/native/types.h:21:8: note: candidate constructor (the implicit copy constructor) not viable: no known conversion from 'double' to 'const Vec2 &' for 1st argument
+   21 | struct Vec2 { double x=0, y=0; };
+      |        ^~~~
+/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/src/native/types.h:21:8: note: candidate constructor (the implicit move constructor) not viable: no known conversion from 'double' to 'Vec2 &&' for 1st argument
+   21 | struct Vec2 { double x=0, y=0; };
+      |        ^~~~
+/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/src/native/world.h:86:43: note: passing argument to parameter 'pos' here
+   86 |   UnitRef add(uint8_t team,Role role,Vec2 pos,uint32_t kind=invalidSlot);
+      |                                           ^
+3 errors generated.
+Traceback (most recent call last):
+  File "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/build.py", line 86, in <module>
+    if __name__=='__main__':build()
+  File "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/build.py", line 65, in build
+    path=OUT/name;path.write_text(content);compile(path,OUT/(path.stem+'.o'))
+  File "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/build.py", line 61, in compile
+    argv=[*flags,'-c',str(source),'-o',str(obj)];subprocess.run(argv,check=True,timeout=300);commands.append(argv);sources[str(source)]=sha(source);objects.append(str(obj))
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 528, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['/usr/bin/clang++', '-std=c++17', '-O3', '-fno-fast-math', '-ffp-contract=off', '-fwrapv', '-I/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/src', '-mcpu=native', '-I/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/src/native', '-I/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/src', '-I/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_spacing_probe_v1', '-I/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1', '-I/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v1', '-c', '/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/build/teacher_projection.cpp', '-o', '/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/build/teacher_projection.o']' returned non-zero exit status 1.

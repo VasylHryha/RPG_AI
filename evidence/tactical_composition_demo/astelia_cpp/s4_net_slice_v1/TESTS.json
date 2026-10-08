@@ -1,0 +1,23 @@
+{
+  "status": "PASS",
+  "exit_code": 0,
+  "seconds": 7.897642916999757,
+  "command": [
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "--confcutdir=/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1",
+    "--basetemp=/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/pytest",
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/test_slice.py",
+    "-k",
+    "not test_encoder_parity and not test_enemy_boundary"
+  ],
+  "fights": 0,
+  "training_steps": 0,
+  "teacher_collection": false,
+  "scope": "NS1 focused fixture suite; native isolated seams only",
+  "resumed_from": "TEST_ATTEMPT_01.json",
+  "unchanged_previously_passed_checks": 10,
+  "test_source_sha256": "8be5f27da8b5a1256d71668660e9baa53a822749907acf4890793d84e137c7fd"
+}

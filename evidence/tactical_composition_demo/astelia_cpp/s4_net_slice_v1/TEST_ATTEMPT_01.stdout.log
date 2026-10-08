@@ -1,0 +1,45 @@
+..........F
+=================================== FAILURES ===================================
+______________ test_masks_padding_target_unavailable_and_overflow ______________
+
+    def test_masks_padding_target_unavailable_and_overflow():
+        s=snapshot(1);s['threats']*=3
+        for i,t in enumerate(s['threats']):t=copy.deepcopy(t);t['ordinal']=i;s['threats'][i]=t
+        s['units'][0]['target']=999
+        s['units'] += [unit(200+i,1,x=700+i) for i in range(14)]
+>       x,meta=encode(s);assert x[16]==-1 and x[32]==0 and meta['enemy_overflow'] and meta['threat_overflow']==4
+               ^^^^^^^^^
+
+test_slice.py:57: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+schema.py:48: in encode
+    me=check(s);friends,enemies,fo,eo=slots(s);sgn=-1 if s['side'] else 1
+       ^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+s = {'dt': 0.03333333333333333, 'fight': 'fixture', 'height': 800.0, 'self': 1, ...}
+
+    def check(s):
+        if set(s) != ROOT or s['version'] != VERSION: raise ValueError('schema root/version')
+        integer=lambda v,lo=0,hi=4294967295:isinstance(v,(int,float)) and not isinstance(v,bool) and math.isfinite(v) and lo<=v<=hi and v==math.floor(v)
+        if s['side'] not in (0,1) or not integer(s['tick'],1,9007199254740991) or not integer(s['self'],1) or not isinstance(s['fight'],str) or s['t']<0: raise ValueError('side/tick/identity')
+        ids = set()
+        for u in s['units']:
+            expected = COMMON | (OWN if u['team']==s['side'] else set())
+            if set(u) != expected: raise ValueError('unit allowlist')
+            if not integer(u['id'],1) or not integer(u['target']) or u['id'] in ids or u['id']<=0 or u['team'] not in (0,1) or u['role'] not in (0,1,2): raise ValueError('unit identity')
+            ids.add(u['id'])
+            if u['maxhp']<=0 or u['radius']<0 or u['speed']<0 or not 0<=u['min_range']<=u['range']: raise ValueError('unit dimensions')
+            if u['team']==s['side'] and (u['time_rate']<=0 or u['windup']<=0): raise ValueError('own cast dimensions')
+        if s['self'] not in ids: raise ValueError('self absent')
+        if s['width']<=0 or s['height']<=0 or not 0<s['dt']<=.2: raise ValueError('arena/dt')
+        for t in s['threats']:
+>           if not integer(t['caster']) or not integer(t['target']) or not integer(t['ordinal'],1) or set(t)!=THREAT or t['kind'] not in KINDS: raise ValueError('threat allowlist')
+                                                                                                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           ValueError: threat allowlist
+
+schema.py:27: ValueError
+=========================== short test summary info ============================
+FAILED test_slice.py::test_masks_padding_target_unavailable_and_overflow - Va...
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 10 passed in 8.59s
