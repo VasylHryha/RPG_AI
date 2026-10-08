@@ -249,3 +249,55 @@ Any search or tuning objective is defined explicitly (terms, units, weights, ter
   - each piece's time cost per fight.
 - **Output:** an impact table ranking mechanisms by streak gain, with the time cost of each. The top few become the work list for our shapes, in the order react → volley timing → volley geometry (§§10–11), unless the ranking shows otherwise. Any change of order goes to the owner.
 - **Cost:** projected before running (decision 0031); the elite rollout arm is the expensive one.
+
+## 14. Amendment 7 (owner, 2026-10-08): script atoms against RRG mechanisms; the first RRG test is battery synchrony (V1)
+
+**The owner:** "the scenarios in the lab are not our AI, they are programmed things." Agreed:
+- P16, the copied dodge, the elite, the enemy tactics and the dummies are scripts.
+- The copied-dodge gain (shape lab v4: 26/50 → 46/50 wins against the 20 tactics; own units hit per landed enemy shell 3.84 → 1.71) is a **script gain**.
+- From now on every result is labelled **script** or **RRG mechanism**, and each RRG mechanism is tested against its scripted equivalent on identical fights (decision 0033 sizing).
+
+**The V1 test.** The base is always-commit + react (forcedP16+react).
+
+**The arms, all paired:**
+- **(a) the base:** guns fire as soon as they are ready (script);
+- **(b) the base + scripted central sync:** a copy of the engine's `holdFire: {sync}` / `waves` rule. A central rule holds a ready gun until enough guns are ready, then releases them together (script);
+- **(c) the base + battery oscillator** (RRG mechanism), detailed below.
+
+**The battery oscillator, arm (c):**
+- Each gun i has a phase φ_i (rad), with **dφ_i/dt = ω_i + (K/n_i) Σ_{j∈N_i} sin(φ_j − φ_i)**.
+- **ω_i = 2π / T_i**, where T_i is the gun's own reload cycle (cooldown + windup, s), from the catalog.
+- **N_i** = the living own guns within the coupling radius R_c (px). It is local, with no central scheduler.
+- **Release:** a gun releases its cast (through the §12 command adapter: hold/release with an aim point) when φ_i crosses 0 mod 2π **and** it is ready **and** a legal target is in reach.
+- **Otherwise it holds.** A ready gun is never held longer than one cycle T_i, a bound that limits lost firepower.
+- **Phase reset on release:** the phase drops to the release point.
+- Guns still choose their **target and aim by P16's rule;** only the timing changes.
+
+**The normalization ledger:**
+- φ in rad; ω, K in 1/s; T in s; R_c in px.
+- **The knobs:** K and R_c only, with ranges declared before fights:
+  - K ∈ {0.5, 1, 2} / T;
+  - R_c ∈ {200, 400, ∞} px;
+  - one development pick on the mechanism stage only.
+- Every gun applies the same law; nothing is tuned per level.
+
+**The mechanism metrics** (read first, 10–20 paired fights):
+- the spread of our shells' landing times within each volley (s);
+- the enemy dodge success against our shells (enemy units that escape a blast they were inside at launch / units inside at launch);
+- hits per own shell; shells per kill;
+- hold-induced idle time per gun (s) and fired shells per gun-minute;
+- behaviour with only 1–2 guns left.
+
+**The outcome metrics** (decision 0033):
+- C3 against regular + the 19 tactics, paired looks at 50/100/200;
+- the ten-fight series, with the streak primary;
+- losses on won and lost fights reported separately.
+
+**The reading** (declared now; development, not acceptance):
+- **"RRG earns this job":** (c) is clearly better than (a) on the mechanism and on outcome at the decision-0033 effect size, **and** (c) is not clearly worse than (b).
+- **"The script is better":** (b) is clearly better than (c). Then (b) is kept as the atom, and the oscillator gets a different job.
+- **Anything else:** no difference at this size, so we do not chase it (decision 0033).
+
+**The closest known methods, and the difference:**
+- **Time-on-target fire**, the engine's `holdFire.sync`, and pulse-coupled oscillator synchrony (Mirollo–Strogatz; identical all-to-all oscillators only).
+- **The difference:** heterogeneous guns, local coupling only, with release gated by readiness and legality inside a battle.
