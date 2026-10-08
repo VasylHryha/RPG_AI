@@ -1,0 +1,10 @@
+{
+  "status": "FAIL_SUPERSEDED",
+  "scope": "Pre-review-fix V2 report CLI",
+  "command": "lab.py report --arm V2",
+  "seconds": 3.9424917080000004,
+  "error": "stage summary drift",
+  "cause": "Sorting changed floating-point aggregate order. Historical base t_end 590.5000000000078 versus sorted 590.500000000008.",
+  "disposition": "Original receipt order captured in R2 manifest. Final VERIFY_E1_R2.json passes.",
+  "new_fights": 0
+}

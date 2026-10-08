@@ -1,0 +1,43 @@
+{
+  "status": "PASS",
+  "new_fights": 0,
+  "inherited_receipts_verified": 324,
+  "historical_artifacts_verified": 53,
+  "commands": [
+    {
+      "args": [
+        "report",
+        "--arm",
+        "E1"
+      ],
+      "returncode": 0,
+      "seconds": 2.423016291,
+      "stdout": "Report: /Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v6/SHAPE_LAB_REPORT_E1_R2.md; mechanism summary: /Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v6/MECHANISM_E1_SUMMARY_R2.json\n",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "run",
+        "--arm",
+        "E1",
+        "--stage",
+        "mechanism"
+      ],
+      "returncode": 0,
+      "seconds": 2.408024084,
+      "stdout": "Report: /Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v6/SHAPE_LAB_REPORT_E1_R2.md; mechanism summary: /Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v6/MECHANISM_E1_SUMMARY_R2.json\nExisting DONE stage preserved; read the selected summary before review\n",
+      "stderr": ""
+    },
+    {
+      "args": [
+        "report",
+        "--arm",
+        "V2"
+      ],
+      "returncode": 0,
+      "seconds": 4.143796583,
+      "stdout": "Report: /Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v6/SHAPE_LAB_REPORT_V2_R2.md; mechanism summary: /Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v6/MECHANISM_V2_SUMMARY.json\n",
+      "stderr": ""
+    }
+  ]
+}

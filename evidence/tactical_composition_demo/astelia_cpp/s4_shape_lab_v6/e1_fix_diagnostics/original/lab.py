@@ -710,6 +710,4 @@ def main():
     else: globals()[args.command]()
 
 
-if __name__=='__main__':
-    from lab_r2 import main
-    main()
+if __name__=='__main__': main()

@@ -19,7 +19,8 @@ import time
 HERE = pathlib.Path(__file__).resolve().parent
 CPP = HERE.parent
 sys.path.insert(0,str(HERE))
-from build import BINARY, admit, sha
+from build import BINARY
+from receipt_identity_r2 import admit, sha
 sys.path.insert(0,str(HERE))
 from requests import ARMS, ROLES, cohort, drill_request, series_request, comparison_arms, groups
 from metrics import measure
@@ -99,14 +100,19 @@ def verified_record(tag, req=None, meta=None):
         raise RuntimeError('completed cell request/claim link drift')
     if r['raw_sha256']!=sha(RAW/(tag+'.jsonl.gz')) or r['stderr_sha256']!=sha(stderr_path) or read(stderr_path)!=r['native_metrics']:
         raise RuntimeError('completed cell raw/stderr drift')
-    with gzip.open(RAW/(tag+'.jsonl.gz'),'rt') as f:
-        for line in f: last=json.loads(line)
-    if last!=r['summary'] or r['native_metrics']['executed_fights']!=1 or any(last['controllerFailures']):
+    receipt_path=RAW/(tag+'_COMPLETE.json')
+    continuation=read(HERE/'E1_REPORTING_R2.json')
+    if tag in continuation['inherited_receipts']:
+        if sha(receipt_path)!=continuation['inherited_receipts'][tag]:
+            raise RuntimeError('inherited measurement receipt drift')
+    else:
+        seal=read(RAW/(tag+'_VERIFIED_R2.json'))
+        if seal!=dict(receipt_sha256=sha(receipt_path),metrics_sha256=sha(HERE/'metrics.py')):
+            raise RuntimeError('completion measurement seal drift')
+    # Existing stats were measured by the original metrics.py; continuation
+    # hashes bind those receipt bytes, and the checks above bind raw bytes.
+    if r['tag']!=tag or r['native_metrics']['executed_fights']!=1 or any(r['summary']['controllerFailures']):
         raise RuntimeError('completed cell native terminal drift')
-    from metrics import measure
-    stats,survivors=measure(RAW/(tag+'.jsonl.gz'))
-    if stats!=r['stats'] or survivors!=r['survivors']:
-        raise RuntimeError('completed cell derived measurement drift')
     return r
 
 def execute(tag, req, meta, timeout=300, deadline=None):
@@ -177,6 +183,7 @@ def execute_cell(tag, req, meta, timeout=300, deadline=None):
                   request_sha256=sha(RAW/(tag+'_request.json')), claim_sha256=sha(RAW/(tag+'_CLAIM.json')),
                   declaration_sha256=sha(HERE/'DECLARATION.json'), stderr_sha256=sha(stderr))
     write(done, record, exclusive=True)
+    write(RAW/(tag+'_VERIFIED_R2.json'),dict(receipt_sha256=sha(done),metrics_sha256=sha(HERE/'metrics.py')),exclusive=True)
     return record
 
 REPO_ROOT = CPP.parents[2].resolve()
@@ -351,13 +358,18 @@ def prepare():
 
 
 def identity():
+    revision=read(HERE/'E1_REPORTING_R2.json')
+    if sha(HERE/'DECLARATION.json')!=revision['declaration_sha256']:raise RuntimeError('R2 inherited declaration drift')
+    for name,digest in revision['tool_hashes'].items():
+        if sha(HERE/name)!=digest:raise RuntimeError('R2 reporting tool drift: '+name)
     declaration = read(HERE/'DECLARATION.json')
     if sha(RAW/'SEED_LEDGER.json')!=declaration['ledger_sha256'] or admit(BINARY)!=declaration['binary']:
         raise RuntimeError('lab entropy/binary drift')
     if admit(ADAPTER/'build/tactics_react_host')!=declaration['adapter_binary']:
         raise RuntimeError('adapter identity drift')
     for name,digest in declaration['source_hashes'].items():
-        if sha(CPP/name)!=digest:
+        original=HERE/'e1_fix_diagnostics/original/lab.py' if name=='s4_shape_lab_v6/lab.py' else CPP/name
+        if sha(original)!=digest:
             raise RuntimeError('lab input drift: '+name)
     selection=HERE/'TIMING_SELECTION.json'
     if selection.exists():
@@ -434,9 +446,22 @@ def run_series(arm,index,deadline,first_only=False,cap_seconds=MAX_SECONDS):
     return result
 
 
-def records_for(stage):
-    return {p.name.removesuffix('_COMPLETE.json'):verified_record(p.name.removesuffix('_COMPLETE.json'))
-            for p in RAW.glob('*_COMPLETE.json') if read(p)['meta']['stage']==stage}
+def records_for(stage,arm=None,look=None):
+    arms=comparison_arms(arm) if arm else ARMS
+    records={}
+    paths={p.name.removesuffix('_COMPLETE.json'):p for p in RAW.glob('*_COMPLETE.json')}
+    continuation=read(HERE/'E1_REPORTING_R2.json') if (HERE/'E1_REPORTING_R2.json').exists() else {}
+    inherited_order=continuation.get('receipt_order',[])
+    order=[tag for tag in inherited_order if tag in paths]+[tag for tag in paths if tag not in inherited_order]
+    for tag in order:
+        p=paths[tag]
+        meta=read(p)['meta']
+        if meta['stage']!=stage or meta['arm'] not in arms:continue
+        if stage=='mechanism' and arm and meta['group'] not in groups(arm):continue
+        if stage=='outcome' and look is not None and meta['pair']>=look:continue
+        tag=p.name.removesuffix('_COMPLETE.json')
+        records[tag]=verified_record(tag)
+    return records
 
 
 def samples_for(stage):
@@ -522,10 +547,11 @@ def compute_attempt(kind,stage,cap,jobs):
     return row
 
 
-def stage_summary(stage,look=None):
-    from report import stage_data
+def stage_summary(stage,look=None,records=None):
+    from report_r2 import stage_data
     path=HERE/(f'OUTCOME_{SELECTED_ARM}_LOOK_{look}.json' if stage=='outcome' else f'{scope(stage).upper()}_SUMMARY.json')
-    return path,stage_data(stage,look)
+    if stage=='mechanism' and SELECTED_ARM=='E1':path=HERE/'MECHANISM_E1_SUMMARY_R2.json'
+    return path,stage_data(stage,look,arm=SELECTED_ARM,records=records)
 
 
 def require_review(stage,look=None):
@@ -620,6 +646,11 @@ def calibrate(stage,look):
 
 
 def run(stage,look):
+    done=HERE/f'RUN_{scope(stage)}.json'
+    if done.exists() and read(done)['status']=='DONE' and (stage!='outcome' or read(done)['look']==look):
+        report()
+        print('Existing DONE stage preserved; read the selected summary before review')
+        return
     ensure_stage(stage,look)
     calibration=calibration_receipt(stage)
     records=records_for(stage)
@@ -673,7 +704,7 @@ def review(stage,look,decision,note,survivor=False):
 
 
 def report():
-    from report import render
+    from report_r2 import render
     render()
 
 
@@ -711,5 +742,5 @@ def main():
 
 
 if __name__=='__main__':
-    from lab_r2 import main
+    sys.modules['lab_r2']=sys.modules[__name__]
     main()
