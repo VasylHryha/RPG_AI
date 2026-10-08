@@ -12,7 +12,7 @@ Order: **S0 existing-data analysis → S1 small script-only cell pilot → S2 on
 
 Owner decision, 2026-10-08, verbatim:
 
-> for training yes, but to be sure let make it see for now
+> for traingin yes, but to sure let make it see for now
 
 The search teacher may use declared hidden enemy state for training labels in both S3a and S3b. For now, S3a also gives both student leaders the same explicit, flagged privileged input channel, to establish whether the pipeline learns timing. S3a cannot support any RRG-state claim. Later S3b removes that channel and trains from public history. It adds a trained memoryless P0 control, and a stateful R/P reading is allowed only in cells where P0 is measurably worse than P. No privileged state enters S3b student evaluation. This is privileged-teacher distillation, following [Learning by Cheating, Chen et al., 2019](https://arxiv.org/abs/1912.12294); [asymmetric actor-critic, Pinto et al., 2017](https://arxiv.org/abs/1710.06542), is a related precedent for full-state training support with partial-observation deployment, not the exact algorithm used here. S3a is an explicitly privileged intermediate step; S3b is the restricted student stage. Decision 0037 and §5 define the exception precisely.
 
