@@ -1,4 +1,4 @@
-# Shape lab and six-fight series: specification (0g, development tooling)
+# Shape lab and ten-fight series: specification (0g, development tooling)
 
 **Date:** 2026-10-08. **Drafter:** Claude (claude-opus-5-5). **Implementer:** Codex. **Executor:** Claude.
 **Status:** owner-approved build. These are development drills on fresh development entropy: no judging seeds, no registered endpoint, no verdict.
@@ -8,8 +8,8 @@
 - **The damage rule:** a damaged unit may move behind others but **must never leave the fight**. Leaving loses firepower, and the army then loses. v7's escape (the v6 action) and the edge-running in the replays violate this.
 - **The current losses are too heavy:** v7 loses 40.7 of 50 on average even when it wins. And we fought one enemy formation only.
 - **"Good work" comes first:** define what good work is for **each small shape**, show which shapes exist, and show how each performs **alone (against dummies)** and **combined (against dummies and opponents)**, visually.
-- **The owner's yardstick is the six-fight series:**
-  - The army must win **6 fights in a row**.
+- **The owner's yardstick is the fight series (amended in §5 to 10 fights; the streak is the measure):**
+  - The army must win **as many fights in a row as possible**, up to 10.
   - Units lost stay lost; **survivors heal** between fights.
   - **Each fight draws the enemy tactic at random** from the pool, so some tactics suit us and some don't.
   - The enemy is a fresh full army each fight.
@@ -27,7 +27,7 @@ Measured values: stored v7c validation, 40 fights against regular (`astelia_cpp/
 | **R1 escort screen (P12)** | Keep enemy infantry off our guns | About 0 damage to own guns from enemy ranged and melee | 420 + 105 |
 | **M1 melee (v6 law)** | Intercept and trade | Exchange better than 1:1; most melee survive | 10/10 of our melee die |
 | **Q1 gate (oscillator)** | Decide when to press | Never takes a unit out of the fight; damaged units rotate back but stay in range | 12% of unit time escaping (24% in non-wins); survivors run to the edge |
-| **A whole army** | Win the series | Win each fight losing ≤ 8 of 50 | Loses 40.7 |
+| **A whole army** | Win the series | Long series streaks; about ≤ 4 losses per fight (§5) | Loses 40.7 |
 
 ## 3. Engine capability (new files only; nothing pinned or frozen is edited)
 
@@ -63,18 +63,21 @@ Each drill runs for every arm in {v7 θ*, forcedP16}, plus v6 where the shape is
 | **C2 combined, fire** | full 50 | full 50 `dummy_static_fire` | time to eliminate; losses |
 | **C3 combined, opponent** | full 50 | regular, and each of the 19 `POOL` doctrines | the win; losses; time |
 
-## 5. The six-fight series (S6X)
+## 5. The ten-fight series (S10X; amended 2026-10-08 by the owner)
 
-- **One run:** 6 fights. In fight k our army is the survivors of fight k−1, **healed to full HP**; the dead stay dead.
+- **The owner's correction:** the series is **10 fights in a row**, and the measure is **how many consecutive fights are won**. The owner's earlier improved AI typically reached **6 wins, sometimes 8**. That was **before abilities were added**; abilities are a separate story.
+- **One run:** up to 10 fights. In fight k our army is the survivors of fight k−1, **healed to full HP**; the dead stay dead.
 - **The enemy:** a fresh full 50 each fight. Its tactic is drawn **uniformly at random with replacement from the 19-entry `POOL`**, at the regular skill set, from the run's seed.
-- **Pass:** all 6 fights won by elimination. We report the units left before each fight and the per-fight losses.
-- **A failed fight ends the run** (the series is lost), and we record the fight number.
+- **Abilities are off on both sides** in the series (`abilities: "off"`), to match the owner's reference conditions. A second, labelled variant with the catalog's default abilities may be reported for context only.
+- **The run ends at the first fight not won by elimination.** The streak is the number of fights won before it; a full pass is 10/10.
+- **The reference band:** a typical streak of 6, sometimes 8 (the owner's earlier improved AI, without abilities).
 - **Arms:**
   - v7 θ*;
   - forcedP16;
-  - **the Astelia elite AI as our side** (the reference, playing the same series draws), so we can see what a series pass looks like in this engine.
+  - **the Astelia elite AI as our side** (the in-engine reference), playing the same series draws.
 - **Runs:** 10 series per arm, from fresh development entropy.
-- **Reported:** pass rate, the fight reached, units left per fight, and per-tactic loss counts across all fights (which tactics hurt us).
+- **Reported:** the streak distribution (mean, median, min, max), the fight reached, units left before each fight, and per-tactic losses and units lost across all fights (which tactics hurt us).
+- **The draft good-work target for the whole army** becomes about **≤ 4 losses per fight on average,** so that 10 wins stay feasible from 50 units. It is reported against the reference band.
 
 ## 6. Visual output
 
@@ -89,7 +92,7 @@ Each drill runs for every arm in {v7 θ*, forcedP16}, plus v6 where the shape is
   - no edits to `astelia_cpp/.gitignore` (it is hash-pinned; local ignores go in `.git/info/exclude`);
   - no hash manifest pins `docs/PLAN_CURRENT.md`, `DESIGN_0G.md`, `DESIGN_0H_REV7.md` or this file.
 - **The raw ledgers stay out of git;** each committed file is under 45 MB.
-- **Cost:** the drills are short. The series is at most 3 arms × 10 × 6 fights = 180 fights. The projection is reported before running; decision 0031 applies.
+- **Cost:** the drills are short. The series is at most 3 arms × 10 series × 10 fights = 300 fights. The projection is reported before running; decision 0031 applies.
 - **No outcome of a drill changes v7.** Changing a shape is a later, owner-approved revision on fresh seeds.
 
 ## 8. Stop rows
