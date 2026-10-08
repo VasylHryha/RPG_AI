@@ -137,3 +137,27 @@ The owner, on what comes next:
 **Viewer:** the drill replays get a "teacher vs ours" layer that draws both targets and goals for the selected role.
 
 **Boundaries:** §7 applies. The shadow computation must not change the teacher's trajectory, which is checked by byte-identical output with shadowing on and off.
+
+## 10. Amendment 3 (owner, 2026-10-08): primitives (move, attack, react), and losses are avoided, not budgeted
+
+**The owner's corrections:**
+- **There is no loss budget.** Losses are avoided. Most losses come from artillery, whose area damage is the unfair part.
+- **Split the shapes further into primitives** (move, attack, react). Copy a simple, efficient move set from the teacher: how it moves, attacks and reacts against melee or artillery. Then compare it with our shapes, or try to rebuild it from our shapes, because we may be lacking something.
+
+**What the stored data show** (`astelia_cpp/s4_checks/shape_scorecard_v1/KILLERS_V7_REGULAR.txt`; 40 v7 fights against regular):
+- **Artillery causes our losses:** 74% of our deaths and 77% of the damage we take come from enemy artillery. It kills 86% of our dead ranged units and 63% of our dead melee.
+- **We never react to shells:** the enemy makes about 2,940 shell dodges per fight, and our side makes 0. Our controller side runs no reaction primitive, while the regular level has `dodgeShells` on.
+- **Our guns are inefficient:** we fire 184 shells per fight against the enemy's 105 for similar kills.
+
+**The primitive catalogue.** Each primitive is measured alone in the drills, and teacher against ours by shadow actions (§9):
+
+| Primitive | Ours now (v7) | Teacher source in the engine | Good work (draft) |
+|---|---|---|---|
+| **Move:** formation and post | P16 post, escort point, v6 law | formation presets, `standoff`, `kite` | stay at the useful distance; never out of the fight |
+| **Attack:** target choice | splash value V, v6 alignment | `killSpeed`, `meleeFocus`, `fireControl`, `artyFire: plan` | damage on the right targets; no overkill |
+| **Attack:** aim | none | `lead` (smooth) | shells and shots land on moving targets |
+| **React:** shells and shots | **none** | `dodgeShells` (smart), `castDodge`, `dodgeShots`, `shotReact` | own units hit per enemy shell → about 0–1 |
+| **Rotate:** damaged units | escape = leave (violates the owner rule) | `saveWounded` (backs away, still near) | damaged units survive and stay in reach |
+| **Volley timing** | none | `waves`, `holdFire.sync` | shells land together; fewer dodged |
+
+**The first change to test, once the lab's checks pass:** the **react** primitive, copied from the engine's `dodgeShells: "smart"` and `castDodge` as a labelled shape for our side. It is measured in D2 (spacing under fire), C2 and the series against v7 without it. It is one change, and it names its source.
