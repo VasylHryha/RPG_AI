@@ -1,0 +1,22 @@
+{
+  "status": "ESTIMATED",
+  "drill_fights": 560,
+  "series_fights_max": 300,
+  "workers_max": 6,
+  "observed_v7_seconds_per_fight": 18.265599875,
+  "full_duration_v7_proxy_seconds": 67.20784909035119,
+  "non_elite_serial_proxy_seconds": 51077.965308666906,
+  "elite_fights_max": 100,
+  "elite_seconds_per_fight_estimate": 91.43536194241376,
+  "elite_estimate_source": "native_benchmark_r1/benchmark.json",
+  "elite_estimate_source_sha256": "4654be44fd9330e29fab3732b6f12d32582993aa411f789a7214f24fd78414dc",
+  "elite_historical_max_seconds_per_step": 0.0005382695590327167,
+  "elite_margin_multiplier": 10,
+  "total_projected_seconds": 175939.0019383123,
+  "total_projected_minutes": 2932.316698971872,
+  "postprocessing_estimate_seconds": 115597.50043540404,
+  "analysis_reserve_seconds": 120,
+  "assumption": "Serial costs; no worker speedup. Full-output compatibility scaled to 150s. Historical full-elite planning rate scaled to 4501 ticks, 10x margin; two more full-stream analysis passes plus 120s reserve.",
+  "limits": "Historical elite benchmark is a different engine revision/short fights, without observer output. Current full-elite series and 6-worker throughput have not been timed; this is a conservative planning estimate, not a measured upper bound.",
+  "cap_seconds": 3600
+}

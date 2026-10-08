@@ -1,0 +1,9 @@
+# Projection interpretation and stop
+
+The required full-stream compatibility fight took 18.266 seconds for 40.767 simulated seconds, including native output, spooling, gzip and streaming metric extraction. It preserves the delivered validation request's additional state, decision and attribution diagnostics for byte equality. Ordinary lab drills use observer-v1/v7 telemetry with trace/debug off, so this compatibility cost is a deliberately conservative proxy rather than a measured lab throughput rate.
+
+PROJECTION.json extrapolates to the 150-second horizon, all 560 drills and the worst-case 300 series fights, adds full-elite historical planning cost with a tenfold margin, two additional analysis passes and 120 seconds reserve. Serial estimate: 175,939 seconds, 48.87 hours. Dividing that entire estimate by six gives an idealized 8.15 hours, still above the owner's 60-minute threshold; this division is not a measured six-worker speedup. Many real fights and series will end early, and drills omit some compatibility diagnostics. Their actual cost remains unmeasured.
+
+No drill or series was started. The owner's instruction requires stopping after the checks when the projection exceeds 60 minutes; Claude asks the owner about further execution. Separately, the mandatory pgrep gate reports UNAVAILABLE (`sysmond service not found; Cannot get process list`), so this environment cannot verify that another heavy job is absent.
+
+The historical native elite sample is a different revision with short fights and no observer output. It supplies a planning proxy, not a current runtime guarantee. No extra pilot or elite timing fight was run to narrow the estimate. A future owner-approved continuation should resolve the process gate and the estimate before beginning the drills; do not repeat the successful compatibility/dummy checks for unchanged code.
