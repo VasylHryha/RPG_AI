@@ -8,6 +8,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from common import LOCAL, sha, write
 from collect import a0, execute, identity, disk_projection
 from jobs import admitted
+from collect import COLLECTION_LIMIT_BYTES, disk_gate
+from recording import rows
 
 RSS_BOUND_BYTES = 512 * 1024**2
 
@@ -31,7 +33,12 @@ def test_full_150s_recording_peak_rss():
     job = dict(tag=tag, seed=seed, request_sha256=sha(path), split='memory_fixture', arm='O')
     with admitted(300) as (deadline, monitor):
         result = execute(job, deadline, monitor, 'MEMORY_FIXTURE_ONLY', memory_profile=True)
-    checks = dict(full_duration=150 <= result['stats']['t_end'] < 150.1,
+    disk=disk_gate([result],180,180)
+    restored=next(row for row in rows(LOCAL/result['raw_file']) if row.get('stageA'))
+    checks = dict(compact_recording=result['recording']=='STAGEASLIM1',
+                  whole_collection_fits=disk['projected_collection_bytes']<=COLLECTION_LIMIT_BYTES,
+                  restored_history=len(restored['units'])==100 and len(restored['history'])==100,
+                  full_duration=150 <= result['stats']['t_end'] < 150.1,
                   full_frames=4500 <= result['frames'] <= 4501,
                   all_units_alive=result['stats']['own_deaths'] == 0 and result['stats']['enemy_kills'] == 0,
                   final_profile=bool(result['memory_profile']) and result['memory_profile'][-1]['final'] is True and result['memory_profile'][-1]['tick'] == result['frames'],
@@ -40,7 +47,7 @@ def test_full_150s_recording_peak_rss():
                  declared_rss_bound_bytes=RSS_BOUND_BYTES, peak_rss_bytes=result['peak_rss_bytes'],
                  frames=result['frames'], duration=result['stats']['t_end'],
                  uncompressed_bytes=result['uncompressed_bytes'], compressed_bytes=result['compressed_bytes'],
-                 full_collection=disk_projection([result], 180), memory_profile=result['memory_profile'],
+                 full_collection=disk, memory_profile=result['memory_profile'],
                  completion_sha256=sha(LOCAL/'raw'/(tag+'_COMPLETE.json')),
                  fixture='150 s; 100 living units; no recorded seeds or training', seconds=result['seconds'])
     write(LOCAL/(tag+'_RSS.json'), proof, exclusive=True)

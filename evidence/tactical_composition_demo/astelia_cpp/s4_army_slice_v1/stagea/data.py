@@ -9,10 +9,9 @@ from common import ARMS,LOCAL,ROLES,read,sha,sources,write
 CAPS={'shells':64,'shots':64,'fields':32,'casts':32}
 
 def frames(path):
-    with gzip.open(path,'rt') as f:
-        for line in f:
-            x=json.loads(line)
-            if x.get('stageA'):yield x
+    from recording import rows
+    for x in rows(path):
+        if x.get('stageA'):yield x
 
 def pack(row,kind):
     units=sorted(row['units'],key=lambda u:u[0]);own=[u for u in units if u[1]==0];enemy=[u for u in units if u[1]==1]

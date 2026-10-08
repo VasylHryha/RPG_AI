@@ -1,5 +1,7 @@
 """Bounded pipe-to-gzip recorder; failed compressed attempts remain evidence."""
 import gzip
+import contextlib
+import lzma
 import json
 import os
 import selectors
@@ -10,11 +12,19 @@ import time
 CHUNK_BYTES = 64 * 1024
 MAX_RAW_BYTES = 1024**3
 
-def stream_host(binary, request, raw, err, deadline, monitor, receipt, profile=False):
+def stream_host(binary, request, raw, err, deadline, monitor, receipt, profile=False, compact=False):
     child = None
     receipt.update(uncompressed_bytes=0, peak_rss_bytes=0)
     try:
-        with raw.open('xb') as target, gzip.GzipFile(fileobj=target, mode='wb', compresslevel=1, mtime=0) as out, err.open('xb') as errors, selectors.DefaultSelector() as selector:
+        with contextlib.ExitStack() as stack:
+            target=stack.enter_context(raw.open('xb'))
+            out=stack.enter_context(lzma.LZMAFile(target, mode='wb', preset=1) if compact else gzip.GzipFile(fileobj=target, mode='wb', compresslevel=1, mtime=0))
+            errors=stack.enter_context(err.open('xb'))
+            selector=stack.enter_context(selectors.DefaultSelector())
+            if compact:
+                from recording import Writer, MAX_RECORD
+                writer=Writer(out)
+            pending=bytearray()
             env = dict(os.environ)
             env.pop('STAGEA_MEMORY_PROFILE', None)
             if profile: env['STAGEA_MEMORY_PROFILE'] = '1'
@@ -41,10 +51,20 @@ def stream_host(binary, request, raw, err, deadline, monitor, receipt, profile=F
                     receipt['uncompressed_bytes'] += len(chunk)
                     if receipt['uncompressed_bytes'] > MAX_RAW_BYTES:
                         raise RuntimeError('raw fight exceeds 1 GiB local bound')
-                    out.write(chunk)
+                    if compact:
+                        pending.extend(chunk)
+                        while True:
+                            end=pending.find(b'\n')
+                            if end<0:break
+                            if end>MAX_RECORD:raise RuntimeError('host row exceeds compact buffer bound')
+                            row=json.loads(pending[:end]);del pending[:end+1]
+                            writer.write(row)
+                        if len(pending)>MAX_RECORD:raise RuntimeError('host row exceeds compact buffer bound')
+                    else:out.write(chunk)
             child.wait()
             if child.returncode or err.stat().st_size:
                 raise RuntimeError('host failed; inspect stderr')
+            if compact and pending:raise RuntimeError('truncated host JSON row')
             target.flush()
     finally:
         if child is not None:

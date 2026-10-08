@@ -5,6 +5,7 @@ import hashlib
 import json
 import os
 import random
+import shutil
 import secrets
 import subprocess
 import time
@@ -48,7 +49,7 @@ def prepare():
     ledger=dict(schema=1,binary=identity(),sources=sources(),jobs=jobs,timing_sample=sample,fresh_entropy=True,split_unit='whole fight',leader='PARKED')
     write(path,ledger,exclusive=True);return ledger
 
-def ledger_path():
+def memory_ledger_path():
     active=LOCAL/'DATA_RECOVERY_ACTIVE.json'
     if not active.exists():return LOCAL/'DATA_LEDGER.json'
     r=read(active)
@@ -58,6 +59,43 @@ def ledger_path():
     for name,digest in r['failed_evidence'].items():
         if sha(LOCAL/name)!=digest:raise RuntimeError('failed attempt evidence drift')
     return path
+
+def ledger_path():
+    previous=memory_ledger_path()
+    active=LOCAL/'DATA_SLIM_RECOVERY_ACTIVE.json'
+    if not active.exists():return previous
+    r=read(active)
+    if str(previous.relative_to(LOCAL))!=r['previous_ledger_file'] or sha(previous)!=r['previous_ledger_sha256']:raise RuntimeError('slim recovery baseline drift')
+    for name,digest in r['failed_evidence'].items():
+        if sha(LOCAL/name)!=digest:raise RuntimeError('failed attempt evidence drift')
+    path=LOCAL/r['ledger_file']
+    if sha(path)!=r['ledger_sha256']:raise RuntimeError('slim recovery ledger drift')
+    return path
+
+def recover_slim():
+    if (LOCAL/'DATA_SLIM_RECOVERY_ACTIVE.json').exists():return check()
+    previous=memory_ledger_path();old=read(previous)
+    if any((LOCAL/'raw'/(j['tag']+'_COMPLETE.json')).exists() for j in old['jobs']):raise RuntimeError('slim recovery requires zero completed collection fights')
+    for j in old['jobs']:
+        if sha(LOCAL/'requests'/(j['tag']+'.json'))!=j['request_sha256']:raise RuntimeError('sealed request drift')
+    failed=dict(old.get('recovery',{}).get('failed_evidence',{}))
+    # Preserve failed collection and development-host attempts, including any
+    # transient metric file left by the old failed validation.
+    for p in sorted((LOCAL/'attempts').glob('*.json')):
+        attempt=read(p)
+        if attempt.get('status')!='STOP_RESUMABLE':continue
+        failed[str(p.relative_to(LOCAL))]=sha(p)
+        if attempt.get('raw_file'):
+            raw=LOCAL/attempt['raw_file']
+            for artifact in (raw,raw.with_suffix('.stderr'),raw.with_suffix('.metrics.gz')):
+                if artifact.exists():failed[str(artifact.relative_to(LOCAL))]=sha(artifact)
+    run_id=secrets.token_hex(8);path=LOCAL/('DATA_LEDGER_SLIM_'+run_id+'.json')
+    recovery=dict(reason='native last-tick boundary and lossless compact binary; same sealed requests',previous_ledger_file=str(previous.relative_to(LOCAL)),previous_ledger_sha256=sha(previous),failed_evidence=failed)
+    write(path,dict(old,binary=identity(),sources=sources(),recording='STAGEASLIM1 float64 lzma1',recovery=recovery),exclusive=True)
+    note=dict(status='RECOVERY_REGISTERED_NO_RETRY',recovery_id=run_id,ledger_file=path.name,ledger_sha256=sha(path),requests_unchanged=True,fresh_attempt_ids_required=True,**recovery)
+    write(LOCAL/('SLIM_RECOVERY_'+run_id+'.json'),note,exclusive=True)
+    write(LOCAL/'DATA_SLIM_RECOVERY_ACTIVE.json',note,exclusive=True)
+    return check()
 
 def recover_memory():
     # Explicit prospective rebind of the same sealed jobs, before any completion.
@@ -89,83 +127,85 @@ def check():
         if sha(LOCAL/'requests'/(j['tag']+'.json'))!=j['request_sha256']:raise RuntimeError('request drift')
     return ledger
 
-def validate_raw(path,deadline):
-    # One bounded streaming reparse validates both inference/label history and A0 metrics.
-    import tempfile
+def validate_raw(path,deadline,duration=150,dt=1/30):
+    # One bounded reparse validates inference/labels, physical history and metrics.
     from data import pack,labels
-    metrics=load('stagea_a0metrics',ARMY/'rev2/a0_metrics.py');n=0;previous=None;trajectory=hashlib.sha256()
-    filtered=Path(str(path)+'.validation.gz')
+    from recording import rows
+    import metrics
+    n=0;previous=None;trajectory=hashlib.sha256()
+    filtered=Path(str(path)+'.validation.gz');memory=[]
     try:
-        with gzip.open(path,'rt') as src,gzip.open(filtered,'wt') as met:
-            for line in src:
+        with gzip.open(filtered,'wt',compresslevel=1) as met:
+            for row in rows(path):
                 if time.monotonic()>=deadline:raise TimeoutError('cap during raw revalidation')
-                row=json.loads(line)
                 if 'error' in row:raise RuntimeError('host error '+str(row['error']))
                 if row.get('stageA'):
-                    x,ids,enemies=pack(row,'N1');ys=labels(row,ids,enemies)
-                    if len(row['labels'])!=len(ids):raise RuntimeError('label identity coverage')
-                    if previous is not None and abs(row['t']-previous-row['dt'])>1e-7:raise RuntimeError('incomplete physical-tick history')
+                    x,ids,enemies=pack(row,'N1');labels(row,ids,enemies)
+                    if len(row['labels'])!=len(ids) or len({r['id'] for r in row['labels']})!=len(ids):raise RuntimeError('label identity coverage')
+                    if abs(row['dt']-dt)>1e-12 or abs(row['t']-(previous+dt if previous is not None else 0))>1e-7:raise RuntimeError('incomplete physical-tick history')
                     previous=row['t'];n+=1
                     trajectory.update(json.dumps({k:v for k,v in row.items() if k not in ('history','pairModes','labels','networkState','networkKind')},sort_keys=True,separators=(',',':')).encode())
-                elif not row.get('stageAParity') and not row.get('stageAMemory'):met.write(line)
-        stats=metrics.measure(filtered,deadline)
+                elif row.get('stageAMemory'):memory.append(row)
+                elif not row.get('stageAParity'):met.write(json.dumps(row,separators=(',',':'))+'\n')
+        stats=metrics.measure(filtered,deadline,duration=duration,dt=dt)
+        if n and abs(previous+dt-stats['t_end'])>1e-7:raise RuntimeError('terminal/physical history time mismatch')
     finally:
         if filtered.exists():filtered.unlink()
-    return dict(stats=stats,frames=n,trajectory_sha256=trajectory.hexdigest())
+    return dict(stats=stats,frames=n,trajectory_sha256=trajectory.hexdigest(),memory_profile=memory)
 
-def execute(job,deadline,monitor,ledger_hash,memory_profile=False):
+def execute(job,deadline,monitor,ledger_hash,memory_profile=False,full_detail=False):
     path=LOCAL/'raw'/(job['tag']+'_COMPLETE.json')
+    request_path=LOCAL/'requests'/(job['tag']+'.json')
+    if sha(request_path)!=job['request_sha256']:raise RuntimeError('request drift')
+    request=read(request_path);duration=request['options']['duration'];dt=request['options'].get('dt',1/30)
     if path.exists():
         r=read(path)
         if r['job']!=job or r['ledger_sha256']!=ledger_hash or sha(LOCAL/r['raw_file'])!=r['raw_sha256']:raise RuntimeError('completed fight drift')
-        checked=validate_raw(LOCAL/r['raw_file'],deadline)
+        checked=validate_raw(LOCAL/r['raw_file'],deadline,duration,dt)
         if any(r[k]!=v for k,v in checked.items()):raise RuntimeError('completion statistics drift')
         return r
-    run_id=secrets.token_hex(8);raw=LOCAL/'raw'/(job['tag']+'_'+run_id+'.jsonl.gz');raw.parent.mkdir(parents=True,exist_ok=True)
-    err=raw.with_suffix('.stderr');start=time.monotonic();receipt=dict(job=job,status='RUNNING',ledger_sha256=ledger_hash,attempt_id=run_id,raw_file=str(raw.relative_to(LOCAL)))
+    # Outcome/network/parity fixtures retain complete diagnostics; the sealed O
+    # dataset and maximum-size memory fixture use compact recording by default.
+    compact=not full_detail and not request.get('stageA',{}).get('weights') and job.get('split')!='outcome'
+    run_id=secrets.token_hex(8);suffix='.slim.xz' if compact else '.jsonl.gz'
+    raw=LOCAL/'raw'/(job['tag']+'_'+run_id+suffix);raw.parent.mkdir(parents=True,exist_ok=True)
+    err=raw.with_suffix('.stderr');start=time.monotonic();receipt=dict(job=job,status='RUNNING',ledger_sha256=ledger_hash,attempt_id=run_id,raw_file=str(raw.relative_to(LOCAL)),recording='STAGEASLIM1' if compact else 'full-detail JSON',physical_dt=dt)
     try:
         monitor.live_memory(None)
-        request_path=LOCAL/'requests'/(job['tag']+'.json')
-        if sha(request_path)!=job['request_sha256']:raise RuntimeError('request drift')
-        request=read(request_path)
         from streaming import stream_host
-        stream_host(BINARY,request,raw,err,deadline,monitor,receipt,profile=memory_profile)
-        # A0 metrics consume observer and terminal only; no duplicate plain file.
-        filtered=raw.with_suffix('.metrics.gz')
-        n=0;previous=None;trajectory=hashlib.sha256();memory=[]
-        with gzip.open(raw,'rt') as src,gzip.open(filtered,'wt',compresslevel=1) as met:
-            for line in src:
-                if time.monotonic()>=deadline:raise TimeoutError('cap during validation')
-                row=json.loads(line)
-                if 'error' in row:raise RuntimeError('host error '+str(row['error']))
-                if row.get('stageA'):
-                    from data import pack,labels
-                    x,ids,enemies=pack(row,'N1');labels(row,ids,enemies)
-                    if previous is not None and abs(row['t']-previous-row['dt'])>1e-7:raise RuntimeError('incomplete physical-tick history')
-                    previous=row['t'];n+=1;trajectory.update(json.dumps({k:v for k,v in row.items() if k not in ('history','pairModes','labels','networkState','networkKind')},sort_keys=True,separators=(',',':')).encode())
-                elif row.get('stageAMemory'):
-                    memory.append(row)
-                    receipt['peak_rss_bytes']=max(receipt['peak_rss_bytes'],row['peak_rss_bytes'])
-                elif not row.get('stageAParity'):met.write(line)
-        if request.get('stageA',{}).get('collect') and not n:raise RuntimeError('missing physical-tick history')
-        metrics=load('stagea_a0metrics',ARMY/'rev2/a0_metrics.py');stats=metrics.measure(filtered,deadline)
-        checked=validate_raw(raw,deadline)
-        if checked!=dict(stats=stats,frames=n,trajectory_sha256=trajectory.hexdigest()):raise RuntimeError('fresh completion validation mismatch')
-        receipt.update(status='DONE',raw_file=str(raw.relative_to(LOCAL)),raw_sha256=sha(raw),stats=stats,seconds=time.monotonic()-start,frames=n,memory_profile=memory,trajectory_sha256=trajectory.hexdigest())
-        write(path,receipt,exclusive=True);filtered.unlink()
+        stream_host(BINARY,request,raw,err,deadline,monitor,receipt,profile=memory_profile,compact=compact)
+        checked=validate_raw(raw,deadline,duration,dt)
+        if request.get('stageA',{}).get('collect') and not checked['frames']:raise RuntimeError('missing physical-tick history')
+        for row in checked['memory_profile']:receipt['peak_rss_bytes']=max(receipt['peak_rss_bytes'],row['peak_rss_bytes'])
+        receipt.update(status='DONE',raw_sha256=sha(raw),seconds=time.monotonic()-start,**checked)
+        write(path,receipt,exclusive=True)
     except BaseException as e:
         receipt.update(status='STOP_RESUMABLE',error=f'{type(e).__name__}: {e}')
         raise
     finally:write(LOCAL/'attempts'/(job['tag']+'_'+run_id+'.json'),receipt,exclusive=True)
     return receipt
 
-def disk_projection(records,total):
-    raw=max(r['uncompressed_bytes']*150/r['stats']['t_end'] for r in records)
-    zipped=max(r['compressed_bytes']*150/r['stats']['t_end'] for r in records)
-    return dict(full_fight_raw_bytes=raw,full_fight_gzip_bytes=zipped,total_fights=total,
-                projected_raw_bytes=1.2*total*raw,projected_gzip_bytes=1.2*total*zipped,
-                margin=1.2,fields_dropped=[],compression='streaming gzip level 1; 64 KiB read buffer',
-                transient='one compressed observer/terminal-only validation file per active fight')
+COLLECTION_LIMIT_BYTES=4_000_000_000
+DISK_RESERVE_BYTES=5_000_000_000
+
+def disk_projection(records,total,remaining=None):
+    from recording import DROPPED
+    from metrics import last_tick_time
+    zipped=max(r['compressed_bytes']*max(1.,last_tick_time(150,r.get('physical_dt',1/30))/r['stats']['t_end']) for r in records)
+    remaining=total if remaining is None else remaining
+    free=shutil.disk_usage(LOCAL).free
+    return dict(full_fight_compact_bytes=zipped,total_fights=total,remaining_fights=remaining,
+                projected_collection_bytes=total*zipped,required_free_bytes=2*remaining*zipped+DISK_RESERVE_BYTES,
+                actual_free_bytes=free,margin=2,reserve_bytes=DISK_RESERVE_BYTES,
+                fields_dropped=DROPPED,compression='lossless float64 arrays with bitwise XOR deltas; streaming LZMA preset 1',
+                transient='one observer/terminal-only gzip validation file per active fight')
+
+def disk_gate(records,total,remaining):
+    p=disk_projection(records,total,remaining)
+    write(LOCAL/'COLLECTION_DISK_GATE.json',p)
+    if p['projected_collection_bytes']>COLLECTION_LIMIT_BYTES:raise RuntimeError('compact collection projection exceeds 4 GB')
+    if p['required_free_bytes']>p['actual_free_bytes']:raise RuntimeError('collection disk gate: measured bytes/fight x remaining x 2 + 5 GB exceeds free space')
+    return p
 
 def run(sample=False):
     ledger=check();base=a0();cap=base.owner_cap();run_id=secrets.token_hex(8);result=dict(status='RUNNING',sample=sample,ledger_sha256=sha(ledger_path()),cap=cap)
@@ -173,13 +213,28 @@ def run(sample=False):
     try:
         with admitted(cap['cap_seconds']) as (deadline,monitor):
             jobs=[j for j in ledger['jobs'] if not sample or j['tag'] in ledger['timing_sample']]
-            calibration=[execute(j,deadline,monitor,result['ledger_sha256']) for j in ledger['jobs'] if j['tag'] in ledger['timing_sample']]
+            calibration=[]
+            total=len(ledger['jobs'])
+            def remaining():return sum(not (LOCAL/'raw'/(j['tag']+'_COMPLETE.json')).exists() for j in ledger['jobs'])
+            # Before the first measurement, reserve the complete target twice plus
+            # 5 GB. Afterwards every new fight uses measured duration-normalized bytes.
+            if not any((LOCAL/'raw'/(j['tag']+'_COMPLETE.json')).exists() for j in ledger['jobs']):
+                if shutil.disk_usage(LOCAL).free < 2*COLLECTION_LIMIT_BYTES+DISK_RESERVE_BYTES:raise RuntimeError('initial collection disk reserve below 13 GB')
+            for j in ledger['jobs']:
+                if j['tag'] not in ledger['timing_sample']:continue
+                if calibration:disk_gate(calibration,total,remaining())
+                calibration.append(execute(j,deadline,monitor,result['ledger_sha256']))
+            disk=disk_gate(calibration,total,remaining())
             rates=max(r['seconds']*150/r['stats']['t_end'] for r in calibration)
             todo=[j for j in jobs if not (LOCAL/'raw'/(j['tag']+'_COMPLETE.json')).exists()]
             projection=1.2*len(todo)*rates
-            write(LOCAL/'COLLECTION_PROJECTION.json',dict(sample_fights=len(calibration),remaining_fights=len(todo),projected_seconds=projection,slowest_full_fight_seconds=rates,disk=disk_projection(calibration,len(ledger['jobs']))))
+            write(LOCAL/'COLLECTION_PROJECTION.json',dict(sample_fights=len(calibration),remaining_fights=len(todo),projected_seconds=projection,slowest_full_fight_seconds=rates,disk=disk))
             if projection>deadline-time.monotonic():raise RuntimeError('collection projection exceeds invocation owner cap')
-            results=[execute(j,deadline,monitor,result['ledger_sha256']) for j in jobs]
+            results=[]
+            for j in jobs:
+                disk_gate(calibration+results,total,remaining())
+                results.append(execute(j,deadline,monitor,result['ledger_sha256']))
+            disk_gate(calibration+results,total,remaining())
             result.update(status='DONE',completed=len(results),completion_hashes={r['job']['tag']:sha(LOCAL/'raw'/(r['job']['tag']+'_COMPLETE.json')) for r in results})
             if not sample:
                 index=dict(ledger_sha256=result['ledger_sha256'],fights=[dict(**r['job'],raw_file=r['raw_file'],raw_sha256=r['raw_sha256'],frames=r['frames'],trajectory_sha256=r['trajectory_sha256']) for r in results])
@@ -187,10 +242,29 @@ def run(sample=False):
     except BaseException as e:result.update(status='STOP_RESUMABLE',error=f'{type(e).__name__}: {e}');raise
     finally:write(path,result,exclusive=True)
 
+def diagnostic(tag):
+    # A handful of separately named full-detail copies; sealed requests and
+    # collection completions never change or enter the training index.
+    ledger=check()
+    if sum(1 for p in (LOCAL/'attempts').glob('diagnostic_*.json'))>=3:raise RuntimeError('three diagnostic attempts already recorded')
+    job=dict(next(j for j in ledger['jobs'] if j['tag']==tag))
+    original=LOCAL/'requests'/(tag+'.json')
+    job.update(tag='diagnostic_'+secrets.token_hex(8),split='diagnostic')
+    destination=LOCAL/'requests'/(job['tag']+'.json')
+    destination.write_bytes(original.read_bytes())
+    if sha(destination)!=job['request_sha256']:raise RuntimeError('diagnostic request copy drift')
+    with admitted(a0().owner_cap()['cap_seconds']) as (deadline,monitor):
+        if shutil.disk_usage(LOCAL).free<DISK_RESERVE_BYTES+2*1024**3:raise RuntimeError('diagnostic disk reserve')
+        return execute(job,deadline,monitor,sha(ledger_path()),full_detail=True)
+
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('command',choices=('prepare','recover-memory','sample','run','audit'));a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('command',choices=('prepare','recover-memory','recover-slim','sample','run','audit','diagnostic'));p.add_argument('--tag');a=p.parse_args()
     if a.command=='prepare':prepare()
     elif a.command=='recover-memory':recover_memory()
+    elif a.command=='recover-slim':recover_slim()
+    elif a.command=='diagnostic':
+        if not a.tag:p.error('diagnostic requires --tag from the sealed ledger')
+        diagnostic(a.tag)
     elif a.command=='audit':
         from data import audit
         if audit(read(LOCAL/'INDEX.json'))['status']!='PASS':raise SystemExit('label gate BLOCKED')

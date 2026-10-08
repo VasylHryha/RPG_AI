@@ -75,7 +75,7 @@ def build():
     hashes={k:v for k,v in record['source_hashes'].items() if Path(k).suffix in ('.py','.cpp','.h','.json')};hashes.update(sources())
     hashes.update({str(p.relative_to(CPP)):sha(p) for p in out.glob('*') if p.suffix in ('.cpp','.h')})
     write(BINARY.with_suffix('.build.json'),dict(schema=2,engine='army_stagea',scope='native_complete_engine',sanitized=False,portable=False,source_hashes=hashes,binary_sha256=sha(BINARY),commands=commands,link=link,reused_object_sha256=reused,parent=parent))
-    write(HERE/'BUILD_STAGEA_MEM.json',dict(status='BUILT_NOT_FIGHT_VERIFIED',seconds=time.monotonic()-start,identity=admission.admit(BINARY),fights=0))
+    write(HERE/'BUILD_STAGEA_SLIM.json',dict(status='BUILT_NOT_FIGHT_VERIFIED',seconds=time.monotonic()-start,identity=admission.admit(BINARY),fights=0))
 
 from pathlib import Path
 if __name__=='__main__':build()
