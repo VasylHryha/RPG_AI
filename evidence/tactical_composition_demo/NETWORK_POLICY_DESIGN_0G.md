@@ -107,3 +107,122 @@
 | Is a network arm far below the scripted base after DAgger? | Report; adjust the design (owner) before stage 2 | drafter |
 | Do the N2 ablations not hurt? | Report "the resonator state is not used"; redesign the N2 readout | drafter |
 | Would training need a project lock change? | No: use the separate environment | implementer |
+
+---
+
+## Revision 2 (answers `docs/reviews/network_policy_design_review_codex.md`, CHANGES_REQUIRED, F1–F11). It overrides the draft where they differ.
+
+**Self-audit (drafter's causes):**
+- **F1–F5:** I assumed the react adapter and the native decision trace were neutral, complete per-unit I/O. They are not. The adapter runs v7 and the copied REACT before submitted commands. The trace precedes fire gates and the joint volley planner. The existing shadow is a dodge-trio teacher, not the full elite.
+- **F6–F7:** I described Stuart-Landau as the C4/C5 law without reading `geomind/c4_model.py`.
+- **F8–F11:** I wrote "same budget", the ES ranking and the readings without the 0033/0034 definitions and without sizing.
+
+### R2.1 The first milestone is a guns-only end-to-end slice (Codex's smallest executable milestone)
+- **The networks control only our artillery:** move, target, cast permission and explicit aim, in drills D1 (guns against guns plus static infantry) and D2-like (under shellfire, with dodging needed).
+- **Non-gun units are explicit, unchanged scaffolding.** No learned full army yet.
+- The cases include 1–2 guns and incoming shells.
+- **Order:** the full army comes only after the slice works: mechanism, then C3 50/100/200, then the series.
+
+### R2.2 A neutral network host (F1)
+- **A new native host and controller** (new files) reuse only the observation and command legality mechanics: body, range, minRange, legality projection and participation.
+- **It never calls** P16, v7, the copied REACT, E1, R1 or the volley planner for network arms.
+- Native physics and reflexes are identical across all arms, including the script comparators.
+- **Per tick, it records:** the raw network intent, the legality projection and its reason, the executed command, and launch acknowledgements.
+- **Dodging is learned** from the threat inputs, with no scripted dodge in network arms.
+
+### R2.3 Action semantics across the 30 Hz tick (F2)
+- **Timing:** decisions at 5 Hz, at the observation snapshot of tick t (before `prepare`). An action holds for six ticks.
+- **The cache stores absolute values:** goal position, aim point and target identity (stable unit id). Offsets are not re-applied to a moving unit.
+- **The gun cast lifecycle:**
+  - `permit` allows the start of a windup; `hold` blocks the start of a new windup;
+  - a windup already started always completes, then releases at the cached aim if it is still legal, else at the nearest legal point;
+  - a completed cast is never held beyond one decision interval;
+  - an actual launch is acknowledged into the next observation.
+- **Target death or slot churn:** the cache drops the target, and the next decision chooses again.
+- **The reaction delay** (up to one interval) is reported and identical for N1 and N2. The script teacher decides every tick, which is a stated asymmetry.
+
+### R2.4 A versioned observation and action schema (F3)
+- **Self:** role, HP, preparation state and time-to-release, cooldown, energy, range and minRange, body radius, speed, velocity.
+- **Friends and enemies:** k = 12 each, sorted by distance then id; the same fields plus target-of and is-targeting-me.
+- **Threats:** typed tokens for shell, aimed shot, field and enemy cast. Each keeps its own geometry and timing:
+  - shell: landing point, time and radius;
+  - shot: origin, direction, speed and remaining distance;
+  - cast: caster, target and release time.
+- **Arena:** distances to the arena borders. **Global:** counts by role on both sides.
+- **Encoding:** egocentric with an orientation transform (mirror for side), and an inverse transform for actions. Units are px, px/s and game-seconds, scaled with a normalization ledger and masks for missing slots.
+- **Decoder:** an absolute goal clipped to legal positions; target = enemy id; aim point = legal splash centre.
+
+### R2.5 A teacher-label collector, and a constrained public teacher for the slice (F4, F5)
+- **A new native collector** records, by fight, tick, unit and volley id:
+  - the pre-policy public snapshot;
+  - the teacher's candidate movement (move flag, stop, multiplier);
+  - the post-arbitration intent;
+  - cast start, hold and continue;
+  - scheduled joint volleys;
+  - the actual release, aim and target.
+- **Action labels are the post-arbitration intent plus the actual release and aim.** Launch outcomes are kept separate.
+- **The slice teacher is a constrained public teacher** for guns: the engine artillery planner (`artyFire: plan`) running on public information over our guns, plus the copied REACT for gun reactions. Labels come at the same tick order as the network's decisions.
+- **The full elite** (with commander look-ahead and rollout) remains a **labelled reference arm**, not the label source for the slice. Its labels exceed the action contract and its branch thinking differs (F5).
+- **DAgger for the slice:** the constrained teacher is evaluated on student-visited states at the same tick point, from a separate teacher-state copy with its own RNG. No physical time advances for labelling. The byte-identical shadow-on/off check applies.
+- A full-elite DAgger oracle is deferred until a defined full-teacher-on-student-state contract exists.
+
+### R2.6 N2 rebuilt on the actual C4 element law (F6, F7)
+- **The C4 law** (`geomind/c4_model.py`): x_dot_i = mean_j[û_ij·(A·(1 + J·cos(θ_j − θ_i)) − B/r_ij)] and θ_dot_i = ω_i + mean_j[K·w(r_ij)·sin(θ_j − θ_i)], with w = exp(−r²), up to k nearest neighbours within a radius, degree-normalized, the neighbour set held for each RK4 step.
+- **N2 for guns:**
+  - each gun is a C4 element: phase θ_i, plus its actual battlefield position as the geometry;
+  - **the mode → geometry → mode loop is kept:** phase-dependent spacing (A, J, B) contributes a bounded share of the move goal; the network adds a learned bounded movement term; real positions feed back into the phase coupling;
+  - **learned parameters:** the input forcing g·φ(o_i) on θ_dot and ω, the coupling scale K and radius within declared bounds, and thin readouts;
+  - **readouts:** permit when the phase is in a window (the learned battery firing point); a target score combining a learned linear term with an alignment term over the local phase order parameter of guns already engaging that target; aim as a learned bounded offset.
+- **The tested subset is declared:** a local geometry-mode loop driving battery timing and target grouping. C5 "many become one" is **not claimed** unless group-detection criteria (`c5_detect.py`) are met and reported.
+- **Numerics, matching `s4_v6_complex.cpp`:**
+  - the bounds, held topology, RK4 and stage monitoring are reused;
+  - the training and native integration use the same dt (1/30 s) and substep policy;
+  - real or imaginary-free phase state (θ in rad);
+  - BPTT over 3 s windows (90 ticks), with gradients through θ and through the readouts, and topology held (no gradient) within a step;
+  - gradient clipping, and a failure policy: drop the window and log it.
+
+### R2.7 Controls and fairness (F8)
+- **Whole-system comparison** (the owner's request): N1 against N2, with the same observations, decoder, data and optimiser budget. The budget is declared in gradient steps, rows seen and ES evaluations.
+- **For attribution to oscillation,** a third network N1r: a bounded recurrent message-passing net (GRU-style) with the same local graph, memory, update cadence and decoder, but no oscillator law.
+- **"RRG earns its place"** requires N2 ≥ N1r **and** N2 ≥ N1, plus the ablations:
+  - K = 0 (no phase coupling);
+  - topology frozen (the geometry → mode channel removed);
+  - J = 0 (the mode → geometry channel removed).
+- **Ablations are reported as harm or no harm. No harm is not proof of non-use** (F11).
+
+### R2.8 Stage-2 objective and budget (F9)
+- **For the slice,** the drill objective is lexicographic, using ratios of totals with a null for a zero denominator:
+  1. own guns lost over all paired fights;
+  2. enemy kills per own death;
+  3. kills per minute.
+- **For the full army later,** decisions 0033/0034 apply: streak first, then deaths over all paired fights, then kills per death.
+- **ES:** separable CMA-ES over the declared learnable subset, with a fixed paired panel per generation:
+  - 16 candidates × 10 paired fights = 160 fights per generation;
+  - at most 20 generations, 3,200 fights for the slice;
+  - evaluated on fresh seeds after selection.
+
+### R2.9 Sizing and environment (F10)
+- **Rows:** Σ over fights and decisions of the living own guns.
+  - Slice D1/D2: 200 fights × about 40 s × 5 Hz × at most 10 guns = at most **0.4 M rows**.
+  - At about 300 float32 features, that is about 0.5 GB.
+  - The full army later: 50 units, about 7.5 M rows at most for 200 fights, so it will be subsampled.
+- **The ML environment:** a separate pinned environment with its own lock file in the new folder (PyTorch CPU, NumPy), reproducible from that lock. The project lock is untouched. The torch thread count is fixed at 4 so fights and training share the 10 cores.
+- **The projection is reported before** collection and training (decision 0031).
+
+### R2.10 Decidable readings for the slice (F11)
+- **Mechanism (10–20 paired drill fights):**
+  - **the network arm activates:** it fires, moves and targets legally, with fewer than 1% illegal projections;
+  - **reports:** damage per shell, shells per kill, fire rate, own guns lost, the enemy's dodge success against our shells, and launch and landing spread.
+- **"The network slice works":** N (stage 1) is within the decision-0033 effect size of the constrained-teacher arm on own guns lost and kills per minute: about ±1 gun lost per fight and ±10% kills per minute.
+- **"It beats the teacher" (stage 2):** clearly better than the teacher arm at that size, at the declared paired looks.
+- **Held-out imitation quality:** per head, against declared baselines. For targets, top-1 against nearest-target and against the teacher's own repeat consistency. For fire, against a constant hold or permit. For move and aim, error against a zero-offset decoder. These are diagnostics only; the decisions use the paired play.
+
+### R2.11 Updated stop rows
+
+| Yes/no | Action | Role |
+|---|---|---|
+| Does any network arm call a scripted policy? | Stop; fix the host | implementer |
+| Do the collector labels fail parity with the executed actions on recorded fights? | Stop; fix the collector | implementer |
+| Is held-out imitation no better than its declared baseline on a head? | Stop before play; fix the features or labels | implementer |
+| Is the slice network far outside the effect size below the teacher after DAgger? | Report; redesign with the owner before stage 2 | drafter |
+| Does a projection exceed 1 h before 22:00? | Ask the owner | Claude |
