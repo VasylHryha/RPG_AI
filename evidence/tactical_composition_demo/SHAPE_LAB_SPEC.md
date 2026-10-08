@@ -103,3 +103,37 @@ Each drill runs for every arm in {v7 θ*, forcedP16}, plus v6 where the shape is
 | Does a dummy deal damage or move when it must not? | Fix before any drill | implementer |
 | Does the projection exceed 1 h before 22:00? | Ask the owner | Claude |
 | Would the build need to edit a pinned or frozen file? | Stop and report; use a new file | implementer |
+
+## 9. Amendment 2 (owner, 2026-10-08): per-role ideal runs, and split-and-compare actions
+
+The owner, on what comes next:
+- select tools that can raise our efficiency;
+- split melee, ranged and artillery;
+- do ideal runs;
+- split the action of each shape, and compare or repeat it;
+- copy game-AI best practice (as AlphaStar learned from StarCraft play).
+
+**This amendment adds three things to the lab. It is built after the current build; nothing in §3–§5 changes.**
+
+1. **Ideal runs per role (the teacher arms).** Every drill D1–D5 and C1–C3 also runs with a teacher on our side:
+   - **T-elite:** the Astelia elite AI, which is the best scripted play in this engine;
+   - **T-search:** later, the best achievable play found by search with the engine's forward model (chosen from the research note `docs/research/GAME_AI_BEST_PRACTICE_RESEARCH.md`).
+   - The teacher's per-role good-work numbers become the **reference line** for each shape.
+2. **Shadow actions (split and compare on the same state).**
+   - While a teacher controls our side, our shapes (v7's gun focus, gun spacing, escort and melee law, plus the gate) compute their action for every unit on every decision tick, **from the same observation, without executing it.** This is the same mechanism v7 already uses to compute P16's and v6's commands side by side.
+   - **Recorded per unit per tick:** the role, the teacher's target and movement, and our shape's target, goal and gate mode.
+   - **Reported per role:**
+     - target agreement;
+     - the goal distance between our shape and the teacher;
+     - where our shape would leave the fight while the teacher stays;
+     - the situations of largest disagreement, as replay timestamps for the viewer.
+   - **The reverse comparison:** our shape in control, with the teacher shadowed.
+3. **Repeat (copy the teacher), as one labelled change per role, later and owner-approved:**
+   - either fit the shape's own parameters to maximise agreement with the teacher on the shadow records (imitation, in the manner of behaviour cloning);
+   - or adopt the teacher's rule for that role as a new shape;
+   - then re-measure in the drill and in the series.
+   - **Each copied shape names its source** (the teacher's rule or skill) and how it differs.
+
+**Viewer:** the drill replays get a "teacher vs ours" layer that draws both targets and goals for the selected role.
+
+**Boundaries:** §7 applies. The shadow computation must not change the teacher's trajectory, which is checked by byte-identical output with shadowing on and off.
