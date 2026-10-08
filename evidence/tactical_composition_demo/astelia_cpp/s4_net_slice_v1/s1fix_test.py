@@ -190,10 +190,11 @@ def test_live_remaining_resource_gate_preserves_projection(tmp_path,monkeypatch,
     attempts=tmp_path/'attempts';attempts.mkdir()
     for i in range(20):(attempts/f'{i}.json').write_text(json.dumps(dict(status='COMPLETE',resources=dict(wall_seconds=1,rss_bytes=1000))))
     monkeypatch.setattr(pilot,'authority',lambda:dict(cap_seconds=200))
+    monkeypatch.setattr(pilot,'free_ram_bytes',lambda:8*1024**3)
     monkeypatch.setattr(pilot.shutil,'disk_usage',lambda p:__import__('types').SimpleNamespace(free=6_000_000_000))
     if failure=='disk':monkeypatch.setattr(pilot.shutil,'disk_usage',lambda p:__import__('types').SimpleNamespace(free=5_000_100_000))
     if failure in ('wall','rss'):
-        (attempts/'19.json').write_text(json.dumps(dict(status='COMPLETE',resources=dict(wall_seconds=100 if failure=='wall' else 1,rss_bytes=600*1024**2 if failure=='rss' else 1000))))
+        (attempts/'19.json').write_text(json.dumps(dict(status='COMPLETE',resources=dict(wall_seconds=100 if failure=='wall' else 1,rss_bytes=3*1024**3 if failure=='rss' else 1000))))
     if failure=='sample_hash':(tmp_path/'f0.receipt.json').write_text('{}')
     if failure:
         with pytest.raises(RuntimeError,match=dict(disk='disk reserve',wall='live owner cap',rss='RSS',sample_hash='sample receipt hash')[failure]):pilot.resource_gate(dict(rows=rows))

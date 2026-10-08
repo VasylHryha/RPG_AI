@@ -13,6 +13,9 @@ import os
 from pathlib import Path
 import secrets
 import shutil
+import subprocess
+import sys
+import re
 import time
 import types
 from collection import HERE, read, sha, atomic, cap
@@ -28,6 +31,26 @@ CELLS=('D2-10','M2-10')
 ARMS=('T-unit-alone','T-unit+wrapper')
 MAX_FIGHTS=80
 SAMPLE_FIGHTS=20
+PROCESS_RSS_CAP_BYTES=2*1024**3
+OLD_PROCESS_RSS_CAP_BYTES=512*1024**2
+RSSFIX_BASELINE_SHA256='02c79cb7bd4dc37ab6f6ab2c8c09701ab1405da557a655a1738c8f9f1e1d6697'
+
+
+def free_ram_bytes():
+    """Live available RAM; no total-RAM substitution when discovery fails."""
+    try:
+        if sys.platform=='darwin':
+            result=subprocess.run(['vm_stat'],capture_output=True,text=True,check=True,timeout=5)
+            page=int(re.search(r'page size of (\d+) bytes',result.stdout).group(1))
+            counts={name:int(re.search(r'Pages '+name+r':\s+(\d+)',result.stdout).group(1))
+                    for name in ('free','inactive','speculative')}
+            value=page*sum(counts.values())
+        else:
+            value=int(re.search(r'^MemAvailable:\s+(\d+) kB',Path('/proc/meminfo').read_text(),re.M).group(1))*1024
+        if value<=0:raise ValueError('no available memory')
+        return value
+    except (OSError,ValueError,AttributeError,subprocess.SubprocessError) as exc:
+        raise RuntimeError('available RAM discovery failed') from exc
 
 
 def forbidden_seeds():
@@ -103,7 +126,23 @@ def seal():
 
 def inventory():
     v=read(ROOT/'INVENTORY.json')
-    if sha(ROOT/'INVENTORY.json')!=read(ROOT/'SEAL.json')['inventory_sha256'] or v['pins']!=pins():raise RuntimeError('sealed source/build/cap drift; preserve inventory')
+    if sha(ROOT/'INVENTORY.json')!=read(ROOT/'SEAL.json')['inventory_sha256']:raise RuntimeError('sealed inventory drift; preserve inventory')
+    current=pins()
+    if v['pins']!=current:
+        expected={**v['pins'],'sources':{**v['pins']['sources'],'s1fix_pilot.py':current['sources']['s1fix_pilot.py']}}
+        if v['pins']['sources']['s1fix_pilot.py']!=RSSFIX_BASELINE_SHA256 or expected!=current:
+            raise RuntimeError('sealed source/build/cap drift; preserve inventory')
+        resolutions=list((ROOT/'resolutions').glob('*.json'))
+        admitted=False
+        for path in resolutions:
+            log=read(path)
+            if log.get('status')!='COMPLETE':continue
+            if log['inventory_sha256']!=sha(ROOT/'INVENTORY.json') or log['tooling']!=dict(before=RSSFIX_BASELINE_SHA256,after=current['sources']['s1fix_pilot.py']):continue
+            receipt=ROOT/(log['original_attempt']['request']['fight']+'.receipt.json')
+            attempt=ROOT/'attempts'/(path.stem+'.json')
+            if receipt.is_file() and sha(receipt)==log['completion_receipt_sha256'] and read(attempt)=={**log['original_attempt'],'status':'COMPLETE'}:
+                admitted=True;break
+        if not admitted:raise RuntimeError('RSS tooling amendment requires explicit resolve')
     return v
 
 
@@ -158,22 +197,73 @@ def execute(row,deadline,sample):
     status='FAILED' if resources['exit_code'] or resources['timed_out'] else 'NATIVE_DONE'
     atomic(attempt,dict(status=status,sample=sample,request=row['request'],resources=resources))
     if status=='FAILED':raise RuntimeError('failed native fight preserved; no retry')
-    if resources['rss_bytes']>512*1024**2:raise RuntimeError('512 MiB/process cap exceeded; output preserved')
-    with partial.open() as stream:metrics=measure((json.loads(line) for line in stream),row['request'])
+    return complete_attempt(row,attempt,partial,stderr,resources,sample)
+
+
+def complete_attempt(row,attempt,partial,stderr,resources,sample,raw_sha256=None):
+    """One completion path for fresh native output and explicit recovery."""
+    if resources['exit_code']!=0 or resources['timed_out'] is not False:raise RuntimeError('native completion requires exit 0 without timeout')
+    if resources['rss_bytes']>PROCESS_RSS_CAP_BYTES:raise RuntimeError('2 GiB/process cap exceeded; output preserved')
     target=ROOT/(row['fight']+'.jsonl')
-    if target.exists():raise RuntimeError('orphan raw file')
-    os.replace(partial,target)
+    source=partial if partial.exists() else target
+    if raw_sha256 is None and target.exists():raise RuntimeError('orphan raw file')
+    if partial.exists() and target.exists():raise RuntimeError('partial and raw both exist; inspect')
+    if raw_sha256 is not None and sha(source)!=raw_sha256:raise RuntimeError('resolution raw drift')
+    with source.open() as stream:metrics=measure((json.loads(line) for line in stream),row['request'])
+    if source==partial:os.replace(partial,target)
     receipt=dict(status='COMPLETE',request=row['request'],inventory_sha256=sha(ROOT/'INVENTORY.json'),raw_sha256=sha(target),resources=resources,disk_bytes=target.stat().st_size+stderr.stat().st_size,metrics=metrics)
-    atomic(ROOT/(row['fight']+'.receipt.json'),receipt);atomic(attempt,dict(status='COMPLETE',sample=sample,request=row['request'],resources=resources))
+    receipt_path=ROOT/(row['fight']+'.receipt.json')
+    if receipt_path.exists():
+        if read(receipt_path)!=receipt:raise RuntimeError('completion receipt drift')
+    else:atomic(receipt_path,receipt)
+    atomic(attempt,dict(status='COMPLETE',sample=sample,request=row['request'],resources=resources))
     print(row['fight'],f"{resources['wall_seconds']:.2f} s",flush=True);return receipt
+
+
+def resolve(attempt_id):
+    """Explicitly finish old-cap NATIVE_DONE output; never launch or retry."""
+    if not re.fullmatch(r'\d{3}',attempt_id):raise RuntimeError('attempt must be a three-digit ID')
+    with lock():
+        attempt=ROOT/'attempts'/f'{attempt_id}.json';partial=attempt.with_suffix('.partial.jsonl');stderr=attempt.with_suffix('.stderr')
+        resolution=ROOT/'resolutions'/f'{attempt_id}.json'
+        original=read(attempt);inv=read(ROOT/'INVENTORY.json');current=pins()
+        if sha(ROOT/'INVENTORY.json')!=read(ROOT/'SEAL.json')['inventory_sha256']:raise RuntimeError('sealed inventory drift')
+        expected={**inv['pins'],'sources':{**inv['pins']['sources'],'s1fix_pilot.py':current['sources']['s1fix_pilot.py']}}
+        if inv['pins']['sources']['s1fix_pilot.py']!=RSSFIX_BASELINE_SHA256 or expected!=current:raise RuntimeError('resolution source/build drift')
+        if resolution.exists():
+            log=read(resolution)
+            if log['inventory_sha256']!=sha(ROOT/'INVENTORY.json') or log['tooling']!=dict(before=RSSFIX_BASELINE_SHA256,after=current['sources']['s1fix_pilot.py']):raise RuntimeError('resolution identity drift')
+            if original not in (log['original_attempt'],{**log['original_attempt'],'status':'COMPLETE'}):raise RuntimeError('resolution attempt drift')
+            original=log['original_attempt']
+            if log['status'] not in ('PREPARED','COMPLETE'):raise RuntimeError('invalid resolution status')
+            if log['status']=='COMPLETE':
+                receipt_path=ROOT/(original['request']['fight']+'.receipt.json')
+                if not receipt_path.is_file() or sha(receipt_path)!=log['completion_receipt_sha256']:raise RuntimeError('finalized resolution receipt drift')
+        else:
+            if original['status']!='NATIVE_DONE':raise RuntimeError('resolve requires NATIVE_DONE; FAILED attempts never retried')
+            resources=original['resources']
+            if resources['exit_code']!=0 or resources['timed_out'] is not False:raise RuntimeError('resolve requires exit 0 without timeout')
+            if not OLD_PROCESS_RSS_CAP_BYTES<resources['rss_bytes']<=PROCESS_RSS_CAP_BYTES:raise RuntimeError('attempt not within old-cap RSS fix')
+            if not partial.is_file() or not stderr.is_file() or (ROOT/(original['request']['fight']+'.jsonl')).exists() or (ROOT/(original['request']['fight']+'.receipt.json')).exists():raise RuntimeError('partial boundary not intact')
+            # Validate before logging any amendment or changing attempt state.
+            with partial.open() as stream:measure((json.loads(line) for line in stream),original['request'])
+            log=dict(status='PREPARED',reason='Old 512 MiB cap interrupted successful native completion; RSSFIX declares 2 GiB and completes preserved output without rerun or data edit',old_process_rss_cap_bytes=OLD_PROCESS_RSS_CAP_BYTES,process_rss_cap_bytes=PROCESS_RSS_CAP_BYTES,inventory_sha256=sha(ROOT/'INVENTORY.json'),tooling=dict(before=RSSFIX_BASELINE_SHA256,after=current['sources']['s1fix_pilot.py']),original_attempt=original,original_attempt_sha256=sha(attempt),raw_sha256=sha(partial),stderr_sha256=sha(stderr),resolved_unix=time.time())
+            row=next((r for r in inv['rows'] if r['request']==original['request'] and r['sample']==original['sample']),None)
+            if row is None:raise RuntimeError('attempt not in sealed inventory')
+            atomic(resolution,log)
+        row=next((r for r in inv['rows'] if r['request']==original['request'] and r['sample']==original['sample']),None)
+        if row is None or sha(stderr)!=log['stderr_sha256']:raise RuntimeError('resolution request/stderr drift')
+        receipt=complete_attempt(row,attempt,partial,stderr,original['resources'],original['sample'],log['raw_sha256'])
+        if log['status']!='COMPLETE':atomic(resolution,{**log,'status':'COMPLETE','completion_receipt_sha256':sha(ROOT/(row['fight']+'.receipt.json'))})
+        return dict(status='COMPLETE',attempt=attempt_id,resolution_receipt=str(resolution),resources=receipt['resources'])
 
 
 def projection():
     inv=inventory();receipts=[completed(r) for r in inv['rows'] if r['sample']]
     if len(receipts)!=20 or any(v is None for v in receipts):raise RuntimeError('complete <=20-fight sample required')
     maximum=max(v['resources']['wall_seconds'] for v in receipts);mean=sum(v['resources']['wall_seconds'] for v in receipts)/20;used=charged();remaining=MAX_FIGHTS-len(list((ROOT/'attempts').glob('*.json')));projected=used+2*maximum*remaining
-    disk=2*max(v['disk_bytes'] for v in receipts)*remaining;available=shutil.disk_usage(ROOT).free;cap_authority=authority();memory=max(v['resources']['rss_bytes'] for v in receipts)
-    value=dict(stage='S1',design_commit=DESIGN_COMMIT,sample_fights=20,sample_receipts={v['request']['fight']:sha(ROOT/(v['request']['fight']+'.receipt.json')) for v in receipts},sample_mean_seconds=mean,sample_max_seconds=maximum,sample_peak_rss_bytes=memory,simple_projection='charged + 2 * sample_max * remaining maximum arm-fights; sample coverage does not guarantee an upper runtime bound',maximum_total_fights=MAX_FIGHTS,maximum_extent_projected_seconds=projected,initial_40_fights_projected_seconds=used+2*maximum*20,charged_wall_seconds=used,remaining_disk_reserve_bytes=disk,disk_free_bytes=available,cap=cap_authority,status='ADMITTED' if projected<=cap_authority['cap_seconds'] and available>=disk+5_000_000_000 and memory<=512*1024**2 else 'STOP_RESOURCE',sample_limits='5 pairs/cell; sample reused in initial 10-pair collection; pilot scripted paths only, no fit/search/full-army cost')
+    disk=2*max(v['disk_bytes'] for v in receipts)*remaining;available=shutil.disk_usage(ROOT).free;cap_authority=authority();memory=max(v['resources']['rss_bytes'] for v in receipts);ram=free_ram_bytes();memory_reserve=2*memory
+    value=dict(stage='S1',design_commit=DESIGN_COMMIT,sample_fights=20,sample_receipts={v['request']['fight']:sha(ROOT/(v['request']['fight']+'.receipt.json')) for v in receipts},sample_mean_seconds=mean,sample_max_seconds=maximum,sample_peak_rss_bytes=memory,process_rss_cap_bytes=PROCESS_RSS_CAP_BYTES,free_ram_bytes=ram,memory_reserve_bytes=memory_reserve,simple_projection='charged + 2 * sample_max * remaining maximum arm-fights; sample coverage does not guarantee an upper runtime bound',maximum_total_fights=MAX_FIGHTS,maximum_extent_projected_seconds=projected,initial_40_fights_projected_seconds=used+2*maximum*20,charged_wall_seconds=used,remaining_disk_reserve_bytes=disk,disk_free_bytes=available,cap=cap_authority,status='ADMITTED' if projected<=cap_authority['cap_seconds'] and available>=disk+5_000_000_000 and memory<=PROCESS_RSS_CAP_BYTES and ram>=memory_reserve else 'STOP_RESOURCE',sample_limits='5 pairs/cell; sample reused in initial 10-pair collection; pilot scripted paths only, no fit/search/full-army cost')
     path=ROOT/'PROJECTION.json'
     if path.exists() and read(path)!=value:raise RuntimeError('existing projection differs; preserve, choose a new named projection')
     if not path.exists():atomic(path,value)
@@ -205,14 +295,15 @@ def resource_gate(inv,verify_raw=False):
     peak=max([v['resources']['rss_bytes'] for v in records]+[v['rss_bytes'] for v in observed])
     max_disk=max([v['disk_bytes'] for v in records]+[v['disk_bytes'] for v in receipts])
     projected=used+2*maximum*remaining;reserve=2*max_disk*remaining+5_000_000_000
-    free=shutil.disk_usage(ROOT).free;live_cap=authority()
+    free=shutil.disk_usage(ROOT).free;live_cap=authority();ram=free_ram_bytes();memory_reserve=2*peak
     reason=('projected remaining extent exceeds live owner cap' if projected>live_cap['cap_seconds'] else
             'measured-size remaining disk reserve unavailable' if free<reserve else
-            'observed RSS exceeds 512 MiB' if peak>512*1024**2 else None)
+            'observed RSS exceeds 2 GiB' if peak>PROCESS_RSS_CAP_BYTES else
+            'measured peak memory reserve unavailable' if ram<memory_reserve else None)
     value=dict(status='REFUSED' if reason else 'PASS',reason=reason,projection_sha256=sha(ROOT/'PROJECTION.json'),
                inventory_sha256=sha(ROOT/'INVENTORY.json'),sample_receipts=hashes,charged_wall_seconds=used,
                remaining_attempts=remaining,observed_max_wall_seconds=maximum,maximum_extent_projected_seconds=projected,
-               observed_peak_rss_bytes=peak,remaining_disk_reserve_bytes=reserve,disk_free_bytes=free,cap=live_cap)
+               observed_peak_rss_bytes=peak,process_rss_cap_bytes=PROCESS_RSS_CAP_BYTES,free_ram_bytes=ram,memory_reserve_bytes=memory_reserve,remaining_disk_reserve_bytes=reserve,disk_free_bytes=free,cap=live_cap)
     # Append-only checks preserve the sample projection and each refusal.
     directory=ROOT/'resource_checks';directory.mkdir(exist_ok=True)
     path=directory/f'{len(list(directory.glob("*.json")))+1:04d}.json'
@@ -266,7 +357,9 @@ def run(stage,cells):
 
 if __name__=='__main__':
     import math
-    p=argparse.ArgumentParser();p.add_argument('stage',choices=('seal','sample','project','collect','extend','report'));p.add_argument('--cells',nargs='*',choices=CELLS,default=[]);a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('stage',choices=('seal','resolve','sample','project','collect','extend','report'));p.add_argument('--cells',nargs='*',choices=CELLS,default=[]);p.add_argument('--attempt');a=p.parse_args()
     if a.stage in ('extend','report') and a.stage=='extend' and not a.cells:p.error('extend requires explicit cells')
-    result=seal() if a.stage=='seal' else projection() if a.stage=='project' else report(a.cells) if a.stage=='report' else run(a.stage,a.cells)
+    if a.stage=='resolve' and not a.attempt:p.error('resolve requires --attempt ID')
+    if a.stage!='resolve' and a.attempt:p.error('--attempt is only for resolve')
+    result=resolve(a.attempt) if a.stage=='resolve' else seal() if a.stage=='seal' else projection() if a.stage=='project' else report(a.cells) if a.stage=='report' else run(a.stage,a.cells)
     print(json.dumps({k:v for k,v in result.items() if k not in ('rows','raw_per_fight','cell_reports','pins')},indent=2))
