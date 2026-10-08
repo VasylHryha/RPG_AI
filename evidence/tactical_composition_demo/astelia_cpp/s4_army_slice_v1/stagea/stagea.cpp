@@ -1,4 +1,5 @@
 #include "stagea.h"
+#include <sys/resource.h>
 #include "react.h"
 #include "geometry.h"
 #include <algorithm>
@@ -6,6 +7,34 @@
 #include <iostream>
 #include <set>
 namespace stagea {
+void memoryReport(uint64_t tick,size_t before,size_t after,bool final){
+ if(!std::getenv("STAGEA_MEMORY_PROFILE")||(!final&&tick!=1&&tick%300))return;
+ rusage usage{};if(getrusage(RUSAGE_SELF,&usage))throw std::runtime_error("getrusage failed");
+ double peak=double(usage.ru_maxrss);
+#ifndef __APPLE__
+ peak*=1024; // macOS reports bytes; Linux reports KiB.
+#endif
+ std::cout<<"{\"stageAMemory\":true,\"tick\":"<<tick<<",\"final\":"<<(final?"true":"false")
+  <<",\"arena_before\":"<<before<<",\"arena_after\":"<<after<<",\"shapes\":"<<js::shapes.size()
+  <<",\"peak_rss_bytes\":"<<std::fixed<<std::setprecision(0)<<peak<<"}\n"<<std::defaultfloat<<std::setprecision(6);
+}
+void collectTick(astelia::World& w,js::Args roots,uint64_t tick){
+ bool enabled=false;
+ for(auto& cc:w.controllers)if(auto* c=dynamic_cast<react_v1::Controller*>(cc.get())){
+  enabled=enabled||c->stage.collect||bool(c->stage.weights);
+  // The input has been consumed by inference and serialized by record().
+  // Numerical caches and learned memory own no js::V handles.
+  c->stage.input=js::V();
+  for(auto row:c->shape.audit)roots.push_back(row);
+  for(auto row:c->shape.shotEvents)roots.push_back(row);
+  for(auto row:c->battery.audit)roots.push_back(row);
+ }
+ if(!enabled)return;
+ auto before=js::arena.size();js::collect(std::move(roots),0);
+ // No live object refers to the consumed input layouts after the sweep.
+ for(auto& cc:w.controllers)if(auto* c=dynamic_cast<react_v1::Controller*>(cc.get()))c->stage.layouts.clear();
+ memoryReport(tick,before,js::arena.size());
+}
 namespace {
 double sig(double x){return (1+std::tanh(x/2))/2;}
 Vec nums(js::V a){if(a.tag!=js::V::Heap||a.p->kind!=js::Object::Array)throw std::invalid_argument("array required");Vec r;for(auto v:a.p->items){double x=js::num(v);if(!std::isfinite(x))throw std::invalid_argument("nonfinite array");r.push_back(x);}return r;}
@@ -17,14 +46,15 @@ void append(Vec& a,const Vec& b){a.insert(a.end(),b.begin(),b.end());}
 double dot(const Vec& a,const Vec& b){if(a.size()!=b.size())throw std::invalid_argument("dot dimensions");double x=0;for(size_t i=0;i<a.size();++i)x+=a[i]*b[i];return x;}
 const astelia::ObservedUnit& unit(react_v1::Controller& c,UnitId id){for(auto& u:c.snapshot().units.units)if(u.id==id)return u;throw std::invalid_argument("missing unit");}
 js::V snapshot(react_v1::Controller& c){
- const auto& s=c.snapshot();const auto& o=s.units;js::Args units,own,shells,shots,fields,casts;auto history=js::obj({}),pairs=js::obj({});
+ const auto& s=c.snapshot();const auto& o=s.units;js::Args units,own,shells,shots,fields,casts;std::vector<std::pair<std::string,js::V>> historyFields,pairFields;
  for(auto& u:o.units){units.push_back(js::arr({double(u.id),double(u.team),double(uint8_t(u.role)),u.x,u.y,u.vx,u.vy,u.hp,u.maxhp,u.radius,u.speed,u.range,u.dmg,u.cd,u.cdMax,double(u.target),u.damageDealt,u.damageTaken,u.minRange,u.dealtToEnemy,u.takenFromEnemy,u.friendlyDealt,u.friendlyTaken}));
   Vec h(16);auto m=c.memory().find(u.id);if(m!=c.memory().end()){const auto& v=m->second;h={v.zOut,v.zIn,v.lastOut/u.maxhp,v.lastIn/u.maxhp,double(v.target)/256,v.zInAnswered,v.zInUnanswered,double(v.hadLegalTarget),double(v.hadUnansweredThreat),0,0,0,0,0,0,0};}
   auto z=c.complexStates().find(u.id);if(z!=c.complexStates().end()){h[9]=z->second.real();h[10]=z->second.imag();}
   auto a=c.argMemory().find(u.id);if(a!=c.argMemory().end()){h[11]=a->second.arg;h[12]=a->second.time/150;h[13]=a->second.valid;}
-  js::set(history,std::to_string(u.id),vectorJSON(h));
+  historyFields.push_back({std::to_string(u.id),vectorJSON(h)});
  }
- for(auto& p:c.pairModes())js::set(pairs,std::to_string(p.first.first)+":"+std::to_string(p.first.second),p.second);
+ for(auto& p:c.pairModes())pairFields.push_back({std::to_string(p.first.first)+":"+std::to_string(p.first.second),p.second});
+ auto history=c.stage.layouts.object(historyFields),pairs=c.stage.layouts.object(pairFields);
  for(auto& u:s.own)own.push_back(js::arr({double(u.id),u.guardUntil,u.prep,u.windup,u.timeRate,u.energy,u.cost,double(u.busy),s.stageGuns.at(u.id)[0]/100,s.stageGuns.at(u.id)[1]/100}));
  for(auto& x:s.stageShells)shells.push_back(js::arr({x[0]/o.width,x[1]/o.height,x[0]/o.width,x[1]/o.height,x[2]-o.t,x[3]/100,x[4],x[5],x[6]/100}));
  for(auto& x:s.shots)shots.push_back(js::arr({x.position.x/o.width,x.position.y/o.height,x.direction.x,x.direction.y,o.t-x.born,x.speed/100,x.left/100}));

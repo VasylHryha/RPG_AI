@@ -26,6 +26,17 @@ def build():
     host=once(host,'if(operation=="catalog")','if(operation=="stageaReplay")return stagea::replay(request);\n  if(operation=="catalog")')
     # Full post-bridge and post-planner labels; snapshot was captured pre-prepare.
     host=once(host,'astelia::coreStep(w);++tick;dumpObserver(tick);','astelia::coreStep(w);++tick;for(auto& cc:w.controllers)if(auto* c=dynamic_cast<react_v1::Controller*>(cc.get()))stagea::record(*c);dumpObserver(tick);')
+    host=once(host,'using js::V;', 'using js::V;\nV stageARequestRoot;js::Args stageABatchResults;')
+    host=once(host,'V request=js::parse(line), result;', 'V request=js::parse(line), result;stageARequestRoot=request;')
+    host=once(host,'js::collect({},0);', 'stageARequestRoot=V();stageABatchResults.clear();js::collect({},0);')
+    host=once(host,'js::Args rows;for (auto r:request.p->items) rows.push_back(fight(r,counts,fights,testControllers,capture));result=js::arr(std::move(rows));',
+              'stageABatchResults.clear();for (auto r:request.p->items) stageABatchResults.push_back(fight(r,counts,fights,testControllers,capture));result=js::arr(std::move(stageABatchResults));')
+    # All tick JSON is serialized here; retain outer batches and trace history.
+    host=once(host,'  }\n  counts.branchUnitActions+=', '''    js::Args roots=stageABatchResults;roots.push_back(stageARequestRoot);roots.push_back(request);for(const auto& h:history)roots.push_back(h.second);
+    stagea::collectTick(w,std::move(roots),tick);
+  }
+  stagea::memoryReport(tick,js::arena.size(),js::arena.size(),true);
+  counts.branchUnitActions+=''')
     generated['lean_host.cpp']=host
     shapes=generated['shapes.cpp']
     # Config validation passes the local extension only to the copied react layer.
@@ -64,7 +75,7 @@ def build():
     hashes={k:v for k,v in record['source_hashes'].items() if Path(k).suffix in ('.py','.cpp','.h','.json')};hashes.update(sources())
     hashes.update({str(p.relative_to(CPP)):sha(p) for p in out.glob('*') if p.suffix in ('.cpp','.h')})
     write(BINARY.with_suffix('.build.json'),dict(schema=2,engine='army_stagea',scope='native_complete_engine',sanitized=False,portable=False,source_hashes=hashes,binary_sha256=sha(BINARY),commands=commands,link=link,reused_object_sha256=reused,parent=parent))
-    write(HERE/'BUILD_STAGEA.json',dict(status='BUILT_NOT_FIGHT_VERIFIED',seconds=time.monotonic()-start,identity=admission.admit(BINARY),fights=0))
+    write(HERE/'BUILD_STAGEA_MEM.json',dict(status='BUILT_NOT_FIGHT_VERIFIED',seconds=time.monotonic()-start,identity=admission.admit(BINARY),fights=0))
 
 from pathlib import Path
 if __name__=='__main__':build()

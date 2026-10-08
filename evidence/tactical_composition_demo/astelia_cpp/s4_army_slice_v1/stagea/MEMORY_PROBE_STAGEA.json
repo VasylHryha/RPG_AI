@@ -1,0 +1,68 @@
+{
+  "dynamic_layout_probes": [
+    {
+      "mode": "dynamic-cached",
+      "gc": true,
+      "ticks": 378,
+      "frame_bytes": 14071,
+      "arena_before": 5,
+      "arena_after": 3,
+      "cached_shapes": 3493,
+      "stopped_at_256MiB": true,
+      "peak_rss_bytes": 297975808
+    },
+    {
+      "mode": "dynamic-flat",
+      "gc": true,
+      "ticks": 821,
+      "frame_bytes": 1925,
+      "arena_before": 5,
+      "arena_after": 3,
+      "cached_shapes": 1,
+      "stopped_at_256MiB": false,
+      "peak_rss_bytes": 3719168
+    }
+  ],
+  "max_pair_keys": 1800,
+  "unique_pair_layouts": 58,
+  "scope": "copied value allocator; reparse/serialize a real failed-attempt frame; no combat",
+  "failed_sha256": "920f8384906175b45e375ec2881cbed0a00eea41b474d8da8342b1b20a11afd4",
+  "failed_bytes": 63905792,
+  "truncated_final_row_bytes": 6244,
+  "row_counts": {
+    "observerV1": 821,
+    "stageA": 821
+  },
+  "stage_frames": 821,
+  "stage_bytes": 50551758,
+  "average_stage_frame_bytes": 61573.39585870889,
+  "failed_gzip_level1_bytes": 14100705,
+  "projected_150s_raw_bytes": 350275352.0097442,
+  "projected_180_fights_raw_bytes": 75659476034.10475,
+  "projected_180_fights_gzip_bytes": 16694135517.661388,
+  "projection_basis": "partial failed trace extrapolated to 4500 ticks; 20 percent collection margin; fixture/sample must replace",
+  "probes": [
+    {
+      "mode": "no-gc",
+      "gc": false,
+      "ticks": 128,
+      "frame_bytes": 45118,
+      "arena_before": 90883,
+      "arena_after": 90883,
+      "cached_shapes": 131,
+      "stopped_at_256MiB": false,
+      "peak_rss_bytes": 30064640
+    },
+    {
+      "mode": "gc",
+      "gc": true,
+      "ticks": 128,
+      "frame_bytes": 45118,
+      "arena_before": 713,
+      "arena_after": 3,
+      "cached_shapes": 131,
+      "stopped_at_256MiB": false,
+      "peak_rss_bytes": 4210688
+    }
+  ]
+}
