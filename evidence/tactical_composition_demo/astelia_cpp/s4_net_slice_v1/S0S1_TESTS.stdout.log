@@ -1,0 +1,16 @@
+..F
+=================================== FAILURES ===================================
+________________ test_reaction_overflow_detects_goal_difference ________________
+
+    def test_reaction_overflow_detects_goal_difference():
+        s=snapshot();s['threats']=[];s['units'][0]['guard_until']=0
+        assert not reaction(s)[0]
+        q=threat('shell');q.update(x=400,y=400,at=s['t']+.2);s['threats']=[q]
+>       assert reaction(s)[0] and not reaction(s,[])[0]
+E       assert (False)
+
+evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/s1_test.py:47: AssertionError
+=========================== short test summary info ============================
+FAILED evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/s1_test.py::test_reaction_overflow_detects_goal_difference
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 2 passed in 0.17s
