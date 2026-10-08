@@ -217,3 +217,35 @@ Each is one labelled change, measured in D1/D2 (guns against guns, and under fir
 - losses on won and lost fights, reported separately with their denominators.
 
 Any search or tuning objective is defined explicitly (terms, units, weights, terminal rules) before use.
+
+## 13. Amendment 6 (owner, 2026-10-08): find and confirm the few high-impact mechanisms
+
+**The owner:** in Astelia and in our older AI versions, a few mechanisms brought most of the success, and the rest added small amounts on top. Identify or confirm those high-impact ones and work on them.
+
+**Stored evidence, before any run:**
+- **Astelia skill search** (`astelia_compose/README.md`; the earlier JS engine; development data, not comparable with C++ scores):
+  - **The dodge trio is the largest:** dodgeShots, smart dodgeShells and castDodge. From novice, these 3 pieces alone gave 100% wins and beat regular by +24 and veteran by +25, 8 below the hand-built elite-fast. castDodge and smart dodging work only as a pair (+9.3 together, 0 alone).
+  - **Artillery coordination:** planned artillery fire with 3 attack waves, +2.8 as a pair. The artillery rollout, +6.5 alone at about 10× the time per fight.
+  - **Structure:** the rules brain with a formation, −6.1 and +1.9 alone, +6.8 together.
+  - Everything else was small or zero.
+- **Our own line** (DESIGN_0G §19):
+  - splash-value gun focus took regular wins from 0/20 to 19/20 (P16);
+  - escorts added a little (6–8/20);
+  - spacing added about nothing (2/20);
+  - the oscillator commit/escape gate added nothing (32/40 against 31/40).
+- **v7 has none of the top mechanism:** 0 shell dodges per fight against the enemy's ~2,940 (§10).
+
+**Confirmation in the C++ engine (the impact ranking IR; runs after the §4–5 lab run; new files only):**
+- **Leave-one-out:** our side is elite-fast, and separately elite without the rollout. Each high-impact candidate is switched off one at a time:
+  - the dodge trio as a unit, and each member alone;
+  - artyFire plan, waves, holdFire, artyRollout;
+  - the rules brain and the formation preset;
+  - saveWounded, killSpeed, meleeFocus, lead.
+- **Add-one-in:** our side is novice, plus each candidate (and each known pair) one at a time.
+- **Measured** in the ten-fight series (abilities off, paired series draws across arms) and in C3 against the 19 doctrines:
+  - the streak distribution;
+  - the probability of reaching each fight;
+  - losses on won and lost fights, reported separately;
+  - each piece's time cost per fight.
+- **Output:** an impact table ranking mechanisms by streak gain, with the time cost of each. The top few become the work list for our shapes, in the order react → volley timing → volley geometry (§§10–11), unless the ranking shows otherwise. Any change of order goes to the owner.
+- **Cost:** projected before running (decision 0031); the elite rollout arm is the expensive one.
