@@ -191,3 +191,25 @@ implementer. This plan edit is explicitly excluded from staging/commit.
 
 
 **B7 Amendment 5 REACT adapter (Codex, 2026-10-08):** DONE for the authorized implementation/no-fight scope in `astelia_cpp/s4_react_adapter_v1/`. New isolated Game host and v2-format request constructors select v7+react / forcedP16+react at delivered θ*. Separate Codex owner recheck COMPLETE (`OWNER_RECHECK.md`, `STATIC_DISPOSITION.md`): F1–F4 fixed; fixture/default-field corrections inspected. Final sequential compile PASS 54.49 s; final focused suite 10 PASS in 1.24 s; native 469 assertions and byte-identical 4,846-byte eight-tick shadow identity with active reaction/return. Initial failed attempts retained separately. No drills/series/calibration/coreStep fights; full-fight effectiveness and V1/V2 remain later work. nice setpriority denied by sandbox; compilation single-threaded. Existing delivered sources and sealed v2 unchanged. .git read-only: new files uncommitted; this plan append must remain unstaged. See REPORT.md and DELIVERY.json.
+
+**B9 decision-0033 REACT lab v4 preparation (Codex, 2026-10-08):** DONE for the
+new-file tooling/no-fight scope in `evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v4/`.
+Arms forcedP16 / forcedP16+react; D2 10 paired seeds, C3 total 50/100/200 paired
+looks, S10X 10 paired series up to 10 fights. Mechanism/each-look Claude-read
+receipts gate outcome/series calibration and execution. Shared persisted draws
+are independent of controller RNG. Same mutable v1 cap and repository-scoped v3
+process gate, including REACT hosts; immutable resume and selected few replays.
+A new host/observer overlay removes controller decision audits and attribution
+collectors; combat/controller policy sources unchanged. Unbound adapter-local
+objects are rebuilt from admitted sources; hashed inherited objects reused.
+One quick separate Codex tooling recheck COMPLETE (`OWNER_RECHECK.md`): two real
+defects fixed in `DISPOSITION.md` (replay timeout, exact observer object exclusion).
+Same-family review, not Claude's later mechanism/result read or acceptance.
+Focused suite once after all code/test/review edits: 23 PASS in 0.69 s (process
+1.015 s). Build PASS in 16.696 s; nice denied by sandbox, sequential compilation.
+Preparation and empty report rendered, zero fights/calibration; 310 unique fresh
+seeds, zero overlap with known prior development inventories, sealed identities
+verified. Live process gate deferred to Claude's host execution. `.git` read-only:
+new v4 files uncommitted; inventory in DELIVERY.json. This plan append remains
+unstaged and is excluded from the delivery commit. Claude's stage commands and
+stop/continue read gates are in v4 README.md. V1-v3/adapter inputs unchanged.
