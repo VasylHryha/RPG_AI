@@ -1,0 +1,76 @@
+{
+  "epochs": 10,
+  "window_ticks": 90,
+  "batch_windows": 4,
+  "learning_rate": 0.001,
+  "optimizer": "Adam",
+  "weight_decay": 0,
+  "gradient_clip": 1,
+  "torch_threads": 4,
+  "interop_threads": 1,
+  "workers": 0,
+  "seeds": {
+    "N1": 41001,
+    "N1r": 41002,
+    "N2": 41003
+  },
+  "device": "cpu",
+  "dtype": "float64",
+  "checkpoint": "minimum validation weighted masked loss; earliest exact tie",
+  "history": "recorded previous accepted assignments; full chronological prefix under current weights",
+  "calibration_steps_per_arm": 3,
+  "training_cap_seconds": 3600,
+  "peak_rss_cap_bytes": 536870912,
+  "steps_per_epoch": 772,
+  "gradient_steps_per_arm": 7720,
+  "decision_rows_per_arm": 954000,
+  "positive_windows_per_epoch": 3086,
+  "training_only_fire_weights": [
+    1.0,
+    1.0
+  ],
+  "fire_counts": {
+    "start": {
+      "1": 7260,
+      "0": 559
+    },
+    "release": {
+      "1": 5700,
+      "0": 284
+    }
+  },
+  "majority_modes": {
+    "move": 0,
+    "target": 1,
+    "start": 1,
+    "release": 1,
+    "aim": 0
+  },
+  "dataset_index_sha256": "4017a4ae47ee8a48398aff58a7a81a69e1c4e91637ab4b837a4106064975b728",
+  "sources": {
+    "CONTRACT.md": "872b0256f7117b26171ff0275980986614bb67c9de961fa5cf32413d49f09229",
+    "dynamics.py": "426d8cbb9a78f4c60637e0abd11d2dfbf96b89703a886f827c949ead3e67cb34",
+    "labels.py": "3c5c3f413c75a2af3c2567941c921eb658613d3a93695b54c616183cbcbbbd08",
+    "losses.py": "ff60f4fd68c5ee27f80d980e37446e012a97b9e23247aad0d69c8077f19181b2",
+    "models.py": "e8267a79bfc1eb88ee7819069f0b1451d5bda6cf7480046fe8cc062d73afc6f3",
+    "requirements.lock": "889552de8f3d70c461b41d9014b694cdc2f2562b1c231fa6f6cba5ba20b95794",
+    "schema.py": "e61359d70bec44cc01994d76608305ecd5f7736aca3d65e286cb8c0d3822439d",
+    "stage1_arithmetic.py": "d97e96306d5408b67dd7d63d782ade9693280c021fd5792109ec6cc5163744b3",
+    "stage1_baselines.py": "ddd99721814dba08aea168b9992a146acb3aac07c5fb3ed93dd5beece9c7e359",
+    "stage1_dagger.py": "c65961f15d98b75450470ca646dde72491b099ec426a48c2b3ddbe9f18aef588",
+    "stage1_data.py": "e33d89278ebb75ad3d8f95695f9ea0637c29fb4e048447be4bef5e00af28a18e",
+    "stage1_driver.cpp": "470b09d55f31def4d112a3ce2376f73b37ea7b334cfd457a1167a2ae4d9ea548",
+    "stage1_export.py": "1ab3464e8a7591cfdabfc5d081e668b66d59c849d74131a5eaff5140e26f9c25",
+    "stage1_impacts.cpp": "a33dd95b768009b24deb288782bdc976675ed46a60ebed0c943fd8ccf7f55faa",
+    "stage1_impacts.h": "2db4cbb9e8b47108d0a11c988bdb3ce5362e62d7c039d62fd37839e669e41fe5",
+    "stage1_jobs.py": "808904f6a0cb5ad9fe6cf25acce2f814aeea0d7ed7c508d8577b1151eb446217",
+    "stage1_mechanism.py": "18a89793e90b68e3698021e3a57a06037699824cc2a544780947931291fd1b15",
+    "stage1_metrics.py": "5dd33fefa90201944a291222cb7d720a37391eae3dc3bcc2035a322674f8f314",
+    "stage1_native.py": "4f3a407addc6c496d95b37b0032b279f28cc6c04d2f20c0e3cd058b7d11f6af9",
+    "stage1_runtime.py": "10fac6341454557bc52e7ceff47457b94fcae6c9eb4edbd0a0aa48e93db5fc85",
+    "stage1_train.py": "71021be5cb136a1f72c53e86f4e28a73f304dfd1d1b706c2abb989244939fd80",
+    "stage1_verify.py": "62e27ba555e340196015aad9ed9934ae5f958875746d7f3737e45db33f78685e"
+  },
+  "status": "DECLARED_NOT_MEASURED",
+  "timing_steps": 0
+}

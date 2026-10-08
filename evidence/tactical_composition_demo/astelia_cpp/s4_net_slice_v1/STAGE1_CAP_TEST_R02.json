@@ -1,0 +1,24 @@
+{
+  "status": "PASS",
+  "exit_code": 0,
+  "wall_seconds": 1.325237583994749,
+  "command": [
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "--confcutdir=/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1",
+    "--basetemp=/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/stage1/cap_pytest_r02",
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/test_stage1.py",
+    "-k",
+    "test_physical_wait_rechecks_remaining_child_time"
+  ],
+  "reason": "review found ownership wait must consume historically charged cap allowance via fixed effective deadline",
+  "sources": {
+    "stage1_jobs.py": "232809caae59432d1f24ff52af4917d0e6432baea4e564c4bf2736791a13c1ff",
+    "test_stage1.py": "b0a5cbba40ecf19c10aa3fe7dd8262d0f1d90aaf940a292328c644adf6227a36"
+  },
+  "physical_fights": 0,
+  "training_steps": 0
+}

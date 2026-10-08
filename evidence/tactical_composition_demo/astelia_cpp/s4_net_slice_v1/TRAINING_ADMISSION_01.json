@@ -1,0 +1,68 @@
+{
+  "status": "BLOCKED_PROCESS_DISCOVERY",
+  "gate": {
+    "utc": "2026-10-08T13:45:26Z",
+    "scope": "/Users/new/RiderProjects/ai_RPG_test",
+    "pattern": "(^|/)(net_host|tactics_lab_host|tactics_react_host[^ ]*|astelia_native[^ ]*)( |$)|[Pp]ython[^ ]* .*medium[^ ]*(runner|run|variants)|(^|/)(stage1_host)( |$)",
+    "matched": [],
+    "ignored_foreign": [],
+    "unresolved": [],
+    "returncode": 3,
+    "stdout": "",
+    "stderr": "sysmon request failed with error: sysmond service not found\npgrep: Cannot get process list\n",
+    "status": "UNAVAILABLE"
+  },
+  "gate_sha256": "34f15727a59590fad14838d5f9ecdc0f643cf1c60883239a51754809a71ff260",
+  "fallback": {
+    "interface": "/bin/ps -axo pid=,command=",
+    "status": "DENIED",
+    "error": "PermissionError: [Errno 1] Operation not permitted"
+  },
+  "sample_steps": 0,
+  "gradient_steps": 0,
+  "projection_seconds": null,
+  "projection_minutes": null,
+  "projection_reason": "Timing sample could not enter repository process gate; no runtime estimate invented",
+  "budget_sha256": "248e9f8c582f35f8f7033b306c266942a42f51bfd5dbba1fe280f868e5240e5d",
+  "sources": {
+    "stage1_arithmetic.py": "d97e96306d5408b67dd7d63d782ade9693280c021fd5792109ec6cc5163744b3",
+    "stage1_baselines.py": "ddd99721814dba08aea168b9992a146acb3aac07c5fb3ed93dd5beece9c7e359",
+    "stage1_runtime.py": "10fac6341454557bc52e7ceff47457b94fcae6c9eb4edbd0a0aa48e93db5fc85",
+    "stage1_impacts.h": "2db4cbb9e8b47108d0a11c988bdb3ce5362e62d7c039d62fd37839e669e41fe5",
+    "stage1_impacts.cpp": "a33dd95b768009b24deb288782bdc976675ed46a60ebed0c943fd8ccf7f55faa",
+    "stage1_verify.py": "62e27ba555e340196015aad9ed9934ae5f958875746d7f3737e45db33f78685e",
+    "stage1_metrics.py": "5dd33fefa90201944a291222cb7d720a37391eae3dc3bcc2035a322674f8f314",
+    "stage1_mechanism.py": "e52a44e4133148432466b2029dbc6f7b58a7e9300bb27c549edf1a3563ffd48d",
+    "stage1_data.py": "e33d89278ebb75ad3d8f95695f9ea0637c29fb4e048447be4bef5e00af28a18e",
+    "stage1_driver.cpp": "470b09d55f31def4d112a3ce2376f73b37ea7b334cfd457a1167a2ae4d9ea548",
+    "stage1_jobs.py": "b4a7192fb489c850b2b009d14161f7ed0c8bd391cad06039558a892529fd7fd5",
+    "stage1_export.py": "1ab3464e8a7591cfdabfc5d081e668b66d59c849d74131a5eaff5140e26f9c25",
+    "stage1_train.py": "71021be5cb136a1f72c53e86f4e28a73f304dfd1d1b706c2abb989244939fd80",
+    "stage1_dagger.py": "a1db32c8a51456b9049281ab99e9410de159632701e2f0dd35784784a5360a77",
+    "stage1_native.py": "4f3a407addc6c496d95b37b0032b279f28cc6c04d2f20c0e3cd058b7d11f6af9"
+  },
+  "per_network": {
+    "N1": {
+      "training": "NOT_RUN",
+      "held_out_diagnostics": "NOT_RUN: no trained checkpoint",
+      "checkpoint": "NOT_RUN",
+      "trained_export_parity": "NOT_RUN"
+    },
+    "N1r": {
+      "training": "NOT_RUN",
+      "held_out_diagnostics": "NOT_RUN: no trained checkpoint",
+      "checkpoint": "NOT_RUN",
+      "trained_export_parity": "NOT_RUN"
+    },
+    "N2": {
+      "training": "NOT_RUN",
+      "held_out_diagnostics": "NOT_RUN: no trained checkpoint",
+      "checkpoint": "NOT_RUN",
+      "trained_export_parity": "NOT_RUN"
+    }
+  },
+  "dagger_rounds_run": 0,
+  "mechanism_fights_run": 0,
+  "no_gate_bypass": true,
+  "budget_record": "STAGE1_BUDGET_DECLARATION_01.json"
+}

@@ -1,0 +1,26 @@
+{
+  "status": "PASS",
+  "exit_code": 0,
+  "wall_seconds": 1.2718444999918574,
+  "command": [
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "--confcutdir=/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1",
+    "--basetemp=/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/stage1/cap_pytest_r03",
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/test_stage1.py",
+    "-k",
+    "physical_wait_rechecks or physical_resumed_budget"
+  ],
+  "reason": "review found resumed invocation must retain historical charge and all prior wait across successive children and live cap reductions",
+  "sources": {
+    "stage1_jobs.py": "808904f6a0cb5ad9fe6cf25acce2f814aeea0d7ed7c508d8577b1151eb446217",
+    "stage1_dagger.py": "c65961f15d98b75450470ca646dde72491b099ec426a48c2b3ddbe9f18aef588",
+    "stage1_mechanism.py": "18a89793e90b68e3698021e3a57a06037699824cc2a544780947931291fd1b15",
+    "test_stage1.py": "44a340ca0300ec05e6451912e509cb6bc9dd71407fd4a6d85fb78244bdeb9807"
+  },
+  "physical_fights": 0,
+  "training_steps": 0
+}

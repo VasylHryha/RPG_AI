@@ -1,0 +1,239 @@
+{
+  "status": "MEASURED_BASELINES_ONLY",
+  "splits": {
+    "validation": {
+      "move": {
+        "counts": {
+          "active": 15919,
+          "excluded": 0,
+          "majority_correct": 14856,
+          "baseline_correct": 14856,
+          "zero_error_px_sum": 51556.99865722656
+        },
+        "baseline": "zero-offset",
+        "top1": 0.9332244487719078,
+        "training_majority_top1": 0.9332244487719078,
+        "zero_offset_mean_error_px": 3.2387083772364194
+      },
+      "target": {
+        "counts": {
+          "active": 11244,
+          "excluded": 4675,
+          "majority_correct": 11244,
+          "baseline_correct": 11244
+        },
+        "baseline": "nearest-target",
+        "top1": 1.0,
+        "training_majority_top1": 1.0
+      },
+      "start": {
+        "counts": {
+          "active": 1294,
+          "excluded": 14625,
+          "majority_correct": 1214,
+          "positive": 1214,
+          "negative": 80
+        },
+        "hold": {
+          "precision": null,
+          "recall": 0,
+          "missed_readiness": 1
+        },
+        "permit": {
+          "precision": 0.9381761978361669,
+          "recall": 1,
+          "missed_readiness": 0
+        }
+      },
+      "release": {
+        "counts": {
+          "active": 993,
+          "excluded": 14926,
+          "majority_correct": 947,
+          "positive": 947,
+          "negative": 46
+        },
+        "hold": {
+          "precision": null,
+          "recall": 0,
+          "missed_readiness": 1
+        },
+        "permit": {
+          "precision": 0.9536757301107754,
+          "recall": 1,
+          "missed_readiness": 0
+        }
+      },
+      "aim": {
+        "counts": {
+          "active": 2161,
+          "excluded": 13758,
+          "majority_correct": 2023,
+          "baseline_correct": 2023,
+          "zero_error_px_sum": 4300.000549316406
+        },
+        "baseline": "zero-offset",
+        "top1": 0.9361406756131421,
+        "training_majority_top1": 0.9361406756131421,
+        "zero_offset_mean_error_px": 1.989819782191766
+      }
+    },
+    "test": {
+      "move": {
+        "counts": {
+          "active": 7987,
+          "excluded": 0,
+          "majority_correct": 7454,
+          "baseline_correct": 7454,
+          "zero_error_px_sum": 25838.999450683594
+        },
+        "baseline": "zero-offset",
+        "top1": 0.9332665581570051,
+        "training_majority_top1": 0.9332665581570051,
+        "zero_offset_mean_error_px": 3.235132020869362
+      },
+      "target": {
+        "counts": {
+          "active": 5647,
+          "excluded": 2340,
+          "majority_correct": 5647,
+          "baseline_correct": 5647
+        },
+        "baseline": "nearest-target",
+        "top1": 1.0,
+        "training_majority_top1": 1.0
+      },
+      "start": {
+        "counts": {
+          "active": 671,
+          "excluded": 7316,
+          "majority_correct": 607,
+          "positive": 607,
+          "negative": 64
+        },
+        "hold": {
+          "precision": null,
+          "recall": 0,
+          "missed_readiness": 1
+        },
+        "permit": {
+          "precision": 0.9046199701937406,
+          "recall": 1,
+          "missed_readiness": 0
+        }
+      },
+      "release": {
+        "counts": {
+          "active": 500,
+          "excluded": 7487,
+          "majority_correct": 476,
+          "positive": 476,
+          "negative": 24
+        },
+        "hold": {
+          "precision": null,
+          "recall": 0,
+          "missed_readiness": 1
+        },
+        "permit": {
+          "precision": 0.952,
+          "recall": 1,
+          "missed_readiness": 0
+        }
+      },
+      "aim": {
+        "counts": {
+          "active": 1083,
+          "excluded": 6904,
+          "majority_correct": 1019,
+          "baseline_correct": 1019,
+          "zero_error_px_sum": 1960.0003051757812
+        },
+        "baseline": "zero-offset",
+        "top1": 0.9409048938134811,
+        "training_majority_top1": 0.9409048938134811,
+        "zero_offset_mean_error_px": 1.8097879087495672
+      }
+    }
+  },
+  "teacher_repeat_baseline": {
+    "status": "PASS",
+    "scope": "six same-state held-out TEST joint decisions; no fights, no fitting",
+    "keys": [
+      {
+        "group": "NS1-9db9def41fe664bc739450410ee0ce72",
+        "tick": 1,
+        "guns": 1
+      },
+      {
+        "group": "NS1-9db9def41fe664bc739450410ee0ce72",
+        "tick": 7,
+        "guns": 1
+      },
+      {
+        "group": "NS1-a54ca4cc9a1c06b6b5ee36a0545fbfc8",
+        "tick": 1,
+        "guns": 2
+      },
+      {
+        "group": "NS1-a54ca4cc9a1c06b6b5ee36a0545fbfc8",
+        "tick": 7,
+        "guns": 2
+      },
+      {
+        "group": "NS1-6242b117075c40480dd2712d3f488fc7",
+        "tick": 1,
+        "guns": 10
+      },
+      {
+        "group": "NS1-6242b117075c40480dd2712d3f488fc7",
+        "tick": 7,
+        "guns": 10
+      }
+    ],
+    "heads": {
+      "move": {
+        "active": 26,
+        "repeat_correct": 26,
+        "collected_correct": 26,
+        "repeat_agreement": 1.0,
+        "collected_agreement": 1.0
+      },
+      "target": {
+        "active": 13,
+        "repeat_correct": 13,
+        "collected_correct": 13,
+        "repeat_agreement": 1.0,
+        "collected_agreement": 1.0
+      },
+      "start": {
+        "active": 13,
+        "repeat_correct": 13,
+        "collected_correct": 13,
+        "repeat_agreement": 1.0,
+        "collected_agreement": 1.0
+      },
+      "release": {
+        "active": 0,
+        "repeat_correct": 0,
+        "collected_correct": 0,
+        "repeat_agreement": null,
+        "collected_agreement": null
+      },
+      "aim": {
+        "active": 13,
+        "repeat_correct": 13,
+        "collected_correct": 13,
+        "repeat_agreement": 1.0,
+        "collected_agreement": 1.0
+      }
+    },
+    "binary_sha256": "9bbae5395ed4aed347a80f6732b31e8f829e2da8949021ce703127d300014814",
+    "collection_receipt_sha256": "5786ac10cd94f8a1f764d2f53e290ac3065bdeb9500d169504703306d77ffae5"
+  },
+  "dataset_index_sha256": "4017a4ae47ee8a48398aff58a7a81a69e1c4e91637ab4b837a4106064975b728",
+  "source_sha256": "ddd99721814dba08aea168b9992a146acb3aac07c5fb3ed93dd5beece9c7e359",
+  "network_diagnostics": "NOT_RUN: no fitted checkpoints",
+  "physical_fights": 0,
+  "training_steps": 0
+}
