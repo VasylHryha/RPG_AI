@@ -1,0 +1,2285 @@
+{
+  "status": "PASS",
+  "scope": "selected exports: complete test sequences with supplied launch acknowledgements; actual Host-path parity additionally required on student logs",
+  "dtype": "float64",
+  "atol": 1e-09,
+  "rtol": 1e-09,
+  "models": {
+    "N1": {
+      "export_sha256": "12c36a9bd272bfaf62559a3855f46f4c681fcd6ec2e0a0c4b6d8832a96b37f66",
+      "checks": [
+        {
+          "group": "NS1-94950f3dab2c816b62ed5f4c80cdc8c8",
+          "ablation": "intact",
+          "ticks": 4501,
+          "launches": 13,
+          "deaths": 0,
+          "maximum_absolute_error": 0.0,
+          "wall_seconds": 3.4463039169932017,
+          "native_resources": {
+            "cpu_seconds": 1.2778770000000002,
+            "wall_seconds": 3.4462939579971135,
+            "peak_rss_bytes": 10829824,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-518ce16e5dee316727f92dce441b2781",
+          "ablation": "intact",
+          "ticks": 1970,
+          "launches": 51,
+          "deaths": 0,
+          "maximum_absolute_error": 0.0,
+          "wall_seconds": 1.6470547920034733,
+          "native_resources": {
+            "cpu_seconds": 0.637274,
+            "wall_seconds": 1.647046833008062,
+            "peak_rss_bytes": 10485760,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-d13c5ec035699d8bd6d1c1b659cf4130",
+          "ablation": "intact",
+          "ticks": 1106,
+          "launches": 54,
+          "deaths": 0,
+          "maximum_absolute_error": 1.3322676295501878e-15,
+          "wall_seconds": 2.1307930420007324,
+          "native_resources": {
+            "cpu_seconds": 0.625899,
+            "wall_seconds": 2.13078720800695,
+            "peak_rss_bytes": 11173888,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-00b6d6d5704711133d101b020b195029",
+          "ablation": "intact",
+          "ticks": 1106,
+          "launches": 53,
+          "deaths": 0,
+          "maximum_absolute_error": 1.4432899320127035e-15,
+          "wall_seconds": 1.793902709003305,
+          "native_resources": {
+            "cpu_seconds": 0.62162,
+            "wall_seconds": 1.7938943750050385,
+            "peak_rss_bytes": 10387456,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-c02ca2243abe5db77e602bd58bb3a2fa",
+          "ablation": "intact",
+          "ticks": 606,
+          "launches": 105,
+          "deaths": 0,
+          "maximum_absolute_error": 5.684341886080802e-14,
+          "wall_seconds": 8.521126000006916,
+          "native_resources": {
+            "cpu_seconds": 2.153275,
+            "wall_seconds": 8.5211116670107,
+            "peak_rss_bytes": 12500992,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-6c38c9b24f8ffb91d13632aeb654d379",
+          "ablation": "intact",
+          "ticks": 536,
+          "launches": 100,
+          "deaths": 0,
+          "maximum_absolute_error": 1.1368683772161603e-13,
+          "wall_seconds": 7.67719929201121,
+          "native_resources": {
+            "cpu_seconds": 1.9214710000000002,
+            "wall_seconds": 7.677196459000697,
+            "peak_rss_bytes": 12107776,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-83e531f43b997a43b1d596c24d22b4d4",
+          "ablation": "intact",
+          "ticks": 472,
+          "launches": 13,
+          "deaths": 1,
+          "maximum_absolute_error": 0.0,
+          "wall_seconds": 0.48426691599888727,
+          "native_resources": {
+            "cpu_seconds": 0.225885,
+            "wall_seconds": 0.48425725000561215,
+            "peak_rss_bytes": 10715136,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-4987813ef119a568d2f112f71f9052b5",
+          "ablation": "intact",
+          "ticks": 473,
+          "launches": 13,
+          "deaths": 1,
+          "maximum_absolute_error": 0.0,
+          "wall_seconds": 0.4918316249968484,
+          "native_resources": {
+            "cpu_seconds": 0.22886599999999999,
+            "wall_seconds": 0.4918160419911146,
+            "peak_rss_bytes": 10846208,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-1b7bb57d6a82b53a168c074bd46a352d",
+          "ablation": "intact",
+          "ticks": 1926,
+          "launches": 20,
+          "deaths": 2,
+          "maximum_absolute_error": 8.881784197001252e-16,
+          "wall_seconds": 0.8035282080090838,
+          "native_resources": {
+            "cpu_seconds": 0.322108,
+            "wall_seconds": 0.8035183750034776,
+            "peak_rss_bytes": 11124736,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-a1bb4222d86eb583abe9b69ecf5f21a4",
+          "ablation": "intact",
+          "ticks": 691,
+          "launches": 25,
+          "deaths": 2,
+          "maximum_absolute_error": 1.3322676295501878e-15,
+          "wall_seconds": 0.9057644170097774,
+          "native_resources": {
+            "cpu_seconds": 0.358077,
+            "wall_seconds": 0.9057514580053976,
+            "peak_rss_bytes": 11124736,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-4679dbe0103d5ac98fc99afb5abca4a6",
+          "ablation": "intact",
+          "ticks": 1623,
+          "launches": 102,
+          "deaths": 10,
+          "maximum_absolute_error": 5.684341886080802e-14,
+          "wall_seconds": 7.643697874998907,
+          "native_resources": {
+            "cpu_seconds": 2.021493,
+            "wall_seconds": 7.643693999998504,
+            "peak_rss_bytes": 11927552,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-9b29fb4f93d1bc41e4940edffc4f58d1",
+          "ablation": "intact",
+          "ticks": 882,
+          "launches": 77,
+          "deaths": 10,
+          "maximum_absolute_error": 1.1368683772161603e-13,
+          "wall_seconds": 6.255985541007249,
+          "native_resources": {
+            "cpu_seconds": 1.6900519999999999,
+            "wall_seconds": 6.255976457992801,
+            "peak_rss_bytes": 13139968,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        }
+      ],
+      "status": "PASS"
+    },
+    "N1_seed41101": {
+      "export_sha256": "a8395042763eb27896085c99fcca7c0c08f778283a1ff56b2491974f452cd0be",
+      "checks": [
+        {
+          "group": "NS1-94950f3dab2c816b62ed5f4c80cdc8c8",
+          "ablation": "intact",
+          "ticks": 4501,
+          "launches": 13,
+          "deaths": 0,
+          "maximum_absolute_error": 0.0,
+          "wall_seconds": 3.476422708001337,
+          "native_resources": {
+            "cpu_seconds": 1.285074,
+            "wall_seconds": 3.476416083998629,
+            "peak_rss_bytes": 10158080,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-518ce16e5dee316727f92dce441b2781",
+          "ablation": "intact",
+          "ticks": 1970,
+          "launches": 51,
+          "deaths": 0,
+          "maximum_absolute_error": 0.0,
+          "wall_seconds": 1.6356903750129277,
+          "native_resources": {
+            "cpu_seconds": 0.631917,
+            "wall_seconds": 1.6356807499978459,
+            "peak_rss_bytes": 10911744,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-d13c5ec035699d8bd6d1c1b659cf4130",
+          "ablation": "intact",
+          "ticks": 1106,
+          "launches": 54,
+          "deaths": 0,
+          "maximum_absolute_error": 1.3322676295501878e-15,
+          "wall_seconds": 1.8503713750105817,
+          "native_resources": {
+            "cpu_seconds": 0.6297379999999999,
+            "wall_seconds": 1.8503638339898316,
+            "peak_rss_bytes": 10371072,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-00b6d6d5704711133d101b020b195029",
+          "ablation": "intact",
+          "ticks": 1106,
+          "launches": 53,
+          "deaths": 0,
+          "maximum_absolute_error": 1.4432899320127035e-15,
+          "wall_seconds": 1.7904247090045828,
+          "native_resources": {
+            "cpu_seconds": 0.619409,
+            "wall_seconds": 1.7904186670057243,
+            "peak_rss_bytes": 11091968,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-c02ca2243abe5db77e602bd58bb3a2fa",
+          "ablation": "intact",
+          "ticks": 606,
+          "launches": 105,
+          "deaths": 0,
+          "maximum_absolute_error": 5.684341886080802e-14,
+          "wall_seconds": 8.618489250002312,
+          "native_resources": {
+            "cpu_seconds": 2.152404,
+            "wall_seconds": 8.618486666993704,
+            "peak_rss_bytes": 12451840,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-6c38c9b24f8ffb91d13632aeb654d379",
+          "ablation": "intact",
+          "ticks": 536,
+          "launches": 100,
+          "deaths": 0,
+          "maximum_absolute_error": 1.1368683772161603e-13,
+          "wall_seconds": 7.632521916995756,
+          "native_resources": {
+            "cpu_seconds": 1.92474,
+            "wall_seconds": 7.632511792005971,
+            "peak_rss_bytes": 11730944,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-83e531f43b997a43b1d596c24d22b4d4",
+          "ablation": "intact",
+          "ticks": 472,
+          "launches": 13,
+          "deaths": 1,
+          "maximum_absolute_error": 0.0,
+          "wall_seconds": 0.494472999998834,
+          "native_resources": {
+            "cpu_seconds": 0.228451,
+            "wall_seconds": 0.4944636250002077,
+            "peak_rss_bytes": 10403840,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-4987813ef119a568d2f112f71f9052b5",
+          "ablation": "intact",
+          "ticks": 473,
+          "launches": 13,
+          "deaths": 1,
+          "maximum_absolute_error": 0.0,
+          "wall_seconds": 0.4823130410077283,
+          "native_resources": {
+            "cpu_seconds": 0.22561099999999998,
+            "wall_seconds": 0.4823068749974482,
+            "peak_rss_bytes": 10731520,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-1b7bb57d6a82b53a168c074bd46a352d",
+          "ablation": "intact",
+          "ticks": 1926,
+          "launches": 20,
+          "deaths": 2,
+          "maximum_absolute_error": 8.881784197001252e-16,
+          "wall_seconds": 0.8059644169989042,
+          "native_resources": {
+            "cpu_seconds": 0.321005,
+            "wall_seconds": 0.8059555419895332,
+            "peak_rss_bytes": 11157504,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-a1bb4222d86eb583abe9b69ecf5f21a4",
+          "ablation": "intact",
+          "ticks": 691,
+          "launches": 25,
+          "deaths": 2,
+          "maximum_absolute_error": 1.3322676295501878e-15,
+          "wall_seconds": 0.9096146670053713,
+          "native_resources": {
+            "cpu_seconds": 0.358081,
+            "wall_seconds": 0.9096033749956405,
+            "peak_rss_bytes": 11091968,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-4679dbe0103d5ac98fc99afb5abca4a6",
+          "ablation": "intact",
+          "ticks": 1623,
+          "launches": 102,
+          "deaths": 10,
+          "maximum_absolute_error": 5.684341886080802e-14,
+          "wall_seconds": 7.496535582991783,
+          "native_resources": {
+            "cpu_seconds": 1.995774,
+            "wall_seconds": 7.4965329590049805,
+            "peak_rss_bytes": 13271040,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-9b29fb4f93d1bc41e4940edffc4f58d1",
+          "ablation": "intact",
+          "ticks": 882,
+          "launches": 77,
+          "deaths": 10,
+          "maximum_absolute_error": 1.1368683772161603e-13,
+          "wall_seconds": 6.203280790999997,
+          "native_resources": {
+            "cpu_seconds": 1.68308,
+            "wall_seconds": 6.203273249993799,
+            "peak_rss_bytes": 12779520,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        }
+      ],
+      "status": "PASS"
+    },
+    "N1_seed41201": {
+      "export_sha256": "42addd5f951dddb4ab068c35965374b7287cd43f8906398db1867be14745f392",
+      "checks": [
+        {
+          "group": "NS1-94950f3dab2c816b62ed5f4c80cdc8c8",
+          "ablation": "intact",
+          "ticks": 4501,
+          "launches": 13,
+          "deaths": 0,
+          "maximum_absolute_error": 0.0,
+          "wall_seconds": 3.861306250008056,
+          "native_resources": {
+            "cpu_seconds": 1.331893,
+            "wall_seconds": 3.86129400000209,
+            "peak_rss_bytes": 10584064,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-518ce16e5dee316727f92dce441b2781",
+          "ablation": "intact",
+          "ticks": 1970,
+          "launches": 51,
+          "deaths": 0,
+          "maximum_absolute_error": 0.0,
+          "wall_seconds": 1.8022891660075402,
+          "native_resources": {
+            "cpu_seconds": 0.6385009999999999,
+            "wall_seconds": 1.8022762080072425,
+            "peak_rss_bytes": 10092544,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-d13c5ec035699d8bd6d1c1b659cf4130",
+          "ablation": "intact",
+          "ticks": 1106,
+          "launches": 54,
+          "deaths": 0,
+          "maximum_absolute_error": 1.3322676295501878e-15,
+          "wall_seconds": 1.9272562080004718,
+          "native_resources": {
+            "cpu_seconds": 0.649436,
+            "wall_seconds": 1.927240332996007,
+            "peak_rss_bytes": 11173888,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-00b6d6d5704711133d101b020b195029",
+          "ablation": "intact",
+          "ticks": 1106,
+          "launches": 53,
+          "deaths": 0,
+          "maximum_absolute_error": 1.4432899320127035e-15,
+          "wall_seconds": 1.877453458000673,
+          "native_resources": {
+            "cpu_seconds": 0.641674,
+            "wall_seconds": 1.8774436249950668,
+            "peak_rss_bytes": 10813440,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-c02ca2243abe5db77e602bd58bb3a2fa",
+          "ablation": "intact",
+          "ticks": 606,
+          "launches": 105,
+          "deaths": 0,
+          "maximum_absolute_error": 5.684341886080802e-14,
+          "wall_seconds": 9.393574625006295,
+          "native_resources": {
+            "cpu_seconds": 2.236729,
+            "wall_seconds": 9.39356399999815,
+            "peak_rss_bytes": 11026432,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-6c38c9b24f8ffb91d13632aeb654d379",
+          "ablation": "intact",
+          "ticks": 536,
+          "launches": 100,
+          "deaths": 0,
+          "maximum_absolute_error": 1.1368683772161603e-13,
+          "wall_seconds": 8.648369916991214,
+          "native_resources": {
+            "cpu_seconds": 2.035808,
+            "wall_seconds": 8.648364708002191,
+            "peak_rss_bytes": 12533760,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-83e531f43b997a43b1d596c24d22b4d4",
+          "ablation": "intact",
+          "ticks": 472,
+          "launches": 13,
+          "deaths": 1,
+          "maximum_absolute_error": 0.0,
+          "wall_seconds": 0.5443568749906262,
+          "native_resources": {
+            "cpu_seconds": 0.244646,
+            "wall_seconds": 0.5443469169986201,
+            "peak_rss_bytes": 10715136,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-4987813ef119a568d2f112f71f9052b5",
+          "ablation": "intact",
+          "ticks": 473,
+          "launches": 13,
+          "deaths": 1,
+          "maximum_absolute_error": 0.0,
+          "wall_seconds": 0.5834117500053253,
+          "native_resources": {
+            "cpu_seconds": 0.247073,
+            "wall_seconds": 0.5834010839898838,
+            "peak_rss_bytes": 10747904,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-1b7bb57d6a82b53a168c074bd46a352d",
+          "ablation": "intact",
+          "ticks": 1926,
+          "launches": 20,
+          "deaths": 2,
+          "maximum_absolute_error": 8.881784197001252e-16,
+          "wall_seconds": 1.23307424999075,
+          "native_resources": {
+            "cpu_seconds": 0.358809,
+            "wall_seconds": 1.2330586670141201,
+            "peak_rss_bytes": 11190272,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-a1bb4222d86eb583abe9b69ecf5f21a4",
+          "ablation": "intact",
+          "ticks": 691,
+          "launches": 25,
+          "deaths": 2,
+          "maximum_absolute_error": 1.3322676295501878e-15,
+          "wall_seconds": 1.0261991250008577,
+          "native_resources": {
+            "cpu_seconds": 0.380243,
+            "wall_seconds": 1.0261878750025062,
+            "peak_rss_bytes": 11091968,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-4679dbe0103d5ac98fc99afb5abca4a6",
+          "ablation": "intact",
+          "ticks": 1623,
+          "launches": 102,
+          "deaths": 10,
+          "maximum_absolute_error": 5.684341886080802e-14,
+          "wall_seconds": 7.881033083001967,
+          "native_resources": {
+            "cpu_seconds": 2.07996,
+            "wall_seconds": 7.881022374989698,
+            "peak_rss_bytes": 13189120,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-9b29fb4f93d1bc41e4940edffc4f58d1",
+          "ablation": "intact",
+          "ticks": 882,
+          "launches": 77,
+          "deaths": 10,
+          "maximum_absolute_error": 1.1368683772161603e-13,
+          "wall_seconds": 6.691808083996875,
+          "native_resources": {
+            "cpu_seconds": 1.7296580000000001,
+            "wall_seconds": 6.691793874997529,
+            "peak_rss_bytes": 13123584,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        }
+      ],
+      "status": "PASS"
+    },
+    "N1r": {
+      "export_sha256": "f6bf0c46d42c9efa10c45e08d4c26b3fafdc0502c38ebc389c8b0a6d676efaa3",
+      "checks": [
+        {
+          "group": "NS1-94950f3dab2c816b62ed5f4c80cdc8c8",
+          "ablation": "intact",
+          "ticks": 4501,
+          "launches": 13,
+          "deaths": 0,
+          "maximum_absolute_error": 8.326672684688674e-16,
+          "wall_seconds": 3.880430334000266,
+          "native_resources": {
+            "cpu_seconds": 1.3058079999999999,
+            "wall_seconds": 3.8804170829971554,
+            "peak_rss_bytes": 10141696,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-518ce16e5dee316727f92dce441b2781",
+          "ablation": "intact",
+          "ticks": 1970,
+          "launches": 51,
+          "deaths": 0,
+          "maximum_absolute_error": 8.326672684688674e-16,
+          "wall_seconds": 1.7707667499926174,
+          "native_resources": {
+            "cpu_seconds": 0.639412,
+            "wall_seconds": 1.7707533750071889,
+            "peak_rss_bytes": 10158080,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-d13c5ec035699d8bd6d1c1b659cf4130",
+          "ablation": "intact",
+          "ticks": 1106,
+          "launches": 54,
+          "deaths": 0,
+          "maximum_absolute_error": 1.3322676295501878e-15,
+          "wall_seconds": 1.9396244999952614,
+          "native_resources": {
+            "cpu_seconds": 0.633086,
+            "wall_seconds": 1.9396149999956833,
+            "peak_rss_bytes": 10190848,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-00b6d6d5704711133d101b020b195029",
+          "ablation": "intact",
+          "ticks": 1106,
+          "launches": 53,
+          "deaths": 0,
+          "maximum_absolute_error": 1.4432899320127035e-15,
+          "wall_seconds": 2.04335895901022,
+          "native_resources": {
+            "cpu_seconds": 0.644857,
+            "wall_seconds": 2.043349041006877,
+            "peak_rss_bytes": 10174464,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-c02ca2243abe5db77e602bd58bb3a2fa",
+          "ablation": "intact",
+          "ticks": 606,
+          "launches": 105,
+          "deaths": 0,
+          "maximum_absolute_error": 5.684341886080802e-14,
+          "wall_seconds": 9.173619541994412,
+          "native_resources": {
+            "cpu_seconds": 2.243573,
+            "wall_seconds": 9.173611166988849,
+            "peak_rss_bytes": 13484032,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-6c38c9b24f8ffb91d13632aeb654d379",
+          "ablation": "intact",
+          "ticks": 536,
+          "launches": 100,
+          "deaths": 0,
+          "maximum_absolute_error": 1.1368683772161603e-13,
+          "wall_seconds": 8.135638208012097,
+          "native_resources": {
+            "cpu_seconds": 1.996255,
+            "wall_seconds": 8.13563224999234,
+            "peak_rss_bytes": 12992512,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-83e531f43b997a43b1d596c24d22b4d4",
+          "ablation": "intact",
+          "ticks": 472,
+          "launches": 13,
+          "deaths": 1,
+          "maximum_absolute_error": 6.106226635438361e-16,
+          "wall_seconds": 0.5827157090097899,
+          "native_resources": {
+            "cpu_seconds": 0.245058,
+            "wall_seconds": 0.5827088749938412,
+            "peak_rss_bytes": 9928704,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-4987813ef119a568d2f112f71f9052b5",
+          "ablation": "intact",
+          "ticks": 473,
+          "launches": 13,
+          "deaths": 1,
+          "maximum_absolute_error": 6.661338147750939e-16,
+          "wall_seconds": 0.5562233329983428,
+          "native_resources": {
+            "cpu_seconds": 0.23615099999999997,
+            "wall_seconds": 0.556212791998405,
+            "peak_rss_bytes": 12353536,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-1b7bb57d6a82b53a168c074bd46a352d",
+          "ablation": "intact",
+          "ticks": 1926,
+          "launches": 20,
+          "deaths": 2,
+          "maximum_absolute_error": 8.881784197001252e-16,
+          "wall_seconds": 0.9371294169977773,
+          "native_resources": {
+            "cpu_seconds": 0.33800099999999994,
+            "wall_seconds": 0.9371178340079496,
+            "peak_rss_bytes": 11190272,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-a1bb4222d86eb583abe9b69ecf5f21a4",
+          "ablation": "intact",
+          "ticks": 691,
+          "launches": 25,
+          "deaths": 2,
+          "maximum_absolute_error": 1.3322676295501878e-15,
+          "wall_seconds": 1.0112484580022283,
+          "native_resources": {
+            "cpu_seconds": 0.370742,
+            "wall_seconds": 1.0112358329934068,
+            "peak_rss_bytes": 10207232,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-4679dbe0103d5ac98fc99afb5abca4a6",
+          "ablation": "intact",
+          "ticks": 1623,
+          "launches": 102,
+          "deaths": 10,
+          "maximum_absolute_error": 5.684341886080802e-14,
+          "wall_seconds": 7.781682042012108,
+          "native_resources": {
+            "cpu_seconds": 2.043704,
+            "wall_seconds": 7.781674375000875,
+            "peak_rss_bytes": 14991360,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-9b29fb4f93d1bc41e4940edffc4f58d1",
+          "ablation": "intact",
+          "ticks": 882,
+          "launches": 77,
+          "deaths": 10,
+          "maximum_absolute_error": 1.1368683772161603e-13,
+          "wall_seconds": 6.621338665994699,
+          "native_resources": {
+            "cpu_seconds": 1.735576,
+            "wall_seconds": 6.621335375006311,
+            "peak_rss_bytes": 12435456,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        }
+      ],
+      "status": "PASS"
+    },
+    "N2": {
+      "export_sha256": "014bfc2a4faf9b0bff12609f9d91d13b30f797420b64e45f7e8a10e402ef31bb",
+      "checks": [
+        {
+          "group": "NS1-94950f3dab2c816b62ed5f4c80cdc8c8",
+          "ablation": "intact",
+          "ticks": 4501,
+          "launches": 13,
+          "deaths": 0,
+          "maximum_absolute_error": 7.105427357601002e-15,
+          "wall_seconds": 4.756918291997863,
+          "native_resources": {
+            "cpu_seconds": 1.3170579999999998,
+            "wall_seconds": 4.756912666009157,
+            "peak_rss_bytes": 10387456,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-94950f3dab2c816b62ed5f4c80cdc8c8",
+          "ablation": "K0",
+          "ticks": 4501,
+          "launches": 13,
+          "deaths": 0,
+          "maximum_absolute_error": 7.105427357601002e-15,
+          "wall_seconds": 4.892846083006589,
+          "native_resources": {
+            "cpu_seconds": 1.339625,
+            "wall_seconds": 4.892833959005657,
+            "peak_rss_bytes": 9404416,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-94950f3dab2c816b62ed5f4c80cdc8c8",
+          "ablation": "frozen_phase",
+          "ticks": 4501,
+          "launches": 13,
+          "deaths": 0,
+          "maximum_absolute_error": 0.0,
+          "wall_seconds": 4.273671083996305,
+          "native_resources": {
+            "cpu_seconds": 1.315703,
+            "wall_seconds": 4.2736627089907415,
+            "peak_rss_bytes": 9863168,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-94950f3dab2c816b62ed5f4c80cdc8c8",
+          "ablation": "topology_only",
+          "ticks": 4501,
+          "launches": 13,
+          "deaths": 0,
+          "maximum_absolute_error": 7.105427357601002e-15,
+          "wall_seconds": 4.8348035409871954,
+          "native_resources": {
+            "cpu_seconds": 1.3381809999999998,
+            "wall_seconds": 4.834795624992694,
+            "peak_rss_bytes": 11108352,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-94950f3dab2c816b62ed5f4c80cdc8c8",
+          "ablation": "no_geometry_to_mode",
+          "ticks": 4501,
+          "launches": 13,
+          "deaths": 0,
+          "maximum_absolute_error": 0.0,
+          "wall_seconds": 4.804660416994011,
+          "native_resources": {
+            "cpu_seconds": 1.333706,
+            "wall_seconds": 4.804650999998557,
+            "peak_rss_bytes": 10600448,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-94950f3dab2c816b62ed5f4c80cdc8c8",
+          "ablation": "no_mode_to_geometry",
+          "ticks": 4501,
+          "launches": 13,
+          "deaths": 0,
+          "maximum_absolute_error": 7.105427357601002e-15,
+          "wall_seconds": 5.186434125003871,
+          "native_resources": {
+            "cpu_seconds": 1.4025800000000002,
+            "wall_seconds": 5.186421125006746,
+            "peak_rss_bytes": 10420224,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-94950f3dab2c816b62ed5f4c80cdc8c8",
+          "ablation": "no_reset",
+          "ticks": 4501,
+          "launches": 13,
+          "deaths": 0,
+          "maximum_absolute_error": 1.4210854715202004e-14,
+          "wall_seconds": 4.657833624994964,
+          "native_resources": {
+            "cpu_seconds": 1.321166,
+            "wall_seconds": 4.657819291009218,
+            "peak_rss_bytes": 10420224,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-518ce16e5dee316727f92dce441b2781",
+          "ablation": "intact",
+          "ticks": 1970,
+          "launches": 51,
+          "deaths": 0,
+          "maximum_absolute_error": 1.1102230246251565e-15,
+          "wall_seconds": 2.134514208009932,
+          "native_resources": {
+            "cpu_seconds": 0.647894,
+            "wall_seconds": 2.1344992090016603,
+            "peak_rss_bytes": 10764288,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-518ce16e5dee316727f92dce441b2781",
+          "ablation": "K0",
+          "ticks": 1970,
+          "launches": 51,
+          "deaths": 0,
+          "maximum_absolute_error": 1.1102230246251565e-15,
+          "wall_seconds": 2.20972608300508,
+          "native_resources": {
+            "cpu_seconds": 0.655607,
+            "wall_seconds": 2.209715791992494,
+            "peak_rss_bytes": 11157504,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-518ce16e5dee316727f92dce441b2781",
+          "ablation": "frozen_phase",
+          "ticks": 1970,
+          "launches": 51,
+          "deaths": 0,
+          "maximum_absolute_error": 0.0,
+          "wall_seconds": 2.0296636250131996,
+          "native_resources": {
+            "cpu_seconds": 0.664348,
+            "wall_seconds": 2.02965308399871,
+            "peak_rss_bytes": 11042816,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-518ce16e5dee316727f92dce441b2781",
+          "ablation": "topology_only",
+          "ticks": 1970,
+          "launches": 51,
+          "deaths": 0,
+          "maximum_absolute_error": 1.1102230246251565e-15,
+          "wall_seconds": 2.2603553329972783,
+          "native_resources": {
+            "cpu_seconds": 0.656199,
+            "wall_seconds": 2.2603498749958817,
+            "peak_rss_bytes": 10780672,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-518ce16e5dee316727f92dce441b2781",
+          "ablation": "no_geometry_to_mode",
+          "ticks": 1970,
+          "launches": 51,
+          "deaths": 0,
+          "maximum_absolute_error": 0.0,
+          "wall_seconds": 2.3554203749954468,
+          "native_resources": {
+            "cpu_seconds": 0.6725469999999999,
+            "wall_seconds": 2.355408917006571,
+            "peak_rss_bytes": 10354688,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-518ce16e5dee316727f92dce441b2781",
+          "ablation": "no_mode_to_geometry",
+          "ticks": 1970,
+          "launches": 51,
+          "deaths": 0,
+          "maximum_absolute_error": 1.1102230246251565e-15,
+          "wall_seconds": 2.4580923750036163,
+          "native_resources": {
+            "cpu_seconds": 0.692313,
+            "wall_seconds": 2.4580778329982422,
+            "peak_rss_bytes": 10993664,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-518ce16e5dee316727f92dce441b2781",
+          "ablation": "no_reset",
+          "ticks": 1970,
+          "launches": 51,
+          "deaths": 0,
+          "maximum_absolute_error": 0.0,
+          "wall_seconds": 2.2954016250005225,
+          "native_resources": {
+            "cpu_seconds": 0.667137,
+            "wall_seconds": 2.295387332997052,
+            "peak_rss_bytes": 10436608,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-d13c5ec035699d8bd6d1c1b659cf4130",
+          "ablation": "intact",
+          "ticks": 1106,
+          "launches": 54,
+          "deaths": 0,
+          "maximum_absolute_error": 5.684341886080802e-14,
+          "wall_seconds": 2.2792992499889806,
+          "native_resources": {
+            "cpu_seconds": 0.656026,
+            "wall_seconds": 2.2792843750066822,
+            "peak_rss_bytes": 11026432,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-d13c5ec035699d8bd6d1c1b659cf4130",
+          "ablation": "K0",
+          "ticks": 1106,
+          "launches": 54,
+          "deaths": 0,
+          "maximum_absolute_error": 5.684341886080802e-14,
+          "wall_seconds": 2.348010665999027,
+          "native_resources": {
+            "cpu_seconds": 0.660809,
+            "wall_seconds": 2.3479951250046724,
+            "peak_rss_bytes": 11255808,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-d13c5ec035699d8bd6d1c1b659cf4130",
+          "ablation": "frozen_phase",
+          "ticks": 1106,
+          "launches": 54,
+          "deaths": 0,
+          "maximum_absolute_error": 5.684341886080802e-14,
+          "wall_seconds": 2.1791950829938287,
+          "native_resources": {
+            "cpu_seconds": 0.654066,
+            "wall_seconds": 2.1791829169960693,
+            "peak_rss_bytes": 11288576,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-d13c5ec035699d8bd6d1c1b659cf4130",
+          "ablation": "topology_only",
+          "ticks": 1106,
+          "launches": 54,
+          "deaths": 0,
+          "maximum_absolute_error": 5.684341886080802e-14,
+          "wall_seconds": 2.272292791007203,
+          "native_resources": {
+            "cpu_seconds": 0.651395,
+            "wall_seconds": 2.2722795419977047,
+            "peak_rss_bytes": 10551296,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-d13c5ec035699d8bd6d1c1b659cf4130",
+          "ablation": "no_geometry_to_mode",
+          "ticks": 1106,
+          "launches": 54,
+          "deaths": 0,
+          "maximum_absolute_error": 1.1368683772161603e-13,
+          "wall_seconds": 2.3364679160004016,
+          "native_resources": {
+            "cpu_seconds": 0.660771,
+            "wall_seconds": 2.3364467499923194,
+            "peak_rss_bytes": 10993664,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-d13c5ec035699d8bd6d1c1b659cf4130",
+          "ablation": "no_mode_to_geometry",
+          "ticks": 1106,
+          "launches": 54,
+          "deaths": 0,
+          "maximum_absolute_error": 1.3322676295501878e-15,
+          "wall_seconds": 2.3984746249916498,
+          "native_resources": {
+            "cpu_seconds": 0.678433,
+            "wall_seconds": 2.3984553330083145,
+            "peak_rss_bytes": 11321344,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-d13c5ec035699d8bd6d1c1b659cf4130",
+          "ablation": "no_reset",
+          "ticks": 1106,
+          "launches": 54,
+          "deaths": 0,
+          "maximum_absolute_error": 1.1368683772161603e-13,
+          "wall_seconds": 2.2819562079967,
+          "native_resources": {
+            "cpu_seconds": 0.650836,
+            "wall_seconds": 2.2819429590017535,
+            "peak_rss_bytes": 11272192,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-00b6d6d5704711133d101b020b195029",
+          "ablation": "intact",
+          "ticks": 1106,
+          "launches": 53,
+          "deaths": 0,
+          "maximum_absolute_error": 1.1368683772161603e-13,
+          "wall_seconds": 2.3478241659904597,
+          "native_resources": {
+            "cpu_seconds": 0.6516,
+            "wall_seconds": 2.3478184999985388,
+            "peak_rss_bytes": 10960896,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-00b6d6d5704711133d101b020b195029",
+          "ablation": "K0",
+          "ticks": 1106,
+          "launches": 53,
+          "deaths": 0,
+          "maximum_absolute_error": 5.684341886080802e-14,
+          "wall_seconds": 2.2634931670036167,
+          "native_resources": {
+            "cpu_seconds": 0.649842,
+            "wall_seconds": 2.263479790999554,
+            "peak_rss_bytes": 11255808,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-00b6d6d5704711133d101b020b195029",
+          "ablation": "frozen_phase",
+          "ticks": 1106,
+          "launches": 53,
+          "deaths": 0,
+          "maximum_absolute_error": 1.1368683772161603e-13,
+          "wall_seconds": 2.2285295829933602,
+          "native_resources": {
+            "cpu_seconds": 0.659693,
+            "wall_seconds": 2.228510417000507,
+            "peak_rss_bytes": 10928128,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-00b6d6d5704711133d101b020b195029",
+          "ablation": "topology_only",
+          "ticks": 1106,
+          "launches": 53,
+          "deaths": 0,
+          "maximum_absolute_error": 1.1368683772161603e-13,
+          "wall_seconds": 2.245400415995391,
+          "native_resources": {
+            "cpu_seconds": 0.651512,
+            "wall_seconds": 2.245386791997589,
+            "peak_rss_bytes": 10616832,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-00b6d6d5704711133d101b020b195029",
+          "ablation": "no_geometry_to_mode",
+          "ticks": 1106,
+          "launches": 53,
+          "deaths": 0,
+          "maximum_absolute_error": 5.684341886080802e-14,
+          "wall_seconds": 2.232715999998618,
+          "native_resources": {
+            "cpu_seconds": 0.648434,
+            "wall_seconds": 2.2327052089967765,
+            "peak_rss_bytes": 10059776,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-00b6d6d5704711133d101b020b195029",
+          "ablation": "no_mode_to_geometry",
+          "ticks": 1106,
+          "launches": 53,
+          "deaths": 0,
+          "maximum_absolute_error": 1.4432899320127035e-15,
+          "wall_seconds": 2.46566104098747,
+          "native_resources": {
+            "cpu_seconds": 0.6972109999999999,
+            "wall_seconds": 2.4656468749890337,
+            "peak_rss_bytes": 11272192,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-00b6d6d5704711133d101b020b195029",
+          "ablation": "no_reset",
+          "ticks": 1106,
+          "launches": 53,
+          "deaths": 0,
+          "maximum_absolute_error": 5.684341886080802e-14,
+          "wall_seconds": 2.1943284169974504,
+          "native_resources": {
+            "cpu_seconds": 0.64762,
+            "wall_seconds": 2.194318249996286,
+            "peak_rss_bytes": 11452416,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-c02ca2243abe5db77e602bd58bb3a2fa",
+          "ablation": "intact",
+          "ticks": 606,
+          "launches": 105,
+          "deaths": 0,
+          "maximum_absolute_error": 1.1368683772161603e-13,
+          "wall_seconds": 9.464000750012929,
+          "native_resources": {
+            "cpu_seconds": 2.2330479999999997,
+            "wall_seconds": 9.463995875004912,
+            "peak_rss_bytes": 12550144,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-c02ca2243abe5db77e602bd58bb3a2fa",
+          "ablation": "K0",
+          "ticks": 606,
+          "launches": 105,
+          "deaths": 0,
+          "maximum_absolute_error": 5.684341886080802e-14,
+          "wall_seconds": 9.598916041999473,
+          "native_resources": {
+            "cpu_seconds": 2.2675140000000003,
+            "wall_seconds": 9.598911250010133,
+            "peak_rss_bytes": 12517376,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-c02ca2243abe5db77e602bd58bb3a2fa",
+          "ablation": "frozen_phase",
+          "ticks": 606,
+          "launches": 105,
+          "deaths": 0,
+          "maximum_absolute_error": 1.1368683772161603e-13,
+          "wall_seconds": 9.648709625005722,
+          "native_resources": {
+            "cpu_seconds": 2.288621,
+            "wall_seconds": 9.648699792000116,
+            "peak_rss_bytes": 12435456,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-c02ca2243abe5db77e602bd58bb3a2fa",
+          "ablation": "topology_only",
+          "ticks": 606,
+          "launches": 105,
+          "deaths": 0,
+          "maximum_absolute_error": 5.684341886080802e-14,
+          "wall_seconds": 9.406064624999999,
+          "native_resources": {
+            "cpu_seconds": 2.259419,
+            "wall_seconds": 9.4060592080059,
+            "peak_rss_bytes": 11157504,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-c02ca2243abe5db77e602bd58bb3a2fa",
+          "ablation": "no_geometry_to_mode",
+          "ticks": 606,
+          "launches": 105,
+          "deaths": 0,
+          "maximum_absolute_error": 5.684341886080802e-14,
+          "wall_seconds": 9.892681249999441,
+          "native_resources": {
+            "cpu_seconds": 2.301724,
+            "wall_seconds": 9.892675916009466,
+            "peak_rss_bytes": 12566528,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-c02ca2243abe5db77e602bd58bb3a2fa",
+          "ablation": "no_mode_to_geometry",
+          "ticks": 606,
+          "launches": 105,
+          "deaths": 0,
+          "maximum_absolute_error": 5.684341886080802e-14,
+          "wall_seconds": 10.284601457999088,
+          "native_resources": {
+            "cpu_seconds": 2.398304,
+            "wall_seconds": 10.284596249999595,
+            "peak_rss_bytes": 11812864,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-c02ca2243abe5db77e602bd58bb3a2fa",
+          "ablation": "no_reset",
+          "ticks": 606,
+          "launches": 105,
+          "deaths": 0,
+          "maximum_absolute_error": 1.1368683772161603e-13,
+          "wall_seconds": 10.003273792011896,
+          "native_resources": {
+            "cpu_seconds": 2.30276,
+            "wall_seconds": 10.003268249987741,
+            "peak_rss_bytes": 11993088,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-6c38c9b24f8ffb91d13632aeb654d379",
+          "ablation": "intact",
+          "ticks": 536,
+          "launches": 100,
+          "deaths": 0,
+          "maximum_absolute_error": 1.1368683772161603e-13,
+          "wall_seconds": 10.628640375012765,
+          "native_resources": {
+            "cpu_seconds": 2.061563,
+            "wall_seconds": 10.628626749996329,
+            "peak_rss_bytes": 12550144,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-6c38c9b24f8ffb91d13632aeb654d379",
+          "ablation": "K0",
+          "ticks": 536,
+          "launches": 100,
+          "deaths": 0,
+          "maximum_absolute_error": 1.1368683772161603e-13,
+          "wall_seconds": 8.662120666995179,
+          "native_resources": {
+            "cpu_seconds": 2.0324419999999996,
+            "wall_seconds": 8.662115875005838,
+            "peak_rss_bytes": 12533760,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-6c38c9b24f8ffb91d13632aeb654d379",
+          "ablation": "frozen_phase",
+          "ticks": 536,
+          "launches": 100,
+          "deaths": 0,
+          "maximum_absolute_error": 1.1368683772161603e-13,
+          "wall_seconds": 8.305384916006005,
+          "native_resources": {
+            "cpu_seconds": 2.017827,
+            "wall_seconds": 8.305379792000167,
+            "peak_rss_bytes": 12500992,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-6c38c9b24f8ffb91d13632aeb654d379",
+          "ablation": "topology_only",
+          "ticks": 536,
+          "launches": 100,
+          "deaths": 0,
+          "maximum_absolute_error": 1.1368683772161603e-13,
+          "wall_seconds": 8.421742874998017,
+          "native_resources": {
+            "cpu_seconds": 2.024168,
+            "wall_seconds": 8.421729834008147,
+            "peak_rss_bytes": 12140544,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-6c38c9b24f8ffb91d13632aeb654d379",
+          "ablation": "no_geometry_to_mode",
+          "ticks": 536,
+          "launches": 100,
+          "deaths": 0,
+          "maximum_absolute_error": 1.1368683772161603e-13,
+          "wall_seconds": 8.485551499994472,
+          "native_resources": {
+            "cpu_seconds": 2.021409,
+            "wall_seconds": 8.485540166991996,
+            "peak_rss_bytes": 11878400,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-6c38c9b24f8ffb91d13632aeb654d379",
+          "ablation": "no_mode_to_geometry",
+          "ticks": 536,
+          "launches": 100,
+          "deaths": 0,
+          "maximum_absolute_error": 1.1368683772161603e-13,
+          "wall_seconds": 8.721496457990725,
+          "native_resources": {
+            "cpu_seconds": 2.10869,
+            "wall_seconds": 8.72148995900352,
+            "peak_rss_bytes": 12517376,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-6c38c9b24f8ffb91d13632aeb654d379",
+          "ablation": "no_reset",
+          "ticks": 536,
+          "launches": 100,
+          "deaths": 0,
+          "maximum_absolute_error": 1.1368683772161603e-13,
+          "wall_seconds": 8.420656583009986,
+          "native_resources": {
+            "cpu_seconds": 2.0387269999999997,
+            "wall_seconds": 8.420644000012544,
+            "peak_rss_bytes": 12468224,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-83e531f43b997a43b1d596c24d22b4d4",
+          "ablation": "intact",
+          "ticks": 472,
+          "launches": 13,
+          "deaths": 1,
+          "maximum_absolute_error": 1.6653345369377348e-16,
+          "wall_seconds": 0.7206694999913452,
+          "native_resources": {
+            "cpu_seconds": 0.24756499999999998,
+            "wall_seconds": 0.7206559589976678,
+            "peak_rss_bytes": 10534912,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-83e531f43b997a43b1d596c24d22b4d4",
+          "ablation": "K0",
+          "ticks": 472,
+          "launches": 13,
+          "deaths": 1,
+          "maximum_absolute_error": 1.6653345369377348e-16,
+          "wall_seconds": 0.7097867919947021,
+          "native_resources": {
+            "cpu_seconds": 0.24190699999999998,
+            "wall_seconds": 0.7097820000053616,
+            "peak_rss_bytes": 10207232,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-83e531f43b997a43b1d596c24d22b4d4",
+          "ablation": "frozen_phase",
+          "ticks": 472,
+          "launches": 13,
+          "deaths": 1,
+          "maximum_absolute_error": 0.0,
+          "wall_seconds": 0.5816651670029387,
+          "native_resources": {
+            "cpu_seconds": 0.238276,
+            "wall_seconds": 0.5816461250069551,
+            "peak_rss_bytes": 10960896,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-83e531f43b997a43b1d596c24d22b4d4",
+          "ablation": "topology_only",
+          "ticks": 472,
+          "launches": 13,
+          "deaths": 1,
+          "maximum_absolute_error": 1.6653345369377348e-16,
+          "wall_seconds": 0.6212541669956408,
+          "native_resources": {
+            "cpu_seconds": 0.23882699999999998,
+            "wall_seconds": 0.6212420420051785,
+            "peak_rss_bytes": 9568256,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-83e531f43b997a43b1d596c24d22b4d4",
+          "ablation": "no_geometry_to_mode",
+          "ticks": 472,
+          "launches": 13,
+          "deaths": 1,
+          "maximum_absolute_error": 0.0,
+          "wall_seconds": 0.6539320419979049,
+          "native_resources": {
+            "cpu_seconds": 0.241303,
+            "wall_seconds": 0.6539217499957886,
+            "peak_rss_bytes": 10534912,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-83e531f43b997a43b1d596c24d22b4d4",
+          "ablation": "no_mode_to_geometry",
+          "ticks": 472,
+          "launches": 13,
+          "deaths": 1,
+          "maximum_absolute_error": 1.6653345369377348e-16,
+          "wall_seconds": 0.6944922910042806,
+          "native_resources": {
+            "cpu_seconds": 0.252704,
+            "wall_seconds": 0.6944832500012126,
+            "peak_rss_bytes": 11010048,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-83e531f43b997a43b1d596c24d22b4d4",
+          "ablation": "no_reset",
+          "ticks": 472,
+          "launches": 13,
+          "deaths": 1,
+          "maximum_absolute_error": 1.3322676295501878e-15,
+          "wall_seconds": 0.621391249995213,
+          "native_resources": {
+            "cpu_seconds": 0.23744099999999999,
+            "wall_seconds": 0.6213760410028044,
+            "peak_rss_bytes": 10190848,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-4987813ef119a568d2f112f71f9052b5",
+          "ablation": "intact",
+          "ticks": 473,
+          "launches": 13,
+          "deaths": 1,
+          "maximum_absolute_error": 1.8041124150158794e-16,
+          "wall_seconds": 0.6208389999956125,
+          "native_resources": {
+            "cpu_seconds": 0.23672399999999996,
+            "wall_seconds": 0.6208295410033315,
+            "peak_rss_bytes": 10993664,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-4987813ef119a568d2f112f71f9052b5",
+          "ablation": "K0",
+          "ticks": 473,
+          "launches": 13,
+          "deaths": 1,
+          "maximum_absolute_error": 1.8041124150158794e-16,
+          "wall_seconds": 0.6176529169897549,
+          "native_resources": {
+            "cpu_seconds": 0.23693,
+            "wall_seconds": 0.6176416250091279,
+            "peak_rss_bytes": 10600448,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-4987813ef119a568d2f112f71f9052b5",
+          "ablation": "frozen_phase",
+          "ticks": 473,
+          "launches": 13,
+          "deaths": 1,
+          "maximum_absolute_error": 0.0,
+          "wall_seconds": 0.5749455000041053,
+          "native_resources": {
+            "cpu_seconds": 0.237066,
+            "wall_seconds": 0.5749370839912444,
+            "peak_rss_bytes": 10993664,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-4987813ef119a568d2f112f71f9052b5",
+          "ablation": "topology_only",
+          "ticks": 473,
+          "launches": 13,
+          "deaths": 1,
+          "maximum_absolute_error": 1.8041124150158794e-16,
+          "wall_seconds": 0.6160791250003967,
+          "native_resources": {
+            "cpu_seconds": 0.237228,
+            "wall_seconds": 0.6160698339954251,
+            "peak_rss_bytes": 10960896,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-4987813ef119a568d2f112f71f9052b5",
+          "ablation": "no_geometry_to_mode",
+          "ticks": 473,
+          "launches": 13,
+          "deaths": 1,
+          "maximum_absolute_error": 0.0,
+          "wall_seconds": 0.6661430829990422,
+          "native_resources": {
+            "cpu_seconds": 0.24700899999999998,
+            "wall_seconds": 0.666130792000331,
+            "peak_rss_bytes": 10911744,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-4987813ef119a568d2f112f71f9052b5",
+          "ablation": "no_mode_to_geometry",
+          "ticks": 473,
+          "launches": 13,
+          "deaths": 1,
+          "maximum_absolute_error": 1.8041124150158794e-16,
+          "wall_seconds": 0.6528552079980727,
+          "native_resources": {
+            "cpu_seconds": 0.242352,
+            "wall_seconds": 0.6528452499915147,
+            "peak_rss_bytes": 10240000,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-4987813ef119a568d2f112f71f9052b5",
+          "ablation": "no_reset",
+          "ticks": 473,
+          "launches": 13,
+          "deaths": 1,
+          "maximum_absolute_error": 2.6645352591003757e-15,
+          "wall_seconds": 0.6316399999923306,
+          "native_resources": {
+            "cpu_seconds": 0.23917,
+            "wall_seconds": 0.6316247500071768,
+            "peak_rss_bytes": 9650176,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-1b7bb57d6a82b53a168c074bd46a352d",
+          "ablation": "intact",
+          "ticks": 1926,
+          "launches": 20,
+          "deaths": 2,
+          "maximum_absolute_error": 1.5543122344752192e-15,
+          "wall_seconds": 1.0418601670098724,
+          "native_resources": {
+            "cpu_seconds": 0.33956600000000003,
+            "wall_seconds": 1.0418451669975184,
+            "peak_rss_bytes": 11190272,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-1b7bb57d6a82b53a168c074bd46a352d",
+          "ablation": "K0",
+          "ticks": 1926,
+          "launches": 20,
+          "deaths": 2,
+          "maximum_absolute_error": 5.684341886080802e-14,
+          "wall_seconds": 1.0084616249951068,
+          "native_resources": {
+            "cpu_seconds": 0.342798,
+            "wall_seconds": 1.008451249988866,
+            "peak_rss_bytes": 10960896,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-1b7bb57d6a82b53a168c074bd46a352d",
+          "ablation": "frozen_phase",
+          "ticks": 1926,
+          "launches": 20,
+          "deaths": 2,
+          "maximum_absolute_error": 1.1102230246251565e-15,
+          "wall_seconds": 0.9439825000008568,
+          "native_resources": {
+            "cpu_seconds": 0.338308,
+            "wall_seconds": 0.9439746669959277,
+            "peak_rss_bytes": 10944512,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-1b7bb57d6a82b53a168c074bd46a352d",
+          "ablation": "topology_only",
+          "ticks": 1926,
+          "launches": 20,
+          "deaths": 2,
+          "maximum_absolute_error": 1.5543122344752192e-15,
+          "wall_seconds": 0.9426812500023516,
+          "native_resources": {
+            "cpu_seconds": 0.331212,
+            "wall_seconds": 0.9426608749927254,
+            "peak_rss_bytes": 11255808,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-1b7bb57d6a82b53a168c074bd46a352d",
+          "ablation": "no_geometry_to_mode",
+          "ticks": 1926,
+          "launches": 20,
+          "deaths": 2,
+          "maximum_absolute_error": 1.5543122344752192e-15,
+          "wall_seconds": 1.041158499996527,
+          "native_resources": {
+            "cpu_seconds": 0.344653,
+            "wall_seconds": 1.0411388749926118,
+            "peak_rss_bytes": 10764288,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-1b7bb57d6a82b53a168c074bd46a352d",
+          "ablation": "no_mode_to_geometry",
+          "ticks": 1926,
+          "launches": 20,
+          "deaths": 2,
+          "maximum_absolute_error": 8.881784197001252e-16,
+          "wall_seconds": 1.0749379170010798,
+          "native_resources": {
+            "cpu_seconds": 0.35007699999999997,
+            "wall_seconds": 1.0749190420028754,
+            "peak_rss_bytes": 11288576,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-1b7bb57d6a82b53a168c074bd46a352d",
+          "ablation": "no_reset",
+          "ticks": 1926,
+          "launches": 20,
+          "deaths": 2,
+          "maximum_absolute_error": 1.5543122344752192e-15,
+          "wall_seconds": 0.9843255419982597,
+          "native_resources": {
+            "cpu_seconds": 0.33588199999999996,
+            "wall_seconds": 0.9843107079941547,
+            "peak_rss_bytes": 10977280,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-a1bb4222d86eb583abe9b69ecf5f21a4",
+          "ablation": "intact",
+          "ticks": 691,
+          "launches": 25,
+          "deaths": 2,
+          "maximum_absolute_error": 2.1094237467877974e-15,
+          "wall_seconds": 1.194642250004108,
+          "native_resources": {
+            "cpu_seconds": 0.383963,
+            "wall_seconds": 1.1946288750041276,
+            "peak_rss_bytes": 11223040,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-a1bb4222d86eb583abe9b69ecf5f21a4",
+          "ablation": "K0",
+          "ticks": 691,
+          "launches": 25,
+          "deaths": 2,
+          "maximum_absolute_error": 1.5265566588595902e-15,
+          "wall_seconds": 1.1082250829931581,
+          "native_resources": {
+            "cpu_seconds": 0.370309,
+            "wall_seconds": 1.1082052499987185,
+            "peak_rss_bytes": 10240000,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-a1bb4222d86eb583abe9b69ecf5f21a4",
+          "ablation": "frozen_phase",
+          "ticks": 691,
+          "launches": 25,
+          "deaths": 2,
+          "maximum_absolute_error": 1.4432899320127035e-15,
+          "wall_seconds": 1.0625792080099927,
+          "native_resources": {
+            "cpu_seconds": 0.373186,
+            "wall_seconds": 1.062561040991568,
+            "peak_rss_bytes": 11321344,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-a1bb4222d86eb583abe9b69ecf5f21a4",
+          "ablation": "topology_only",
+          "ticks": 691,
+          "launches": 25,
+          "deaths": 2,
+          "maximum_absolute_error": 2.1094237467877974e-15,
+          "wall_seconds": 1.1443547499948181,
+          "native_resources": {
+            "cpu_seconds": 0.375793,
+            "wall_seconds": 1.144344040993019,
+            "peak_rss_bytes": 9879552,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-a1bb4222d86eb583abe9b69ecf5f21a4",
+          "ablation": "no_geometry_to_mode",
+          "ticks": 691,
+          "launches": 25,
+          "deaths": 2,
+          "maximum_absolute_error": 1.3322676295501878e-15,
+          "wall_seconds": 1.1510372920020018,
+          "native_resources": {
+            "cpu_seconds": 0.38089799999999996,
+            "wall_seconds": 1.151027250001789,
+            "peak_rss_bytes": 11321344,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-a1bb4222d86eb583abe9b69ecf5f21a4",
+          "ablation": "no_mode_to_geometry",
+          "ticks": 691,
+          "launches": 25,
+          "deaths": 2,
+          "maximum_absolute_error": 1.3322676295501878e-15,
+          "wall_seconds": 1.1625670420035021,
+          "native_resources": {
+            "cpu_seconds": 0.382512,
+            "wall_seconds": 1.1625555829959922,
+            "peak_rss_bytes": 10960896,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-a1bb4222d86eb583abe9b69ecf5f21a4",
+          "ablation": "no_reset",
+          "ticks": 691,
+          "launches": 25,
+          "deaths": 2,
+          "maximum_absolute_error": 2.1094237467877974e-15,
+          "wall_seconds": 1.1000263750029262,
+          "native_resources": {
+            "cpu_seconds": 0.36921699999999996,
+            "wall_seconds": 1.100011667003855,
+            "peak_rss_bytes": 11304960,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-4679dbe0103d5ac98fc99afb5abca4a6",
+          "ablation": "intact",
+          "ticks": 1623,
+          "launches": 102,
+          "deaths": 10,
+          "maximum_absolute_error": 1.1368683772161603e-13,
+          "wall_seconds": 8.06313450000016,
+          "native_resources": {
+            "cpu_seconds": 2.050128,
+            "wall_seconds": 8.063129208996543,
+            "peak_rss_bytes": 13451264,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-4679dbe0103d5ac98fc99afb5abca4a6",
+          "ablation": "K0",
+          "ticks": 1623,
+          "launches": 102,
+          "deaths": 10,
+          "maximum_absolute_error": 1.1368683772161603e-13,
+          "wall_seconds": 8.215180583007168,
+          "native_resources": {
+            "cpu_seconds": 2.08895,
+            "wall_seconds": 8.21516100000008,
+            "peak_rss_bytes": 13123584,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-4679dbe0103d5ac98fc99afb5abca4a6",
+          "ablation": "frozen_phase",
+          "ticks": 1623,
+          "launches": 102,
+          "deaths": 10,
+          "maximum_absolute_error": 8.881784197001252e-16,
+          "wall_seconds": 10.37805783400836,
+          "native_resources": {
+            "cpu_seconds": 2.0832759999999997,
+            "wall_seconds": 10.378051332998439,
+            "peak_rss_bytes": 13402112,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-4679dbe0103d5ac98fc99afb5abca4a6",
+          "ablation": "topology_only",
+          "ticks": 1623,
+          "launches": 102,
+          "deaths": 10,
+          "maximum_absolute_error": 5.684341886080802e-14,
+          "wall_seconds": 8.21319295799185,
+          "native_resources": {
+            "cpu_seconds": 2.098483,
+            "wall_seconds": 8.213175875003799,
+            "peak_rss_bytes": 13156352,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-4679dbe0103d5ac98fc99afb5abca4a6",
+          "ablation": "no_geometry_to_mode",
+          "ticks": 1623,
+          "launches": 102,
+          "deaths": 10,
+          "maximum_absolute_error": 1.1102230246251565e-15,
+          "wall_seconds": 8.234521417005453,
+          "native_resources": {
+            "cpu_seconds": 2.085301,
+            "wall_seconds": 8.23451437499898,
+            "peak_rss_bytes": 12648448,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-4679dbe0103d5ac98fc99afb5abca4a6",
+          "ablation": "no_mode_to_geometry",
+          "ticks": 1623,
+          "launches": 102,
+          "deaths": 10,
+          "maximum_absolute_error": 5.684341886080802e-14,
+          "wall_seconds": 8.21688062499743,
+          "native_resources": {
+            "cpu_seconds": 2.1136459999999997,
+            "wall_seconds": 8.216870125004789,
+            "peak_rss_bytes": 13402112,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-4679dbe0103d5ac98fc99afb5abca4a6",
+          "ablation": "no_reset",
+          "ticks": 1623,
+          "launches": 102,
+          "deaths": 10,
+          "maximum_absolute_error": 1.1368683772161603e-13,
+          "wall_seconds": 8.428082333004568,
+          "native_resources": {
+            "cpu_seconds": 2.09216,
+            "wall_seconds": 8.428072707989486,
+            "peak_rss_bytes": 13467648,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-9b29fb4f93d1bc41e4940edffc4f58d1",
+          "ablation": "intact",
+          "ticks": 882,
+          "launches": 77,
+          "deaths": 10,
+          "maximum_absolute_error": 5.684341886080802e-14,
+          "wall_seconds": 6.701695333991665,
+          "native_resources": {
+            "cpu_seconds": 1.735193,
+            "wall_seconds": 6.7016912499966566,
+            "peak_rss_bytes": 13172736,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-9b29fb4f93d1bc41e4940edffc4f58d1",
+          "ablation": "K0",
+          "ticks": 882,
+          "launches": 77,
+          "deaths": 10,
+          "maximum_absolute_error": 2.2737367544323206e-13,
+          "wall_seconds": 6.7353277079964755,
+          "native_resources": {
+            "cpu_seconds": 1.74637,
+            "wall_seconds": 6.735318250008277,
+            "peak_rss_bytes": 12582912,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-9b29fb4f93d1bc41e4940edffc4f58d1",
+          "ablation": "frozen_phase",
+          "ticks": 882,
+          "launches": 77,
+          "deaths": 10,
+          "maximum_absolute_error": 8.881784197001252e-16,
+          "wall_seconds": 6.60867612498987,
+          "native_resources": {
+            "cpu_seconds": 1.732645,
+            "wall_seconds": 6.608672542002751,
+            "peak_rss_bytes": 13008896,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-9b29fb4f93d1bc41e4940edffc4f58d1",
+          "ablation": "topology_only",
+          "ticks": 882,
+          "launches": 77,
+          "deaths": 10,
+          "maximum_absolute_error": 5.684341886080802e-14,
+          "wall_seconds": 6.760091125004692,
+          "native_resources": {
+            "cpu_seconds": 1.7570780000000001,
+            "wall_seconds": 6.760079500003485,
+            "peak_rss_bytes": 13238272,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-9b29fb4f93d1bc41e4940edffc4f58d1",
+          "ablation": "no_geometry_to_mode",
+          "ticks": 882,
+          "launches": 77,
+          "deaths": 10,
+          "maximum_absolute_error": 5.684341886080802e-14,
+          "wall_seconds": 6.704442999995081,
+          "native_resources": {
+            "cpu_seconds": 1.749935,
+            "wall_seconds": 6.704431624995777,
+            "peak_rss_bytes": 13090816,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-9b29fb4f93d1bc41e4940edffc4f58d1",
+          "ablation": "no_mode_to_geometry",
+          "ticks": 882,
+          "launches": 77,
+          "deaths": 10,
+          "maximum_absolute_error": 1.1368683772161603e-13,
+          "wall_seconds": 6.765425541991135,
+          "native_resources": {
+            "cpu_seconds": 1.771648,
+            "wall_seconds": 6.76542008400429,
+            "peak_rss_bytes": 12812288,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        },
+        {
+          "group": "NS1-9b29fb4f93d1bc41e4940edffc4f58d1",
+          "ablation": "no_reset",
+          "ticks": 882,
+          "launches": 77,
+          "deaths": 10,
+          "maximum_absolute_error": 1.1368683772161603e-13,
+          "wall_seconds": 6.719743749999907,
+          "native_resources": {
+            "cpu_seconds": 1.74779,
+            "wall_seconds": 6.719731375007541,
+            "peak_rss_bytes": 13107200,
+            "exit_code": 0
+          },
+          "chunk_ticks": 12,
+          "scope": "complete sequence; persistent Host and Python Replay state across bounded chunks"
+        }
+      ],
+      "status": "PASS"
+    }
+  },
+  "driver_sha256": "d0fcec4202171f752dbac21a5dff3ab85728c5e7fd85843621e72102bccec5c5",
+  "physical_fights": 0
+}
