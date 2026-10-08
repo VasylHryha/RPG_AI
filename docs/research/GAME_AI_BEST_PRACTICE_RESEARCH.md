@@ -1,360 +1,554 @@
 # Game-AI best practice for Astelia: what landmark systems did, what transfers to one laptop, and a ranked plan
 
-**Status:** research note for plan step B8 (`docs/PLAN_CURRENT.md`). It informs the shape-lab spec Amendments 2–3 (`evidence/tactical_composition_demo/SHAPE_LAB_SPEC.md` §9–§10). No project code was run for this note. Every external claim carries a link. Statements marked **[inference]** are this note's reasoning, not a source's finding. Numbers about our engine come from the task brief and the spec, not from new measurements.
+**Status:** research note for plan step B8 (`docs/PLAN_CURRENT.md`). It informs `evidence/tactical_composition_demo/SHAPE_LAB_SPEC.md` §§9–12:
+- Amendment 2: teacher arms and shadow actions;
+- Amendment 3: primitives, and losses avoided, not budgeted;
+- Amendment 4: coordinated artillery volleys;
+- Amendment 5: the interface prerequisite.
 
-**Date:** 2026-10-08. **Author family:** Claude.
+**Revision history:**
+- **Revision 1:** commit `db404c2`.
+- **Revision 2:** this file. It fixes the cross-family recheck `docs/reviews/game_ai_research_recheck_codex.md` (CHANGES_REQUIRED, F1–F8, N1); see §12, the self-audit.
+
+**Ground rules:**
+- No project code, fight, benchmark or pilot was run for this note.
+- Engine facts come from reading delivered sources, the spec and the stored killers summary.
+- Every external claim carries a link. Statements marked **[inference]** are this note's reasoning, not a source's finding.
+- Nothing here authorizes a run; any pilot proposed below needs owner authorization under decision 0031.
+
+**Date:** 2026-10-08. **Drafter family:** Claude.
 
 ---
 
 ## 0. Our problem in the literature's terms
 
-| Our term | Closest literature term | Where it comes from |
+| Our term | Closest literature term | Source |
 |---|---|---|
-| Shape (per-role behaviour: gun focus, spacing, escort, melee law) | **Script** in a **script portfolio** | Churchill & Buro's portfolio search line ([Lelis, IJCAI 2017](https://www.ijcai.org/proceedings/2017/522)) |
-| Oscillator gate choosing when a shape acts | Script-selection policy, or a hand-written meta-controller | [Barriga et al. 2017](https://arxiv.org/abs/1709.03480) learn this selector |
-| ~11 knobs tuned by CMA-ES | Parameterised micro tuned by evolution | ECSLBot: [Liu, Louis & Ballinger 2014](https://www.cse.unr.edu/~simingl/papers/publish/CIG2014IMPFMicro.pdf), 14 parameters, GA |
-| Engine clone + forward play (elite's 2-s volley rollouts) | **Forward model** for playout-based search | [SparCraft](https://github.com/davechurchill/SparCraft) (MIT); PGS, SSS, POE |
-| 19 enemy doctrines × 4 skills | Fixed **opponent pool** | AlphaStar league / PFSP, without the learning opponents |
-| 10-fight series, dead stay dead | Attrition objective (own losses matter as much as winning) | LTD2 evaluation ([Churchill et al.](https://ojs.aaai.org/index.php/AIIDE/article/view/12527)), ECSLBot fitness |
-| Teacher arm and shadow actions (spec §9) | Expert labelling of states (**behaviour cloning**, or **DAgger** when our policy drives) | [Ross, Gordon & Bagnell 2011](https://arxiv.org/abs/1011.0686) |
+| Shape (per-role behaviour) and its primitives (move, attack, aim, react, rotate, volley; spec §10) | **Script** in a **script portfolio** | Churchill & Buro's line ([Lelis, IJCAI 2017](https://www.ijcai.org/proceedings/2017/522)) |
+| **Battery oscillator** (spec §11, V1): each gun's firing phase is pulled towards its neighbours' and released at a shared firing point | Pulse-coupled oscillators ([Mirollo & Strogatz 1990](https://www.iasi.cnr.it/~vbonifaci/semcn/Mirollo1990.pdf)); the [Kuramoto model](https://en.wikipedia.org/wiki/Kuramoto_model); military [time on target](https://en.wikipedia.org/wiki/Time_on_target) | Spec §11 names these as the closest methods |
+| The **old commit/escape gate** (v7) | A hand-written meta-controller | **Superseded** (spec §11): no gain (v7 32/40 against always-commit 31/40), and it violates the owner's never-leave rule |
+| ~11 knobs tuned by CMA-ES | Parameterised micro tuned by evolution | ECSLBot ([Liu, Louis & Ballinger 2014](https://www.cse.unr.edu/~simingl/papers/publish/CIG2014IMPFMicro.pdf)) |
+| Engine clone plus forward play (the elite's 2-s volley rollouts) | Forward model for playout-based search, **with the caveats in §6** | SparCraft, PGS, SSS |
+| 19 enemy doctrines at regular skill (the owner's series) | Fixed scripted **opponent pool** | AlphaStar's PFSP is a *training* distribution, not our yardstick (§8) |
+| Teacher arms and shadow actions (spec §9) | Expert labelling; **behaviour cloning** when the teacher drives, **DAgger** when our policy drives *and* the labels are aggregated and refitted | [Ross, Gordon & Bagnell 2011](https://arxiv.org/abs/1011.0686) |
 
-**Closest known method to what we already have:** ECSLBot ([Liu, Louis & Ballinger, CIG 2014](https://www.cse.unr.edu/~simingl/papers/publish/CIG2014IMPFMicro.pdf)).
-- It encodes micro (influence maps, potential fields, kiting, target selection, fleeing) in **fourteen parameters**.
-- A GA tunes them in "about 21 hours" per unit type.
-- Its fitness is **units remaining on each side** plus a time term: F = (N_F − N_E)·S_u + (1 − T/MaxT)·S_t.
-- The evolved player beat UAlbertaBot and Nova "in kiting efficiency, target selection, and knowing when to flee to survive".
+**The closest known method to what we already have is ECSLBot** ([Liu, Louis & Ballinger, CIG 2014](https://www.cse.unr.edu/~simingl/papers/publish/CIG2014IMPFMicro.pdf)).
+- It encodes micro (influence maps, potential fields, kiting, target selection, fleeing) in fourteen parameters, tuned by a GA in "about 21 hours".
+- Its main fitness (Eq. 3) is units remaining on each side plus a time term. A second scoring (Eq. 4) is used for a kiting scenario.
+- The main comparisons control five Vultures. Similar Dragoon results are mentioned. Mixed own-army composition is named as "still an open research question".
+- **How we differ:** per-role shapes, a battery oscillator for gun synchrony, CMA-ES, and three mixed roles with lobbed splash.
 
-**How we differ:**
-- per-role shapes rather than one parameter set per unit type;
-- a per-unit oscillator gate;
-- CMA-ES instead of a GA;
-- mixed melee, ranged and artillery with splash.
+**What the yardstick measures** (spec §5):
+- **The rules:**
+  - 10 fights;
+  - fresh full enemy 50 each fight;
+  - tactic drawn uniformly with replacement from the 19-entry POOL at regular skill;
+  - abilities off;
+  - survivors healed to full;
+  - the dead stay dead.
+- **The run ends at the first fight not won by elimination,** including losses, draws and timeouts.
+- **The streak is primary.** Losses matter because they shrink later armies, but cumulative loss alone does not decide the streak: a timeout with few deaths also ends it.
+- **The stored v7 data** (`KILLERS_V7_REGULAR.txt`, 40 fights against regular): own deaths average **41.8 per fight over all 40 fights**. The spec's 40.7 is the separate mean over won fights only.
 
-ECSLBot was tested on one unit type. The authors themselves list mixed unit types as "still an open research question".
-
-**One fact about our yardstick drives most of this note [inference].** In the series, survivors heal and the dead stay dead. A win that loses 41 of 50 units leaves 9 units for the next fight, so in practice the streak measures **cumulative losses**, not the per-fight win rate. This is why literature that optimises win rate alone, such as SMAC's default reward, transfers only partly. In [SMAC's code](https://raw.githubusercontent.com/oxwhirl/smac/master/smac/env/starcraft2/starcraft2.py), `reward_only_positive=True` by default, so own damage is ignored. Methods with a loss-aware evaluation (LTD2, ECSLBot's fitness) transfer directly.
-
----
-
-## 1. Landmark game AIs: what they did, and what transfers at 10^5–10^6 fights
-
-Our budget [inference from the brief]:
-- **Throughput:** about 1,350 fights/min on 10 workers, so about 81,000 fights/hour. That is about 0.44 core-seconds per 50v50 fight.
-- **Budget:** 10^5 fights is roughly 1.2 h, and 10^6 roughly 12 h.
-- **Cost of one rollout:** a full fight of 30–150 game-s is 900–4,500 ticks. A 2-s rollout (60 ticks) therefore costs roughly 0.005–0.03 core-s.
-
-| System | What it actually did | Compute | Transfers to us | Does not transfer |
-|---|---|---|---|---|
-| **AlphaGo** ([Nature 2016](https://research.google/pubs/mastering-the-game-of-go-with-deep-neural-networks-and-tree-search/)) | Supervised policy net on expert moves (57% move prediction per [secondary summary](https://blog.acolyer.org/2016/09/20/mastering-the-game-of-go-with-deep-neural-networks-and-tree-search/)), then self-play RL, a value net, and MCTS combining them | Large GPU/TPU clusters | **Imitate a teacher first, then improve by search.** Search uses the policy as a prior and an evaluator at the leaves. | Deep nets over raw state; human game records (we have none, but we have the engine's elite AI as a teacher) |
-| **AlphaZero / KataGo** ([KataGo, Wu 2019](https://arxiv.org/abs/1902.10565)) | Self-play plus MCTS; the network learns the search's visit distribution (policy) and the outcome (value). KataGo cut compute about 50× versus ELF OpenGo, still about 1.4 GPU-years. | AlphaZero: about 21 M games ([EfficientZero paper](https://arxiv.org/abs/2111.00210)) | **Expert-iteration loop:** search produces better labels and a cheap policy learns them ([Anthony et al. 2017](https://arxiv.org/abs/1705.08439)). Gumbel planning keeps policy improvement with few simulations ([Danihelka et al. ICLR 2022](https://iclr.cc/virtual/2022/poster/6418)). | 21 M games of self-play is 1–2 orders of magnitude over our budget. Discrete-move tree search does not fit 100 simultaneous continuous units without action abstraction (see §2). |
-| **MuZero** ([arXiv 1911.08265](https://arxiv.org/pdf/1911.08265)) | Learns a dynamics model and searches in it | As above | Nothing core. MuZero exists for when "a perfect simulator" is **not** available. We have one: the engine clone. | Learning a model when the exact engine is available is pure loss. Learned models also misjudge unseen policies ([What model does MuZero learn?](https://arxiv.org/html/2306.00840v3)). |
-| **AlphaStar** ([DeepMind blog](https://deepmind.google/discover/blog/alphastar-grandmaster-level-in-starcraft-ii-using-multi-agent-reinforcement-learning/)) | 1) Imitation from human replays, which beat 84% of active players. 2) League: main agents, main exploiters and league exploiters. 3) Main agents sample opponents by **PFSP**: weight f(P[win]), with f_hard(x) = (1−x)^p focusing the hardest ([survey, arXiv 2408.01072](https://arxiv.org/pdf/2408.01072)). 4) Distillation towards human play throughout, against forgetting. | Each agent 44 days on 32 TPUv3; 12 core agents; about 900 players created ([secondary](https://gamesbeat.com/deepminds-alphastar-final-beats-99-8-of-human-starcraft-2-players/)) | (a) **Start from a teacher** (our elite AI). (b) **PFSP weighting** over our 19×4 opponent pool. (c) **Exploiter idea:** search for the enemy settings our AI loses to. (d) **Keep a pull towards the teacher** while tuning (an anti-forgetting regulariser). | The neural policy, the league of *learning* agents and the compute. [AlphaStar Unplugged](https://arxiv.org/abs/2308.03526) shows that even offline RL from replays needs millions of games. |
-| **OpenAI Five** ([arXiv 1912.06680](https://arxiv.org/abs/1912.06680)) | PPO at scale: about 2 M frames per 2 s, 10 months. 80% of games against the current self and 20% against past selves ([survey summary](https://arxiv.org/pdf/2111.07631)). "Team spirit" blends individual and team reward. "Surgery" carries training across code changes. | Very large | (a) A **past-self pool** against forgetting: keep a hall of fame of our earlier versions in the evaluation pool. (b) The **team-spirit** idea maps to a per-unit term against a team term in our fitness: units should not trade themselves for team damage. | The PPO scale. |
-| **Smaller successors** | [RAISocketAI](https://arxiv.org/html/2402.08112v1) won the microRTS competition at CoG 2023, the first DRL agent to do so (about 70 GPU-days). Its BC variant (**RAI-BC**), trained to copy the scripted winner Mayari, reached 71% overall but only 44% against Mayari itself; PPO fine-tuning raised this to 88% overall. | 23–70 GPU-days | **Copying a scripted teacher is cheap and gets near the teacher, not past it.** Exceeding the teacher needs an improvement step (search or RL). | DRL at 70 GPU-days |
-| **Programmatic synthesis** ([Mariño et al. AAAI 2021](https://ojs.aaai.org/index.php/AAAI/article/view/16114); [2L, IJCAI 2023](https://arxiv.org/abs/2307.04893)) | Local search over programs in a DSL, by self-play. With 2L's choice of reference opponents, it beat the two latest microRTS competition winners in a simulated tournament. | Laptop-scale search | **This is the closest landmark to our principle:** small readable programs (shapes) found by search, with the opponent set chosen to sharpen the search signal. | |
-
-**Summary of question 1.** The transferable core of every landmark is the same three-part loop:
-1. **Start from a teacher.** (AlphaGo SL, AlphaStar SL, RAI-BC.)
-2. **Improve with search or optimisation against a curated opponent set.** (MCTS, the league with PFSP, 2L.)
-3. **Distil the improved behaviour back into a cheap policy.** (AlphaZero, ExIt.)
-
-The neural-network scale is what does not transfer. Our "policy" is the shape set with its knobs and gate. Each of the three steps has a shape-level version (§9).
+**Literature that scores only damage and kills therefore transfers partly.**
+- SMAC's default reward is positive-only: damage dealt + 10 per kill + 200 per win, with reward scaling on ([environment source](https://raw.githubusercontent.com/oxwhirl/smac/master/smac/env/starcraft2/starcraft2.py)).
+- It has no direct penalty for allied damage or deaths, although own casualties still affect outcomes indirectly.
 
 ---
 
-## 2. StarCraft micro-combat research (closest to our problem)
+## 1. Landmark game AIs: what they did, and what might transfer at 10^5–10^6 fights
 
-### 2.1 Combat simulators and scripts
-- **SparCraft** ([GitHub, MIT](https://github.com/davechurchill/SparCraft); also inside [UAlbertaBot](https://github.com/davechurchill/ualbertabot)) is a StarCraft combat simulator built for search. Its abstractions: no collisions, no fog, constant speed ([Lelis 2017](https://www.ijcai.org/proceedings/2017/522)).
-- **Standard scripts**, as defined in [Churchill, Lin & Synnaeve 2017](https://ojs.aaai.org/index.php/AIIDE/article/view/12962):
-  - **c** AttackClosest;
-  - **w** AttackWeakest;
-  - **k Kiter:** "moves away from an enemy unit while reloading";
-  - **h** HoldPosition;
-  - **n NoOverkill:** no unit is assigned to an enemy that is already receiving lethal damage.
-- **NOKAV** (no-overkill attack-value): attack value = damage per frame ÷ hit points.
-- **LTD2 evaluation** ([Churchill, Saffidine & Buro, AIIDE 2012](https://ojs.aaai.org/index.php/AIIDE/article/view/12527)) is a playout's end value. It sums √hp × dpf over living units, so it rewards keeping **many** units alive, not one healthy unit. **[inference]** This is much closer to our series objective than "win".
+**Throughput** [inference from the brief]: about 1,350 fights/min on 10 workers, i.e. about 81,000 fights/hour or about 0.44 core-s per whole 50v50 fight. **Branch cost is not measured** (§7).
 
-### 2.2 Search over scripts (the portfolio family)
+| System | What it did | Transfer candidate for us | What we defer, and why |
+|---|---|---|---|
+| **AlphaGo** ([Nature 2016](https://research.google/pubs/mastering-the-game-of-go-with-deep-neural-networks-and-tree-search/)) | Supervised policy on expert moves (57% prediction per a [secondary summary](https://blog.acolyer.org/2016/09/20/mastering-the-game-of-go-with-deep-neural-networks-and-tree-search/)); self-play RL; value net; MCTS | A teacher-first bootstrap, then improvement by search | Deep nets over raw state |
+| **AlphaZero / KataGo** ([KataGo](https://arxiv.org/abs/1902.10565)) | Self-play + MCTS **from random play, no teacher**; the network learns search visit counts and outcomes. KataGo cut compute about 50× against ELF OpenGo, still about 1.4 GPU-years. | Distilling a search into a cheaper policy ([ExIt](https://arxiv.org/abs/1705.08439)); planning with few simulations ([Gumbel, ICLR 2022](https://iclr.cc/virtual/2022/poster/6418)) | AlphaZero self-play is about 21 M games ([EfficientZero paper](https://arxiv.org/abs/2111.00210)), far beyond our budget |
+| **MuZero** ([arXiv 1911.08265](https://arxiv.org/pdf/1911.08265)) | Learns a dynamics model and plans in it | Nothing now | **Deferred, not dismissed.** We have an engine clone with known semantics (§6). A learned model could trade accuracy for speed, but that is not our current bottleneck. Learned models can misjudge unseen policies ([arXiv 2306.00840](https://arxiv.org/html/2306.00840v3)). |
+| **AlphaStar** ([DeepMind](https://deepmind.google/discover/blog/alphastar-grandmaster-level-in-starcraft-ii-using-multi-agent-reinforcement-learning/)) | Imitation from human replays (beat 84% of players); a league with main agents, main exploiters and league exploiters; **PFSP**: f_hard(x) = (1−x)^p ([arXiv 2408.01072](https://arxiv.org/pdf/2408.01072)); distillation towards human play | Teacher bootstrap; PFSP-style *training* sampling (with a uniform floor, §8); script-level exploiter search as a separate *stress* test | The neural policy and the learning league. Each agent took 44 days on 32 TPUv3 ([secondary](https://gamesbeat.com/deepminds-alphastar-final-beats-99-8-of-human-starcraft-2-players/)). |
+| **OpenAI Five** ([arXiv 1912.06680](https://arxiv.org/abs/1912.06680)) | PPO at scale, about 2 M frames per 2 s for 10 months; about 80/20 current/past-self opponents ([survey](https://arxiv.org/pdf/2111.07631)); "team spirit"; "surgery" | A past-self (hall-of-fame) regression pool; a per-unit against team term in fitness design | PPO scale |
+| **microRTS BC experiment** ([Goodfriend 2024 §4.3](https://arxiv.org/html/2402.08112v1)) | Post-competition experiment, not the winning agent's recipe. RAI-BC copied the scripted Mayari: 71% overall, 44% against Mayari. PPO fine-tuning: 88% overall, 84% against Mayari, but it **regressed** on some map/opponent pairs: TwoBasesBarracks16x16 against POLightRush 100→0; BloodBath against Mayari 40→5. | Copying a scripted teacher can be a cheap **initial baseline**; per-cell paired checks are needed | **Not evidence of a ceiling.** A copy can fall short (features, approximation, distribution shift) or exceed its teacher in some matchups. Aggregate gains can hide cell regressions. |
+| **Programmatic synthesis** ([AAAI 2021](https://ojs.aaai.org/index.php/AAAI/article/view/16114); [2L, IJCAI 2023](https://arxiv.org/abs/2307.04893)) | Local search over DSL programs with chosen reference opponents; beat the two latest microRTS winners in a simulated tournament | Closest in *spirit* to our principle: small readable programs found by search | |
 
-| Method | Mechanism | Reported effect |
+**What we propose to copy** [inference]. The landmarks use different recipes: AlphaZero has no teacher, and AlphaStar's league has no tree search. The workflow we propose combines pieces of them:
+1. copy a teacher's primitive;
+2. improve it by measured comparison, optimisation or search;
+3. distil anything expensive into a named shape.
+
+This is **our proposal**, not a core shared by every landmark.
+
+---
+
+## 2. StarCraft micro-combat research
+
+### 2.1 Simulators, scripts and the LTD2 heuristic
+- **SparCraft** ([GitHub, MIT](https://github.com/davechurchill/SparCraft)) is a StarCraft combat simulator without collisions, fog or acceleration ([Lelis 2017](https://www.ijcai.org/proceedings/2017/522)).
+- **Scripts** ([Churchill, Lin & Synnaeve 2017](https://ojs.aaai.org/index.php/AIIDE/article/view/12962)):
+  - c AttackClosest;
+  - w AttackWeakest;
+  - k Kiter: moves away while reloading;
+  - h Hold;
+  - n NoOverkill.
+- **NOKAV:** no-overkill with attack value dpf/hp.
+- **LTD2** ([Churchill, Saffidine & Buro 2012](https://ojs.aaai.org/index.php/AIIDE/article/view/12527)) sums √hp × dpf over living units. It is a **candidate heuristic** for us, not our series objective, because current HP does not carry over when survivors heal (§5).
+
+### 2.2 Search over scripts
+
+| Method | Mechanism | Reported effect (scoped) |
 |---|---|---|
-| **ABCD** ([Churchill et al. 2012](https://ojs.aaai.org/index.php/AIIDE/article/view/12527)) | Alpha-beta with durative moves; scripts order moves and evaluate playouts | Beats scripts up to 8v8 |
-| **UCTCD**, **PGS** ([Churchill & Buro, CIG 2013](https://experts.mcmaster.ca/scholarly-works/1941877), DOI 10.1109/cig.2013.6633643) | PGS starts every unit on a seed script. It then hill-climbs one unit at a time over the portfolio, scoring each candidate assignment by a playout, and alternates between the two players. | PGS beats alpha-beta and UCT up to 50v50 at 40 ms per decision |
-| **POE**, Portfolio Online Evolution ([Wang et al. AIIDE 2016](https://ojs.aaai.org/index.php/AIIDE/article/view/12862)) | Evolves the unit→script assignment | Beats PGS 0.76–1.00 in Lelis's table |
-| **PGS+** ([Lelis 2017](https://www.ijcai.org/proceedings/2017/522)) | Same search as PGS, but the **evaluation** plays the candidate script for the **first** action only, then NOKAV to the end | Beats PGS 0.72–1.00 and usually beats POE. **Changing only the evaluation turns the search from losing to winning.** The original evaluation assumes a chosen script runs forever, which wrongly scores non-offensive scripts such as Cluster. |
-| **SSS / SSS+**, Stratified Strategy Selection ([IJCAI 2017](https://www.ijcai.org/proceedings/2017/522)) | Partitions units into **types**; all units of a type share a script; searches over types. SSS+ adapts the granularity to the time left. | With more than 16 units: SSS beats PGS 0.90–1.00, POE 0.92–1.00 and PGS+ 0.67–0.92. Example: Zea 8/Dra 8, SSS beats POE 0.92. Up to 56 units per side; 1,000 matches per cell; 40 ms per decision. |
-| **GAB / SAB**, Asymmetric Action Abstraction ([Moraes & Lelis AAAI 2018](https://arxiv.org/abs/1711.08101)) | Most units are restricted to script moves. **A few units** (best: the N with the highest attack value dpf/hp, "AV+") get the **full action set**, searched by alpha-beta. | GAB beats PGS 0.82 (Zea 8/Dra 8) and 0.81 (32 Zea); SAB beats SSS 0.90 (50 Zea); the best N was about 4 |
-| **Puppet Search** ([Barriga, Stanescu & Buro AIIDE 2015](https://ojs.aaai.org/index.php/AIIDE/article/view/12779)) | Scripts expose **choice points**; search sets them | Matches or beats every script it contains |
-| **NaiveMCTS** ([Ontañón AIIDE 2013](https://ojs.aaai.org/index.php/AIIDE/article/view/12681); [JAIR 2017](https://arxiv.org/abs/1710.04805)) | MCTS whose action sampling treats each unit as an arm of a combinatorial bandit | Better than other MCTS variants as the branching factor grows. In microRTS it is a baseline that portfolio methods usually beat. |
-| **FRGS** ([Clark & Fleshner AIIDE 2017](https://ojs.aaai.org/index.php/AIIDE/article/view/12955)) | Small-population GA over script assignments | 200v200 within 40 ms |
+| ABCD ([2012](https://ojs.aaai.org/index.php/AIIDE/article/view/12527)) | Alpha-beta with durations; script move ordering and playouts | Beats scripts up to 8v8 |
+| UCTCD, PGS ([CIG 2013](https://experts.mcmaster.ca/scholarly-works/1941877)) | PGS hill-climbs unit→script assignments, scored by playouts | PGS beats alpha-beta and UCT up to 50v50 at 40 ms (abstract-level record; the PDF returned 404) |
+| POE ([AIIDE 2016](https://ojs.aaai.org/index.php/AIIDE/article/view/12862)) | Evolves script assignments | In Lelis's Table 1, POE beats PGS **0.56–1.00**; the low end is the six-unit mixed case |
+| PGS+ ([Lelis 2017](https://www.ijcai.org/proceedings/2017/0522.pdf)) | Same search; the evaluation plays the candidate for the first action only, then NOKAV | Beats PGS 0.72–1.00. **The evaluation design alone changed the outcomes.** |
+| SSS (fixed type system) | Units of a type share a script; search over types | Strong with mid-size armies. **Fails at the largest mixed case:** Zea14/Dra14/Ling14/Mar14 (56 per side), SSS against POE **0.46** and against PGS+ **0.16**. |
+| SSS+ (adaptive granularity) | Coarsens or refines the type system so a full pass fits the time budget | Same 56-unit case: SSS+ against POE **0.96**, against PGS+ **0.95**, against SSS 0.93 |
+| GAB / SAB ([AAAI 2018](https://arxiv.org/abs/1711.08101)) | A few highest-attack-value units (AV+) get full actions under alpha-beta; the rest are script-restricted | GAB against PGS 0.82 (8 Zealots + 8 Dragoons) and 0.81 (32 Zealots); SAB against SSS 0.90 (50 Zealots). N≈4 was best **in that experiment** |
+| Puppet Search ([2015](https://ojs.aaai.org/index.php/AIIDE/article/view/12779)) | Scripts expose choice points to search | Matches or beats its scripts against 2014 bots |
+| NaiveMCTS ([2013](https://ojs.aaai.org/index.php/AIIDE/article/view/12681)) | Combinatorial-bandit MCTS | Better than other MCTS as branching grows |
 
-**The critical lesson on model accuracy.** [Churchill, Lin & Synnaeve 2017](https://ojs.aaai.org/index.php/AIIDE/article/view/12962) put PGS into real StarCraft and found that "performance of PGS relies heavily on the accuracy of the underlying model":
-- PGS won everything inside SparCraft.
-- It lost in the real engine wherever SparCraft lacked collisions.
-- A 10-ms limit was as good as 40 ms, because model error, not search time, was the bottleneck.
+**Lessons, scoped:**
+- (a) The **evaluation and continuation design** can matter as much as the search algorithm (PGS→PGS+).
+- (b) **Exhausting the time budget breaks fixed granularity** at scale. Adaptive granularity (SSS+) is the design lesson, not "coarse role types always win".
+- (c) None of this proves that a search beats its scripts in our engine; that must be measured.
 
-**[inference]** Our engine clones its own exact state. This removes the main failure mode of the whole portfolio literature. The remaining model errors for us:
-- the enemy's response, which is exact if we roll out the engine's own scripted AI at the drawn tactic and skill;
-- random draws such as dodge rolls, which call for several seeds per playout or common random numbers.
+**PGS in the real StarCraft engine** ([Churchill, Lin & Synnaeve 2017, Table 1](https://ojs.aaai.org/index.php/AIIDE/article/view/12962)):
+- In simulation, against AttackClosest, PGS won all battles in the four test scenarios.
+- In the real engine it scored 0.72 (d2z3), 0.88 (m5v5), **0.22 (m15v16)** and 0.94 (w15v17, flying units, no collisions).
+- The authors attribute the m15v16 loss to SparCraft not modelling collisions, and conclude that PGS "relies heavily on the accuracy of the underlying model".
+- Raising the search time from 10 ms to 40 ms did not significantly help.
 
-### 2.3 Learned multi-agent RL on SMAC
+### 2.3 Learned multi-agent RL (SMAC and others)
+- **QMIX test win % against the built-in AI** at "level 7, very difficult" ([SMAC](https://ar5iv.labs.arxiv.org/html/1902.04043)): MMM2 69, 27m_vs_30m 49, corridor 1, 6h_vs_8z 3.
+- **MAPPO** matches QMIX on most maps with up to 10 M steps ([Yu et al.](https://arxiv.org/abs/2103.01955)).
+- **Emergent behaviours:**
+  - kiting in 3s_vs_5z;
+  - BiCNet's "hit and run", "cover attack" and "focus fire without overkill" ([Peng et al.](https://arxiv.org/abs/1703.10069));
+  - a SMAClite baiter that backs out at low HP ([SMAClite](https://arxiv.org/abs/2305.05566)).
+- **Open-loop caveat:** many SMAC scenarios can be won by open-loop, timestep-only policies ([SMACv2](https://arxiv.org/abs/2212.07489)).
+- **The splash mini-game** ([SC2LE Table 1](https://ar5iv.labs.arxiv.org/html/1708.04782)): DefeatZerglingsAndBanelings scores (scores, not win rates) were best agent mean **96** against human means **729 / 727**, after 600 M training steps.
+  - **Scope:** this is one historical benchmark. It does not isolate splash avoidance as the cause, or compare modern methods.
+  - **[inference]** Our preference for copying react first rests on our own data, not on this benchmark: we have zero reaction, and a teacher rule exists in the engine.
 
-| Item | What the sources show |
-|---|---|
-| **Setting** | [SMAC](https://ar5iv.labs.arxiv.org/html/1902.04043) scenarios are against the built-in AI at "level 7, very difficult" |
-| **Reward** | Damage dealt + 10 per kill + 200 per win; own losses ignored by default |
-| **QMIX test win %** | MMM2 69, 27m_vs_30m 49, corridor 1, 6h_vs_8z 3 ([SMAC appendix](https://ar5iv.labs.arxiv.org/html/1902.04043)) |
-| **Cost** | 8–16 GPU-hours per run |
-| **MAPPO** | Matches or beats QMIX on most maps, up to 10 M steps ([Yu et al.](https://arxiv.org/abs/2103.01955); [BAIR summary](https://bair.berkeley.edu/blog/2021/07/14/mappo)) |
-| **Emergent behaviours** | Kiting in 3s_vs_5z (needs recurrent nets). BiCNet reports "move without collision", "hit and run", "cover attack" and "focus fire without overkill" ([Peng et al. 2017](https://arxiv.org/abs/1703.10069)). A baiting stalker that "backs out" at low HP in SMAClite 2s_vs_1sc ([SMAClite](https://arxiv.org/abs/2305.05566)). |
-| **Caveat** | [SMACv2](https://arxiv.org/abs/2212.07489) shows SMAC policies can largely replay fixed open-loop sequences |
-| **Splash in SC2LE** | In DefeatZerglingsAndBanelings (marines must spread against splash), the best end-to-end agent scored **96** against **727–729** for humans ([SC2LE](https://ar5iv.labs.arxiv.org/html/1708.04782)). **Splash avoidance is among the hardest things for end-to-end RL to discover.** |
-
-**[inference]** SMAC-class RL on a laptop CPU, at 50v50 with three roles, would mean a GPU-week-class effort for one doctrine. It would produce a black-box policy, against the project principle. Not recommended as a controller. A learned **selector over shapes** is the acceptable form (§3, §9).
-
-### 2.4 Which give the most win-efficiency per compute, and which preserve units
-- **Most gain per compute** (all in SparCraft at 40 ms per decision): type-level portfolio search (**SSS**) and asymmetric abstraction (**GAB/SAB**). The cheapest single large gain in the table is **PGS → PGS+**, which changes only the evaluation.
-- **Explicit unit preservation:**
-  - LTD2 rewards survivors (√hp sums).
-  - The ECSLBot fitness counts units remaining.
-  - [Liu et al.'s multi-objective follow-up](https://arxiv.org/abs/1803.10316) keeps a Pareto front of damage done against damage received.
-  - Churchill 2017 observed that the **kiting script "cycl[es] low hit point units to the back lines, taking them out of range… causing units to stay alive much longer"** in simulation: emergent damaged-unit rotation, exactly the owner's rule. In the real engine it failed only because of collisions. **[inference]** Our engine models collisions, so a rotation shape can be judged directly by the clone.
-- **No paper reports a "series with carried losses" metric.** Our yardstick is stricter than any benchmark found.
+### 2.4 Unit preservation in the literature
+- **Explicitly loss-aware objectives:**
+  - LTD2 rewards many surviving units;
+  - ECSLBot's Eq. 3 counts units remaining;
+  - multi-objective micro keeps a Pareto front of damage done against damage received ([Liu et al. 2018](https://arxiv.org/abs/1803.10316)).
+- **Damaged units cycling back:** Churchill 2017 observed in *simulation* that kiting cycled low-HP units "to the back lines, taking them out of range of the enemy… causing units to stay alive much longer". That is **out of enemy range**, which does not show they stayed in their own useful range.
+  - **[inference]** It is a rotation *candidate*. It must pass the owner's participation rule (§4.3).
+- **No paper found reports a series-with-carried-losses measure.**
 
 ---
 
-## 3. Learning from a teacher, per role ("copy best practice")
+## 3. Learning from a teacher per role, and what our interface must carry first
+
+### 3.1 Methods
 
 | Technique | Mechanism | Evidence | Fit for us |
 |---|---|---|---|
-| **Behaviour cloning (BC)** | Fit the policy to the teacher's (state, action) pairs on the teacher's own trajectories | RAI-BC copied the scripted Mayari: 71% overall, but only 44% against Mayari itself ([Goodfriend 2024](https://arxiv.org/html/2402.08112v1)). AlphaStar SL beat 84% of players. | Spec §9 "shadow actions, teacher in control" **is** BC data collection |
-| **DAgger** ([Ross, Gordon & Bagnell 2011](https://arxiv.org/abs/1011.0686)) | Run **our** policy, have the teacher label the states we actually reach, aggregate, refit. This fixes compounding error (quadratic in horizon for BC, linear for DAgger). | Standard result. A 2026 Gin Rummy study found DAgger did *not* help there and blamed causal confusion ([arXiv 2607.06854](https://arxiv.org/html/2607.06854v1)). | Spec §9 "reverse comparison: our shape in control, teacher shadowed" **is** the DAgger state distribution. Keep it. |
-| **AggreVaTe** ([Ross & Bagnell 2014](https://arxiv.org/abs/1406.5979)) | Imitation weighted by **cost-to-go**: what a deviation from the teacher costs, not merely whether it happened | Regret guarantee, stronger than error reduction | **[inference] Our clone makes this exact.** At a disagreement state, clone the state, play the teacher's action and ours for k seconds, and compare LTD2 or own-loss. This turns "agreement %" into "cost of disagreement", which is what matters. |
-| **Comparison training / inverse scoring** ([Tesauro 1988](https://papers.neurips.cc/paper/1988/hash/a8baa56554f96369ab93e4f3bb068c22-Abstract.html); MMTO, [Hoki & Kaneko JAIR 2014](https://jair.org/index.php/jair/article/view/10871)) | Learn a **scoring function** so the teacher's choice outranks the alternatives. MMTO tuned more than 40 M shogi evaluation weights to match expert moves and won the 2013 World Computer Shogi Championship. | Strong in chess, shogi, backgammon | **Directly fits our shapes.** Gun focus is already a scoring function (splash value V). Fit V's weights so the teacher's chosen target ranks first: a ranking loss over candidate targets per shot. Same for posts and escort points. |
-| **Privileged teacher → student** ([Learning by Cheating, Chen et al. CoRL 2019](https://arxiv.org/abs/1912.12294)) | A teacher with privileged information labels; the student lacks it | 100% success on the original CARLA benchmark | **[inference]** A search teacher that uses clone rollouts is "privileged"; a shape that cannot afford rollouts is the student. |
-| **Search → policy distillation** ([ExIt](https://arxiv.org/abs/1705.08439); [Barriga et al. 2017](https://arxiv.org/abs/1709.03480)) | A CNN learns, from **Puppet Search labels**, which **script** to run. Leftover time goes to tactical search for units near the enemy. | Higher win rates in microRTS than either component alone | **Distil a search teacher into a shape selector.** Barriga's net picks a script, which is our gate's job. |
-| **Credit per unit, "split the action and compare"** ([difference rewards](https://arxiv.org/pdf/2012.11258); [COMA](https://microsoft.com/en-us/research/wp-content/uploads/2017/03/Whiteson.pdf)) | D_i = G(z) − G(z with unit i's action replaced by a default) | The counterfactual "requires … a resettable simulator", which we have | **[inference]** Measure each shape's per-unit contribution exactly: replace one role's (or one unit's) shape action by the teacher's or by a null action in a clone, and replay. |
+| **BC** | Fit to the teacher's (state, action) pairs on the teacher's trajectories | RAI-BC (§1); AlphaStar SL | Spec §9 "teacher in control, ours shadowed" supplies BC data |
+| **DAgger** ([2011](https://arxiv.org/abs/1011.0686)) | Run our policy; the teacher labels visited states; **aggregate and refit**; iterate | Fixes BC's compounding error. A 2026 Gin Rummy study found it did not help there (causal confusion; [arXiv 2607.06854](https://arxiv.org/html/2607.06854v1)). | Spec §9's reverse arm is DAgger-style *collection*; DAgger also needs aggregation and refitting |
+| **AggreVaTe** ([2014](https://arxiv.org/abs/1406.5979)) | Imitation weighted by the teacher's cost-to-go | Regret guarantee under its assumptions | **[inference]** At disagreement states, clone rollouts give an **estimated, continuation-dependent disagreement cost**: neither exact cost-to-go nor an AggreVaTe guarantee (§6) |
+| **Comparison training / MMTO** ([Tesauro 1988](https://papers.neurips.cc/paper/1988/hash/a8baa56554f96369ab93e4f3bb068c22-Abstract.html); [Hoki & Kaneko 2014](https://jair.org/index.php/jair/article/view/10871)) | Fit a scoring function so the teacher's choice outranks alternatives | MMTO tuned more than 40 M shogi weights from expert moves | Fits shapes whose decision is a choice among candidates: gun target score V, post, escort point |
+| **Privileged teacher → student** ([Learning by Cheating](https://arxiv.org/abs/1912.12294)) | A teacher sees privileged state; the student does not | CARLA results | Basis for separating **oracle** and **deployable** teacher arms (§6) |
+| **Search → policy** ([ExIt](https://arxiv.org/abs/1705.08439); [Barriga et al. 2017](https://arxiv.org/abs/1709.03480)) | A network learns from Puppet Search labels which script to run | Beat either component alone in microRTS | Later: a selector over *named volley patterns or movement policies* (§9, item 5). It must not replace the battery oscillator's local coupling. |
+| **Per-unit counterfactuals** ([difference rewards](https://arxiv.org/pdf/2012.11258); [COMA](https://microsoft.com/en-us/research/wp-content/uploads/2017/03/Whiteson.pdf)) | D_i = G(z) − G(z with i's action replaced by a default) | The counterfactual "requires … a resettable simulator" | Clone replays give **sampled** counterfactuals under a stated continuation; not unbiased in expectation without coupled random streams (§6) |
 
-**Tool note.** [`imitation`](https://github.com/HumanCompatibleAI/imitation) (MIT, v1.0.1, Jan 2025) implements BC, DAgger, GAIL and AIRL for Gymnasium/PyTorch policies. Our "policies" are parameterised C++ shapes, so the library adds little. DAgger and BC on 11–50 shape parameters, or a small selector, are a few dozen lines with scikit-learn or LightGBM. **[inference]**
+### 3.2 Interface prerequisites (spec Amendment 5, adopted here)
 
-**Critical point on the owner's idea ("ideal runs").** The Astelia elite AI is a *good* teacher, not an *ideal* one.
-- BC caps near the teacher: RAI-BC won only 44% against its own teacher.
-- So "copy the elite" lifts each primitive *up to* the elite's level, which is still very valuable where we are far below it (shell dodging: 0 against about 2,940 per fight).
-- **Going beyond** needs the T-search arm. That is the AlphaZero/ExIt step: search over shapes from the teacher's states, with the clone as the judge.
+These are integration prerequisites, not "a few extra fitted weights".
 
----
+**Today's gap:**
+- The delivered `controller.h` Observation has time, arena size and unit records only: no incoming shells, shots or slow fields, and no enemy cast preparation.
+- `UnitDecision` has movement, target and failure fields only: no aim point, no hold/release, no volley membership.
+- The scripted side's `dodge.cpp` reads shell and cast state.
+- So **target/goal agreement alone cannot copy react, aim or volleys.**
 
-## 4. Search over shapes with the forward model
-
-**Evidence that it beats fixed scripts:**
-- PGS "outperformed all of its individual portfolio scripts" even in the inaccurate-model case ([Churchill et al. 2017](https://ojs.aaai.org/index.php/AIIDE/article/view/12962)).
-- Puppet Search "matches or outperforms all of the individual scripts" ([AIIDE 2015](https://ojs.aaai.org/index.php/AIIDE/article/view/12779)).
-- SSS reached 0.80–1.00 against the previous best searches with more than 16 units ([Lelis 2017](https://www.ijcai.org/proceedings/2017/522)).
-- Online Evolution in Hero Academy "outperform[s]… by a large margin" ([Justesen et al. 2016](https://pure.itu.dk/en/publications/online-evolution-for-multi-action-adversarial-games/)).
-- RHEA evolves action sequences, plays the first, then re-plans ([Gaina et al. 2020](https://arxiv.org/abs/2003.12331)).
-
-**Design for us [inference, sized from the brief's throughput]:**
-- **Types:** our three roles, optionally split by HP band (healthy/damaged), giving 3–6 types. This is SSS's type system; Lelis's best coarse system already used melee/ranged.
-- **Portfolio per type:** 3–5 shapes. Examples:
-  - guns: current focus V, NOKAV-style AV focus, hold volley for synchrony, relocate;
-  - ranged: escort screen, kite, focus AV;
-  - melee: v6 law, screen guns, rotate damaged.
-- **Asymmetric layer (GAB):** the about 4 highest-value units, likely our guns, get a richer candidate set, such as target × aim point × move vector.
-- **Evaluation (PGS+ style):**
-  - play the candidate assignment for one decision interval, then a **fixed default** (our current shapes) to a horizon of about 5–10 s;
-  - score by an own-loss-weighted LTD2;
-  - roll the enemy with its real tactic and skill;
-  - use 2–3 seeds or common random numbers.
-- **Cost:** 6 types × 4 shapes is about 24 hill-climb playouts per pass. At 5–10 s each (150–300 ticks, about 0.02–0.1 core-s), one decision costs about 0.5–2.5 core-s. Re-planned every 1 s of game time, a 90-s fight takes about 45–225 core-s, roughly 100–500× a normal fight.
-- **Throughput:** about 3–15 search-teacher fights per minute on 10 cores. That suits **offline ideal runs and label generation**, not mass tuning. Online use in the series is affordable only if restricted to guns (as the elite already does) or distilled (§3).
-
----
-
-## 5. Quality-diversity repertoires and per-doctrine switching
-
-- **MAP-Elites** ([Mouret & Clune 2015](https://arxiv.org/abs/1504.04909)) keeps the best solution per cell of a behaviour grid.
-  - **CMA-ME** ([Fontaine et al. GECCO 2020](https://arxiv.org/abs/1912.02400)) fuses CMA-ES with MAP-Elites. On Hearthstone strategies it found higher quality *and* diversity than either CMA-ES or MAP-Elites.
-  - **Repertoire + fast online selection:** [Cully et al. Nature 2015](https://arxiv.org/abs/1407.3501) (Intelligent Trial and Error) adapts from the map in a few trials.
-  - **In strategy games:** MAP-Elites over portfolio-MCTS parameters gave distinct play styles in Tribes without losing strength ([Perez-Liebana et al. 2021](https://arxiv.org/abs/2104.08641)).
-- **Strategy selection against an opponent:**
-  - Treating the choice of bot/strategy as a metagame, and deviating from Nash to exploit weaker opponents, paid off ([Tavares et al. AIIDE 2016](https://ojs.aaai.org/index.php/AIIDE/article/view/12857)).
-  - The MegaBot bot uses ε-greedy selection over bots per opponent ([survey](https://www.cs.mun.ca/~dchurchill/starcraftaicomp/2017/survey/MegaBot_Survey.txt)).
-  - Opponent strategy classifiers from early observations: [Weber & Mateas CIG 2009](https://dblp1.uni-trier.de/rec/conf/cig/WeberM09.html).
-- **[inference] For us:**
-  - Our 19 doctrines are known and fixed, so a doctrine classifier from the first few seconds (formation shape, approach speed, whether raiders go for guns) is easy to label in the engine.
-  - **But a repertoire only pays if the best knobs differ by doctrine.** Test that first with a cheap cross-table: tune per doctrine, then cross-evaluate. If the off-diagonal loss is small, one robust setting suffices and QD adds complexity for nothing.
-  - Behaviour descriptors that fit our goals: gun standoff distance, and ranged screen depth against aggression.
+**Required, in new files only, with pinned interfaces unchanged:**
+1. **An observation adapter** with immutable, legally observable projectile and cast data:
+   - in-flight shells: position, predicted landing point and time, radius;
+   - aimed shots and slow fields;
+   - enemy guns winding up: target and release time.
+   It carries the same information `dodge.cpp` uses, no more.
+2. **A command adapter** with an explicit aim point, hold/release intent per gun, and volley membership.
+3. **Arbitration rules:**
+   - react takes temporary precedence over movement;
+   - it is defined which attacks stay possible during a dodge;
+   - units return to their useful position after a dodge;
+   - reacting affects volley readiness;
+   - copied rotation is constrained to the participation rule (§4.3).
+4. **Recording**, next to targets and goals:
+   - primitive activation;
+   - candidate and executed intent;
+   - arbitration winner and reason;
+   - readiness;
+   - volley membership.
+5. **Shadow state:**
+   - the teacher's and the student's state and RNG are separate, initialised and advanced consistently on the same decision state;
+   - the spec's byte-identical shadow-on/off check still applies;
+   - students are trained on their own available features, including sparse late-army states.
+6. **Battery-level labels for volleys.** Per-unit marginal agreement can copy individually plausible shots that fail jointly. A volley is labelled as one joint decision: members, release times, aim points.
 
 ---
 
-## 6. Hard-opponent weighting without full RL
+## 4. Primitives in the owner's order: react → V1 timing → V2 geometry
 
-- **PFSP** ([AlphaStar](https://deepmind.google/discover/blog/alphastar-grandmaster-level-in-starcraft-ii-using-multi-agent-reinforcement-learning/); definition in [arXiv 2408.01072](https://arxiv.org/pdf/2408.01072)): sample opponent B with probability ∝ f(P[A beats B]).
-  - f_hard(x) = (1−x)^p focuses on the hardest;
-  - f_var(x) = x(1−x) on the even matches.
-  - **Our version:** weight the 76 (doctrine × skill) cells by our current loss rate, or better by expected own losses, when composing each CMA-ES evaluation batch.
-- **The past-self mix** (OpenAI Five's 80/20) and the **hall of fame** ([Rosin & Belew 1997](https://www.cs.utexas.edu/users/nn/downloads/papers/lubberts.coevolution-gecco01.pdf), as summarised). In RTS micro, co-evolution with fitness sharing, shared sampling and a hall of fame produced better micro faster ([Liu et al. 2018](https://arxiv.org/abs/1803.10314)). For us: keep the earlier champions (v6, v7…) as regression opponents in *self-play drills*, not only the scripted pool.
-- **Curriculum by learning potential:** [Prioritized Level Replay](https://arxiv.org/abs/2010.03934) samples training "levels" by estimated learning potential and gets an emergent easy-to-hard curriculum. Our "levels" are (doctrine, skill, seed) cells.
-- **Noise handling, needed because one fight is a noisy sample:**
-  - UH-CMA-ES ([Hansen et al. IEEE TEC 2009](https://cs.utexas.edu/~shivaram/readings/b2hd-HansenNGK2009.html)) re-evaluates candidates and raises the step size when rank changes are noise-driven;
-  - racing (irace, [López-Ibáñez et al. 2016](https://iridia.ulb.ac.be/irace/)) drops configurations early once they are statistically worse across instances;
-  - paired seeds, i.e. common random numbers across candidates **[inference]**.
-- **Main-exploiter analogue without RL [inference]:** run CMA-ES on the *enemy's* tactic parameters (formation spacing, raid timing, skill flags) to minimise our series streak. Then add the found settings to the evaluation pool as "exploiter cells". This copies AlphaStar's exploiters at script level. **Risk:** it can find enemy settings outside the owner's 19 doctrines. Report them separately; never mix them into the yardstick.
+### 4.1 React (first labelled change)
+- **Teacher:** `dodgeShells: "smart"`, `castDodge`, `dodgeShots` (spec §10). Copy the rule as a named shape on the observation adapter.
+- **Measure:**
+  - hit probability per shell landing within splash of our units;
+  - damage and deaths avoided;
+  - time and firepower cost of dodging (attack opportunities lost);
+  - interaction with volley readiness.
+- **Do not maximise event counts.** The stored ~2,940.5 per fight are positive dodge-goal *decision records* (`observer_v1.cpp`), not distinct shells avoided. The gap is our **zero** reaction.
+
+### 4.2 V1 timing: the battery oscillator
+- **The comparison:**
+  - (a) the copied central sync (`holdFire: {sync}`, `waves`);
+  - (b) the RRG shape: local coupled phases in Kuramoto or pulse-coupled form, where a firing gun advances its neighbours' phases ([Mirollo & Strogatz](https://www.iasi.cnr.it/~vbonifaci/semcn/Mirollo1990.pdf) prove almost all initial conditions synchronise for identical integrate-and-fire oscillators).
+- **The owner's difference:** timing emerges from local coupling, not a central scheduler.
+- **Report:**
+  - spread of launch times **and** of landing times (time on target is about landing within seconds of a planned impact; [TOT](https://en.wikipedia.org/wiki/Time_on_target));
+  - effects of cooldown, windup and flight time;
+  - hold-induced firepower loss;
+  - enemy dodge success against our shells;
+  - hits per shell and shells per kill;
+  - behaviour with **only one or two guns left**.
+- **[inference] Caveats:**
+  - Different ranges give different flight times, so synchronising launches does not synchronise impacts; the phase should target landing time.
+  - Kuramoto's coherence threshold is an N→∞ result and "breaks down" for small N ([Kuramoto model](https://en.wikipedia.org/wiki/Kuramoto_model)), so few-gun behaviour must be specified and tested, not assumed.
+  - Synchrony alone does not prevent escape; that is V2's job.
+
+### 4.3 V2 geometry, and the supporting changes
+- **V2 geometry:**
+  - copy the existing teacher planner first: `artyFire: plan` (trap, sweep, net, wall), `artyHerd`, `artyRollout` (2-s look-ahead), `artyModel: exact`;
+  - then compare and simplify.
+  - Score **joint** volley coverage, enemy units caught per volley, damage per volley and delayed herd/trap patterns. Do not optimise guns independently.
+  - **Closest landmark:** playout-scored choice among script patterns (Puppet Search choice points; PGS-style playouts). **[inference]** The elite's planner already is such a search over volley patterns. Use it before commissioning any general SSS/GAB teacher.
+- **Rotation (supporting, measured separately):**
+  - `saveWounded` (`decisions.cpp:6–12`) backs towards home with **no own-range constraint**;
+  - `decideUnit` returns as soon as it activates (line 44), before attack-release selection;
+  - **Eligibility:**
+    - HP at or below the threshold;
+    - more than 2 enemies;
+    - our survivors fewer than 4× theirs;
+    - wounded fewer than half our survivors;
+    - the nearest enemy within its range + 1.5 × speed + 60.
+  - **Movement:** it steps 60 px directly away from that enemy, plus 20% of the way towards the home edge.
+  - A copied rotation must therefore be constrained to the owner's rule: stay within own useful range, never leave. Check time out of own range per activation.
+- **Aim (`lead`):** a supporting change, measured separately, on the command adapter's aim point.
 
 ---
 
-## 7. Tools (checked 2026-10-08 on PyPI and GitHub)
+## 5. Evaluation: the series is primary; any proxy is defined and validated first
 
-| Tool | Version, license | Fit | Verdict |
+### 5.1 Primary and secondary measures (spec §5)
+- **Primary:** the streak S ∈ {0,…,10} under the rules in §0. The first fight not won by elimination ends the run.
+- **Secondary, always reported with denominators:**
+  - the probability of reaching each fight k;
+  - the completion (10/10) frequency;
+  - survivors by role (melee, ranged, guns) before each fight;
+  - losses on **won** and **failed** fights, reported separately;
+  - per-tactic losses.
+- **Never optimise only losses conditional on wins.**
+- The spec's 10 development series per arm are descriptive evidence, not a precise population estimate. More sampling needs its own projection and authorization.
+
+### 5.2 A candidate proxy for search and tuning [inference, unvalidated]
+An unconstrained weighted sum of deaths and damage can favour passive survival or short failed fights. So the proxy targets the expected streak contribution directly.
+
+- **Branch end:** a branch from state s runs for horizon H under a stated continuation policy (§6). It then continues stepping until every shell launched before H has landed, so damage already committed counts.
+- **Terminal rules inside a branch:**
+  - enemy eliminated → fight won; survivors are the living own units (to be healed);
+  - own army eliminated, or the fight clock reaching the timeout → the series ends here (value 0 for later fights);
+  - otherwise non-terminal: apply the tail estimate.
+- **Tail estimate:**
+  - P̂_win(s_H) is the estimated probability this fight is won by elimination.
+  - m̂ = (m̂_melee, m̂_ranged, m̂_gun) is the expected surviving count per role. Each living unit counts with a survival probability q(hp fraction, threat), and threat includes incoming shells.
+  - Survivors heal, so a surviving unit counts fully whatever its HP. Low HP matters only through q.
+- **Series continuation value:**
+  - V(m, k) is the expected number of further fights won, starting at fight k+1 with role composition m. It is fitted from series data as a lookup or monotone regression on role counts, with V(·, 10) = 0.
+  - This is the **role-capability** term: losing the last effective gun can cost more than losing another escort.
+- **Proxy:** J(s_H) = P̂_win · (1 + V(m̂, k)). Its unit is expected fights won, so it needs no free weights.
+  - Before V is fitted, LTD2 (√hp·dpf) may stand in for P̂_win as a labelled heuristic.
+- **Validation before any use:** on paired candidates, J's ranking must predict the paired series outcomes above a pre-registered agreement threshold (§7 stop row). Otherwise J is not used.
+
+### 5.3 Normalization ledger
+
+| Quantity | Level | Units | Normalization |
 |---|---|---|---|
-| [pycma](https://github.com/CMA-ES/pycma) | 4.5.0 (2026-09-13), BSD-3 | Pure Python, CPU. Has noise handling (`cma.NoiseHandler`, i.e. UH-CMA-ES) and a parallel ask/tell API. | **Keep.** Turn on noise handling and paired seeds. |
-| [pyribs](https://pyribs.org) | 0.12.0 (2026-07-22), MIT | Python CPU QD: CMA-ME, CMA-MAE, MAP-Elites; ask/tell like pycma | **Adopt if** the per-doctrine cross-table (§5) shows real specialisation |
-| [Optuna](https://optuna.org) | 5.0.0 (2026-09-07), MIT | Mixed categorical/continuous; pruners (successive halving/Hyperband); good for *choosing which shapes* (categorical) plus knobs | **Adopt for discrete shape-portfolio selection** and early stopping of bad configurations. CMA-ES stays for continuous knobs. |
-| [Nevergrad](https://github.com/facebookresearch/nevergrad) | 1.0.12 (2025-04), MIT | Many noisy-optimisation algorithms, portfolio optimisers | Optional cross-check; overlaps pycma and Optuna |
-| [irace](https://iridia.ulb.ac.be/irace/) | CRAN 4.x, GPL ≥2 | R; racing over instances | Optional. The idea (racing) is easy to do in Python; the R dependency is not worth it. |
-| scikit-learn 1.9.1, LightGBM 4.7.0 | BSD / MIT | Small selectors, doctrine classifier, ranking loss (LGBMRanker) for comparison training | **Adopt** for BC/DAgger of the *selector* and for fitting scoring weights |
-| [evosax](https://github.com/RobertTLange/evosax) 0.3.1, [EvoTorch](https://github.com/nnaisense/evotorch) 0.6.1, [QDax](https://github.com/adaptive-intelligent-robotics/QDax) 0.5.0 | Apache-2 / MIT | JAX/GPU-oriented; their speed advantage needs a JAX-native environment | **Skip.** The cost is in our C++ fights, not the optimiser. |
-| [neat-python](https://github.com/CodeReclaimers/neat-python) 2.0.0 | BSD-3 | Evolves network topologies | **Skip:** opaque networks conflict with the shapes principle |
-| [PettingZoo](https://pettingzoo.farama.org) 1.27, [RLlib](https://docs.ray.io) (ray 2.59), [CleanRL](https://github.com/vwxyzjn/cleanrl) (PyPI 1.2.0 is from 2023; use from source), MAPPO ([on-policy repo](https://github.com/marlbenchmark/on-policy)) | MIT / Apache | Need a Python env wrapper around the C++ engine; GPU-hungry for 100-agent PPO | **Defer.** Only if a learned *shape selector* via RL becomes the bottleneck after BC/ExIt. |
-| [imitation](https://github.com/HumanCompatibleAI/imitation) 1.0.1, [d3rlpy](https://github.com/takuseno/d3rlpy) 2.8.1 | MIT | Neural-policy imitation and offline RL | **Skip:** our policy is not a torch net; BC/DAgger on shapes is simpler by hand |
-| [OpenSpiel](https://github.com/google-deepmind/open_spiel) 2.0.2 | Apache-2 | MCTS, PSRO, alpha-zero for turn-based games | **Read, do not adopt.** Simultaneous 100-unit real-time play does not fit its game API without heavy abstraction. PSRO is the formal version of our opponent-pool idea. |
-| [SparCraft](https://github.com/davechurchill/SparCraft) / [UAlbertaBot](https://github.com/davechurchill/ualbertabot) (MIT), [microRTS](https://github.com/Farama-Foundation/MicroRTS) (GPL-3.0) | C++ / Java | Reference implementations of PGS, SSS-type portfolios, NOKAV, Kiter, LTD2 | **Read for the algorithms** (port PGS+/SSS logic into our C++). Do not vendor microRTS code (GPL). |
+| Streak S | series | fights | none (0–10) |
+| Survivors by role m | between fights | unit counts | raw counts per role; healed to full |
+| P̂_win, q | inside a fight | probability | bounded [0,1] |
+| V(m, k) | series | expected fights | fitted on the same rules; no per-level hand tuning |
+| Hit probability per shell, landing-time spread | per volley | probability; game-seconds | per shell; per volley |
+| Branch cost | engine | core-seconds | per decision, per fight (§7) |
 
 ---
 
-## 8. Low-loss victory techniques: size of effect
+## 6. The engine clone: what it is and is not, and the information boundary
 
-| Technique | Evidence and size | Note for us |
+### 6.1 Branch semantics
+Read from the delivered sources:
+- `World::copyAuthorityFrom` (`world.cpp:274–279`) sets `thinkTeams=0`, and clones are `branch` worlds.
+- In a branch, `artilleryVolley` takes a **lighter** candidate path (`artillery.cpp:61`, `light = w.branch && !(thinkTeams & team)`).
+- `lookahead` (`search.cpp:26`) and the director (`director.cpp:48`) are **suppressed** unless thinking is enabled for that team.
+- **So a copied world does not reproduce the scripted opponent's own future search behaviour by default.**
+
+**Before any search pilot:**
+- document branch thinking, enemy continuation, timestep, and all controller memory and RNG semantics;
+- test **continuation parity**: same actions and settings, main against branch trajectory;
+- or label the reduced-policy model and measure its **ranking error** against full-thinking continuations.
+
+### 6.2 Randomness
+- Copying RNG state scores **one realised future**, not an expectation.
+- Use several sampled continuations with **coupled random streams** across alternatives. Identical initial seeds alone do not align action-dependent draws.
+- Call results "estimated disagreement cost" and "continuation-dependent counterfactuals". Never call them exact, ideal or globally optimal.
+
+### 6.3 Information boundary: two separate teacher arms
+- **The oracle arm** may use the true enemy tactic and skill, hidden state and clone rollouts. It is used for diagnosis and as an upper reference only.
+- **The deployable arm** uses only declared public fields:
+  - unit records and the projectile/cast data of §3.2;
+  - **no** tactic ID, RNG state or enemy internals.
+- **Students learn from observations,** or from a declared, measured *inference* of doctrine, never from hidden IDs.
+
+---
+
+## 7. Cost: formula, uncertainty, and a proposed (not run) pilot
+
+**Per decision:**
+
+C_dec = P × K × S × (c_copy + (H/Δt) × c_tick) + c_select + c_record
+
+where:
+- P = hill-climb passes;
+- K = candidate evaluations per pass (types × shapes);
+- S = stochastic continuations;
+- H = horizon in game-s, at Δt = 1/30 s per tick;
+- c_tick = the per-tick branch cost, which depends on unit count, projectiles and the branch-thinking setting.
+
+**Per fight:** C_fight = (T_fight / Δ_dec) × C_dec + c_base_fight.
+
+**With revision 1's assumptions [inference, arithmetic only]:**
+- P = 1, K = 24, S = 2–3, H × c_tick ≈ 0.02–0.1 core-s;
+- C_dec ≈ **0.96–7.2 core-s**, re-planned every Δ_dec = 1 s;
+- a 90-s fight costs ≈ **86–648 core-s**;
+- ideal 10-core throughput ≈ **0.9–7 teacher fights/min**.
+
+**This excludes:**
+- extra passes;
+- the GAB layer;
+- state-copy cost;
+- **nested enemy search** if branch thinking is enabled, which multiplies c_tick;
+- recording;
+- the counterfactual replays at disagreement states.
+
+The whole-fight average (0.44 core-s per fight, about 0.16 ms per tick) understates dense early states.
+
+**Proposed branch-cost pilot** (owner authorization required; not run):
+- **States:** about 20 each of early-dense, mid, late-sparse and projectile-heavy states, from stored fights.
+- **Measure:**
+  - CPU and wall time;
+  - c_copy and c_tick with branch thinking off and on;
+  - controller, teacher and recording time;
+  - peak memory.
+- **Sweep:** small K, S and P values.
+- **Output:**
+  - a cost table;
+  - ranking stability (does S = 2 against S = 3 change the chosen assignment?);
+  - a per-label and total budget.
+- **Projection:** reported before the run (decision 0031).
+- **Until it is measured,** prefer the directly copied react and the existing gun-only teacher planner. Cache labels, and screen disagreements cheaply (target/goal/intent mismatch) before any counterfactual rollout.
+
+**Stop rows:**
+
+| Yes/no | Action | Role |
 |---|---|---|
-| **Concentration of force** | Lanchester's square law: aimed-fire strength ∝ N², so early kills compound ([Stanescu et al. AIIDE 2015](https://ojs.aaai.org/index.php/AIIDE/article/view/12780) fit Lanchester models to StarCraft battles; [explainer](https://win-vector.com/2010/09/17/lanchesters-law-why-small-advantages-swell-in-starcraft/)) | Why focus fire and kill speed matter more than spreading damage |
-| **Focus fire with overkill avoidance** | 15v16 marines, 1,000 battles ([Usunier et al. ICLR 2017](https://ar5iv.labs.arxiv.org/html/1609.02993)): attack-weakest **0.10**; with no-overkill **0.68**; attack-closest **0.81**; learned ZO **0.79**. In 15v17 wraiths: 0.02 / 0.12 / 0.20 / 0.49. | Naive focus fire **collapses** at scale because of overkill and crowding. No-overkill is necessary but not sufficient; the best rule is scenario-dependent, which argues for search or selection over a portfolio. |
-| **Target priority by threat/HP** | NOKAV (attack value = dpf/hp) is the default in the strongest SparCraft searches. Furtak & Buro derive optimal kill orderings for 1-vs-n attrition games ([AIIDE 2010](https://ojs.aaai.org/index.php/AIIDE/article/view/12410)). | Our gun focus by splash value V is a different, splash-aware score. Compare V against AV+splash in the clone. |
-| **Kiting / hit-and-run** | Learned in SMAC 3s_vs_5z; influence-map kiting ([Uriarte & Ontañón AIIDE 2012](https://ojs.aaai.org/index.php/AIIDE/article/view/12544)); ECSLBot beat Nova and UAlbertaBot on "kiting efficiency" | Relevant for ranged (reach 280) against melee (reach 64) |
-| **Damaged-unit rotation** | The kiting script cycled low-HP units to the back and units "stay[ed] alive much longer" ([Churchill et al. 2017](https://ojs.aaai.org/index.php/AIIDE/article/view/12962)); ECSLBot "knowing when to flee to survive"; SMAClite baiter backs out at low HP | Copy the engine's `saveWounded` (backs away, stays near), per spec §10. This respects the owner's never-leave rule. |
-| **Splash management and spreading** | End-to-end RL scored 96 against 727–729 for humans on the marine-vs-baneling mini-game ([SC2LE](https://ar5iv.labs.arxiv.org/html/1708.04782)). Potential-field unit control is an established hand-built alternative ([Hagelbäck](https://ojs.aaai.org/index.php/AIIDE/article/view/12365)). Whether his fields include a splash-specific friendly-repulsion term was **not verified**. | **Hand-built spacing and react shapes beat waiting for learning to find them.** Our data: artillery causes 74% of our deaths, and we make 0 shell dodges against the enemy's about 2,940 (spec §10). This is the single largest known gap. |
-| **Damage dealt against received, as a trade-off** | Multi-objective evolution gives a Pareto front of micro ([Liu et al. 2018](https://arxiv.org/abs/1803.10316)) | Tune on own losses explicitly, not on win rate |
+| Does branch continuation fail parity with the main trajectory under identical actions and settings? | Label the reduced model; measure ranking error before using it as a teacher | implementer |
+| Does the measured cost per teacher fight exceed the owner-set budget? | Restrict search to guns, or drop T-search and keep copied primitives | drafter |
+| Does any student input include an oracle field (tactic ID, RNG, enemy internals)? | Remove it; use observation-only or a declared, measured inference | implementer |
+| Does a copied rotation leave a unit outside its own useful range beyond the declared tolerance? | Reject or constrain the copy | implementer |
+| Does the proxy J fail to predict paired series outcomes at the pre-registered threshold? | Do not use J; redefine it | drafter |
+| Does any projected run exceed 1 h before 22:00? | Ask the owner | Claude |
+| Would any change edit a pinned or frozen file? | Stop; use a new file | implementer |
 
 ---
 
-## 9. Ranked plan: top 5 to adopt
+## 8. Seeds, curriculum and the owner's series kept apart
 
-The ranking weighs expected effect on the **series** (losses carry over) against laptop cost and risk. Each item keeps shapes as the unit of behaviour; learning and search only fit, select or compose them.
+### 8.1 Separate seed sets
+| Set | Purpose |
+|---|---|
+| **D** | The owner's development series; untouched, comparison only |
+| **T** | Tuning |
+| **L** | Teacher label generation |
+| **R** | Fresh reporting |
 
-### 1. Copy the teacher, per role and per primitive: shadow actions, DAgger and cost-weighted disagreement
-- **What:**
-  - Run the spec §9 teacher arm (T-elite) in the per-role drills, with our shapes shadowed. This is BC data.
-  - Run the reverse arm (ours in control, teacher shadowed). This is DAgger data.
-  - At each large disagreement, use the **clone** to replay the teacher's action against ours for a few seconds. Record the loss difference: the AggreVaTe-style cost of disagreement.
-  - Fit each shape's own scoring weights so the teacher's choice ranks first (comparison training / MMTO style), weighted by that cost.
-  - **First primitive:** react (shell dodge), then rotate (`saveWounded`), then aim (`lead`), as in spec §10.
-- **Copies:** AlphaStar's and AlphaGo's supervised stage, plus DAgger, AggreVaTe and Tesauro/MMTO comparison training.
-- **Expected gain and why:** Biggest where we are furthest below the teacher, and the data name it: artillery causes 74% of our deaths, with 0 dodges against about 2,940. Copying gets us **up to** elite level per primitive (RAI-BC precedent), not beyond.
-- **Cost:** shadowing costs about one extra controller evaluation per tick, so drills run at near full speed. Fitting is seconds to minutes with scikit-learn or LightGBM.
-- **Risk:**
-  - "Agreement %" can reward copying irrelevant habits. Weight by the clone-measured cost.
-  - Elite-level is a ceiling.
-  - The Gin Rummy study's DAgger failure (causal confusion) is a warning: imitate actions conditioned on the features the shape actually uses.
-- **Shapes kept:** Yes. The output is either refitted weights of an existing shape, or a new named shape that cites its source (the engine rule).
+- Pair the enemy tactic sequence and placements across arms from a **separate draw stream**, so controller RNG consumption cannot change later draws.
+- Late fights have survivor compositions that ordinary full-army drills never see. Include reduced-survivor states in L and T.
 
-### 2. A search teacher over shapes (T-search): SSS/PGS+ with an asymmetric gun layer, using the engine clone
-- **What:**
-  - Offline "ideal runs": at each decision point, search over the per-type (role × HP band) shape assignment by hill-climbing (SSS).
-  - Give the about 4 highest-value units (likely guns) a wider candidate set (GAB).
-  - Evaluate with PGS+ playouts: candidate for one interval, then current shapes, a 5–10 s horizon, an own-loss-weighted LTD2, the enemy's real tactic and skill, and 2–3 seeds.
-- **Copies:** Churchill & Buro PGS, Lelis SSS, Moraes & Lelis GAB, and the search half of AlphaGo/AlphaZero.
-- **Expected gain and why:** In SparCraft, type-level and asymmetric search beat the previous best searches at 0.8–1.0. Searches always beat their own fixed scripts. The literature's main failure, model inaccuracy, is absent for us because we clone the real engine.
-- **Cost [inference]:** about 100–500× a normal fight, so a few teacher fights per minute on 10 cores. That suits drills and label generation, not tuning loops.
-- **Risk:**
-  - Horizon and evaluation choices dominate: the PGS→PGS+ evaluation change alone flipped the outcomes.
-  - Myopic playouts can undervalue rotation and spacing, whose payoff is late. Test the horizon.
-  - A search that exploits engine details can hit a cap set by its RNG.
-- **Shapes kept:** Yes. Search only *assigns* shapes; it never emits raw actions, except the small asymmetric layer, which should itself be a parameterised "aim/move" shape.
-- **Answers the owner's idea:** This is the "ideal run" beyond the elite. Its per-role good-work numbers become the reference line, and spec §9's split-and-compare runs against it.
-
-### 3. Distil the search teacher into a cheap shape selector (expert iteration)
-- **What:** Use T-search's per-state choices as labels. Fit a small, readable selector, such as a decision tree or gradient-boosted trees on a handful of features (role, HP fraction, nearest-threat distance, incoming shells, enemy doctrine), that picks the shape. It replaces or conditions the oscillator gate. Iterate: the next search starts from the distilled selector as its default.
-- **Copies:** AlphaZero / ExIt policy distillation; Barriga et al. 2017 (CNN picks scripts from Puppet Search labels).
-- **Expected gain and why:** Most of the search's benefit at a normal fight's cost, which makes it usable in the 10-fight series and in CMA-ES loops.
-- **Cost:** one batch of T-search drills, then minutes to fit.
-- **Risk:** The selector's state distribution shifts once it controls play. Use DAgger rounds with T-search as the labeller (as in item 1). The gate must remain interpretable.
-- **Shapes kept:** Yes. The selector chooses among named shapes, and its rules are inspectable.
-
-### 4. Series-aware, noise-aware tuning against a weighted opponent pool (PFSP-lite)
-- **What:**
-  - The CMA-ES fitness is own losses per fight plus a series-streak simulator (dead stay dead), not single-fight win rate.
-  - Sample (doctrine, skill) cells by PFSP f_hard on current expected losses.
-  - Keep earlier champions (hall of fame) as regression checks.
-  - Use paired seeds and pycma's noise handling.
-  - Use racing (Optuna pruners) to drop bad candidates early.
-  - Optionally add a script-level "exploiter" search over enemy parameters, reported separately from the owner's yardstick.
-- **Copies:** AlphaStar PFSP and exploiters; the OpenAI Five past-self mix; Rosin & Belew's hall of fame; UH-CMA-ES; irace racing; ECSLBot's units-remaining fitness.
-- **Expected gain and why:**
-  - Aligns the optimiser with the yardstick. Today's 80%-win AI that loses 41/50 shows the current objective rewards costly wins.
-  - Focusing on hard cells removes the weakest link, and one loss ends a streak.
-- **Cost:** the same fight budget as today, with better spent samples.
-- **Risk:**
-  - Over-weighting hard cells can trade away easy-cell margins. Keep an f_var floor.
-  - Exploiter cells must not leak into the yardstick.
-- **Shapes kept:** Yes; this only changes how knobs are scored and sampled.
-
-### 5. Doctrine-aware repertoire, only if specialisation is real (MAP-Elites/CMA-ME and an early doctrine classifier)
-- **What:**
-  1. First run the cross-table (tune per doctrine group, cross-evaluate).
-  2. If off-diagonal losses are material, build a pyribs CMA-ME archive over 2 behaviour descriptors (e.g. gun standoff, screen depth).
-  3. Add a classifier from the first seconds of a fight that picks the archive cell.
-- **Copies:** Cully et al. repertoire adaptation; Tavares metagame strategy selection; Weber & Mateas strategy prediction; the diversity aim of the AlphaStar league.
-- **Expected gain and why:** Specialised responses to raids on artillery against lines and boxes. The literature shows exploiting a known opponent beats one Nash-like policy (Tavares).
-- **Cost:** QD needs roughly 5–20× a single CMA-ES run's evaluations [inference]; the classifier is cheap.
-- **Risk:** Wasted effort if one robust setting already sits near the per-doctrine optima. A misclassification early in a fight can be worse than a robust default, so include a fallback cell.
-- **Shapes kept:** Yes. Each archive cell is a knob vector for the same shapes.
-
-### What does NOT transfer, and why
-- **End-to-end deep RL controllers** (AlphaStar, OpenAI Five, MAPPO/QMIX at 50v50):
-  - compute in GPU-weeks to TPU-months;
-  - black-box policies against the project principle;
-  - SMAC's default reward ignores own losses;
-  - splash avoidance is exactly where end-to-end RL lagged humans by about 7× (SC2LE).
-- **MuZero-style learned models:** we have the exact simulator; a learned model only adds error.
-- **Human-replay imitation:** there are no human replays. The engine's elite AI and a search teacher replace them.
-- **Leagues of learning agents:** our opponent is a fixed scripted pool. Only the *sampling* idea (PFSP) and *script-level* exploiters transfer.
-- **NEAT and neural QD controllers:** they produce opaque behaviour.
-- **SparCraft-tuned scripts as-is:** SparCraft has no collisions, no splash-dodging and no lobbed shells. Copy the algorithms (PGS+, SSS, NOKAV, LTD2), not the tuned behaviours.
-
-### Order of work suggested for B8 [inference]
-1. Item 1 with the **react** primitive (already the spec's first change).
-2. Item 4's fitness change, so later tuning measures the right thing.
-3. Item 2 as a drill-only teacher.
-4. Item 3 to make it cheap.
-5. Item 5 only after the cross-table.
-
-Each step is one labelled change, measured in the drill and in the series, per spec §9–§10.
+### 8.2 Curriculum and pool weighting (training only)
+- PFSP over 19 doctrines × skills, prior selves (hall of fame; [Liu et al. 2018](https://arxiv.org/abs/1803.10314) found co-evolution with fitness sharing, shared sampling and a hall of fame produced better micro faster) and exploiter cells can be **training or stress distributions**. They are not the yardstick.
+- **Sampling:** use p(cell) = ε·uniform + (1−ε)·PFSP with ε > 0.
+  - f_var(x) = x(1−x) is zero at both extremes, so a "floor" from f_var alone does not guarantee coverage.
+  - f_hard needs a bounded x, e.g. the estimated probability that this cell ends a series, or role-normalised own-loss fraction in [0,1]. It also needs uncertainty, e.g. a Beta posterior.
+- [Prioritized Level Replay](https://arxiv.org/abs/2010.03934) is the analogue for choosing training cells.
+- **Noise handling:** UH-CMA-ES ([Hansen et al. 2009](https://cs.utexas.edu/~shivaram/readings/b2hd-HansenNGK2009.html)) via `cma.NoiseHandler`; paired seeds; racing ([irace](https://iridia.ulb.ac.be/irace/)).
+- **Accounting:** series multiply the fights per candidate, and noise handling adds re-evaluations. Every budget states fights per candidate × candidates × series.
+- **Report separately:**
+  - the uniform regular-skill series (the owner's objective);
+  - weighted-training results;
+  - skill, self-play and exploiter stress results.
+- **Stress tests, labelled and separate** (they never change the official pool):
+  - held-out doctrine families and parameter perturbations;
+  - placement and orientation variation;
+  - react × volley interaction ablations;
+  - reduced survivor compositions.
 
 ---
 
-## Source list (primary links used above)
-- AlphaGo: https://research.google/pubs/mastering-the-game-of-go-with-deep-neural-networks-and-tree-search/
-- AlphaStar: https://deepmind.google/discover/blog/alphastar-grandmaster-level-in-starcraft-ii-using-multi-agent-reinforcement-learning/ ; AlphaStar Unplugged https://arxiv.org/abs/2308.03526 ; PFSP definition https://arxiv.org/pdf/2408.01072
-- OpenAI Five: https://arxiv.org/abs/1912.06680
-- KataGo: https://arxiv.org/abs/1902.10565 ; ExIt: https://arxiv.org/abs/1705.08439 ; Gumbel: https://iclr.cc/virtual/2022/poster/6418 ; MuZero: https://arxiv.org/pdf/1911.08265 ; EfficientZero: https://arxiv.org/abs/2111.00210
-- PGS: https://experts.mcmaster.ca/scholarly-works/1941877 ; PGS in StarCraft: https://ojs.aaai.org/index.php/AIIDE/article/view/12962 ; ABCD/LTD2: https://ojs.aaai.org/index.php/AIIDE/article/view/12527
-- SSS: https://www.ijcai.org/proceedings/2017/522 ; GAB/SAB: https://arxiv.org/abs/1711.08101 ; POE: https://ojs.aaai.org/index.php/AIIDE/article/view/12862 ; Puppet Search: https://ojs.aaai.org/index.php/AIIDE/article/view/12779 ; FRGS: https://ojs.aaai.org/index.php/AIIDE/article/view/12955
-- NaiveMCTS: https://ojs.aaai.org/index.php/AIIDE/article/view/12681 , https://arxiv.org/abs/1710.04805
-- Strategic learning + tactical search: https://arxiv.org/abs/1709.03480
-- RAISocketAI: https://arxiv.org/html/2402.08112v1 ; programmatic strategies: https://ojs.aaai.org/index.php/AAAI/article/view/16114 ; 2L: https://arxiv.org/abs/2307.04893
-- SMAC: https://ar5iv.labs.arxiv.org/html/1902.04043 ; SMAC code: https://github.com/oxwhirl/smac ; MAPPO: https://arxiv.org/abs/2103.01955 ; BiCNet: https://arxiv.org/abs/1703.10069 ; SMAClite: https://arxiv.org/abs/2305.05566 ; SMACv2: https://arxiv.org/abs/2212.07489 ; SC2LE: https://ar5iv.labs.arxiv.org/html/1708.04782
-- Usunier et al. (focus fire table): https://ar5iv.labs.arxiv.org/html/1609.02993
-- ECSLBot: https://www.cse.unr.edu/~simingl/papers/publish/CIG2014IMPFMicro.pdf ; multi-objective micro: https://arxiv.org/abs/1803.10316 ; co-evolved micro: https://arxiv.org/abs/1803.10314
-- Kiting with influence maps: https://ojs.aaai.org/index.php/AIIDE/article/view/12544 ; Lanchester in StarCraft: https://ojs.aaai.org/index.php/AIIDE/article/view/12780 ; attrition games: https://ojs.aaai.org/index.php/AIIDE/article/view/12410 ; potential fields: https://ojs.aaai.org/index.php/AIIDE/article/view/12365
-- DAgger: https://arxiv.org/abs/1011.0686 ; AggreVaTe: https://arxiv.org/abs/1406.5979 ; Learning by Cheating: https://arxiv.org/abs/1912.12294 ; comparison training: https://papers.neurips.cc/paper/1988/hash/a8baa56554f96369ab93e4f3bb068c22-Abstract.html ; MMTO: https://jair.org/index.php/jair/article/view/10871 ; difference rewards: https://arxiv.org/pdf/2012.11258 ; Gin Rummy lightweight-agent study: https://arxiv.org/html/2607.06854v1
-- MAP-Elites: https://arxiv.org/abs/1504.04909 ; CMA-ME: https://arxiv.org/abs/1912.02400 ; Cully et al.: https://arxiv.org/abs/1407.3501 ; Tribes play styles: https://arxiv.org/abs/2104.08641 ; Rock-Paper-StarCraft: https://ojs.aaai.org/index.php/AIIDE/article/view/12857 ; Weber & Mateas: https://dblp1.uni-trier.de/rec/conf/cig/WeberM09.html
-- PLR: https://arxiv.org/abs/2010.03934 ; UH-CMA-ES: https://cs.utexas.edu/~shivaram/readings/b2hd-HansenNGK2009.html ; irace: https://iridia.ulb.ac.be/irace/ ; RHEA: https://arxiv.org/abs/2003.12331 ; Online Evolution: https://pure.itu.dk/en/publications/online-evolution-for-multi-action-adversarial-games/
-- Tools: https://github.com/CMA-ES/pycma , https://pyribs.org , https://optuna.org , https://github.com/facebookresearch/nevergrad , https://github.com/HumanCompatibleAI/imitation , https://github.com/google-deepmind/open_spiel , https://github.com/davechurchill/SparCraft , https://github.com/Farama-Foundation/MicroRTS
+## 9. Ranked plan (owner's order kept; each item one labelled change, owner-approved, on fresh seeds)
 
-**Verification limits:**
-- These figures come from secondary summaries:
-  - AlphaStar's compute (44 days, 32 TPUs) and the f_hard exponent;
-  - OpenAI Five's 80/20 split;
-  - the AlphaGo 57% figure.
-- The PGS 2013 PDF could not be fetched (404); its claims are taken from the abstract-level record and from the SSS and 2017 PGS papers, which were read in full text.
-- No project code was run.
+**Step 0 (prerequisite, not a gain item):**
+1. Define the participation rule check (§4.3), the evaluation (§5) and the interface adapters (§3.2).
+2. Establish the T-elite baseline and the shadow logging (spec §9).
+3. Fix the seed sets (§8).
+
+Evaluation design precedes every comparison. It does not displace the owner's primitive order.
+
+### 1. React: copy the engine's reaction rule as a named shape
+- **Closest landmark:** the supervised-copy stage (AlphaStar/AlphaGo SL) in its simplest form: adopt the teacher's rule (spec §9.3 option 2), not learn it.
+- **Expected gain:** the largest known gap.
+  - Enemy artillery causes 74.1% of our deaths and 77% of damage taken (86% of our ranged deaths, 63% of melee).
+  - We make zero reactions.
+  - Measured by hit probability and losses avoided (§4.1).
+- **Cost:** low once the observation adapter exists.
+- **Risk:**
+  - dodging costs firepower and breaks volley readiness;
+  - the arbitration rules (§3.2) must be explicit.
+- **Shapes kept:** Yes, a named react primitive citing `dodgeShells`/`castDodge`.
+
+### 2. V1 timing: the battery oscillator against copied central sync
+- **Closest landmark:** time-on-target doctrine; Mirollo–Strogatz pulse coupling; Kuramoto; the engine's `holdFire.sync`.
+- **The difference:** local coupling, not a scheduler.
+- **Expected gain:** shells landing together leave less room to dodge one shell into another's footprint. Our 184.4 launches per fight against the enemy's 104.9, for similar kills, suggest single-gun fire is inefficient.
+- **Risk:** hold-induced firepower loss; few-gun degeneracy; launch ≠ landing synchrony (§4.2).
+- **Shapes kept:** Yes; the oscillator *is* the shape's synchrony.
+
+### 3. V2 geometry: copy the teacher's volley planner, then simplify
+- **Closest landmark:** playout-scored pattern choice (Puppet Search choice points; PGS playouts). The engine's `artyFire: plan` with `artyRollout` already does this for guns.
+- **Expected gain:** coverage, herding and trapping beat independent aiming against dodging units (owner, spec §11).
+- **Cost:** that of the existing gun-only planner. Its branch cost needs the §7 pilot if extended.
+- **Risk:** joint labels are required (§3.2 item 6); the branch semantics of §6.1 apply to its rollouts.
+- **Shapes kept:** Yes; named volley patterns.
+
+### 4. Supporting changes, each measured separately
+- **Changes:**
+  - participation-constrained rotation (§4.3);
+  - aim (`lead`);
+  - series-aware tuning of the existing knobs, using the §5 proxy only after validation, §8 sampling and noise handling.
+- **Closest landmarks:** ECSLBot-style fitness, PFSP and hall of fame, UH-CMA-ES.
+- **Risk:** rotation leaving the fight; proxy mis-ranking. Both are covered by stop rows.
+
+### 5. Conditional: budgeted adaptive portfolio search and distillation
+- **Only if** the §7 pilot fits the budget **and** a paired comparison shows a measured low-loss series benefit over items 1–4.
+- **Design:**
+  - SSS+-style adaptive granularity, not fixed role types (§2.2 failure row);
+  - a PGS+-style first-action-then-default evaluation, with its rankings checked against longer continuations;
+  - a deployable teacher arm only for labels.
+- **Distillation:** into a small, depth-limited, readable selector over **named volley patterns or movement policies**, with a native (C++) deployment path. It must not replace the oscillator's local coupling.
+- **Closest landmarks:** PGS/SSS+/GAB, ExIt, Barriga et al.
+
+**Deferred (last):** a doctrine repertoire (pyribs CMA-ME plus an early doctrine classifier).
+- It is considered only if a cross-table shows per-doctrine gains over one robust policy that exceed misclassification and latency costs.
+- Sources: [Cully et al.](https://arxiv.org/abs/1407.3501); [CMA-ME](https://arxiv.org/abs/1912.02400); [Tavares et al.](https://ojs.aaai.org/index.php/AIIDE/article/view/12857).
+
+### The owner's "ideal runs", restated
+- **T-elite** is the in-engine reference line per role and primitive: deployable where it uses only public data.
+- **T-search** is an optional, budgeted improvement candidate, oracle or deployable as declared. It is **not** an ideal or optimal player (§6).
+- **"Split and compare"** = shadow intents per primitive (§3.2), reported as agreement **and** estimated disagreement cost.
+- **"Repeat"** = one labelled copy per primitive, re-measured in drills and the series.
+
+### What does not transfer now, and why (scoped)
+- **End-to-end deep-RL controllers:**
+  - compute;
+  - opaque policies, against the project principle;
+  - default reward shaping that does not penalise own losses directly.
+- **Learned dynamics models:** deferred while the clone is available and branch cost is unmeasured; not universally dismissed.
+- **Leagues of learning agents:** our opponent is a fixed scripted pool. Only sampling ideas and script-level stress tests transfer, kept apart from the yardstick.
+- **SparCraft-tuned behaviours:** no collisions, splash or lobbed shells. Copy the algorithms and lessons, not the tuned scripts.
+
+---
+
+## 10. Low-loss techniques: evidence and scope
+
+| Technique | Evidence (scoped) | Note for us |
+|---|---|---|
+| Concentration of force | Lanchester models fitted to StarCraft battles ([Stanescu et al. 2015](https://ojs.aaai.org/index.php/AIIDE/article/view/12780)) | Kill speed compounds |
+| Focus fire and overkill | Against the built-in AI, 1,000 battles ([Usunier et al. §7.2, Table 1](https://ar5iv.labs.arxiv.org/html/1609.02993)): m15v16 weakest-closest (wc) **.10**, no-overkill-no-change (nok_nc) **.68**, closest (c) **.81**, learned ZO **.79**; w15v17 .02/.12/.20/.49. The paper warns that "if our units die without doing their expected damage… 'no overkill' can be detrimental (as it is implemented)". | Naive weakest-first focus collapsed at scale. No-overkill helped against weakest-first but was not best; the best rule is scenario-dependent. |
+| Target priority (dpf/hp) | NOKAV in SparCraft searches; optimal 1-vs-n orderings exist ([Furtak & Buro 2010](https://ojs.aaai.org/index.php/AIIDE/article/view/12410)) | Compare our splash value V with AV-plus-splash on clone branches |
+| Kiting | SMAC 3s_vs_5z; [Uriarte & Ontañón 2012](https://ojs.aaai.org/index.php/AIIDE/article/view/12544); ECSLBot | Ranged (reach 280) against melee (reach 64) |
+| Damaged-unit rotation | Churchill 2017 (simulation, out of *enemy* range); ECSLBot "knowing when to flee" | Candidate only, under the participation rule (§4.3) |
+| Splash: react, timing, geometry | SC2LE splash mini-game gap (scores, one benchmark); potential-field unit control ([Hagelbäck](https://ojs.aaai.org/index.php/AIIDE/article/view/12365); splash-specific repulsion not verified) | Owner's order §4: react, then V1, then V2 |
+| Damage dealt against received | Pareto micro ([Liu et al. 2018](https://arxiv.org/abs/1803.10316)) | Report both. The series proxy (§5.2) folds them into expected fights won. |
+
+---
+
+## 11. Tools (checked 2026-10-08; one license and link per tool)
+
+**Policy:** keep pycma now. Add any other dependency only on a measured need from items 1–5.
+
+| Tool | Version, license | Verdict |
+|---|---|---|
+| [pycma](https://pypi.org/project/cma/) | 4.5.0 (2026-09-13), BSD-3-Clause | **Keep;** use `NoiseHandler` and paired seeds |
+| [pyribs](https://pypi.org/project/ribs/) | 0.12.0 (2026-07-22), MIT | Only for the deferred repertoire |
+| [Optuna](https://pypi.org/project/optuna/) | 5.0.0 (2026-09-07), MIT | Optional for categorical choices and pruning, if a need is measured |
+| [Nevergrad](https://pypi.org/project/nevergrad/) | 1.0.12 (2025-04-23), MIT | Optional cross-check |
+| [irace](https://raw.githubusercontent.com/MLopez-Ibanez/irace/master/DESCRIPTION) | upstream dev 4.5.0.9000, GPL (≥ 2); current CRAN release **not verified** | Use the racing idea in Python; skip the R dependency |
+| [scikit-learn](https://pypi.org/project/scikit-learn/) | 1.9.1, BSD-3-Clause | Small selectors and ranking fits, **with explicit depth/size limits and a native export path** |
+| [LightGBM](https://pypi.org/project/lightgbm/) | 4.7.0, MIT | As above; boosted trees are readable only with strict limits |
+| [evosax](https://pypi.org/project/evosax/) | 0.3.1, Apache-2.0 (JAX) | Skip: the cost is C++ fights, not the optimiser |
+| [EvoTorch](https://docs.evotorch.ai/latest/) | 0.6.1, Apache-2.0 (**PyTorch**) | Skip, same reason |
+| [QDax](https://pypi.org/project/qdax/) | 0.5.0, MIT (JAX) | Skip |
+| [neat-python](https://pypi.org/project/neat-python/) | 2.0.0, BSD-3 | Skip: opaque networks |
+| [PettingZoo](https://pypi.org/project/pettingzoo/) | 1.27.0, MIT | Defer |
+| [Ray/RLlib](https://pypi.org/project/ray/) | 2.59.0, Apache-2.0 | Defer |
+| [CleanRL](https://pypi.org/project/cleanrl/) | 1.2.0 (2023-05-22), MIT | Defer |
+| [imitation](https://pypi.org/project/imitation/) | 1.0.1, MIT | Skip: our policies are not torch nets |
+| [d3rlpy](https://pypi.org/project/d3rlpy/) | 2.8.1, MIT | Skip, same reason |
+| [OpenSpiel](https://openspiel.readthedocs.io/en/latest/api_reference.html) | 2.0.2, Apache-2.0 | **Supports simultaneous joint actions** (`apply_actions`, `is_simultaneous_node`). Deferred because the action-abstraction and wrapper cost is high, not because it lacks simultaneous moves. |
+| [SparCraft](https://github.com/davechurchill/SparCraft) / [UAlbertaBot](https://github.com/davechurchill/ualbertabot) | MIT | Read the algorithms (PGS+, SSS, NOKAV, LTD2) |
+| [microRTS](https://github.com/Farama-Foundation/MicroRTS) | GPL-3.0 | Read only; do not vendor |
+
+---
+
+## 12. Self-audit (revision 2): each recheck finding, the fix and its cause
+
+| Finding | Fix in this revision | Cause in revision 1 |
+|---|---|---|
+| **F1 (High):** owner sequence and battery oscillator | Scope extended to spec §§9–12. §0 separates the superseded commit/escape gate from the battery oscillator. §4 and §9 follow react → V1 → V2 with the teacher volley planner before any general search. V1 metrics include landing-time spread, hold loss and few-gun behaviour. The selector may choose named patterns only, never replacing local coupling. | I read Amendments 2–3 but did not re-read the spec for Amendment 4. I carried the old "gate" role into the plan. |
+| **F2 (High):** observation/action interface; saveWounded | §3.2 adopts Amendment 5: adapters, arbitration, recording, separate shadow state, battery-level labels. DAgger is described as collection + aggregation + refit. §4.3 records saveWounded's lack of an own-range limit, its early return and its eligibility cap, and constrains rotation to the participation rule. | I assumed target/goal agreement could carry react, aim and volley copying, without reading `controller.h`. I trusted the teacher rule's name ("backs away, still near"). |
+| **F3 (High):** series primary; explicit evaluator | §5: streak primary with exact terminal rules (any fight not won by elimination ends the run); secondary measures with denominators; a candidate proxy J = P̂_win·(1+V(m̂,k)) with shells-in-flight resolution, healed-survivor and role-capability terms, and terminal rules; a validation gate and a normalization ledger. LTD2 is labelled a heuristic. | I compressed "losses carry over" into "the streak measures cumulative losses". I named "own-loss-weighted LTD2" without defining it. |
+| **F4 (High):** clone semantics and information boundary | §6: branch thinking off by default (`thinkTeams=0`; light volley path; lookahead and director suppressed), verified in the sources; a parity or ranking-error requirement; coupled random streams; oracle against deployable arms; no hidden IDs for students. "Exact" and "ideal" removed. | I equated cloning world state with an exact teacher, without reading the branch code. |
+| **F5 (Medium):** cost | §7: full formula with all factors; corrected arithmetic (0.96–7.2 core-s per decision; 86–648 core-s per fight; 0.9–7 fights/min); listed exclusions; a proposed, not-run pilot; stop rows with action and role. | Revision 1 omitted the continuation factor S, which it had itself proposed, and stated feasibility from whole-fight throughput. |
+| **F6 (Medium):** SSS and SSS+ | §2.2 separates SSS and SSS+ and adds the 56-unit failure row (0.46 / 0.16 against 0.96 / 0.95). POE against PGS corrected to 0.56–1.00. PGS-in-StarCraft results given per scenario. "Searches always beat their scripts" removed. Rows re-checked against the fetched IJCAI PDF text. | I summarised ranges from the larger scenarios and skipped the last table block and the small-army rows. |
+| **F7 (Medium):** curriculum against the yardstick | §8: seed sets D/T/L/R; paired draw streams; an ε-uniform mixture (f_var is zero at the extremes); bounded f_hard input with uncertainty; separate reporting; stress tests kept outside the official pool. | I treated the 76 skill × doctrine cells as the yardstick. I reused one pool for tuning, labels and reporting. |
+| **F8 (Medium):** ceilings and universal claims | RAI-BC is described as a baseline, with per-map regressions (re-verified: 100→0, 40→5). The SC2LE result is scoped (scores, 600 M steps, one benchmark). The kiting quote is scoped to enemy range. AlphaZero is described as teacher-free. MuZero is deferred, not dismissed. The three-step loop is called our proposal. The Usunier caveat is quoted. ECSLBot's scope is corrected (Vultures, Dragoon mention, Eq. 4). The SMAC reward description is corrected. Killers denominators are stated (41.8 over all fights, 40.7 wins-only; about 2,940 are decision records). | Interpretation ran ahead of the sources. I generalised single experiments into rules. |
+| **N1 (Low):** tools | EvoTorch is PyTorch (re-verified); OpenSpiel supports simultaneous moves (re-verified); one license per tool; irace version from upstream with CRAN marked unverified; tree selectors need depth limits and a native path; extra dependencies only on a measured need. | One shared license cell; I assumed JAX for EvoTorch and turn-based for OpenSpiel without checking. |
+
+**Re-verified for this revision (WebFetch or fetched-PDF text):**
+- Goodfriend per-map regressions;
+- SSS Table 1 rows;
+- Churchill 2017 Table 1 and the 10/40 ms note;
+- SC2LE: 600 M steps, scores;
+- the Usunier caveat and that results are against the built-in AI;
+- ECSLBot Eq. 3/4 and the Dragoon mention;
+- OpenSpiel simultaneous API;
+- EvoTorch on PyTorch;
+- irace DESCRIPTION;
+- SMACv2 open-loop claim;
+- Mirollo–Strogatz, the Kuramoto model and TOT definitions;
+- engine branch semantics and saveWounded, read in `evidence/tactical_composition_demo/astelia_cpp/src/native/`.
+
+**Still from secondary summaries:** AlphaStar compute, the f_hard exponent, OpenAI Five's 80/20 split, AlphaGo's 57%, and the PGS 2013 abstract-level claim (the PDF returned 404).
+
+**This revision should get the owner's verbatim recheck again** (AGENTS.md), preferably by Codex, before B8 acts on it.
