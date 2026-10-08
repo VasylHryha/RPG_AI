@@ -309,3 +309,19 @@ mechanism execution/entropy allocated. REPORT_STAGE1.md and STAGE1_GUIDE.md
 carry measured baselines, preserved failed-conversion diagnosis and Claude's
 process/resource-gated handoff commands. This append is unstaged, preserves the
 pre-existing plan changes and is excluded from any slice-only commit. .git read-only.
+
+**B12 units-and-leader stage1b design (Codex, 2026-10-08):**
+Owner-requested DESIGN ONLY delivery under decision0035. Read AGENTS.md,
+0034/0035, network design, original/v2 contracts, the requested source files,
+committed BC/mechanism receipts, both Claude rechecks, R5 and RRG CURRENT.
+Draft: evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/DESIGN_UNITS_AND_LEADER.md.
+Separate Codex design reviewer received the owner request verbatim:
+> Recheck what you did please, check if it is the best we can do, we want 10 out of 10 or above 9 - it's fine to break the things or fully rework. Check for issues, conflicts, gaps.
+Recheck COMPLETE: PASS after drafter fixes R1-R7 (mode-data replay, summary
+projection, dodge residual, complete output-path controls, scaffold context,
+command bounds/support and full-token tie ordering). Reviewer reread all fixes;
+no remaining blocking design findings. Report/disposition:
+docs/reviews/network_units_and_leader_design_recheck_codex.md; self-audit in draft.
+This is a same-family design recheck, not a cross-family acceptance. No code edits, tests,
+Python, fights or heavy jobs; running v2 DAgger and _local/ untouched. No living
+plan/design/spec hash pin and no experimental execution approval inferred.
