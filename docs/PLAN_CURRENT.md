@@ -123,6 +123,7 @@ The full account of 6–7 October is in `docs/reports/SESSION_SUMMARY_2026-10-06
 | B7 | **Shape lab + six-fight series** (owner 2026-10-08: damaged units rotate, never leave; define good work per shape; see each shape alone and combined; series of 6 with survivors healed and a random POOL tactic per fight; target 40/40 then the series). Scorecard `c82ce59`, per-shape replay layers, spec `SHAPE_LAB_SPEC.md` (`ac17d7b`) | **Build DONE** (`ad8539d`; 8 checks and 17 tests PASS). The conservative projection (48.9 h serial) exceeded 1 h; **owner approved: measure, then run with a cap of 3 h** (local cap file + calibration step, Codex RUNNING; Claude executes calibrate/run/report) | Codex, Claude | today |
 | B8 | **Per-role ideal runs and split-and-compare** (owner): teacher arms (Astelia elite, later forward-model search), shadow actions of our shapes on the teacher's states, then copy per role as labelled changes (spec Amendment 2, `81f6104`); research note `docs/research/GAME_AI_BEST_PRACTICE_RESEARCH.md` revision 3 (`0141ca2`): Codex rounds 1–2 CHANGES_REQUIRED, all fixed; **round 3 PASS_WITH_NOTES** (N1 gun-first vs fewer-deaths tie rule, N2 early-terminal horizon bound, N3–N4 cleanup; before any evaluator is built). Impact ranking (spec Amendment 6) queued after the lab run | after B7 build | Claude, Codex | today |
 | B9 | **0g order after V1** (owner-approved spec order react → V1 → V2 kept; owner's R3 recheck `~/Downloads/RRG_0G_LOW_LOSS_STREAK_FINAL_RECHECK_R3_2026-10-08.md` adopted): (0) finish V1 with its declared rule; (0b) true time-on-target cohort witness only if V1 shows launch sync with dispersed landings; (1) **V2 geometry: copy the engine artillery planner** (historical +22% damage per shell, same fire rate, −17% fight time), timing held fixed; (2) ranged engagement floor (dodge keeps precedence); (3) predicted-lethal rotation (counterfactual trigger after dodge; participation rule; never leave); (4) time-to-next-legal-fire kite band; (5) dodge-profile aim; (6) raid intercept only if wolfpack/storm still dominate; (7) look-ahead teacher labelled script/search. History note: 2-gun waits helped and 4-gun waits hurt, so if V1 is negative the next oscillator try is small cohorts. Decisions 0033/0034 apply | V1 RUNNING | Claude, Codex | today |
+| B10 | **The 0g AI is a trained network (owner, 2026-10-08).** Plain NN (N1) and RRG resonator net (N2) in parallel on the same elite-teacher data; stage 1 imitation + DAgger, stage 2 ES on the paired series; the scripts are teachers/data/comparators only. Design `NETWORK_POLICY_DESIGN_0G.md` (`9452fe6`), Codex design review RUNNING; then owner approval → teacher dataset run → training in a separate ML environment (the project lock is frozen) → C++ inference → lab evaluation | review RUNNING | Claude, Codex | today |
 | B6 | S5 registration (W4: CLOSED) | DECIDED: no registration until a development version beats regular; then register with morale as a labelled comparator | Claude drafts | **[OWNER] approves the registered run** |
 
 
@@ -232,3 +233,24 @@ repository-scoped gate; live discovery UNAVAILABLE in sandbox, host CLEAR
 required before fights. No pick/calibration/outcome reading. V1–v4 and adapter
 unchanged. .git read-only: new v5 files uncommitted; inventory DELIVERY.json.
 This tracking append must remain unstaged and is excluded from delivery scope.
+
+
+**B10 v5b outcome-calibration tooling continuation (Codex, 2026-10-08):** DONE
+for the authorized no-fight scope under decision 0033. New
+`evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v5b/` preserves the
+exact v5 admitted binary, declaration, entropy, 220 completed mechanism
+receipts, mechanism summary, K=2/R=infinity pick and Claude mechanism read.
+Bounded read-only profile (120 s, zero fights): 503 completion verifications,
+1,472,008 JSON decodes; outcome plans repeatedly recomputed mechanism data.
+Temporary pinned spec bytes restored to HEAD afterwards. New hash admission
+uses receipt statistics without raw re-decoding; one pick resolution per plan;
+frozen local copies of declared spec/decision 0033. One quick separate Codex
+owner verbatim recheck COMPLETE (`OWNER_RECHECK.md`, same family): F1 fixed
+before tests by blocking inherited mechanism calibrate/run/review before writes;
+disposition in `DISPOSITION.md`. Final focused batch once: 19 PASS in 19.80 s
+(process 20.427 s). Actual recorded-receipt outcome calibration preflight
+1.718 s under 20 s deadline; full control flow with synthetic samples 3.179 s.
+No native fights, new pick, result analysis or acceptance. Actual calibration
+and outcomes remain Claude's work. `.git` read-only; new v5b files uncommitted,
+inventoried in `DELIVERY.json`; v5 and other labs untouched. This plan append
+must remain unstaged and is excluded from the delivery scope.
