@@ -38,3 +38,11 @@ Final focused tests, once after the complete change/review batch:
 ```
 
 The owner's separate Codex recheck and disposition live here because this task forbids edits to existing plan files. Main `.git` is read-only in the current managed permission profile; the report inventories new uncommitted files. No alternate repository, bundle, push or hook bypass is used.
+
+## Owner-approved continuation (2026-10-08)
+
+"Measure, then run ≤3 h" is implemented in [shape lab v2](../s4_shape_lab_v2/README.md).
+V1 declarations, code, entropy, checks and committed observations remain preserved.
+Use the v2 commands for the continuation. Its mutable, gitignored cap is read from
+this folder's `raw/LAB_CAP.json`; the owner-approved local value is 10800 seconds.
+The historical v1 serial projection is retained and no longer gates v2 execution.

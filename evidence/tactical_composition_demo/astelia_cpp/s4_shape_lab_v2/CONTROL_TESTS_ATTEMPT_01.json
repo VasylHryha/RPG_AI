@@ -1,0 +1,18 @@
+{
+  "status": "FAIL",
+  "command": [
+    "/usr/bin/caffeinate",
+    "-i",
+    "-s",
+    ".venv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v2/test_lab.py",
+    "--basetemp=evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v2/.pytest_cache/test_tmp"
+  ],
+  "exit_code": 1,
+  "seconds": 1.791151,
+  "scope": "Focused v2 contracts; native admission requests duration 0; calibration/run workers mocked. No drills, series or calibration fights."
+}

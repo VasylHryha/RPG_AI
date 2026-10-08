@@ -171,3 +171,15 @@ The full account of 6–7 October is in `docs/reports/SESSION_SUMMARY_2026-10-06
    - Commit them with both `Assisted-by` trailers.
    - Ignore the bundles and tarballs; they are listed in `.gitignore`.
 4. Continue with the first step that is not DONE and not waiting on **[OWNER]**.
+
+
+**B7 measured-cap control continuation (Codex, 2026-10-08):** implementation in
+`s4_shape_lab_v2/`, preserving v1 sealed preparation and committed receipts. Mutable
+owner cap at `s4_shape_lab_v1/raw/LAB_CAP.json` = 10800 s; v2 fresh entropy, unchanged
+v1 native binary/checks, fixed 59-fight calibration reused by full execution, measured
+remaining gate and per-invocation cutoff/resume. Separate Codex owner recheck COMPLETE: APPROVE_WITH_NOTES
+(`s4_shape_lab_v2/OWNER_RECHECK_CONTROL.md`); all six findings resolved in
+`CONTROL_DISPOSITION.md`. Final focused suite 32 PASS in 1.07 s (process 1.806 s),
+after one failed temporary-directory setup attempt retained separately. V2 fresh
+preparation sealed; no fights; source/native/input identities verified. No drills/series/calibration run by
+implementer. This plan edit is explicitly excluded from staging/commit.
