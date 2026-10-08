@@ -1,0 +1,1070 @@
+{
+  "trace": false,
+  "debug": false,
+  "mode": "alone",
+  "opponent": "alone",
+  "s3": true,
+  "diagnostics": false,
+  "options": {
+    "seed": 616208448,
+    "rules": "game",
+    "scenario": "mirror",
+    "sandboxAbilities": false,
+    "perception": false,
+    "duration": 150,
+    "dt": 0.03333333333333333,
+    "army": {
+      "melee": 10,
+      "ranged": 30,
+      "artillery": 10
+    },
+    "swapSides": false,
+    "ai": [
+      {
+        "controller": "forcedP16+react",
+        "skeleton": "v7",
+        "params": {
+          "K": 0.37170590833718886,
+          "K_t": 3.65326053622193,
+          "kappa": 38.800628149830196,
+          "beta": 1.5151496229104617,
+          "G": 3.457657402346487,
+          "w": 1.8741404479412271,
+          "f_c": 0.9896720150642289,
+          "m_k": 0.3280745938729417,
+          "lambda_th": 1.1066977151706074,
+          "mu": -1.3995913367114279,
+          "omega_ranged": 1.5775291057474368
+        }
+      },
+      {
+        "level": "regular",
+        "brain": "formation",
+        "formation": {
+          "preset": "loose free"
+        }
+      }
+    ]
+  },
+  "endCounts": true,
+  "killerTelemetry": true,
+  "decisionTrace": false,
+  "labScenario": {
+    "sides": [
+      [
+        {
+          "role": "melee",
+          "kind": "brute",
+          "position": {
+            "x": 270.44569273944944,
+            "y": 315.4289252124727
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "melee",
+          "kind": "brute",
+          "position": {
+            "x": 241.7967029940337,
+            "y": 362.4844815209508
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "melee",
+          "kind": "brute",
+          "position": {
+            "x": 291.6472175857052,
+            "y": 495.4684736020863
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "melee",
+          "kind": "brute",
+          "position": {
+            "x": 299.81471267994493,
+            "y": 487.7585322968662
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "melee",
+          "kind": "brute",
+          "position": {
+            "x": 280.10179325938225,
+            "y": 426.19077403098345
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "melee",
+          "kind": "brute",
+          "position": {
+            "x": 259.52844015788287,
+            "y": 399.98227540403605
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "melee",
+          "kind": "brute",
+          "position": {
+            "x": 256.48803597316146,
+            "y": 508.535944968462
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "melee",
+          "kind": "brute",
+          "position": {
+            "x": 242.60653133969754,
+            "y": 418.6133681051433
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "melee",
+          "kind": "brute",
+          "position": {
+            "x": 269.15334187913686,
+            "y": 388.56975158676505
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "melee",
+          "kind": "brute",
+          "position": {
+            "x": 287.82711453270167,
+            "y": 378.63780971616507
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 179.2099775816314,
+            "y": 486.70855697710067
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 181.33399264421314,
+            "y": 462.8068856196478
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 190.46259237919003,
+            "y": 316.7446053819731
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 231.40198001638055,
+            "y": 258.0452414462343
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 186.29128250526264,
+            "y": 500.5679460708052
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 228.63969256170094,
+            "y": 375.6023082882166
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 167.54156523384154,
+            "y": 290.175225911662
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 218.73171281302348,
+            "y": 307.1684369118884
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 214.45172293111682,
+            "y": 526.2753436109051
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 211.67734862538055,
+            "y": 268.08779975399375
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 179.6096969442442,
+            "y": 417.17491012532264
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 154.68480420531705,
+            "y": 465.42123313993216
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 223.12502969289199,
+            "y": 482.7314843190834
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 224.77537129539996,
+            "y": 387.1061140205711
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 162.88103870814666,
+            "y": 394.99904895201325
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 185.91759018832818,
+            "y": 399.4299577316269
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 151.14912745077163,
+            "y": 513.3876467589289
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 186.14571895916015,
+            "y": 443.37705383077264
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 154.32903721695766,
+            "y": 460.52133284974843
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 171.52933701407164,
+            "y": 402.64028860256076
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 221.79199169855565,
+            "y": 461.84574228245765
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 173.6456458386965,
+            "y": 403.5642959875986
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 167.55017223302275,
+            "y": 527.5338907726109
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 161.4802399626933,
+            "y": 362.46600474696606
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 237.8261931426823,
+            "y": 462.6927141100168
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 177.2476300690323,
+            "y": 446.8406857457012
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 176.99859655927867,
+            "y": 458.51010258775204
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 224.352295990102,
+            "y": 485.418794490397
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 172.55357027286664,
+            "y": 452.0669548539445
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 165.2708441298455,
+            "y": 311.35427958797663
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "artillery",
+          "kind": "shaman",
+          "position": {
+            "x": 135.95323832705617,
+            "y": 324.13622001186013
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "artillery",
+          "kind": "shaman",
+          "position": {
+            "x": 127.85099365282804,
+            "y": 316.0811019875109
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "artillery",
+          "kind": "shaman",
+          "position": {
+            "x": 100.5666166357696,
+            "y": 343.5476930998266
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "artillery",
+          "kind": "shaman",
+          "position": {
+            "x": 88.44323822297156,
+            "y": 398.3911241404712
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "artillery",
+          "kind": "shaman",
+          "position": {
+            "x": 83.63544865045696,
+            "y": 317.0466020144522
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "artillery",
+          "kind": "shaman",
+          "position": {
+            "x": 115.05530639085919,
+            "y": 497.57292691618204
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "artillery",
+          "kind": "shaman",
+          "position": {
+            "x": 91.36815801262856,
+            "y": 337.00435284525156
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "artillery",
+          "kind": "shaman",
+          "position": {
+            "x": 135.89926899876446,
+            "y": 401.4304029010236
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "artillery",
+          "kind": "shaman",
+          "position": {
+            "x": 80.93173744156957,
+            "y": 423.3566668257117
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "artillery",
+          "kind": "shaman",
+          "position": {
+            "x": 83.07342745829374,
+            "y": 291.9859353452921
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        }
+      ],
+      [
+        {
+          "role": "melee",
+          "kind": "brute",
+          "position": {
+            "x": 1129.5543072605506,
+            "y": 315.4289252124727
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "melee",
+          "kind": "brute",
+          "position": {
+            "x": 1158.2032970059663,
+            "y": 362.4844815209508
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "melee",
+          "kind": "brute",
+          "position": {
+            "x": 1108.3527824142948,
+            "y": 495.4684736020863
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "melee",
+          "kind": "brute",
+          "position": {
+            "x": 1100.185287320055,
+            "y": 487.7585322968662
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "melee",
+          "kind": "brute",
+          "position": {
+            "x": 1119.8982067406178,
+            "y": 426.19077403098345
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "melee",
+          "kind": "brute",
+          "position": {
+            "x": 1140.4715598421171,
+            "y": 399.98227540403605
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "melee",
+          "kind": "brute",
+          "position": {
+            "x": 1143.5119640268385,
+            "y": 508.535944968462
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "melee",
+          "kind": "brute",
+          "position": {
+            "x": 1157.3934686603025,
+            "y": 418.6133681051433
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "melee",
+          "kind": "brute",
+          "position": {
+            "x": 1130.8466581208631,
+            "y": 388.56975158676505
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "melee",
+          "kind": "brute",
+          "position": {
+            "x": 1112.1728854672983,
+            "y": 378.63780971616507
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 1220.7900224183686,
+            "y": 486.70855697710067
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 1218.6660073557869,
+            "y": 462.8068856196478
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 1209.53740762081,
+            "y": 316.7446053819731
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 1168.5980199836195,
+            "y": 258.0452414462343
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 1213.7087174947374,
+            "y": 500.5679460708052
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 1171.360307438299,
+            "y": 375.6023082882166
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 1232.4584347661585,
+            "y": 290.175225911662
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 1181.2682871869765,
+            "y": 307.1684369118884
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 1185.5482770688832,
+            "y": 526.2753436109051
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 1188.3226513746195,
+            "y": 268.08779975399375
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 1220.3903030557558,
+            "y": 417.17491012532264
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 1245.315195794683,
+            "y": 465.42123313993216
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 1176.874970307108,
+            "y": 482.7314843190834
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 1175.2246287046,
+            "y": 387.1061140205711
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 1237.1189612918533,
+            "y": 394.99904895201325
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 1214.0824098116718,
+            "y": 399.4299577316269
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 1248.8508725492284,
+            "y": 513.3876467589289
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 1213.8542810408399,
+            "y": 443.37705383077264
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 1245.6709627830423,
+            "y": 460.52133284974843
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 1228.4706629859284,
+            "y": 402.64028860256076
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 1178.2080083014444,
+            "y": 461.84574228245765
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 1226.3543541613035,
+            "y": 403.5642959875986
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 1232.4498277669773,
+            "y": 527.5338907726109
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 1238.5197600373067,
+            "y": 362.46600474696606
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 1162.1738068573177,
+            "y": 462.6927141100168
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 1222.7523699309677,
+            "y": 446.8406857457012
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 1223.0014034407213,
+            "y": 458.51010258775204
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 1175.647704009898,
+            "y": 485.418794490397
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 1227.4464297271334,
+            "y": 452.0669548539445
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "ranged",
+          "kind": "spitter",
+          "position": {
+            "x": 1234.7291558701545,
+            "y": 311.35427958797663
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "artillery",
+          "kind": "shaman",
+          "position": {
+            "x": 1264.0467616729438,
+            "y": 324.13622001186013
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "artillery",
+          "kind": "shaman",
+          "position": {
+            "x": 1272.149006347172,
+            "y": 316.0811019875109
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "artillery",
+          "kind": "shaman",
+          "position": {
+            "x": 1299.4333833642304,
+            "y": 343.5476930998266
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "artillery",
+          "kind": "shaman",
+          "position": {
+            "x": 1311.5567617770284,
+            "y": 398.3911241404712
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "artillery",
+          "kind": "shaman",
+          "position": {
+            "x": 1316.364551349543,
+            "y": 317.0466020144522
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "artillery",
+          "kind": "shaman",
+          "position": {
+            "x": 1284.9446936091408,
+            "y": 497.57292691618204
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "artillery",
+          "kind": "shaman",
+          "position": {
+            "x": 1308.6318419873714,
+            "y": 337.00435284525156
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "artillery",
+          "kind": "shaman",
+          "position": {
+            "x": 1264.1007310012355,
+            "y": 401.4304029010236
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "artillery",
+          "kind": "shaman",
+          "position": {
+            "x": 1319.0682625584304,
+            "y": 423.3566668257117
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        },
+        {
+          "role": "artillery",
+          "kind": "shaman",
+          "position": {
+            "x": 1316.9265725417063,
+            "y": 291.9859353452921
+          },
+          "heading": 0,
+          "hp_fraction": 1.0
+        }
+      ]
+    ]
+  },
+  "labReact": {
+    "shadow": false
+  },
+  "labBattery": {
+    "mode": "battery_oscillator",
+    "k": 2.0,
+    "radius": -1
+  },
+  "decisionDiagnostics": false,
+  "attributionDiagnostics": false
+}

@@ -1,0 +1,213 @@
+{
+  "tag": "C3_forcedP16+react_p027",
+  "meta": {
+    "group": "C3",
+    "stage": "outcome",
+    "arm": "forcedP16+react",
+    "variant": null,
+    "pair": 27,
+    "seed": 1698760618,
+    "orientation": 1,
+    "opponent": "screen",
+    "units_before": 50,
+    "knobs": [
+      2.0,
+      -1
+    ]
+  },
+  "summary": {
+    "mode": "alone",
+    "melee": 121,
+    "ranged": 809,
+    "artillery": 6082,
+    "total": 7012,
+    "wasted": 1309.2,
+    "monsterDeaths": 36,
+    "hunterKills": 50,
+    "aliveSeconds": 1396.9333333333418,
+    "enemyDamage": 5721,
+    "survivors": 14,
+    "enemySurvivors": 0,
+    "t": 44.06666666666673,
+    "controllerFailures": [
+      0,
+      0
+    ],
+    "controllerStatus": "completed",
+    "crossTeamDealt": [
+      6728,
+      5299
+    ],
+    "crossTeamTaken": [
+      5299,
+      6728
+    ],
+    "friendlyDealt": [
+      284,
+      422
+    ],
+    "friendlyTaken": [
+      284,
+      422
+    ],
+    "artilleryAlive": [
+      10,
+      0
+    ],
+    "complexDiagnostics": {
+      "side": 0,
+      "samples": 41944,
+      "lowAmplitudeSamples": 17349,
+      "fractionBelow02": 0.4136229258058364,
+      "argRateSamples": 24469,
+      "argRateAbsSum": 6764.6326298207105,
+      "argRateAbsMean": 0.27645725733870247,
+      "argRateNullReason": null,
+      "argValidityThreshold": 0.2,
+      "retryCount": 0,
+      "numericalFailureTicks": 0,
+      "mu": -1.3995913367114279,
+      "omega_ranged": 1.5775291057474368,
+      "omega_melee": 0
+    }
+  },
+  "stats": {
+    "win": true,
+    "timeout": false,
+    "own_initial": 50,
+    "own_lost": 36,
+    "t_end": 44.06666666666673,
+    "own_shells": 255,
+    "own_shells_landed": 252,
+    "own_shells_unresolved": 3,
+    "hits": 426,
+    "artillery_kills": 42,
+    "landing_spread_s": 0.022933285119068742,
+    "landing_spreads_s": [
+      0.01956542391000049,
+      0.005229507943486311,
+      0.006419147707788397,
+      0.011444864903259244,
+      0.06578973641337882,
+      0.08604652059722184,
+      0.036871982557357796,
+      0.07287524095642439,
+      0.009544347302664846,
+      0.004226795244782977,
+      0.005819509853427718,
+      0.014685513233775538,
+      0.08044007490755689,
+      0.002955444594231693,
+      0.00560360716292152,
+      0.01037246247533119,
+      0.0015824821654604193,
+      0.0007242238029760983,
+      0.013466947598317347,
+      0.039185558480454574,
+      0.007259486004208782,
+      0.0005364817564057489,
+      0.007798647429339667,
+      0.04195483585687754
+    ],
+    "multi_shell_volleys": 24,
+    "single_shell_volleys": 205,
+    "enemy_dodge_eligible": 621,
+    "enemy_dodge_escaped": 201,
+    "enemy_dodge_censored": 79,
+    "enemy_dodge_launch_exposed": 700,
+    "enemy_dodge_success": 0.28714285714285714,
+    "hits_per_own_shell": 1.6904761904761905,
+    "shells_per_kill": 6.0,
+    "gun_seconds": 440.6666666666693,
+    "idle_seconds": 0,
+    "idle_seconds_per_gun": 0.0,
+    "fired_shells_per_gun_minute": 34.72012102874412,
+    "low_gun_behaviour": {},
+    "unassigned_own_artillery_damage": 0
+  },
+  "survivors": [
+    {
+      "id": 15,
+      "role": "ranged"
+    },
+    {
+      "id": 26,
+      "role": "ranged"
+    },
+    {
+      "id": 28,
+      "role": "ranged"
+    },
+    {
+      "id": 34,
+      "role": "ranged"
+    },
+    {
+      "id": 41,
+      "role": "artillery"
+    },
+    {
+      "id": 42,
+      "role": "artillery"
+    },
+    {
+      "id": 43,
+      "role": "artillery"
+    },
+    {
+      "id": 44,
+      "role": "artillery"
+    },
+    {
+      "id": 45,
+      "role": "artillery"
+    },
+    {
+      "id": 46,
+      "role": "artillery"
+    },
+    {
+      "id": 47,
+      "role": "artillery"
+    },
+    {
+      "id": 48,
+      "role": "artillery"
+    },
+    {
+      "id": 49,
+      "role": "artillery"
+    },
+    {
+      "id": 50,
+      "role": "artillery"
+    }
+  ],
+  "native_metrics": {
+    "executed_fights": 1,
+    "executed_steps": 1322,
+    "branch_steps": 0,
+    "forks": 0,
+    "search_calls": 0,
+    "inference_calls": 0,
+    "candidate_models": 0,
+    "artillery_rollouts": 0,
+    "artillery_predictions": 0,
+    "artillery_candidates": 0,
+    "prediction_steps": 0,
+    "prediction_unit_steps": 0,
+    "branch_unit_actions": 0,
+    "branch_projectile_steps": 0,
+    "unit_actions": 79845,
+    "projectile_steps": 11276,
+    "cache_hits": 0,
+    "scope": "native_complete_engine",
+    "fork_settings": []
+  },
+  "seconds": 1.948774041,
+  "raw_sha256": "59721fc20d8a91b0a0d1f071e5b30378fc4cad1bd26dd788968c5b58cd60178b",
+  "request_sha256": "80d6e6d4b3685f2d8a3b04a0fd7874d8591ae17e06e7bcd54c66ef75cc909304",
+  "claim_sha256": "ce2b6def90c8bfc8812bad81bdd0a257f8591c1195d3a7790dbf5acb867e6b87",
+  "declaration_sha256": "cbb32aec7034c02107d8f797245434c9dc759ce1b3b0e05e89b1265eff8fbb7a",
+  "stderr_sha256": "85467adb58199fbe09107700ea337a3ef73b2ea902e6dc619c556e6a5f73369f"
+}
