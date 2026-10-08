@@ -234,10 +234,7 @@ def execute(job,deadline,monitor,ledger_hash,memory_profile=False,full_detail=Fa
     finally:write(LOCAL/'attempts'/(job['tag']+'_'+run_id+'.json'),receipt,exclusive=True)
     return receipt
 
-# Claude 2026-10-09: declared target raised 4 -> 5 GB. The projection scales every sampled fight to a
-# full 150 s (worst case; measured fights end ~45 s, ~4.5 MB each); it read 4.23 GB. The free-space gate
-# (measured x remaining x 2 + 5 GB vs actual free) is unchanged and passes.
-COLLECTION_LIMIT_BYTES=5_000_000_000
+COLLECTION_LIMIT_BYTES=4_000_000_000
 DISK_RESERVE_BYTES=5_000_000_000
 
 def disk_projection(records,total,remaining=None):
@@ -255,7 +252,7 @@ def disk_projection(records,total,remaining=None):
 def disk_gate(records,total,remaining):
     p=disk_projection(records,total,remaining)
     write(LOCAL/'COLLECTION_DISK_GATE.json',p)
-    if p['projected_collection_bytes']>COLLECTION_LIMIT_BYTES:raise RuntimeError('compact collection projection exceeds 5 GB')
+    if p['projected_collection_bytes']>COLLECTION_LIMIT_BYTES:raise RuntimeError('compact collection projection exceeds 4 GB')
     if p['required_free_bytes']>p['actual_free_bytes']:raise RuntimeError('collection disk gate: measured bytes/fight x remaining x 2 + 5 GB exceeds free space')
     return p
 
@@ -271,7 +268,7 @@ def run(sample=False):
             # Before the first measurement, reserve the complete target twice plus
             # 5 GB. Afterwards every new fight uses measured duration-normalized bytes.
             if not any((LOCAL/'raw'/(j['tag']+'_COMPLETE.json')).exists() for j in ledger['jobs']):
-                if shutil.disk_usage(LOCAL).free < 2*COLLECTION_LIMIT_BYTES+DISK_RESERVE_BYTES:raise RuntimeError('initial collection disk reserve below 15 GB')
+                if shutil.disk_usage(LOCAL).free < 2*COLLECTION_LIMIT_BYTES+DISK_RESERVE_BYTES:raise RuntimeError('initial collection disk reserve below 13 GB')
             for j in ledger['jobs']:
                 if j['tag'] not in ledger['timing_sample']:continue
                 if calibration:disk_gate(calibration,total,remaining())
