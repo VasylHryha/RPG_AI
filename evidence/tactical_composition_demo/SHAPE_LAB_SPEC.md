@@ -161,3 +161,31 @@ The owner, on what comes next:
 | **Volley timing** | none | `waves`, `holdFire.sync` | shells land together; fewer dodged |
 
 **The first change to test, once the lab's checks pass:** the **react** primitive, copied from the engine's `dodgeShells: "smart"` and `castDodge` as a labelled shape for our side. It is measured in D2 (spacing under fire), C2 and the series against v7 without it. It is one change, and it names its source.
+
+## 11. Amendment 4 (owner, 2026-10-08): coordinated artillery volleys
+
+**The owner:**
+- Artillery is efficient when the guns **work together**: fire at one time and cover the maximum area, so the opponent cannot dodge or escape the corner.
+- Or **force them to dodge into one place, then cover that place.**
+
+**The data:** we fire 184 shells per fight, one gun at a time. The enemy makes about 2,940 shell dodges per fight (§10).
+
+**The volley primitive, split into two parts and staged after the react primitive:**
+
+| Part | Job | Teacher in the engine | Our shape (RRG form) | Good work (draft) |
+|---|---|---|---|---|
+| **V1 timing** | guns fire together, so a dodge from one shell lands in another | `holdFire: {sync}`, `waves` | **the guns as coupled phase oscillators:** each gun's firing phase is pulled toward its neighbours' (Kuramoto-type coupling), and a gun releases when its phase crosses the shared firing point. Synchrony decides when the battery fires | the spread of shell landing times within one volley; enemy dodge success against our shells; hits per shell; shells per kill |
+| **V2 geometry** | cover the area, or herd and trap | `artyFire: plan` (trap, sweep, net, wall), `artyHerd`, `artyRollout` (2 s look-ahead), `artyModel: exact` | a volley pattern chosen per volley by forward-model scoring: copied first, then compared and simplified | the same, plus enemy units caught per volley and damage per volley |
+
+**The order:**
+1. react (§10);
+2. V1 timing;
+3. V2 geometry (copy the teacher, then compare with our shape).
+
+Each is one labelled change, measured in D1/D2 (guns against guns, and under fire), C2 and the series, with shadow comparison against T-elite (§9). The guns' synchrony is the oscillator's intended job. It replaces the commit/escape gate, which showed no gain (v7 32/40 against always-commit 31/40) and which violates the owner's rule.
+
+**The closest known methods, and the difference:**
+- **Time-on-target artillery fire** (real-world doctrine: shells timed to land at once);
+- **Kuramoto synchronization;**
+- **Astelia's own `holdFire.sync`.**
+- **The difference:** the timing emerges from local coupling between guns, not from a central scheduler.
