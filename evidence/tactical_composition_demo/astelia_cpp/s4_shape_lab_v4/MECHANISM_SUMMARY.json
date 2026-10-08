@@ -1,0 +1,135 @@
+{
+  "arms": {
+    "forcedP16": {
+      "n": 10,
+      "wins": 10,
+      "own_losses_on_wins": {
+        "n": 10,
+        "mean": 20.1
+      },
+      "own_losses_on_nonwins": {
+        "n": 0,
+        "mean": null
+      },
+      "dodges_per_fight": {
+        "n": 10,
+        "mean": 0.0
+      },
+      "enemy_shells_landed": 404,
+      "hit_units": 1744,
+      "shell_damage": 23573.0,
+      "own_units_hit_per_landed_enemy_shell": 4.316831683168317,
+      "damage_taken_per_landed_enemy_shell": 58.3490099009901,
+      "unassigned_enemy_artillery_damage": 0.0,
+      "unresolved_enemy_shells": 6
+    },
+    "forcedP16+react": {
+      "n": 10,
+      "wins": 10,
+      "own_losses_on_wins": {
+        "n": 10,
+        "mean": 11.4
+      },
+      "own_losses_on_nonwins": {
+        "n": 0,
+        "mean": null
+      },
+      "dodges_per_fight": {
+        "n": 10,
+        "mean": 1779.8
+      },
+      "enemy_shells_landed": 564,
+      "hit_units": 1002,
+      "shell_damage": 13568.0,
+      "own_units_hit_per_landed_enemy_shell": 1.7765957446808511,
+      "damage_taken_per_landed_enemy_shell": 24.05673758865248,
+      "unassigned_enemy_artillery_damage": 0.0,
+      "unresolved_enemy_shells": 6
+    }
+  },
+  "paired": {
+    "n": 10,
+    "unmatched_pairs": 0,
+    "direction": "forcedP16+react minus forcedP16",
+    "differences": {
+      "win": {
+        "n": 10,
+        "mean": 0.0
+      },
+      "own_lost": {
+        "n": 10,
+        "mean": -8.7
+      },
+      "own_dodges": {
+        "n": 10,
+        "mean": 1779.8
+      },
+      "own_units_hit_per_enemy_shell": {
+        "n": 10,
+        "mean": -2.55462659358073
+      },
+      "damage_taken_per_enemy_shell": {
+        "n": 10,
+        "mean": -34.48521127101955
+      }
+    }
+  },
+  "paired_losses_both_won": {
+    "n": 10,
+    "unmatched_pairs": 0,
+    "direction": "forcedP16+react minus forcedP16",
+    "differences": {
+      "win": {
+        "n": 10,
+        "mean": 0.0
+      },
+      "own_lost": {
+        "n": 10,
+        "mean": -8.7
+      },
+      "own_dodges": {
+        "n": 10,
+        "mean": 1779.8
+      },
+      "own_units_hit_per_enemy_shell": {
+        "n": 10,
+        "mean": -2.55462659358073
+      },
+      "damage_taken_per_enemy_shell": {
+        "n": 10,
+        "mean": -34.48521127101955
+      }
+    }
+  },
+  "paired_losses_both_nonwin": {
+    "n": 0,
+    "unmatched_pairs": 0,
+    "direction": "forcedP16+react minus forcedP16",
+    "differences": {
+      "win": {
+        "n": 0,
+        "mean": null
+      },
+      "own_lost": {
+        "n": 0,
+        "mean": null
+      },
+      "own_dodges": {
+        "n": 0,
+        "mean": null
+      },
+      "own_units_hit_per_enemy_shell": {
+        "n": 0,
+        "mean": null
+      },
+      "damage_taken_per_enemy_shell": {
+        "n": 0,
+        "mean": null
+      }
+    }
+  },
+  "stage": "mechanism",
+  "look": 10,
+  "complete": true,
+  "declaration_sha256": "65850e8427cdc540d984ca90c278b26254a1ecbc0299fcab43796ce4e700dc6e"
+}
