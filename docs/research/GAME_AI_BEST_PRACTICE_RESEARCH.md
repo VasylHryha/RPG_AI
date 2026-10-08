@@ -8,7 +8,9 @@
 
 **Revision history:**
 - **Revision 1:** commit `db404c2`.
-- **Revision 2:** this file. It fixes the cross-family recheck `docs/reviews/game_ai_research_recheck_codex.md` (CHANGES_REQUIRED, F1–F8, N1); see §12, the self-audit.
+- **Revision 2:** fixed the cross-family recheck `docs/reviews/game_ai_research_recheck_codex.md` (CHANGES_REQUIRED, F1–F8, N1).
+- **Revision 3:** this file. It fixes round 2, `docs/reviews/game_ai_research_recheck_r2_codex.md` (CHANGES_REQUIRED, R2-F1–F3, N1–N3).
+- Both rounds are recorded in §12, the self-audit.
 
 **Ground rules:**
 - No project code, fight, benchmark or pilot was run for this note.
@@ -65,7 +67,7 @@
 | **AlphaGo** ([Nature 2016](https://research.google/pubs/mastering-the-game-of-go-with-deep-neural-networks-and-tree-search/)) | Supervised policy on expert moves (57% prediction per a [secondary summary](https://blog.acolyer.org/2016/09/20/mastering-the-game-of-go-with-deep-neural-networks-and-tree-search/)); self-play RL; value net; MCTS | A teacher-first bootstrap, then improvement by search | Deep nets over raw state |
 | **AlphaZero / KataGo** ([KataGo](https://arxiv.org/abs/1902.10565)) | Self-play + MCTS **from random play, no teacher**; the network learns search visit counts and outcomes. KataGo cut compute about 50× against ELF OpenGo, still about 1.4 GPU-years. | Distilling a search into a cheaper policy ([ExIt](https://arxiv.org/abs/1705.08439)); planning with few simulations ([Gumbel, ICLR 2022](https://iclr.cc/virtual/2022/poster/6418)) | AlphaZero self-play is about 21 M games ([EfficientZero paper](https://arxiv.org/abs/2111.00210)), far beyond our budget |
 | **MuZero** ([arXiv 1911.08265](https://arxiv.org/pdf/1911.08265)) | Learns a dynamics model and plans in it | Nothing now | **Deferred, not dismissed.** We have an engine clone with known semantics (§6). A learned model could trade accuracy for speed, but that is not our current bottleneck. Learned models can misjudge unseen policies ([arXiv 2306.00840](https://arxiv.org/html/2306.00840v3)). |
-| **AlphaStar** ([DeepMind](https://deepmind.google/discover/blog/alphastar-grandmaster-level-in-starcraft-ii-using-multi-agent-reinforcement-learning/)) | Imitation from human replays (beat 84% of players); a league with main agents, main exploiters and league exploiters; **PFSP**: f_hard(x) = (1−x)^p ([arXiv 2408.01072](https://arxiv.org/pdf/2408.01072)); distillation towards human play | Teacher bootstrap; PFSP-style *training* sampling (with a uniform floor, §8); script-level exploiter search as a separate *stress* test | The neural policy and the learning league. Each agent took 44 days on 32 TPUv3 ([secondary](https://gamesbeat.com/deepminds-alphastar-final-beats-99-8-of-human-starcraft-2-players/)). |
+| **AlphaStar** ([DeepMind](https://deepmind.google/discover/blog/alphastar-grandmaster-level-in-starcraft-ii-using-multi-agent-reinforcement-learning/)) | Imitation from human replays (beat 84% of players); a league with main agents, main exploiters and league exploiters; **PFSP**: opponent weight f(win rate against it), with f_hard(x) = (1−x)^p favouring the opponents we beat least (formula per [survey §3.2.5](https://arxiv.org/html/2408.01072); the name f_hard is AlphaStar's); distillation towards human play | Teacher bootstrap; PFSP-style *training* sampling (with a uniform floor, §8); script-level exploiter search as a separate *stress* test | The neural policy and the learning league. Each agent took 44 days on 32 TPUv3 ([secondary](https://gamesbeat.com/deepminds-alphastar-final-beats-99-8-of-human-starcraft-2-players/)). |
 | **OpenAI Five** ([arXiv 1912.06680](https://arxiv.org/abs/1912.06680)) | PPO at scale, about 2 M frames per 2 s for 10 months; about 80/20 current/past-self opponents ([survey](https://arxiv.org/pdf/2111.07631)); "team spirit"; "surgery" | A past-self (hall-of-fame) regression pool; a per-unit against team term in fitness design | PPO scale |
 | **microRTS BC experiment** ([Goodfriend 2024 §4.3](https://arxiv.org/html/2402.08112v1)) | Post-competition experiment, not the winning agent's recipe. RAI-BC copied the scripted Mayari: 71% overall, 44% against Mayari. PPO fine-tuning: 88% overall, 84% against Mayari, but it **regressed** on some map/opponent pairs: TwoBasesBarracks16x16 against POLightRush 100→0; BloodBath against Mayari 40→5. | Copying a scripted teacher can be a cheap **initial baseline**; per-cell paired checks are needed | **Not evidence of a ceiling.** A copy can fall short (features, approximation, distribution shift) or exceed its teacher in some matchups. Aggregate gains can hide cell regressions. |
 | **Programmatic synthesis** ([AAAI 2021](https://ojs.aaai.org/index.php/AAAI/article/view/16114); [2L, IJCAI 2023](https://arxiv.org/abs/2307.04893)) | Local search over DSL programs with chosen reference opponents; beat the two latest microRTS winners in a simulated tournament | Closest in *spirit* to our principle: small readable programs found by search | |
@@ -133,7 +135,7 @@ This is **our proposal**, not a core shared by every landmark.
 - **Explicitly loss-aware objectives:**
   - LTD2 rewards many surviving units;
   - ECSLBot's Eq. 3 counts units remaining;
-  - multi-objective micro keeps a Pareto front of damage done against damage received ([Liu et al. 2018](https://arxiv.org/abs/1803.10316)).
+  - multi-objective micro keeps a Pareto front of damage done against damage received ([Dubey, Ghantous, Louis & Liu 2018](https://arxiv.org/abs/1803.10316)).
 - **Damaged units cycling back:** Churchill 2017 observed in *simulation* that kiting cycled low-HP units "to the back lines, taking them out of range of the enemy… causing units to stay alive much longer". That is **out of enemy range**, which does not show they stayed in their own useful range.
   - **[inference]** It is a rotation *candidate*. It must pass the owner's participation rule (§4.3).
 - **No paper found reports a series-with-carried-losses measure.**
@@ -147,7 +149,7 @@ This is **our proposal**, not a core shared by every landmark.
 | Technique | Mechanism | Evidence | Fit for us |
 |---|---|---|---|
 | **BC** | Fit to the teacher's (state, action) pairs on the teacher's trajectories | RAI-BC (§1); AlphaStar SL | Spec §9 "teacher in control, ours shadowed" supplies BC data |
-| **DAgger** ([2011](https://arxiv.org/abs/1011.0686)) | Run our policy; the teacher labels visited states; **aggregate and refit**; iterate | Fixes BC's compounding error. A 2026 Gin Rummy study found it did not help there (causal confusion; [arXiv 2607.06854](https://arxiv.org/html/2607.06854v1)). | Spec §9's reverse arm is DAgger-style *collection*; DAgger also needs aggregation and refitting |
+| **DAgger** ([2011](https://arxiv.org/abs/1011.0686)) | Run our policy; the teacher labels visited states; **aggregate and refit**; iterate | Fixes BC's compounding error. A 2026 Gin Rummy study reports that it did not help in that setting; **the authors interpret** this as causal confusion ([arXiv 2607.06854](https://arxiv.org/html/2607.06854v1)). This is one empirical failure, not a general DAgger limit. | Spec §9's reverse arm is DAgger-style *collection*; DAgger also needs aggregation and refitting |
 | **AggreVaTe** ([2014](https://arxiv.org/abs/1406.5979)) | Imitation weighted by the teacher's cost-to-go | Regret guarantee under its assumptions | **[inference]** At disagreement states, clone rollouts give an **estimated, continuation-dependent disagreement cost**: neither exact cost-to-go nor an AggreVaTe guarantee (§6) |
 | **Comparison training / MMTO** ([Tesauro 1988](https://papers.neurips.cc/paper/1988/hash/a8baa56554f96369ab93e4f3bb068c22-Abstract.html); [Hoki & Kaneko 2014](https://jair.org/index.php/jair/article/view/10871)) | Fit a scoring function so the teacher's choice outranks alternatives | MMTO tuned more than 40 M shogi weights from expert moves | Fits shapes whose decision is a choice among candidates: gun target score V, post, escort point |
 | **Privileged teacher → student** ([Learning by Cheating](https://arxiv.org/abs/1912.12294)) | A teacher sees privileged state; the student does not | CARLA results | Basis for separating **oracle** and **deployable** teacher arms (§6) |
@@ -188,6 +190,11 @@ These are integration prerequisites, not "a few extra fitted weights".
    - the spec's byte-identical shadow-on/off check still applies;
    - students are trained on their own available features, including sparse late-army states.
 6. **Battery-level labels for volleys.** Per-unit marginal agreement can copy individually plausible shots that fail jointly. A volley is labelled as one joint decision: members, release times, aim points.
+7. **Primitive fidelity, before any copy:**
+   - Define each primitive's legal inputs and effective intent: own cooldown and preparation, release eligibility, reaction latency, attack interruption.
+   - Compare teacher-driven and student-driven state distributions, and joint battery decisions. Do not compare only agreement averaged over ticks where the primitive is inactive.
+   - Agreement alone never promotes a copy. Damage and loss benefit, and retained useful participation, are required alongside it.
+   - The full T-elite reference may itself violate the participation rule (e.g. `saveWounded`, §4.3). Keep that visible, and label any constrained teacher variant separately.
 
 ---
 
@@ -205,7 +212,7 @@ These are integration prerequisites, not "a few extra fitted weights".
 ### 4.2 V1 timing: the battery oscillator
 - **The comparison:**
   - (a) the copied central sync (`holdFire: {sync}`, `waves`);
-  - (b) the RRG shape: local coupled phases in Kuramoto or pulse-coupled form, where a firing gun advances its neighbours' phases ([Mirollo & Strogatz](https://www.iasi.cnr.it/~vbonifaci/semcn/Mirollo1990.pdf) prove almost all initial conditions synchronise for identical integrate-and-fire oscillators).
+  - (b) the RRG shape: local coupled phases in Kuramoto or pulse-coupled form, where a firing gun advances its neighbours' phases ([Mirollo & Strogatz](https://www.iasi.cnr.it/~vbonifaci/semcn/Mirollo1990.pdf) prove that almost all initial conditions synchronise, **for identical, all-to-all, excitatory integrate-and-fire oscillators**). That theorem does not cover a sparse battery graph with cooldown, readiness and range heterogeneity. The future V1 design must name its coupling graph and assumptions, and test them.
 - **The owner's difference:** timing emerges from local coupling, not a central scheduler.
 - **Report:**
   - spread of launch times **and** of landing times (time on target is about landing within seconds of a planned impact; [TOT](https://en.wikipedia.org/wiki/Time_on_target));
@@ -240,7 +247,7 @@ These are integration prerequisites, not "a few extra fitted weights".
 
 ---
 
-## 5. Evaluation: the series is primary; any proxy is defined and validated first
+## 5. Evaluation: the series is primary; any reference value is defined, calibrated and validated first
 
 ### 5.1 Primary and secondary measures (spec §5)
 - **Primary:** the streak S ∈ {0,…,10} under the rules in §0. The first fight not won by elimination ends the run.
@@ -253,24 +260,47 @@ These are integration prerequisites, not "a few extra fitted weights".
 - **Never optimise only losses conditional on wins.**
 - The spec's 10 development series per arm are descriptive evidence, not a precise population estimate. More sampling needs its own projection and authorization.
 
-### 5.2 A candidate proxy for search and tuning [inference, unvalidated]
-An unconstrained weighted sum of deaths and damage can favour passive survival or short failed fights. So the proxy targets the expected streak contribution directly.
+### 5.2 A reference value for search and tuning: a future design and validation requirement, not an executable evaluator [inference]
+An unconstrained weighted sum of deaths and damage can favour passive survival or short failed fights. The reference value therefore targets the expected streak contribution directly, and it is **defined**, not yet estimable.
 
-- **Branch end:** a branch from state s runs for horizon H under a stated continuation policy (§6). It then continues stepping until every shell launched before H has landed, so damage already committed counts.
-- **Terminal rules inside a branch:**
-  - enemy eliminated → fight won; survivors are the living own units (to be healed);
-  - own army eliminated, or the fight clock reaching the timeout → the series ends here (value 0 for later fights);
-  - otherwise non-terminal: apply the tail estimate.
-- **Tail estimate:**
-  - P̂_win(s_H) is the estimated probability this fight is won by elimination.
-  - m̂ = (m̂_melee, m̂_ranged, m̂_gun) is the expected surviving count per role. Each living unit counts with a survival probability q(hp fraction, threat), and threat includes incoming shells.
-  - Survivors heal, so a surviving unit counts fully whatever its HP. Low HP matters only through q.
-- **Series continuation value:**
-  - V(m, k) is the expected number of further fights won, starting at fight k+1 with role composition m. It is fitted from series data as a lookup or monotone regression on role counts, with V(·, 10) = 0.
-  - This is the **role-capability** term: losing the last effective gun can cost more than losing another escort.
-- **Proxy:** J(s_H) = P̂_win · (1 + V(m̂, k)). Its unit is expected fights won, so it needs no free weights.
-  - Before V is fitted, LTD2 (√hp·dpf) may stand in for P̂_win as a labelled heuristic.
-- **Validation before any use:** on paired candidates, J's ranking must predict the paired series outcomes above a pre-registered agreement threshold (§7 stop row). Otherwise J is not used.
+**Definition.** Fix a named continuation policy π: the controllers and settings for both sides after the candidate action a, including the branch-thinking setting (§6.1). Use the official random-series rules (§0). Then:
+
+Jπ(s, a, k) = Eπ[ I(fight k won by elimination) × (1 + Vπ(M, k)) | s, a ]
+
+where:
+- **M** is the actual survivor composition at the **canonical fight terminal** (§5.4), which is then healed;
+- **Vπ(M, k)** is the expected number of further fights won from fight k+1 with army M under π and the official draws, with Vπ(·, 10) = 0.
+
+Its unit is expected fights won.
+
+**The factorisation and its rules:**
+- **Allowed form:** Jπ = P(win) × (1 + E[Vπ(M, k) | win]).
+- **The conditional expectation is required.** Replacing it by Vπ at the mean composition, Vπ(E[M | win]), is **not** equivalent, because Vπ is nonlinear in role counts.
+- **Example** (illustrative, not measured): two candidates both win with certainty.
+  - A keeps two or zero guns with equal probability; B always keeps one.
+  - If future wins need at least one gun, their continuation values differ by a factor of two, while a mean-composition proxy ties them.
+  - A count lookup also has no defined value at fractional counts.
+- **Any such substitution** must be labelled an approximation, with measured error bounds.
+
+**How Jπ may be estimated:**
+- Either by sampled continuations that reach the canonical terminal (joint win and composition outcomes),
+- or by a fitted approximation, labelled as such.
+
+**What Vπ evaluates:** name the policy and data identity Vπ is fitted on. Changing the deployed policy can invalidate its calibration. If retained attributes other than role counts matter (for example per-unit ability state, if abilities are ever on), role counts are an insufficient summary; document that.
+
+**LTD2 is not a substitute.** Raw √hp × dpf is not a probability and can exceed 1; a side-difference LTD2 can be negative. It stays a **separate, unit-labelled ranking baseline**. It may enter Jπ only after a held-out calibration maps it to a bounded win probability.
+
+**Selection and tie rule** (to be fixed before any use; no casualty budget is tolerated or invented):
+1. **Streak first:** prefer the candidate with the higher estimated Jπ when the difference exceeds its uncertainty, for example non-overlapping paired intervals.
+2. **Loss-aware tie-break,** when Jπ estimates are statistically tied:
+   - prefer fewer expected own deaths, with **retained gun capability** first (P(≥1 effective gun survives)), then total survivors;
+   - this also applies at **fight 10**, where Vπ = 0 would otherwise make every certain win equal however many units die.
+3. **Non-passive timeout rule:** a timeout is never a win (§0). The rule may never prefer a candidate whose higher survivor count comes from a raised timeout probability.
+4. **Uncertainty:** with no statistical separation on any criterion, keep the incumbent (the current shape), so changes need evidence.
+
+**Validation gate** (§7 stop row): on paired candidates, rankings by the estimate must agree with paired series outcomes above a pre-registered threshold. This gate is necessary, but it does not repair an undefined formula, and it does not replace probability calibration.
+
+These are requirements for a future, owner-authorized design. They authorize no data collection now.
 
 ### 5.3 Normalization ledger
 
@@ -278,10 +308,49 @@ An unconstrained weighted sum of deaths and damage can favour passive survival o
 |---|---|---|---|
 | Streak S | series | fights | none (0–10) |
 | Survivors by role m | between fights | unit counts | raw counts per role; healed to full |
-| P̂_win, q | inside a fight | probability | bounded [0,1] |
-| V(m, k) | series | expected fights | fitted on the same rules; no per-level hand tuning |
+| P(win), P(≥1 gun survives) | inside a fight, at the canonical terminal | probability | bounded [0,1] |
+| Vπ(M, k), Jπ | series | expected fights won | defined under the named π and the official rules; no per-level hand tuning |
+| LTD2 (√hp × dpf summed) | inside a fight | hp^½ × damage/s | separate ranking baseline only; uncalibrated |
 | Hit probability per shell, landing-time spread | per volley | probability; game-seconds | per shell; per volley |
 | Branch cost | engine | core-seconds | per decision, per fight (§7) |
+
+### 5.4 Terminal precedence and projectile tails
+**The engine's stop condition.** The delivered `World::done()` (`world.cpp:126–128`) stops the fight when either holds:
+- `time >= duration`;
+- team 0 has no survivors;
+- in mirror mode, team 1 has no survivors.
+
+**The required design** [inference]:
+- **The canonical fight terminal** is the tick on which the series runner records the outcome. The lab's runner must state its classification, and search must reproduce it exactly. The proposal to confirm against the runner:
+  - **Elimination is checked before timeout on the same tick.** Enemy survivors = 0 and own > 0 counts as a win by elimination, even on the timeout tick.
+  - **Simultaneous elimination** (both 0 on one tick) is not a win, so it ends the series.
+  - **Time ≥ duration** with both sides alive is a timeout, so it ends the series.
+- **The terminal takes precedence over in-flight projectiles.**
+  - At the canonical terminal, the fight ends.
+  - Shells and aimed shots still in flight do not apply.
+  - Survivors are healed.
+  - A search-only "drain" must never apply delayed damage after the terminal. That would redefine carry-over.
+- **Non-terminal branches** distinguish:
+  - **nominal horizon H:** candidate plus continuation actions;
+  - **H_eff:** the actual simulated end, at most H + E_max;
+  - **pre-H projectiles:** shells and aimed shots launched before H, tracked;
+  - **post-H actions and projectiles:** the choice is declared. Either the same continuation π keeps acting during the extension, so post-H launches occur and are counted, or a separately labelled pending-projectile estimator scores only the pre-H projectiles from their predicted landing points.
+- **The extension** runs until all pre-H projectiles resolve, or the canonical terminal, or E_max game-seconds, whichever comes first.
+  - Proposed E_max: the longest shell flight time.
+  - **Fallback** at E_max: the pending-projectile estimator, labelled.
+- **Estimators** consume the state at H_eff, never at H, when an extension ran.
+
+### 5.5 Fit, calibration and validation protocol
+This is required before any future authorized fit of Vπ, a calibration or a ranking check.
+- **Splits:** separate the data used to fit Vπ, to calibrate probabilities and to validate rankings. Each comes from its own seed set (§8.1); none reuses D or R.
+- **Grouping:** the unit of independence is the **whole series**. Ticks and fights within one series are not independent examples. Split by series, and report uncertainty by series.
+- **Size:** the spec's ten development series per arm cannot support an unrestricted lookup over role-count combinations.
+  - Project the sample needed for a monotone, low-dimensional Vπ (e.g. per role) before any run, under decision 0031.
+  - Define a fallback for unsupported compositions: the nearest supported monotone bound, labelled.
+- **Reuse:** repeatedly selecting on D or R makes them training information even without direct fitting.
+  - Refresh the reporting draws after selection.
+  - Freeze held-out doctrine-family stress cases until their declared evaluation.
+- **Scope:** fresh seeds from the same 19 scripts do not establish transfer beyond those scripts.
 
 ---
 
@@ -290,7 +359,7 @@ An unconstrained weighted sum of deaths and damage can favour passive survival o
 ### 6.1 Branch semantics
 Read from the delivered sources:
 - `World::copyAuthorityFrom` (`world.cpp:274–279`) sets `thinkTeams=0`, and clones are `branch` worlds.
-- In a branch, `artilleryVolley` takes a **lighter** candidate path (`artillery.cpp:61`, `light = w.branch && !(thinkTeams & team)`).
+- In a branch, `artilleryVolley` takes a **lighter** candidate path (`artillery.cpp:61`, `light = w.branch && !(w.thinkTeams & (1 << me))`).
 - `lookahead` (`search.cpp:26`) and the director (`director.cpp:48`) are **suppressed** unless thinking is enabled for that team.
 - **So a copied world does not reproduce the scripted opponent's own future search behaviour by default.**
 
@@ -317,19 +386,22 @@ Read from the delivered sources:
 
 **Per decision:**
 
-C_dec = P × K × S × (c_copy + (H/Δt) × c_tick) + c_select + c_record
+C_dec = P × K × S × (c_copy + (H_eff/Δt) × c_tick + c_nested) + c_select + c_record
 
 where:
 - P = hill-climb passes;
 - K = candidate evaluations per pass (types × shapes);
 - S = stochastic continuations;
-- H = horizon in game-s, at Δt = 1/30 s per tick;
-- c_tick = the per-tick branch cost, which depends on unit count, projectiles and the branch-thinking setting.
+- H_eff = the actual simulated game-seconds per rollout, including the projectile extension of §5.4 (H_eff ≥ H), at Δt = 1/30 s per tick;
+- c_tick = the per-tick branch cost (core-s per tick), which depends on unit count, projectiles and the branch-thinking setting;
+- c_nested = any nested search inside the branch (zero with branch thinking off);
+- the pilot uses **measured** tick and decision counts, not nominal ones.
 
-**Per fight:** C_fight = (T_fight / Δ_dec) × C_dec + c_base_fight.
+**Per fight:** C_fight = (T_fight / Δ_dec) × C_dec + c_base_fight + c_shadow, where c_shadow covers teacher shadowing and disagreement replays on the actual label path.
 
 **With revision 1's assumptions [inference, arithmetic only]:**
-- P = 1, K = 24, S = 2–3, H × c_tick ≈ 0.02–0.1 core-s;
+- P = 1, K = 24, S = 2–3;
+- (H/Δt) × c_tick ≈ 0.02–0.1 core-s **per rollout**: the total CPU cost of one rollout, assumed, not measured;
 - C_dec ≈ **0.96–7.2 core-s**, re-planned every Δ_dec = 1 s;
 - a 90-s fight costs ≈ **86–648 core-s**;
 - ideal 10-core throughput ≈ **0.9–7 teacher fights/min**.
@@ -349,12 +421,14 @@ The whole-fight average (0.44 core-s per fight, about 0.16 ms per tick) understa
 - **Measure:**
   - CPU and wall time;
   - c_copy and c_tick with branch thinking off and on;
-  - controller, teacher and recording time;
+  - actual H_eff and projectile-extension lengths;
+  - controller, teacher-shadowing and recording time on the actual label path;
   - peak memory.
 - **Sweep:** small K, S and P values.
 - **Output:**
   - a cost table;
-  - ranking stability (does S = 2 against S = 3 change the chosen assignment?);
+  - **short-sample stability:** does S = 2 against S = 3 change the chosen assignment? This is stability, **not accuracy**.
+  - **accuracy**, only if checked: on a bounded subset, compare against a stronger reference (many more continuations, full branch thinking, longer horizon). Otherwise accuracy stays **unverified**.
   - a per-label and total budget.
 - **Projection:** reported before the run (decision 0031).
 - **Until it is measured,** prefer the directly copied react and the existing gun-only teacher planner. Cache labels, and screen disagreements cheaply (target/goal/intent mismatch) before any counterfactual rollout.
@@ -367,7 +441,8 @@ The whole-fight average (0.44 core-s per fight, about 0.16 ms per tick) understa
 | Does the measured cost per teacher fight exceed the owner-set budget? | Restrict search to guns, or drop T-search and keep copied primitives | drafter |
 | Does any student input include an oracle field (tactic ID, RNG, enemy internals)? | Remove it; use observation-only or a declared, measured inference | implementer |
 | Does a copied rotation leave a unit outside its own useful range beyond the declared tolerance? | Reject or constrain the copy | implementer |
-| Does the proxy J fail to predict paired series outcomes at the pre-registered threshold? | Do not use J; redefine it | drafter |
+| Does the Jπ estimate fail to predict paired series outcomes at the pre-registered threshold, or lack probability calibration on held-out series? | Do not use it; redefine or recalibrate | drafter |
+| Does a search branch apply projectile damage after the canonical fight terminal (§5.4)? | Fix the drain; terminal takes precedence | implementer |
 | Does any projected run exceed 1 h before 22:00? | Ask the owner | Claude |
 | Would any change edit a pinned or frozen file? | Stop; use a new file | implementer |
 
@@ -387,10 +462,20 @@ The whole-fight average (0.44 core-s per fight, about 0.16 ms per tick) understa
 - Late fights have survivor compositions that ordinary full-army drills never see. Include reduced-survivor states in L and T.
 
 ### 8.2 Curriculum and pool weighting (training only)
-- PFSP over 19 doctrines × skills, prior selves (hall of fame; [Liu et al. 2018](https://arxiv.org/abs/1803.10314) found co-evolution with fitness sharing, shared sampling and a hall of fame produced better micro faster) and exploiter cells can be **training or stress distributions**. They are not the yardstick.
-- **Sampling:** use p(cell) = ε·uniform + (1−ε)·PFSP with ε > 0.
-  - f_var(x) = x(1−x) is zero at both extremes, so a "floor" from f_var alone does not guarantee coverage.
-  - f_hard needs a bounded x, e.g. the estimated probability that this cell ends a series, or role-normalised own-loss fraction in [0,1]. It also needs uncertainty, e.g. a Beta posterior.
+- PFSP over 19 doctrines × skills, prior selves (hall of fame; [Adhikari, Louis, Liu & Spurgeon 2018](https://arxiv.org/abs/1803.10314) found co-evolution with fitness sharing, shared sampling and a hall of fame produced better micro faster) and exploiter cells can be **training or stress distributions**. They are not the yardstick.
+- **PFSP polarity:**
+  - In the [PFSP survey §3.2.5](https://arxiv.org/html/2408.01072), f's argument is the **win rate of the training policy against the opponent**.
+  - f(x) = (1−x)^p makes stronger opponents more likely; f(x) = x(1−x) favours similar skill. The names f_hard and f_var are AlphaStar's.
+- **Sampling definition** [inference]:
+  - **Perspective:** our side, in the official fight rules.
+  - **Per cell c:** x_c = the posterior mean probability that our side wins a fight in cell c by elimination (success).
+  - **Weight:** w_c = (1 − x_c)^p, with p > 0. Equivalently, use a bounded difficulty d_c = 1 − x_c with w_c = d_c^p. **Never** put a failure probability or a loss fraction into (1−x)^p: that inverts the priority and favours easy cells.
+  - **Normalization and fallback:** p(c) = ε/|C| + (1−ε) · w_c / Σ w. If Σ w = 0, as when every cell is won with certainty, use uniform.
+  - **ε:** in (0, 1] (ε = 1 is uniform). It is chosen and recorded before tuning. f_var(x) = x(1−x) is zero at both extremes, so f_var alone gives no coverage floor.
+- **Observation model:**
+  - **Each fight's outcome is one Bernoulli observation per cell** (won by elimination or not), with a Beta(α, β) posterior per cell. α and β are declared priors.
+  - Per-unit deaths within a fight are correlated, so they are **not** independent Bernoulli observations.
+  - A continuous role-weighted loss fraction needs its own stated model (e.g. per-fight means with series-grouped uncertainty) before it is used as a sampling input.
 - [Prioritized Level Replay](https://arxiv.org/abs/2010.03934) is the analogue for choosing training cells.
 - **Noise handling:** UH-CMA-ES ([Hansen et al. 2009](https://cs.utexas.edu/~shivaram/readings/b2hd-HansenNGK2009.html)) via `cma.NoiseHandler`; paired seeds; racing ([irace](https://iridia.ulb.ac.be/irace/)).
 - **Accounting:** series multiply the fights per candidate, and noise handling adds re-evaluations. Every budget states fights per candidate × candidates × series.
@@ -411,16 +496,18 @@ The whole-fight average (0.44 core-s per fight, about 0.16 ms per tick) understa
 **Step 0 (prerequisite, not a gain item):**
 1. Define the participation rule check (§4.3), the evaluation (§5) and the interface adapters (§3.2).
 2. Establish the T-elite baseline and the shadow logging (spec §9).
-3. Fix the seed sets (§8).
+3. Fix the seed sets (§8) and the fit/validation protocol (§5.5).
+4. Run spec §13's impact ranking (leave-one-out and add-one-in over the elite's mechanisms in the series). It confirms or changes the order below. Any change of order goes to the owner.
 
 Evaluation design precedes every comparison. It does not displace the owner's primitive order.
 
 ### 1. React: copy the engine's reaction rule as a named shape
 - **Closest landmark:** the supervised-copy stage (AlphaStar/AlphaGo SL) in its simplest form: adopt the teacher's rule (spec §9.3 option 2), not learn it.
-- **Expected gain:** the largest known gap.
+- **Why first:** the largest known gap. **No particular gain is promised.**
   - Enemy artillery causes 74.1% of our deaths and 77% of damage taken (86% of our ranged deaths, 63% of melee).
-  - We make zero reactions.
-  - Measured by hit probability and losses avoided (§4.1).
+  - We record zero reactions.
+  - It is measured by hit probability and losses avoided (§4.1).
+  - In the earlier JS engine (spec §13), the dodge trio was the largest single contributor. That is development data, not comparable with C++ scores.
 - **Cost:** low once the observation adapter exists.
 - **Risk:**
   - dodging costs firepower and breaks volley readiness;
@@ -430,7 +517,11 @@ Evaluation design precedes every comparison. It does not displace the owner's pr
 ### 2. V1 timing: the battery oscillator against copied central sync
 - **Closest landmark:** time-on-target doctrine; Mirollo–Strogatz pulse coupling; Kuramoto; the engine's `holdFire.sync`.
 - **The difference:** local coupling, not a scheduler.
-- **Expected gain:** shells landing together leave less room to dodge one shell into another's footprint. Our 184.4 launches per fight against the enemy's 104.9, for similar kills, suggest single-gun fire is inefficient.
+- **Expected gain (a hypothesis):** shells landing together leave less room to dodge one shell into another's footprint.
+  - Our 184.4 launches per fight against the enemy's 104.9 (killers file) is a **diagnostic lead only**.
+  - The file has no launch/impact timing and no counterfactual synchronisation measurement.
+  - Unequal casualty timing, target types and opportunities could also produce the ratio.
+  - V1's benefit stays unproven until paired timing and coverage evidence exists.
 - **Risk:** hold-induced firepower loss; few-gun degeneracy; launch ≠ landing synchrony (§4.2).
 - **Shapes kept:** Yes; the oscillator *is* the shape's synchrony.
 
@@ -445,9 +536,9 @@ Evaluation design precedes every comparison. It does not displace the owner's pr
 - **Changes:**
   - participation-constrained rotation (§4.3);
   - aim (`lead`);
-  - series-aware tuning of the existing knobs, using the §5 proxy only after validation, §8 sampling and noise handling.
+  - series-aware tuning of the existing knobs, using a §5.2 estimate only after the §5.5 calibration and validation, with §8 sampling and noise handling.
 - **Closest landmarks:** ECSLBot-style fitness, PFSP and hall of fame, UH-CMA-ES.
-- **Risk:** rotation leaving the fight; proxy mis-ranking. Both are covered by stop rows.
+- **Risk:** rotation leaving the fight; the estimate mis-ranking. Both are covered by stop rows.
 
 ### 5. Conditional: budgeted adaptive portfolio search and distillation
 - **Only if** the §7 pilot fits the budget **and** a paired comparison shows a measured low-loss series benefit over items 1–4.
@@ -484,44 +575,46 @@ Evaluation design precedes every comparison. It does not displace the owner's pr
 | Technique | Evidence (scoped) | Note for us |
 |---|---|---|
 | Concentration of force | Lanchester models fitted to StarCraft battles ([Stanescu et al. 2015](https://ojs.aaai.org/index.php/AIIDE/article/view/12780)) | Kill speed compounds |
-| Focus fire and overkill | Against the built-in AI, 1,000 battles ([Usunier et al. §7.2, Table 1](https://ar5iv.labs.arxiv.org/html/1609.02993)): m15v16 weakest-closest (wc) **.10**, no-overkill-no-change (nok_nc) **.68**, closest (c) **.81**, learned ZO **.79**; w15v17 .02/.12/.20/.49. The paper warns that "if our units die without doing their expected damage… 'no overkill' can be detrimental (as it is implemented)". | Naive weakest-first focus collapsed at scale. No-overkill helped against weakest-first but was not best; the best rule is scenario-dependent. |
+| Focus fire and overkill | Against the built-in AI, 1,000 battles ([Usunier et al. §7.2 heuristics, §7.3 / Table 1 results](https://ar5iv.labs.arxiv.org/html/1609.02993)): m15v16 weakest-closest (wc) **.10**, no-overkill-no-change (nok_nc) **.68**, closest (c) **.81**, learned ZO **.79**; w15v17 .02/.12/.20/.49. The paper warns that "if our units die without doing their expected damage… 'no overkill' can be detrimental (as it is implemented)". | Naive weakest-first focus collapsed at scale. No-overkill helped against weakest-first but was not best; the best rule is scenario-dependent. |
 | Target priority (dpf/hp) | NOKAV in SparCraft searches; optimal 1-vs-n orderings exist ([Furtak & Buro 2010](https://ojs.aaai.org/index.php/AIIDE/article/view/12410)) | Compare our splash value V with AV-plus-splash on clone branches |
 | Kiting | SMAC 3s_vs_5z; [Uriarte & Ontañón 2012](https://ojs.aaai.org/index.php/AIIDE/article/view/12544); ECSLBot | Ranged (reach 280) against melee (reach 64) |
 | Damaged-unit rotation | Churchill 2017 (simulation, out of *enemy* range); ECSLBot "knowing when to flee" | Candidate only, under the participation rule (§4.3) |
 | Splash: react, timing, geometry | SC2LE splash mini-game gap (scores, one benchmark); potential-field unit control ([Hagelbäck](https://ojs.aaai.org/index.php/AIIDE/article/view/12365); splash-specific repulsion not verified) | Owner's order §4: react, then V1, then V2 |
-| Damage dealt against received | Pareto micro ([Liu et al. 2018](https://arxiv.org/abs/1803.10316)) | Report both. The series proxy (§5.2) folds them into expected fights won. |
+| Damage dealt against received | Pareto micro ([Dubey et al. 2018](https://arxiv.org/abs/1803.10316)) | Report both. The series reference value Jπ (§5.2) is defined in expected fights won, with a loss-aware tie rule. |
 
 ---
 
-## 11. Tools (checked 2026-10-08; one license and link per tool)
+## 11. Tools (checked 2026-10-08; one license and one version-pinned link per tool)
 
-**Policy:** keep pycma now. Add any other dependency only on a measured need from items 1–5.
+**Policy:** keep pycma now. Moving `latest`/`master` links are for browsing only; the version-pinned PyPI pages are the audited snapshot. Add any other dependency only on a measured need from items 1–5.
 
 | Tool | Version, license | Verdict |
 |---|---|---|
-| [pycma](https://pypi.org/project/cma/) | 4.5.0 (2026-09-13), BSD-3-Clause | **Keep;** use `NoiseHandler` and paired seeds |
-| [pyribs](https://pypi.org/project/ribs/) | 0.12.0 (2026-07-22), MIT | Only for the deferred repertoire |
-| [Optuna](https://pypi.org/project/optuna/) | 5.0.0 (2026-09-07), MIT | Optional for categorical choices and pruning, if a need is measured |
-| [Nevergrad](https://pypi.org/project/nevergrad/) | 1.0.12 (2025-04-23), MIT | Optional cross-check |
+| [pycma](https://pypi.org/project/cma/4.5.0/) | 4.5.0 (2026-09-13), BSD-3-Clause | **Keep;** use `NoiseHandler` and paired seeds |
+| [pyribs](https://pypi.org/project/ribs/0.12.0/) | 0.12.0 (2026-07-22), MIT | Only for the deferred repertoire |
+| [Optuna](https://pypi.org/project/optuna/5.0.0/) | 5.0.0 (2026-09-07), MIT | Optional for categorical choices and pruning, if a need is measured |
+| [Nevergrad](https://pypi.org/project/nevergrad/1.0.12/) | 1.0.12 (2025-04-23), MIT | Optional cross-check |
 | [irace](https://raw.githubusercontent.com/MLopez-Ibanez/irace/master/DESCRIPTION) | upstream dev 4.5.0.9000, GPL (≥ 2); current CRAN release **not verified** | Use the racing idea in Python; skip the R dependency |
-| [scikit-learn](https://pypi.org/project/scikit-learn/) | 1.9.1, BSD-3-Clause | Small selectors and ranking fits, **with explicit depth/size limits and a native export path** |
-| [LightGBM](https://pypi.org/project/lightgbm/) | 4.7.0, MIT | As above; boosted trees are readable only with strict limits |
-| [evosax](https://pypi.org/project/evosax/) | 0.3.1, Apache-2.0 (JAX) | Skip: the cost is C++ fights, not the optimiser |
-| [EvoTorch](https://docs.evotorch.ai/latest/) | 0.6.1, Apache-2.0 (**PyTorch**) | Skip, same reason |
-| [QDax](https://pypi.org/project/qdax/) | 0.5.0, MIT (JAX) | Skip |
-| [neat-python](https://pypi.org/project/neat-python/) | 2.0.0, BSD-3 | Skip: opaque networks |
-| [PettingZoo](https://pypi.org/project/pettingzoo/) | 1.27.0, MIT | Defer |
-| [Ray/RLlib](https://pypi.org/project/ray/) | 2.59.0, Apache-2.0 | Defer |
-| [CleanRL](https://pypi.org/project/cleanrl/) | 1.2.0 (2023-05-22), MIT | Defer |
-| [imitation](https://pypi.org/project/imitation/) | 1.0.1, MIT | Skip: our policies are not torch nets |
-| [d3rlpy](https://pypi.org/project/d3rlpy/) | 2.8.1, MIT | Skip, same reason |
-| [OpenSpiel](https://openspiel.readthedocs.io/en/latest/api_reference.html) | 2.0.2, Apache-2.0 | **Supports simultaneous joint actions** (`apply_actions`, `is_simultaneous_node`). Deferred because the action-abstraction and wrapper cost is high, not because it lacks simultaneous moves. |
+| [scikit-learn](https://pypi.org/project/scikit-learn/1.9.1/) | 1.9.1, BSD-3-Clause | Small selectors and ranking fits, **with explicit depth/size limits and a native export path** |
+| [LightGBM](https://pypi.org/project/lightgbm/4.7.0/) | 4.7.0, MIT | As above; boosted trees are readable only with strict limits |
+| [evosax](https://pypi.org/project/evosax/0.3.1/) | 0.3.1, Apache-2.0 (JAX) | Skip: the cost is C++ fights, not the optimiser |
+| [EvoTorch](https://pypi.org/project/evotorch/0.6.1/) ([docs](https://docs.evotorch.ai/latest/)) | 0.6.1, Apache-2.0 (**PyTorch**) | Skip, same reason |
+| [QDax](https://pypi.org/project/qdax/0.5.0/) | 0.5.0, MIT (JAX) | Skip |
+| [neat-python](https://pypi.org/project/neat-python/2.0.0/) | 2.0.0, BSD-3 | Skip: opaque networks |
+| [PettingZoo](https://pypi.org/project/pettingzoo/1.27.0/) | 1.27.0, MIT | Defer |
+| [Ray/RLlib](https://pypi.org/project/ray/2.59.0/) | 2.59.0, Apache-2.0 | Defer |
+| [CleanRL](https://pypi.org/project/cleanrl/1.2.0/) | 1.2.0 (2023-05-22), MIT | Defer |
+| [imitation](https://pypi.org/project/imitation/1.0.1/) | 1.0.1, MIT | Skip: our policies are not torch nets |
+| [d3rlpy](https://pypi.org/project/d3rlpy/2.8.1/) | 2.8.1, MIT | Skip, same reason |
+| [OpenSpiel](https://pypi.org/project/open-spiel/2.0.2/) ([API](https://openspiel.readthedocs.io/en/latest/api_reference.html)) | 2.0.2, Apache-2.0 | **Supports simultaneous joint actions** (`apply_actions`, `is_simultaneous_node`). Deferred because the action-abstraction and wrapper cost is high, not because it lacks simultaneous moves. |
 | [SparCraft](https://github.com/davechurchill/SparCraft) / [UAlbertaBot](https://github.com/davechurchill/ualbertabot) | MIT | Read the algorithms (PGS+, SSS, NOKAV, LTD2) |
 | [microRTS](https://github.com/Farama-Foundation/MicroRTS) | GPL-3.0 | Read only; do not vendor |
 
 ---
 
-## 12. Self-audit (revision 2): each recheck finding, the fix and its cause
+## 12. Self-audit: each recheck finding, the fix and its cause
+
+### 12.1 Round 1 (revision 2)
 
 | Finding | Fix in this revision | Cause in revision 1 |
 |---|---|---|
@@ -550,5 +643,23 @@ Evaluation design precedes every comparison. It does not displace the owner's pr
 - engine branch semantics and saveWounded, read in `evidence/tactical_composition_demo/astelia_cpp/src/native/`.
 
 **Still from secondary summaries:** AlphaStar compute, the f_hard exponent, OpenAI Five's 80/20 split, AlphaGo's 57%, and the PGS 2013 abstract-level claim (the PDF returned 404).
+
+### 12.2 Round 2 (revision 3)
+
+| Finding | Fix in this revision | Cause in revision 2 |
+|---|---|---|
+| **R2-F1 (High):** the expected-streak proxy was invalid | §5.2 now defines Jπ(s,a,k) = Eπ[I(win) × (1 + Vπ(M,k)) \| s,a] under a named continuation policy π, with M the actual healed composition at the canonical terminal. The factorisation requires E[Vπ(M,k) \| win]; a value at mean composition is labelled an approximation needing measured error bounds (gun counterexample included). Vπ names its policy and data identity. LTD2 is a separate, unit-labelled baseline, never substituted for a probability without held-out calibration. A streak-first, loss-aware selection/tie rule covers retained gun capability, survivors at fight 10, uncertainty (keep the incumbent) and non-passive timeouts, with no casualty budget. Everything is labelled a future design and validation requirement, not an executable evaluator. | I wrote V(m̂) at the mean survivor vector without checking Jensen's gap against the very nonlinearity (last gun) that motivated role counts. I let a non-probability heuristic stand in for a probability. I did not look at what Vπ = 0 at fight 10 implies for losses. |
+| **R2-F2 (Medium):** tail semantics and cost | §5.4 now states the canonical terminal per `World::done()` (re-read: `world.cpp:126–128`). It proposes precedence (elimination before timeout on one tick; simultaneous elimination is not a win; timeout ends the series), to be confirmed against the lab runner. The terminal precedes in-flight projectiles, so no post-terminal drain. It separates nominal H, H_eff ≤ H + E_max, pre-H projectiles (shells **and aimed shots**) and declared post-H behaviour, with a labelled fallback estimator. §7's formula now uses H_eff, c_nested and c_shadow on the actual label path. The dimensional slip is fixed: (H/Δt) × c_tick ≈ 0.02–0.1 core-s per rollout, assumed. S = 2 against S = 3 is called stability, not accuracy; accuracy needs a bounded stronger-reference comparison or stays unverified. A stop row forbids post-terminal damage in branches. | I added "continue until shells land" without reconciling it with the engine's stop condition, the series carry-over rule or the cost formula. I wrote H × c_tick in the worked numbers while the formula said (H/Δt) × c_tick. I conflated stability with accuracy. |
+| **R2-F3 (Medium):** PFSP polarity | §8.2 now puts our **win probability** x_c (posterior mean, Beta–Bernoulli per fight per cell) into (1−x)^p, or equivalently a difficulty d^p. It forbids feeding failure probabilities or loss fractions into (1−x)^p. It defines perspective, normalization ε/\|C\| + (1−ε)·w/Σw with ε ∈ (0,1], an all-zero fallback to uniform, and a separate stated model before any continuous loss input is used. f_hard/f_var attribution is re-verified against survey §3.2.5 (argument is the training agent's win rate). | I substituted a difficulty-increasing quantity into a formula whose argument is a success probability, without re-reading the source's definition. |
+| **N1:** fit and validation protocol | §5.5: separate fit/calibration/validation sets; whole-series grouping; sample projection before any fit; an unsupported-composition fallback; refreshed reporting draws after selection; frozen held-out stress cases; no transfer claim beyond the 19 scripts. Step 0 now includes it. | Revision 2 named seed sets but did not allocate them to fitting and validation. |
+| **N2:** causal language and primitive fidelity | §9 item 2: launch counts are a diagnostic lead; V1's benefit is a hypothesis. Item 1 promises no gain. §3.2 item 7 adds per-primitive legal inputs and intent (cooldown, release eligibility, latency, interruption); teacher-driven against student-driven distributions; joint battery decisions; benefit and participation required beyond agreement; a possibly non-compliant T-elite labelled. Step 0 adds spec §13's impact ranking, with the owner deciding any order change. | I turned a ratio without timing data into an expected gain. |
+| **N3:** citations and snapshots | Pareto micro is now Dubey, Ghantous, Louis & Liu 2018; co-evolution is Adhikari, Louis, Liu & Spurgeon 2018 (both re-verified on arXiv). The Gin Rummy DAgger result is attributed as one empirical failure plus the authors' interpretation. Mirollo–Strogatz is scoped to identical, all-to-all, excitatory integrate-and-fire oscillators, and the V1 design must name its graph. Usunier sections are corrected to §7.2 (heuristics) and §7.3 (results). Tool links are pinned to version pages (all 16 return HTTP 200). The `thinkTeams & (1 << me)` expression is corrected. | I labelled papers by a familiar co-author. I cited moving links as snapshots. I paraphrased a source expression instead of copying it. |
+
+**Re-verified in round 2 (WebFetch or source read):**
+- arXiv author lists for 1803.10316 and 1803.10314;
+- PFSP survey §3.2.5 definition;
+- Usunier section numbers;
+- `World::done()`, `artillery.cpp:61` and `decisions.cpp:6–12` read directly;
+- the PyPI version pages.
 
 **This revision should get the owner's verbatim recheck again** (AGENTS.md), preferably by Codex, before B8 acts on it.
