@@ -1,0 +1,111 @@
+# Agent rules for this repository (Codex, Claude Code, any other agent)
+
+GeoMind research workspace. Forward guidance: `GEOMIND_GEOMETRIC_AI_QUALITY_STANDARD_R5.md`, aligned to the owner's `docs/RRG_V0_2_1_ALIGNMENT_HANDOFF.md`. Source identity and pin readiness: `research/rrg/CURRENT.md`. R4 remains unchanged historical guidance for accepted experiments. Milestone status lives only in `STATUS.json` (README shows a generated table). Process design and rationale: `docs/PROCESS_REVIEW.md`.
+
+## Milestone lifecycle (C4 onward)
+
+1. **Propose** (`experiments/cN_proposal.md`), and get owner approval.
+2. **Register:** commit `experiments/cN_manifest.json` (all endpoints and verdict rules) and `milestones/cN.json` (dependencies, stage commands, mutants, implementer family) **before** any run on final seeds.
+3. **Implement** in new files (`geomind/cN_*.py`, `geomind/run_cN.py`, `tests/test_cN.py`, `tools/cN_mutants.py`). The runner must call `tools/milestones.py` `check("cN", "panel")` itself.
+4. **Verify once, in order:** `.venv/bin/python tools/verify.py --milestone cN --output evidence/cN_rNNN` runs preflight → tests → smoke (non-panel seeds) → parallel mutation probe → recorded panel. A rerun resumes after the last stage verified for the same code.
+5. **Commit the evidence.** The pre-commit hook checks registration order, the `PIPELINE.json` record, endpoint coverage and the status block.
+6. **One independent review** per revision, by the **other model family** (Claude ↔ Codex), with a time cap of about 15–20 minutes. It goes in `evidence/cN_rNNN_review_<family>/INDEPENDENT_REVIEW.md`: first line the verdict, a `Reviewer family: <family>` line, and the SHA256 of the reviewed `results.json`.
+7. **ACCEPTED:** update `STATUS.json`, run `python3 tools/status.py --write`, and freeze the files. **CHANGES_REQUIRED:** fix, register a new revision on fresh seeds, verify once, review once.
+   An implementer who finds a design defect before review **withdraws** the revision in a decision record (`docs/decisions/`), keeps its evidence unchanged and registers the next revision on fresh seeds. Never re-analyze a recorded panel to change its verdict.
+
+## Proposal phase (every agent)
+
+- **Scientific authority:** current owner decisions → unchanged RRG foundation definitions → current audited RRG interpretation → GeoMind R5/decisions → proposals/manifests → code → historical drafts. The local geometry↔mode loop is required for a resonator claim. Current RRG v0.2.1 additionally makes causal background transformation central to `B_n → R_n → B_{n+1}`. Each experiment names the subset it tests; staged composition alone does not establish source recursion. Physical examples do not impose literal physical-force equations on this AI model. Current interpretation guides future claims without changing old measurements. Consult `research/rrg/CURRENT.md`; missing or mismatched audited sources block source qualification and new experimental execution.
+- **The drafter owns the proposal.** Any defect found in it, by anyone, is fixed by the drafter. The fix is recorded in the proposal's self-audit with its cause.
+- **Before owner approval, run no project code.** That covers benchmarks, pilots and smoke runs, unless the owner explicitly asks. An owner-requested pilot uses its own pilot entropy and scratch code outside `geomind/`. Its scripts, raw results and a README stating its status are committed to `evidence/cN_dev_pilot/` in the same session.
+- **Every proposal has a normalization ledger.** It lists measured quantities, their levels and their normalization. R5 and decision 0007 retain the same procedure without hand-tuning per level as an experimental constraint, not a universal identical-equation definition of RRG. Scale ratios, composition from child summaries and lawful up/down transmission are allowed. State each side's units and keep descendant reads owner/evaluator-side, outside the upper-level prediction API. Direct-part validity can veto promotion; deeper reorganization is diagnostic (0010), and all underlying elements keep evolving.
+- **Every stop condition is a yes/no row** with one action and one responsible role (owner, drafter, implementer or reviewer).
+
+## Owner recheck (mandatory for every complex or important task)
+
+After every complex or important piece of work, send the owner's recheck request **verbatim** to a reviewer, preferably the other model family. Fix what it finds before moving on. Important work includes:
+- a design or design revision;
+- an engine, port or integration;
+- a development or fixture run and its report;
+- a major analysis or result;
+- a delivery that others build on.
+
+The request, verbatim:
+
+> Recheck what you did please, check if it is the best we can do, we want 10 out of 10 or above 9 - it's fine to break the things or fully rework. Check for issues, conflicts, gaps.
+
+The reviewer reports findings, never numeric scores (see **Never**). Each recheck and its disposition are tracked in `docs/PLAN_CURRENT.md`, the step-by-step plan.
+
+## Verification order (mandatory)
+
+| Stage | Time | How |
+|---|---|---|
+| tests | measure actual suite time | `.venv/bin/python -m pytest -q -x` once after the complete planned change batch, at the end of implementation work |
+| gated pipeline, C4+ | measure on first run | `tools/verify.py --milestone cN --output evidence/cN_rNNN` |
+| gated pipeline, C1/C2 (legacy) | C1 R006 measured 185 s | `tools/verify_milestone.py` (C1) and `tools/verify_c2.py` (C2) |
+| independent review | ≤ 20 min | once per revision, on committed evidence |
+
+- **Owner test timing rule:** finish all planned code, test and review-driven changes before running tests. Run the appropriate tests once at the end of the change batch/session. Do not run a full suite after each intermediate edit or review finding.
+- An earlier test run is allowed only when its result is required to unblock progress, diagnose a concrete failure, or decide a dependent implementation step. State that blocking need before the run. A successful run is not repeated unless subsequent changes, a failure or a specific unresolved concern requires it.
+- If review finds more changes after an early test, collect and complete the remaining batch before the next run; do not alternate edits with routine full-suite reruns.
+- Finish **all** code and test edits before any long run. Never edit code while a long run is in progress.
+- Never run a recorded panel or mutation probe directly; use the pipeline. Do not run a rehearsal panel. Do not repeat runs that already passed for the same code.
+- **Every registered endpoint** must appear in the receipt's `endpoint_coverage` as `evaluated` (value and verdict) or `not_run` (reason). No endpoint may be test-only and silently missing (the C2 lesson).
+- Before starting anything that takes more than a few minutes, tell the user how long it will take and why.
+
+## Provenance and status
+
+- Every commit carries a provenance trailer: `Assisted-by: Claude:<model>`, `Assisted-by: Codex:<model>`, or `Human-authored: yes`. The commit-msg hook enforces this.
+- Change milestone status only in `STATUS.json`, then run `python3 tools/status.py --write`. The pre-commit hook rejects a stale README block. Do not hand-edit status prose in README or the standard.
+
+## Enforcement (do not bypass)
+
+- **C4+ (generic):**
+  - `tools/milestones.py` is the gate: per-milestone dependency fingerprints, with stamps in `.gate/<cN>/` re-verified by artifact hash and content.
+  - `tools/verify.py` and `tools/milestone_mutation.py` refuse stages that are not ready.
+  - `tools/milestone_hook.py` (agent hook) and `tools/milestone_precommit.py` (git) enforce the same rules.
+- **C1/C2 (legacy, frozen):** `tools/gate.py`, `tools/gate_hook.py` and `tools/precommit.py`.
+- **Wiring:** agent hooks run both hook scripts, in `.claude/settings.json` (Claude Code) and `.codex/hooks.json` (Codex; loaded only after you trust the project's `.codex/` folder). Git hooks are in `.githooks/`; run `git config core.hooksPath .githooks` once per clone. Never use `git commit --no-verify`; the agent hooks block it.
+- Hooks are a guardrail, not a hard boundary, in both tools; the self-guards and git hooks back them up. Never work around a block: fix what it reports. Never forge or edit `.gate/`.
+
+## Accepted and frozen
+
+**C1 R006** is independently accepted (commit 721249b). Do not modify these files:
+
+- `geomind/incremental.py` `fcbb18a41f151da3d93c47f9779af0ae46adc3e45fe2f61581f825ab66118b23`
+- `geomind/run_c1.py` `c561625056311ecee9ff795844b67775567db49a7b40f1697b4e6a9c74cbdeb5`
+- `geomind/c1_cases.py` `56f080e4e06eecdcfcc2910250003d9b5d5a745b37f32d65b564c7876348bf05`
+- `geomind/c1_reference.py` `1f853a205d18a26b7c9e544d8c3dd04980096ac56ced259672e40486a3c14df4`
+- `tests/test_c1.py` `31ff88acd1c7b7df479153063283d891fde2dd855e9bc9a9ebbf38eee343dd5e`
+- `experiments/c1_manifest.json` `a96767c7b9548e35dd1b9974873b7295fd7cc8aea66b21698195489dae6bf4b4`
+
+**Bound by accepted receipts:** the C1 R006 and C2 R002 receipts bind every file listed in their `results.json` `file_hashes`. That includes `tools/gate.py`, `tools/gate_hook.py`, `tools/precommit.py`, `tools/mutation_probe.py`, `tools/verify_milestone.py`, `tools/verify_c2.py`, `tools/c1_mutants.py`, the C2 tools, `tests/test_gate.py`, `tests/test_c2*.py` and the C2 sources. **Never edit them**; add new files instead. Check with the identity snippet in `docs/PROCESS_REVIEW.md` or by comparing against `file_hashes`.
+
+**C4 R003** is independently accepted (`evidence/c4_r003_review_codex/INDEPENDENT_REVIEW.md`). Its ten own files (`experiments/c4_manifest.json`, `geomind/c4_*.py`, `geomind/run_c4.py`, `tests/test_c4.py`, `tools/c4_mutants.py`, `milestones/c4.json`, `pyproject.toml`, `uv.lock`) are frozen at the hashes in `STATUS.json`, which `tools/accepted_freeze.py` enforces at commit. The shared pipeline tools (`tools/milestones.py`, `tools/verify.py`, `tools/milestone_mutation.py`) are **pinned** to the accepted evidence commit instead (`pinned_shared`): they may be improved for later milestones, and git history keeps the exact versions that produced C4.
+
+**C5 R003** is independently accepted (`evidence/c5_r003_review_codex/INDEPENDENT_REVIEW.md`).
+- **Frozen:** its ten own files (`experiments/c5_manifest.json`, `geomind/c5_*.py`, `geomind/run_c5.py`, `tests/test_c5.py`, `tools/c5_mutants.py`, `milestones/c5.json`), plus the six C4 and environment files it reads, at the hashes in `STATUS.json`.
+- **Pinned, not frozen:** the shared pipeline tools, to the accepted evidence commit.
+- **Reuse:** C6 must reuse C5 code read-only or through new files.
+- **Formation caveat:** H-M at level 2 is supported for the formed groups only. Formation is near its threshold, and this panel does not establish a population formation rate above 50%.
+
+Open low notes from that review, for future new-file work, not blocking:
+- **N1:** the `level2_interface` check counts publications globally. It should match one publication per accepted candidate, per world, and validate finite fields and the link between S and the candidate.
+- **N2:** keep the raw development measurements behind any calibrated threshold.
+- **N3:** zero-area (collinear) hulls bypass the hull-overlap test.
+- **Before claiming next-level dynamics:** the parent's inherited port capacities and its size-weighted natural rate need a full-versus-coarse check.
+
+Open low notes for a future C1 revision, not blocking: R1 (`_validate_delta` should require `type(edge) is Constraint`) and R2 (state the re-anchoring cost in receipt-generated limits).
+
+## Known gaps (by design, documented)
+
+- The frozen C1/C2 runners cannot be changed to check the gate themselves; agent hooks and git hooks cover them. Every C4+ runner must call the gate itself.
+- An agent that deliberately forges consistent artifacts and stamps can defeat local checks. The pre-commit fingerprint and registration-order checks and the cross-family review are the backstop.
+
+## Never
+
+- Modify accepted code, receipt-bound files or committed evidence receipts (`evidence/*/results.json`, `evidence/c0_review/`). The only exception is shared pipeline tooling that an acceptance explicitly pins (`pinned_shared`) instead of freezing.
+- Change or remove committed freeze metadata in `STATUS.json`.
+- Run the C0 world experiment (`geomind.run_c0`) unless explicitly asked.
+- Start a milestone whose proposal the owner has not approved, or C3 (not authorized after the C2 stop decision).
+- Assign numeric quality scores (such as 9/10).

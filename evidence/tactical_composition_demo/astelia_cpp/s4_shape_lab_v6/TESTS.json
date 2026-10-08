@@ -1,0 +1,23 @@
+{
+  "status": "PASS",
+  "seconds": 2.3248267080000002,
+  "exit_code": 0,
+  "command": [
+    "/Users/new/RiderProjects/ai_RPG_test/.venv/bin/python",
+    "-B",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v6/test_lab.py",
+    "-k",
+    "not (test_native_fixtures or test_world_pairing or test_series_cohort_pairing)",
+    "--basetemp",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v6/raw/test_tmp_remaining"
+  ],
+  "fights": 0,
+  "prior_passed": 7,
+  "remaining_passed": 8,
+  "prior_pass_receipt": "TESTS_ATTEMPT_02.json",
+  "note": "Native and six constructor cases passed on prior failed setup attempt; only remaining eight cases execute here. Failed attempts are retained separately."
+}

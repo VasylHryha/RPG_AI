@@ -1,0 +1,22 @@
+nice: setpriority: Operation not permitted
+nice: setpriority: Operation not permitted
+/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v6/build/planner_copy.cpp:26:110: error: call to 'attackName' is ambiguous
+   26 | AttackFamily attackByName(const std::string& name){for(size_t i=0;i<size_t(AttackFamily::Count);++i)if(name==attackName(AttackFamily(i)))return AttackFamily(i);throw std::invalid_argument("unknown artillery family: "+name);}
+      |                                                                                                              ^~~~~~~~~~
+/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/src/native/artillery.h:20:13: note: candidate function
+   20 | const char* attackName(AttackFamily family);
+      |             ^
+/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v6/build/planner_copy.cpp:25:13: note: candidate function
+   25 | const char* attackName(AttackFamily f){constexpr const char* names[]={"singles","focus","net","wall","herd","split","trap","sweep","battery","dashnet","left","own"};if(size_t(f)>=size_t(AttackFamily::Count))throw std::invalid_argument("invalid artillery family");return names[size_t(f)];}
+      |             ^
+1 error generated.
+Traceback (most recent call last):
+  File "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v6/build.py", line 121, in <module>
+    if __name__=='__main__':build()
+  File "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v6/build.py", line 91, in build
+    if name.endswith('.cpp') and name!='adapter_fixture.cpp':objects.append(compile(out/name,out/(pathlib.Path(name).stem+'.o')))
+  File "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v6/build.py", line 89, in compile
+    argv=[*flags,'-c',str(source),'-o',str(obj)];subprocess.run(['nice','-n','15',*argv],check=True,timeout=180);commands.append(argv);return str(obj)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 528, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['nice', '-n', '15', '/usr/bin/clang++', '-I/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v6/build', '-I/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v6', '-std=c++17', '-O3', '-fno-fast-math', '-ffp-contract=off', '-fwrapv', '-I/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/src', '-mcpu=native', '-I/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/src/native', '-I/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/src', '-I/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_spacing_probe_v1', '-I/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_react_adapter_v1', '-I/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v1', '-c', '/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v6/build/planner_copy.cpp', '-o', '/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v6/build/planner_copy.o']' returned non-zero exit status 1.

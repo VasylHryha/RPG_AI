@@ -1,0 +1,26 @@
+F
+=================================== FAILURES ===================================
+_____________________________ test_native_fixtures _____________________________
+
+    def test_native_fixtures():
+        payload=json.loads((HERE.parent/'s4_v7c/THETA_ORIGIN.json').read_text())
+        payload['planner_states']=json.loads((HERE/'PLANNER_STATES.json').read_text())
+        pool=json.loads((HERE.parent/'s4_shape_lab_v4/DECLARATION.json').read_text())['pool'];timing=dict(mode='base',k=1,radius=400)
+        payload['requests']=[requests.drill_request(g,a,'regular',731,0,pool,timing) for g in ('D1','V2D2','D5','RD','C3') for a in requests.ARMS]
+        payload['requests'] += [requests.series_request(a,dict(seed=732,orientation=1,tactic='line'),pool,requests.cohort()[:3],timing) for a in requests.ARMS]
+        results=[]
+        for name in ('shape_fixture','adapter_fixture'):
+            binary=HERE/'build'/name;build.admit(binary);started=time.monotonic()
+            result=subprocess.run([str(binary)],input=json.dumps(payload)+'\n',text=True,capture_output=True,timeout=60)
+            (HERE/f'{name.upper()}.stdout.log').write_text(result.stdout);(HERE/f'{name.upper()}.stderr.log').write_text(result.stderr)
+>           assert result.returncode==0,result.stderr
+E           AssertionError: dummy snapshot absent
+E             
+E           assert 1 == 0
+E            +  where 1 = CompletedProcess(args=['/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v6/build/shape_fixture'], returncode=1, stdout='', stderr='dummy snapshot absent\n').returncode
+
+evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v6/test_lab.py:40: AssertionError
+=========================== short test summary info ============================
+FAILED evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v6/test_lab.py::test_native_fixtures
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed in 0.92s
