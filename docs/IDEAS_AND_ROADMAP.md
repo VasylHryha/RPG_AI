@@ -53,6 +53,7 @@ The test of "real" is that the AI wins against Astelia's scripted AI in a game r
 | W6 | 0h: adopt the root-relative O pin (C2) for a preregistered evaluation, and the multi-key F5 gate (DESIGN_0H_REV7 §19.7) | adopt both; the gate only; neither (push the medium laws first) | the gate in any case (single-key F5 flips under every rule); C2 as the 7.12 candidate, honestly labelled a placement prior; the medium laws continue in parallel |
 | W7 | 0g: approve the S5 v7 proposal (S as a reported secondary; the 200-cluster cap) | approve; amend | approve (then Codex builds the sealed spec and the planning receipt, no fights) |
 | W8 | 0h after the capacity result | (a) ceiling 96 in the candidate law; (b) keep 64 and test a stall gate on B-path funding (meaningful progress 0.556); (c) (b) first, 96 as the fallback. A narrower root zone was withdrawn (FRONT_TIPS_ROOTZONE: it releases 0.1%); one-active-front targets 17–25% of the front cost | (c) |
+| W9 | 0g network route after first trained nets (decisions 0035, 0036) | units act alone + tactical leader on top; stage 2 = search-guided self-improvement (Expert Iteration) instead of ES; full-army fight sooner; RRG tested at the leader (coordination); lighter dev process | **owner approved 2026-10-08** (0035 units/leader; 0036 'overall seems solid, document it'). Recheck table in 0036 | Claude |
 
 ## 3b. Recheck rule (owner, 2026-10-05: "don't forget to run recheck script for each serious chunk of work")
 
