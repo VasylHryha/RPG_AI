@@ -226,3 +226,32 @@
 | Is held-out imitation no better than its declared baseline on a head? | Stop before play; fix the features or labels | implementer |
 | Is the slice network far outside the effect size below the teacher after DAgger? | Report; redesign with the owner before stage 2 | drafter |
 | Does a projection exceed 1 h before 22:00? | Ask the owner | Claude |
+
+---
+
+## Owner approval and the build route (2026-10-08)
+
+- **Codex round 2** (`docs/reviews/network_policy_design_review_r2_codex.md`, CHANGES_REQUIRED, R2-F1…F10) asked for exact engineering contracts:
+  - the field allowlist and tensor table;
+  - the cast state machine;
+  - the constrained-teacher and label join;
+  - the N2 gradient and recurrent-state paths;
+  - C4 motion numerics in engine units;
+  - isolating ablations;
+  - safe multimodal losses and the DAgger schedule;
+  - resources;
+  - the ES optimizer contract;
+  - decidable readings.
+- **The owner chose "Build now, contract first":** the design direction (revisions 1–2) is approved.
+- **Build deliverable 1** is the exact engineering contract answering R2-F1…F10, **in code with tests**, before any training or teacher-data run:
+  - the schema and normalization table;
+  - the cast state machine;
+  - the neutral host;
+  - the collector and label join;
+  - the N1/N1r/N2 forward passes;
+  - the losses;
+  - the ablation switches;
+  - the resource projection;
+  - the readings.
+- **Review:** Claude reviews deliverable 1 once (cross-family), then Codex continues with the guns-only slice: teacher data, then stage 1, then DAgger, then the mechanism check.
+- **Living documents are never hash-pinned:** frozen copies are kept inside the build folder.
