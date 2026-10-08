@@ -1,0 +1,24 @@
+{
+  "status": "FAIL",
+  "command": [
+    "evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "-s",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stagea/test_stagea.py",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stagea/test_stagea_mem.py",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stagea/test_stagea_slim.py",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stagea/test_stagea_disk.py",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stagea/test_stagea_host.py",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stagea/test_stagea_memory_host.py",
+    "--basetemp",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stagea/_local/test_disk_attempt001"
+  ],
+  "fixture_mode": true,
+  "seconds": 11.038510833,
+  "exit_code": 1,
+  "stdout": "evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stagea/_local/TEST_DISK_ATTEMPT001.stdout.log",
+  "stderr": "evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stagea/_local/TEST_DISK_ATTEMPT001.stderr.log"
+}
