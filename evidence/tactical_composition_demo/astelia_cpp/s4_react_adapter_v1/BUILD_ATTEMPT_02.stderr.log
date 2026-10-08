@@ -1,0 +1,32 @@
+nice: setpriority: Operation not permitted
+nice: setpriority: Operation not permitted
+In file included from /Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_react_adapter_v1/dispatch.cpp:2:
+In file included from /Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_react_adapter_v1/../s4_shape_lab_v1/lab_dispatch.cpp:1:
+/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_react_adapter_v1/../s4_shape_lab_v1/build/lab_v7_dispatch.cpp:1:9: warning: 'makeController' macro redefined [-Wmacro-redefined]
+    1 | #define makeController makeV6Controller
+      |         ^
+/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_react_adapter_v1/dispatch.cpp:1:9: note: previous definition is here
+    1 | #define makeController makeReactParentController
+      |         ^
+/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_react_adapter_v1/dispatch.cpp:6:29: error: redefinition of 'makeController'
+    6 | std::unique_ptr<Controller> makeController(const ControllerProfile& p,double seed,uint8_t side){
+      |                             ^
+/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_react_adapter_v1/../s4_shape_lab_v1/lab_dispatch.cpp:4:29: note: previous definition is here
+    4 | std::unique_ptr<Controller> makeController(const ControllerProfile& p,double seed,uint8_t side) {
+      |                             ^
+/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_react_adapter_v1/dispatch.cpp:11:9: error: use of undeclared identifier 'makeReactParentController'; did you mean 'makeSpacingController'?
+   11 |  return makeReactParentController(p,seed,side);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~
+      |         makeSpacingController
+/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_react_adapter_v1/../s4_shape_lab_v1/build/lab_v7_dispatch.cpp:7:29: note: 'makeSpacingController' declared here
+    7 | std::unique_ptr<Controller> makeSpacingController(const ControllerProfile& p,double seed,uint8_t side){
+      |                             ^
+1 warning and 2 errors generated.
+Traceback (most recent call last):
+  File "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_react_adapter_v1/build.py", line 87, in <module>
+    build()
+  File "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_react_adapter_v1/build.py", line 51, in build
+    subprocess.run(['nice','-n','15',*argv], check=True, timeout=300)
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/subprocess.py", line 528, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['nice', '-n', '15', '/usr/bin/clang++', '-std=c++17', '-O3', '-fno-fast-math', '-ffp-contract=off', '-fwrapv', '-I/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/src', '-mcpu=native', '-I/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/src/native', '-I/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/src', '-I/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_spacing_probe_v1', '-I/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_react_adapter_v1', '-I/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v1', '-c', '/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_react_adapter_v1/dispatch.cpp', '-o', '/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_react_adapter_v1/build/dispatch.o']' returned non-zero exit status 1.

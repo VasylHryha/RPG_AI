@@ -1,0 +1,23 @@
+F
+=================================== FAILURES ===================================
+____________ test_native_recorded_observation_and_decision_fixtures ____________
+
+    def test_native_recorded_observation_and_decision_fixtures():
+        binary=HERE/'build/react_fixture'
+        admit(binary)
+        result=subprocess.run(['nice','-n','15',str(binary)],input=(CPP/'s4_v7c/THETA_ORIGIN.json').read_text(),
+                              text=True,capture_output=True,timeout=30)
+        (HERE/'FIXTURE.stdout.log').write_text(result.stdout)
+        (HERE/'FIXTURE.stderr.log').write_text(result.stderr)
+>       assert result.returncode==0,result.stderr
+E       AssertionError: nice: setpriority: Operation not permitted
+E         reaction pauses release and preparation start
+E         
+E       assert 1 == 0
+E        +  where 1 = CompletedProcess(args=['nice', '-n', '15', '/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/as...ode=1, stdout='', stderr='nice: setpriority: Operation not permitted\nreaction pauses release and preparation start\n').returncode
+
+evidence/tactical_composition_demo/astelia_cpp/s4_react_adapter_v1/test_adapter.py:31: AssertionError
+=========================== short test summary info ============================
+FAILED evidence/tactical_composition_demo/astelia_cpp/s4_react_adapter_v1/test_adapter.py::test_native_recorded_observation_and_decision_fixtures
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed in 0.68s
