@@ -1,0 +1,1811 @@
+{
+  "status": "DONE",
+  "stage": "pilot",
+  "look": 50,
+  "ledger_sha256": "c5a820a7719d9cc2c24b95b15fbad72d6b27b0b61bb83395a5a90ea779d7ec59",
+  "cap": {
+    "cap_seconds": 10800,
+    "approved_by": "owner",
+    "date": "2026-10-08",
+    "cap_path": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_shape_lab_v1/raw/LAB_CAP.json",
+    "cap_sha256": "96064b88fdf42c0295fa6f1dbd9eff4f1796b95116dad3b35cce809425d38ea4"
+  },
+  "fights_started": 18,
+  "fights_reused": 0,
+  "report": {
+    "status": "PARTIAL",
+    "look": null,
+    "panels": {
+      "regular": {
+        "complete": false,
+        "decomposition_harm": false,
+        "arms": {
+          "O": {
+            "n": 3,
+            "own_deaths_per_fight": 39.333333333333336,
+            "enemy_kills_per_fight": 50.0,
+            "kills_per_own_death": 1.271186440677966,
+            "zero_death_denominator": false,
+            "kills_per_minute": 67.13078070611633,
+            "enemy_damage_per_fight": 6368.333333333333,
+            "eliminated_n": 3,
+            "censored_n": 0,
+            "time_to_elimination_mean_eliminated_only": 44.68888888888891,
+            "elimination_fraction": 1,
+            "restricted_elimination_time_150": 44.68888888888891,
+            "kills_saturation_fraction": 1,
+            "wins": 3,
+            "won_lost": {
+              "won": {
+                "n": 3,
+                "own_deaths_per_fight": 39.333333333333336,
+                "enemy_kills_per_fight": 50
+              },
+              "nonwon": {
+                "n": 0,
+                "own_deaths_per_fight": null,
+                "enemy_kills_per_fight": null
+              }
+            },
+            "eligible_events": 580,
+            "multi_gun_events": 80,
+            "multi_gun_event_share": 0.13793103448275862,
+            "assignments": 670,
+            "rejected_assignments": 1,
+            "active_fire_label_rate": 0.7349547485567332,
+            "raw_to_executed_mean_px": 69.43141304572455,
+            "per_role_labels": {
+              "melee": {
+                "rows": 18200,
+                "active_fire_rate": 0.8132417582417583,
+                "ready_opportunity_rate": 0.0035164835164835165
+              },
+              "ranged": {
+                "rows": 73831,
+                "active_fire_rate": 0.671872248784386,
+                "ready_opportunity_rate": 0.17783857729138167
+              },
+              "artillery": {
+                "rows": 39788,
+                "active_fire_rate": 0.8162008645822861,
+                "ready_opportunity_rate": 0.022896350658489998
+              }
+            }
+          },
+          "O+G": {
+            "n": 3,
+            "own_deaths_per_fight": 35.666666666666664,
+            "enemy_kills_per_fight": 50.0,
+            "kills_per_own_death": 1.4018691588785046,
+            "zero_death_denominator": false,
+            "kills_per_minute": 73.4693877551016,
+            "enemy_damage_per_fight": 6270.0,
+            "eliminated_n": 3,
+            "censored_n": 0,
+            "time_to_elimination_mean_eliminated_only": 40.83333333333358,
+            "elimination_fraction": 1,
+            "restricted_elimination_time_150": 40.83333333333358,
+            "kills_saturation_fraction": 1,
+            "wins": 3,
+            "won_lost": {
+              "won": {
+                "n": 3,
+                "own_deaths_per_fight": 35.666666666666664,
+                "enemy_kills_per_fight": 50
+              },
+              "nonwon": {
+                "n": 0,
+                "own_deaths_per_fight": null,
+                "enemy_kills_per_fight": null
+              }
+            },
+            "eligible_events": 576,
+            "multi_gun_events": 67,
+            "multi_gun_event_share": 0.11631944444444445,
+            "assignments": 650,
+            "rejected_assignments": 0,
+            "active_fire_label_rate": 0.7286225208626856,
+            "raw_to_executed_mean_px": 71.70289546936989,
+            "per_role_labels": {
+              "melee": {
+                "rows": 19017,
+                "active_fire_rate": 0.793342798548667,
+                "ready_opportunity_rate": 0.003312825366777094
+              },
+              "ranged": {
+                "rows": 73711,
+                "active_fire_rate": 0.6718671568693954,
+                "ready_opportunity_rate": 0.19379739794603248
+              },
+              "artillery": {
+                "rows": 36450,
+                "active_fire_rate": 0.8096296296296296,
+                "ready_opportunity_rate": 0.02318244170096022
+              }
+            }
+          },
+          "T": {
+            "n": 3,
+            "own_deaths_per_fight": 32.666666666666664,
+            "enemy_kills_per_fight": 50.0,
+            "kills_per_own_death": 1.530612244897959,
+            "zero_death_denominator": false,
+            "kills_per_minute": 71.35306553911175,
+            "enemy_damage_per_fight": 6338.0,
+            "eliminated_n": 3,
+            "censored_n": 0,
+            "time_to_elimination_mean_eliminated_only": 42.04444444444462,
+            "elimination_fraction": 1,
+            "restricted_elimination_time_150": 42.04444444444462,
+            "kills_saturation_fraction": 1,
+            "wins": 3,
+            "won_lost": {
+              "won": {
+                "n": 3,
+                "own_deaths_per_fight": 32.666666666666664,
+                "enemy_kills_per_fight": 50
+              },
+              "nonwon": {
+                "n": 0,
+                "own_deaths_per_fight": null,
+                "enemy_kills_per_fight": null
+              }
+            },
+            "eligible_events": 585,
+            "multi_gun_events": 63,
+            "multi_gun_event_share": 0.1076923076923077,
+            "assignments": 652,
+            "rejected_assignments": 0,
+            "active_fire_label_rate": 0.743265943213914,
+            "raw_to_executed_mean_px": 85.82764559633355,
+            "per_role_labels": {
+              "melee": {
+                "rows": 18503,
+                "active_fire_rate": 0.8318110576663243,
+                "ready_opportunity_rate": 0.0032967626871318162
+              },
+              "ranged": {
+                "rows": 78197,
+                "active_fire_rate": 0.6823791194035577,
+                "ready_opportunity_rate": 0.1824878192258015
+              },
+              "artillery": {
+                "rows": 37840,
+                "active_fire_rate": 0.8257928118393235,
+                "ready_opportunity_rate": 0.023282241014799154
+              }
+            }
+          }
+        },
+        "comparisons": {
+          "O+G minus O": {
+            "n": 3,
+            "unmatched_pairs": 0,
+            "deaths_saved": 3.6666666666666665,
+            "deaths_saved_sd": 5.507570547286102,
+            "deaths_saved_approx_95_ci": [
+              -2.5657361159240453,
+              9.899069449257379
+            ],
+            "exchange_gain": 0.13068271820053856,
+            "planned_death_mde_80pct": {
+              "50": 2.180886669835612,
+              "100": 1.5421197532401085
+            },
+            "enemy_kills_gained": 0.0,
+            "kills_per_minute_gain": 6.338607048985267,
+            "restricted_elimination_seconds_saved": 3.855555555555334
+          },
+          "T minus O": {
+            "n": 3,
+            "unmatched_pairs": 0,
+            "deaths_saved": 6.666666666666667,
+            "deaths_saved_sd": 3.5118845842842465,
+            "deaths_saved_approx_95_ci": [
+              2.6925951468718297,
+              10.640738186461505
+            ],
+            "exchange_gain": 0.25942580421999306,
+            "planned_death_mde_80pct": {
+              "50": 1.3906353464034582,
+              "100": 0.9833276835995889
+            },
+            "enemy_kills_gained": 0.0,
+            "kills_per_minute_gain": 4.2222848329954275,
+            "restricted_elimination_seconds_saved": 2.6444444444442894
+          },
+          "O+G minus T": {
+            "n": 3,
+            "unmatched_pairs": 0,
+            "deaths_saved": -3,
+            "deaths_saved_sd": 6.557438524302,
+            "deaths_saved_approx_95_ci": [
+              -10.420440238512358,
+              4.420440238512358
+            ],
+            "exchange_gain": -0.1287430860194545,
+            "planned_death_mde_80pct": {
+              "50": 2.5966131787387967,
+              "100": 1.83608278680456
+            },
+            "enemy_kills_gained": 0.0,
+            "kills_per_minute_gain": 2.1163222159898396,
+            "restricted_elimination_seconds_saved": 1.2111111111110446
+          }
+        },
+        "useful_effect": false,
+        "harm": false,
+        "multi_gun_floor_pass": true,
+        "per_tactic": {
+          "regular": {
+            "arms": {
+              "O": {
+                "n": 3,
+                "own_deaths_per_fight": 39.333333333333336,
+                "enemy_kills_per_fight": 50.0,
+                "kills_per_own_death": 1.271186440677966,
+                "zero_death_denominator": false,
+                "kills_per_minute": 67.13078070611633,
+                "enemy_damage_per_fight": 6368.333333333333,
+                "eliminated_n": 3,
+                "censored_n": 0,
+                "time_to_elimination_mean_eliminated_only": 44.68888888888891,
+                "elimination_fraction": 1,
+                "restricted_elimination_time_150": 44.68888888888891,
+                "kills_saturation_fraction": 1,
+                "wins": 3,
+                "won_lost": {
+                  "won": {
+                    "n": 3,
+                    "own_deaths_per_fight": 39.333333333333336,
+                    "enemy_kills_per_fight": 50
+                  },
+                  "nonwon": {
+                    "n": 0,
+                    "own_deaths_per_fight": null,
+                    "enemy_kills_per_fight": null
+                  }
+                },
+                "eligible_events": 580,
+                "multi_gun_events": 80,
+                "multi_gun_event_share": 0.13793103448275862,
+                "assignments": 670,
+                "rejected_assignments": 1,
+                "active_fire_label_rate": 0.7349547485567332,
+                "raw_to_executed_mean_px": 69.43141304572455,
+                "per_role_labels": {
+                  "melee": {
+                    "rows": 18200,
+                    "active_fire_rate": 0.8132417582417583,
+                    "ready_opportunity_rate": 0.0035164835164835165
+                  },
+                  "ranged": {
+                    "rows": 73831,
+                    "active_fire_rate": 0.671872248784386,
+                    "ready_opportunity_rate": 0.17783857729138167
+                  },
+                  "artillery": {
+                    "rows": 39788,
+                    "active_fire_rate": 0.8162008645822861,
+                    "ready_opportunity_rate": 0.022896350658489998
+                  }
+                }
+              },
+              "O+G": {
+                "n": 3,
+                "own_deaths_per_fight": 35.666666666666664,
+                "enemy_kills_per_fight": 50.0,
+                "kills_per_own_death": 1.4018691588785046,
+                "zero_death_denominator": false,
+                "kills_per_minute": 73.4693877551016,
+                "enemy_damage_per_fight": 6270.0,
+                "eliminated_n": 3,
+                "censored_n": 0,
+                "time_to_elimination_mean_eliminated_only": 40.83333333333358,
+                "elimination_fraction": 1,
+                "restricted_elimination_time_150": 40.83333333333358,
+                "kills_saturation_fraction": 1,
+                "wins": 3,
+                "won_lost": {
+                  "won": {
+                    "n": 3,
+                    "own_deaths_per_fight": 35.666666666666664,
+                    "enemy_kills_per_fight": 50
+                  },
+                  "nonwon": {
+                    "n": 0,
+                    "own_deaths_per_fight": null,
+                    "enemy_kills_per_fight": null
+                  }
+                },
+                "eligible_events": 576,
+                "multi_gun_events": 67,
+                "multi_gun_event_share": 0.11631944444444445,
+                "assignments": 650,
+                "rejected_assignments": 0,
+                "active_fire_label_rate": 0.7286225208626856,
+                "raw_to_executed_mean_px": 71.70289546936989,
+                "per_role_labels": {
+                  "melee": {
+                    "rows": 19017,
+                    "active_fire_rate": 0.793342798548667,
+                    "ready_opportunity_rate": 0.003312825366777094
+                  },
+                  "ranged": {
+                    "rows": 73711,
+                    "active_fire_rate": 0.6718671568693954,
+                    "ready_opportunity_rate": 0.19379739794603248
+                  },
+                  "artillery": {
+                    "rows": 36450,
+                    "active_fire_rate": 0.8096296296296296,
+                    "ready_opportunity_rate": 0.02318244170096022
+                  }
+                }
+              },
+              "T": {
+                "n": 3,
+                "own_deaths_per_fight": 32.666666666666664,
+                "enemy_kills_per_fight": 50.0,
+                "kills_per_own_death": 1.530612244897959,
+                "zero_death_denominator": false,
+                "kills_per_minute": 71.35306553911175,
+                "enemy_damage_per_fight": 6338.0,
+                "eliminated_n": 3,
+                "censored_n": 0,
+                "time_to_elimination_mean_eliminated_only": 42.04444444444462,
+                "elimination_fraction": 1,
+                "restricted_elimination_time_150": 42.04444444444462,
+                "kills_saturation_fraction": 1,
+                "wins": 3,
+                "won_lost": {
+                  "won": {
+                    "n": 3,
+                    "own_deaths_per_fight": 32.666666666666664,
+                    "enemy_kills_per_fight": 50
+                  },
+                  "nonwon": {
+                    "n": 0,
+                    "own_deaths_per_fight": null,
+                    "enemy_kills_per_fight": null
+                  }
+                },
+                "eligible_events": 585,
+                "multi_gun_events": 63,
+                "multi_gun_event_share": 0.1076923076923077,
+                "assignments": 652,
+                "rejected_assignments": 0,
+                "active_fire_label_rate": 0.743265943213914,
+                "raw_to_executed_mean_px": 85.82764559633355,
+                "per_role_labels": {
+                  "melee": {
+                    "rows": 18503,
+                    "active_fire_rate": 0.8318110576663243,
+                    "ready_opportunity_rate": 0.0032967626871318162
+                  },
+                  "ranged": {
+                    "rows": 78197,
+                    "active_fire_rate": 0.6823791194035577,
+                    "ready_opportunity_rate": 0.1824878192258015
+                  },
+                  "artillery": {
+                    "rows": 37840,
+                    "active_fire_rate": 0.8257928118393235,
+                    "ready_opportunity_rate": 0.023282241014799154
+                  }
+                }
+              }
+            },
+            "O+G minus O": {
+              "n": 3,
+              "unmatched_pairs": 0,
+              "deaths_saved": 3.6666666666666665,
+              "deaths_saved_sd": 5.507570547286102,
+              "deaths_saved_approx_95_ci": [
+                -2.5657361159240453,
+                9.899069449257379
+              ],
+              "exchange_gain": 0.13068271820053856,
+              "planned_death_mde_80pct": {
+                "50": 2.180886669835612,
+                "100": 1.5421197532401085
+              },
+              "enemy_kills_gained": 0.0,
+              "kills_per_minute_gain": 6.338607048985267,
+              "restricted_elimination_seconds_saved": 3.855555555555334
+            }
+          }
+        }
+      },
+      "C3": {
+        "complete": false,
+        "decomposition_harm": false,
+        "arms": {
+          "O": {
+            "n": 3,
+            "own_deaths_per_fight": 34.666666666666664,
+            "enemy_kills_per_fight": 50.0,
+            "kills_per_own_death": 1.4423076923076923,
+            "zero_death_denominator": false,
+            "kills_per_minute": 63.98104265402857,
+            "enemy_damage_per_fight": 6064.333333333333,
+            "eliminated_n": 3,
+            "censored_n": 0,
+            "time_to_elimination_mean_eliminated_only": 46.888888888888786,
+            "elimination_fraction": 1,
+            "restricted_elimination_time_150": 46.888888888888786,
+            "kills_saturation_fraction": 1,
+            "wins": 3,
+            "won_lost": {
+              "won": {
+                "n": 3,
+                "own_deaths_per_fight": 34.666666666666664,
+                "enemy_kills_per_fight": 50
+              },
+              "nonwon": {
+                "n": 0,
+                "own_deaths_per_fight": null,
+                "enemy_kills_per_fight": null
+              }
+            },
+            "eligible_events": 646,
+            "multi_gun_events": 65,
+            "multi_gun_event_share": 0.10061919504643962,
+            "assignments": 716,
+            "rejected_assignments": 1,
+            "active_fire_label_rate": 0.7077223115612277,
+            "raw_to_executed_mean_px": 67.44799999445142,
+            "per_role_labels": {
+              "melee": {
+                "rows": 20504,
+                "active_fire_rate": 0.7727272727272727,
+                "ready_opportunity_rate": 0.0037065938353492
+              },
+              "ranged": {
+                "rows": 86446,
+                "active_fire_rate": 0.6421928140110589,
+                "ready_opportunity_rate": 0.19489623580038407
+              },
+              "artillery": {
+                "rows": 39185,
+                "active_fire_rate": 0.8182722980732423,
+                "ready_opportunity_rate": 0.023350771979073624
+              }
+            }
+          },
+          "O+G": {
+            "n": 3,
+            "own_deaths_per_fight": 39.0,
+            "enemy_kills_per_fight": 50.0,
+            "kills_per_own_death": 1.2820512820512822,
+            "zero_death_denominator": false,
+            "kills_per_minute": 59.301559411377475,
+            "enemy_damage_per_fight": 6111.0,
+            "eliminated_n": 3,
+            "censored_n": 0,
+            "time_to_elimination_mean_eliminated_only": 50.588888888888576,
+            "elimination_fraction": 1,
+            "restricted_elimination_time_150": 50.588888888888576,
+            "kills_saturation_fraction": 1,
+            "wins": 3,
+            "won_lost": {
+              "won": {
+                "n": 3,
+                "own_deaths_per_fight": 39,
+                "enemy_kills_per_fight": 50
+              },
+              "nonwon": {
+                "n": 0,
+                "own_deaths_per_fight": null,
+                "enemy_kills_per_fight": null
+              }
+            },
+            "eligible_events": 592,
+            "multi_gun_events": 76,
+            "multi_gun_event_share": 0.12837837837837837,
+            "assignments": 677,
+            "rejected_assignments": 1,
+            "active_fire_label_rate": 0.7197454458897492,
+            "raw_to_executed_mean_px": 67.89786271758118,
+            "per_role_labels": {
+              "melee": {
+                "rows": 21431,
+                "active_fire_rate": 0.788717278708413,
+                "ready_opportunity_rate": 0.0046194764593346085
+              },
+              "ranged": {
+                "rows": 82751,
+                "active_fire_rate": 0.6543123345941438,
+                "ready_opportunity_rate": 0.1911396841125787
+              },
+              "artillery": {
+                "rows": 38656,
+                "active_fire_rate": 0.8215800910596026,
+                "ready_opportunity_rate": 0.023075331125827814
+              }
+            }
+          },
+          "T": {
+            "n": 3,
+            "own_deaths_per_fight": 36.666666666666664,
+            "enemy_kills_per_fight": 50.0,
+            "kills_per_own_death": 1.3636363636363635,
+            "zero_death_denominator": false,
+            "kills_per_minute": 68.96551724137916,
+            "enemy_damage_per_fight": 6231.333333333333,
+            "eliminated_n": 3,
+            "censored_n": 0,
+            "time_to_elimination_mean_eliminated_only": 43.50000000000009,
+            "elimination_fraction": 1,
+            "restricted_elimination_time_150": 43.50000000000009,
+            "kills_saturation_fraction": 1,
+            "wins": 3,
+            "won_lost": {
+              "won": {
+                "n": 3,
+                "own_deaths_per_fight": 36.666666666666664,
+                "enemy_kills_per_fight": 50
+              },
+              "nonwon": {
+                "n": 0,
+                "own_deaths_per_fight": null,
+                "enemy_kills_per_fight": null
+              }
+            },
+            "eligible_events": 635,
+            "multi_gun_events": 72,
+            "multi_gun_event_share": 0.11338582677165354,
+            "assignments": 710,
+            "rejected_assignments": 0,
+            "active_fire_label_rate": 0.738863287250384,
+            "raw_to_executed_mean_px": 90.0666933116439,
+            "per_role_labels": {
+              "melee": {
+                "rows": 19241,
+                "active_fire_rate": 0.7827036016839042,
+                "ready_opportunity_rate": 0.003534119848240736
+              },
+              "ranged": {
+                "rows": 73392,
+                "active_fire_rate": 0.6734657728362764,
+                "ready_opportunity_rate": 0.194012971441029
+              },
+              "artillery": {
+                "rows": 36265,
+                "active_fire_rate": 0.8479525713497863,
+                "ready_opportunity_rate": 0.024155521853026333
+              }
+            }
+          }
+        },
+        "comparisons": {
+          "O+G minus O": {
+            "n": 3,
+            "unmatched_pairs": 0,
+            "deaths_saved": -4.333333333333333,
+            "deaths_saved_sd": 6.658328118479393,
+            "deaths_saved_approx_95_ci": [
+              -11.867940895184919,
+              3.201274228518254
+            ],
+            "exchange_gain": -0.16025641025641013,
+            "planned_death_mde_80pct": {
+              "50": 2.636563419807433,
+              "100": 1.8643318731742302
+            },
+            "enemy_kills_gained": 0.0,
+            "kills_per_minute_gain": -4.679483242651095,
+            "restricted_elimination_seconds_saved": -3.6999999999997897
+          },
+          "T minus O": {
+            "n": 3,
+            "unmatched_pairs": 0,
+            "deaths_saved": -2,
+            "deaths_saved_sd": 1.7320508075688772,
+            "deaths_saved_approx_95_ci": [
+              -3.96,
+              -0.040000000000000036
+            ],
+            "exchange_gain": -0.07867132867132876,
+            "planned_death_mde_80pct": {
+              "50": 0.6858571279792898,
+              "100": 0.4849742261192856
+            },
+            "enemy_kills_gained": 0.0,
+            "kills_per_minute_gain": 4.98447458735059,
+            "restricted_elimination_seconds_saved": 3.388888888888694
+          },
+          "O+G minus T": {
+            "n": 3,
+            "unmatched_pairs": 0,
+            "deaths_saved": -2.3333333333333335,
+            "deaths_saved_sd": 5.859465277082315,
+            "deaths_saved_approx_95_ci": [
+              -8.963942489193583,
+              4.297275822526917
+            ],
+            "exchange_gain": -0.08158508158508138,
+            "planned_death_mde_80pct": {
+              "50": 2.3202298736691294,
+              "100": 1.6406502775830478
+            },
+            "enemy_kills_gained": 0.0,
+            "kills_per_minute_gain": -9.663957830001685,
+            "restricted_elimination_seconds_saved": -7.088888888888484
+          }
+        },
+        "useful_effect": false,
+        "harm": false,
+        "multi_gun_floor_pass": true,
+        "per_tactic": {
+          "regular": {
+            "arms": {
+              "O": {
+                "n": 0
+              },
+              "O+G": {
+                "n": 0
+              },
+              "T": {
+                "n": 0
+              }
+            },
+            "O+G minus O": {
+              "n": 0,
+              "unmatched_pairs": 0,
+              "deaths_saved": null,
+              "deaths_saved_sd": null,
+              "deaths_saved_approx_95_ci": null,
+              "exchange_gain": null,
+              "planned_death_mde_80pct": {
+                "50": null,
+                "100": null
+              },
+              "enemy_kills_gained": null,
+              "kills_per_minute_gain": null,
+              "restricted_elimination_seconds_saved": null
+            }
+          },
+          "line": {
+            "arms": {
+              "O": {
+                "n": 0
+              },
+              "O+G": {
+                "n": 0
+              },
+              "T": {
+                "n": 0
+              }
+            },
+            "O+G minus O": {
+              "n": 0,
+              "unmatched_pairs": 0,
+              "deaths_saved": null,
+              "deaths_saved_sd": null,
+              "deaths_saved_approx_95_ci": null,
+              "exchange_gain": null,
+              "planned_death_mde_80pct": {
+                "50": null,
+                "100": null
+              },
+              "enemy_kills_gained": null,
+              "kills_per_minute_gain": null,
+              "restricted_elimination_seconds_saved": null
+            }
+          },
+          "wide line": {
+            "arms": {
+              "O": {
+                "n": 0
+              },
+              "O+G": {
+                "n": 0
+              },
+              "T": {
+                "n": 0
+              }
+            },
+            "O+G minus O": {
+              "n": 0,
+              "unmatched_pairs": 0,
+              "deaths_saved": null,
+              "deaths_saved_sd": null,
+              "deaths_saved_approx_95_ci": null,
+              "exchange_gain": null,
+              "planned_death_mde_80pct": {
+                "50": null,
+                "100": null
+              },
+              "enemy_kills_gained": null,
+              "kills_per_minute_gain": null,
+              "restricted_elimination_seconds_saved": null
+            }
+          },
+          "wedge": {
+            "arms": {
+              "O": {
+                "n": 0
+              },
+              "O+G": {
+                "n": 0
+              },
+              "T": {
+                "n": 0
+              }
+            },
+            "O+G minus O": {
+              "n": 0,
+              "unmatched_pairs": 0,
+              "deaths_saved": null,
+              "deaths_saved_sd": null,
+              "deaths_saved_approx_95_ci": null,
+              "exchange_gain": null,
+              "planned_death_mde_80pct": {
+                "50": null,
+                "100": null
+              },
+              "enemy_kills_gained": null,
+              "kills_per_minute_gain": null,
+              "restricted_elimination_seconds_saved": null
+            }
+          },
+          "box": {
+            "arms": {
+              "O": {
+                "n": 0
+              },
+              "O+G": {
+                "n": 0
+              },
+              "T": {
+                "n": 0
+              }
+            },
+            "O+G minus O": {
+              "n": 0,
+              "unmatched_pairs": 0,
+              "deaths_saved": null,
+              "deaths_saved_sd": null,
+              "deaths_saved_approx_95_ci": null,
+              "exchange_gain": null,
+              "planned_death_mde_80pct": {
+                "50": null,
+                "100": null
+              },
+              "enemy_kills_gained": null,
+              "kills_per_minute_gain": null,
+              "restricted_elimination_seconds_saved": null
+            }
+          },
+          "column": {
+            "arms": {
+              "O": {
+                "n": 0
+              },
+              "O+G": {
+                "n": 0
+              },
+              "T": {
+                "n": 0
+              }
+            },
+            "O+G minus O": {
+              "n": 0,
+              "unmatched_pairs": 0,
+              "deaths_saved": null,
+              "deaths_saved_sd": null,
+              "deaths_saved_approx_95_ci": null,
+              "exchange_gain": null,
+              "planned_death_mde_80pct": {
+                "50": null,
+                "100": null
+              },
+              "enemy_kills_gained": null,
+              "kills_per_minute_gain": null,
+              "restricted_elimination_seconds_saved": null
+            }
+          },
+          "loose": {
+            "arms": {
+              "O": {
+                "n": 1,
+                "own_deaths_per_fight": 39.0,
+                "enemy_kills_per_fight": 50.0,
+                "kills_per_own_death": 1.2820512820512822,
+                "zero_death_denominator": false,
+                "kills_per_minute": 58.44155844155884,
+                "enemy_damage_per_fight": 5966.0,
+                "eliminated_n": 1,
+                "censored_n": 0,
+                "time_to_elimination_mean_eliminated_only": 51.33333333333298,
+                "elimination_fraction": 1,
+                "restricted_elimination_time_150": 51.33333333333298,
+                "kills_saturation_fraction": 1,
+                "wins": 1,
+                "won_lost": {
+                  "won": {
+                    "n": 1,
+                    "own_deaths_per_fight": 39,
+                    "enemy_kills_per_fight": 50
+                  },
+                  "nonwon": {
+                    "n": 0,
+                    "own_deaths_per_fight": null,
+                    "enemy_kills_per_fight": null
+                  }
+                },
+                "eligible_events": 257,
+                "multi_gun_events": 18,
+                "multi_gun_event_share": 0.07003891050583658,
+                "assignments": 275,
+                "rejected_assignments": 0,
+                "active_fire_label_rate": 0.7166437953342482,
+                "raw_to_executed_mean_px": 67.59130382646633,
+                "per_role_labels": {
+                  "melee": {
+                    "rows": 6606,
+                    "active_fire_rate": 0.8310626702997275,
+                    "ready_opportunity_rate": 0.0037844383893430216
+                  },
+                  "ranged": {
+                    "rows": 29801,
+                    "active_fire_rate": 0.6482668366833327,
+                    "ready_opportunity_rate": 0.2258649038622865
+                  },
+                  "artillery": {
+                    "rows": 14603,
+                    "active_fire_rate": 0.8044237485448196,
+                    "ready_opportunity_rate": 0.024036156954050536
+                  }
+                }
+              },
+              "O+G": {
+                "n": 1,
+                "own_deaths_per_fight": 39.0,
+                "enemy_kills_per_fight": 50.0,
+                "kills_per_own_death": 1.2820512820512822,
+                "zero_death_denominator": false,
+                "kills_per_minute": 57.69230769230813,
+                "enemy_damage_per_fight": 5799.0,
+                "eliminated_n": 1,
+                "censored_n": 0,
+                "time_to_elimination_mean_eliminated_only": 51.99999999999961,
+                "elimination_fraction": 1,
+                "restricted_elimination_time_150": 51.99999999999961,
+                "kills_saturation_fraction": 1,
+                "wins": 1,
+                "won_lost": {
+                  "won": {
+                    "n": 1,
+                    "own_deaths_per_fight": 39,
+                    "enemy_kills_per_fight": 50
+                  },
+                  "nonwon": {
+                    "n": 0,
+                    "own_deaths_per_fight": null,
+                    "enemy_kills_per_fight": null
+                  }
+                },
+                "eligible_events": 224,
+                "multi_gun_events": 29,
+                "multi_gun_event_share": 0.12946428571428573,
+                "assignments": 254,
+                "rejected_assignments": 0,
+                "active_fire_label_rate": 0.7336198862663801,
+                "raw_to_executed_mean_px": 64.67978226878425,
+                "per_role_labels": {
+                  "melee": {
+                    "rows": 6910,
+                    "active_fire_rate": 0.818958031837916,
+                    "ready_opportunity_rate": 0.004630969609261939
+                  },
+                  "ranged": {
+                    "rows": 30069,
+                    "active_fire_rate": 0.666699923509262,
+                    "ready_opportunity_rate": 0.2323988160564036
+                  },
+                  "artillery": {
+                    "rows": 15600,
+                    "active_fire_rate": 0.8248076923076924,
+                    "ready_opportunity_rate": 0.02185897435897436
+                  }
+                }
+              },
+              "T": {
+                "n": 1,
+                "own_deaths_per_fight": 39.0,
+                "enemy_kills_per_fight": 50.0,
+                "kills_per_own_death": 1.2820512820512822,
+                "zero_death_denominator": false,
+                "kills_per_minute": 64.65517241379321,
+                "enemy_damage_per_fight": 6034.0,
+                "eliminated_n": 1,
+                "censored_n": 0,
+                "time_to_elimination_mean_eliminated_only": 46.39999999999993,
+                "elimination_fraction": 1,
+                "restricted_elimination_time_150": 46.39999999999993,
+                "kills_saturation_fraction": 1,
+                "wins": 1,
+                "won_lost": {
+                  "won": {
+                    "n": 1,
+                    "own_deaths_per_fight": 39,
+                    "enemy_kills_per_fight": 50
+                  },
+                  "nonwon": {
+                    "n": 0,
+                    "own_deaths_per_fight": null,
+                    "enemy_kills_per_fight": null
+                  }
+                },
+                "eligible_events": 255,
+                "multi_gun_events": 26,
+                "multi_gun_event_share": 0.10196078431372549,
+                "assignments": 282,
+                "rejected_assignments": 0,
+                "active_fire_label_rate": 0.7638870025804699,
+                "raw_to_executed_mean_px": 86.41975171782855,
+                "per_role_labels": {
+                  "melee": {
+                    "rows": 6090,
+                    "active_fire_rate": 0.8366174055829229,
+                    "ready_opportunity_rate": 0.004105090311986864
+                  },
+                  "ranged": {
+                    "rows": 24168,
+                    "active_fire_rate": 0.6952168156239655,
+                    "ready_opportunity_rate": 0.2237669645812645
+                  },
+                  "artillery": {
+                    "rows": 13920,
+                    "active_fire_rate": 0.8512931034482759,
+                    "ready_opportunity_rate": 0.02435344827586207
+                  }
+                }
+              }
+            },
+            "O+G minus O": {
+              "n": 1,
+              "unmatched_pairs": 0,
+              "deaths_saved": 0,
+              "deaths_saved_sd": null,
+              "deaths_saved_approx_95_ci": null,
+              "exchange_gain": 0.0,
+              "planned_death_mde_80pct": {
+                "50": null,
+                "100": null
+              },
+              "enemy_kills_gained": 0.0,
+              "kills_per_minute_gain": -0.749250749250713,
+              "restricted_elimination_seconds_saved": -0.6666666666666288
+            }
+          },
+          "screen": {
+            "arms": {
+              "O": {
+                "n": 0
+              },
+              "O+G": {
+                "n": 0
+              },
+              "T": {
+                "n": 0
+              }
+            },
+            "O+G minus O": {
+              "n": 0,
+              "unmatched_pairs": 0,
+              "deaths_saved": null,
+              "deaths_saved_sd": null,
+              "deaths_saved_approx_95_ci": null,
+              "exchange_gain": null,
+              "planned_death_mde_80pct": {
+                "50": null,
+                "100": null
+              },
+              "enemy_kills_gained": null,
+              "kills_per_minute_gain": null,
+              "restricted_elimination_seconds_saved": null
+            }
+          },
+          "crescent": {
+            "arms": {
+              "O": {
+                "n": 0
+              },
+              "O+G": {
+                "n": 0
+              },
+              "T": {
+                "n": 0
+              }
+            },
+            "O+G minus O": {
+              "n": 0,
+              "unmatched_pairs": 0,
+              "deaths_saved": null,
+              "deaths_saved_sd": null,
+              "deaths_saved_approx_95_ci": null,
+              "exchange_gain": null,
+              "planned_death_mde_80pct": {
+                "50": null,
+                "100": null
+              },
+              "enemy_kills_gained": null,
+              "kills_per_minute_gain": null,
+              "restricted_elimination_seconds_saved": null
+            }
+          },
+          "ring": {
+            "arms": {
+              "O": {
+                "n": 0
+              },
+              "O+G": {
+                "n": 0
+              },
+              "T": {
+                "n": 0
+              }
+            },
+            "O+G minus O": {
+              "n": 0,
+              "unmatched_pairs": 0,
+              "deaths_saved": null,
+              "deaths_saved_sd": null,
+              "deaths_saved_approx_95_ci": null,
+              "exchange_gain": null,
+              "planned_death_mde_80pct": {
+                "50": null,
+                "100": null
+              },
+              "enemy_kills_gained": null,
+              "kills_per_minute_gain": null,
+              "restricted_elimination_seconds_saved": null
+            }
+          },
+          "wedge hold": {
+            "arms": {
+              "O": {
+                "n": 0
+              },
+              "O+G": {
+                "n": 0
+              },
+              "T": {
+                "n": 0
+              }
+            },
+            "O+G minus O": {
+              "n": 0,
+              "unmatched_pairs": 0,
+              "deaths_saved": null,
+              "deaths_saved_sd": null,
+              "deaths_saved_approx_95_ci": null,
+              "exchange_gain": null,
+              "planned_death_mde_80pct": {
+                "50": null,
+                "100": null
+              },
+              "enemy_kills_gained": null,
+              "kills_per_minute_gain": null,
+              "restricted_elimination_seconds_saved": null
+            }
+          },
+          "line anvil": {
+            "arms": {
+              "O": {
+                "n": 0
+              },
+              "O+G": {
+                "n": 0
+              },
+              "T": {
+                "n": 0
+              }
+            },
+            "O+G minus O": {
+              "n": 0,
+              "unmatched_pairs": 0,
+              "deaths_saved": null,
+              "deaths_saved_sd": null,
+              "deaths_saved_approx_95_ci": null,
+              "exchange_gain": null,
+              "planned_death_mde_80pct": {
+                "50": null,
+                "100": null
+              },
+              "enemy_kills_gained": null,
+              "kills_per_minute_gain": null,
+              "restricted_elimination_seconds_saved": null
+            }
+          },
+          "wedge flank": {
+            "arms": {
+              "O": {
+                "n": 0
+              },
+              "O+G": {
+                "n": 0
+              },
+              "T": {
+                "n": 0
+              }
+            },
+            "O+G minus O": {
+              "n": 0,
+              "unmatched_pairs": 0,
+              "deaths_saved": null,
+              "deaths_saved_sd": null,
+              "deaths_saved_approx_95_ci": null,
+              "exchange_gain": null,
+              "planned_death_mde_80pct": {
+                "50": null,
+                "100": null
+              },
+              "enemy_kills_gained": null,
+              "kills_per_minute_gain": null,
+              "restricted_elimination_seconds_saved": null
+            }
+          },
+          "loose free": {
+            "arms": {
+              "O": {
+                "n": 0
+              },
+              "O+G": {
+                "n": 0
+              },
+              "T": {
+                "n": 0
+              }
+            },
+            "O+G minus O": {
+              "n": 0,
+              "unmatched_pairs": 0,
+              "deaths_saved": null,
+              "deaths_saved_sd": null,
+              "deaths_saved_approx_95_ci": null,
+              "exchange_gain": null,
+              "planned_death_mde_80pct": {
+                "50": null,
+                "100": null
+              },
+              "enemy_kills_gained": null,
+              "kills_per_minute_gain": null,
+              "restricted_elimination_seconds_saved": null
+            }
+          },
+          "swarm": {
+            "arms": {
+              "O": {
+                "n": 0
+              },
+              "O+G": {
+                "n": 0
+              },
+              "T": {
+                "n": 0
+              }
+            },
+            "O+G minus O": {
+              "n": 0,
+              "unmatched_pairs": 0,
+              "deaths_saved": null,
+              "deaths_saved_sd": null,
+              "deaths_saved_approx_95_ci": null,
+              "exchange_gain": null,
+              "planned_death_mde_80pct": {
+                "50": null,
+                "100": null
+              },
+              "enemy_kills_gained": null,
+              "kills_per_minute_gain": null,
+              "restricted_elimination_seconds_saved": null
+            }
+          },
+          "loose skirmish": {
+            "arms": {
+              "O": {
+                "n": 0
+              },
+              "O+G": {
+                "n": 0
+              },
+              "T": {
+                "n": 0
+              }
+            },
+            "O+G minus O": {
+              "n": 0,
+              "unmatched_pairs": 0,
+              "deaths_saved": null,
+              "deaths_saved_sd": null,
+              "deaths_saved_approx_95_ci": null,
+              "exchange_gain": null,
+              "planned_death_mde_80pct": {
+                "50": null,
+                "100": null
+              },
+              "enemy_kills_gained": null,
+              "kills_per_minute_gain": null,
+              "restricted_elimination_seconds_saved": null
+            }
+          },
+          "loose berserk": {
+            "arms": {
+              "O": {
+                "n": 0
+              },
+              "O+G": {
+                "n": 0
+              },
+              "T": {
+                "n": 0
+              }
+            },
+            "O+G minus O": {
+              "n": 0,
+              "unmatched_pairs": 0,
+              "deaths_saved": null,
+              "deaths_saved_sd": null,
+              "deaths_saved_approx_95_ci": null,
+              "exchange_gain": null,
+              "planned_death_mde_80pct": {
+                "50": null,
+                "100": null
+              },
+              "enemy_kills_gained": null,
+              "kills_per_minute_gain": null,
+              "restricted_elimination_seconds_saved": null
+            }
+          },
+          "storm": {
+            "arms": {
+              "O": {
+                "n": 1,
+                "own_deaths_per_fight": 34.0,
+                "enemy_kills_per_fight": 50.0,
+                "kills_per_own_death": 1.4705882352941178,
+                "zero_death_denominator": false,
+                "kills_per_minute": 78.74015748031414,
+                "enemy_damage_per_fight": 6053.0,
+                "eliminated_n": 1,
+                "censored_n": 0,
+                "time_to_elimination_mean_eliminated_only": 38.1000000000004,
+                "elimination_fraction": 1,
+                "restricted_elimination_time_150": 38.1000000000004,
+                "kills_saturation_fraction": 1,
+                "wins": 1,
+                "won_lost": {
+                  "won": {
+                    "n": 1,
+                    "own_deaths_per_fight": 34,
+                    "enemy_kills_per_fight": 50
+                  },
+                  "nonwon": {
+                    "n": 0,
+                    "own_deaths_per_fight": null,
+                    "enemy_kills_per_fight": null
+                  }
+                },
+                "eligible_events": 176,
+                "multi_gun_events": 30,
+                "multi_gun_event_share": 0.17045454545454544,
+                "assignments": 209,
+                "rejected_assignments": 1,
+                "active_fire_label_rate": 0.7166439061788735,
+                "raw_to_executed_mean_px": 68.21531240188044,
+                "per_role_labels": {
+                  "melee": {
+                    "rows": 5298,
+                    "active_fire_rate": 0.786711966779917,
+                    "ready_opportunity_rate": 0.004718761796904492
+                  },
+                  "ranged": {
+                    "rows": 25011,
+                    "active_fire_rate": 0.6532725600735676,
+                    "ready_opportunity_rate": 0.20610931190276277
+                  },
+                  "artillery": {
+                    "rows": 11430,
+                    "active_fire_rate": 0.8228346456692913,
+                    "ready_opportunity_rate": 0.023272090988626423
+                  }
+                }
+              },
+              "O+G": {
+                "n": 1,
+                "own_deaths_per_fight": 35.0,
+                "enemy_kills_per_fight": 50.0,
+                "kills_per_own_death": 1.4285714285714286,
+                "zero_death_denominator": false,
+                "kills_per_minute": 75.75757575757515,
+                "enemy_damage_per_fight": 6415.0,
+                "eliminated_n": 1,
+                "censored_n": 0,
+                "time_to_elimination_mean_eliminated_only": 39.600000000000314,
+                "elimination_fraction": 1,
+                "restricted_elimination_time_150": 39.600000000000314,
+                "kills_saturation_fraction": 1,
+                "wins": 1,
+                "won_lost": {
+                  "won": {
+                    "n": 1,
+                    "own_deaths_per_fight": 35,
+                    "enemy_kills_per_fight": 50
+                  },
+                  "nonwon": {
+                    "n": 0,
+                    "own_deaths_per_fight": null,
+                    "enemy_kills_per_fight": null
+                  }
+                },
+                "eligible_events": 179,
+                "multi_gun_events": 20,
+                "multi_gun_event_share": 0.11173184357541899,
+                "assignments": 205,
+                "rejected_assignments": 0,
+                "active_fire_label_rate": 0.7286133615122696,
+                "raw_to_executed_mean_px": 66.85992565139868,
+                "per_role_labels": {
+                  "melee": {
+                    "rows": 5663,
+                    "active_fire_rate": 0.8103478721525693,
+                    "ready_opportunity_rate": 0.006003884866678439
+                  },
+                  "ranged": {
+                    "rows": 25042,
+                    "active_fire_rate": 0.6517850011979874,
+                    "ready_opportunity_rate": 0.188523280888108
+                  },
+                  "artillery": {
+                    "rows": 11880,
+                    "active_fire_rate": 0.8515993265993266,
+                    "ready_opportunity_rate": 0.02281144781144781
+                  }
+                }
+              },
+              "T": {
+                "n": 1,
+                "own_deaths_per_fight": 37.0,
+                "enemy_kills_per_fight": 50.0,
+                "kills_per_own_death": 1.3513513513513513,
+                "zero_death_denominator": false,
+                "kills_per_minute": 81.08108108108007,
+                "enemy_damage_per_fight": 6538.0,
+                "eliminated_n": 1,
+                "censored_n": 0,
+                "time_to_elimination_mean_eliminated_only": 37.00000000000046,
+                "elimination_fraction": 1,
+                "restricted_elimination_time_150": 37.00000000000046,
+                "kills_saturation_fraction": 1,
+                "wins": 1,
+                "won_lost": {
+                  "won": {
+                    "n": 1,
+                    "own_deaths_per_fight": 37,
+                    "enemy_kills_per_fight": 50
+                  },
+                  "nonwon": {
+                    "n": 0,
+                    "own_deaths_per_fight": null,
+                    "enemy_kills_per_fight": null
+                  }
+                },
+                "eligible_events": 195,
+                "multi_gun_events": 27,
+                "multi_gun_event_share": 0.13846153846153847,
+                "assignments": 224,
+                "rejected_assignments": 0,
+                "active_fire_label_rate": 0.7161692187905528,
+                "raw_to_executed_mean_px": 88.64655916142517,
+                "per_role_labels": {
+                  "melee": {
+                    "rows": 4313,
+                    "active_fire_rate": 0.8272664038952006,
+                    "ready_opportunity_rate": 0.0048690006955715275
+                  },
+                  "ranged": {
+                    "rows": 23117,
+                    "active_fire_rate": 0.6454124670156162,
+                    "ready_opportunity_rate": 0.1892979192801834
+                  },
+                  "artillery": {
+                    "rows": 11100,
+                    "active_fire_rate": 0.8203603603603603,
+                    "ready_opportunity_rate": 0.025405405405405406
+                  }
+                }
+              }
+            },
+            "O+G minus O": {
+              "n": 1,
+              "unmatched_pairs": 0,
+              "deaths_saved": -1,
+              "deaths_saved_sd": null,
+              "deaths_saved_approx_95_ci": null,
+              "exchange_gain": -0.04201680672268915,
+              "planned_death_mde_80pct": {
+                "50": null,
+                "100": null
+              },
+              "enemy_kills_gained": 0.0,
+              "kills_per_minute_gain": -2.982581722738985,
+              "restricted_elimination_seconds_saved": -1.4999999999999147
+            }
+          },
+          "wolfpack": {
+            "arms": {
+              "O": {
+                "n": 1,
+                "own_deaths_per_fight": 31.0,
+                "enemy_kills_per_fight": 50.0,
+                "kills_per_own_death": 1.6129032258064515,
+                "zero_death_denominator": false,
+                "kills_per_minute": 58.55562784645453,
+                "enemy_damage_per_fight": 6174.0,
+                "eliminated_n": 1,
+                "censored_n": 0,
+                "time_to_elimination_mean_eliminated_only": 51.233333333332986,
+                "elimination_fraction": 1,
+                "restricted_elimination_time_150": 51.233333333332986,
+                "kills_saturation_fraction": 1,
+                "wins": 1,
+                "won_lost": {
+                  "won": {
+                    "n": 1,
+                    "own_deaths_per_fight": 31,
+                    "enemy_kills_per_fight": 50
+                  },
+                  "nonwon": {
+                    "n": 0,
+                    "own_deaths_per_fight": null,
+                    "enemy_kills_per_fight": null
+                  }
+                },
+                "eligible_events": 213,
+                "multi_gun_events": 17,
+                "multi_gun_event_share": 0.07981220657276995,
+                "assignments": 232,
+                "rejected_assignments": 0,
+                "active_fire_label_rate": 0.6922226801033979,
+                "raw_to_executed_mean_px": 66.71116297641748,
+                "per_role_labels": {
+                  "melee": {
+                    "rows": 8600,
+                    "active_fire_rate": 0.7193023255813954,
+                    "ready_opportunity_rate": 0.0030232558139534882
+                  },
+                  "ranged": {
+                    "rows": 31634,
+                    "active_fire_rate": 0.6277106910286401,
+                    "ready_opportunity_rate": 0.1568565467534931
+                  },
+                  "artillery": {
+                    "rows": 13152,
+                    "active_fire_rate": 0.829683698296837,
+                    "ready_opportunity_rate": 0.02265815085158151
+                  }
+                }
+              },
+              "O+G": {
+                "n": 1,
+                "own_deaths_per_fight": 43.0,
+                "enemy_kills_per_fight": 50.0,
+                "kills_per_own_death": 1.1627906976744187,
+                "zero_death_denominator": false,
+                "kills_per_minute": 49.86149584487605,
+                "enemy_damage_per_fight": 6119.0,
+                "eliminated_n": 1,
+                "censored_n": 0,
+                "time_to_elimination_mean_eliminated_only": 60.16666666666581,
+                "elimination_fraction": 1,
+                "restricted_elimination_time_150": 60.16666666666581,
+                "kills_saturation_fraction": 1,
+                "wins": 1,
+                "won_lost": {
+                  "won": {
+                    "n": 1,
+                    "own_deaths_per_fight": 43,
+                    "enemy_kills_per_fight": 50
+                  },
+                  "nonwon": {
+                    "n": 0,
+                    "own_deaths_per_fight": null,
+                    "enemy_kills_per_fight": null
+                  }
+                },
+                "eligible_events": 189,
+                "multi_gun_events": 27,
+                "multi_gun_event_share": 0.14285714285714285,
+                "assignments": 218,
+                "rejected_assignments": 1,
+                "active_fire_label_rate": 0.6965222133657759,
+                "raw_to_executed_mean_px": 72.37418108567856,
+                "per_role_labels": {
+                  "melee": {
+                    "rows": 8858,
+                    "active_fire_rate": 0.7512982614585685,
+                    "ready_opportunity_rate": 0.003725445924587943
+                  },
+                  "ranged": {
+                    "rows": 27640,
+                    "active_fire_rate": 0.6431259044862518,
+                    "ready_opportunity_rate": 0.14862518089725035
+                  },
+                  "artillery": {
+                    "rows": 11176,
+                    "active_fire_rate": 0.7851646385110952,
+                    "ready_opportunity_rate": 0.025053686471009307
+                  }
+                }
+              },
+              "T": {
+                "n": 1,
+                "own_deaths_per_fight": 34.0,
+                "enemy_kills_per_fight": 50.0,
+                "kills_per_own_death": 1.4705882352941178,
+                "zero_death_denominator": false,
+                "kills_per_minute": 63.69426751592372,
+                "enemy_damage_per_fight": 6122.0,
+                "eliminated_n": 1,
+                "censored_n": 0,
+                "time_to_elimination_mean_eliminated_only": 47.09999999999989,
+                "elimination_fraction": 1,
+                "restricted_elimination_time_150": 47.09999999999989,
+                "kills_saturation_fraction": 1,
+                "wins": 1,
+                "won_lost": {
+                  "won": {
+                    "n": 1,
+                    "own_deaths_per_fight": 34,
+                    "enemy_kills_per_fight": 50
+                  },
+                  "nonwon": {
+                    "n": 0,
+                    "own_deaths_per_fight": null,
+                    "enemy_kills_per_fight": null
+                  }
+                },
+                "eligible_events": 185,
+                "multi_gun_events": 19,
+                "multi_gun_event_share": 0.10270270270270271,
+                "assignments": 204,
+                "rejected_assignments": 0,
+                "active_fire_label_rate": 0.733860142888071,
+                "raw_to_executed_mean_px": 94.73940070587435,
+                "per_role_labels": {
+                  "melee": {
+                    "rows": 8838,
+                    "active_fire_rate": 0.723806291016067,
+                    "ready_opportunity_rate": 0.0024892509617560534
+                  },
+                  "ranged": {
+                    "rows": 26107,
+                    "active_fire_rate": 0.6781706055847091,
+                    "ready_opportunity_rate": 0.17064388861224958
+                  },
+                  "artillery": {
+                    "rows": 11245,
+                    "active_fire_rate": 0.8710538016896399,
+                    "ready_opportunity_rate": 0.02267674522009782
+                  }
+                }
+              }
+            },
+            "O+G minus O": {
+              "n": 1,
+              "unmatched_pairs": 0,
+              "deaths_saved": -12,
+              "deaths_saved_sd": null,
+              "deaths_saved_approx_95_ci": null,
+              "exchange_gain": -0.45011252813203284,
+              "planned_death_mde_80pct": {
+                "50": null,
+                "100": null
+              },
+              "enemy_kills_gained": 0.0,
+              "kills_per_minute_gain": -8.694132001578474,
+              "restricted_elimination_seconds_saved": -8.933333333332826
+            }
+          },
+          "alone": {
+            "arms": {
+              "O": {
+                "n": 0
+              },
+              "O+G": {
+                "n": 0
+              },
+              "T": {
+                "n": 0
+              }
+            },
+            "O+G minus O": {
+              "n": 0,
+              "unmatched_pairs": 0,
+              "deaths_saved": null,
+              "deaths_saved_sd": null,
+              "deaths_saved_approx_95_ci": null,
+              "exchange_gain": null,
+              "planned_death_mde_80pct": {
+                "50": null,
+                "100": null
+              },
+              "enemy_kills_gained": null,
+              "kills_per_minute_gain": null,
+              "restricted_elimination_seconds_saved": null
+            }
+          }
+        }
+      }
+    },
+    "training_readiness": "UNRESOLVED",
+    "unit_decision": "UNRESOLVED",
+    "leader_decision": "UNRESOLVED",
+    "series_streak": {
+      "status": "not_run",
+      "reason": "A0 contains independent fights, no series"
+    },
+    "multi_single_gain_attribution": {
+      "status": "not_identified",
+      "reason": "Event share and assignment counts are measured; fight outcomes cannot be causally divided between events in these three arms."
+    }
+  },
+  "completed_fights": 18,
+  "completion_receipts": {
+    "pilot_regular_000_O": "9937841b8c346ca381c8975c4dcf0ee784d333f9f29e18bae675404a5ecc1404",
+    "pilot_regular_000_O_G": "56e7e3f5fc63590fca1f830f38491b96df54216676da3b6f7b713cf9a3c85668",
+    "pilot_regular_000_T": "a458e2077ed3795ab6cf8f2d74d0cf526a47a264772ae5a1ea7e540df7e845cb",
+    "pilot_C3_000_O": "b785be94f28d1ee43377122903d2199246e965bee34e038dac6a5ea4068c2b80",
+    "pilot_C3_000_O_G": "88ef8f7b3e40ff7135f5ed18b386ff4856fb2419ce030a7fdfb5775fed548594",
+    "pilot_C3_000_T": "0a563df79ed817cc7b607a0f66b7188aa4db77cba78dd0b37be1172fa409d7fb",
+    "pilot_regular_001_O": "a211668cf1282437bdbc1bf1c32ee4c2ece5e6b0fb56257e2faf5176461a40f3",
+    "pilot_regular_001_O_G": "87c4bf706faa112d697f223bccf0319f2b08e47bdbd9fa67a4ec26df3f70995d",
+    "pilot_regular_001_T": "124d8d95b6d172be5a96f9bd8c2f7153315f331b51e5836de8cc141a28dd56b5",
+    "pilot_C3_001_O": "278e7169f2563df259c64f2acebe1e7bc75ccb87716b400d4a36da1606824414",
+    "pilot_C3_001_O_G": "5bb866e9a5a149470d448e671171b7876b6aa5d8988713fd60402b3eaf4257f3",
+    "pilot_C3_001_T": "42009c95a9dcc665e81fc440672b19dec1bbe39cf45e99b8bbb1cb575463442f",
+    "pilot_regular_002_O": "d4671a8cd3c127384251713bc3f5723f8fb89b0361ff90ed75da210c1bced33b",
+    "pilot_regular_002_O_G": "eb4dd6ba9f11e5097a0f3d2faf1608652753715ec6a34d84ec6a84be1c0e65a5",
+    "pilot_regular_002_T": "dd0f2f0b9526dcc2bd728a685c7806d5186137c73b3780d8486291487c96513a",
+    "pilot_C3_002_O": "0aa9addbe2bf21e60d470ae8ae1551f49cb7838b8ef9fa3edb1d79362334a456",
+    "pilot_C3_002_O_G": "f8b4d782e5556eca8b35215383d5e904360a419d086613dc4fc465e87d57bf7e",
+    "pilot_C3_002_T": "6db6ee31321ca90109714c71f825e79a32d02badf41f71c41d0d741c173e1db0"
+  },
+  "projection_50": {
+    "remaining_fights": 300,
+    "projected_seconds": 1756.106953877699,
+    "seconds_per_full_150s_fight": {
+      "O": 4.194758200787355,
+      "O+G": 4.097074862157501,
+      "T": 6.342391552702624
+    },
+    "safety_multiplier": 1.2,
+    "workers": 1,
+    "basis": "18 measured pilot fights; worst per-arm full-150s equivalent, serial, plus 20%; not a guarantee",
+    "max_frame_bytes": 24019
+  },
+  "projection_100": {
+    "remaining_fights": 600,
+    "projected_seconds": 3512.213907755422,
+    "seconds_per_full_150s_fight": {
+      "O": 4.194758200787355,
+      "O+G": 4.097074862157501,
+      "T": 6.342391552702624
+    },
+    "safety_multiplier": 1.2,
+    "workers": 1,
+    "basis": "18 measured pilot fights; worst per-arm full-150s equivalent, serial, plus 20%; not a guarantee",
+    "max_frame_bytes": 24019
+  },
+  "mechanism_first": {
+    "regular": {
+      "n": 3,
+      "own_deaths_per_fight": 39.333333333333336,
+      "enemy_kills_per_fight": 50.0,
+      "kills_per_own_death": 1.271186440677966,
+      "zero_death_denominator": false,
+      "kills_per_minute": 67.13078070611633,
+      "enemy_damage_per_fight": 6368.333333333333,
+      "eliminated_n": 3,
+      "censored_n": 0,
+      "time_to_elimination_mean_eliminated_only": 44.68888888888891,
+      "elimination_fraction": 1,
+      "restricted_elimination_time_150": 44.68888888888891,
+      "kills_saturation_fraction": 1,
+      "wins": 3,
+      "won_lost": {
+        "won": {
+          "n": 3,
+          "own_deaths_per_fight": 39.333333333333336,
+          "enemy_kills_per_fight": 50
+        },
+        "nonwon": {
+          "n": 0,
+          "own_deaths_per_fight": null,
+          "enemy_kills_per_fight": null
+        }
+      },
+      "eligible_events": 580,
+      "multi_gun_events": 80,
+      "multi_gun_event_share": 0.13793103448275862,
+      "assignments": 670,
+      "rejected_assignments": 1,
+      "active_fire_label_rate": 0.7349547485567332,
+      "raw_to_executed_mean_px": 69.43141304572455,
+      "per_role_labels": {
+        "melee": {
+          "rows": 18200,
+          "active_fire_rate": 0.8132417582417583,
+          "ready_opportunity_rate": 0.0035164835164835165
+        },
+        "ranged": {
+          "rows": 73831,
+          "active_fire_rate": 0.671872248784386,
+          "ready_opportunity_rate": 0.17783857729138167
+        },
+        "artillery": {
+          "rows": 39788,
+          "active_fire_rate": 0.8162008645822861,
+          "ready_opportunity_rate": 0.022896350658489998
+        }
+      }
+    },
+    "C3": {
+      "n": 3,
+      "own_deaths_per_fight": 34.666666666666664,
+      "enemy_kills_per_fight": 50.0,
+      "kills_per_own_death": 1.4423076923076923,
+      "zero_death_denominator": false,
+      "kills_per_minute": 63.98104265402857,
+      "enemy_damage_per_fight": 6064.333333333333,
+      "eliminated_n": 3,
+      "censored_n": 0,
+      "time_to_elimination_mean_eliminated_only": 46.888888888888786,
+      "elimination_fraction": 1,
+      "restricted_elimination_time_150": 46.888888888888786,
+      "kills_saturation_fraction": 1,
+      "wins": 3,
+      "won_lost": {
+        "won": {
+          "n": 3,
+          "own_deaths_per_fight": 34.666666666666664,
+          "enemy_kills_per_fight": 50
+        },
+        "nonwon": {
+          "n": 0,
+          "own_deaths_per_fight": null,
+          "enemy_kills_per_fight": null
+        }
+      },
+      "eligible_events": 646,
+      "multi_gun_events": 65,
+      "multi_gun_event_share": 0.10061919504643962,
+      "assignments": 716,
+      "rejected_assignments": 1,
+      "active_fire_label_rate": 0.7077223115612277,
+      "raw_to_executed_mean_px": 67.44799999445142,
+      "per_role_labels": {
+        "melee": {
+          "rows": 20504,
+          "active_fire_rate": 0.7727272727272727,
+          "ready_opportunity_rate": 0.0037065938353492
+        },
+        "ranged": {
+          "rows": 86446,
+          "active_fire_rate": 0.6421928140110589,
+          "ready_opportunity_rate": 0.19489623580038407
+        },
+        "artillery": {
+          "rows": 39185,
+          "active_fire_rate": 0.8182722980732423,
+          "ready_opportunity_rate": 0.023350771979073624
+        }
+      }
+    }
+  },
+  "seconds": 26.935896334000002
+}
