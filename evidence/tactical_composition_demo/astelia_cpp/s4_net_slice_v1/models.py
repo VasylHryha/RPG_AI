@@ -15,7 +15,7 @@ class Policy(nn.Module):
         super().__init__()
         if kind not in ('N1','N1r','N2'):raise ValueError(kind)
         self.kind=kind
-        self.hidden=nn.Linear(WIDTH+(0 if kind=='N1' else 16),64)
+        self.hidden=nn.Linear(WIDTH+(0 if kind=='N1' else 28 if kind=='N1r' else 16),64)
         self.readout=nn.Linear(64,81)
         if kind=='N1r':self.recurrence=nn.Linear(64,8)
         if kind=='N2':
@@ -26,7 +26,7 @@ class Policy(nn.Module):
         if kind=="N2":self.law.register_hook(lambda g:g*g.new_tensor([0.,0.,0.,1.,1.,0.]))
     def forward(self,x,state=None,message=None):
         if self.kind=='N1':return self.readout(torch.tanh(self.hidden(x))),None
-        if state is None or message is None or state.shape[-1]+message.shape[-1]!=16:raise ValueError('state/message required')
+        if state is None or message is None or state.shape[-1]+message.shape[-1]!=(28 if self.kind=='N1r' else 16):raise ValueError('state/message required')
         h=torch.tanh(self.hidden(torch.cat([x,state,message],-1)))
         y=self.readout(h)
         if self.kind=='N1r':return y,torch.tanh(self.recurrence(h))
@@ -69,16 +69,17 @@ def export(model,path):
     return payload
 
 def recurrent_message(memory,pos,ids,assignments,candidates):
-    """N1r exposes self8 + mean neighbor8; target aggregation encoded into mean channels.
-    Candidate-specific previous-target groups are included in channels through a fixed
-    cyclic sum (12 slots into 8 dimensions), not a privileged global read."""
+    """Neighbor mean8 and separate per-target cosine12; no slot aliasing."""
     result=[]
     for i,ns in enumerate(graph(pos,ids)):
         m=memory[ns].mean(0) if ns else memory[i]*0
-        for k,t in enumerate(candidates[i]):
-            peers=[j for j in ns if t and assignments[j]==t]
-            if peers:m=m+torch.roll(memory[peers].mean(0),k%8)/12
-        result.append(m/2)
+        align=[]
+        for target in candidates[i]:
+            peers=[j for j in ns if target and assignments[j]==target]
+            group=memory[peers].mean(0) if peers else memory[i]*0
+            length=torch.linalg.vector_norm(group)*torch.linalg.vector_norm(memory[i])
+            align.append((memory[i]*group).sum()/length.clamp_min(1e-6) if float(length.detach())>=1e-6 else memory[i].sum()*0)
+        result.append(torch.cat([m,torch.stack(align)]))
     return torch.stack(result)
 
 

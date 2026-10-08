@@ -8,13 +8,13 @@ def unit(id,team,role=2,x=400,y=400):
     return u
 
 def threat(kind,ordinal=1):
-    return dict(kind=kind,ordinal=ordinal,x=430.,y=400.,dx=-1.,dy=0.,born=0.,at=1.,radius=40.,speed=300.,left=320.,**{'from':0.,'until':3.},release_at=.2,landing_at=1.,caster=101,target=1,slow=False)
+    return dict(kind=kind,ordinal=ordinal,x=430.,y=400.,dx=-1.,dy=0.,born=0.,at=1.,radius=40.,speed=300.,left=320.,**{'from':0.,'until':3.},release_at=.2,landing_at=1.,caster=101,target=1,slow=False,damage=20.)
 
 def snapshot(guns=2):
     us=[unit(i+1,0,x=400,y=400+i*30) for i in range(guns)]+[unit(101,1,x=650),unit(102,1,role=1,x=670,y=440)]
     for u in us:
         if u['team']==0:u['target']=101
-    return dict(version='NS1',fight='fixture',tick=1,side=0,self=1,t=1/30,dt=1/30,width=1400.,height=800.,units=us,threats=[threat(k,i+1) for i,k in enumerate(('shell','shot','field','cast'))])
+    return dict(version='NS1',fight='fixture',tick=1,side=0,self=1,t=1/30,dt=1/30,width=1400.,height=800.,units=us,threats=[threat(k,i+1) for i,k in enumerate(('shell','shot','field','cast','own_shell'))])
 
 def reflected(s):
     s=copy.deepcopy(s);s['side']=1-s['side']

@@ -54,7 +54,7 @@ def test_masks_padding_target_unavailable_and_overflow():
     for i,t in enumerate(s['threats']):t=copy.deepcopy(t);t['ordinal']=i+1;s['threats'][i]=t
     s['units'][0]['target']=999
     s['units'] += [unit(200+i,1,x=700+i) for i in range(14)]
-    x,meta=encode(s);assert x[16]==-1 and x[32]==0 and meta['enemy_overflow'] and meta['threat_overflow']==4
+    x,meta=encode(s);assert x[16]==-1 and x[32]==0 and meta['enemy_overflow'] and meta['threat_overflow']==7
     native=rpc({'operation':'encode','snapshot':s});assert native['features']==pytest.approx(x)
     s['units'][0]['target']=0;assert encode(s)[0][16]==0
 
@@ -76,6 +76,7 @@ def test_invalid_and_no_legal_aim():
     bad=copy.deepcopy(s);bad['private']=0;rpc({'operation':'encode','snapshot':bad},False)
 
 def test_native_state_collector_shadow_and_planner(native_record):
+    assert native_record['integration']['boundary_invariance'] and native_record['integration']['decision_permission_parity']
     assert native_record['checks']>=70 and native_record['fights']==0 and native_record['shells']>=1
     labels=join(native_record['events']);assert labels
     assert all(v['action']['target']==2 for v in labels.values())
@@ -91,12 +92,12 @@ def test_host_neutrality_source():
     for forbidden in ('S4V7Controller','S4V6Controller','forcedP16','react_v1::','artilleryVolley(','net_public::react('):assert forbidden not in h+cpp
     assert 'if(teacher&&decision)' in cpp and 'if(shadow&&decision)' in cpp
 
-@pytest.mark.parametrize('kind,count',[('N1',69841),('N1r',71385),('N2',71880)])
+@pytest.mark.parametrize('kind,count',[('N1',69841),('N1r',72153),('N2',71880)])
 def test_exported_forward_parity(kind,count):
     torch.manual_seed(33);m=Policy(kind);assert sum(p.numel() for p in m.parameters())==count
     x=torch.tensor(encode(snapshot())[0],dtype=torch.float64)[None]
     state=torch.tensor([[.1,.9,-.3,.4] if kind=='N2' else [.1]*8],dtype=torch.float64)
-    msg=torch.tensor([[.2]*12 if kind=='N2' else [-.2]*8],dtype=torch.float64)
+    msg=torch.tensor([[.2]*12 if kind=='N2' else [-.2]*20],dtype=torch.float64)
     y,mem=m(x,state,msg) if kind!='N1' else m(x)
     weights=export(m,LOCAL/(kind+'_fixture_weights.json'))
     native=rpc({'operation':'forward','weights':weights,'features':x[0].tolist(),'state':state[0].tolist(),'message':msg[0].tolist()})
@@ -135,26 +136,41 @@ def test_long_sparse_numerics_and_refinement():
     assert torch.allclose(coarse,fine,atol=1e-3,rtol=1e-5)
     with pytest.raises(ValueError):phase_step(th,p,ids,om,k,f,.3)
 
-@pytest.mark.parametrize('kind',['N1r','N2'])
-def test_recurrent_sequence_parity(kind):
+@pytest.mark.parametrize('kind',['N1','N1r','N2'])
+@pytest.mark.parametrize('ab',['intact','topology_only'])
+def test_recurrent_sequence_parity(kind,ab):
+    from dynamics import baseline_drift,add_drift,remap_graph
     torch.manual_seed(44);m=Policy(kind);weights=export(m,LOCAL/(kind+'_sequence_weights.json'));base=snapshot(2);base['threats']=[];frames=[]
-    for tick in range(1,13):
+    for tick in range(1,19):
         s=copy.deepcopy(base);s['tick']=tick;s['t']=tick/30;s['units'][1]['x']+=tick*3
-        frames.append([s,{**copy.deepcopy(s),'self':2}])
-    native=rpc({'operation':'sequence','weights':weights,'frames':frames,'ablation':'intact'})
-    phases=torch.tensor([math.pi/8,math.pi/4],dtype=torch.float64);mem=torch.zeros((2,8),dtype=torch.float64);assign=[0,0];ids=[1,2];held=None
+        if tick>=9:s['units']=[u for u in s['units'] if u['id']!=2]
+        frames.append([s,{**copy.deepcopy(s),'self':2}] if tick<9 else [s])
+    native=rpc({'operation':'sequence','weights':weights,'frames':frames,'ablation':ab})
+    phase_map={1:math.pi/8,2:math.pi/4};mem_map={i:torch.zeros(8,dtype=torch.float64) for i in (1,2)};assign_map={1:0,2:0};held_map={};cached={};fixed=None;fixed_ids=None
     for tick,frame in enumerate(frames,1):
-        pos=torch.tensor([[s['units'][i]['x'],s['units'][i]['y']] for i,s in enumerate(frame)],dtype=torch.float64)
-        if (tick-1)%6==0:held=torch.tensor([encode(s)[0] for s in frame],dtype=torch.float64)
-        candidates=[encode(s)[1]['enemy_ids']+[0]*(12-len(encode(s)[1]['enemy_ids'])) for s in frame]
-        if kind=='N2':y,phases,drift=m.joint(held,pos,ids,phases,candidates,assignments=assign)
-        else:y,mem=m(held,mem,recurrent_message(mem,pos,ids,assign,candidates))
+        ids=[s['self'] for s in frame]
+        pos=torch.tensor([[next(u for u in s['units'] if u['id']==s['self'])[k] for k in ('x','y')] for s in frame],dtype=torch.float64)
+        phases=torch.tensor([phase_map[i] for i in ids],dtype=torch.float64);mem=torch.stack([mem_map[i] for i in ids]);assign=[assign_map[i] for i in ids]
+        if fixed is None:fixed=graph(pos,ids);fixed_ids=ids[:]
         if (tick-1)%6==0:
-            actions=[decode(s,yy.detach().tolist()) for s,yy in zip(frame,y)]
-            assign=[a['target'] for a in actions]
-            for i,a in enumerate(actions):
-                n=native[tick-1]['actions'][i]['action'];assert n['target']==a['target'] and n['start']==a['start'] and n['release']==a['release']
+            for s in frame:held_map[s['self']]=torch.tensor(encode(s)[0],dtype=torch.float64)
+        held=torch.stack([held_map[i] for i in ids]);candidates=[encode(s)[1]['enemy_ids']+[0]*(12-len(encode(s)[1]['enemy_ids'])) for s in frame]
+        if kind=='N2':y,phases,drift=m.joint(held,pos,ids,phases,candidates,assignments=assign,ablation=ab,fixed=remap_graph(fixed,fixed_ids,ids))
+        else:
+            if kind=='N1r':y,mem=m(held,mem,recurrent_message(mem,pos,ids,assign,candidates))
+            else:y,_=m(held)
+            drift=baseline_drift(pos,ids,held[:,10]*200)
+        if (tick-1)%6==0:
+            actions=[add_drift(decode(s,yy.detach().tolist()),d,s) for s,yy,d in zip(frame,y,drift)]
+            for id,a in zip(ids,actions):assign_map[id]=a['target'];cached[id]=a
+        for i,id in enumerate(ids):
+            n=next(a['action'] for a in native[tick-1]['actions'] if a['id']==id)
+            for key,value in cached[id].items():assert n[key]==pytest.approx(value,abs=1e-9) if isinstance(value,list) else n[key]==value
+            phase_map[id]=phases[i].item();mem_map[id]=mem[i].detach()
+        assert torch.allclose(torch.tensor(native[tick-1]['drift'],dtype=torch.float64),drift,atol=1e-9,rtol=1e-9)
+        assert [p[0] for p in native[tick-1]['phases']]==ids
         if kind=='N2':assert [p[1] for p in native[tick-1]['phases']]==pytest.approx(phases.detach().tolist(),abs=1e-9)
+
 
 def test_safe_loss_masks_and_backward():
     y=torch.zeros((2,81),dtype=torch.float64,requires_grad=True);labels={k:torch.tensor([0,16]) for k in ('move','target','aim')};labels['target']=torch.tensor([0,1]);labels.update(start=torch.tensor([0.,1.]),release=torch.tensor([1.,0.]));masks={k:torch.tensor([True,True]) for k in labels};legal={'move':torch.ones(2,33,dtype=torch.bool),'target':torch.ones(2,13,dtype=torch.bool),'aim':torch.ones(2,33,dtype=torch.bool)}
@@ -167,10 +183,16 @@ def test_safe_loss_masks_and_backward():
 def test_protocol_caps_splits_ranks_and_projection():
     row=dict(opportunities=10,launches=5,enemy_kills=10,completed=8,own_gun_deaths=0,seconds=400)
     passive={**row,'launches':0};assert rank(row)<rank(passive)
-    assert rank_utilities([row,row])==[0,0];es=SliceES(13);assert len(es.candidates())==16;es.update([row]*16);assert es.mean==[0.]*16
-    assert split('whole-series')==split('whole-series');data=[dict(group='g'+str(i),round=r,visitor=a,frames=[1,2,3]) for i in range(20) for r in range(3) for a in ('N1','N1r','N2')];result=aggregate(data);assert result and all(split(x['group'])=='train' for x in result)
-    assert reading(200,[0.]*200,[0.]*200,[0.]*200)[0]=='PARK'
+    assert rank_utilities([row,row])==[0,0];es=SliceES(13);panel=tuple(range(10));row['panel_ids']=panel;assert len(es.candidates(panel))==16;es.update([row]*16,row,panel);assert es.mean==[0.]*16
+    assert split('whole-series')==split('whole-series')
+    data=[dict(group='g'+str(i),round=r,visitor=a,frames=[1,2,3],decision_rows=3+i) for i in range(20) for r in range(3) for a in (('teacher',) if r==0 else ('N1','N1r','N2'))]
+    result=aggregate(data);assert result and all(split(x['group'])=='train' for x in result)
+    assert any(x['round']==0 and x['visitor']=='teacher' for x in result)
+    for r in range(3):assert sum(x['weight']*x['decision_rows'] for x in result if x['round']==r)==pytest.approx(1/3)
+    with pytest.raises(ValueError):aggregate([x for x in data if x['visitor']!='N1'])
+    assert reading(200,[0.]*200,[0.]*200,[0.]*200)[0]=='NONINFERIOR'
     assert reading(50,[-1.]*50,[0.]*50,[0.]*50)[0]=='NEGATIVE'
+
     p=projection(40);assert p['decision_rows']==400000 and p['decision_bytes']==1676800000 and p['joint_bytes']==2549760000
 
 @pytest.mark.parametrize('field,value',[('tick',1.5),('self',1.2),('t',-.01),('fight',12)])
@@ -232,3 +254,108 @@ def test_joint_wire_reconstruction_and_slice_requests(native_record):
     assert next(e for e in unpacked if e['stage']=='snapshot')['value']['self']==1
     a=drill('D1-static',2,13);b=drill('D2-shellfire',2,13)
     assert len(a['roster'])==8 and len(b['roster'])==6
+
+
+def test_integrated_lifecycle(native_record):
+    drills=native_record['integration']['drill_dispatch']
+    assert drills[0]['cell']=='D1-static' and not drills[0]['enemy_launched']
+    assert drills[1]['cell']=='D2-shellfire' and drills[1]['enemy_launched']
+    assert all(d['scaffold_entry_gate'] for d in drills)
+    scenarios=native_record['integration']['scenarios']
+    assert len(scenarios)==8 and all(s['ticks']==60 for s in scenarios)
+    for scenario in scenarios:
+        events=scenario['events'];join(events)
+        if scenario['scenario']=='no_launch':assert scenario['no_launch']==13 and not scenario['launch']
+        if scenario['scenario']=='walk_across':assert scenario['launch']==13
+        if scenario['scenario']=='aim_veto':assert scenario['veto']==13
+
+
+def test_decision_tick_permissions_masks(native_record):
+    from schema import opportunities
+    from labels import join
+    for prep,cd in ((0,2/30),(.2,0),(.28,0),(0,0)):
+        s=snapshot(1);s['threats']=[];s['units'][0].update(prep=prep,cooldown=cd,windup=.3)
+        y=[-1.]*81;y[0]=y[34]=y[46]=y[47]=y[48]=1
+        action=decode(s,y);teacher=rpc({'operation':'teacher','snapshots':[s]})['actions'][0]['action']
+        expected=opportunities(s,s['units'][1],action['aim'])
+        assert (action['start'],action['release'])==expected
+        assert (teacher['start'],teacher['release'])==expected
+        events=[dict(fight='fixture',tick=1,decision_tick=1,cast_tick=0,volley=0,unit=1,stage='snapshot',value=s),dict(fight='fixture',tick=1,decision_tick=1,cast_tick=0,volley=0,unit=1,stage='intent',value=action)]
+        masks=join(events)[('fixture',1,1)]['masks']
+        assert (masks['start'],masks['release'])==expected
+
+
+def test_unaliased_recurrent_target_channels():
+    memory=torch.tensor([[1.]*8,[1.]*8,[-1.]*8],dtype=torch.float64);pos=torch.tensor([[0.,0.],[50.,0.],[100.,0.]],dtype=torch.float64)
+    candidates=[[100+i for i in range(12)]]*3
+    message=recurrent_message(memory,pos,[1,2,3],[0,100,108],candidates)
+    assert message.shape==(3,20) and message[0,8].item()==pytest.approx(1.,abs=1e-12) and message[0,16].item()==pytest.approx(-1.,abs=1e-12)
+    assert torch.equal(message[0,:8],torch.zeros(8,dtype=torch.float64))
+
+
+def test_alpha_spending_and_reachable_readings():
+    from protocol import LOOK_SPEND,t_critical
+    assert sum(LOOK_SPEND.values())==pytest.approx(.05)
+    assert t_critical(49,.05)==pytest.approx(2.009575,abs=1e-6)
+    # Paired SD ~.20, mean .00/.10 at reachable n. .10 is a margin boundary,
+    # so no finite-n guarantee of superiority beyond .10 is claimed.
+    noise=[-.2,.2]*100
+    assert reading(200,noise,noise,[0.]*200)[0]=='NONINFERIOR'
+    assert reading(200,[x+.1 for x in noise],noise,[0.]*200)[0]=='NONINFERIOR'
+    assert reading(200,[x+.2 for x in noise],noise,[0.]*200)[0]=='POSITIVE'
+    assert reading(200,[x-.2 for x in noise],noise,[0.]*200)[0]=='NEGATIVE'
+    lo,hi=__import__('protocol').paired_interval([x-.1 for x in noise],LOOK_SPEND[200]/2)
+    assert lo<-.1<hi<0 # Detects signed .10 effect, but NI-deficit lies on boundary.
+
+
+def test_es_incumbent_and_effective_clipped_noise():
+    from protocol import es_generation
+    panel=tuple(range(10));es=SliceES(13);es.mean=[2.]*16;points=es.candidates(panel)
+    assert all(z<=0 for e in es.noise for z in e)
+    base=dict(opportunities=10,launches=5,enemy_kills=10,completed=8,own_gun_deaths=1,seconds=400,panel_ids=panel)
+    es.update([base]*16,base,panel);assert es.incumbent==[0.]*16
+    with pytest.raises(ValueError):SliceES(1).candidates([1]*10)
+    engines={a:SliceES(i) for i,a in enumerate(('N1','N1r','N2'))};seen=[]
+    def evaluate(arm,point,p):seen.append((arm,p));return {**base,'panel_ids':p}
+    result=es_generation(engines,panel,evaluate)
+    assert len(seen)==51 and all(r['retained'] for r in result.values())
+    es=SliceES(5);es.candidates(panel)
+    # Survival deterioration cannot replace even if offense improves.
+    worse={**base,'own_gun_deaths':2,'enemy_kills':30}
+    assert es.update([worse]*16,base,panel)['retained']
+    es.candidates(panel);better={**base,'own_gun_deaths':0}
+    assert not es.update([better]*16,base,panel)['retained']
+
+
+def test_matched_kick_harness():
+    from probes import matched_kicks
+    scalar=lambda x:torch.tensor(x,dtype=torch.float64)
+    theta=torch.tensor([.2,1.],dtype=torch.float64);pos=torch.tensor([[0.,0.],[50.,0.]],dtype=torch.float64)
+    result=matched_kicks(theta,pos,[1,2],[scalar(x) for x in (.5,.5,.8,1.,.2,.125)],theta*0,theta*0+80,torch.tensor([[0.,0.],[100.,0.]],dtype=torch.float64),torch.tensor([0.,.7],dtype=torch.float64))['ablations']
+    assert result['intact']['baseline']['phase_increment']!=result['intact']['geometry']['phase_increment']
+    assert result['no_geometry_to_mode']['baseline']['phase_increment']==pytest.approx(result['no_geometry_to_mode']['geometry']['phase_increment'])
+    assert torch.allclose(torch.tensor(result['no_mode_to_geometry']['baseline']['motion']),torch.tensor(result['no_mode_to_geometry']['phase']['motion']))
+
+
+def test_shell_kind_tensor_and_teacher_planner_input():
+    s=snapshot();s['threats']=[threat('own_shell')];s['threats'][0]['caster']=1
+    x,_=encode(s);start=32+12*32*2
+    assert x[start+22]==1 and x[start+23]==.1 and x[start+1]==0
+    assert rpc({'operation':'encode','snapshot':s})['features']==pytest.approx(x)
+    s['threats'].append(threat('shell',2))
+    s['units'][0]['prep']=.09
+    result=rpc({'operation':'teacher','snapshots':[s]})
+    inputs=next(d['value'] for d in result['diagnostics'] if d['stage']=='teacher_planner_input')
+    assert inputs['shells']==2 and inputs['projected_shells']==2
+
+
+def test_drill_geometry_and_record_caps():
+    from requests import drill
+    d1=drill('D1-static',10,1);d2=drill('D2-shellfire',10,1)
+    assert d1['cell']!=d2['cell'] and d1['threat_source']=='none' and d2['threat_source']=='native_enemy_guns'
+    for d in (d1,d2):
+        gun=next(u for u in d['roster'] if u['team']==0 and u['role']==2)
+        nearest=min((u for u in d['roster'] if u['team']==1),key=lambda u:math.dist(gun['position'],u['position']))
+        assert nearest['role']==2
+    assert projection()['raw_JSON_record_cap_bytes']==1048576
+    assert 'maximum_record_bytes' in (HERE/'rpc.cpp').read_text() and 'own_guns_alive' in (HERE/'rpc.cpp').read_text()

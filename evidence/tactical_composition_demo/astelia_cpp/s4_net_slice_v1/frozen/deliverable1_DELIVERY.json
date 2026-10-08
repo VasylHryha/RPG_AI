@@ -1,0 +1,289 @@
+{
+  "status": "REVIEW_READY_NOT_ACCEPTED",
+  "scope": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1",
+  "git": "read-only; no staging/commit attempted",
+  "provenance": "Assisted-by: Codex:GPT-6",
+  "fights": 0,
+  "teacher_collection": false,
+  "training_updates": 0,
+  "focused_completed_cases": 44,
+  "native_assertions": 183,
+  "native_build_seconds": 25.044275333,
+  "review": "OWNER_RECHECK.md; same-family implementation+artifact closure; Claude next",
+  "post_build_python_changes": {
+    "verify_focused.py": {
+      "build_sha256": "12bebb5c5302e22d6410122490a6b978fc88c6ccebdfd9d200fca05c84888646",
+      "current_sha256": "a37fcd8fcb619e6cf07a88b043939ae63b43142c5b8448984e4c6e8b532ab869",
+      "reason": "post-build explicit test-resume bookkeeping; no native changes"
+    },
+    "test_slice.py": {
+      "build_sha256": "043862ec9cf5592247b420730008d19eba94f2128ca24f6f6dc985d74a573815",
+      "current_sha256": "8be5f27da8b5a1256d71668660e9baa53a822749907acf4890793d84e137c7fd",
+      "reason": "post-build malformed ordinal fixture correction"
+    }
+  },
+  "files": {
+    ".gitignore": {
+      "bytes": 39,
+      "sha256": "5719ae418c694ec5349b95da200b829b4683d9cf19cd372289346426d19a4076"
+    },
+    "BUILD.json": {
+      "bytes": 58636,
+      "sha256": "0e13e6ecbb019a15753f03ca4e2cf81b48e8225d8c6931d1f13fdc19f5e5b98c"
+    },
+    "BUILD_ATTEMPT_01.stderr.log": {
+      "bytes": 5190,
+      "sha256": "80429c7ea9888f583a501d075952c129c3d20731007946cb074f94d2d4480fea"
+    },
+    "BUILD_ATTEMPT_01.stdout.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "BUILD_ATTEMPT_02.stderr.log": {
+      "bytes": 42476,
+      "sha256": "ee04e055164241a3cb62a69f16e620cd55a2b5d52ea0e6ebe5c439fe5631250f"
+    },
+    "BUILD_ATTEMPT_02.stdout.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "BUILD_ATTEMPT_03.stderr.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "BUILD_ATTEMPT_03.stdout.log": {
+      "bytes": 31,
+      "sha256": "cae9a4ab4c9eb47ca38cd500dd0a74755b273f937302ded7c01c9ea5fe2ba36f"
+    },
+    "CONTRACT.md": {
+      "bytes": 33872,
+      "sha256": "4fb03f5bb7113fe735d789564684846efd16f7446f1c7077c3fdca2edfadb297"
+    },
+    "ENVIRONMENT.json": {
+      "bytes": 3215,
+      "sha256": "f5d717d154a231fe0633a1a7d05c3ec994bc27da7f545573c10cc08609435f0b"
+    },
+    "ENVIRONMENT_INSTALL.stderr.log": {
+      "bytes": 455,
+      "sha256": "bc79c51b8e4895d0e7f0747579f74525b22c037171346c549ff8aa75d576f2a9"
+    },
+    "ENVIRONMENT_INSTALL.stdout.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FIXTURE_EXPORTS.json": {
+      "bytes": 704,
+      "sha256": "225b48d55d2a80c47583e0c7ef0cce44f36a102aa43304767f70c00062fbf284"
+    },
+    "NATIVE_FIXTURES.json": {
+      "bytes": 111931,
+      "sha256": "4bc3bcf9ad443b984a2290bffe9a9babb64525e757cdf74e1d204955cb6149ab"
+    },
+    "OWNER_RECHECK.md": {
+      "bytes": 11381,
+      "sha256": "3b7accc8e4857046a73c7588f92ce09677652bf7cb195362cf13f28d6c566556"
+    },
+    "PLAN.md": {
+      "bytes": 2609,
+      "sha256": "e5744cfa13d47b86f0d23a972d0958a69f32946988814f5b20a69e2a359366e5"
+    },
+    "PLAN_CURRENT_APPEND.md": {
+      "bytes": 1300,
+      "sha256": "ff8512fa6b48325e4ed52f21316e6147309bcdc66e9c64f5f8e6e84494660e1d"
+    },
+    "README.md": {
+      "bytes": 3396,
+      "sha256": "104a5e04e0cb9ee8904cb9a7f78eecae8d35d43b8403424198942f5b9bf0afe9"
+    },
+    "REPORT.md": {
+      "bytes": 3069,
+      "sha256": "2b142a66ed992c1b29182e76e27a3d5ae2875dcdb65f9d96803cfb2cc27f1ed5"
+    },
+    "TESTS.json": {
+      "bytes": 1014,
+      "sha256": "e1dbd2e6e62037f1a273101a728341889142f60f98033978a27c01d8ef09ec0e"
+    },
+    "TEST_ATTEMPT_01.json": {
+      "bytes": 869,
+      "sha256": "a0cc3c74e04df74c6998f6c610c90a41e6723a1325592e6bba4c04be78947d4a"
+    },
+    "TEST_ATTEMPT_01.stderr.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "TEST_ATTEMPT_01.stdout.log": {
+      "bytes": 3004,
+      "sha256": "4d09bb7afcb98330390b5586d2b52ab4441ac4767f585680082e4d14ea449a99"
+    },
+    "TEST_ATTEMPT_02.json": {
+      "bytes": 1014,
+      "sha256": "e1dbd2e6e62037f1a273101a728341889142f60f98033978a27c01d8ef09ec0e"
+    },
+    "TEST_ATTEMPT_02.stderr.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "TEST_ATTEMPT_02.stdout.log": {
+      "bytes": 114,
+      "sha256": "a2182797201ed17bf4eed7c9f1a597fd2f1df74600d6406d1eccc755904579c1"
+    },
+    "build.py": {
+      "bytes": 6501,
+      "sha256": "78eb9e643ef1cdd07bbff006c31f993bae4ce32603fde061881d448e3921788d"
+    },
+    "cast.cpp": {
+      "bytes": 2555,
+      "sha256": "588be1713d2dedf2ec1c13fa4db62c21bdab0516c7c06d78ffec7812fce34db3"
+    },
+    "cast.h": {
+      "bytes": 897,
+      "sha256": "62b483376bead9da6d938604a2bb0747fcc603b2659b59dcbf6528f0e22605e6"
+    },
+    "collector.cpp": {
+      "bytes": 498,
+      "sha256": "9b0487a338857d72bb4965a6aaafe8b61fad2f9c8f7d168f21adcb85d98e6cf0"
+    },
+    "collector.h": {
+      "bytes": 271,
+      "sha256": "9093d2812b26e5e9104ccdbdc26665669fa510775d43cf6a8aa38812ae022eac"
+    },
+    "dynamics.py": {
+      "bytes": 3462,
+      "sha256": "14566f1e1815da73193a74490205924faac506569fa22e016319c456b1d49d5f"
+    },
+    "fixture.cpp": {
+      "bytes": 10296,
+      "sha256": "d5afce783b5b0a41cefd971ae4d80c6894851d9275715a8ec57de0ab4234f619"
+    },
+    "fixtures/N1_export.json": {
+      "bytes": 1488192,
+      "sha256": "4140068d178ddba759e71facba05d34a298cebded472b54f90972123d6835ffd"
+    },
+    "fixtures/N1r_export.json": {
+      "bytes": 1521025,
+      "sha256": "27342d2910a19a030df8a264785a468f6b851e4f077c8b536ae58bd06edf0f77"
+    },
+    "fixtures/N2_export.json": {
+      "bytes": 1531845,
+      "sha256": "7a339b2ee34ae32e4d22e097e1bb8151fe6c2c9977d2e81f99ef708c2782bee3"
+    },
+    "fixtures/PLANNER_STATES.json": {
+      "bytes": 5603,
+      "sha256": "1bad745b19afaa8046e1b033e399a881a3d8413f71d678e40c62ddfc1fa5aa9f"
+    },
+    "fixtures.py": {
+      "bytes": 1354,
+      "sha256": "df6c2867bffd7660e8d2be88894cce63172f685a81e41134c58b9bc7b04c89a6"
+    },
+    "frozen/0033-0g-big-levers-and-lighter-tooling-reviews.md": {
+      "bytes": 3385,
+      "sha256": "4554f6327f7ef04025feae951b2b0d540512621f3b0a7493f8fc027640067a18"
+    },
+    "frozen/0034-0g-two-axis-evaluation-and-fixed-combiner-first.md": {
+      "bytes": 2874,
+      "sha256": "ef873e64e2e2b9b6325d43cb61696eb46c633df6d7a7adda0442bdd10bdd8ced"
+    },
+    "frozen/AGENTS.md": {
+      "bytes": 12572,
+      "sha256": "1df35be73da0df1fbb914edb5a1e389bb2b593d6245a6234fc6cc2dd32743a23"
+    },
+    "frozen/NETWORK_POLICY_DESIGN_0G.md": {
+      "bytes": 20251,
+      "sha256": "0952090720f6f96b72fbeabac73b42486afb3c8ad9a78de771f599cc47fa9cae"
+    },
+    "frozen/network_policy_design_review_codex.md": {
+      "bytes": 28007,
+      "sha256": "5119fdbc8df2f2e7210142148bf307bb793d8ce59bb83cc96cebc75a8f87a767"
+    },
+    "frozen/network_policy_design_review_r2_codex.md": {
+      "bytes": 28250,
+      "sha256": "ff4d8d7f88c6970f8a240d541b50cc7ae0fb13a58881f5b1644ec28fff48b3f9"
+    },
+    "host.cpp": {
+      "bytes": 11272,
+      "sha256": "0394b1763e70eade3ca234e7a8d76902dbd500b1f75ac335d4ebc99076773a9a"
+    },
+    "host.h": {
+      "bytes": 1432,
+      "sha256": "8714c35a684c2aaa73660ace361acf3ca68803b7ccb9720617d9331c7d349851"
+    },
+    "labels.py": {
+      "bytes": 3077,
+      "sha256": "ddfe235b574d242094e3d779a16a51cb94c9cce92d0d0e4f313312147ada039f"
+    },
+    "losses.py": {
+      "bytes": 1517,
+      "sha256": "ff60f4fd68c5ee27f80d980e37446e012a97b9e23247aad0d69c8077f19181b2"
+    },
+    "models.cpp": {
+      "bytes": 6645,
+      "sha256": "f2aeb0628690f69a7e41fc0993887ab1a78d4db70590c888cfd6847eeb855fc9"
+    },
+    "models.h": {
+      "bytes": 1047,
+      "sha256": "5e80a6cf22b6e4b5902acade2d8c5b1b9e5ee6f167d5171e78dcbd1a0a57455c"
+    },
+    "models.py": {
+      "bytes": 4975,
+      "sha256": "a167d1a3ef00640d9d3d71e4d3bdfa437e1ef842db1b91160cdff47834c4aca5"
+    },
+    "project.py": {
+      "bytes": 2678,
+      "sha256": "ef1973a12cd58a10cb06957cd7bbc1d7448e953b7968ad622a1446c5bc297bf7"
+    },
+    "protocol.py": {
+      "bytes": 3848,
+      "sha256": "a6698ea4b2396eca92932c7d4ca77e0a04fb9fefb1faecd4ea8fec66947600fa"
+    },
+    "public_mechanics.h": {
+      "bytes": 915,
+      "sha256": "e5d97de5d69b5582902f4aa9e76f64819147911b234d2a023ef8e115fa74c523"
+    },
+    "requests.py": {
+      "bytes": 776,
+      "sha256": "0b2928d0679ff80e643cdc085ab643a852507e9d6331fde78bd9474e4ffd1919"
+    },
+    "requirements.lock": {
+      "bytes": 428,
+      "sha256": "889552de8f3d70c461b41d9014b694cdc2f2562b1c231fa6f6cba5ba20b95794"
+    },
+    "rpc.cpp": {
+      "bytes": 6440,
+      "sha256": "05cd95c1ee9ca65ff7416f3a9e02dc2194907e2ef42c18ab2e729ff88949987a"
+    },
+    "schema.cpp": {
+      "bytes": 11702,
+      "sha256": "901aa10a0e3fb162d66adf41cca48677bca06dacb0a8f133545755281b59faa6"
+    },
+    "schema.h": {
+      "bytes": 549,
+      "sha256": "93a8caabfdffb33031ae31f7a7985b758ee671163e33969b6269b7401ab94ff1"
+    },
+    "schema.py": {
+      "bytes": 7934,
+      "sha256": "92eb6f851e05813c6a96597399d88b7c753b94cda963702e3875d97eb6d1e065"
+    },
+    "setup_env.py": {
+      "bytes": 2351,
+      "sha256": "55f05e6ff48162e8d87904f843f1dd5092584cb1cafbf3bb08965b2eeb802487"
+    },
+    "teacher.cpp": {
+      "bytes": 5121,
+      "sha256": "e8610e6eff0983392cf00af0d7acdb2955dbb0644f9e2a42fc9c09e7de0402ff"
+    },
+    "teacher.h": {
+      "bytes": 552,
+      "sha256": "c143500438f83f58b98896f863a45d3f6d84c1504e4a538a3cf0e7f575e186ab"
+    },
+    "test_slice.py": {
+      "bytes": 15254,
+      "sha256": "8be5f27da8b5a1256d71668660e9baa53a822749907acf4890793d84e137c7fd"
+    },
+    "verify_focused.py": {
+      "bytes": 1770,
+      "sha256": "a37fcd8fcb619e6cf07a88b043939ae63b43142c5b8448984e4c6e8b532ab869"
+    }
+  },
+  "excluded": "_local environment/build/test caches; unrelated labs; docs/PLAN_CURRENT.md",
+  "self_hash_rule": "DELIVERY.json and NEW_FILES.txt excluded from hash map to avoid self-reference"
+}

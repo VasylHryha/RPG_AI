@@ -6,8 +6,8 @@ WIDTH = 1008
 COMMON = {'id','team','role','x','y','vx','vy','hp','maxhp','radius','speed','range','min_range','damage','cooldown','cooldown_max','target'}
 OWN = {'prep','windup','time_rate','energy','cost','guard_until','busy','lob','splash','last_launch','consumed'}
 ROOT = {'version','fight','tick','side','self','t','dt','width','height','units','threats'}
-THREAT = {'kind','ordinal','x','y','dx','dy','born','at','radius','speed','left','from','until','release_at','landing_at','caster','target','slow'}
-KINDS = ('shell','shot','field','cast')
+THREAT = {'kind','ordinal','x','y','dx','dy','born','at','radius','speed','left','from','until','release_at','landing_at','caster','target','slow','damage'}
+KINDS = ('shell','shot','field','cast','own_shell')
 
 def check(s):
     if set(s) != ROOT or s['version'] != VERSION: raise ValueError('schema root/version')
@@ -55,7 +55,7 @@ def encode(s):
             target=next((e for e in s['units'] if e['id']==u['target'] and e['hp']>0 and e['team']!=u['team']),None)
             reach=target is not None and u['min_range']<=math.hypot(u['x']-target['x'],u['y']-target['y'])<=u['range']
             body=u['guard_until']<=s['t'] and not u['busy']
-            a += [u['prep']/10,u['windup']/10,u['time_rate']/4,u['energy']/1000,u['cost']/1000,max(0,u['guard_until']-s['t'])/10,float(u['busy']),u['lob']/1000,u['splash']/100,float(body and reach and u['prep']<=0 and u['cooldown']<=0 and u['energy']>=u['cost']),float(body and reach and u['prep']>0 and u['prep']>=u['windup']-1e-9),-1 if u['last_launch']<0 else (s['t']-u['last_launch'])/10,float(u['consumed'])]
+            a += [u['prep']/10,u['windup']/10,u['time_rate']/4,u['energy']/1000,u['cost']/1000,max(0,u['guard_until']-s['t'])/10,float(u['busy']),u['lob']/1000,u['splash']/100,float(body and reach and u['prep']<=0 and u['cooldown']<=0 and u['energy']>=u['cost']),float(body and reach and u['prep']>0 and u['prep']+s['dt']*u['time_rate']>=u['windup']-1e-9),-1 if u['last_launch']<0 else (s['t']-u['last_launch'])/10,float(u['consumed'])]
         else:a += [0.]*13
         assert len(a)==32
         return a
@@ -63,14 +63,14 @@ def encode(s):
     for group in (friends,enemies):
         for i in range(12):features+=row(group[i] if i<len(group) else None)
     def urgency(t):
-        when={'shell':t['at'],'cast':t['landing_at'],'field':max(s['t'],t['from']),'shot':s['t']+max(0,((me['x']-t['x'])*t['dx']+(me['y']-t['y'])*t['dy']))/max(t['speed'],1e-6)}[t['kind']]
+        when={'shell':t['at'],'own_shell':t['at'],'cast':t['landing_at'],'field':max(s['t'],t['from']),'shot':s['t']+max(0,((me['x']-t['x'])*t['dx']+(me['y']-t['y'])*t['dy']))/max(t['speed'],1e-6)}[t['kind']]
         inside=math.hypot(t['x']-me['x'],t['y']-me['y'])<=t['radius']+me['radius']+4
         return (not inside,max(0,when-s['t']),KINDS.index(t['kind']),t['ordinal'])
     threats=sorted(s['threats'],key=urgency)
     for i in range(8):
         if i>=len(threats):features += [0.]*24;continue
         t=threats[i]
-        features += [1.,*map(float,(t['kind']==k for k in KINDS)),sgn*(t['x']-me['x'])/100,(t['y']-me['y'])/100,sgn*t['dx'],t['dy'],(s['t']-t['born'])/10,(t['at']-s['t'])/10,t['radius']/100,t['speed']/1000,t['left']/1000,(t['from']-s['t'])/10,(t['until']-s['t'])/10,(t['release_at']-s['t'])/10,(t['landing_at']-s['t'])/10,pointer(t['caster']),float(t['target']==me['id']),float(not urgency(t)[0]),float(t['slow']),0.,0.]
+        features += [1.,*map(float,(t['kind']==k for k in KINDS[:4])),sgn*(t['x']-me['x'])/100,(t['y']-me['y'])/100,sgn*t['dx'],t['dy'],(s['t']-t['born'])/10,(t['at']-s['t'])/10,t['radius']/100,t['speed']/1000,t['left']/1000,(t['from']-s['t'])/10,(t['until']-s['t'])/10,(t['release_at']-s['t'])/10,(t['landing_at']-s['t'])/10,pointer(t['caster']),float(t['target']==me['id']),float(not urgency(t)[0]),float(t['slow']),float(t['kind']=='own_shell'),t['damage']/200]
     counts=[sum(u['hp']>0 and u['team']==team and u['role']==role for u in s['units'])/64 for team in (s['side'],1-s['side']) for role in range(3)]
     cent=[]
     for team in (s['side'],1-s['side']):
@@ -103,4 +103,14 @@ def decode(s,logits):
     moves,aims=candidates(s,target)
     valid=[i for i,a in enumerate(aims) if 0<=a[0]<=s['width'] and 0<=a[1]<=s['height'] and me['min_range']<=math.hypot(a[0]-me['x'],a[1]-me['y'])<=me['range']]
     mi=arg(range(33));ai=max(valid,key=lambda i:(logits[48+i],-i)) if valid else None
-    return {'multiplier':float(mi!=0),'stop':0.,'goal':moves[mi],'target':target['id'] if target else 0,'start':logits[46]>=0 and ai is not None,'release':logits[47]>=0 and ai is not None,'aim':aims[ai] if ai is not None else None,'move_index':mi,'aim_index':ai,'target_index':ti,'volley':0}
+    start_opportunity,release_opportunity=opportunities(s,target,aims[ai] if ai is not None else None)
+    return {'multiplier':float(mi!=0),'stop':0.,'goal':moves[mi],'target':target['id'] if target else 0,'start':logits[46]>=0 and start_opportunity,'release':logits[47]>=0 and release_opportunity,'start_opportunity':start_opportunity,'release_opportunity':release_opportunity,'aim':aims[ai] if ai is not None else None,'move_index':mi,'aim_index':ai,'target_index':ti,'volley':0}
+
+
+def opportunities(s,target,aim):
+    """Decision-tick gates; release includes this tick's native prep increment."""
+    me=check(s)
+    body=me['guard_until']<=s['t'] and not me['busy']
+    reach=target is not None and me['min_range']<=math.hypot(target['x']-me['x'],target['y']-me['y'])<=me['range']
+    legal=body and reach and aim is not None and 0<=aim[0]<=s['width'] and 0<=aim[1]<=s['height'] and me['min_range']<=math.hypot(aim[0]-me['x'],aim[1]-me['y'])<=me['range']
+    return (bool(legal and me['prep']<=0 and me['cooldown']<=0 and me['energy']>=me['cost']),bool(legal and me['prep']>0 and me['prep']+s['dt']*me['time_rate']>=me['windup']-1e-9))

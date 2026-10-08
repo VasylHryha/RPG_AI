@@ -4,8 +4,8 @@
 
 namespace net_slice {
 using namespace astelia;
-struct Intent {UnitId target=0;Vec2 goal,aim;bool hasAim=false,start=false,release=false;double multiplier=0,stop=0;unsigned moveIndex=0,aimIndex=0,targetIndex=0;uint64_t volley=0;};
-struct CastInput {uint64_t tick=0;bool alive=true,body=false,target=false,targetReach=false,aimReach=false;double cooldown=0,energy=0,cost=0,prep=0,windup=1;};
+struct Intent {UnitId target=0;Vec2 goal,aim;bool hasAim=false,start=false,release=false,startOpportunity=false,releaseOpportunity=false;double multiplier=0,stop=0;unsigned moveIndex=0,aimIndex=0,targetIndex=0;uint64_t volley=0;};
+struct CastInput {uint64_t tick=0;bool alive=true,body=false,target=false,targetReach=false,aimReach=false;double cooldown=0,energy=0,cost=0,prep=0,windup=1,advance=0;};
 struct CastOutput {std::string state,reason;bool start=false,release=false,cancel=false;};
 class Cast {
 public:

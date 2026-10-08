@@ -1,7 +1,7 @@
 {
-  "status": "PASS",
-  "exit_code": 0,
-  "seconds": 2.1694877080008155,
+  "status": "FAIL",
+  "exit_code": 1,
+  "seconds": 8.897619291994488,
   "command": [
     "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/bin/python",
     "-m",
@@ -9,15 +9,13 @@
     "-q",
     "--confcutdir=/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1",
     "--basetemp=/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/pytest",
-    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/test_slice.py",
-    "-k",
-    "test_unaliased_recurrent_target_channels"
+    "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/test_slice.py"
   ],
   "fights": 0,
   "training_steps": 0,
   "teacher_collection": false,
   "scope": "NS1 focused fixture suite; native isolated seams + bounded scripted coreStep lifecycle checks",
-  "resumed_from": "TEST_ATTEMPT_03.json",
-  "unchanged_previously_passed_checks": 56,
-  "test_source_sha256": "5b492ac29588c509a7aa3bafe78811213021cef200685b96a46db4ecf13e2783"
+  "resumed_from": null,
+  "unchanged_previously_passed_checks": 0,
+  "test_source_sha256": "38e276df9b47e8abe556b94cc1a8e48ffacdbbd68f3e2566026a70bd5738dcee"
 }

@@ -44,7 +44,8 @@ def generated():
     combat=once(combat,'controllerDecision(w,i)','net_slice::decide(w,i)')
     combat=once(combat,'for(auto i:w.active)gamePrep(w,i,dt*w.state[i].timeRate);','net_slice::prePrep(w);for(auto i:w.active)gamePrep(w,i,dt*w.state[i].timeRate);net_slice::postPrep(w);')
     combat=once(combat,'for (const auto& hit:w.meleeHits)', 'net_slice::finishTick(w);for (const auto& hit:w.meleeHits)')
-    combat=once(combat,'d.release==Release::Artillery&&prepared(w,i)','d.release==Release::Artillery&&prepared(w,i)&&net_slice::aimReach(w,i)')
+    combat=once(combat,'double before=t?', 'const bool sliceAimLegal=net_slice::actAimReach(w,i);double before=t?')
+    combat=once(combat,'d.release==Release::Artillery&&prepared(w,i)','d.release==Release::Artillery&&prepared(w,i)&&sliceAimLegal')
     combat=once(combat,'fireShellAt(w,i,t->pos+(sk.lobLead||(sk.adaptiveLobLead&&steady)?ts.longVelocity*fl:Vec2{}));','fireShellAt(w,i,net_slice::aimPoint(w,i,t->pos+(sk.lobLead||(sk.adaptiveLobLead&&steady)?ts.longVelocity*fl:Vec2{})));')
     rules=(CPP/'src/native/observer_v1_combat_rules.cpp').read_text()
     rules=once(rules,'w.state[i].prep=0;if(w.config->rules','net_slice::consumedAck(w,i);w.state[i].prep=0;if(w.config->rules')
@@ -63,7 +64,7 @@ def build():
     compile(CPP/'s4_shape_lab_v1/lab_dispatch.cpp',OUT/'dispatch.o')
     for name,content in generated().items():
         path=OUT/name;path.write_text(content);compile(path,OUT/(path.stem+'.o'))
-    for name in ('schema','models','cast','collector','teacher','host'):
+    for name in ('schema','models','cast','collector','teacher','host','integration'):
         compile(HERE/(name+'.cpp'),OUT/(name+'.o'))
     skip={'lab_host.o','lab_combat.o','lab_dispatch.o','observer_v1_observer_v1_combat_rules.o',*(f'overlay_{i}.o' for i in range(5))}
     reused={}

@@ -1,7 +1,7 @@
 """Chronological causal joins. Fit decision intents; never backfill launch outcomes."""
 import math
 from collections import defaultdict
-from schema import check,slots
+from schema import check,slots,opportunities
 
 def join(events):
     decisions={};snapshots={};outcomes=defaultdict(list);casts={};seen=set();last_tick={}
@@ -22,6 +22,8 @@ def join(events):
             aim=v['aim'];aim_legal=aim is not None and 0<=aim[0]<=s['width'] and 0<=aim[1]<=s['height'] and me['min_range']<=math.hypot(aim[0]-me['x'],aim[1]-me['y'])<=me['range']
             start=body and reach and aim_legal and me['prep']<=0 and me['cooldown']<=0 and me['energy']>=me['cost']
             release=body and reach and aim_legal and me['prep']>0 and me['prep']+s['dt']*me['time_rate']>=me['windup']-1e-9
+            start,release=opportunities(s,target,aim)
+            if (v['start'] and not start) or (v['release'] and not release):raise ValueError('permission without decision-tick opportunity')
             decisions[dkey]={'action':v,'volley':e['volley'],'masks':{'target':me['prep']<=0,'move':body,'start':start,'release':release,'aim':aim_legal and (v['start'] or v['release'])},'outcomes':[]}
         elif e['stage']=='cast_start':
             if dkey not in decisions:raise ValueError('cast lacks originating decision')

@@ -1,30 +1,27 @@
-# NS1 deliverable 1
+# NS1 deliverable 1b
 
-Read CONTRACT.md first. New-file implementation only; no training, teacher collection or fights in this delivery. Native fixture RPC defaults to observation/decoder/forward/phase/teacher/sequence operations. `--collect` is an explicit future physical-run switch and was never invoked here. The model exports produced by tests are **untrained fixture weights**, not policies suitable for play.
+Read CONTRACT.md and REPORT.md. This is the corrected pre-data slice; frozen/deliverable1_* retains D1 history and frozen/network_slice_d1_recheck_claude.md is the review input. OWNER_RECHECK_D1B.md records the separate same-family source check and fix dispositions. PLAN_CURRENT_APPEND.md is unchanged for Claude; docs/PLAN_CURRENT.md is untouched.
 
-From the repository root:
+No fights, teacher collection, training, optimizer fitting or ES evaluation ran. Fixtures contain isolated seams and ten bounded scripted60-tick coreStep scenarios, with no fight outcome reads. Exports remain untrained fixture weights. The next execution gate is cross-family re-review plus a sealed collection/resource/timing inventory.
+
+Rebuild and focused verification (already performed for this delivery; do not routinely repeat):
 
 ```sh
 SLICE=evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1
-UV_CACHE_DIR="$SLICE/_local/uv-cache" uv venv --python 3.11.15 "$SLICE/_local/mlenv"
-UV_CACHE_DIR="$SLICE/_local/uv-cache" python3 "$SLICE/setup_env.py"
 python3 "$SLICE/build.py"
 "$SLICE/_local/mlenv/bin/python" "$SLICE/verify_focused.py"
-```
-
-Online installation initially failed DNS in this sandbox. The delivered `_local/mlenv` was instead populated with isolated exact distribution copies from existing read-only package sources using `setup_env.py --offline-source ...`. ENVIRONMENT.json contains the distribution versions, bytes and tree identities. requirements.lock seals exact transitive runtime/test versions. No Torch/MPS/CUDA operation, optimizer update or workspace environment change occurs on setup. Online recreation on this macOS arm64 host uses the commands above; Linux would require a separate CPU wheel lock rather than accepting PyPI's CUDA extras.
-
-BUILD.json binds native code and reused admitted objects. Generated overlays stay in `_local/build`; build.py reconstructs them without altering ancestors. Tests generate `_local/*fixture_weights.json`; NATIVE_FIXTURES.json records short isolated native seam decisions and acknowledgements, not full fights or a teacher dataset. TESTS.json and logs preserve the final focused batch; failed build/test attempts are retained separately if present.
-
-Claude next reviews CONTRACT.md against every R2 finding, source/fixture parity, neutral gun dispatch, teacher action support and chronological join, exact cast hooks, gradient/state and ablation paths, proposed resource/margin rules, and the findings/disposition. Cross-family review is still required before data execution. STATUS.json and accepted experiments are untouched.
-
-**Next step is the teacher-data projection, not collection:**
-
-```sh
-SLICE=evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1
 python3 "$SLICE/project.py" --output "$SLICE/TEACHER_DATA_PROJECTION.json"
 ```
 
-This produces expected/hard row, byte, memory and symbolic CPU budgets without allocating draws, collecting labels, training or fighting. Claude then reviews the projection and declares a bounded real-path timing/collection plan with whole-group split inventory, fresh entropy exclusion, admitted native binary/model/teacher hashes and resource permission if required by the one-hour rule. Only a subsequently authorized run may call `_local/build/net_host --collect` with `requests.drill(...)`; a collection executor, dataset packing and trainer remain the next deliverable. Never feed reporting draws to fitting/DAgger. Long native jobs must not run concurrently with source edits.
+The isolated environment is described in ENVIRONMENT.json and requirements.lock; setup_env.py recreates it with the pinned offline distributions or online package sources. Ancestor sources/objects are read-only; generated overlays and binaries stay under _local/build. BUILD.json pins slice source and frozen document bytes, not living external documents. Historical build/test attempts are retained separately.
 
-The owner's same-family recheck and disposition are tracked locally in PLAN.md because this user's new-files-only scope forbids editing/staging docs/PLAN_CURRENT.md. PLAN_CURRENT_APPEND.md is a paste-ready tracking entry for the authorized document owner, not staged plan work.
+After Claude re-review and the authorized collection executor supplies a fresh sealed SEED/FIGHT/CELL/GUNS/ORIENTATION (reporting identities excluded), the exact one-request teacher collection commands are:
+
+```sh
+SLICE=evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1
+: "${SEED:?sealed collection seed required}" "${FIGHT:?sealed collection fight ID required}" "${CELL:?D1-static or D2-shellfire required}" "${GUNS:?1, 2 or 10 required}" "${ORIENTATION:?0 or 1 required}"
+"$SLICE/_local/mlenv/bin/python" "$SLICE/requests.py" --cell "$CELL" --guns "$GUNS" --seed "$SEED" --fight "$FIGHT" --orientation "$ORIENTATION" > "$SLICE/_local/teacher_request.json"
+"$SLICE/_local/build/net_host" --collect < "$SLICE/_local/teacher_request.json" > "$SLICE/_local/teacher_${FIGHT}.jsonl"
+```
+
+Use the separately approved <=20-fight actual-path timing sample first, measure terminal maximum_record_bytes/RSS/CPU/wall/disk, and revise the symbolic projection before full collection. This delivery allocates no entropy and does not supply a split/collection executor, trainer or approved runtime budget. The raised1MiB worst-case raw reserve is substantial; projection is a bound, not measured disk use. Never reuse fixtures or reporting data as training collection.

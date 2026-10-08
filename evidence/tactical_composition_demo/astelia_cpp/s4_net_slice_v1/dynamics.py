@@ -2,7 +2,7 @@
 import math
 import torch
 
-ABLATIONS={'intact','K0','frozen_phase','topology_only','no_geometry_to_mode','no_mode_to_geometry'}
+ABLATIONS={'intact','K0','frozen_phase','topology_only','no_geometry_to_mode','no_mode_to_geometry','no_reset'}
 
 def graph(pos,ids,radius=3.):
     if len(ids)!=len(set(ids)) or len(ids)!=len(pos):raise ValueError('joint identity')
@@ -55,3 +55,28 @@ def movement(theta,pos,ids,A,B,J,share,speeds,ablation='intact'):
         # Smooth norm bound: ||v/(1+||v||)|| < 1, <= .25 speed px/s.
         out.append(share*speeds[i]*v/(1+torch.linalg.vector_norm(v)))
     return torch.stack(out) if out else pos.clone()
+
+
+def remap_graph(fixed,fixed_ids,ids):
+    """Prune frozen graph by persistent IDs after deaths, never by current slots."""
+    slots={id:i for i,id in enumerate(ids)}
+    original={id:i for i,id in enumerate(fixed_ids)}
+    return [[slots[fixed_ids[j]] for j in fixed[original[id]] if fixed_ids[j] in slots] if id in original else [] for id in ids]
+
+
+def baseline_drift(pos,ids,speeds):
+    zero=speeds*0
+    scalar=lambda x:speeds.new_tensor(x)
+    return movement(zero,pos,ids,scalar(.5),scalar(.5),scalar(0),scalar(.125),speeds)
+
+
+def add_drift(action,drift,snapshot):
+    """Deployment goal projection, including Hold + nonzero drift."""
+    from schema import check
+    me=check(snapshot);out=dict(action)
+    goal=[a+float(d) for a,d in zip(out['goal'],drift)]
+    if math.hypot(*map(float,drift))>1e-12:out['multiplier']=1.
+    delta=[goal[0]-me['x'],goal[1]-me['y']];length=math.hypot(*delta)
+    if length>me['speed'] and length>0:goal=[me['x']+delta[0]*me['speed']/length,me['y']+delta[1]*me['speed']/length]
+    out['goal']=[min(snapshot['width'],max(0,goal[0])),min(snapshot['height'],max(0,goal[1]))]
+    return out

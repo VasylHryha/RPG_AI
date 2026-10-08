@@ -1,0 +1,24 @@
+...................................................F.....                [100%]
+=================================== FAILURES ===================================
+___________________ test_unaliased_recurrent_target_channels ___________________
+
+    def test_unaliased_recurrent_target_channels():
+        memory=torch.tensor([[1.]*8,[1.]*8,[-1.]*8],dtype=torch.float64);pos=torch.tensor([[0.,0.],[50.,0.],[100.,0.]],dtype=torch.float64)
+        candidates=[[100+i for i in range(12)]]*3
+        message=recurrent_message(memory,pos,[1,2,3],[0,100,108],candidates)
+>       assert message.shape==(3,20) and message[0,8]==1 and message[0,16]==-1
+E       assert (torch.Size([3, 20]) == (3, 20)
+E         
+E         Use -v to get more diff and tensor(1.0000, dtype=torch.float64) == 1)
+
+test_slice.py:292: AssertionError
+=============================== warnings summary ===============================
+evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/test_slice.py::test_recurrent_sequence_parity[intact-N2]
+  /Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/dynamics.py:77: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+  Consider using tensor.detach() first. (Triggered internally at /Users/runner/work/pytorch/pytorch/torch/csrc/autograd/generated/python_variable_methods.cpp:821.)
+    goal=[a+float(d) for a,d in zip(out['goal'],drift)]
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED test_slice.py::test_unaliased_recurrent_target_channels - assert (torc...
+1 failed, 56 passed, 1 warning in 7.85s
