@@ -1,0 +1,67 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "50v50 entire output byte equality",
+      "pass_check": true,
+      "lab_stream_sha256": "336df649bbe1409b63fa5429737fdb0a6f8b3698e44074b110bc3dac555f9e75",
+      "delivered_stream_sha256": "336df649bbe1409b63fa5429737fdb0a6f8b3698e44074b110bc3dac555f9e75",
+      "same_terminal": true
+    },
+    {
+      "name": "dummy_static no damage/no launches/no movement",
+      "pass_check": true
+    },
+    {
+      "name": "dummy_static_fire attacks and never moves",
+      "pass_check": true
+    },
+    {
+      "name": "dummy_advance catalog speed, gun pursuit, fire contract",
+      "pass_check": true,
+      "distance": 56.833333333332746,
+      "t": 1.0333333333333332
+    },
+    {
+      "name": "dummy_advance_fire catalog speed, gun pursuit, fire contract",
+      "pass_check": true,
+      "distance": 56.833333333332746,
+      "t": 1.0333333333333332
+    },
+    {
+      "name": "static body stays fixed under collision",
+      "pass_check": true
+    },
+    {
+      "name": "placement deterministic and first role slots",
+      "pass_check": true
+    },
+    {
+      "name": "carry-over heals survivors, dead stay absent",
+      "pass_check": true,
+      "survivors": 15,
+      "removed": 35,
+      "cohort_survivors": [
+        16,
+        20,
+        21,
+        22,
+        25,
+        27,
+        30,
+        31,
+        33,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49
+      ]
+    }
+  ],
+  "compatibility_seconds": 18.265599875,
+  "compatibility_t": 40.766666666666914,
+  "declaration_sha256": "ab5bcf6eb0bb0ef4fef0c0575e38feb948d9ff1f4900317ac54aef21efc6bdd7",
+  "inherited_from": "s4_shape_lab_v1/CHECKS.json"
+}
