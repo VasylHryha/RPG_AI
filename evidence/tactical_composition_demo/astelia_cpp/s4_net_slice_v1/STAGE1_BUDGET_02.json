@@ -1,0 +1,100 @@
+{
+  "epochs": 10,
+  "window_ticks": 90,
+  "batch_windows": 4,
+  "learning_rate": 0.001,
+  "optimizer": "Adam",
+  "weight_decay": 0,
+  "gradient_clip": 1,
+  "torch_threads": 2,
+  "interop_threads": 1,
+  "workers": 0,
+  "seeds": {
+    "N1": 41001,
+    "N1r": 41002,
+    "N2": 41003
+  },
+  "device": "cpu",
+  "dtype": "float64",
+  "checkpoint": "minimum validation weighted masked loss; earliest exact tie",
+  "history": "R2D2 stored-state epoch refresh, 30-tick current-weight burn-in, 90-tick TBPTT",
+  "burn_in_ticks": 30,
+  "refresh": "one chronological training-fight pass each epoch; state stale at most one epoch",
+  "epoch_shuffle_seed": 41999,
+  "n1_seeds": [
+    41001,
+    41101,
+    41201
+  ],
+  "concurrent_fits": false,
+  "calibration_steps_per_arm": 3,
+  "training_cap_seconds": 3600,
+  "peak_rss_cap_bytes": 536870912,
+  "attempt": 2,
+  "steps_per_epoch": 516,
+  "gradient_steps_per_arm": 5160,
+  "decision_rows_per_arm": 715080,
+  "training_only_fire_class_weights": [
+    [
+      10.0,
+      1.0
+    ],
+    [
+      10.0,
+      1.0
+    ]
+  ],
+  "fire_counts": {
+    "start": {
+      "1": 9347,
+      "0": 386
+    },
+    "release": {
+      "1": 7554,
+      "0": 162
+    }
+  },
+  "majority_modes": {
+    "move": 0,
+    "target": 1,
+    "start": 1,
+    "release": 1,
+    "aim": 0
+  },
+  "dataset_index_sha256": "4e173d76a22aaa97dc1b4903dd38e795cdf3254b78db8c77d8eb1afe07324c30",
+  "sources": {
+    "CONTRACT.md": "872b0256f7117b26171ff0275980986614bb67c9de961fa5cf32413d49f09229",
+    "CONTRACT_AMENDMENT_STAGE1_V2.md": "4c4a40b4d6876706cb276918e399d64dfea83cf2278279b18331d7658487f167",
+    "collection_v2.py": "7ea33e8428bc2187fd0214ed254e508fc5e8b63f021f15bd712e79da883f3bf0",
+    "dynamics.py": "426d8cbb9a78f4c60637e0abd11d2dfbf96b89703a886f827c949ead3e67cb34",
+    "labels.py": "3c5c3f413c75a2af3c2567941c921eb658613d3a93695b54c616183cbcbbbd08",
+    "losses.py": "ff60f4fd68c5ee27f80d980e37446e012a97b9e23247aad0d69c8077f19181b2",
+    "models.py": "e8267a79bfc1eb88ee7819069f0b1451d5bda6cf7480046fe8cc062d73afc6f3",
+    "requests_v2.py": "583532fcb10de169bf8cec94b5fa2137a1f35d47dbaf5c9c4ebc89989959b123",
+    "requirements.lock": "889552de8f3d70c461b41d9014b694cdc2f2562b1c231fa6f6cba5ba20b95794",
+    "schema.py": "e61359d70bec44cc01994d76608305ecd5f7736aca3d65e286cb8c0d3822439d",
+    "stage1_arithmetic.py": "d97e96306d5408b67dd7d63d782ade9693280c021fd5792109ec6cc5163744b3",
+    "stage1_baselines.py": "ddd99721814dba08aea168b9992a146acb3aac07c5fb3ed93dd5beece9c7e359",
+    "stage1_dagger.py": "ebedaeee5e9db07fef872b48f0d84ec52cc1323dbb2dd0b9a44d7702f9dd7266",
+    "stage1_data.py": "e33d89278ebb75ad3d8f95695f9ea0637c29fb4e048447be4bef5e00af28a18e",
+    "stage1_data_v2.py": "1d444679881c82bb83d7f0c1b6d4f9ede97ddab4749ff0a8251361ef851742a1",
+    "stage1_driver.cpp": "470b09d55f31def4d112a3ce2376f73b37ea7b334cfd457a1167a2ae4d9ea548",
+    "stage1_export.py": "cb5954e639e016b963e999dd3cfe06bba5bf34675f7d347b207a7f11c47303d9",
+    "stage1_impacts.cpp": "a33dd95b768009b24deb288782bdc976675ed46a60ebed0c943fd8ccf7f55faa",
+    "stage1_impacts.h": "2db4cbb9e8b47108d0a11c988bdb3ce5362e62d7c039d62fd37839e669e41fe5",
+    "stage1_jobs.py": "898b4b848a3a0a6972f378c5d446714222436329728ea5aff664951f32909b56",
+    "stage1_logged_parity.py": "89f3b78aef7b54fea00ab33d910035032a348326aa94d5b31fc23023aa7ab97f",
+    "stage1_mechanism.py": "43927a3e00c52c5f465b59544fb76f30b17f4a93396d197ad20809d721c12956",
+    "stage1_metrics.py": "5dd33fefa90201944a291222cb7d720a37391eae3dc3bcc2035a322674f8f314",
+    "stage1_native.py": "4f3a407addc6c496d95b37b0032b279f28cc6c04d2f20c0e3cd058b7d11f6af9",
+    "stage1_native_v2.py": "0bef41f9303d21e02bb897a3f87350130ddd38159e47f0bd2e2bcec7c66c8209",
+    "stage1_runtime.py": "b56e8d63aeccdf40d7b871ecc28ea4456591958037f7c2ba26c685f015bd6fc8",
+    "stage1_stored.py": "52b8179550882833f22c66aa64853e4d8c8022db51209bce0edc0c80d9f1a4a4",
+    "stage1_stream.cpp": "53586c7dc91b4f190d44a5b79ba51d75b8bde67257cac5afd0372d14229bf8e5",
+    "stage1_stream.py": "4ecd2e9fc8ef283e9f159b50deb1ae5ef570f54175256ede148af57fc4e22b68",
+    "stage1_train.py": "b50a5e369406af5f2084d8bd4bf6cfbadf1e9be2bdc5deaf8d4990c568f652ea",
+    "stage1_uniqueness.py": "105844bdf1fc1a6d5de326dad5ec2cc7e325f359c65f82bce24ec2427672e95c",
+    "stage1_verify.py": "62e27ba555e340196015aad9ed9934ae5f958875746d7f3737e45db33f78685e",
+    "stage1_verify_v2.py": "499532207783bcc68c68050b2089faa7f7e0cd4a6597e3df42e53e73fa036054"
+  }
+}
