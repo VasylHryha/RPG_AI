@@ -27,7 +27,7 @@ def training_cap(here):
     if value.get('approved_by')!='owner':
         raise ValueError('TRAIN_CAP approved_by must be owner')
     date.fromisoformat(value['date'])
-    if value.get('written_by')!='Claude' or seconds>10800:raise ValueError('Claude-authored B2 cap, at most 10800 seconds')
+    if value.get('written_by')!='Claude' or seconds>16200:raise ValueError('Claude-authored B2 cap, at most 16200 seconds')
     return dict(**value,path=str(path),sha256=sha256(raw).hexdigest())
 
 

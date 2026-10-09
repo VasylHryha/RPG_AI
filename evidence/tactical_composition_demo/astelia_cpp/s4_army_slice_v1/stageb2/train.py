@@ -64,7 +64,7 @@ def project(samples,epochs,slots):
 def measure(round):
     local=configure(round);index=prepare(round);training.environment();cap=training_cap(r.HERE)
     coverage=coverage_admission(local,verify_models=True)
-    if cap['cap_seconds']>10800:raise RuntimeError('owner Stage B cap cannot exceed 3 h')
+    if cap['cap_seconds']>16200:raise RuntimeError('owner Stage B2 cap cannot exceed 4.5 h')
     if (local/'TRAIN_BUDGET.json').exists():return checked(local)
     from jobs import admitted
     with admitted(cap['cap_seconds']) as (absolute,monitor):
@@ -135,7 +135,7 @@ def complete(local,arm,digest):
 def _run(round,run_id):
     local=configure(round);b=checked(local);cap=training_cap(r.HERE);digest=r.sha(local/'TRAIN_BUDGET.json')
     if b['status']!='ADMITTED':raise RuntimeError('budget refused')
-    if cap['cap_seconds']>10800:raise RuntimeError('3 h maximum')
+    if cap['cap_seconds']>16200:raise RuntimeError('4.5 h maximum')
     costs={}
     for arm in r.ARMS:
         ck=last_checkpoint(local/'training/epochs'/arm,digest)
