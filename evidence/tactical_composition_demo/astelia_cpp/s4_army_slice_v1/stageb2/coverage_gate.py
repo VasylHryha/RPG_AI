@@ -1,5 +1,6 @@
 """Declared B2 availability gate; fixed before any corrected-revision timing."""
 THRESHOLDS={'all':.90,'ordinary':.90,'dodge':.80}
+STRUCTURALLY_EMPTY={'artillery:aim:dodge':'O never releases (so never aims) while its react dodge is active; 0 aim rows in that stratum by construction'}
 CAUSE='Reject vocabulary-limited fits: at least 90% ordinary/all labels and 80% O-dodge labels must have nearby candidates and fit bounded residuals, separately per role/head/arm. These are development admission floors, not measured success or teacher acceptance.'
 
 def admission(receipt,arms):
@@ -12,6 +13,10 @@ def admission(receipt,arms):
                     key=f'{role}:{head}:{category}';value=table.get(key,{})
                     for metric in ('coverage','bounded_residual_coverage'):
                         observed=value.get(metric);rows=value.get('rows',0)
+                        # Claude 2026-10-09: artillery aim during O dodge is structurally empty (react vetoes
+                        # release, so no aim label exists); a 0-row stratum there is not applicable, not a failure.
+                        if rows==0 and key in STRUCTURALLY_EMPTY:
+                            checks.append(dict(arm=arm,key=key,metric=metric,rows=0,value=None,threshold=threshold,passed=True,not_applicable=STRUCTURALLY_EMPTY[key]));continue
                         passed=rows>0 and observed is not None and observed>=threshold and value.get('no_candidates',0)==0
                         checks.append(dict(arm=arm,key=key,metric=metric,rows=rows,value=observed,threshold=threshold,passed=passed))
     failed=[c for c in checks if not c['passed']]
