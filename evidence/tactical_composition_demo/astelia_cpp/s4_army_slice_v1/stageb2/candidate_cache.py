@@ -1,24 +1,27 @@
-"""Exact window banks in bounded chunks; full public prefixes stay intact.
+"""Lossless native input packets for the four declared head windows only.
 
-Rows retain lazy handles: training.stored(list(frames)) cannot eagerly retain
-whole-fight arrays. Four registered90-tick head windows share banks across arms.
+Full physical prefixes retain every public row. Lazy handles regenerate exact
+float64 banks with candidates.h in one native batch; candidates never enter the
+recurrent state. Training/evaluation/calibration keep their existing cadence.
 """
 import hashlib,time,shutil,os
 from pathlib import Path
 from collections.abc import Mapping
 import numpy as np
 import common as c
-from native_candidates import batch,unpack
+from native_candidates import packet,batch_packet,unpack
 ACTIVE=None
 BASE_FRAMES=None
 VERIFIED=set()
 MAX_FIGHT_BYTES=512*1024**2 # original worker storage ceiling
+DISK_LIMIT_BYTES=5_000_000_000 # engineering cache target; owner training caps unchanged
+SCHEMA=3
 MAX_CHUNK_BYTES=32*1024**2 # working arrays remain below original512MiB
 LOADED=None
 LAST_BANK=None
 
 def identity(fight):
-    return dict(raw_sha256=fight['raw_sha256'],builder={p:c.sha(c.HERE/p) for p in ('native_candidates.cpp','native_candidates.py','candidates.h','tools.h','movement.h','movement.py','candidate_cache.py','public_velocity.py','runtime.py','data.py','recording.py','streaming.py','training.py')})
+    return dict(schema=SCHEMA,raw_sha256=fight['raw_sha256'],builder={p:c.sha(c.HERE/p) for p in ('native_candidates.cpp','native_candidates.py','candidates.h','tools.h','movement.h','movement.py','candidate_cache.py','public_velocity.py','runtime.py','data.py','recording.py','streaming.py','training.py')})
 
 def location(root,fight):
     digest=hashlib.sha256(__import__('json').dumps(identity(fight),sort_keys=True).encode()).hexdigest()
@@ -63,7 +66,7 @@ class LazyBank(Mapping):
         global LAST_BANK
         flat,offsets=load_chunk(self.root,self.record)
         key=(LOADED[0],self.index)
-        if LAST_BANK is None or LAST_BANK[0]!=key:LAST_BANK=(key,unpack(flat[offsets[self.index]:offsets[self.index+1]]))
+        if LAST_BANK is None or LAST_BANK[0]!=key:LAST_BANK=(key,unpack(batch_packet(flat[offsets[self.index]:offsets[self.index+1]])))
         return LAST_BANK[1]
     def __getitem__(self,key):return self.values_for_frame()[key]
     def __iter__(self):return iter(self.values_for_frame())
@@ -73,7 +76,7 @@ def frames(path):
     key=str(Path(path).resolve());fight=ACTIVE[1].get(key) if ACTIVE else None
     if fight is None:yield from BASE_FRAMES(path);return
     root=ACTIVE[0];cache=location(root,fight);meta=c.read(cache.with_suffix('.json'))
-    if meta['identity']!=identity(fight) or meta['schema']!=2 or meta['frames']!=fight['frames']:raise RuntimeError('candidate cache identity drift')
+    if meta['identity']!=identity(fight) or meta['schema']!=SCHEMA or meta['frames']!=fight['frames']:raise RuntimeError('candidate cache identity drift')
     expected=selected_ticks(fight['frames']);lookup={}
     for record in meta['chunks']:
         validate_chunk(root,record)
@@ -96,7 +99,7 @@ def prepare(root,index,base_frames,deadline,monitor=None):
         path=location(root,f);meta_path=path.with_suffix('.json');began=time.monotonic();ticks=selected_ticks(f['frames'])
         if meta_path.exists():
             meta=c.read(meta_path)
-            if meta['schema']!=2 or meta['identity']!=identity(f) or [tick for q in meta['chunks'] for tick in q['ticks']]!=ticks:raise RuntimeError('candidate cache drift')
+            if meta['schema']!=SCHEMA or meta['identity']!=identity(f) or [tick for q in meta['chunks'] for tick in q['ticks']]!=ticks:raise RuntimeError('candidate cache drift')
             for q in meta['chunks']:validate_chunk(root,q)
         else:
             path.parent.mkdir(parents=True,exist_ok=True);chunks=[];values=[];offsets=[0];chunk_ticks=[];previous=None;n=0
@@ -117,7 +120,7 @@ def prepare(root,index,base_frames,deadline,monitor=None):
                 if time.monotonic()>=deadline:raise TimeoutError('candidate cache cap')
                 if monitor and n%30==0:monitor.live_memory(os.getpid())
                 if n-1 not in wanted:continue
-                v=batch(row);bits=v.view(np.uint64)
+                v=packet(row);bits=v.view(np.uint64)
                 if bits.nbytes>MAX_CHUNK_BYTES:raise RuntimeError('candidate frame exceeds chunk bound')
                 if offsets[-1]*8+bits.nbytes>MAX_CHUNK_BYTES:flush()
                 if offsets[-1]*8+bits.nbytes>shutil.disk_usage(root).free-2*1024**3:raise RuntimeError('candidate scratch needs 2 GiB free reserve')
@@ -125,12 +128,18 @@ def prepare(root,index,base_frames,deadline,monitor=None):
                 values.append(encoded);offsets.append(offsets[-1]+len(bits));chunk_ticks.append(n-1);previous=bits
             if n!=f['frames']:raise RuntimeError('candidate raw frame count drift')
             flush()
-            meta=dict(schema=2,identity=identity(f),frames=f['frames'],cached_frames=len(ticks),chunks=chunks,compressed_bytes=sum(q['compressed_bytes'] for q in chunks),uncompressed_bytes=sum(q['uncompressed_bytes'] for q in chunks),build_seconds=time.monotonic()-began,selection='four registered90-tick windows; full physical prefix retained',encoding='xor_u64_v1: previous original bits when flat lengths match; reset per chunk')
+            meta=dict(schema=SCHEMA,identity=identity(f),frames=f['frames'],cached_frames=len(ticks),chunks=chunks,compressed_bytes=sum(q['compressed_bytes'] for q in chunks),uncompressed_bytes=sum(q['uncompressed_bytes'] for q in chunks),build_seconds=time.monotonic()-began,selection='four registered90-tick head windows; full physical prefix retained',representation='lossless float64 native ABI input packets; candidates regenerated by native batch at consumption',encoding='xor_u64_v1: previous original bits when flat lengths match; reset per chunk')
             c.write(meta_path,meta,exclusive=True)
         records.append(dict(tag=f['tag'],**meta));mass+=f['frames'];cached_frames+=meta['cached_frames'];bytes_written+=meta['compressed_bytes']
-        projected=bytes_written/mass*total_frames;free=shutil.disk_usage(root).free
-        if projected>20*1024**3 or 1.2*(projected-bytes_written)>free-2*1024**3:raise RuntimeError('candidate disk projection exceeds 20 GiB / free disk reserve')
-        remaining=1.2*(time.monotonic()-start)/mass*(total_frames-mass)
-        if remaining>deadline-time.monotonic():raise RuntimeError('candidate time projection exceeds cap')
-    result=dict(records=records,seconds=time.monotonic()-start,compressed_bytes=bytes_written,free_bytes=shutil.disk_usage(root).free,frames=mass,cached_frames=cached_frames,format='schema2: exact float64 banks, XOR uint64 chunks; lazy handles; four registered head windows only',max_chunk_bytes=MAX_CHUNK_BYTES,worker_storage_ceiling_bytes=MAX_FIGHT_BYTES,disk_limit_bytes=20*1024**3,reserve_bytes=2*1024**3)
+        # Project by selected head rows, not physical length: long fights also
+        # have only four windows. Reused builds do not dilute timing estimates.
+        total_selected=sum(len(selected_ticks(q['frames'])) for q in index['fights'])
+        projected=bytes_written/max(1,cached_frames)*total_selected;free=shutil.disk_usage(root).free
+        if projected>DISK_LIMIT_BYTES or 1.2*(projected-bytes_written)>free-2*1024**3:raise RuntimeError('candidate disk projection exceeds 5 GB / free disk reserve')
+        remaining=1.2*sum(q['build_seconds'] for q in records)/mass*(total_frames-mass)
+        if time.monotonic()>=deadline or remaining>deadline-time.monotonic():raise RuntimeError('candidate time projection exceeds cap')
+    result=dict(records=records,seconds=time.monotonic()-start,compressed_bytes=bytes_written,free_bytes=shutil.disk_usage(root).free,frames=mass,cached_frames=cached_frames,format='schema3: lossless float64 native inputs, XOR uint64 chunks; exact native batch regeneration; four registered head windows only',max_chunk_bytes=MAX_CHUNK_BYTES,worker_storage_ceiling_bytes=MAX_FIGHT_BYTES,disk_limit_bytes=DISK_LIMIT_BYTES,reserve_bytes=2*1024**3)
+    directory_bytes=sum(p.stat().st_size for p in (root/'candidates').iterdir() if p.is_file()) if (root/'candidates').exists() else 0
+    active_bytes=bytes_written+sum(location(root,f).with_suffix('.json').stat().st_size for f in index['fights'])
+    result.update(active_cache_bytes=active_bytes,cache_directory_bytes=directory_bytes,other_cache_bytes=directory_bytes-active_bytes,uncompressed_bytes=sum(q['uncompressed_bytes'] for q in records),projected_bytes=projected if records else 0,projected_build_seconds=sum(q['build_seconds'] for q in records),regeneration='included in measured optimizer/evaluation window costs, not cache build cost')
     c.write(root/'CANDIDATE_CACHE.json',result);return result

@@ -1,0 +1,33 @@
+{
+  "status": "FOCUSED_CHECKS_PASS_HOST_MEASUREMENT_BLOCKED",
+  "focused_checks": {
+    "passed": 23,
+    "pytest_seconds": 8.22,
+    "first_run": {
+      "passed": 7,
+      "setup_error": "missing basetemp parent",
+      "seconds": 1.5
+    },
+    "continuation": {
+      "passed": 16,
+      "deselected": 7,
+      "seconds": 6.72
+    }
+  },
+  "source_sha256": {
+    "candidate_cache.py": "ced76113c44c9665eab18ebddc5755014cfe6225b04108530035b25925e740b0",
+    "native_candidates.py": "e580fc25777928b5de7c953fb17bf858810db4c3b18ff7c0db840fd25303dc61",
+    "train.py": "589c998697666a102771938fe944add06fa03658516a984981a0ba1fd4cce169",
+    "test_b2cache.py": "d1a70a1d969e367e008b5dc067e7260b531c013898056186c6221274a41ffca1"
+  },
+  "owner_approvals_sha256": "ec336cadaccfc9bc78179cd01df708eccdb38426602753934310e1b42c5ebfc3",
+  "recorded_sample_sha256": "c86706df416598ca4d21a2eff9098e733cec97f8ed823465363c81c08307b4bf",
+  "recheck_sha256": "ab54e2c08156ade32d6464d2f88e937e68f4de0b6b8ccaed0725959e6c3afb9e",
+  "host_test_mode": {
+    "command": "train.py measure --round 0 --test-mode",
+    "exit_code": 1,
+    "status": "PROCESS_GATE_UNAVAILABLE",
+    "log_sha256": "6ca1a298b1644368391fa744b5774b466001bac43cd0cef102dee4ae63906967"
+  },
+  "limits": "Full cache and optimizer timings require host continuation; no behavioural or experiment claim."
+}

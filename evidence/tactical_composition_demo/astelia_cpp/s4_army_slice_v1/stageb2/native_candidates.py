@@ -1,4 +1,4 @@
-"""Native frame batch and exact float64 ragged banks; padding only on consumption."""
+"""Lossless native input packets and float64 ragged banks; one batch per frame."""
 import ctypes,os,subprocess,sys
 from pathlib import Path
 import numpy as np
@@ -21,18 +21,34 @@ def library():
     LIB.candidate_batch.restype=ctypes.c_long;LIB.candidate_error.restype=ctypes.c_char_p
     return LIB
 
-def batch(row,allow_missing_aim=False):
+WIDTHS=(23,10,9,7,5,7,3)
+
+def packet(row):
+    """Only candidate inputs, in the native ABI order, with no rounding.
+
+    Labels, dt, history and recurrent state never enter the candidate builder.
+    Float64 headers carry exact small integer counts; candidate banks are rebuilt
+    by the same candidates.h function as native inference.
+    """
     ids=sorted(u[0] for u in row['units'] if u[1]==0)
-    # Native validates every actor; Python validates empty frames as well.
-    if not ids:
-        if row['own']:raise ValueError('candidate own-state coverage')
-    matrices=[np.asarray(row[k],dtype=np.float64).reshape(-1,w) for k,w in zip(('units','own','shells','shots','fields','casts'),(23,10,9,7,5,7))]
+    if not ids and row['own']:raise ValueError('candidate own-state coverage')
+    matrices=[np.asarray(row[k],dtype=np.float64).reshape(-1,w) for k,w in zip(('units','own','shells','shots','fields','casts'),WIDTHS)]
     velocities=np.asarray([[int(k),*v] for k,v in row.get('longVelocity',{}).items()],dtype=np.float64).reshape(-1,3)
-    matrices.append(velocities);counts=np.asarray([len(v) for v in matrices],dtype=np.int32)
-    data=np.concatenate([v.ravel() for v in matrices]);result=ctypes.POINTER(ctypes.c_double)();lib=library()
-    size=lib.candidate_batch(data.ctypes.data_as(ctypes.POINTER(ctypes.c_double)),counts.ctypes.data_as(ctypes.POINTER(ctypes.c_int)),row['width'],row['height'],int(allow_missing_aim),ctypes.byref(result))
+    matrices.append(velocities)
+    return np.concatenate(([row['width'],row['height'],*[len(v) for v in matrices]],*[v.ravel() for v in matrices]))
+
+def batch_packet(value,allow_missing_aim=False):
+    value=np.asarray(value,dtype=np.float64)
+    if value.ndim!=1 or len(value)<9 or not np.isfinite(value).all():raise ValueError('candidate packet nonfinite/schema')
+    raw_counts=value[2:9]
+    if np.any(raw_counts<0) or np.any(raw_counts>128) or np.any(raw_counts!=np.floor(raw_counts)) or len(value)!=9+int(raw_counts@np.asarray(WIDTHS)) or np.any(value[:2]<=0):raise ValueError('candidate packet counts/arena')
+    counts=raw_counts.astype(np.int32);data=np.ascontiguousarray(value[9:]);result=ctypes.POINTER(ctypes.c_double)();lib=library()
+    size=lib.candidate_batch(data.ctypes.data_as(ctypes.POINTER(ctypes.c_double)),counts.ctypes.data_as(ctypes.POINTER(ctypes.c_int)),value[0],value[1],int(allow_missing_aim),ctypes.byref(result))
     if size<0:raise ValueError(lib.candidate_error().decode())
     return np.ctypeslib.as_array(result,shape=(size,)).copy()
+
+def batch(row,allow_missing_aim=False):
+    return batch_packet(packet(row),allow_missing_aim)
 
 def unpack(flat):
     at=0;out={}

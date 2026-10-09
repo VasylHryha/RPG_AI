@@ -1,0 +1,77 @@
+{
+  "status": "TEST_ONLY",
+  "parity": "bitwise float64 all candidates/features/types/sources on recorded window endpoints",
+  "records": [
+    {
+      "tag": "train_0019",
+      "split": "train",
+      "panel": "C3",
+      "sample_ticks": [
+        0,
+        2100
+      ],
+      "sample_rows": 2,
+      "input_uncompressed_bytes": 27080,
+      "compressed_bytes": 3700,
+      "candidate_float64_bytes": 3499224,
+      "build_seconds": 0.004027082992251962,
+      "max_input_bytes": 24872
+    },
+    {
+      "tag": "train_0049",
+      "split": "train",
+      "panel": "regular",
+      "sample_ticks": [
+        0,
+        1439
+      ],
+      "sample_rows": 2,
+      "input_uncompressed_bytes": 31544,
+      "compressed_bytes": 4774,
+      "candidate_float64_bytes": 3805416,
+      "build_seconds": 0.004528624995145947,
+      "max_input_bytes": 24872
+    },
+    {
+      "tag": "validation_0096",
+      "split": "validation",
+      "panel": "C3",
+      "sample_ticks": [
+        0,
+        1810
+      ],
+      "sample_rows": 2,
+      "input_uncompressed_bytes": 29312,
+      "compressed_bytes": 4148,
+      "candidate_float64_bytes": 3686976,
+      "build_seconds": 0.004735166992759332,
+      "max_input_bytes": 24872
+    },
+    {
+      "tag": "validation_0128",
+      "split": "validation",
+      "panel": "regular",
+      "sample_ticks": [
+        0,
+        1391
+      ],
+      "sample_rows": 2,
+      "input_uncompressed_bytes": 28392,
+      "compressed_bytes": 3877,
+      "candidate_float64_bytes": 3625280,
+      "build_seconds": 0.004368082998553291,
+      "max_input_bytes": 24872
+    }
+  ],
+  "seconds": 5.026816416007932,
+  "full_index_sha256": "7e4119ea6a596b1e18707f71c85c9be48af824ca5b2406b3d48e21ef9e98569e",
+  "full_window_rows": 56556,
+  "full_input_uncompressed_upper_bytes": 2436432480,
+  "full_compressed_projection_bytes": 116639680.5,
+  "limits": "Four timing fights, two endpoints each; not full cache or fit timing. ZIP/meta overhead excluded from uncompressed input upper bound. Native regeneration is timed by host measure.",
+  "owner_approvals": {
+    "path": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/OWNER_APPROVALS.json",
+    "sha256": "ec336cadaccfc9bc78179cd01df708eccdb38426602753934310e1b42c5ebfc3",
+    "history": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/_local/owner_approvals/CHANGES.jsonl"
+  }
+}
