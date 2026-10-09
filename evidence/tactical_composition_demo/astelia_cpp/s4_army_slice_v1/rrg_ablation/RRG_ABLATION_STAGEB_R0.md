@@ -1,8 +1,10 @@
+> Report-only correction (2026-10-09; H2/M1/M3): original metrics JSON is unchanged. The earlier commit wording “geometry-driven phase coupling (not memory) carries the gain” is unsupported. The original replay establishes sensitivity to phase alignment with an N2-only engineered neighbour-target readout; it does not distinguish information in dynamics from synchrony enabling that feature. See RRG_ABLATION_STAGEB_R0_CONTROLS.md for the separately requested controls. Committed history is unchanged.
+
 # Stage B round-0 RRG mechanism check
 
 Offline float32 inference on the selected trained checkpoints. No retraining and no fights. The exact sealed TEST split has 50 fights, 63,897 replayed physical ticks, and 592,992 scored unit rows. Each dynamic intervention gets its own full-prefix state replay; scoring uses the same four 90-tick windows as the original outcomes. The tested exact identities reuse intact computation: reset-disabled changes nothing, and drift-only removal zeros output drift while retaining identical state and heads.
 
-N2’s ranged/artillery target advantage does **not** survive K=0, frozen phase, or no geometry→mode. For this trained checkpoint on these fixed test rows, the phase/coupling path is needed to express the observed gain. The static architecture with those paths disabled does not retain it. This supports a phase/coupling mechanism contribution; it does not establish resonance in general, a live geometry↔mode feedback loop, or recursive RRG.
+N2’s ranged/artillery target advantage does **not** survive K=0, frozen phase, or no geometry→mode. For this trained checkpoint on these fixed test rows, the original gain is sensitive to disrupted neighbour phase alignment. Alignment weights an N2-only exact neighbour-target feature, so this loss does not distinguish information carried by phase dynamics from an on-switch for that engineered feature. Phase is recurrent state, and N1r lacks the feature, so “not memory” is unsupported. This does not establish resonance, a live geometry↔mode feedback loop, or recursive RRG.
 
 | Policy / intervention | Melee target | Ranged target | Artillery target |
 |---|---:|---:|---:|
@@ -28,7 +30,7 @@ At least one cut erases the observed margin over N1. This establishes checkpoint
 
 Reset disabled is exactly intact: this implementation never resets phase on attack. Removing mode→geometry zeros drift and can change movement error, but leaves target/fire/aim unchanged in this replay. Recorded positions cannot react to the removed drift. Neither identity result tests a live feedback loop.
 
-Frozen phase retains ID-dependent sin/cos features, peer phase summaries and the explicit target-alignment/fire-window readouts. No geometry→mode removes learned input-dependent forcing from the phase equation and removes geometry-weighted coupling; learned omega and the direct forcing feature supplied to the head remain. Topology-only freezes edges, distances and direction vectors at the first recorded tick, while tokens and target assignments stay live. These are distinct cuts, not a trained replacement architecture. No phase-free retrained model is compared. No causal background transformation or recursive RRG claim is tested.
+Frozen phase retains ID-dependent sin/cos features, peer phase summaries and the explicit target-alignment/fire-window readouts. No geometry→mode removes learned input-dependent forcing from the phase equation and removes geometry-weighted coupling; learned omega and the direct forcing feature supplied to the head remain. Topology-only freezes edges, distances and direction vectors at the first recorded tick, while tokens and target assignments stay live. The K=0, frozen-phase and no-geometry→mode cuts largely repeat one alignment disruption; they are not three independent confirmations. Frozen-phase and omega-only have the same relative phases. Topology-only also freezes which peers supply the target-assignment readout; its surviving gain does not isolate geometry’s causal role. These are checkpoint interventions, not trained replacement architectures. No phase-free retrained model is compared. No causal background transformation or recursive RRG claim is tested.
 
 Fire below is raw three-class accuracy, matching the outcome metric. The JSON also gives fire accuracy with each original validation threshold unchanged, both before and after the calibration safety mask. Move and masked aim errors are mean SmoothL1 with beta=1, in 100-pixel units; lower is better. Aim uses only oracle rows with an aim label.
 
@@ -92,3 +94,12 @@ R is the length of the mean unit phase vector: near one means global alignment; 
 Original outcome reproduction: all row and target/fire correct counts match exactly.
 
 Inference took 697.2 s wall / 678.6 s CPU; nice 15, one Torch thread and one interop thread. All input/source hashes were checked again after inference. Results describe this held-out offline replay and are exploratory; repeated unit ticks are not independent fights.
+
+N2-only readout inputs (M3 protocol correction within this report; upstream STAGEA_PROTOCOL.md left unchanged by owner scope):
+
+| Readout | Additional input and transformation |
+|---|---|
+| Neighbour-target alignment | Exact current engine target IDs of up to eight own allies strictly within 300 px, plus the unit/peer phases. Add +2 times cosine alignment to each matching enemy logit; absent/cancelling phase groups give zero. |
+| Fire window | Updated absolute phase; add [2 cos(theta), -2 cos(theta), 2 cos(theta)] to automatic/hold/release logits. |
+
+N1/N1h/N1r lack these hard-wired readouts. Equal parameter inventory and the same 136-coordinate head vector do not imply matched readout inputs. One training seed and the final selected epoch per arm support a fixed-budget comparison, not convergence or seed-to-seed generality.
