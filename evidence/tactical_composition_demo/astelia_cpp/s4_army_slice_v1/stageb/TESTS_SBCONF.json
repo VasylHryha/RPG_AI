@@ -1,0 +1,37 @@
+{
+  "command": [
+    "evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-x",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb/test_eval_revision.py",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb/test_sbconf.py",
+    "--basetemp",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb/_local/sbconf_tests_final"
+  ],
+  "exit_code": 0,
+  "seconds": 4.949338499980513,
+  "stdout": "........................................................................ [ 84%]\n.............                                                            [100%]\n85 passed in 4.03s\n",
+  "stderr": "",
+  "scope": "failure-driven final batch after actual historical chain admission refusal",
+  "prior_batch": {
+    "command": [
+      "evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb/test_eval_revision.py",
+      "evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb/test_sbconf.py",
+      "--basetemp",
+      "evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb/_local/sbconf_tests"
+    ],
+    "exit_code": 0,
+    "seconds": 5.567928375006886,
+    "stdout": "........................................................................ [ 85%]\n............                                                             [100%]\n84 passed in 4.60s\n",
+    "stderr": "",
+    "scope": "focused recovery/config contracts once after complete code and review-fix batch"
+  },
+  "owner_approvals_sha256": "81cfe5740a0729e21ece15b4e465fb9d7b1fd6858dd6dc904faab4f4374c6c9a"
+}

@@ -20,6 +20,10 @@ APPROVED = '0b710410064ca2cf45103be79ba6388e432ca346'
 PREFIX = 's4_army_slice_v1/stageb/'
 PARITY = PREFIX + 'calibrated_parity.py'
 TOOLING = {PREFIX + 'eval_revision.py', PREFIX + 'test_eval_revision.py'}
+ORIGINAL_TOOLING = TOOLING.copy()
+TOOLING |= {PREFIX + p for p in ('owner_approvals.py', 'smoke_chain.py', 'test_sbconf.py')}
+CONFIG_REASON = ('Owner 2026-10-09: live approvals/config and isolated whole-chain smoke; '
+                 'original training-relevant sources and native binary unchanged since round-0 budget.')
 REASON = ('Decision 0036; owner-requested evaluation-source recovery for the '
           'declared Stage B recurrent float32 parity rule at 0b71041; '
           'no training, calibration, export or native changes.')
@@ -57,7 +61,7 @@ def source_proof(old, new):
     allowed = {PARITY} | TOOLING
     if not set(changed) <= allowed or PARITY not in changed:
         raise RuntimeError('training-relevant source drift; preserve revision: ' + ', '.join(changed))
-    if any(k in old or k not in new for k in TOOLING):
+    if any(k in old for k in TOOLING) or not ORIGINAL_TOOLING <= new.keys():
         raise RuntimeError('recovery tooling must be new, not a training dependency')
     before = hashlib.sha256(historical(BASELINE, PARITY)).hexdigest()
     after = hashlib.sha256(historical(APPROVED, PARITY)).hexdigest()
@@ -66,7 +70,7 @@ def source_proof(old, new):
     return dict(changed_sources=changed,
                 training_sources={k: v for k, v in old.items() if k != PARITY},
                 evaluation_changes={PARITY: dict(old_sha256=before, new_sha256=after)},
-                recovery_tooling={k: new[k] for k in sorted(TOOLING)})
+                recovery_tooling={k: new[k] for k in sorted(TOOLING & new.keys())})
 
 
 def dataset_checked(local, budget):
@@ -160,7 +164,7 @@ def chain(local, bind_head=True):
         raise RuntimeError('evaluation recovery receipt identity drift')
     # The original sealed tooling hashes are provenance, not live ancestor pins.
     expected.update(new_sources=historical_sources,
-                    recovery_tooling=source_proof(expected['old_sources'], historical_sources)['recovery_tooling'])
+                    **source_proof(expected['old_sources'], historical_sources))
     if any(note.get(k) != v for k, v in expected.items()):
         raise RuntimeError('evaluation recovery receipt identity drift')
     if note.get('preserved_training_artifacts') != preserved_artifacts(local):
@@ -178,14 +182,17 @@ def chain(local, bind_head=True):
         sources = head['new_sources']
         proof = source_proof(expected['old_sources'], sources)
         fields = dict(schema=2, status='SEALED_LAUNCHER_RECOVERY', round=0,
-                      revision=revision, reason=CHAIN_REASON,
+                      revision=revision, reason=CONFIG_REASON if revision >= 3 and 'owner_approvals' in head else CHAIN_REASON,
                       parent=dict(path=parent_path.name, sha256=r.sha(parent_path)),
                       budget_sha256=expected['budget_sha256'], index_sha256=expected['index_sha256'],
                       training_sources=expected['training_sources'],
                       evaluation_changes=expected['evaluation_changes'],
                       recovery_tooling=proof['recovery_tooling'],
-                      tooling_changes={k: dict(old_sha256=parent['new_sources'][k], new_sha256=sources[k])
-                                       for k in sorted(TOOLING) if parent['new_sources'][k] != sources[k]})
+                      tooling_changes={k: dict(old_sha256=parent['new_sources'].get(k), new_sha256=sources.get(k))
+                                       for k in sorted(TOOLING) if parent['new_sources'].get(k) != sources.get(k)})
+        if 'owner_approvals' in head:
+            import owner_approvals
+            owner_approvals.verify_snapshot(head['owner_approvals'])
         if (without_tooling(sources) != without_tooling(expected['new_sources']) or
                 any(head.get(k) != v for k, v in fields.items())):
             raise RuntimeError('evaluation recovery chain identity drift')
@@ -220,12 +227,17 @@ def recover_chain(round, revision=2):
     parent_path, parent = nodes[-1]
     now = r.sources()
     payload = dict(schema=2, status='SEALED_LAUNCHER_RECOVERY', round=0, revision=revision,
-        reason=CHAIN_REASON, parent=dict(path=parent_path.name, sha256=r.sha(parent_path)),
+        reason=CONFIG_REASON if revision >= 3 else CHAIN_REASON, parent=dict(path=parent_path.name, sha256=r.sha(parent_path)),
         budget_sha256=parent['budget_sha256'], index_sha256=parent['index_sha256'],
         training_sources=parent['training_sources'], evaluation_changes=parent['evaluation_changes'],
-        new_sources=now, recovery_tooling={k: now[k] for k in sorted(TOOLING)},
-        tooling_changes={k: dict(old_sha256=parent['new_sources'][k], new_sha256=now[k])
-                         for k in sorted(TOOLING) if parent['new_sources'][k] != now[k]})
+        new_sources=now, recovery_tooling={k: now[k] for k in sorted(TOOLING & now.keys())},
+        tooling_changes={k: dict(old_sha256=parent['new_sources'].get(k), new_sha256=now.get(k))
+                         for k in sorted(TOOLING) if parent['new_sources'].get(k) != now.get(k)})
+    # Validate before writing an immutable head. Config is provenance, never a live pin.
+    source_proof(parent['old_sources'] if 'old_sources' in parent else r.read(local / 'TRAIN_BUDGET.json')['sources'], now)
+    if revision >= 3:
+        import owner_approvals
+        payload['owner_approvals'] = owner_approvals.snapshot()
     payload['seal_sha256'] = digest(payload)
     r.write(path, payload, exclusive=True)
     verify(local)
@@ -316,6 +328,42 @@ def training_run(round):
         train.subprocess = original
 
 
+def measure(round):
+    """Take a new prospective host timing after a refused, never-started fit.
+
+    Keep refused measurements byte-for-byte. An admitted budget/checkpoint is
+    never replaced. Restore the old active refusal if admission fails before a
+    new budget is produced; this is not a re-analysis of a recorded panel.
+    """
+    local = train.ROOT / ('round' + str(round))
+    path = local / 'TRAIN_BUDGET.json'
+    original = None
+    if path.exists():
+        budget = checked(local)
+        if budget['status'] == 'REFUSED':
+            if any(p.is_file() for p in (local / 'training').rglob('*')):
+                raise RuntimeError('cannot remeasure a round with training artifacts')
+            original = path.read_bytes()
+            archive = local / 'refused_measurements' / (r.sha(path) + '.json')
+            archive.parent.mkdir(parents=True, exist_ok=True)
+            if archive.exists():
+                if archive.read_bytes() != original:
+                    raise RuntimeError('refused measurement archive drift')
+            else:
+                with archive.open('xb') as file:
+                    file.write(original); file.flush(); __import__('os').fsync(file.fileno())
+            path.unlink()
+    try:
+        result = train.measure(round)
+        if result['status'] != 'ADMITTED':
+            raise RuntimeError('measured projection exceeds live owner cap')
+        return result
+    finally:
+        if original is not None and not path.exists():
+            with path.open('xb') as file:
+                file.write(original); file.flush(); __import__('os').fsync(file.fileno())
+
+
 def adjudicate(original, original_name, note, manifest, recovery_sha):
     import calibrated_parity as calibrated
     record = dict(original)
@@ -369,7 +417,11 @@ def parity_run(round):
                         if (record['manifest'] != manifest or record['recovery_sha256'] != recovery_sha or
                                 not calibrated.passes(record)):
                             raise RuntimeError('revised parity cache drift')
-                        if original_name in note['preserved_parity_receipts'] and record != adjudicate(
+                        if 'owner_approvals' in record:
+                            import owner_approvals
+                            owner_approvals.verify_snapshot(record['owner_approvals'])
+                        comparable = {k: v for k, v in record.items() if k != 'owner_approvals'}
+                        if original_name in note['preserved_parity_receipts'] and comparable != adjudicate(
                                 r.read(original), original_name, note, manifest, recovery_sha):
                             raise RuntimeError('revised parity numeric proof drift')
                     else:
@@ -404,7 +456,10 @@ def parity_run(round):
         r.write(r.HERE / ('PARITY_STAGEB_EVAL_RUN_' + secrets.token_hex(8) + '.json'), receipt, exclusive=True)
 
 
-def dispatch(command, round, revision=2, look=20):
+def dispatch(command, round, revision=2, look=20, test_mode=False, scratch_root=None):
+    if command == 'smoke':
+        from smoke_chain import run
+        return run(round, test_mode=test_mode, scratch_root=scratch_root)
     if command == 'recover-eval-chain':
         note = recover_chain(round, revision)
         print('Sealed launcher recovery:', chain_path(train.ROOT / 'round0', revision))
@@ -418,6 +473,8 @@ def dispatch(command, round, revision=2, look=20):
     # Always recheck original provenance before a later-round gate/measurement.
     verify(train.ROOT / 'round0')
     install_gates()
+    import owner_approvals
+    owner_approvals.install('dagger' if command.startswith('dagger-') else 'lab' if command.startswith('readout-') else 'training')
     if command == 'parity':
         return parity_run(round)
     if command in ('dagger-prepare', 'dagger-run'):
@@ -426,7 +483,7 @@ def dispatch(command, round, revision=2, look=20):
     if command == 'measure':
         if round not in (1, 2):
             raise RuntimeError('recovered measurement is for later rounds only')
-        return train.measure(round)
+        return measure(round)
     if command == 'run':
         # Claude 2026-10-09: later-round fits under the same recovery binding as their measurement.
         if round not in (1, 2):
@@ -441,7 +498,7 @@ def dispatch(command, round, revision=2, look=20):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('command', choices=('recover-eval-revision', 'recover-eval-chain', 'parity',
-        'dagger-prepare', 'dagger-run', 'measure', 'run', 'worker', 'readout-prepare', 'readout-run'))
+        'dagger-prepare', 'dagger-run', 'measure', 'run', 'worker', 'readout-prepare', 'readout-run', 'smoke'))
     parser.add_argument('--round', type=int, choices=(0, 1, 2), required=True)
     parser.add_argument('--revision', type=int, default=2)
     parser.add_argument('--look', type=int, choices=(20, 50), default=20)
@@ -449,7 +506,11 @@ if __name__ == '__main__':
     parser.add_argument('--absolute', type=float)
     parser.add_argument('--cap', type=float)
     parser.add_argument('--fds', type=int, nargs=2)
+    parser.add_argument('--test-mode', action='store_true', help='smoke fixtures only; skip process/RAM discovery')
+    parser.add_argument('--scratch-root', type=Path, help='new smoke directory under stageb/_local/smoke')
     args = parser.parse_args()
+    if (args.test_mode or args.scratch_root) and args.command != 'smoke':
+        parser.error('test mode and scratch root are only for smoke')
     if args.command == 'worker':
         if args.round not in (1, 2) or any(v is None for v in (args.arm, args.absolute, args.cap, args.fds)):
             parser.error('later-round worker requires arm, absolute, cap and both lock fds')
@@ -457,8 +518,10 @@ if __name__ == '__main__':
         jobs.inherited(args.fds)
         verify(train.ROOT / 'round0')
         install_gates()
+        import owner_approvals
+        owner_approvals.install('training')
         os.nice(10)
-        train.training.MONITOR = r.collect.a0()
+        train.training.MONITOR = owner_approvals.Monitor()
         train.fit(args.arm, args.round, args.absolute, args.cap)
     else:
-        dispatch(args.command, args.round, args.revision, args.look)
+        dispatch(args.command, args.round, args.revision, args.look, args.test_mode, args.scratch_root)

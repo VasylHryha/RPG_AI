@@ -64,6 +64,13 @@ def recovery(tmp_path, monkeypatch):
     new_build['sources'][e.PARITY] = r.sha(tmp_path / e.PARITY)
     monkeypatch.setattr(r, 'CPP', tmp_path)
     monkeypatch.setattr(r, 'HERE', here)
+    monkeypatch.setattr(r, 'LOCAL', here / '_local')
+    import owner_approvals
+    config = Path(__file__).resolve().parent / 'OWNER_APPROVALS.json'
+    (here / 'OWNER_APPROVALS.json').write_bytes(config.read_bytes())
+    # These fixtures exercise provenance only; operational controls have their
+    # own config tests and a separate complete real-binary smoke invocation.
+    monkeypatch.setattr(owner_approvals, 'install', lambda scope: None)
     monkeypatch.setattr(e.train, 'ROOT', here / '_local')
     monkeypatch.setattr(parity_run, 'ROOT', here / '_local')
     monkeypatch.setattr(e.train, 'validate_index', lambda index: None)
@@ -83,6 +90,25 @@ def advance_tooling():
     for name in e.TOOLING:
         with (e.r.CPP / name).open('a') as file:
             file.write('\nlauncher/fixture revision')
+
+
+def test_new_config_tooling_can_first_appear_at_revision_three(recovery):
+    local, _ = recovery
+    added = e.TOOLING - e.ORIGINAL_TOOLING
+    for name in added: (e.r.CPP/name).unlink()
+    e.recover(0)
+    original_sha = e.r.sha(e.receipt_path(local))
+    for name in e.ORIGINAL_TOOLING:
+        with (e.r.CPP/name).open('a') as file: file.write('\nrevision two')
+    e.recover_chain(0, 2)
+    second_sha = e.r.sha(e.chain_path(local, 2))
+    for name in added: (e.r.CPP/name).write_text('new config/smoke tooling')
+    note = e.recover_chain(0, 3)
+    assert set(note['tooling_changes']) == added
+    assert all(note['tooling_changes'][name]['old_sha256'] is None for name in added)
+    assert e.checked(local)['round'] == 0
+    assert e.r.sha(e.receipt_path(local)) == original_sha
+    assert e.r.sha(e.chain_path(local, 2)) == second_sha
 
 
 def test_chained_launcher_recovery_keeps_original_and_only_pins_head(recovery):
@@ -360,10 +386,10 @@ def test_launcher_installs_gate_before_later_measurement(recovery, monkeypatch):
         assert e.train.checked(local)['round'] == 0
         # New budgets and ledgers keep the real current source map.
         assert set(e.TOOLING) <= e.r.sources().keys()
-        return 'measured'
+        return dict(status='ADMITTED', marker='measured')
     monkeypatch.setattr(e.train, 'checked', e.ORIGINAL_CHECKED)
     monkeypatch.setattr(e.train, 'measure', measure)
-    assert e.dispatch('measure', 1) == 'measured'
+    assert e.dispatch('measure', 1) == dict(status='ADMITTED', marker='measured')
 
 
 def test_unchanged_new_budget_retains_original_gate(recovery, monkeypatch):
@@ -429,6 +455,10 @@ def test_cached_old_build_manifest_is_recovered_without_replay(recovery, monkeyp
     assert revised['status'] == 'PASS' and revised['original_receipt']['status'] == 'FAIL'
     assert all(e.r.sha(path) == sha for path, sha in originals.items())
     # Resume checks translated proofs and preserves original receipts.
+    # Config provenance is orthogonal to the immutable numeric comparison.
+    import owner_approvals
+    for path in (local / 'parity/eval_revision_v1').glob('*.json'):
+        e.r.write(path, dict(e.r.read(path), owner_approvals=owner_approvals.snapshot()))
     e.dispatch('parity', 0)
     altered = local / 'parity/eval_revision_v1/N2_validation_0125.json'
     record = e.r.read(altered)

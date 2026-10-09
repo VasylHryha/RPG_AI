@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "approved_by": "owner",
+  "approval_reference": "Owner 2026-10-09 Stage B config/smoke batch; Decision 0036 recurrent parity; keep ten epochs; run planned after 22:00 Europe/Kiev",
+  "training": {"max_seconds": 16200, "cap_seconds": 16200},
+  "dagger": {"cap_seconds": 16200},
+  "lab": {"cap_seconds": 16200},
+  "parity": {
+    "native_atol": 1e-8,
+    "native_categorical_mismatches": 0,
+    "float32_near_tie_ceiling": 0.0001,
+    "float32_recurrent_flip_rate_max": 0.0001,
+    "float32_recurrent_error_multiplier": 2,
+    "float32_recurrent_head_error_ceiling": null,
+    "require_top2_gap": true,
+    "require_selected_class_deficit": true,
+    "calibrated_fire_error_multiplier": 2,
+    "calibrated_fire_near_tie_ceiling": 0.0001,
+    "native_calibrated_fire_mismatches": 0,
+    "uncertified_calibrated_fire_mismatches": 0
+  },
+  "resources": {
+    "disk_reserve_bytes": 5000000000,
+    "disk_projection_multiplier": 2,
+    "process_rss_cap_bytes": 2147483648,
+    "training_rss_cap_bytes": 2147483648,
+    "fixture_rss_cap_bytes": 536870912,
+    "available_ram_reserve_bytes": 536870912
+  },
+  "smoke": {"cap_seconds": 300, "fight_seconds": 0.4, "threads": 2},
+  "planning": {
+    "round1_quiet_projection_minutes": 225,
+    "round1_loaded_projection_minutes": 421,
+    "loaded_context": "other Codex job plus desktop apps",
+    "planned_after": "22:00 Europe/Kiev"
+  },
+  "change_log": [{
+    "date": "2026-10-09", "by": "Codex", "change": "Initial Stage B live config",
+    "reason": "Owner requested config authority outside source pins and whole-chain smoke; legacy files retained byte-for-byte for round-0 provenance"
+  }]
+}
