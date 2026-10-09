@@ -291,13 +291,18 @@ def dispatch(command, round):
         if round not in (1, 2):
             raise RuntimeError('recovered measurement is for later rounds only')
         return train.measure(round)
+    if command == 'run':
+        # Claude 2026-10-09: later-round fits under the same recovery binding as their measurement.
+        if round not in (1, 2):
+            raise RuntimeError('recovered training run is for later rounds only')
+        return train.run(round)
     raise ValueError('unknown recovery command')
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('command', choices=('recover-eval-revision', 'parity',
-        'dagger-prepare', 'dagger-run', 'measure'))
+        'dagger-prepare', 'dagger-run', 'measure', 'run'))
     parser.add_argument('--round', type=int, choices=(0, 1, 2), required=True)
     args = parser.parse_args()
     dispatch(args.command, args.round)
