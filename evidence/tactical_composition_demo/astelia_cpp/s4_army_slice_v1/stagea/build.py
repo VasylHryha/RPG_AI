@@ -26,9 +26,10 @@ def build(receipt="BUILD_STAGEA_SLIM.json"):
     host=once(host,'if(operation=="catalog")','if(operation=="stageaReplay")return stagea::replay(request);\n  if(operation=="catalog")')
     # Full post-bridge and post-planner labels; snapshot was captured pre-prepare.
     host=once(host,'astelia::coreStep(w);++tick;dumpObserver(tick);','astelia::coreStep(w);++tick;for(auto& cc:w.controllers)if(auto* c=dynamic_cast<react_v1::Controller*>(cc.get()))stagea::record(*c);dumpObserver(tick);')
-    host=once(host,'using js::V;', 'using js::V;\nV stageARequestRoot;js::Args stageABatchResults;')
-    host=once(host,'V request=js::parse(line), result;', 'V request=js::parse(line), result;stageARequestRoot=request;')
-    host=once(host,'js::collect({},0);', 'stageARequestRoot=V();stageABatchResults.clear();js::collect({},0);')
+    host=once(host,'using js::V;', 'using js::V;\nV stageARequestRoot;js::Args stageABatchResults;stagea::FrameLayouts stageARequestLayouts;')
+    host=once(host,'V request=js::parse(line), result;', 'V request=stagea::parseBounded(line,stageARequestLayouts), result;stageARequestRoot=request;')
+    host=once(host,'js::collect({},0);', 'stageARequestRoot=V();stageABatchResults.clear();js::collect({},0);stageARequestLayouts.clear();stagea::replayMemoryReport();')
+    host=once(host,'  if (metrics) std::cerr', '  stagea::replayMemoryReport(true);\n  if (metrics) std::cerr')
     host=once(host,'js::Args rows;for (auto r:request.p->items) rows.push_back(fight(r,counts,fights,testControllers,capture));result=js::arr(std::move(rows));',
               'stageABatchResults.clear();for (auto r:request.p->items) stageABatchResults.push_back(fight(r,counts,fights,testControllers,capture));result=js::arr(std::move(stageABatchResults));')
     # All tick JSON is serialized here; retain outer batches and trace history.

@@ -16,4 +16,5 @@ void record(react_v1::Controller&);
 void collectTick(astelia::World&,js::Args,uint64_t);
 void memoryReport(uint64_t,size_t,size_t,bool final=false);
 js::V replay(js::V);
+void replayMemoryReport(bool final=false);
 }

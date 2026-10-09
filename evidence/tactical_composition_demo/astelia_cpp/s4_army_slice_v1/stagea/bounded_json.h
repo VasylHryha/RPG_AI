@@ -19,4 +19,29 @@ struct FrameLayouts {
  }
  void clear(){owned.clear();}
 };
+// Reuse the host parser's scalar/escape rules, but allocate object layouts once
+// rather than caching every insertion prefix. The caller owns these layouts
+// until all request JSON has been swept, including the exception path.
+struct BoundedParser : js::Parser {
+ FrameLayouts& layouts;
+ BoundedParser(const std::string& text,FrameLayouts& owner):js::Parser{text},layouts(owner){}
+ js::V value(){
+  char c=peek();
+  if(c=='{'){
+   ++i;std::vector<std::pair<std::string,js::V>> fields;std::unordered_map<std::string,size_t> offsets;
+   if(peek()=='}'){++i;return layouts.object(fields);}
+   do{auto key=string();expect(':');auto v=value();auto entry=offsets.emplace(key,fields.size());
+    if(entry.second)fields.emplace_back(std::move(key),v);else fields[entry.first->second].second=v;
+    if(peek()=='}'){++i;return layouts.object(fields);}expect(',');}while(true);
+  }
+  if(c=='['){++i;js::Args a;if(peek()==']'){++i;return js::arr(std::move(a));}
+   do{a.push_back(value());if(peek()==']'){++i;return js::arr(std::move(a));}expect(',');}while(true);
+  }
+  return js::Parser::value();
+ }
+};
+inline js::V parseBounded(const std::string& text,FrameLayouts& layouts){
+ BoundedParser parser(text,layouts);auto v=parser.value();
+ if(parser.peek())throw std::runtime_error("trailing JSON input");return v;
+}
 }

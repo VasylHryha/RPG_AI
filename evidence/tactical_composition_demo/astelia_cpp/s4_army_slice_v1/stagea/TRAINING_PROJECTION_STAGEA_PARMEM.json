@@ -1,0 +1,273 @@
+{
+  "status": "OFFLINE_PROJECTION_NO_RETRAINING",
+  "budget_sha256": "2a56a3be326ae302310427d91d44e62c6456f2f88eb43d8b6b5db92a7e1dd718",
+  "trained_epochs": 2,
+  "trained_windows_per_fight": 4,
+  "topology": {
+    "measurements": {
+      "hw.perflevel0.physicalcpu": 8,
+      "hw.ncpu": 10
+    },
+    "slots": 4,
+    "threads_per_process": 2,
+    "nice_increment": 10,
+    "fallback": "one process when performance core measurement unavailable"
+  },
+  "arms": {
+    "N1": {
+      "epochs": [
+        {
+          "epoch": 1,
+          "wall_seconds": 374.53965966700343,
+          "refresh_seconds": 145.40904616699845,
+          "step_seconds": 27.463537625138997,
+          "validation_seconds": 100.9757625409984,
+          "other_seconds": 100.69131333386758,
+          "checkpoint_sha256": "e9ac05451b8ac4a330fea1f4163472b7cf508eb0ba2147f13028175bda24a4b3"
+        },
+        {
+          "epoch": 2,
+          "wall_seconds": 385.75246783300827,
+          "refresh_seconds": 146.3493832910026,
+          "step_seconds": 28.713245836115675,
+          "validation_seconds": 105.66743995800789,
+          "other_seconds": 105.02239874788211,
+          "checkpoint_sha256": "5c0dbd90092d09395b8af8ac18a79815785c227058daf7c0a6a49bf9ecb51c5a"
+        }
+      ],
+      "average_epoch_wall_seconds": 380.14606375000585,
+      "final_test_export_overhead_seconds": 107.33644233399536,
+      "outcome_sha256": "fa52c5b956169e0506b12d7392af351d749b17e84fdc93733590f1742bc11c33"
+    },
+    "N1h": {
+      "epochs": [
+        {
+          "epoch": 1,
+          "wall_seconds": 458.48906212499423,
+          "refresh_seconds": 181.18405900000653,
+          "step_seconds": 37.42935841601866,
+          "validation_seconds": 136.80422066700703,
+          "other_seconds": 103.07142404196202,
+          "checkpoint_sha256": "3ce90b1b5d97f3d3481a2630c2332b5efd265b3cf6fac866d4828b901b9eb94e"
+        },
+        {
+          "epoch": 2,
+          "wall_seconds": 470.8870469590038,
+          "refresh_seconds": 191.18882720799593,
+          "step_seconds": 38.36929883096309,
+          "validation_seconds": 136.2720866669988,
+          "other_seconds": 105.05683425304596,
+          "checkpoint_sha256": "2915253381606edfef269cb1f24ed38e63f17b3dd4a18f0392b86c1db990fe24"
+        }
+      ],
+      "average_epoch_wall_seconds": 464.688054541999,
+      "final_test_export_overhead_seconds": 138.495789624998,
+      "outcome_sha256": "fd435c3a738f20e5a22eac192b0822945d13b8f82b070b7059f98e2cc9d2401f"
+    },
+    "N1r": {
+      "epochs": [
+        {
+          "epoch": 1,
+          "wall_seconds": 412.3416201670043,
+          "refresh_seconds": 158.65111720800633,
+          "step_seconds": 36.80454233009368,
+          "validation_seconds": 114.55501524999272,
+          "other_seconds": 102.33094537891157,
+          "checkpoint_sha256": "707a5ce1ce190350da839e8e766ff3872efecbe36b2f42e82f1d0c99846cbec5"
+        },
+        {
+          "epoch": 2,
+          "wall_seconds": 423.44038554199506,
+          "refresh_seconds": 162.81654324999545,
+          "step_seconds": 37.64681658797781,
+          "validation_seconds": 116.38959254100337,
+          "other_seconds": 106.58743316301843,
+          "checkpoint_sha256": "2ab6dcff5efc0153b533dd2819930bfab6776789dcdb1f6d7a5cb3f01b7546a0"
+        }
+      ],
+      "average_epoch_wall_seconds": 417.8910028544997,
+      "final_test_export_overhead_seconds": 117.62704804100213,
+      "outcome_sha256": "4305289a0139a63fb35c0f07e02e363fe225b7dccc1ee99be85746ad378502ff"
+    },
+    "N2": {
+      "epochs": [
+        {
+          "epoch": 1,
+          "wall_seconds": 828.1581503750058,
+          "refresh_seconds": 314.2043525409972,
+          "step_seconds": 166.25928277921048,
+          "validation_seconds": 241.0601081670029,
+          "other_seconds": 106.6344068877952,
+          "checkpoint_sha256": "8dd0c8e3e1ee8d1645481d2940b2c16db96332a790a77056e2d3c96298beb0a3"
+        },
+        {
+          "epoch": 2,
+          "wall_seconds": 821.5667769579886,
+          "refresh_seconds": 320.68141420799657,
+          "step_seconds": 158.75935034699796,
+          "validation_seconds": 235.23347999999532,
+          "other_seconds": 106.89253240299877,
+          "checkpoint_sha256": "1f26c8e7d3b276bdad17d76ef55cd5a2fc88966f18889550ad7eab535eb2a8a1"
+        }
+      ],
+      "average_epoch_wall_seconds": 824.8624636664972,
+      "final_test_export_overhead_seconds": 235.56951750000007,
+      "outcome_sha256": "30b23984c9c686c3f404da964d611d09d59543f53274dceab5f787ae2efc556c"
+    },
+    "N2J0": {
+      "epochs": [
+        {
+          "epoch": 1,
+          "wall_seconds": 828.113530290997,
+          "refresh_seconds": 314.050642000002,
+          "step_seconds": 166.58449054896482,
+          "validation_seconds": 239.95432808299665,
+          "other_seconds": 107.52406965903356,
+          "checkpoint_sha256": "73f5825f774148020f8b97c3c118858be1350ad60f2cbb3843476a4d830c2411"
+        },
+        {
+          "epoch": 2,
+          "wall_seconds": 821.1712424169964,
+          "refresh_seconds": 320.5815825419995,
+          "step_seconds": 159.18375534187362,
+          "validation_seconds": 235.26663841700065,
+          "other_seconds": 106.1392661161226,
+          "checkpoint_sha256": "c317c6e4ee35be73d8a91c0d8fbfd1abc95bedf358534895657ab7ba01eb4748"
+        }
+      ],
+      "average_epoch_wall_seconds": 824.6423863539967,
+      "final_test_export_overhead_seconds": 235.54987512501248,
+      "outcome_sha256": "68606c58bb1632f2272a15542c7f2998015678c6b4f51cd7a7ecc34dbf7bcbe1"
+    }
+  },
+  "projections": {
+    "4": {
+      "epochs": 10,
+      "windows_per_fight": 4,
+      "per_arm_seconds": {
+        "N1": 3964.861120664078,
+        "N1h": 4847.366259215036,
+        "N1r": 4352.030903460953,
+        "N2": 8517.151021250058,
+        "N2J0": 8516.685178034983
+      },
+      "concurrent_groups": [
+        {
+          "arms": [
+            "N2"
+          ],
+          "wall_seconds": 8517.151021250058
+        },
+        {
+          "arms": [
+            "N2J0"
+          ],
+          "wall_seconds": 8516.685178034983
+        },
+        {
+          "arms": [
+            "N1h"
+          ],
+          "wall_seconds": 4847.366259215036
+        },
+        {
+          "arms": [
+            "N1r",
+            "N1"
+          ],
+          "wall_seconds": 8316.89202412503
+        }
+      ],
+      "projected_seconds": 8517.151021250058,
+      "with_20_percent_margin_seconds": 10220.58122550007,
+      "within_3h_with_margin": true,
+      "within_existing_1h_per_arm_rule": false
+    },
+    "8": {
+      "epochs": 10,
+      "windows_per_fight": 8,
+      "per_arm_seconds": {
+        "N1": 5416.004420939309,
+        "N1h": 6732.275903819653,
+        "N1r": 6010.022042791767,
+        "N2": 12825.914448212192,
+        "N2J0": 12817.62323947961
+      },
+      "concurrent_groups": [
+        {
+          "arms": [
+            "N2"
+          ],
+          "wall_seconds": 12825.914448212192
+        },
+        {
+          "arms": [
+            "N2J0"
+          ],
+          "wall_seconds": 12817.62323947961
+        },
+        {
+          "arms": [
+            "N1h"
+          ],
+          "wall_seconds": 6732.275903819653
+        },
+        {
+          "arms": [
+            "N1r",
+            "N1"
+          ],
+          "wall_seconds": 11426.026463731076
+        }
+      ],
+      "projected_seconds": 12825.914448212192,
+      "with_20_percent_margin_seconds": 15391.09733785463,
+      "within_3h_with_margin": false,
+      "within_existing_1h_per_arm_rule": false
+    },
+    "16": {
+      "epochs": 10,
+      "windows_per_fight": 16,
+      "per_arm_seconds": {
+        "N1": 8318.291021489771,
+        "N1h": 10502.095193028887,
+        "N1r": 9326.004321453394,
+        "N2": 21443.44130213646,
+        "N2J0": 21419.499362368864
+      },
+      "concurrent_groups": [
+        {
+          "arms": [
+            "N2"
+          ],
+          "wall_seconds": 21443.44130213646
+        },
+        {
+          "arms": [
+            "N2J0"
+          ],
+          "wall_seconds": 21419.499362368864
+        },
+        {
+          "arms": [
+            "N1h"
+          ],
+          "wall_seconds": 10502.095193028887
+        },
+        {
+          "arms": [
+            "N1r",
+            "N1"
+          ],
+          "wall_seconds": 17644.295342943165
+        }
+      ],
+      "projected_seconds": 21443.44130213646,
+      "with_20_percent_margin_seconds": 25732.12956256375,
+      "within_3h_with_margin": false,
+      "within_existing_1h_per_arm_rule": false
+    }
+  },
+  "method": "Epoch cumulative checkpoint wall differences; includes full refresh, optimizer windows, reload/checks and validation. Project 10 epochs using slower observed epoch; scale optimizer, whole validation and final overhead by windows/4; keep refresh/other fixed; max of 4 sequential lane sums; 20% margin. Conservative validation scaling includes fixed replay; extra saved-state I/O and changed contention unmeasured. Separate measurement/parity not included.",
+  "limits": "Current train.py measure also enforces 1 h per arm and refuses an already sealed budget; no current artifact or cap is changed."
+}

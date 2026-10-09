@@ -2,6 +2,7 @@
 import argparse
 import copy
 import json
+import os
 import subprocess
 import time
 import numpy as np
@@ -33,38 +34,51 @@ def sequence(model,rows):
 
 def categories(x):return np.concatenate((x[:,3:6].argmax(1)[:,None],x[:,10:].argmax(1)[:,None]),1)
 
-def replay(weights,rows,timeout=600):
+def replay(weights,rows,timeout=600,profile=None,fixture_monitor=None):
     # Stream one frame per RPC; persistent native state, bounded JS heap per tick.
     import secrets
     directory=LOCAL/'parity';directory.mkdir(parents=True,exist_ok=True)
     token=secrets.token_hex(8);request_path=directory/(token+'.requests.jsonl');output_path=directory/(token+'.outputs.jsonl')
+    if fixture_monitor is not None and (os.environ.get('STAGEA_HOST_TEST')!='1' or not getattr(fixture_monitor,'fixture_only',False)):
+        raise RuntimeError('explicit fixture-only replay monitor required')
+    count=0
     with request_path.open('w') as f:
         for i,row in enumerate(rows):
             check_live()
             request=dict(operation='stageaReplay',frames=[row])
             if i==0:request['weights']=weights
             f.write(json.dumps(request,allow_nan=False,separators=(',',':'))+'\n')
+            count+=1
+    if not count:raise RuntimeError('empty native replay sequence')
     with request_path.open('r') as src,output_path.open('w') as dst:
         errpath=directory/(token+'.stderr')
         with errpath.open('w') as err:
-            child=subprocess.Popen([str(BINARY)],stdin=src,stdout=dst,stderr=err,start_new_session=True)
+            child=subprocess.Popen([str(BINARY)],stdin=src,stdout=dst,stderr=err,start_new_session=True,env={**os.environ,'STAGEA_MEMORY_PROFILE':'1'})
             started=time.monotonic()
             try:
                 while child.poll() is None:
-                    check_live(child.pid)
+                    if fixture_monitor is None:check_live(child.pid)
+                    else:fixture_monitor.live_memory(child.pid)
                     if time.monotonic()-started>timeout:raise TimeoutError('native sequence replay timeout')
                     time.sleep(.1)
                 if child.returncode or errpath.stat().st_size:raise RuntimeError('native parity host failed; inspect local stream/stderr')
             finally:
                 if child.poll() is None:__import__('os').killpg(child.pid,9);child.wait()
-    out=[]
+    out=[];memory=[]
     with output_path.open() as f:
         for line in f:
             check_live()
             result=json.loads(line)
+            if result.get('stageAMemory'):
+                memory.append(result)
+                if fixture_monitor is not None:fixture_monitor.memory_report(result)
+                continue
             if 'error' in result or result.get('combat_steps')!=0:raise RuntimeError('bad native replay '+str(result))
             if len(result['outputs'])!=1:raise RuntimeError('stream replay tick count')
             out.append(np.asarray(result['outputs'][0],dtype=np.float64))
+    if len(out)!=count or not memory or not memory[-1]['final'] or memory[-1]['tick']!=count:
+        raise RuntimeError('incomplete native replay/profile')
+    if profile is not None:profile.update(frames=count,peak_rss_bytes=max(r['peak_rss_bytes'] for r in memory),memory_profile=memory)
     request_path.unlink();output_path.unlink();errpath.unlink()
     return out
 
@@ -74,9 +88,9 @@ def compare(a,b):
 
 def run():
     global DEADLINE,MONITOR
-    environment();from collect import identity,check
-    check();from training import checked_budget
-    checked_budget();index=read(LOCAL/'INDEX.json');records=[];start=time.monotonic()
+    environment();from collect import identity
+    from parmem_recovery import checked_inference_budget
+    checked_inference_budget();index=read(LOCAL/'INDEX.json');records=[];start=time.monotonic()
     from jobs import admitted
     from training_control import training_cap,TrainingDeadline
     cap=training_cap(HERE);run_id=__import__('secrets').token_hex(8)
@@ -98,9 +112,11 @@ def run():
                     r=read(proof_path)
                     if r['manifest']!=manifest or r['raw_sha256']!=sha(raw) or r['status']!='PASS':raise RuntimeError('stored parity receipt drift')
                 else:
-                    began=time.monotonic();m32,weights,m64=models[arm];rows=list(frames(raw));check_live()
-                    a=sequence(m32,rows);b=sequence(m64,rows);c=replay(weights,rows,timeout=max(1,float(DEADLINE-time.monotonic())))
-                    r=dict(status='PASS',manifest=manifest,arm=arm,fight=fight['tag'],raw_sha256=sha(raw),float32_export=compare(a,b),native_float64=compare(b,c),seconds=time.monotonic()-began,frames=len(rows))
+                    began=time.monotonic();m32,weights,m64=models[arm];profile={}
+                    # Decode one row at a time on each pass; never retain the
+                    # full JSON sequence alongside three output banks.
+                    a=sequence(m32,frames(raw));b=sequence(m64,frames(raw));c=replay(weights,frames(raw),timeout=max(1,float(DEADLINE-time.monotonic())),profile=profile)
+                    r=dict(status='PASS',manifest=manifest,arm=arm,fight=fight['tag'],raw_sha256=sha(raw),float32_export=compare(a,b),native_float64=compare(b,c),seconds=time.monotonic()-began,frames=len(a),native_memory=profile)
                     if r['float32_export']['categorical_mismatches'] or r['native_float64']['categorical_mismatches'] or r['native_float64']['max_abs_error']>1e-8:
                         r['status']='FAIL';write(proof_path,r,exclusive=True);raise RuntimeError('categorical/numeric export parity defect')
                     write(proof_path,r,exclusive=True)

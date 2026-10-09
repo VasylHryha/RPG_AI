@@ -13,8 +13,8 @@ POLICIES=(*ARMS,'O','T')
 def parity_gate():
     proof=read(HERE/'PARITY_STAGEA.json')
     if proof['status']!='PASS' or proof['binary']!=identity() or proof['exports']!={a:sha(LOCAL/'training'/(a+'.weights.json')) for a in ARMS} or proof['budget_sha256']!=sha(LOCAL/'TRAIN_BUDGET.json') or proof['index_sha256']!=sha(LOCAL/'INDEX.json'):raise RuntimeError('current full-sequence parity required')
-    from training import checked_budget
-    checked_budget();return proof
+    from parmem_recovery import checked_inference_budget
+    checked_inference_budget();return proof
 
 def prepare():
     parity_gate();path=LOCAL/'OUTCOME_LEDGER.json'
