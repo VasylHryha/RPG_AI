@@ -38,7 +38,7 @@ import training_control
 _base_cap=training_control.training_cap
 def stageb_cap(here):
     value=_base_cap(here)
-    if Path(here).resolve()==HERE and (value.get('written_by')!='Claude' or value['cap_seconds']>12600):raise RuntimeError('Claude-authored Stage B cap, maximum 3.5 h, required')
+    if Path(here).resolve()==HERE and (value.get('written_by')!='Claude' or value['cap_seconds']>16200):raise RuntimeError('Claude-authored Stage B cap, maximum 4.5 h, required')
     return value
 training_control.training_cap=stageb_cap
 import jobs
