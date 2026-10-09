@@ -8,7 +8,7 @@ from common import BINARY
 
 def check_live(pid=None):return parity.check_live(pid)
 LOCAL=r.LOCAL
-def _replay(weights,rows,timeout=600,profile=None,fixture_monitor=None,fire_classes=None):
+def _replay(weights,rows,timeout=600,profile=None,fixture_monitor=None,fire_classes=None,candidate_counts=None):
     # Stream one frame per RPC; persistent native state, bounded JS heap per tick.
     import secrets
     directory=LOCAL/'parity';directory.mkdir(parents=True,exist_ok=True)
@@ -55,21 +55,24 @@ def _replay(weights,rows,timeout=600,profile=None,fixture_monitor=None,fire_clas
             if len(result['outputs'])!=1:raise RuntimeError('stream replay tick count')
             out.append(np.asarray(result['outputs'][0],dtype=np.float64))
             if fire_classes is not None:fire_classes.append(np.asarray(result['fireClasses'][0],dtype=np.int64))
+            if candidate_counts is not None:
+                from candidate_audit import observe_record
+                observe_record(candidate_counts,result)
     if len(out)!=count or not memory or not memory[-1]['final'] or memory[-1]['tick']!=count:
         raise RuntimeError('incomplete native replay/profile')
     if profile is not None:profile.update(frames=count,peak_rss_bytes=max(r['peak_rss_bytes'] for r in memory),memory_profile=memory)
     request_path.unlink();output_path.unlink();errpath.unlink()
     return out
 
-def replay(weights,rows,timeout=600,profile=None,fixture_monitor=None,fire_classes=None):
+def replay(weights,rows,timeout=600,profile=None,fixture_monitor=None,fire_classes=None,candidate_counts=None):
     if fixture_monitor is not None:
         from jobs import locked
-        with locked():return _replay(weights,rows,min(timeout,300),profile,fixture_monitor,fire_classes)
-    return _replay(weights,rows,timeout,profile,fixture_monitor,fire_classes)
+        with locked():return _replay(weights,rows,min(timeout,300),profile,fixture_monitor,fire_classes,candidate_counts)
+    return _replay(weights,rows,timeout,profile,fixture_monitor,fire_classes,candidate_counts)
 
 def compare_calibrated(a,b,native,rows,thresholds):
     error=max((float(np.max(np.abs(x[:,3:6]-y[:,3:6]))) for x,y in zip(a,b)),default=0.)
-    bound=min(2*error,1e-4);details=[];native_errors=0
+    bound=min(2*error,parity.PARITY_RULE['float32_near_tie_ceiling']);details=[];native_errors=0
     for at,(x,y,z,row) in enumerate(zip(a,b,native,rows)):
         own=sorted((u for u in row['units'] if u[1]==0),key=lambda u:u[0]);roles=[u[2] for u in own]
         c32=fire_classes(x[:,3:6],roles,thresholds);c64=fire_classes(y[:,3:6],roles,thresholds)
@@ -84,14 +87,17 @@ def compare_calibrated(a,b,native,rows,thresholds):
 
 def passes(proof):
     c=proof['calibrated_fire']
-    return parity.parity_passes(proof) and c['native_mismatches']==0 and c['uncertified_mismatches']==0
+    return (parity.parity_passes(proof) and c['native_mismatches']==0 and c['uncertified_mismatches']==0
+            and all(d['relevant_gap']<=min(d['bound'],parity.approvals()['parity']['float32_near_tie_ceiling']) for d in c['float32_mismatches']))
 
 def evaluate(arm,fight):
     global LOCAL
     LOCAL=parity.LOCAL;raw=LOCAL/fight['raw_file'];start=time.monotonic()
     if r.sha(raw)!=fight['raw_sha256']:raise RuntimeError('calibrated parity shard drift')
     m32,weights=parity.load_model(arm,torch.float32);m64,_=parity.load_model(arm,torch.float64)
-    a=parity.sequence(m32,frames(raw));b=parity.sequence(m64,frames(raw));classes=[];profile={}
-    c=replay(weights,frames(raw),timeout=max(1,float(parity.DEADLINE-time.monotonic())) if parity.DEADLINE is not None else 600,profile=profile,fire_classes=classes)
+    audit={};a=parity.sequence(m32,frames(raw),audit=audit);b=parity.sequence(m64,frames(raw));classes=[];profile={};native_audit={}
+    c=replay(weights,frames(raw),timeout=max(1,float(parity.DEADLINE-time.monotonic())) if parity.DEADLINE is not None else 600,profile=profile,fire_classes=classes,candidate_counts=native_audit)
     proof=dict(arm=arm,fight=fight['tag'],raw_sha256=r.sha(raw),float32_export=parity.compare(a,b,near_ties=True),native_float64=parity.compare(b,c),calibrated_fire=compare_calibrated(a,b,classes,frames(raw),weights['fireThresholds']),frames=len(a),seconds=time.monotonic()-start,native_memory=profile,parity_rule=parity.PARITY_RULE)
+    proof['candidate_pick_counts']=native_audit
+    proof['python_float32_candidate_pick_counts']=audit
     proof['status']='PASS' if passes(proof) else 'FAIL';return proof

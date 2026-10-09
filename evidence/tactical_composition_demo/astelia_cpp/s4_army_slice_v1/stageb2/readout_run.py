@@ -5,14 +5,17 @@ from execution import execute,disk_projection
 from parity_run import gate
 from dagger import used_seeds
 from recording import rows
-POLICIES=(*r.ARMS,*(a+'_network_only' for a in r.ARMS),*(tuple(a+'_react_on' for a in r.ARMS) if r.VARIANT=='learned_dodge' else ()),'O','T')
+POLICIES=(*r.ARMS,*(a+'_network_only' for a in r.common.BASELINE_ARMS),*(tuple(a+'_react_on' for a in r.ARMS) if r.VARIANT=='learned_dodge' else ()),'O','T')
 
 def mechanism(raw):
     from dodge_metrics import DodgeMetrics
     dodge=DodgeMetrics()
+    from candidate_audit import observe_record
+    picks={}
     previous={};enemy_credit={};own_damage=0.;deaths={role:0 for role in ('melee','ranged','artillery')};killers={};m=dict(dodges=0,launches=0,ready_rows=0,active_fire_rows=0,react_rows=0,phase_samples=0,phase_abs_rate_sum=0.,spacing_norm_sum=0.,forcing_abs_sum=0.)
     for row in rows(raw):
         dodge.observe(row)
+        observe_record(picks,row)
         if row.get('observerV1'):
             m['dodges']+=sum(x[1]==0 for x in row['dodges']);m['launches']+=sum(x[2]==0 for x in row['launches'])
             for d in row['damage']:
@@ -28,7 +31,7 @@ def mechanism(raw):
                     if uid in previous:m['phase_abs_rate_sum']+=abs(state[1]-previous[uid][0])/(row['t']-previous[uid][1]);m['phase_rate_samples']=m.get('phase_rate_samples',0)+1
                     previous[uid]=(state[1],row['t'])
             for v in row['labels']:m['ready_rows']+=v['ready'];m['active_fire_rows']+=v['executed']['fire']!='hold';m['react_rows']+=v['active']
-    return dict(per_role_deaths=deaths,killer_sources=killers,enemy_death_credit=enemy_credit,own_damage_to_enemy=own_damage,**dodge.finish(),**m)
+    return dict(candidate_pick_counts=picks,per_role_deaths=deaths,killer_sources=killers,enemy_death_credit=enemy_credit,own_damage_to_enemy=own_damage,**dodge.finish(),**m)
 
 def prepare(round):
     if round<1:raise RuntimeError('full-fight DAgger refit required before looks')
@@ -79,10 +82,12 @@ def _run(round,look,run_id):
         if not prior['complete'] or prior['ledger_sha256']!=digest:raise RuntimeError('same revision complete look 20 required')
     from jobs import admitted
     from training_control import training_cap,TrainingDeadline
-    cap=training_cap(r.HERE);receipt['cap']=cap;jobs=[j for j in ledger['jobs'] if j['index']<look]
+    cap=training_cap(r.HERE)
+    from owner_approvals import cap as scope_cap
+    cap['cap_seconds']=scope_cap('lab');receipt['cap']=cap;jobs=[j for j in ledger['jobs'] if j['index']<look]
     try:
         with admitted(cap['cap_seconds']) as (absolute,monitor):
-            deadline=TrainingDeadline(r.HERE,absolute,cap['cap_seconds'])
+            deadline=TrainingDeadline(r.HERE,absolute,cap['cap_seconds'],scope='lab')
             calibration=[execute(j,deadline,monitor,digest) for j in jobs if j['index']==0]
             rates={a:max(c['seconds']*150.04/c['stats']['t_end'] for c in calibration if c['job']['arm']==a) for a in POLICIES};todo=[j for j in jobs if not (r.LOCAL/'raw'/(j['tag']+'_COMPLETE.json')).exists()]
             projection=1.2*sum(rates[j['arm']] for j in todo);receipt['projection']=dict(seconds=projection,per_arm_full150_seconds=rates,disk=disk_projection(calibration,todo))
@@ -96,11 +101,22 @@ def _run(round,look,run_id):
                 disk_projection(calibration,[k for k in jobs if not (r.LOCAL/'raw'/(k['tag']+'_COMPLETE.json')).exists()])
             import readout
             readout.POLICIES=POLICIES
-            summary=readout.report(receipt['records'],look);harm=look==50 and any(c['deaths_saved']<=-2 or c['enemy_kills_gained']<=-2 for p in summary['panels'].values() for c in p['comparisons'].values())
+            summary=readout.report(receipt['records'],look)
+            from candidate_audit import merge,report as pick_report
+            proof=r.read(r.LOCAL/f'round{round}/PARITY_STAGEB2.json')
+            summary['validation_candidate_picks']={a:pick_report(merge(v['candidate_pick_counts'] for v in proof['records'] if v['arm']==a)) for a in r.ARMS}
+            summary['completion_hashes']={v['tag']:v['completion_sha256'] for v in receipt['records']}
+            if look==50:
+                for arm in r.ARMS:
+                    if prior['report']['readiness']['per_arm'][arm]!='YES':summary['readiness']['per_arm'][arm]='NO'
+                summary['readiness']['READY']='YES' if all(v=='YES' for v in summary['readiness']['per_arm'].values()) else 'NO'
+                summary['readiness']['confirmed']=summary['readiness']['READY']=='YES'
+            print(__import__('json').dumps(dict(look=look,READY=summary['readiness']['READY'],confirmed=summary['readiness']['confirmed'],per_arm=summary['readiness']['per_arm'])))
+            harm=look==50 and any(c['deaths_saved']<=-2 or c['enemy_kills_gained']<=-2 for p in summary['panels'].values() for c in p['comparisons'].values())
             payload=dict(round=round,look=look,ledger_sha256=digest,complete=True,harm_stop=harm,report=summary)
             path=r.LOCAL/f'LOOK_STAGEB2_R{round}_{look}.json'
             if path.exists():
-                if r.read(path)!=payload:raise RuntimeError('look drift')
+                if {k:v for k,v in r.read(path).items() if k!='owner_approvals'}!=payload:raise RuntimeError('look drift')
             else:r.write(path,payload,exclusive=True)
             receipt.update(status='DONE',**payload)
     except BaseException as e:receipt.update(status='STOP_RESUMABLE',error=str(e));raise
@@ -117,4 +133,4 @@ def run(round,look):
         raise
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('command',choices=('prepare','run'));p.add_argument('--round',type=int,choices=(1,2),default=1);p.add_argument('--look',type=int,choices=(20,50),default=20);a=p.parse_args();prepare(a.round) if a.command=='prepare' else run(a.round,a.look)
+    p=argparse.ArgumentParser();p.add_argument('command',choices=('prepare','run'));p.add_argument('--round',type=int,choices=range(1,11),default=1);p.add_argument('--look',type=int,choices=(20,50),default=20);a=p.parse_args();prepare(a.round) if a.command=='prepare' else run(a.round,a.look)

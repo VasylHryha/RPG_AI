@@ -11,37 +11,29 @@ import subprocess
 import tempfile
 import time
 
-FITS=tuple((arm,41001,arm) for arm in ('N1','N1h','N1r','N2','N2J0'))
+FITS=tuple((arm,41001,arm) for arm in ('N1','N1b','N1r','N1rb','N2'))
 
 
 def training_cap(here):
-    from common import LOCAL
-    path=LOCAL/'TRAIN_CAP.json'
-    if not path.exists():
-        raise RuntimeError('Claude-written owner TRAIN_CAP.json required before timing or training')
-    from hashlib import sha256
-    raw=path.read_bytes(); value=json.loads(raw)
-    seconds=value.get('cap_seconds')
-    if isinstance(seconds,bool) or not isinstance(seconds,(float,int)) or not math.isfinite(seconds) or seconds<=0:
-        raise ValueError('TRAIN_CAP cap_seconds must be finite and positive')
-    if value.get('approved_by')!='owner':
-        raise ValueError('TRAIN_CAP approved_by must be owner')
-    date.fromisoformat(value['date'])
-    if value.get('written_by')!='Claude' or seconds>16200:raise ValueError('Claude-authored B2 cap, at most 16200 seconds')
-    return dict(**value,path=str(path),sha256=sha256(raw).hexdigest())
+    from owner_approvals import load,snapshot
+    value=load()['training']
+    return dict(cap_seconds=value['cap_seconds'],max_seconds=value['max_seconds'],approved_by='owner',owner_approvals=snapshot())
+
 
 
 class TrainingDeadline:
     """Live owner reductions tighten the admitted deadline; increases cannot extend it."""
-    def __init__(self,here,absolute,admitted_cap):
-        self.here=here; self.absolute=absolute; self.admitted_cap=admitted_cap
+    def __init__(self,here,absolute,admitted_cap,scope="training"):
+        self.scope=scope; self.here=here; self.absolute=absolute; self.admitted_cap=admitted_cap
         self.started=absolute-admitted_cap
         self.checked_at=-math.inf; self.owner_cap=admitted_cap
 
     def current(self):
         now=time.monotonic()
         if now-self.checked_at>=1.:
-            self.owner_cap=min(self.owner_cap,training_cap(self.here)['cap_seconds']); self.checked_at=now
+            from owner_approvals import load
+            cfg=load();live=cfg['training']['cap_seconds'] if self.scope=='training' else min(cfg['training']['cap_seconds'],cfg[self.scope]['max_seconds' if self.scope=='coverage' else 'cap_seconds'])
+            self.owner_cap=min(self.owner_cap,live); self.checked_at=now
         return min(self.absolute,self.started+self.owner_cap)
 
     def __sub__(self,other):

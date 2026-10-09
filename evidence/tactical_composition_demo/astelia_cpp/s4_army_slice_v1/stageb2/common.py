@@ -13,8 +13,9 @@ VARIANT=os.environ.get('B2_VARIANT','react_on')
 if VARIANT not in ('react_on','learned_dodge'):raise ValueError('B2_VARIANT')
 LOCAL=HERE/'_local'/VARIANT
 BINARY=HERE/'_local/build/tactics_react_host_stageb2'
-ARMS=('N1','N1r','N2')
-if os.environ.get('B2_N1H')=='1':ARMS=(*ARMS,'N1h')
+ARMS=('N1','N1b','N1r','N1rb','N2')
+BASELINE_ARMS=('N1','N1r','N2')
+BASELINE_PARENT={'N1':'N1','N1b':'N1','N1r':'N1r','N1rb':'N1r','N2':'N2'}
 ROLES=('melee','ranged','artillery')
 
 def sha(path):
@@ -26,7 +27,11 @@ def sha(path):
 def read(path):return json.loads(Path(path).read_text())
 
 def write(path,value,exclusive=False):
-    path=Path(path);path.parent.mkdir(parents=True,exist_ok=True)
+    path=Path(path)
+    if isinstance(value,dict) and path.suffix=='.json' and path.name!='OWNER_APPROVALS.json' and 'parameters' not in value and path.parent.name!='requests':
+        from owner_approvals import snapshot
+        value['owner_approvals']=snapshot()
+    path.parent.mkdir(parents=True,exist_ok=True)
     text=json.dumps(value,allow_nan=False,indent=2)+'\n'
     if len(text.encode())>=45_000_000:raise ValueError('compact receipt exceeds 45 MB')
     if exclusive:

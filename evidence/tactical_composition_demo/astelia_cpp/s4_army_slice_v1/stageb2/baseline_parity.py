@@ -17,7 +17,7 @@ def run(round):
             parity.MONITOR=monitor;parity.DEADLINE=TrainingDeadline(r.HERE,absolute,cap['cap_seconds']);cal.LOCAL=local
             for fight in (f for f in index['fights'] if f['split']=='validation'):
                 if r.sha(fight['raw_file'])!=fight['raw_sha256']:raise RuntimeError('baseline parity raw drift')
-                for arm in r.ARMS:
+                for arm in r.common.BASELINE_ARMS:
                     weights=r.read(baseline['exports'][arm]['path']);classes=[];cal.BINARY=original
                     a=cal.replay(weights,r.data.frames(fight['raw_file']),timeout=max(1,parity.DEADLINE-time.monotonic()),fire_classes=classes)
                     reference=[];cal.BINARY=r.BINARY;b=cal.replay(weights,r.data.frames(fight['raw_file']),timeout=max(1,parity.DEADLINE-time.monotonic()),fire_classes=reference)
@@ -31,8 +31,8 @@ def run(round):
 
 def gate(round):
     proof=r.read(r.LOCAL/f'round{round}/BASELINE_PARITY.json')
-    expected={(a,f['tag']) for a in r.ARMS for f in r.read(r.LOCAL/f'round{round}/INDEX.json')['fights'] if f['split']=='validation'}
+    expected={(a,f['tag']) for a in r.common.BASELINE_ARMS for f in r.read(r.LOCAL/f'round{round}/INDEX.json')['fights'] if f['split']=='validation'}
     if proof['status']!='PASS' or proof['binary']!=r.collect.identity() or proof['baseline_sha256']!=r.sha(r.LOCAL/'BASELINE.json') or len(proof['records'])!=len(expected) or {(v['arm'],v['fight']) for v in proof['records']}!=expected or not all(v['exactly_equal'] for v in proof['records']):raise RuntimeError('network-only native bridge parity required')
     check();return proof
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--round',type=int,choices=(0,1,2),default=1);run(p.parse_args().round)
+    p=argparse.ArgumentParser();p.add_argument('--round',type=int,choices=range(11),default=1);run(p.parse_args().round)

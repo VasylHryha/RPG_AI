@@ -42,7 +42,7 @@ def bindings(round,ledger,parity):
             group=[c for c in records if c['panel']==panel and c['arm']==arm]
             if len(group)!=50 or {c['index'] for c in group}!=set(range(50)) or not any(c['stats']['win'] for c in group):raise RuntimeError('actual parent wins and complete per-arm panel required')
             if sum(c['stats']['win'] for c in group)!=v['report']['panels'][panel]['arms'][arm]['wins']:raise RuntimeError('parent win summary mismatch')
-            for reference in ('O','T',arm+'_network_only'):
+            for reference in ('O','T',r.common.BASELINE_PARENT[arm]+'_network_only'):
                 other=[c for c in records if c['panel']==panel and c['arm']==reference]
                 if len(other)!=50:raise RuntimeError('parent comparator coverage')
                 deaths_saved=sum(c['stats']['own_deaths'] for c in other)/50-sum(c['stats']['own_deaths'] for c in group)/50
@@ -59,4 +59,4 @@ def enable(round):
     parity=gate(round);ledger=outcome_gate(round)
     proof=bindings(round,ledger,parity);r.write(path,proof,exclusive=True);return proof
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--round',type=int,choices=(1,2),default=1);enable(p.parse_args().round)
+    p=argparse.ArgumentParser();p.add_argument('--round',type=int,choices=range(1,11),default=1);enable(p.parse_args().round)

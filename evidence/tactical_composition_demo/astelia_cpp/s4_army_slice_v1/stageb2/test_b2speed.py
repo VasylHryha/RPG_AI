@@ -24,7 +24,7 @@ def test_batch_matches_python_order_features_sources(mutate):
     row['_candidate_banks']=banks
     assert mapped_labels(row,ids,np.ones((len(ids),2)))==expected
 
-@pytest.mark.parametrize('kind',['N1','N1h','N1r','N2'])
+@pytest.mark.parametrize('kind',list(r.ARMS))
 def test_state_only_preserves_prefix_including_removal(kind):
     torch.manual_seed(73);model=Policy(kind).double().eval()
     full=(initial(kind,[],torch.float64),[],None,(0,[]));fast=copy.deepcopy(full)

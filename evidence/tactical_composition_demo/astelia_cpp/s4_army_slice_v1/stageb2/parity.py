@@ -24,12 +24,15 @@ def load_model(arm,dtype):
     weights=read(LOCAL/'training'/(arm+'.weights.json'));m=Policy(arm).to(dtype=dtype)
     m.load_state_dict({k:torch.tensor(v['values'],dtype=dtype).reshape(v['shape']) for k,v in weights['parameters'].items()});m.eval();return m,weights
 
-def sequence(model,rows):
+def sequence(model,rows,audit=None):
     state=initial(model.kind,[],next(model.parameters()).dtype);ids=[];cache=None;next_frame=(0,[]);outputs=[]
     with torch.no_grad():
         for row in rows:
             check_live()
             y,state,ids,enemies,cache,next_frame,_=forward(model,row,state,ids,cache,next_frame);outputs.append(flat(y).detach().numpy())
+            if audit is not None:
+                from candidate_audit import observe_prediction
+                observe_prediction(audit,row,ids,y)
     return outputs
 
 def categories(x):return np.stack([x[:,s].argmax(1) for _,s in HEADS],1)
@@ -82,10 +85,11 @@ def replay(weights,rows,timeout=600,profile=None,fixture_monitor=None):
     request_path.unlink();output_path.unlink();errpath.unlink()
     return out
 
-PARITY_RULE = dict(version='certified_near_tie_v1', native_atol=1e-8,
-                   native_categorical_mismatches=0,
+from owner_approvals import load as approvals
+PARITY_RULE = dict(version='certified_near_tie_v1', native_atol=approvals()['parity']['native_atol'],
+                   native_categorical_mismatches=approvals()['parity']['native_categorical_mismatches'],
                    float32_bound='min(2 * measured max_abs_error per categorical head, 1e-4)',
-                   float32_near_tie_ceiling=1e-4,
+                   float32_near_tie_ceiling=approvals()['parity']['float32_near_tie_ceiling'],
                    reference='float64', require_selected_class_deficit=True)
 from candidates import MAX_AIM,MAX_MOVE
 TAIL=MAX_AIM+MAX_MOVE+4
@@ -125,12 +129,12 @@ def compare(a,b,near_ties=False):
     return result
 
 def parity_passes(result):
-    native=result['native_float64'];export=result['float32_export']
-    return (native['categorical_mismatches']==0 and native['max_abs_error']<=PARITY_RULE['native_atol']
+    native=result['native_float64'];export=result['float32_export'];rule=approvals()['parity']
+    return (native['categorical_mismatches']==0 and native['max_abs_error']<=rule['native_atol']
             and export['uncertified_mismatches']==0
             and len(export['mismatches'])==export['categorical_mismatches']
-            and all(d['certified'] and d['float64_top2_gap']<=d['bound']
-                    and d['float64_selected_class_deficit']<=d['bound'] for d in export['mismatches']))
+            and all(d['certified'] and d['float64_top2_gap']<=min(d['bound'],rule['float32_near_tie_ceiling'])
+                    and d['float64_selected_class_deficit']<=min(d['bound'],rule['float32_near_tie_ceiling']) for d in export['mismatches']))
 
 def evaluate(arm,fight,models=None,fixture_monitor=None):
     raw=LOCAL/fight['raw_file']

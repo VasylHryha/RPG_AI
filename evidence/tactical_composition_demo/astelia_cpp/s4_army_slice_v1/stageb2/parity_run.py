@@ -29,7 +29,7 @@ def run(round):
                     path=parity.RECEIPT_DIRECTORY/(arm+'_'+fight['tag']+'.json')
                     if path.exists():
                         proof=r.read(path)
-                        if proof['manifest']!=manifest or not calibrated.passes(proof):raise RuntimeError('parity cache drift')
+                        if {k:v for k,v in proof['manifest'].items() if k!='parity_rule'}!={k:v for k,v in manifest.items() if k!='parity_rule'} or not calibrated.passes(proof):raise RuntimeError('parity cache drift')
                     else:
                         proof=calibrated.evaluate(arm,fight);proof['manifest']=manifest;r.write(path,proof,exclusive=True)
                         if not calibrated.passes(proof):raise RuntimeError('native/export numeric parity failed')
@@ -42,4 +42,4 @@ def run(round):
     finally:
         parity.DEADLINE=None;parity.MONITOR=None;receipt['seconds']=time.monotonic()-start;r.write(r.HERE/('PARITY_STAGEB2_RUN_'+r.VARIANT+'_'+secrets.token_hex(8)+'.json'),receipt,exclusive=True)
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--round',type=int,choices=(0,1,2),default=0);a=p.parse_args();run(a.round)
+    p=argparse.ArgumentParser();p.add_argument('--round',type=int,choices=range(11),default=0);a=p.parse_args();run(a.round)

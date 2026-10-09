@@ -61,12 +61,13 @@ def native_binary():
     from fixture_build import compile_fixture
     return compile_fixture(r.HERE/'_local/light_tests/replay')
 
-@pytest.mark.parametrize('kind',['N1','N1r','N2','N1h'])
+@pytest.mark.parametrize('kind',list(r.ARMS))
 def test_no_combat_complete_native_heads_and_memory(native_binary,kind):
     torch.manual_seed(77);model=Policy(kind).double().eval();weights=export(model,r.HERE/'_local/light_tests'/f'{kind}.json');weights['fireThresholds']=[.1,.2,.3]
     rows=[]
     for i in range(3):
         row=frame();row['t']=(i+1)/30
+        row['units'][0][15]=7;row['units'][1][15]=9
         if i==2:row['units']=[u for u in row['units'] if u[0]!=9]
         rows.append(row)
     requests=[json.dumps(dict(frames=[row],**({'weights':weights} if i==0 else {}))) for i,row in enumerate(rows)]
@@ -90,7 +91,9 @@ def test_categorical_residual_loss_and_source_scope():
     assert {'aim_choice','move_choice','aim_residual','move_residual','target','fire'}<=heads.keys()
     loss.backward();assert m.move_choice.weight.grad is not None and m.aim_offset.weight.grad is not None
     assert not any(Path(p).suffix=='.md' for p in r.sources())
-    protected=r.read(r.HERE/'PROTECTED_SOURCE_BASELINE.json')
+    historical=r.read(r.HERE/'PROTECTED_SOURCE_BASELINE.json')
+    protected=r.read(r.HERE/'PROTECTED_SOURCE_BASELINE_HEAD_0040.json')['files']
+    assert set(protected)==set(historical)
     assert all(r.sha(r.ARMY/p)==h for p,h in protected.items())
 
 
@@ -277,7 +280,7 @@ def test_melee_behind_friend_and_deduplicated_approach():
     assert np.linalg.norm(np.array(behind)-centre)>15
     for band in (c for c in items['move'] if c[2]==5):
         assert all(np.linalg.norm(np.array(band[0])-np.array(c[0]))>1e-8 for c in items['move'] if c[2]==7 and c[3]==band[3])
-    assert MAX_MOVE==896
+    assert MAX_MOVE==1280
 
 
 def test_smoothed_public_velocity_and_lead_native_twin(native_binary):

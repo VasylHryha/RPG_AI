@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "approved_by": "owner",
+  "approval_reference": "Decision 0040 and owner B2 batch instruction, 2026-10-09",
+  "training": {
+    "max_seconds": 16200,
+    "cap_seconds": 16200
+  },
+  "coverage": {
+    "max_seconds": 1800,
+    "thresholds": {
+      "all": 0.9,
+      "ordinary": 0.9,
+      "dodge": 0.8
+    },
+    "structurally_empty": {
+      "artillery:aim:dodge": "O never releases (so never aims) while its react dodge is active; 0 aim rows in that stratum by construction"
+    }
+  },
+  "parity": {
+    "native_atol": 1e-08,
+    "native_categorical_mismatches": 0,
+    "float32_near_tie_ceiling": 0.0001
+  },
+  "dagger": {
+    "rounds": 5,
+    "min_rounds": 5,
+    "max_rounds": 10,
+    "cap_seconds": 16200,
+    "teacher_share_start": 0.5,
+    "teacher_share_end": 0,
+    "dart": {
+      "enabled": false,
+      "movement_sigma_px": 0,
+      "target_replace_probability": 0
+    }
+  },
+  "lab": {
+    "cap_seconds": 16200
+  }
+}

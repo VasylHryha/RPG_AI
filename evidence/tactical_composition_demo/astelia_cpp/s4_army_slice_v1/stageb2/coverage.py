@@ -23,7 +23,8 @@ def model_identity(model):
     return hashlib.sha256(b''.join(k.encode()+v.detach().cpu().numpy().tobytes() for k,v in model.state_dict().items())).hexdigest()
 
 STRIDE=6 # recorded physical ticks are 30 Hz; one declared phase per fight
-MAX_SECONDS=1800  # Claude 2026-10-09: 15 -> 30 min; first sampled projection 1,057 s (own target, not a safety bound)
+from owner_approvals import load as approvals
+MAX_SECONDS=approvals()['coverage']['max_seconds']
 
 def population(counts,row):
     for lab in row['labels']:
@@ -61,9 +62,11 @@ def run(round,test_mode=False,preserve_stale=False):
     from jobs import admitted
     from training_control import training_cap,TrainingDeadline
     from coverage_gate import THRESHOLDS,CAUSE,admission
+    global MAX_SECONDS
+    MAX_SECONDS=approvals()['coverage']['max_seconds']
     local=configure(round);index=prepare(round);training.environment();token=secrets.token_hex(8);start=time.monotonic()
-    receipt=dict(status='RUNNING',index_sha256=r.sha(local/'INDEX.json'),sources=r.sources(),records=[],thresholds=THRESHOLDS,threshold_cause=CAUSE)
-    cap=training_cap(r.HERE)
+    receipt=dict(status='RUNNING',index_sha256=r.sha(local/'INDEX.json'),sources=r.sources(),records=[],thresholds=approvals()['coverage']['thresholds'],threshold_cause=CAUSE)
+    cap=training_cap(r.HERE);cap['cap_seconds']=min(cap['cap_seconds'],MAX_SECONDS)
     from native_candidates import batch,unpack
     if test_mode:
         from train import timing_fights
@@ -71,7 +74,7 @@ def run(round,test_mode=False,preserve_stale=False):
     try:
         with admitted(cap['cap_seconds']) as (absolute,monitor):
             if preserve_stale and not test_mode:receipt['preserved_coverage']=preserve_previous(local,receipt['sources'],receipt['index_sha256'])
-            deadline=TrainingDeadline(r.HERE,absolute,cap['cap_seconds']);coverage_end=time.monotonic()+MAX_SECONDS;counts={};fit_counts={};checkpoint_counts={};populations={};fit_populations={};mass=0;physical_mass=0;initial_models={};checkpoints={}
+            deadline=TrainingDeadline(r.HERE,absolute,cap['cap_seconds'],scope='coverage');coverage_end=time.monotonic()+MAX_SECONDS;counts={};fit_counts={};checkpoint_counts={};populations={};fit_populations={};mass=0;physical_mass=0;initial_models={};checkpoints={}
             for arm in r.ARMS:
                 model,_=training.make(arm);model.eval();initial_models[arm]=model
             receipt['fit_models']={arm:dict(state_sha256=model_identity(m),target='executed goal minus current model drift; same deterministic initialization/warm start as trainer') for arm,m in initial_models.items()}
@@ -121,7 +124,7 @@ def run(round,test_mode=False,preserve_stale=False):
                 if at==0 and not test_mode:
                     projection=1.2*(time.monotonic()-start)/max(1,physical_mass)*sum(q['frames'] for q in index['fights'][1:]);receipt['projected_remaining_seconds']=projection
                     if projection>min(deadline-time.monotonic(),coverage_end-time.monotonic()):raise RuntimeError('coverage projection exceeds cap')
-            receipt.update(status='TEST_ONLY' if test_mode else 'DONE',sampling=dict(stride=STRIDE,phase='sha256(fight tag) first 32 bits modulo 6',fights='TEST ONLY: largest-frame train fight per panel' if test_mode else 'all indexed fights; panel/tactic/split/arm strata retained',physical_frames=physical_mass,sampled_frames=mass,sampling_error='Exact worst-case finite-population bounds per role/head/category: unsampled binary outcomes can all fail or all pass. Deterministic systematic sampling has no distribution-free narrow statistical CI; thresholds apply to the declared sample only. Physical ticks are correlated. No full-population certification.',cadence='every sixth physical tick (5 Hz at 30 Hz)'),coverage={split:error_bounds(c,populations[split]) for split,c in counts.items()},fit_target_coverage={split:error_bounds(c,fit_populations[split]) for split,c in fit_counts.items()},checkpoint_target_coverage={split:error_bounds(c,fit_populations[split]) for split,c in checkpoint_counts.items()},tolerance_px=TOLERANCE,offset_px=dict(aim=AIM_OFFSET,move=MOVE_OFFSET),interpretation='Declared deterministic sample only. N2 drift uses exact full-prefix recurrent evolution with batched units and skips unused candidate/output heads; N1/N1r/N1h drift is identically zero. Raw goal and drift-adjusted target use identical frames/units and nearest mapping as loss.py. Admission uses deterministic fit-initialization drift; DAgger additionally reports current checkpoint drift. Drift evolves during fitting, so availability must not be read as proof for every later update. Sample denominators differ from four optimization windows. No closed-loop sufficiency claim.')
+            receipt.update(status='TEST_ONLY' if test_mode else 'DONE',sampling=dict(stride=STRIDE,phase='sha256(fight tag) first 32 bits modulo 6',fights='TEST ONLY: largest-frame train fight per panel' if test_mode else 'all indexed fights; panel/tactic/split/arm strata retained',physical_frames=physical_mass,sampled_frames=mass,sampling_error='Exact worst-case finite-population bounds per role/head/category: unsampled binary outcomes can all fail or all pass. Deterministic systematic sampling has no distribution-free narrow statistical CI; thresholds apply to the declared sample only. Physical ticks are correlated. No full-population certification.',cadence='every sixth physical tick (5 Hz at 30 Hz)'),coverage={split:error_bounds(c,populations[split]) for split,c in counts.items()},fit_target_coverage={split:error_bounds(c,fit_populations[split]) for split,c in fit_counts.items()},checkpoint_target_coverage={split:error_bounds(c,fit_populations[split]) for split,c in checkpoint_counts.items()},tolerance_px=TOLERANCE,offset_px=dict(aim=AIM_OFFSET,move=MOVE_OFFSET),interpretation='Declared deterministic sample only. N2 drift uses exact full-prefix recurrent evolution with batched units and skips unused candidate/output heads; N1/N1b/N1r/N1rb drift is identically zero. Raw goal and drift-adjusted target use identical frames/units and nearest mapping as loss.py. Admission uses deterministic fit-initialization drift; DAgger additionally reports current checkpoint drift. Drift evolves during fitting, so availability must not be read as proof for every later update. Sample denominators differ from four optimization windows. No closed-loop sufficiency claim.')
             receipt['admission']=admission(receipt,r.ARMS)
             print(__import__('json').dumps(dict(status=receipt['status'],seconds=time.monotonic()-start,sampled_frames=mass,physical_frames=physical_mass,admission_passed=receipt['admission']['passed'])))
             receipt['seconds']=time.monotonic()-start
@@ -129,4 +132,4 @@ def run(round,test_mode=False,preserve_stale=False):
     except BaseException as e:receipt.update(status='STOP',error=str(e));raise
     finally:receipt['seconds']=time.monotonic()-start;r.write(r.HERE/('COVERAGE_RUN_'+token+'.json'),receipt,exclusive=True)
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--round',type=int,choices=(0,1,2),default=0);p.add_argument('--test-mode',action='store_true');p.add_argument('--preserve-stale',action='store_true');a=p.parse_args();run(a.round,a.test_mode,a.preserve_stale)
+    p=argparse.ArgumentParser();p.add_argument('--round',type=int,choices=range(11),default=0);p.add_argument('--test-mode',action='store_true');p.add_argument('--preserve-stale',action='store_true');a=p.parse_args();run(a.round,a.test_mode,a.preserve_stale)

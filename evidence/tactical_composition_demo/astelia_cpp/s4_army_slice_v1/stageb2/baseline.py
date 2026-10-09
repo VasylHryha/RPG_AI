@@ -18,7 +18,7 @@ def prepare(round):
     if proof['status']!='PASS' or proof['budget_sha256']!=r.sha(budget):raise RuntimeError('completed Stage B parity required')
     if any(Path(p).suffix=='.md' for p in r.read(budget)['sources']):raise RuntimeError('baseline pins living docs')
     inputs={str(parity):r.sha(parity),str(budget):r.sha(budget)};exports={}
-    for arm in r.ARMS:
+    for arm in r.common.BASELINE_ARMS:
         source=local/'training'/(arm+'.weights.json');outcome=local/'training'/(arm+'.outcome.json');v=r.read(outcome)
         if v['status']!='FIT_CALIBRATED_PARITY_PENDING' or v['budget_sha256']!=r.sha(budget) or v['export_sha256']!=r.sha(source) or proof['exports'][arm]!=r.sha(source):raise RuntimeError('baseline fit/export identity')
         weights=r.read(source)

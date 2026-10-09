@@ -17,7 +17,19 @@ def configure(round):
     training.checked_budget=lambda:checked(local)
     return local
 
+_CHECK_DEPTH=0
+_DAGGER_CHECKS={}
+
 def checked(local):
+    # Prior receipts form a DAG, not a tree. Verify each once within one nested
+    # gate call; discard the cache before the next epoch/invocation check.
+    global _CHECK_DEPTH
+    if _CHECK_DEPTH==0:_DAGGER_CHECKS.clear()
+    _CHECK_DEPTH+=1
+    try:return _checked(local)
+    finally:_CHECK_DEPTH-=1
+
+def _checked(local):
     b=r.read(local/'TRAIN_BUDGET.json');validate_index(r.read(local/'INDEX.json'))
     coverage=coverage_admission(local)
     if r.read(local/'CANDIDATE_CACHE.json')!=b['candidate_cache']:raise RuntimeError('candidate cache manifest drift')
@@ -73,7 +85,7 @@ def timing_fights(fights):
 def measure(round,test_mode=False):
     local=configure(round);index=prepare(round);training.environment();cap=training_cap(r.HERE)
     coverage=None if test_mode else coverage_admission(local,verify_models=True)
-    if cap['cap_seconds']>16200:raise RuntimeError('owner Stage B2 cap cannot exceed 4.5 h')
+    if cap['cap_seconds']>cap['max_seconds']:raise RuntimeError('owner Stage B2 cap cannot exceed 4.5 h')
     if not test_mode and (local/'TRAIN_BUDGET.json').exists():return checked(local)
     from jobs import admitted
     with admitted(cap['cap_seconds']) as (absolute,monitor):
@@ -129,7 +141,7 @@ def measure(round,test_mode=False):
             samples[arm]=dict(parameter_count=sum(p.numel() for p in model.parameters()),tool_head_parameters=sum(p.numel() for k,p in model.named_parameters() if k.startswith(('aim_','move_'))),threads=1,provenance_check_seconds=admission_seconds,target_balance=balance,setup_seconds=setup_seconds,steps=steps,per_step_seconds=max(s['wall_seconds'] for s in steps),panel_samples=panel_samples,steps_per_epoch=step_mass,refresh_seconds_per_epoch=refresh_total,read_seconds_per_epoch=read_total,epoch_seconds=epoch,tail_seconds=tail,validation_seconds=validation,fit_seconds=10*epoch+tail)
         topology=measured_cores();topology['slots']=min(4,topology['slots']);p=project(samples,10,topology['slots'])
         cache_frames_count=cache_receipt['frames'];cache_projection=cache_receipt['compressed_bytes']/cache_frames_count*sum(f['frames'] for f in index['fights'])
-        b=dict(schema=1,sample_steps=sum(len(s['steps']) for s in samples.values()),measurement_seconds=time.monotonic()-sample_start,candidate_cache=cache_receipt,cache_projected_bytes=cache_projection,cache_projected_seconds=cache_receipt['seconds']/cache_frames_count*sum(f['frames'] for f in index['fights']),coverage_sha256=None if test_mode else r.sha(local/'COVERAGE.json'),coverage_admission=None if test_mode else coverage['admission'],variant=r.VARIANT,sources=r.sources(),index_sha256=r.sha(local/'INDEX.json'),epochs=10,windows_per_fight=4,window_ticks=90,class_weights=None,loss='fire CE; train-only balanced pointer CE; candidate CE plus bounded residual SmoothL1 /100 px; validation-only fire calibration',arms=list(r.ARMS),dropped='N2J0; optional N1h only with B2_N1H=1',samples=samples,topology=topology,round=round,margin=1.2,training_cap=cap,status='TEST_ONLY' if test_mode else ('ADMITTED' if p['projected_seconds']<=cap['cap_seconds'] else 'REFUSED'),timing_selection='largest-frame training/validation fight per panel; first and last selected optimizer windows; all arms, at most 20 steps',**p)
+        b=dict(schema=1,sample_steps=sum(len(s['steps']) for s in samples.values()),measurement_seconds=time.monotonic()-sample_start,candidate_cache=cache_receipt,cache_projected_bytes=cache_projection,cache_projected_seconds=cache_receipt['seconds']/cache_frames_count*sum(f['frames'] for f in index['fights']),coverage_sha256=None if test_mode else r.sha(local/'COVERAGE.json'),coverage_admission=None if test_mode else coverage['admission'],variant=r.VARIANT,sources=r.sources(),index_sha256=r.sha(local/'INDEX.json'),epochs=10,windows_per_fight=4,window_ticks=90,class_weights=None,loss='fire CE; train-only balanced pointer CE; candidate CE plus bounded residual SmoothL1 /100 px; validation-only fire calibration',arms=list(r.ARMS),dropped='N1h, N2J0',samples=samples,topology=topology,round=round,margin=1.2,training_cap=cap,status='TEST_ONLY' if test_mode else ('ADMITTED' if p['projected_seconds']<=cap['cap_seconds'] else 'REFUSED'),timing_selection='largest-frame training/validation fight per panel; first and last selected optimizer windows; all arms, at most 20 steps',**p)
         r.write((cache_root/'SPEED_MEASURE_TEST.json') if test_mode else (local/'TRAIN_BUDGET.json'),b,exclusive=True)
         print(__import__('json').dumps(dict(status=b['status'],sample_steps=b['sample_steps'],measurement_seconds=b['measurement_seconds'],projected_seconds=b['projected_seconds'],cache_projected_bytes=cache_projection,per_step_seconds={a:s['per_step_seconds'] for a,s in samples.items()})))
         if b['status']=='REFUSED':raise RuntimeError('measured projection exceeds live owner cap')
@@ -177,7 +189,7 @@ def complete(local,arm,digest):
 def _run(round,run_id):
     local=configure(round);b=checked(local);cap=training_cap(r.HERE);digest=r.sha(local/'TRAIN_BUDGET.json')
     if b['status']!='ADMITTED':raise RuntimeError('budget refused')
-    if cap['cap_seconds']>16200:raise RuntimeError('4.5 h maximum')
+    if cap['cap_seconds']>cap['max_seconds']:raise RuntimeError('4.5 h maximum')
     costs={}
     for arm in r.ARMS:
         ck=last_checkpoint(local/'training/epochs'/arm,digest)
@@ -217,6 +229,8 @@ def _run(round,run_id):
 
 
 def verified_dagger(round):
+    key=(round,r.sha(ROOT/f'DAGGER_ROUND{round}.json'),r.sha(ROOT/f'DAGGER_LEDGER_ROUND{round}.json'))
+    if _CHECK_DEPTH and key in _DAGGER_CHECKS:return _DAGGER_CHECKS[key]
     from dagger import check
     ledger=check(round);p=ROOT/f'DAGGER_ROUND{round}.json';result=r.read(p);digest=r.sha(ROOT/f'DAGGER_LEDGER_ROUND{round}.json')
     if result['status']!='DONE' or result['ledger_sha256']!=digest or result['round']!=round:raise RuntimeError('DAgger aggregate receipt identity')
@@ -225,9 +239,17 @@ def verified_dagger(round):
     for f in result['fights']:
         c=r.read(ROOT/'raw'/(f['tag']+'_COMPLETE.json'))
         if c['status']!='DONE' or c['job']!=registered[f['tag']] or any(f.get(k)!=v for k,v in registered[f['tag']].items()) or c['ledger_sha256']!=digest or any(c[k]!=f[k] for k in ('raw_file','raw_sha256','frames')) or r.sha(ROOT/c['raw_file'])!=c['raw_sha256']:raise RuntimeError('DAgger aggregate completion drift')
+    if _CHECK_DEPTH:_DAGGER_CHECKS[key]=result
     return result
 
 def validate_index(index):
+    global _CHECK_DEPTH
+    if _CHECK_DEPTH==0:_DAGGER_CHECKS.clear()
+    _CHECK_DEPTH+=1
+    try:return _validate_index(index)
+    finally:_CHECK_DEPTH-=1
+
+def _validate_index(index):
     if index['stagea_index_sha256']!=r.sha(r.A_LOCAL/'INDEX.json'):raise RuntimeError('round 0 dataset drift')
     audit=r.read(r.A_LOCAL/'DECIDABILITY.json')
     if audit['status']!='PASS' or audit['index_sha256']!=index['stagea_index_sha256']:raise RuntimeError('round 0 audit gate')
@@ -239,6 +261,8 @@ def validate_index(index):
             receipt=verified_dagger(number)
             expected.extend(dict(f,raw_file=str((ROOT/f['raw_file']).resolve())) for f in receipt['fights'] if f['arm']==arm)
         if index['arm_fights'][arm]!=expected:raise RuntimeError('cross-arm or held-out aggregation leak')
+    counts=[len([f for f in index['arm_fights'][a] if f['split']=='train']) for a in r.ARMS]
+    if len(set(counts))!=1:raise RuntimeError('matched train fight budget violated')
     union=list({f['tag']:f for arm in r.ARMS for f in index['arm_fights'][arm]}.values())
     if index['fights']!=union:raise RuntimeError('global dataset union drift')
     if round and index['dagger_sha256']!=r.sha(ROOT/f'DAGGER_ROUND{round}.json'):raise RuntimeError('DAgger receipt drift')
@@ -251,7 +275,7 @@ def run(round):
         raise
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('command',choices=('prepare','measure','run','worker'));p.add_argument('--round',type=int,choices=(0,1,2),default=0);p.add_argument('--arm',choices=r.ARMS);p.add_argument('--absolute',type=float);p.add_argument('--cap',type=float);p.add_argument('--fds',type=int,nargs=2);p.add_argument('--test-mode',action='store_true');a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('command',choices=('prepare','measure','run','worker'));p.add_argument('--round',type=int,choices=range(11),default=0);p.add_argument('--arm',choices=r.ARMS);p.add_argument('--absolute',type=float);p.add_argument('--cap',type=float);p.add_argument('--fds',type=int,nargs=2);p.add_argument('--test-mode',action='store_true');a=p.parse_args()
     if a.command=='worker':
         import jobs
         jobs.inherited(a.fds);os.nice(10);training.MONITOR=r.collect.a0();fit(a.arm,a.round,a.absolute,a.cap)

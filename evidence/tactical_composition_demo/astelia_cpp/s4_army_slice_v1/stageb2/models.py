@@ -9,7 +9,7 @@ from common import ARMS,write
 class Policy(nn.Module):
     def __init__(self,kind):
         super().__init__()
-        if kind not in ('N1','N1h','N1r','N2'):raise ValueError(kind)
+        if kind not in ARMS:raise ValueError(kind)
         self.kind=kind
         self.enc1=nn.Linear(64,64);self.enc2=nn.Linear(64,64)
         self.query=nn.Linear(128,64);self.head=nn.Linear(136,64)
@@ -28,13 +28,17 @@ class Policy(nn.Module):
     def tick(self,tokens,query,own,enemy,pos,speeds,assignments,ids,state,dt,refresh=True,cache=None,aim_points=None,aim_features=None,aim_valid=None,move_points=None,move_features=None,move_valid=None,aim_sources=None,move_sources=None,state_only=False):
         encoded=self.encode(tokens) if refresh else cache
         q=torch.tanh(self.query(query));a=torch.softmax(q@encoded.T/8,dim=-1);context=a@encoded
-        if self.kind in ('N1','N1h'):state=q.new_zeros((len(ids),8))
-        if self.kind=='N1r':
+        if self.kind in ('N1','N1b'):state=q.new_zeros((len(ids),8))
+        if self.kind in ('N1r','N1rb'):
             r=torch.linalg.vector_norm(pos[None,:,:]-pos[:,None,:],dim=-1)/100
             order=torch.argsort(r+torch.eye(len(ids),device=r.device)*1e6,dim=-1,stable=True)[:,:8]
             mask=(r.gather(1,order)<3)&(order!=torch.arange(len(ids),device=r.device)[:,None])
             message=(state[order]*mask[...,None]).sum(1)/mask.sum(1).clamp_min(1)[:,None]
             state=torch.tanh(self.recur(torch.cat((q,context,state,message),-1)))
+        if self.kind in ('N1b','N1rb'):
+            r=torch.linalg.vector_norm(pos[None,:,:]-pos[:,None,:],dim=-1)/100
+            order=torch.argsort(r+torch.eye(len(ids),device=r.device)*1e6,dim=-1,stable=True)[:,:8]
+            mask=(r.gather(1,order)<3)&(order!=torch.arange(len(ids),device=r.device)[:,None])
         drift=pos*0
         if self.kind in ('N2','N2J0'):
             # graph sorted by distance then persistent ID; eight neighbors inside 300 px.
@@ -62,6 +66,12 @@ class Policy(nn.Module):
         y=self.out(h)
         # Enemy pointer, with explicit none logit. All living enemies; no top-k loss.
         targets=torch.cat((y[:,8:9],self.target(h)@encoded[enemy].T/8),-1)
+        if self.kind in ('N1b','N1rb'):
+            for e,column in enumerate(enemy):
+                target_id=tokens[column,1]*256
+                peers=mask & (assignments[order]==target_id)
+                # Indicator, once per enemy, regardless of number of peers.
+                targets[:,e+1]=targets[:,e+1]+2*peers.any(1)
         if self.kind in ('N2','N2J0'):
             # Phase alignment of neighboring units already engaging each target.
             for e,column in enumerate(enemy):
@@ -104,7 +114,7 @@ class Policy(nn.Module):
         # query stores arena-normalized own position; dimensions passed via world token.
         scale=tokens[-1,38:40]*1000
         movement=movement/scale;aim=aim/scale;mult=torch.sigmoid(y[:,2])
-        return dict(move=movement,mult=mult,fire=y[:,3:6],aim=aim,target=targets,drift=drift,aim_logits=aim_logits,move_logits=move_logits,aim_residual=aim_residual,move_residual=move_residual,aim_points=aim_points,aim_valid=aim_valid,move_points=move_points,move_valid=move_valid),state,encoded
+        return dict(move=movement,mult=mult,fire=y[:,3:6],aim=aim,target=targets,drift=drift,aim_logits=aim_logits,move_logits=move_logits,aim_residual=aim_residual,move_residual=move_residual,aim_points=aim_points,aim_valid=aim_valid,move_points=move_points,move_valid=move_valid,aim_features=aim_features,move_features=move_features),state,encoded
 
 def initial(kind,ids,dtype=torch.float32):
     x=torch.zeros((len(ids),8),dtype=dtype)

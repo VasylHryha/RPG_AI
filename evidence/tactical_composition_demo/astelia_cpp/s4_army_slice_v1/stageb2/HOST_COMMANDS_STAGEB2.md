@@ -1,101 +1,55 @@
-# Host commands (prepared, not executed)
+# B2 decision 0040 host commands (prepared, not executed)
 
-Use after the running Stage B finishes and its outcomes show a need for B2. Keep this revision unchanged during admitted jobs. Commands below write only B2 output paths; external modules are read with bytecode disabled. Training/fights were not run in this delivery.
+No training or fights were run during implementation. Use the pinned host Python. OWNER_APPROVALS.json is already the owner-approved authority (maximum/live training 16200 s; coverage 1800 s). The legacy Claude cap command only displays this config. Do not change the declared readiness rule after outcomes.
+
+Before running: finish any current Stage B/B2 job, keep its receipts unchanged, archive the existing B2 `_local/react_on` directory under a unique revision name, then prepare the fresh root. The five-arm code changes intentionally refuse old three-arm indexes/budgets/checkpoints. Stage A/B/rev2 remain read-only. A process lock continues to prevent concurrent admitted work.
 
 ```sh
 cd /Users/new/RiderProjects/ai_RPG_test
 B2=evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2
 ML=evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/bin/python
-export PYTHONDONTWRITEBYTECODE=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1
-export B2_VARIANT=react_on
-# Optional N1h: export B2_N1H=1 before ANY preparation, consistently per revision.
-```
-
-Only if the owner approves a **three-hour maximum per B2 training invocation**, the owner can execute this authority-record command. Executing it is the approval; the agent has not executed it or reused Stage B's authorization. A shorter cap is permitted; every prospective timing checks the live cap. Claude writes the actual TRAIN_CAP in the next command.
-
-```sh
-"$ML" -c 'import json,pathlib; p=pathlib.Path("evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/_local/react_on/CAP_AUTHORITY.json"); p.parent.mkdir(parents=True,exist_ok=True); p.open("x").write(json.dumps(dict(cap_seconds=10800,approved_by="owner",date="2026-10-09",approval_reference="Owner executed the B2 three-hour cap authority command"))+"\n")'
-nice -n 15 "$ML" "$B2/claude_train_cap.py"
-```
-
-The Claude command needs an authenticated CLI; expected under one minute. If logged out it refuses; no authorship is impersonated. Existing cap files are preserved, including live owner reductions.
-
-```sh
-# Build only after the shared Stage B job lock is free. Expected 1–3 minutes.
+export PYTHONDONTWRITEBYTECODE=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 B2_VARIANT=react_on
+# Once, only after old jobs finish; preserves the complete previous revision.
+mv "$B2/_local/react_on" "$B2/_local/react_on_pre0040_$(date +%Y%m%dT%H%M%S)"
+# Build: expected 1–3 minutes, no fights.
 nice -n 15 "$ML" "$B2/build.py"
-# Bind the completed Stage B checkpoint used as network-only comparator.
-# Use --round 0 if the owner chooses round-0 Stage B as the baseline.
-nice -n 15 "$ML" "$B2/baseline.py" --round 1
-# Prepare round 0 from existing sealed data; expected seconds.
-nice -n 15 "$ML" "$B2/train.py" prepare --round 0
-# Whole-trajectory candidate coverage; no fights/optimization.
-# Time is unknown until first-fight projection, bounded by the live cap.
-nice -n 15 "$ML" "$B2/coverage.py" --round 0
-# Real timing samples: one complete training prefix + up to four windows/arm.
-# This DOES execute small training samples; expected 5–20 minutes, unmeasured.
-nice -n 15 "$ML" "$B2/train.py" measure --round 0
-# Exact expected time: _local/react_on/round0/TRAIN_BUDGET.json projected_seconds.
-# Run or resume ten epochs, at most live TRAIN_CAP (initially 10800 seconds).
-nice -n 15 "$ML" "$B2/train.py" run --round 0
-# Complete validation sequences, native/Python heads and calibrated fire decoder.
-# Expected minutes to tens of minutes, unmeasured; live cap enforced.
-nice -n 15 "$ML" "$B2/parity_run.py" --round 0
-# Full-fight DAgger: 22 fresh fights per arm, student-only actions, O shadow labels.
-nice -n 15 "$ML" "$B2/dagger.py" prepare --round 1
-nice -n 15 "$ML" "$B2/dagger.py" run --round 1
-# Aggregate only each student's own occupancy; coverage then measured refit.
-nice -n 15 "$ML" "$B2/train.py" prepare --round 1
-nice -n 15 "$ML" "$B2/coverage.py" --round 1
-nice -n 15 "$ML" "$B2/train.py" measure --round 1
-nice -n 15 "$ML" "$B2/train.py" run --round 1
-nice -n 15 "$ML" "$B2/parity_run.py" --round 1
-# Zero-combat baseline bridge, all validation sequences; expected minutes,
-# unmeasured. Required before same paired fights compare network-only exports.
-nice -n 15 "$ML" "$B2/baseline_parity.py" --round 1
-nice -n 15 "$ML" "$B2/readout_run.py" prepare --round 1
-nice -n 15 "$ML" "$B2/readout_run.py" run --round 1 --look 20
-nice -n 15 "$ML" "$B2/readout_run.py" run --round 1 --look 50
-```
-
-DAgger has 66 fights for the three core arms: a rough inherited Stage A/B reference is 20 s per network fight, about 22 minutes serial before B2 overhead/shadow recording. Look 20 has 320 fights (three B2, three network-only, O/T ×40 pairs): rough inherited arithmetic 85 minutes. Look 50 has 800 total fights, 480 additional after 20: about 128 minutes additional at 16 s mean. These are **unmeasured expectations**, not B2 speed results; candidate computation and recording may raise them substantially. Each command measures actual sample fights and refuses an over-cap tail, retaining valid completions. It does not reduce the declared look or epoch budget. B2 collection/readout use the variant-specific B2 TRAIN_CAP and its owner CAP_AUTHORITY, with live reductions; inherited A0 LAB_CAP is not used. If it is too short, the owner must set the appropriate cap before execution. No host performance or safety qualification is claimed here.
-
-The learned-dodge arm is later work, after non-harmful react-on look 50 with actual wins in both panels for all core arms. Enable verifies the successful look/ledger/completions, calibrated fit, export, checkpoint and parity chain, then binds matched parent checkpoints; hashing archived raw files can take minutes. This is a behavioural eligibility gate, not teacher acceptance.
-
-```sh
-nice -n 15 "$ML" "$B2/enable_dodge.py" --round 1
-export B2_VARIANT=learned_dodge
-# Owner executes this only when approving the later three-hour invocation cap.
-"$ML" -c 'import json,pathlib; p=pathlib.Path("evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/_local/learned_dodge/CAP_AUTHORITY.json"); p.parent.mkdir(parents=True,exist_ok=True); p.open("x").write(json.dumps(dict(cap_seconds=10800,approved_by="owner",date="2026-10-09",approval_reference="Owner executed the learned-dodge three-hour authority command"))+"\n")'
-nice -n 15 "$ML" "$B2/claude_train_cap.py"
+# Bind the completed Stage B parent architecture comparators, read-only.
 nice -n 15 "$ML" "$B2/baseline.py" --round 1
 nice -n 15 "$ML" "$B2/train.py" prepare --round 0
+# Coverage: no optimization/fights; first-sample projection, at most 1800 s.
 nice -n 15 "$ML" "$B2/coverage.py" --round 0
+# Measure: real small optimization samples, <=20 steps; expected 5–20 min,
+# unmeasured. Refuses if measured five-arm lane sums +20% exceed the cap.
 nice -n 15 "$ML" "$B2/train.py" measure --round 0
+# Train: ten matched epochs, sequential sharing of <=4 measured slots,
+# bounded by the live 16200 s maximum. Actual projection is TRAIN_BUDGET.json.
 nice -n 15 "$ML" "$B2/train.py" run --round 0
+# Parity: full validation sequences, no fights; expected minutes to tens of
+# minutes, unmeasured. Includes validation candidate-pick counts.
 nice -n 15 "$ML" "$B2/parity_run.py" --round 0
-nice -n 15 "$ML" "$B2/dagger.py" prepare --round 1
-nice -n 15 "$ML" "$B2/dagger.py" run --round 1
-nice -n 15 "$ML" "$B2/train.py" prepare --round 1
-nice -n 15 "$ML" "$B2/coverage.py" --round 1
-nice -n 15 "$ML" "$B2/train.py" measure --round 1
-nice -n 15 "$ML" "$B2/train.py" run --round 1
-nice -n 15 "$ML" "$B2/parity_run.py" --round 1
-nice -n 15 "$ML" "$B2/baseline_parity.py" --round 1
-nice -n 15 "$ML" "$B2/readout_run.py" prepare --round 1
-nice -n 15 "$ML" "$B2/readout_run.py" run --round 1 --look 20
-nice -n 15 "$ML" "$B2/readout_run.py" run --round 1 --look 50
 ```
 
-Learned-dodge look 20 has 440 fights, about 120–150 minutes by inherited speed arithmetic; look 50 adds 660 fights, roughly 3–4 hours before B2 overhead. Actual sample-based projection and live B2 TRAIN_CAP decide admission (at most three hours per invocation). Reports compare with the frozen matched react-on B2 parent, network-only Stage B and O/T on exactly the same pairs. The ON parent's training budget is reported separately from additional OFF refitting; this is a warm-start ablation, not equal-total-training compute.
-
-Focused tests, when changed code requires them (no fights/training):
+Declare OWNER_APPROVALS.json dagger.rounds (5–10, default 5) and any optional measured DART noise **before** first dagger prepare seals the schedule. All rounds keep the same schedule and checkpoint identities. Every next round requires the prior paired real-fight look 20, not just collection statistics. Each DAgger collection is 110 fights; each react-on look 20 is 400 fights (five B2, three parent network-only, O/T ×40 pairs). Final look 50 adds 600 fights. Cost is unmeasured; each invocation measures real sample fights and refuses a projection over its configured cap. It retains valid completions and never silently shrinks a look.
 
 ```sh
-B2_VARIANT=react_on nice -n 15 "$ML" -m pytest -q -x -o cache_dir="$B2/_local/pytest_cache" "$B2/test_stageb2.py"
+# Repeat for rounds 1..5 (or the prospectively declared 6..10), stopping if
+# any command refuses. This loop never changes the schedule after outcomes.
+for ROUND in 1 2 3 4 5; do
+  nice -n 15 "$ML" "$B2/dagger.py" prepare --round "$ROUND" || break
+  nice -n 15 "$ML" "$B2/dagger.py" run --round "$ROUND" || break
+  nice -n 15 "$ML" "$B2/train.py" prepare --round "$ROUND" || break
+  nice -n 15 "$ML" "$B2/coverage.py" --round "$ROUND" || break
+  nice -n 15 "$ML" "$B2/train.py" measure --round "$ROUND" || break
+  nice -n 15 "$ML" "$B2/train.py" run --round "$ROUND" || break
+  nice -n 15 "$ML" "$B2/parity_run.py" --round "$ROUND" || break
+  nice -n 15 "$ML" "$B2/baseline_parity.py" --round "$ROUND" || break
+  nice -n 15 "$ML" "$B2/readout_run.py" prepare --round "$ROUND" || break
+  nice -n 15 "$ML" "$B2/readout_run.py" run --round "$ROUND" --look 20 || break
+done
+# Only after the final scheduled round's complete look 20:
+nice -n 15 "$ML" "$B2/readout_run.py" run --round 5 --look 50
 ```
 
-Expected under one minute: one small tool executable, one no-combat replay executable, four architectures on three synthetic ticks, mathematical/loss/provenance/resume checks plus adversarial padding, empty aim, malformed twin inputs, synthetic parent look/checkpoint binding and nonzero warm-start law fixtures. These tests do not acquire the heavy-job lock or run the current Stage B binary. The no-combat executable has no fight entrypoint. PyTorch uses one thread. Full production engine build, arbitration and performance remain later host checks.
+The later learned-dodge variant still requires its matched frozen parent look 50; enable_dodge.py validates that separate eligibility. It gets its own fresh `_local/learned_dodge` root and the same declared config authority. No learned-dodge fight is authorized or run by this delivery.
 
-## Corrected-revision restart
-
-The scorer schema, head padding, hazard cadence and readout changed. Earlier B2 exports, measured budgets, coverage and binary identities are incompatible. Preserve any old `_local/react_on` and `_local/learned_dodge` revisions before preparing fresh roots; do not delete evidence or reuse old receipts. Stage A/B/rev2 stay read-only. After Stage B finishes, use the sequence above, beginning with owner B2 cap authority, a fresh B2 build, and **round-0 coverage before any measurement/training**. The numeric coverage gate may refuse admission; report its failed rows and revise the vocabulary instead of lowering thresholds after inspecting labels. Full coverage, production build, parity sequences, DAgger and looks were not executed by this fix session.
+Focused tests for this batch use synthetic geometry/native inference and syntax-only engine seams; they run no optimizer or fights. A production build and real host coverage/parity/readouts are separate commands above.

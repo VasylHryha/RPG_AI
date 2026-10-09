@@ -66,7 +66,7 @@ def forward(model,row,state,previous,cache,next_frame,state_only=False):
     choices=0 if state_only else int(x['aim_valid'].sum()+x['move_valid'].sum())
     # Two choice/source/offset heads, factored MLP projections and source dots.
     if not state_only:FORWARD_FLOPS += 2*(n*2*(64*FEATURES+64*64+64*2+64*16+nt*64)+nt*2*64*16+choices*(FEATURES+FEATURES*16+16))
-    if model.kind=='N1r':FORWARD_FLOPS+=n*2*144*8
+    if model.kind in ('N1r','N1rb'):FORWARD_FLOPS+=n*2*144*8
     if model.kind in ('N2','N2J0'):FORWARD_FLOPS+=n*2*128;PHASE_RHS+=4
     ENCODER_CALLS+=int(refresh)
     return y,state,ids,enemies,cache,next_frame,refresh
@@ -95,7 +95,7 @@ def stored(model,fight,windows,deadline,path=None):
     start=time.monotonic();rows=list(frames(LOCAL/fight['raw_file']));starts=selected_starts(len(rows),windows)
     state=initial(model.kind,[],next(model.parameters()).dtype);ids=[];cache=None;next_frame=(0,[]);saved={}
     model.eval()
-    if model.kind in ('N1','N1h'):
+    if model.kind in ('N1','N1b'):
         # Memoryless arms refresh their encoder each tick; no prefix forward is needed.
         saved={i:(state.clone(),[],None,(0,[])) for i in starts}
         if path:atomic_checkpoint(path,saved)
