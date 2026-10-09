@@ -25,3 +25,23 @@
 ## Not claimed
 
 No result yet. The stage A networks lose every full-army fight: 0 wins against 10/10 for the script. Stage B must fix that first.
+
+## Addendum (owner agreed to Claude's suggestions, 2026-10-09 ~07:10)
+
+1. **The reward cannot be gamed by stalling.**
+   - Units saved count only on a win.
+   - A timeout scores badly.
+   - A small time penalty rewards finishing fast (rule: win means kill efficiently).
+2. **Opponents during training:** a random mix of the regular enemy and all C3 tactics. Later, a small league of the network's own past versions.
+3. **Held-out evaluation:** unseen seeds and held-out tactics.
+4. **A speed pass before stage 2:** batched C++ inference for all units, with the encoder at 5 Hz. A network fight measures about 20 s per worker, against about 4 s for the script.
+5. **Growth after a no-growth baseline,** at equal fight budget, reporting each network's final size.
+6. **The series streak enters the reward** once single fights are won reliably.
+7. **Arms trimmed after stage B:** N2J0 is dropped (identical to N2). N1h is kept only if it clearly beats N1. The core arms are plain N1, memory N1r and RRG N2.
+8. **Targeted outside research before the stage 2 design:**
+   - ES vs PPO for RTS micro;
+   - neuroevolution with growth;
+   - fixes for compounding imitation error;
+   - reward design;
+   - a low-budget league;
+   - training coupled-oscillator networks.
