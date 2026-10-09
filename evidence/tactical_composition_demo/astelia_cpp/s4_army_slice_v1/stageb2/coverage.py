@@ -23,7 +23,7 @@ def model_identity(model):
     return hashlib.sha256(b''.join(k.encode()+v.detach().cpu().numpy().tobytes() for k,v in model.state_dict().items())).hexdigest()
 
 STRIDE=6 # recorded physical ticks are 30 Hz; one declared phase per fight
-MAX_SECONDS=900
+MAX_SECONDS=1800  # Claude 2026-10-09: 15 -> 30 min; first sampled projection 1,057 s (own target, not a safety bound)
 
 def population(counts,row):
     for lab in row['labels']:
