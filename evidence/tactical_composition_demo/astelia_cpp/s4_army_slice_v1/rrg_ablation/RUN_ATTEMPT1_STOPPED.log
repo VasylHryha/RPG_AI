@@ -1,0 +1,12 @@
+1/50 test sequences; elapsed 28.8s
+2/50 test sequences; elapsed 49.5s
+3/50 test sequences; elapsed 71.7s
+Traceback (most recent call last):
+  File "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/rrg_ablation/check.py", line 359, in <module>
+    run()
+  File "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/rrg_ablation/check.py", line 235, in run
+    phases[name][role].add(state[:, 0].numpy()[mask], diagnostic['forcing'].numpy()[mask],
+  File "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/rrg_ablation/check.py", line 105, in add
+    resultant = abs(np.exp(1j*theta).mean())
+                    ^^^^^^^^^^^^^^^^
+KeyboardInterrupt

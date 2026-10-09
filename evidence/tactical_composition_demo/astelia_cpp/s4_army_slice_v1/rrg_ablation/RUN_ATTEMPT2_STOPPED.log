@@ -1,0 +1,33 @@
+1/50 test sequences; elapsed 19.0s
+2/50 test sequences; elapsed 36.9s
+3/50 test sequences; elapsed 54.2s
+4/50 test sequences; elapsed 69.8s
+5/50 test sequences; elapsed 87.0s
+6/50 test sequences; elapsed 105.5s
+7/50 test sequences; elapsed 124.2s
+8/50 test sequences; elapsed 144.4s
+9/50 test sequences; elapsed 162.3s
+10/50 test sequences; elapsed 179.6s
+11/50 test sequences; elapsed 196.8s
+12/50 test sequences; elapsed 213.7s
+13/50 test sequences; elapsed 230.1s
+14/50 test sequences; elapsed 246.8s
+15/50 test sequences; elapsed 264.8s
+16/50 test sequences; elapsed 279.4s
+17/50 test sequences; elapsed 295.1s
+18/50 test sequences; elapsed 311.4s
+19/50 test sequences; elapsed 328.0s
+20/50 test sequences; elapsed 342.5s
+Traceback (most recent call last):
+  File "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/rrg_ablation/check.py", line 384, in <module>
+    run()
+  File "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/rrg_ablation/check.py", line 250, in run
+    y, state, ids, enemies, cache, next_frame, _ = forward(model, row, state, ids, cache, next_frame)
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stagea/training.py", line 54, in forward
+    y,state,cache=model.tick(**x,ids=ids,state=state,dt=row['dt'],refresh=refresh,cache=cache)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/rrg_ablation/ablation_model.py", line 97, in tick
+    targets[:,e+1]=targets[:,e+1]+2*(z*group/length.clamp_min(1e-6)[:,None]).sum(1)*(length>=1e-6)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt

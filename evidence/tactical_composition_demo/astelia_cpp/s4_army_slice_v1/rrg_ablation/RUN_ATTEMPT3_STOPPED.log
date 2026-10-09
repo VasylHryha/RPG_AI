@@ -1,0 +1,34 @@
+1/50 test sequences; elapsed 18.2s
+2/50 test sequences; elapsed 34.0s
+3/50 test sequences; elapsed 50.2s
+4/50 test sequences; elapsed 66.5s
+5/50 test sequences; elapsed 83.0s
+6/50 test sequences; elapsed 99.9s
+7/50 test sequences; elapsed 117.8s
+8/50 test sequences; elapsed 135.2s
+9/50 test sequences; elapsed 151.9s
+10/50 test sequences; elapsed 169.1s
+11/50 test sequences; elapsed 187.4s
+12/50 test sequences; elapsed 203.1s
+13/50 test sequences; elapsed 218.3s
+14/50 test sequences; elapsed 234.9s
+15/50 test sequences; elapsed 253.2s
+16/50 test sequences; elapsed 267.9s
+17/50 test sequences; elapsed 284.6s
+18/50 test sequences; elapsed 300.8s
+Traceback (most recent call last):
+  File "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/rrg_ablation/check.py", line 390, in <module>
+    run()
+  File "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/rrg_ablation/check.py", line 265, in run
+    row_hash.update(json.dumps([fight['tag'], tick, uid, lab], sort_keys=True, separators=(',', ':')).encode()+b'\n')
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/new/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/python3.11/json/__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "/Users/new/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/python3.11/json/encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/new/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/python3.11/json/encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+KeyboardInterrupt

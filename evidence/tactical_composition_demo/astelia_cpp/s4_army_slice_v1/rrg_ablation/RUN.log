@@ -1,0 +1,59 @@
+1/50 test sequences; elapsed 15.4s
+2/50 test sequences; elapsed 29.8s
+3/50 test sequences; elapsed 45.2s
+4/50 test sequences; elapsed 59.5s
+5/50 test sequences; elapsed 73.6s
+6/50 test sequences; elapsed 87.8s
+7/50 test sequences; elapsed 101.1s
+8/50 test sequences; elapsed 115.3s
+9/50 test sequences; elapsed 128.5s
+10/50 test sequences; elapsed 141.6s
+11/50 test sequences; elapsed 155.3s
+12/50 test sequences; elapsed 168.2s
+13/50 test sequences; elapsed 180.0s
+14/50 test sequences; elapsed 192.9s
+15/50 test sequences; elapsed 206.8s
+16/50 test sequences; elapsed 218.0s
+17/50 test sequences; elapsed 230.8s
+18/50 test sequences; elapsed 243.6s
+19/50 test sequences; elapsed 256.4s
+20/50 test sequences; elapsed 267.9s
+21/50 test sequences; elapsed 282.0s
+22/50 test sequences; elapsed 296.1s
+23/50 test sequences; elapsed 315.6s
+24/50 test sequences; elapsed 331.8s
+25/50 test sequences; elapsed 347.0s
+26/50 test sequences; elapsed 362.9s
+27/50 test sequences; elapsed 379.1s
+28/50 test sequences; elapsed 393.9s
+29/50 test sequences; elapsed 410.9s
+30/50 test sequences; elapsed 427.4s
+31/50 test sequences; elapsed 444.0s
+32/50 test sequences; elapsed 457.4s
+33/50 test sequences; elapsed 470.4s
+34/50 test sequences; elapsed 484.7s
+35/50 test sequences; elapsed 498.9s
+36/50 test sequences; elapsed 513.6s
+37/50 test sequences; elapsed 527.9s
+38/50 test sequences; elapsed 543.9s
+39/50 test sequences; elapsed 557.7s
+40/50 test sequences; elapsed 571.5s
+41/50 test sequences; elapsed 585.7s
+42/50 test sequences; elapsed 599.1s
+43/50 test sequences; elapsed 611.7s
+44/50 test sequences; elapsed 624.3s
+45/50 test sequences; elapsed 636.0s
+46/50 test sequences; elapsed 645.7s
+47/50 test sequences; elapsed 659.4s
+48/50 test sequences; elapsed 673.1s
+49/50 test sequences; elapsed 684.5s
+50/50 test sequences; elapsed 697.0s
+Traceback (most recent call last):
+  File "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/rrg_ablation/check.py", line 403, in <module>
+    run()
+  File "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/rrg_ablation/check.py", line 330, in run
+    report(result)
+  File "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/rrg_ablation/check.py", line 380, in report
+    lines.append(f"| {name} | {v['fire_accuracy']:.4f} | {v['move_smooth_l1']:.4f} | {v['aim_smooth_l1']:.4f} |")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: unsupported format string passed to NoneType.__format__
