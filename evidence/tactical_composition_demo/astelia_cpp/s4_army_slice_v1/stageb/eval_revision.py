@@ -1,7 +1,8 @@
 """Explicit evaluation recovery launcher; never change training sources or exports.
 
 Use this launcher for recovered parity, DAgger and subsequent measurement. Direct
-train.py retains its original strict gate, including for training/resume.
+train.py retains its original strict gate. Later fits and their workers use this
+launcher so historical DAgger ledgers retain their sealed source identities.
 """
 import argparse
 import hashlib
@@ -23,6 +24,10 @@ REASON = ('Decision 0036; owner-requested evaluation-source recovery for the '
           'declared Stage B recurrent float32 parity rule at 0b71041; '
           'no training, calibration, export or native changes.')
 ORIGINAL_CHECKED = train.checked
+LAUNCHER = PREFIX + 'eval_revision.py'
+CHAIN_REASON = ('Decision 0036; launcher-only recovery: eval_revision.py added run '
+                'for rounds 1-2 at f0426d30; chained provenance, historical DAgger '
+                'gate and worker/readout routing; no training-source changes.')
 
 
 def digest(value):
@@ -132,22 +137,99 @@ def preserved_parity(local, proof):
     return preserved
 
 
-def verify(local):
+def chain_path(local, revision):
+    return receipt_path(local).with_name(receipt_path(local).stem + '_V' + str(revision) + '.json')
+
+
+def sealed(path):
+    note = r.read(path)
+    if note.get('seal_sha256') != digest({k: v for k, v in note.items() if k != 'seal_sha256'}):
+        raise RuntimeError('evaluation recovery receipt seal drift')
+    return note
+
+
+def chain(local, bind_head=True):
+    """Verify ancestors historically; only the head pins live recovery tooling."""
     path = receipt_path(local)
     if not path.exists():
         raise RuntimeError('Stage B evaluation drift requires a sealed recovery receipt')
-    note = r.read(path)
-    payload = {k: v for k, v in note.items() if k != 'seal_sha256'}
-    if note.get('seal_sha256') != digest(payload):
-        raise RuntimeError('evaluation recovery receipt seal drift')
+    note = sealed(path)
     expected = baseline_proof(local)
+    historical_sources = note['new_sources']
+    if without_tooling(historical_sources) != without_tooling(expected['new_sources']):
+        raise RuntimeError('evaluation recovery receipt identity drift')
+    # The original sealed tooling hashes are provenance, not live ancestor pins.
+    expected.update(new_sources=historical_sources,
+                    recovery_tooling=source_proof(expected['old_sources'], historical_sources)['recovery_tooling'])
     if any(note.get(k) != v for k, v in expected.items()):
         raise RuntimeError('evaluation recovery receipt identity drift')
     if note.get('preserved_training_artifacts') != preserved_artifacts(local):
         raise RuntimeError('recovered training artifacts drift')
     if note.get('preserved_parity_receipts') != preserved_parity(local, expected):
         raise RuntimeError('original cached parity receipts drift')
+    nodes = [(path, note)]
+    paths = list(path.parent.glob(path.stem + '_V*.json'))
+    ordered = [chain_path(local, n) for n in range(2, len(paths) + 2)]
+    if set(paths) != set(ordered):
+        raise RuntimeError('evaluation recovery chain gap or invalid revision')
+    for revision, current in enumerate(ordered, 2):
+        parent_path, parent = nodes[-1]
+        head = sealed(current)
+        sources = head['new_sources']
+        proof = source_proof(expected['old_sources'], sources)
+        fields = dict(schema=2, status='SEALED_LAUNCHER_RECOVERY', round=0,
+                      revision=revision, reason=CHAIN_REASON,
+                      parent=dict(path=parent_path.name, sha256=r.sha(parent_path)),
+                      budget_sha256=expected['budget_sha256'], index_sha256=expected['index_sha256'],
+                      training_sources=expected['training_sources'],
+                      evaluation_changes=expected['evaluation_changes'],
+                      recovery_tooling=proof['recovery_tooling'],
+                      tooling_changes={k: dict(old_sha256=parent['new_sources'][k], new_sha256=sources[k])
+                                       for k in sorted(TOOLING) if parent['new_sources'][k] != sources[k]})
+        if (without_tooling(sources) != without_tooling(expected['new_sources']) or
+                any(head.get(k) != v for k, v in fields.items())):
+            raise RuntimeError('evaluation recovery chain identity drift')
+        nodes.append((current, head))
+    if bind_head and nodes[-1][1]['new_sources'] != r.sources():
+        raise RuntimeError('evaluation recovery receipt identity drift at chain head')
+    return nodes
+
+
+def without_tooling(sources):
+    return {k: v for k, v in sources.items() if k not in TOOLING}
+
+
+def verify(local):
+    chain(local)
     return r.read(local / 'TRAIN_BUDGET.json')
+
+
+def recover_chain(round, revision=2):
+    if round != 0 or revision < 2:
+        raise RuntimeError('launcher recovery chains require round 0, revision >= 2')
+    local = train.ROOT / 'round0'
+    nodes = chain(local, bind_head=False)
+    path = chain_path(local, revision)
+    if path.exists():
+        if nodes[-1][0] != path:
+            raise RuntimeError('requested recovery revision is not the chain head')
+        verify(local)
+        return r.read(path)
+    if revision != len(nodes) + 1:
+        raise RuntimeError('recovery revision must extend the chain head once')
+    parent_path, parent = nodes[-1]
+    now = r.sources()
+    payload = dict(schema=2, status='SEALED_LAUNCHER_RECOVERY', round=0, revision=revision,
+        reason=CHAIN_REASON, parent=dict(path=parent_path.name, sha256=r.sha(parent_path)),
+        budget_sha256=parent['budget_sha256'], index_sha256=parent['index_sha256'],
+        training_sources=parent['training_sources'], evaluation_changes=parent['evaluation_changes'],
+        new_sources=now, recovery_tooling={k: now[k] for k in sorted(TOOLING)},
+        tooling_changes={k: dict(old_sha256=parent['new_sources'][k], new_sha256=now[k])
+                         for k in sorted(TOOLING) if parent['new_sources'][k] != now[k]})
+    payload['seal_sha256'] = digest(payload)
+    r.write(path, payload, exclusive=True)
+    verify(local)
+    return payload
 
 
 def recover(round):
@@ -181,8 +263,57 @@ def checked(local):
     budget = r.read(local / 'TRAIN_BUDGET.json')
     if budget['sources'] == r.sources():
         return ORIGINAL_CHECKED(local)
-    budget = verify(local)
+    if budget['round'] == 0:
+        return verify(local)
+    require_known_sources(budget['sources'])
+    dataset_checked(local, budget)
     return budget
+
+
+def require_known_sources(sources):
+    nodes = chain(train.ROOT / 'round0')
+    if sources not in [note['new_sources'] for _, note in nodes]:
+        raise RuntimeError('unsealed historical source identity; preserve revision')
+
+
+def dagger_checked(round):
+    """Keep all original ledger gates; permit only exact sealed tooling history."""
+    import dagger
+    path = train.ROOT / ('DAGGER_LEDGER_ROUND' + str(round) + '.json')
+    ledger = r.read(path)
+    dagger.gate(round - 1)
+    require_known_sources(ledger['sources'])
+    if (ledger['round'] != round or ledger['binary'] != r.collect.identity() or
+            ledger['parent_parity_sha256'] != r.sha(train.ROOT / ('round' + str(round - 1)) / 'PARITY_STAGEB.json')):
+        raise RuntimeError('DAgger identity drift')
+    for job in ledger['jobs']:
+        if r.sha(train.ROOT / 'requests' / (job['tag'] + '.json')) != job['request_sha256']:
+            raise RuntimeError('DAgger request drift')
+    return ledger
+
+
+def install_gates():
+    train.checked = checked
+    import parity_run, dagger
+    parity_run.checked = checked  # Also covers modules imported before dispatch.
+    dagger.check = dagger_checked
+
+
+def training_run(round):
+    # Only this launcher's children are rerouted; no source/global map changes.
+    from types import SimpleNamespace
+    original = train.subprocess
+    def popen(argv, **kwargs):
+        if argv[1:3] != [str(r.HERE / 'train.py'), 'worker']:
+            raise RuntimeError('unexpected Stage B worker invocation')
+        argv = [argv[0], str(r.HERE / 'eval_revision.py'), *argv[2:]]
+        return original.Popen(argv, **kwargs)
+    train.subprocess = SimpleNamespace(Popen=popen, TimeoutExpired=original.TimeoutExpired,
+                                      STDOUT=original.STDOUT)
+    try:
+        return train.run(round)
+    finally:
+        train.subprocess = original
 
 
 def adjudicate(original, original_name, note, manifest, recovery_sha):
@@ -273,7 +404,12 @@ def parity_run(round):
         r.write(r.HERE / ('PARITY_STAGEB_EVAL_RUN_' + secrets.token_hex(8) + '.json'), receipt, exclusive=True)
 
 
-def dispatch(command, round):
+def dispatch(command, round, revision=2, look=20):
+    if command == 'recover-eval-chain':
+        note = recover_chain(round, revision)
+        print('Sealed launcher recovery:', chain_path(train.ROOT / 'round0', revision))
+        print('Changed tooling:', ', '.join(note['tooling_changes']))
+        return note
     if command == 'recover-eval-revision':
         note = recover(round)
         print('Sealed evaluation recovery:', receipt_path(train.ROOT / 'round0'))
@@ -281,7 +417,7 @@ def dispatch(command, round):
         return
     # Always recheck original provenance before a later-round gate/measurement.
     verify(train.ROOT / 'round0')
-    train.checked = checked
+    install_gates()
     if command == 'parity':
         return parity_run(round)
     if command in ('dagger-prepare', 'dagger-run'):
@@ -295,14 +431,34 @@ def dispatch(command, round):
         # Claude 2026-10-09: later-round fits under the same recovery binding as their measurement.
         if round not in (1, 2):
             raise RuntimeError('recovered training run is for later rounds only')
-        return train.run(round)
+        return training_run(round)
+    if command in ('readout-prepare', 'readout-run'):
+        import readout_run
+        return readout_run.prepare(round) if command == 'readout-prepare' else readout_run.run(round, look)
     raise ValueError('unknown recovery command')
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('command', choices=('recover-eval-revision', 'parity',
-        'dagger-prepare', 'dagger-run', 'measure', 'run'))
+    parser.add_argument('command', choices=('recover-eval-revision', 'recover-eval-chain', 'parity',
+        'dagger-prepare', 'dagger-run', 'measure', 'run', 'worker', 'readout-prepare', 'readout-run'))
     parser.add_argument('--round', type=int, choices=(0, 1, 2), required=True)
+    parser.add_argument('--revision', type=int, default=2)
+    parser.add_argument('--look', type=int, choices=(20, 50), default=20)
+    parser.add_argument('--arm', choices=r.ARMS)
+    parser.add_argument('--absolute', type=float)
+    parser.add_argument('--cap', type=float)
+    parser.add_argument('--fds', type=int, nargs=2)
     args = parser.parse_args()
-    dispatch(args.command, args.round)
+    if args.command == 'worker':
+        if args.round not in (1, 2) or any(v is None for v in (args.arm, args.absolute, args.cap, args.fds)):
+            parser.error('later-round worker requires arm, absolute, cap and both lock fds')
+        import jobs, os
+        jobs.inherited(args.fds)
+        verify(train.ROOT / 'round0')
+        install_gates()
+        os.nice(10)
+        train.training.MONITOR = r.collect.a0()
+        train.fit(args.arm, args.round, args.absolute, args.cap)
+    else:
+        dispatch(args.command, args.round, args.revision, args.look)
