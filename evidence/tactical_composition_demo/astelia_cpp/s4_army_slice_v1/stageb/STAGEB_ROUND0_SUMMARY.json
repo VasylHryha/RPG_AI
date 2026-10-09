@@ -1,0 +1,103 @@
+{
+ "offline_round0": {
+  "N1": {
+   "melee": {
+    "target_acc": 0.884,
+    "fire_acc": 0.861,
+    "active_pred_over_oracle": 1.12
+   },
+   "ranged": {
+    "target_acc": 0.654,
+    "fire_acc": 0.804,
+    "active_pred_over_oracle": 1.07
+   },
+   "artillery": {
+    "target_acc": 0.638,
+    "fire_acc": 0.86,
+    "active_pred_over_oracle": 1.16
+   }
+  },
+  "N1h": {
+   "melee": {
+    "target_acc": 0.889,
+    "fire_acc": 0.856,
+    "active_pred_over_oracle": 1.14
+   },
+   "ranged": {
+    "target_acc": 0.662,
+    "fire_acc": 0.79,
+    "active_pred_over_oracle": 1.12
+   },
+   "artillery": {
+    "target_acc": 0.652,
+    "fire_acc": 0.852,
+    "active_pred_over_oracle": 1.17
+   }
+  },
+  "N1r": {
+   "melee": {
+    "target_acc": 0.884,
+    "fire_acc": 0.86,
+    "active_pred_over_oracle": 1.14
+   },
+   "ranged": {
+    "target_acc": 0.658,
+    "fire_acc": 0.805,
+    "active_pred_over_oracle": 1.1
+   },
+   "artillery": {
+    "target_acc": 0.64,
+    "fire_acc": 0.861,
+    "active_pred_over_oracle": 1.16
+   }
+  },
+  "N2": {
+   "melee": {
+    "target_acc": 0.901,
+    "fire_acc": 0.85,
+    "active_pred_over_oracle": 1.15
+   },
+   "ranged": {
+    "target_acc": 0.802,
+    "fire_acc": 0.798,
+    "active_pred_over_oracle": 1.1
+   },
+   "artillery": {
+    "target_acc": 0.794,
+    "fire_acc": 0.86,
+    "active_pred_over_oracle": 1.16
+   }
+  }
+ },
+ "dagger_round1_fights": {
+  "N1": {
+   "fights": 22,
+   "wins": 0,
+   "own_deaths_per_fight": 48.1,
+   "enemy_body_deaths_per_fight": 14.3,
+   "mean_end_s": 75
+  },
+  "N1h": {
+   "fights": 22,
+   "wins": 0,
+   "own_deaths_per_fight": 47.8,
+   "enemy_body_deaths_per_fight": 15.2,
+   "mean_end_s": 78
+  },
+  "N1r": {
+   "fights": 22,
+   "wins": 0,
+   "own_deaths_per_fight": 48.6,
+   "enemy_body_deaths_per_fight": 14.5,
+   "mean_end_s": 76
+  },
+  "N2": {
+   "fights": 22,
+   "wins": 0,
+   "own_deaths_per_fight": 50.0,
+   "enemy_body_deaths_per_fight": 14.7,
+   "mean_end_s": 60
+  }
+ },
+ "note": "DAgger fights: student (round-0 nets) controls; 2 regular + 20 C3 per arm; enemy_kills counts enemy body deaths (incl. enemy friendly fire). Stage A look-20 partial for comparison: 0 wins, ~49-50 deaths, 3-6 enemy deaths/fight."
+}
