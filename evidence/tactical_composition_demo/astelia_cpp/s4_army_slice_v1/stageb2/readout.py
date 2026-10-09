@@ -74,10 +74,12 @@ def report(rows,look):
         for a in POLICIES:
             rr=[r for r in part if r['arm']==a];arms[a]['win_rate']=arms[a]['wins']/len(rr)
             arms[a]['per_role_deaths_per_fight']={role:sum(r['mechanism']['per_role_deaths'][role] for r in rr)/len(rr) for role in ROLES}
+            from dodge_metrics import aggregate
+            arms[a].update(aggregate([r['mechanism'] for r in rr]))
             keys={k for r in rr for k in r['mechanism']['killer_sources']};arms[a]['killer_sources']={k:sum(r['mechanism']['killer_sources'].get(k,0) for r in rr) for k in keys}
             for k in ('dodges','launches','ready_rows','active_fire_rows','react_rows','phase_samples','phase_abs_rate_sum','spacing_norm_sum','forcing_abs_sum'):arms[a][k+'_per_fight']=sum(r['mechanism'][k] for r in rr)/len(rr)
         panels[panel]=dict(arms=arms,comparisons={f'{a} minus {reference}':metrics.contrast(part,reference,a) for a in ARMS for reference in ('O','T',a+'_network_only',a+'_react_on') if reference in POLICIES},per_tactic={cell:{a:metrics.summary([r for r in part if r['tactic']==cell and r['arm']==a]) for a in POLICIES} for cell in (('regular',) if panel=='regular' else base.CELLS)})
-    return dict(look=look,status='MECHANISM_ONLY' if look==20 else 'DEVELOPMENT_OUTCOME',panels=panels,series_streak=dict(status='not_run',reason='independent full-army fights'),interpretation='network+tools versus calibrated Stage B network-only, paired fights; body/participation remain shared; react-off disables movement react and automatic dash; no RRG recursion claim')
+    return dict(look=look,status='MECHANISM_ONLY' if look==20 else 'DEVELOPMENT_OUTCOME',panels=panels,series_streak=dict(status='not_run',reason='independent full-army fights'),interpretation='network+tools versus calibrated Stage B network-only, paired fights; body/participation remain shared; react-off disables movement react; body dash stays ON; no RRG recursion claim')
 
 def run(look):
     ledger=check();prior=20 if look==50 else 50 if look==100 else None

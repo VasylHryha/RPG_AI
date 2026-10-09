@@ -24,7 +24,8 @@ import data
 _original_frames=data.frames
 
 def frames(path):
-    for row in _original_frames(path):
+    from public_velocity import attach
+    for row in attach(_original_frames(path)):
         if 'shadowLabels' in row:row=dict(row,studentLabels=row['labels'],labels=row['shadowLabels'])
         yield row
 data.frames=frames

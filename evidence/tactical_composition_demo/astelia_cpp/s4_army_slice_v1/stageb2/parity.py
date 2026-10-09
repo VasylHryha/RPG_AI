@@ -87,7 +87,9 @@ PARITY_RULE = dict(version='certified_near_tie_v1', native_atol=1e-8,
                    float32_bound='min(2 * measured max_abs_error per categorical head, 1e-4)',
                    float32_near_tie_ceiling=1e-4,
                    reference='float64', require_selected_class_deficit=True)
-HEADS = (('fire', slice(3,6)), ('target', slice(10,-1194)), ('aim_choice',slice(-1194,-1000)), ('move_choice',slice(-1000,-4)))
+from candidates import MAX_AIM,MAX_MOVE
+TAIL=MAX_AIM+MAX_MOVE+4
+HEADS = (('fire', slice(3,6)), ('target', slice(10,-TAIL)), ('aim_choice',slice(-TAIL,-MAX_MOVE-4)), ('move_choice',slice(-MAX_MOVE-4,-4)))
 RECEIPT_DIRECTORY = LOCAL/'parity'/'certified_near_tie_v1'
 
 def compare(a,b,near_ties=False):

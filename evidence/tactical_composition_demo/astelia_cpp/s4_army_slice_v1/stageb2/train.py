@@ -15,6 +15,8 @@ def configure(round):
 
 def checked(local):
     b=r.read(local/'TRAIN_BUDGET.json');validate_index(r.read(local/'INDEX.json'))
+    coverage=coverage_admission(local)
+    if b.get('coverage_sha256')!=r.sha(local/'COVERAGE.json'):raise RuntimeError('coverage admission drift')
     if b['arms']!=list(r.ARMS) or b.get('variant')!=r.VARIANT:raise RuntimeError('arm/variant drift')
     if b['sources']!=r.sources() or b['index_sha256']!=r.sha(local/'INDEX.json'):raise RuntimeError('Stage B training code/index drift; preserve revision')
     for f in r.read(local/'INDEX.json')['fights']:
@@ -40,14 +42,28 @@ def prepare(round):
         index=dict(schema=1,arm_fights=arm_fights,fights=list({f['tag']:f for a in r.ARMS for f in arm_fights[a]}.values()),stagea_index_sha256=previous['stagea_index_sha256'],dagger_sha256=r.sha(ROOT/f'DAGGER_ROUND{round}.json'),round=round)
     validate_index(index);r.write(path,index,exclusive=True);return index
 
+def coverage_admission(local,verify_models=False):
+    from coverage_gate import require
+    from coverage import model_identity
+    coverage=r.read(local/'COVERAGE.json')
+    if coverage['status']!='DONE' or coverage['index_sha256']!=r.sha(local/'INDEX.json') or coverage['sources']!=r.sources():raise RuntimeError('current label coverage required')
+    require(coverage,r.ARMS)
+    if verify_models:
+        for arm in r.ARMS:
+            model,_=training.make(arm)
+            if coverage['fit_models'][arm]['state_sha256']!=model_identity(model):raise RuntimeError('coverage fit model drift')
+    if coverage.get('drift_checkpoint'):
+        cp=coverage['drift_checkpoint']
+        if r.sha(cp['path'])!=cp['sha256']:raise RuntimeError('coverage DAgger checkpoint drift')
+    return coverage
+
 def project(samples,epochs,slots):
     costs={a:epochs*s['epoch_seconds']+s['tail_seconds'] for a,s in samples.items()}
     groups=lanes(costs,slots);return dict(groups=groups,projected_seconds=1.2*max(g['wall_seconds'] for g in groups),costs=costs)
 
 def measure(round):
     local=configure(round);index=prepare(round);training.environment();cap=training_cap(r.HERE)
-    coverage=r.read(local/'COVERAGE.json')
-    if coverage['status']!='DONE' or coverage['index_sha256']!=r.sha(local/'INDEX.json') or coverage['sources']!=r.sources():raise RuntimeError('current label coverage required')
+    coverage=coverage_admission(local,verify_models=True)
     if cap['cap_seconds']>10800:raise RuntimeError('owner Stage B cap cannot exceed 3 h')
     if (local/'TRAIN_BUDGET.json').exists():return checked(local)
     from jobs import admitted
@@ -70,9 +86,9 @@ def measure(round):
             validation=diag['wall_seconds']/val[0]['frames']*sum(f['frames'] for f in val)
             tail=3*admission_seconds+setup_seconds+3*validation+diag['wall_seconds']/val[0]['frames']*sum(f['frames'] for f in test)
             epoch=admission_seconds+refresh/train[0]['frames']*frame_mass+read_seconds/train[0]['frames']*frame_mass+step_mass*max(s['wall_seconds'] for s in steps[1:])+validation
-            samples[arm]=dict(parameter_count=sum(p.numel() for p in model.parameters()),tool_head_parameters=sum(p.numel() for k,p in model.named_parameters() if k.startswith(('aim_choice.','move_choice.','aim_offset.','move_offset.'))),threads=1,provenance_check_seconds=admission_seconds,target_balance=balance,setup_seconds=setup_seconds,steps=steps,steps_per_epoch=step_mass,epoch_seconds=epoch,tail_seconds=tail,validation_seconds=validation,fit_seconds=10*epoch+tail)
+            samples[arm]=dict(parameter_count=sum(p.numel() for p in model.parameters()),tool_head_parameters=sum(p.numel() for k,p in model.named_parameters() if k.startswith(('aim_','move_'))),threads=1,provenance_check_seconds=admission_seconds,target_balance=balance,setup_seconds=setup_seconds,steps=steps,steps_per_epoch=step_mass,epoch_seconds=epoch,tail_seconds=tail,validation_seconds=validation,fit_seconds=10*epoch+tail)
         topology=measured_cores();topology['slots']=min(4,topology['slots']);p=project(samples,10,topology['slots'])
-        b=dict(schema=1,variant=r.VARIANT,sources=r.sources(),index_sha256=r.sha(local/'INDEX.json'),epochs=10,windows_per_fight=4,window_ticks=90,class_weights=None,loss='fire CE; train-only balanced pointer CE; candidate CE plus bounded residual SmoothL1 /100 px; validation-only fire calibration',arms=list(r.ARMS),dropped='N2J0; optional N1h only with B2_N1H=1',samples=samples,topology=topology,round=round,margin=1.2,training_cap=cap,status='ADMITTED' if p['projected_seconds']<=cap['cap_seconds'] else 'REFUSED',**p)
+        b=dict(schema=1,coverage_sha256=r.sha(local/'COVERAGE.json'),coverage_admission=coverage['admission'],variant=r.VARIANT,sources=r.sources(),index_sha256=r.sha(local/'INDEX.json'),epochs=10,windows_per_fight=4,window_ticks=90,class_weights=None,loss='fire CE; train-only balanced pointer CE; candidate CE plus bounded residual SmoothL1 /100 px; validation-only fire calibration',arms=list(r.ARMS),dropped='N2J0; optional N1h only with B2_N1H=1',samples=samples,topology=topology,round=round,margin=1.2,training_cap=cap,status='ADMITTED' if p['projected_seconds']<=cap['cap_seconds'] else 'REFUSED',**p)
         r.write(local/'TRAIN_BUDGET.json',b,exclusive=True)
         if b['status']!='ADMITTED':raise RuntimeError('measured projection exceeds live owner cap')
         return b

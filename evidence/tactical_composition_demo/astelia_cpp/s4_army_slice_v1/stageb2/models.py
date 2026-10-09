@@ -1,4 +1,4 @@
-"""Shared 5 Hz entity attention; physical-tick GRU/phase updates and heads.
+"""Shared physical-tick entity attention; physical-tick GRU/phase updates and heads.
 C4 projected phase/spacing law, as amended in 0g R2.6; J learns here.
 """
 import math
@@ -17,10 +17,15 @@ class Policy(nn.Module):
         # Equal registered parameter budget, including unused N1 state branch.
         self.recur=nn.Linear(144,8);self.force=nn.Linear(128,1)
         self.law=nn.Parameter(torch.zeros(6))
-        self.aim_choice=nn.Linear(64,16);self.move_choice=nn.Linear(64,16)
+        from candidates import FEATURES
+        self.aim_choice=nn.Linear(64,FEATURES);self.move_choice=nn.Linear(64,FEATURES)
+        for name in ('aim','move'):
+            setattr(self,name+'_source',nn.Linear(64,64))
+            setattr(self,name+'_hidden',nn.Linear(FEATURES+128,16))
+            setattr(self,name+'_score',nn.Linear(16,1))
         self.aim_offset=nn.Linear(64,2);self.move_offset=nn.Linear(64,2) # A,B,J,K,omega,share
     def encode(self,tokens):return torch.tanh(self.enc2(torch.tanh(self.enc1(tokens))))
-    def tick(self,tokens,query,own,enemy,pos,speeds,assignments,ids,state,dt,refresh=True,cache=None,aim_points=None,aim_features=None,aim_valid=None,move_points=None,move_features=None,move_valid=None):
+    def tick(self,tokens,query,own,enemy,pos,speeds,assignments,ids,state,dt,refresh=True,cache=None,aim_points=None,aim_features=None,aim_valid=None,move_points=None,move_features=None,move_valid=None,aim_sources=None,move_sources=None):
         encoded=self.encode(tokens) if refresh else cache
         q=torch.tanh(self.query(query));a=torch.softmax(q@encoded.T/8,dim=-1);context=a@encoded
         if self.kind in ('N1','N1h'):state=q.new_zeros((len(ids),8))
@@ -67,20 +72,34 @@ class Policy(nn.Module):
             # Learned logits retain the phase-window readout; no reset clock.
             y=torch.cat((y[:,:3],y[:,3:4]+2*torch.cos(theta)[:,None],y[:,4:5]-2*torch.cos(theta)[:,None],y[:,5:6]+2*torch.cos(theta)[:,None],y[:,6:]),-1)
         from candidates import AIM_OFFSET,MOVE_OFFSET
-        def choose(points,features,valid,scorer,offsetter,bound):
-            logits=(features*scorer(h)[:,None,:]).sum(-1)/4
+        def choose(name,points,features,valid,sources,scorer,offsetter,bound):
+            # Factor the first MLP linear: never retain [candidate,h,source]
+            # concatenations, nor score padding, across a 90-tick autograd window.
             valid=valid>=.5
+            unit_index,candidate_index=valid.nonzero(as_tuple=True)
+            f=features[unit_index,candidate_index]
+            source=sources[unit_index,candidate_index];has_source=source>=0
+            key=scorer(h);source_key=getattr(self,name+'_source')(h)
+            source_scores=source_key@encoded.T/8
+            values=(f*key[unit_index]).sum(-1)/math.sqrt(features.shape[-1])
+            values=values+source_scores[unit_index,source.clamp_min(0)]*has_source
+            layer=getattr(self,name+'_hidden');width=features.shape[-1]
+            projection=torch.nn.functional.linear(f,layer.weight[:,:width],layer.bias)
+            own_projection=torch.nn.functional.linear(h,layer.weight[:,width:width+64])
+            source_projection=torch.nn.functional.linear(encoded,layer.weight[:,width+64:])
+            projection=projection+own_projection[unit_index]+source_projection[source.clamp_min(0)]*has_source[:,None]
+            values=values+getattr(self,name+'_score')(torch.tanh(projection)).squeeze(-1)
+            logits=h.new_zeros(valid.shape).index_put((unit_index,candidate_index),values)
             if not torch.isfinite(logits[valid]).all():raise FloatingPointError('nonfinite candidate scores')
-            masked=logits.masked_fill(~valid,-torch.inf)
-            choice=masked.argmax(-1) # validity is unconditional, irrespective of score magnitude
+            masked=logits.masked_fill(~valid,-torch.inf);choice=masked.argmax(-1)
             maximum=masked.max(-1).values
             maximum=torch.where(valid.any(-1),maximum,torch.zeros_like(maximum))
             logits=(logits-maximum[:,None]).masked_fill(~valid,-1e6)
             offset=bound*torch.tanh(offsetter(h))
             point=points[torch.arange(len(ids),device=h.device),choice]+offset
             return point,logits,offset
-        movement,move_logits,move_residual=choose(move_points,move_features,move_valid,self.move_choice,self.move_offset,MOVE_OFFSET)
-        aim,aim_logits,aim_residual=choose(aim_points,aim_features,aim_valid,self.aim_choice,self.aim_offset,AIM_OFFSET)
+        movement,move_logits,move_residual=choose('move',move_points,move_features,move_valid,move_sources,self.move_choice,self.move_offset,MOVE_OFFSET)
+        aim,aim_logits,aim_residual=choose('aim',aim_points,aim_features,aim_valid,aim_sources,self.aim_choice,self.aim_offset,AIM_OFFSET)
         # query stores arena-normalized own position; dimensions passed via world token.
         scale=tokens[-1,38:40]*1000
         movement=movement/scale;aim=aim/scale;mult=torch.sigmoid(y[:,2])

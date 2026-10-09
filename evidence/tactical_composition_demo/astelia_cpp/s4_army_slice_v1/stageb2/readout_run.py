@@ -8,8 +8,11 @@ from recording import rows
 POLICIES=(*r.ARMS,*(a+'_network_only' for a in r.ARMS),*(tuple(a+'_react_on' for a in r.ARMS) if r.VARIANT=='learned_dodge' else ()),'O','T')
 
 def mechanism(raw):
+    from dodge_metrics import DodgeMetrics
+    dodge=DodgeMetrics()
     previous={};enemy_credit={};own_damage=0.;deaths={role:0 for role in ('melee','ranged','artillery')};killers={};m=dict(dodges=0,launches=0,ready_rows=0,active_fire_rows=0,react_rows=0,phase_samples=0,phase_abs_rate_sum=0.,spacing_norm_sum=0.,forcing_abs_sum=0.)
     for row in rows(raw):
+        dodge.observe(row)
         if row.get('observerV1'):
             m['dodges']+=sum(x[1]==0 for x in row['dodges']);m['launches']+=sum(x[2]==0 for x in row['launches'])
             for d in row['damage']:
@@ -25,7 +28,7 @@ def mechanism(raw):
                     if uid in previous:m['phase_abs_rate_sum']+=abs(state[1]-previous[uid][0])/(row['t']-previous[uid][1]);m['phase_rate_samples']=m.get('phase_rate_samples',0)+1
                     previous[uid]=(state[1],row['t'])
             for v in row['labels']:m['ready_rows']+=v['ready'];m['active_fire_rows']+=v['executed']['fire']!='hold';m['react_rows']+=v['active']
-    return dict(per_role_deaths=deaths,killer_sources=killers,enemy_death_credit=enemy_credit,own_damage_to_enemy=own_damage,**m)
+    return dict(per_role_deaths=deaths,killer_sources=killers,enemy_death_credit=enemy_credit,own_damage_to_enemy=own_damage,**dodge.finish(),**m)
 
 def prepare(round):
     if round<1:raise RuntimeError('full-fight DAgger refit required before looks')
@@ -75,16 +78,19 @@ def _run(round,look,run_id):
         prior=r.read(r.LOCAL/f'LOOK_STAGEB2_R{round}_20.json')
         if not prior['complete'] or prior['ledger_sha256']!=digest:raise RuntimeError('same revision complete look 20 required')
     from jobs import admitted
-    cap=r.collect.a0().owner_cap();jobs=[j for j in ledger['jobs'] if j['index']<look]
+    from training_control import training_cap,TrainingDeadline
+    cap=training_cap(r.HERE);receipt['cap']=cap;jobs=[j for j in ledger['jobs'] if j['index']<look]
     try:
-        with admitted(cap['cap_seconds']) as (deadline,monitor):
+        with admitted(cap['cap_seconds']) as (absolute,monitor):
+            deadline=TrainingDeadline(r.HERE,absolute,cap['cap_seconds'])
             calibration=[execute(j,deadline,monitor,digest) for j in jobs if j['index']==0]
             rates={a:max(c['seconds']*150.04/c['stats']['t_end'] for c in calibration if c['job']['arm']==a) for a in POLICIES};todo=[j for j in jobs if not (r.LOCAL/'raw'/(j['tag']+'_COMPLETE.json')).exists()]
             projection=1.2*sum(rates[j['arm']] for j in todo);receipt['projection']=dict(seconds=projection,per_arm_full150_seconds=rates,disk=disk_projection(calibration,todo))
-            if projection>deadline-time.monotonic():raise RuntimeError('paired-look projection exceeds current LAB_CAP')
+            if projection>deadline-time.monotonic():raise RuntimeError('paired-look projection exceeds current B2 TRAIN_CAP')
             from dagger import disagreement
             for j in jobs:
                 c=execute(j,deadline,monitor,digest);m=mechanism(r.LOCAL/c['raw_file'])
+                if m['damage_rows_without_hazard_tag']:raise RuntimeError('B2 hazard damage provenance missing; fresh tagged host required')
                 if sum(m['per_role_deaths'].values())!=c['stats']['own_deaths']:raise RuntimeError('death attribution gap')
                 receipt['records'].append(dict(**j,stats=c['stats'],mechanism=m,seconds=c['seconds'],on_policy=disagreement(r.LOCAL/c['raw_file']) if j['arm'] in r.ARMS else None,completion_sha256=r.sha(r.LOCAL/'raw'/(j['tag']+'_COMPLETE.json'))))
                 disk_projection(calibration,[k for k in jobs if not (r.LOCAL/'raw'/(k['tag']+'_COMPLETE.json')).exists()])

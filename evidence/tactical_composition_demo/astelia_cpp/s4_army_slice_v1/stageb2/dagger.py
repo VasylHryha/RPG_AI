@@ -53,16 +53,18 @@ def disagreement(raw):
 def _run(round,run_id):
     ledger=check(round);digest=r.sha(r.LOCAL/f'DAGGER_LEDGER_ROUND{round}.json');jobs=ledger['jobs'];start=time.monotonic();receipt=dict(status='RUNNING',round=round,ledger_sha256=digest,fights=[])
     from jobs import admitted
-    cap=r.collect.a0().owner_cap()
+    from training_control import training_cap,TrainingDeadline
+    cap=training_cap(r.HERE);receipt['cap']=cap
     try:
-        with admitted(cap['cap_seconds']) as (deadline,monitor):
+        with admitted(cap['cap_seconds']) as (absolute,monitor):
+            deadline=TrainingDeadline(r.HERE,absolute,cap['cap_seconds'])
             # <= 20 complete fights; one regular and one C3 from each lane.
             sample=[next(j for j in jobs if j['arm']==a and j['panel']==p) for a in r.ARMS for p in ('regular','C3')]
             calibration=[execute(j,deadline,monitor,digest) for j in sample]
             todo=[j for j in jobs if not (r.LOCAL/'raw'/(j['tag']+'_COMPLETE.json')).exists()]
             rates={a:max(c['seconds']*150.04/c['stats']['t_end'] for c in calibration if c['job']['arm']==a) for a in r.ARMS}
             projection=1.2*sum(rates[j['arm']] for j in todo);receipt['projection']=dict(seconds=projection,per_arm_full150_seconds=rates,disk=disk_projection(calibration,todo))
-            if projection>deadline-time.monotonic():raise RuntimeError('full-fight DAgger projection exceeds live LAB_CAP')
+            if projection>deadline-time.monotonic():raise RuntimeError('full-fight DAgger projection exceeds live B2 TRAIN_CAP')
             for j in jobs:
                 c=execute(j,deadline,monitor,digest);receipt['fights'].append(dict(**j,raw_file=c['raw_file'],raw_sha256=c['raw_sha256'],frames=c['frames'],stats=c['stats'],seconds=c['seconds'],on_policy=disagreement(r.LOCAL/c['raw_file'])))
                 todo=[k for k in jobs if not (r.LOCAL/'raw'/(k['tag']+'_COMPLETE.json')).exists()];disk_projection(calibration,todo)

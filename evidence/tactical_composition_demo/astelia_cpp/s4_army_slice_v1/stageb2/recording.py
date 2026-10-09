@@ -51,7 +51,7 @@ def slim(row):
         row['labels'] = [{k: v for k, v in label.items() if k not in ('raw', 'participation', 'react', 'winner')} for label in row['labels']]
     elif row.get('observerV1'):
         row = {k: row[k] for k in ('observerV1', 'step', 't', 'units', 'shapeV6', 'damage', 'dodges', 'launches')}
-        row['units'] = [u[:2] for u in row['units']]
+        row['units'] = [u[:7] for u in row['units']] # B2 impact-time position/role/radius outcome evidence
         events=[]
         for e in row['shapeV6']:
             if e.get('a0Event'):events.append({k:e[k] for k in ('a0Event','eligible','joint','applied','rejected')})

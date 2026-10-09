@@ -48,7 +48,7 @@ def make(kind):
         value=torch.load(path,weights_only=False);m.load_state_dict(value['model'])
     return m,torch.optim.Adam(m.parameters(),lr=.001,weight_decay=0)
 
-def tensor(x,dtype=torch.float32):return {k:torch.as_tensor(v,dtype=torch.long if k in ('own','enemy','assignments') else dtype) for k,v in x.items()}
+def tensor(x,dtype=torch.float32):return {k:torch.as_tensor(v,dtype=torch.long if k in ('own','enemy','assignments','aim_sources','move_sources') else dtype) for k,v in x.items()}
 
 def forward(model,row,state,previous,cache,next_frame):
     global FORWARD_FLOPS,ENCODER_CALLS,PHASE_RHS
@@ -56,13 +56,16 @@ def forward(model,row,state,previous,cache,next_frame):
     state=remap(model.kind,state,previous,ids)
     # Force a shared refresh on entity removal; no stale-token index reuse.
     current=[u[0] for u in sorted(row['units'],key=lambda u:u[0])]
-    refresh=row['t']+1e-9>=next_frame[0] or current!=next_frame[1]
+    refresh=True # B2 public hazards and source embeddings refresh every physical tick
     y,state,cache=model.tick(**x,ids=ids,state=state,dt=row['dt'],refresh=refresh,cache=cache)
     if refresh:next_frame=(row['t']+.2,current)
     n=len(ids);nt=len(x['tokens']);ne=len(enemies)
     # Count dense multiply/add operations exactly; nonlinear kernels are separate.
     FORWARD_FLOPS += (nt*2*2*64*64 if refresh else 0)+n*2*(128*64+136*64+64*9+64*64+2*nt*64+ne*64)
-    FORWARD_FLOPS += n*2*(4*64*16+194*16+996*16+2*64*2)
+    from candidates import FEATURES
+    choices=int(x['aim_valid'].sum()+x['move_valid'].sum())
+    # Two choice/source/offset heads, factored MLP projections and source dots.
+    FORWARD_FLOPS += 2*(n*2*(64*FEATURES+64*64+64*2+64*16+nt*64)+nt*2*64*16+choices*(FEATURES+FEATURES*16+16))
     if model.kind=='N1r':FORWARD_FLOPS+=n*2*144*8
     if model.kind in ('N2','N2J0'):FORWARD_FLOPS+=n*2*128;PHASE_RHS+=4
     ENCODER_CALLS+=int(refresh)
