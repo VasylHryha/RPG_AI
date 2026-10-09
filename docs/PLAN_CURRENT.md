@@ -325,3 +325,10 @@ docs/reviews/network_units_and_leader_design_recheck_codex.md; self-audit in dra
 This is a same-family design recheck, not a cross-family acceptance. No code edits, tests,
 Python, fights or heavy jobs; running v2 DAgger and _local/ untouched. No living
 plan/design/spec hash pin and no experimental execution approval inferred.
+
+**Disk cleanup (owner-approved 2026-10-09 ~21:45, groups A+B+C):** 9,262 local data files (~30 GB) were deleted: fight streams and converted arrays (`.jsonl`, `.gz`, `.xz`, `.npy`, `.npz`, `.pt`, `.stdout`, `.bin`). Locations:
+- **A:** `s4_net_slice_v1/_local` collection, collection_v2, stage1, stage1_v2, s0s1, s1fix;
+- **B:** `s4_army_slice_v1/_local/raw`;
+- **C:** raw folders of s4_v7c, s4_shape_lab_v3, s4_v5_trace_diagnostic, s4_volley_probe_v1, s4_gun_assault, s4_focus_probe_v1, s4_escort_probe_v4 and s4_shape_lab_v6.
+
+Every `.json` receipt, lock, build and the ML environment were kept, and all results stay committed in git. Free disk went from 27 GB to 61 GB. Earlier the same day the A0 rev2 fight streams (16 GB) had been deleted the same way.
