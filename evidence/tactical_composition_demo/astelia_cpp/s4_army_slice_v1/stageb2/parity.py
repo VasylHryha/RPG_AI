@@ -92,8 +92,8 @@ PARITY_RULE = dict(version='certified_near_tie_v1', native_atol=approvals()['par
                    float32_near_tie_ceiling=approvals()['parity']['float32_near_tie_ceiling'],
                    reference='float64', require_selected_class_deficit=True)
 from candidates import MAX_AIM,MAX_MOVE
-TAIL=MAX_AIM+MAX_MOVE+4
-HEADS = (('fire', slice(3,6)), ('target', slice(10,-TAIL)), ('aim_choice',slice(-TAIL,-MAX_MOVE-4)), ('move_choice',slice(-MAX_MOVE-4,-4)))
+TAIL=MAX_AIM+MAX_MOVE+64+4
+HEADS = (('fire', slice(3,6)), ('target', slice(10,-TAIL)), ('aim_choice',slice(-TAIL,-MAX_MOVE-68)), ('move_choice',slice(-MAX_MOVE-68,-68)), ('aim_family',slice(-68,-36)), ('move_family',slice(-36,-4)))
 RECEIPT_DIRECTORY = LOCAL/'parity'/'certified_near_tie_v1'
 
 def compare(a,b,near_ties=False):

@@ -11,8 +11,8 @@ def observe_prediction(counts,row,ids,y):
         chosen=y[head+'_logits'].argmax(-1).tolist()
         for i,uid in enumerate(ids):
             if not bool(y[head+'_valid'][i].any()):continue
-            typ=int(y[head+'_features'][i,chosen[i],list(FAMILIES)].argmax())
-            add(counts,roles[uid],head,FAMILIES[list(FAMILIES)[typ]])
+            typ=int(y[head+'_types'][i,chosen[i]])
+            add(counts,roles[uid],head,FAMILIES[typ])
 
 def observe_record(counts,row):
     for pick in row.get('candidatePicks',[]):add(counts,pick['role'],pick['head'],FAMILIES[int(pick['type'])])

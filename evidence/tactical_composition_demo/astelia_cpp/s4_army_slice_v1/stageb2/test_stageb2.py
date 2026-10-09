@@ -19,7 +19,7 @@ def frame():
 
 @pytest.fixture(scope='session')
 def tool_binary():
-    out=r.HERE/'_local/light_tests';out.mkdir(parents=True,exist_ok=True);binary=out/'tools_fixture'
+    out=r.HERE/'_local/hier_light_tests';out.mkdir(parents=True,exist_ok=True);binary=out/'tools_fixture'
     subprocess.run(['nice','-n','15','/usr/bin/clang++','-std=c++17','-O0','-ffp-contract=off',str(r.HERE/'tools_fixture.cpp'),'-o',str(binary)],check=True,timeout=30,capture_output=True)
     return binary
 
@@ -59,11 +59,11 @@ def test_public_candidates_and_honest_residuals():
 @pytest.fixture(scope='session')
 def native_binary():
     from fixture_build import compile_fixture
-    return compile_fixture(r.HERE/'_local/light_tests/replay')
+    return compile_fixture(r.HERE/'_local/hier_light_tests/replay')
 
 @pytest.mark.parametrize('kind',list(r.ARMS))
 def test_no_combat_complete_native_heads_and_memory(native_binary,kind):
-    torch.manual_seed(77);model=Policy(kind).double().eval();weights=export(model,r.HERE/'_local/light_tests'/f'{kind}.json');weights['fireThresholds']=[.1,.2,.3]
+    torch.manual_seed(77);model=Policy(kind).double().eval();weights=export(model,r.HERE/'_local/hier_light_tests'/f'{kind}.json');weights['fireThresholds']=[.1,.2,.3]
     rows=[]
     for i in range(3):
         row=frame();row['t']=(i+1)/30
@@ -87,7 +87,7 @@ def test_categorical_residual_loss_and_source_scope():
     import training
     balance={role:dict(weights=[1,1]) for role in ('melee','ranged','artillery')};install(balance)
     m=Policy('N2').float();row=frame()
-    y,*_=forward(m,row,initial('N2',[]),[],None,(0,[]));loss,heads=training.objective(y,row,[1,4],[7,9]);assert torch.isfinite(loss)
+    y,*_=forward(m,row,initial('N2',[]),[],None,(0,[]),supervised=True);loss,heads=training.objective(y,row,[1,4],[7,9]);assert torch.isfinite(loss)
     assert {'aim_choice','move_choice','aim_residual','move_residual','target','fire'}<=heads.keys()
     loss.backward();assert m.move_choice.weight.grad is not None and m.aim_offset.weight.grad is not None
     assert not any(Path(p).suffix=='.md' for p in r.sources())
@@ -111,13 +111,13 @@ def test_projection_calibration_and_resume_identity(tmp_path,monkeypatch):
 
 def test_variant_native_seams_and_near_tie_head_scope():
     from build import prepare_sources
-    out=r.HERE/'_local/light_tests/seams';out.mkdir(parents=True,exist_ok=True);prepare_sources(out)
+    out=r.HERE/'_local/hier_light_tests/seams';out.mkdir(parents=True,exist_ok=True);prepare_sources(out)
     assert 'learnedDodge)?Reaction{}' in (out/'react.cpp').read_text()
     assert 'if(s.dodge!=Dodge::None && s.dashReady<=w.time)' in (out/'react_rules.cpp').read_text()
     assert 'learnedDodge' not in (out/'react_rules.cpp').read_text()
     from parity import compare,categories
-    x=np.zeros((1,11+MAX_AIM+MAX_MOVE+4));x[:,10]=2;x[:,11]=3;x[:,11+MAX_AIM]=4;y=x.copy();y[:,11]=2;y[:,12]=3
-    assert categories(x).tolist()==[[0,0,0,0]]
+    x=np.zeros((1,11+MAX_AIM+MAX_MOVE+68));x[:,10]=2;x[:,11]=3;x[:,11+MAX_AIM]=4;y=x.copy();y[:,11]=2;y[:,12]=3
+    assert categories(x).tolist()==[[0,0,0,0,0,0]]
     detail=compare([x],[y],near_ties=True);assert detail['categorical_mismatches']==1 and detail['mismatches'][0]['head']=='aim_choice' and detail['uncertified_mismatches']==1
 
 
@@ -125,7 +125,7 @@ def test_no_enemy_or_own_and_undefined_aim():
     row=frame();row['units']=[u for u in row['units'] if u[1]==0]
     model=Policy('N1').double();y,*_=forward(model,row,initial('N1',[],torch.float64),[],None,(0,[]));assert y['target'].shape==(2,1)
     row['units']=[];row['own']=[]
-    y,*_=forward(model,row,initial('N1',[],torch.float64),[],None,(0,[]));assert flat(y).shape==(0,11+MAX_AIM+MAX_MOVE+4)
+    y,*_=forward(model,row,initial('N1',[],torch.float64),[],None,(0,[]));assert flat(y).shape==(0,11+MAX_AIM+MAX_MOVE+68)
     a,_=bank(frame(),1);assert np.isfinite(a['aim_features']).all()
 
 
@@ -133,7 +133,7 @@ def test_extreme_logits_cannot_choose_padding(native_binary):
     m=Policy('N1').double().eval()
     with torch.no_grad():
         for head in (m.move_choice,m.aim_choice):head.weight.zero_();head.bias.zero_();head.bias[:11]=-1e9
-    row=frame();weights=export(m,r.HERE/'_local/light_tests/extreme.json')
+    row=frame();weights=export(m,r.HERE/'_local/hier_light_tests/extreme.json')
     result=rpc(native_binary,[json.dumps(dict(frames=[row],weights=weights))])[0]
     with torch.no_grad():y,*_=forward(m,row,initial('N1',[],torch.float64),[],None,(0,[]))
     for name in ('aim','move'):
@@ -148,7 +148,7 @@ def test_empty_required_aim_stops_native_and_training_but_audits(native_binary):
     label=mapped_labels(row,[1])[0]['aim'];assert label['distance'] is None and not label['covered']
     from coverage import accumulate
     counts={};accumulate(counts,row);assert counts['artillery','aim','all']['no_candidates']==1
-    weights=export(Policy('N1').double(),r.HERE/'_local/light_tests/empty.json')
+    weights=export(Policy('N1').double(),r.HERE/'_local/hier_light_tests/empty.json')
     x=subprocess.run([str(native_binary)],input=json.dumps(dict(frames=[row],weights=weights))+'\n',text=True,capture_output=True,timeout=10)
     assert x.returncode==1 and 'empty required artillery aim bank' in x.stderr
 
@@ -227,14 +227,14 @@ def test_middle_collinear_lead_is_selectable_python_and_native(native_binary):
     with torch.no_grad():
         for p in m.parameters():p.zero_()
         # Explicit nonlinear interval score: tanh(dx-1.5)-tanh(dx-2.5).
-        m.aim_choice.bias[1]=100
+        m.aim_family.bias[2]=100;m.aim_choice.bias[1]=100
         m.aim_hidden.weight[0,11]=10;m.aim_hidden.bias[0]=-15
         m.aim_hidden.weight[1,11]=10;m.aim_hidden.bias[1]=-25
         m.aim_score.weight[0,0]=1;m.aim_score.weight[0,1]=-1
         y,*_=forward(m,row,initial('N1',[],torch.float64),[],None,(0,[]))
     np.testing.assert_allclose(y['aim'][0].numpy()*[500,300],[240,100],atol=1e-8)
     arrays,items=bank(row,1);choice=int(y['aim_logits'][0].argmax());assert items['aim'][choice][2:]==(1,2)
-    weights=export(m,r.HERE/'_local/light_tests/middle.json')
+    weights=export(m,r.HERE/'_local/hier_light_tests/middle.json')
     native=rpc(native_binary,[json.dumps(dict(frames=[row],weights=weights))])[0]
     np.testing.assert_allclose(native['outputs'][0],flat(y).numpy(),atol=1e-8,rtol=0)
 
@@ -243,7 +243,9 @@ def test_candidate_identity_binding_and_nonlinear_gradients():
     row=frame();arrays,items=bank(row,1)
     assert [(c[2],c[3]) for c in items['aim'][1:5]]==[(0,2),(1,2),(0,3),(1,3)]
     assert any(c[3]>=len(row['units']) for c in items['move'])
-    m=Policy('N1').float();y,*_=forward(m,row,initial('N1',[]),[],None,(0,[]))
+    m=Policy('N1').float()
+    with torch.no_grad():m.aim_family.weight.zero_();m.aim_family.bias.zero_();m.aim_family.bias[2]=100
+    y,*_=forward(m,row,initial('N1',[]),[],None,(0,[]))
     y['aim_logits'][0,:int(arrays['aim_valid'].sum())].sum().backward()
     assert m.aim_source.weight.grad.abs().sum()>0 and m.aim_hidden.weight.grad.abs().sum()>0
 
@@ -303,7 +305,7 @@ def test_physical_tick_refresh_sees_new_hazard(native_binary):
         _,state,ids,_,cache,clock,_=forward(m,first,initial('N1',[],torch.float64),[],None,(0,[]))
         y,*tail=forward(m,second,state,ids,cache,clock)
     assert tail[-1] is True
-    native=rpc(native_binary,[json.dumps(dict(frames=[first],weights=export(m,r.HERE/'_local/light_tests/refresh.json'))),json.dumps(dict(frames=[second]))])
+    native=rpc(native_binary,[json.dumps(dict(frames=[first],weights=export(m,r.HERE/'_local/hier_light_tests/refresh.json'))),json.dumps(dict(frames=[second]))])
     np.testing.assert_allclose(native[1]['outputs'][0],flat(y).numpy(),atol=1e-8,rtol=0)
 
 
@@ -344,7 +346,7 @@ def test_hazard_damage_and_impact_escape_with_death_and_censor():
 
 def test_b2_dagger_look_cap_and_native_metric_seams():
     from build import prepare_sources
-    out=r.HERE/'_local/light_tests/seams';prepare_sources(out)
+    out=r.HERE/'_local/hier_light_tests/seams';prepare_sources(out)
     assert '"hazardType",stageb2::damageKinds.at(damageIndex++)' in (out/'lean_host.cpp').read_text()
     assert 'DamageScope damageScope("shell")' in (out/'react_combat.cpp').read_text()
     for name in ('dagger.py','readout_run.py'):

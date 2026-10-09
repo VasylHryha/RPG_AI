@@ -28,15 +28,12 @@ def install(balance):
         scale=y['move'].new_tensor([row['width'],row['height']])
         for name,bound in (('move',MOVE_OFFSET),('aim',AIM_OFFSET)):
             mask=vals('aim_mask').bool() if name=='aim' else torch.ones(len(ids),device=ce.device,dtype=torch.bool)
-            desired=vals(name)*scale
-            if name=='move':desired=desired-y['drift'].detach()
-            delta=desired[:,None,:]-y[name+'_points']
-            d2=(delta**2).sum(-1).masked_fill(y[name+'_valid']<.5,1e30)
-            index=d2.argmin(-1);mask=mask & (y[name+'_valid'].sum(-1)>0)
-            residual=delta[torch.arange(len(ids),device=ce.device),index]
-            # Raw residual remains visible, even when it exceeds the bounded head.
-            losses[name+'_choice']=torch.nn.functional.cross_entropy(y[name+'_logits'][mask],index[mask]) if mask.any() else y[name+'_logits'].sum()*0
-            losses[name+'_residual']=torch.nn.functional.smooth_l1_loss(y[name+'_residual'][mask]/100,residual[mask]/100) if mask.any() else y[name+'_residual'].sum()*0
+            mask=mask & y[name+'_valid'].any(-1)
+            if name+'_train_logits' not in y:raise RuntimeError('hierarchical loss requires supervised forward')
+            zero=y[name+'_residual'].sum()*0
+            losses[name+'_family']=torch.nn.functional.cross_entropy(y[name+'_family_logits'][mask],y[name+'_true_family'][mask]) if mask.any() else zero
+            losses[name+'_choice']=torch.nn.functional.cross_entropy(y[name+'_train_logits'][mask],y[name+'_true_member'][mask]) if mask.any() else zero
+            losses[name+'_residual']=torch.nn.functional.smooth_l1_loss(y[name+'_residual'][mask]/100,y[name+'_true_residual'][mask]/100) if mask.any() else zero
         # N2 geometry drift gets gradients through the executed movement residual.
         actual=y['move']*scale+y['drift'];losses['move_geometry']=torch.nn.functional.smooth_l1_loss(actual/100,vals('move')*scale/100)
         return sum(losses.values()),{k:float(v.detach()) for k,v in losses.items()}

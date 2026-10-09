@@ -23,6 +23,14 @@ def live_check():
     now=time.monotonic()
     if MONITOR is not None and now-LAST_MONITOR>=1:
         MONITOR.live_memory(__import__("os").getpid());LAST_MONITOR=now
+        worker_memory()
+
+def worker_memory():
+    import resource,sys
+    rss=resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+    if sys.platform!='darwin':rss*=1024
+    if rss>=1.5*1024**3:raise RuntimeError('training worker exceeds 1.5 GiB')
+    return rss
 
 def environment():
     import importlib.metadata
@@ -48,11 +56,15 @@ def make(kind):
         value=torch.load(path,weights_only=False);m.load_state_dict(value['model'])
     return m,torch.optim.Adam(m.parameters(),lr=.001,weight_decay=0)
 
-def tensor(x,dtype=torch.float32):return {k:torch.as_tensor(v,dtype=torch.long if k in ('own','enemy','assignments','aim_sources','move_sources') else dtype) for k,v in x.items()}
+def tensor(x,dtype=torch.float32):return {k:torch.as_tensor(v,dtype=torch.long if k in ('own','enemy','assignments','aim_sources','move_sources','aim_members','move_members','aim_mapping','move_mapping') else dtype) for k,v in x.items()}
 
-def forward(model,row,state,previous,cache,next_frame,state_only=False):
+def forward(model,row,state,previous,cache,next_frame,state_only=False,supervised=False):
     global FORWARD_FLOPS,ENCODER_CALLS,PHASE_RHS
     x,ids,enemies=pack(row,model.kind,with_candidates=not state_only);x=tensor(x,next(model.parameters()).dtype)
+    if supervised and not state_only:
+        labs=labels(row,ids,enemies)
+        scale=x['pos'].new_tensor([row['width'],row['height']])
+        for name in ('aim','move'):x['teacher_'+name]=x['pos'].new_tensor([v[name] for v in labs]).reshape(-1,2)*scale
     state=remap(model.kind,state,previous,ids)
     # Force a shared refresh on entity removal; no stale-token index reuse.
     current=[u[0] for u in sorted(row['units'],key=lambda u:u[0])]
@@ -60,18 +72,18 @@ def forward(model,row,state,previous,cache,next_frame,state_only=False):
     y,state,cache=model.tick(**x,ids=ids,state=state,dt=row['dt'],refresh=refresh,cache=cache,state_only=state_only)
     if refresh:next_frame=(row['t']+.2,current)
     n=len(ids);nt=len(x['tokens']);ne=len(enemies)
-    # Count dense multiply/add operations exactly; nonlinear kernels are separate.
+    # Conservative dense multiply/add bound: each scored family has <=64 members; nonlinear kernels are separate.
     FORWARD_FLOPS += (nt*2*2*64*64 if refresh else 0)+n*2*(128*64+2*nt*64+(0 if state_only else 136*64+64*9+64*64+ne*64))
     from candidates import FEATURES
-    choices=0 if state_only else int(x['aim_valid'].sum()+x['move_valid'].sum())
+    choices=0 if state_only else 2*n*64*(2 if supervised else 1)
     # Two choice/source/offset heads, factored MLP projections and source dots.
-    if not state_only:FORWARD_FLOPS += 2*(n*2*(64*FEATURES+64*64+64*2+64*16+nt*64)+nt*2*64*16+choices*(FEATURES+FEATURES*16+16))
+    if not state_only:FORWARD_FLOPS += n*2*2*64*32+2*(n*2*(64*FEATURES+64*64+64*2+64*16+nt*64)+nt*2*64*16+choices*(FEATURES+FEATURES*16+16))
     if model.kind in ('N1r','N1rb'):FORWARD_FLOPS+=n*2*144*8
     if model.kind in ('N2','N2J0'):FORWARD_FLOPS+=n*2*128;PHASE_RHS+=4
     ENCODER_CALLS+=int(refresh)
     return y,state,ids,enemies,cache,next_frame,refresh
 
-def flat(y):return torch.cat((y['move'],y['mult'][:,None],y['fire'],y['aim'],y['drift'],y['target'],y['aim_logits'],y['move_logits'],y['aim_residual'],y['move_residual']),-1)
+def flat(y):return torch.cat((y['move'],y['mult'][:,None],y['fire'],y['aim'],y['drift'],y['target'],y['aim_logits'],y['move_logits'],y['aim_family_logits'],y['move_family_logits'],y['aim_residual'],y['move_residual']),-1)
 
 def objective(y,row,ids,enemies,weights=None):
     labs=labels(row,ids,enemies);device=y['move'].device;dtype=y['move'].dtype
@@ -115,7 +127,7 @@ def step(model,optimizer,rows,context,weights,deadline):
     for tick,row in enumerate(rows):
         live_check()
         if time.monotonic()>=deadline:raise TimeoutError('cap during optimizer step')
-        y,state,ids,enemies,cache,next_frame,refresh=forward(model,row,state,ids,cache,next_frame)
+        y,state,ids,enemies,cache,next_frame,refresh=forward(model,row,state,ids,cache,next_frame,supervised=True)
         # Every release/readiness/reaction transition; otherwise base frames /4.
         important=any(r['ready'] or r['engineRelease'] or previous_active.get(r['id'])!=r['active'] for r in row['labels'])
         previous_active={r['id']:r['active'] for r in row['labels']}
@@ -124,10 +136,7 @@ def step(model,optimizer,rows,context,weights,deadline):
     if not mass:raise RuntimeError('empty training window')
     optimizer.zero_grad();(loss/mass).backward();torch.nn.utils.clip_grad_norm_(model.parameters(),5);optimizer.step()
     if not all(torch.isfinite(v).all() for v in model.parameters()):raise FloatingPointError('nonfinite weights')
-    import resource
-    rss=resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
-    if __import__('sys').platform!='darwin':rss*=1024
-    if rss>2*1024**3:raise RuntimeError('training worker exceeds 2 GiB')
+    rss=worker_memory()
     return dict(wall_seconds=time.monotonic()-start,cpu_seconds=time.process_time()-cpu,rss_bytes=rss,decision_rows=decisions,loss=float((loss/mass).detach()))
 
 def evaluate(model,fights,windows,weights,deadline):
@@ -139,7 +148,7 @@ def evaluate(model,fights,windows,weights,deadline):
                 state,ids,cache,next_frame=context
                 for row in rows[at:at+WINDOW]:
                     window_ticks+=1
-                    y,state,ids,enemies,cache,next_frame,_=forward(model,row,state,ids,cache,next_frame);v,ls=objective(y,row,ids,enemies,weights);total+=float(v)*len(ids);mass+=len(ids)
+                    y,state,ids,enemies,cache,next_frame,_=forward(model,row,state,ids,cache,next_frame,supervised=True);v,ls=objective(y,row,ids,enemies,weights);total+=float(v)*len(ids);mass+=len(ids)
                     for k,x in ls.items():heads[k]=heads.get(k,0)+x*len(ids)
                     for i,l in enumerate(labels(row,ids,enemies)):
                         c=roles.setdefault(l['role'],dict(rows=0,target_correct=0,fire_correct=0,active_predicted=0,active_oracle=0,ready_rows=0))

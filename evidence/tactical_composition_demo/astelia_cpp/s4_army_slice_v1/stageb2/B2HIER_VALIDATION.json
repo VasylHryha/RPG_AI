@@ -1,0 +1,54 @@
+{
+  "status": "FOCUSED_PASS_HOST_TIMING_BLOCKED",
+  "reviewer_family": "Codex",
+  "tests": {
+    "passed": 56,
+    "seconds": 20.4,
+    "suites": [
+      "test_b2hier.py",
+      "test_stageb2.py",
+      "test_b2speed.py",
+      "test_b2batch.py"
+    ],
+    "junit": "_local/hier_tests.xml"
+  },
+  "native_python_parity": "all five arms; complete heads/memory, forced paged-family choices and audit counts; zero-combat fixtures",
+  "reachability": "maximum-envelope whole-bank bijection and nearest covered label pair checks",
+  "timing": {
+    "attempt": "train.py measure --round 0 --test-mode",
+    "status": "BLOCKED_BEFORE_OPTIMIZER",
+    "process_gate": "UNAVAILABLE",
+    "returncode": 3,
+    "stderr": "sysmon request failed with error: sysmond service not found\npgrep: Cannot get process list",
+    "log": "_local/B2HIER_MEASURE.log",
+    "measured_per_step_seconds": null,
+    "measured_projection_seconds": null,
+    "measured_peak_worker_rss_bytes": null
+  },
+  "limits": {
+    "training_cap_seconds": 16200,
+    "projection_margin": 1.2,
+    "worker_rss_bytes_exclusive": 1610612736,
+    "members_per_family": 64,
+    "aim_page_slots": 5,
+    "move_page_slots": 26,
+    "padded_family_slots": 32
+  },
+  "owner_approvals_sha256": "ec336cadaccfc9bc78179cd01df708eccdb38426602753934310e1b42c5ebfc3",
+  "source_sha256": {
+    "hierarchy.py": "f7b8bf8155b2acdf5159ec6366cd15c8918aba4e76ede0473e36e90978b6a529",
+    "hierarchy.h": "e12c34b7beab375ae62fde318098f99346cc5668f9685c142ca0dc3f07bd5801",
+    "models.py": "2b70f1cfd4d925b9914b7093feda339afb7e79e749869ad8672d0bb8a7904d12",
+    "training.py": "eef75bd3e4c5c40e71f30e23cf35c1da96e7a8b6e8cb737f9d451a13dc419fca",
+    "loss.py": "2b71b92173e1dad163158f05a0a7219fcba444e09befa588f1738eef1ee6bbe3",
+    "native_patch.py": "07e2f7681ef2e02ff9789ee6c0fa6b37998fae789bb979bf60abe9ea5bd17ea2",
+    "parity.py": "a25273a379d15645b060262b0ed4b7d7b788490824dc40883ead33424058cd79",
+    "candidates.py": "288cbc5e2b79cc3d31a2df09bd4565626bc1965d18353f74eb202e75fdda0073",
+    "candidate_audit.py": "5f9a88145a7ab8a6626b8609da47237b731a0459387e4a757e67a8f747917e9e",
+    "train.py": "1f0b99aba1389b29dfaf79627a234ade30ce2d349db1e8c029b5649c63f0d9d2",
+    "worker.py": "2d2489316c3c3942cfa41935cc5d1f93b863762265c78b9cd35bbf3187c9ab65",
+    "test_b2hier.py": "727a8b65fe0600b7b39b2d5bad51c0d1518a66950fb5b36b1c69fd9d8fbec9c3",
+    "test_stageb2.py": "4247c7513dfd2191a15a83dfaaec8455b0c41cdc7492139903462e78607d82e8"
+  },
+  "qualification": "No production budget, full host coverage, trained checkpoint, full-sequence parity or fight readout produced. No target timing/RSS qualification claimed."
+}

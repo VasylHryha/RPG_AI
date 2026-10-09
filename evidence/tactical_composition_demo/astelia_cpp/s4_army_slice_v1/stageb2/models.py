@@ -19,13 +19,15 @@ class Policy(nn.Module):
         self.law=nn.Parameter(torch.zeros(6))
         from candidates import FEATURES
         self.aim_choice=nn.Linear(64,FEATURES);self.move_choice=nn.Linear(64,FEATURES)
+        from hierarchy import FAMILY_SLOTS
         for name in ('aim','move'):
+            setattr(self,name+'_family',nn.Linear(64,FAMILY_SLOTS))
             setattr(self,name+'_source',nn.Linear(64,64))
             setattr(self,name+'_hidden',nn.Linear(FEATURES+128,16))
             setattr(self,name+'_score',nn.Linear(16,1))
         self.aim_offset=nn.Linear(64,2);self.move_offset=nn.Linear(64,2) # A,B,J,K,omega,share
     def encode(self,tokens):return torch.tanh(self.enc2(torch.tanh(self.enc1(tokens))))
-    def tick(self,tokens,query,own,enemy,pos,speeds,assignments,ids,state,dt,refresh=True,cache=None,aim_points=None,aim_features=None,aim_valid=None,move_points=None,move_features=None,move_valid=None,aim_sources=None,move_sources=None,state_only=False):
+    def tick(self,tokens,query,own,enemy,pos,speeds,assignments,ids,state,dt,refresh=True,cache=None,aim_points=None,aim_features=None,aim_valid=None,move_points=None,move_features=None,move_valid=None,aim_sources=None,move_sources=None,state_only=False,aim_members=None,move_members=None,aim_mapping=None,move_mapping=None,teacher_aim=None,teacher_move=None):
         encoded=self.encode(tokens) if refresh else cache
         q=torch.tanh(self.query(query));a=torch.softmax(q@encoded.T/8,dim=-1);context=a@encoded
         if self.kind in ('N1','N1b'):state=q.new_zeros((len(ids),8))
@@ -83,38 +85,65 @@ class Policy(nn.Module):
             # Learned logits retain the phase-window readout; no reset clock.
             y=torch.cat((y[:,:3],y[:,3:4]+2*torch.cos(theta)[:,None],y[:,4:5]-2*torch.cos(theta)[:,None],y[:,5:6]+2*torch.cos(theta)[:,None],y[:,6:]),-1)
         from candidates import AIM_OFFSET,MOVE_OFFSET
-        def choose(name,points,features,valid,sources,scorer,offsetter,bound):
-            # Factor the first MLP linear: never retain [candidate,h,source]
-            # concatenations, nor score padding, across a 90-tick autograd window.
+        def choose(name,points,features,valid,sources,members,mapping,teacher,scorer,offsetter,bound):
+            from hierarchy import MEMBERS
             valid=valid>=.5
-            unit_index,candidate_index=valid.nonzero(as_tuple=True)
-            f=features[unit_index,candidate_index]
-            source=sources[unit_index,candidate_index];has_source=source>=0
+            family_valid=(members>=0).any(-1)
+            raw_family=getattr(self,name+'_family')(h)
+            if not torch.isfinite(raw_family).all():raise FloatingPointError('nonfinite family scores')
+            family=raw_family.masked_fill(~family_valid,-torch.inf)
+            family_max=family.max(-1).values
+            family_max=torch.where(family_valid.any(-1),family_max,torch.zeros_like(family_max))
+            family_logits=(raw_family-family_max[:,None]).masked_fill(~family_valid,-1e6)
+            chosen_family=family.argmax(-1)
+            ui=torch.arange(len(ids),device=h.device)
             key=scorer(h);source_key=getattr(self,name+'_source')(h)
             source_scores=source_key@encoded.T/8
-            values=(f*key[unit_index]).sum(-1)/math.sqrt(features.shape[-1])
-            values=values+source_scores[unit_index,source.clamp_min(0)]*has_source
             layer=getattr(self,name+'_hidden');width=features.shape[-1]
-            projection=torch.nn.functional.linear(f,layer.weight[:,:width],layer.bias)
             own_projection=torch.nn.functional.linear(h,layer.weight[:,width:width+64])
             source_projection=torch.nn.functional.linear(encoded,layer.weight[:,width+64:])
-            projection=projection+own_projection[unit_index]+source_projection[source.clamp_min(0)]*has_source[:,None]
-            values=values+getattr(self,name+'_score')(torch.tanh(projection)).squeeze(-1)
-            logits=h.new_zeros(valid.shape).index_put((unit_index,candidate_index),values)
-            if not torch.isfinite(logits[valid]).all():raise FloatingPointError('nonfinite candidate scores')
-            masked=logits.masked_fill(~valid,-torch.inf);choice=masked.argmax(-1)
-            maximum=masked.max(-1).values
-            maximum=torch.where(valid.any(-1),maximum,torch.zeros_like(maximum))
-            logits=(logits-maximum[:,None]).masked_fill(~valid,-1e6)
-            offset=bound*torch.tanh(offsetter(h))
-            point=points[torch.arange(len(ids),device=h.device),choice]+offset
-            return point,logits,offset
-        movement,move_logits,move_residual=choose('move',move_points,move_features,move_valid,move_sources,self.move_choice,self.move_offset,MOVE_OFFSET)
-        aim,aim_logits,aim_residual=choose('aim',aim_points,aim_features,aim_valid,aim_sources,self.aim_choice,self.aim_offset,AIM_OFFSET)
+            def score(family_index):
+                indices=members[ui,family_index];mask=indices>=0
+                unit,member=mask.nonzero(as_tuple=True);candidate=indices[unit,member]
+                f=features[unit,candidate];source=sources[unit,candidate];has_source=source>=0
+                values=(f*key[unit]).sum(-1)/math.sqrt(width)
+                values=values+source_scores[unit,source.clamp_min(0)]*has_source
+                projection=torch.nn.functional.linear(f,layer.weight[:,:width],layer.bias)
+                projection=projection+own_projection[unit]+source_projection[source.clamp_min(0)]*has_source[:,None]
+                values=values+getattr(self,name+'_score')(torch.tanh(projection)).squeeze(-1)
+                if not torch.isfinite(values).all():raise FloatingPointError('nonfinite member scores')
+                logits=h.new_zeros(indices.shape).index_put((unit,member),values)
+                masked=logits.masked_fill(~mask,-torch.inf)
+                maximum=masked.max(-1).values
+                maximum=torch.where(mask.any(-1),maximum,torch.zeros_like(maximum))
+                logits=(logits-maximum[:,None]).masked_fill(~mask,-1e6)
+                choice=indices.masked_fill(~(mask & (logits==0)),points.shape[1]).min(-1).values
+                choice=torch.where(mask.any(-1),choice,torch.zeros_like(choice))
+                return choice,logits,indices,mask
+            choice,member_logits,indices,mask=score(chosen_family)
+            # Preserve the native replay ABI: sparse full-bank scores expose the
+            # chosen family's argmax; other families are masked, never scored.
+            unit,member=mask.nonzero(as_tuple=True)
+            logits=h.new_full(valid.shape,-1e6).index_put((unit,indices[unit,member]),member_logits[unit,member])
+            offset=bound*torch.tanh(offsetter(h));point=points[ui,choice]+offset
+            result={name+'_logits':logits,name+'_family_logits':family_logits,
+                    name+'_residual':offset,name+'_valid':valid,
+                    name+'_types':torch.tensor(list(range(11))+list(range(18,26)),device=h.device)[features[:,:,list(range(11))+list(range(18,26))].argmax(-1)]}
+            if teacher is not None:
+                desired=teacher-(drift.detach() if name=='move' else 0)
+                delta=desired[:,None,:]-points
+                nearest=(delta.square().sum(-1).masked_fill(~valid,torch.inf)).argmin(-1)
+                target=mapping[ui,nearest];true_family=target[:,0].clamp_min(0)
+                _,true_logits,_,_=score(true_family)
+                result.update({name+'_true_family':true_family,name+'_true_member':target[:,1].clamp_min(0),
+                               name+'_train_logits':true_logits,name+'_true_residual':delta[ui,nearest]})
+            return point,result
+        movement,mresult=choose('move',move_points,move_features,move_valid,move_sources,move_members,move_mapping,teacher_move,self.move_choice,self.move_offset,MOVE_OFFSET)
+        aim,aresult=choose('aim',aim_points,aim_features,aim_valid,aim_sources,aim_members,aim_mapping,teacher_aim,self.aim_choice,self.aim_offset,AIM_OFFSET)
         # query stores arena-normalized own position; dimensions passed via world token.
         scale=tokens[-1,38:40]*1000
         movement=movement/scale;aim=aim/scale;mult=torch.sigmoid(y[:,2])
-        return dict(move=movement,mult=mult,fire=y[:,3:6],aim=aim,target=targets,drift=drift,aim_logits=aim_logits,move_logits=move_logits,aim_residual=aim_residual,move_residual=move_residual,aim_points=aim_points,aim_valid=aim_valid,move_points=move_points,move_valid=move_valid,aim_features=aim_features,move_features=move_features),state,encoded
+        return dict(move=movement,mult=mult,fire=y[:,3:6],aim=aim,target=targets,drift=drift,**aresult,**mresult),state,encoded
 
 def initial(kind,ids,dtype=torch.float32):
     x=torch.zeros((len(ids),8),dtype=dtype)
@@ -126,6 +155,6 @@ def remap(kind,state,previous,ids):
     return torch.stack([state[lookup[id]] if id in lookup else fresh[i] for i,id in enumerate(ids)]) if ids else fresh
 
 def export(model,path):
-    payload=dict(version='ARMYB2',kind=model.kind,dtype='float64',learnedDodge=__import__('os').environ.get('B2_VARIANT','react_on')=='learned_dodge',parameters={k:dict(shape=list(v.shape),values=v.detach().double().reshape(-1).tolist()) for k,v in model.state_dict().items()})
+    payload=dict(version='ARMYB2',kind=model.kind,dtype='float64',hierarchy='semantic_pages64_v1',learnedDodge=__import__('os').environ.get('B2_VARIANT','react_on')=='learned_dodge',parameters={k:dict(shape=list(v.shape),values=v.detach().double().reshape(-1).tolist()) for k,v in model.state_dict().items()})
     write(path,payload)
     return payload

@@ -114,7 +114,7 @@ def bank(row,id,allow_missing_aim=False):
     if not moves:raise ValueError('missing movement candidates')
     return dict(aim_points=a,aim_features=af,aim_valid=am,aim_sources=asi,move_points=m,move_features=mf,move_valid=mm,move_sources=msi),dict(aim=aims,move=moves)
 
-def pack_candidates(row,ids):
+def _pack_candidates(row,ids):
     if '_candidate_banks' in row:
         from native_candidates import packed
         return packed(row['_candidate_banks'],ids)
@@ -137,5 +137,22 @@ def mapped_labels(row,ids,drift=None):
         lab=labels[id];c=lab['executed'];move=np.asarray(c['goal'])-(np.asarray(drift[i]) if drift is not None else 0)
         result=dict(id=id,role=lab['role'],dodge=bool(lab.get('active')),move=nearest(move,arrays['move_points'],arrays['move_valid'],MOVE_OFFSET),aim=None)
         if c['aim'] is not None:result['aim']=nearest(c['aim'],arrays['aim_points'],arrays['aim_valid'],AIM_OFFSET)
+        from hierarchy import reachable
+        for head,column in (('aim',0),('move',1)):
+            value=result[head]
+            if value is None or value['distance'] is None:continue
+            if '_candidate_banks' in row:
+                v=row['_candidate_banks'][id][column];features=np.zeros((len(v),FEATURES))
+                features[np.arange(len(v)),v[:,9].astype(int)]=1;features[:,13]=v[:,4]
+            else:
+                features=arrays[head+'_features'][arrays[head+'_valid']>=.5]
+            family,member,ok=reachable(features,value['index'],head)
+            if not ok:raise ValueError('covered label unreachable through hierarchy')
+            value.update(family=family,member=member,hierarchy_reachable=ok)
         out.append(result)
     return out
+
+
+def pack_candidates(row,ids):
+    from hierarchy import attach
+    return attach(_pack_candidates(row,ids))

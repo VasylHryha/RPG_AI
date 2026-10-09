@@ -30,7 +30,7 @@ Public shells/casts contribute landing points and time-to-impact; fields contrib
 
 ## Honest supervised labels and coverage
 
-The loss maps **O's executed** goal and masked aim to the nearest valid candidate (Euclidean distance; first enumerated tie) and retains the full residual. For N2 movement fitting, the detached current spacing drift is subtracted before selecting the label candidate. The model learns categorical CE plus residual SmoothL1 in 100 px units; actual movement SmoothL1 also trains N2 drift. Out-of-bound residual labels are neither clipped nor relabelled as covered. Coverage has two separate readings: candidate-only distance <=20 px and representable by the bounded per-axis residual. It reports no-candidate counts, denominators, mean/max distance, per-role/head/split/occupancy arm and executed O-react dodge rows separately. Admission floors are fixed prospectively: ≥0.90 on ordinary and all rows and ≥0.80 on dodge rows, separately per train arm/role/head, for both candidate-only and bounded-residual coverage; no missing candidates and nonzero denominators are required. Move is required for every role, aim for artillery; missing O-dodge classes refuse admission. Cause: keep vocabulary-limited fitting from masquerading as an architecture failure; these floors are engineering thresholds, not empirical teacher-success claims. `train.py` enforces them before measurement, fit and resume; failed checks name arm, role, head, category, metric, denominator, observed value and floor. The coverage receipt records each pass/fail row. Missing aim labels stay masked; absent dodge classes are unavailable evidence, not zero error.
+The loss maps **O's executed** goal and masked aim to the nearest valid candidate (Euclidean distance; first enumerated tie) and retains the full residual. For N2 movement fitting, the detached current spacing drift is subtracted before selecting the label candidate. The model learns CE(family) + CE(member within true family) plus residual SmoothL1 in 100 px units; actual movement SmoothL1 also trains N2 drift. Out-of-bound residual labels are neither clipped nor relabelled as covered. Coverage has two separate readings: candidate-only distance <=20 px and representable by the bounded per-axis residual. It reports no-candidate counts, denominators, mean/max distance, per-role/head/split/occupancy arm and executed O-react dodge rows separately. Admission floors are fixed prospectively: ≥0.90 on ordinary and all rows and ≥0.80 on dodge rows, separately per train arm/role/head, for both candidate-only and bounded-residual coverage; no missing candidates and nonzero denominators are required. Move is required for every role, aim for artillery; missing O-dodge classes refuse admission. Cause: keep vocabulary-limited fitting from masquerading as an architecture failure; these floors are engineering thresholds, not empirical teacher-success claims. `train.py` enforces them before measurement, fit and resume; failed checks name arm, role, head, category, metric, denominator, observed value and floor. The coverage receipt records each pass/fail row. Missing aim labels stay masked; absent dodge classes are unavailable evidence, not zero error.
 
 `coverage.py` reads complete existing trajectories under live cap, lock and measured first-fight projection. It runs on round 0 before timing; later rounds include each student's own full-fight DAgger occupancy. DAgger retains O executed dodges and student history, not oracle history; O acts only on a cloned predecision world. Four windows per fight remain the declared optimization budget, so full-prefix label coverage and the actual fitting sample distribution are different denominators. Coverage reports raw goals and fit-initialization goal-minus-drift targets on identical frames for each arm; after round 0 N2 also reports goal-minus-current-DAgger-checkpoint drift with its checkpoint hash. Native/Python nearest mapping and detached drift subtraction match the loss. Admission binds the coverage receipt and deterministic initialization/warm-start identity. Drift can evolve during optimization; these reports do not prove availability under every later update. The nonlinear source-aware scorer removes the specific collinear hull obstruction; availability still does not prove learnability or fixed-memory sufficiency.
 
@@ -112,3 +112,45 @@ After **every refit round**, coverage → measured matched refit → native pari
 Batch review/disposition is in OWNER_RECHECK_B2BATCH.md; the owner explicitly prohibited PLAN_CURRENT changes for this task. Changed paths are listed only in UNCOMMITTED_B2BATCH.txt. The HEAD-local revision's prior run data/receipts must be archived as bytes before preparing fresh B2 roots; source changes are not waived by config authority.
 
 The historical PROTECTED_SOURCE_BASELINE.json predates a committed Stage B calibrated-parity fix. For this HEAD task, PROTECTED_SOURCE_BASELINE_HEAD_0040.json records the same protected path set at the current HEAD commit; the focused preservation check uses it. Every protected file matched HEAD before/after this batch. The older inventory remains unchanged.
+
+
+## B2 hierarchical candidate heads (owner request, 2026-10-09)
+
+Exact/native generation and the full candidate bank are unchanged. Each type
+has fixed page slots declared in hierarchy.py/h: aim has five occupied slots
+(direct two, lead one, cluster one, splash one); movement has 15 native types
+and 26 page slots. Both learned family heads have 32 output slots, with empty
+slots masked. This exceeds the suggested 10–16 choices because a lossless bank
+with 1,226 candidates cannot fit 16 families of 64 members. No new tool or
+teacher decision is introduced.
+
+Within a type, candidates sort nearest-first in 1e-6 px distance bins, then
+native enumeration index. Every consecutive 64 form a declared subfamily.
+There is no pruning: every original candidate has exactly one (family, member)
+pair. Labels retain the original nearest candidate (first enumeration tie),
+20 px coverage tolerance, and detached N2 drift adjustment. Coverage checks the
+nearest candidate's reachability; partition construction checks the entire
+bank. Family validity and ordering depend only on public geometry.
+
+Inference takes argmax family, then scores at most 64 members in that family;
+member ties select the first original enumeration index. Training additionally
+scores at most 64 members in the label's true family for conditional CE. The
+teacher mapping never enters the family head, recurrent state, or inference
+selection. Aim/move offsets remain bounded at 12/24 px per axis. All five arms
+receive identical heads and parameter counts. Semantic readout type counts
+aggregate pages under the existing family names.
+
+Native replay now appends both 32-slot family logits before residuals and
+checks their categorical parity, as well as the final candidate choice. The
+export carries hierarchy=semantic_pages64_v1; old B2 weights are rejected.
+Near-tie admission remains conservative: a different family that induces a
+non-near-tied member difference refuses float32 parity. Owner bounds are
+unchanged.
+
+Candidate inputs remain lazy, chunked, and streamed at each window row;
+full-bank feature tensors are transient. Autograd retains only selected-family
+features, true-family features, sparse replay logits and small label targets.
+The worker checks peak RSS below 1.5 GiB during live checks and after each
+optimizer step. Test-mode timing uses a separate hier_speed_test directory;
+it does not seal a production training budget. New source/model identities
+require host coverage and a fresh measured production budget before training.
