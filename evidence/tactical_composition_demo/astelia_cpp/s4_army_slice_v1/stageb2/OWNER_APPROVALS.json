@@ -44,6 +44,15 @@
       "by": "Claude",
       "change": "coverage.max_seconds 1800 -> 3600",
       "reason": "hierarchical reachability check makes sampled coverage project 2,576 s; bound is an operational time target set by Claude, not an owner cap"
+    },
+    {
+      "date": "2026-10-09 21:35 EEST",
+      "by": "Claude",
+      "change": "cache.disk_limit_bytes added = 12e9 (was code constant 5e9)",
+      "reason": "prepared cache projected > 5 GB (estimate 4.8 GB); free disk ~26 GB; free-space reserve check unchanged"
     }
-  ]
+  ],
+  "cache": {
+    "disk_limit_bytes": 12000000000
+  }
 }

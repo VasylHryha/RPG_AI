@@ -11,7 +11,10 @@ import torch
 import common as c
 SCHEMA=11
 MAX_CHUNK_BYTES=64*1024**2
-DISK_LIMIT_BYTES=5_000_000_000
+DISK_LIMIT_BYTES=5_000_000_000  # default; live value from OWNER_APPROVALS.json cache.disk_limit_bytes (Claude 2026-10-09)
+def disk_limit():
+    from owner_approvals import load
+    return float(load().get('cache',{}).get('disk_limit_bytes',DISK_LIMIT_BYTES))
 ACTIVE=None
 META_HASHES={}
 BASE_FRAMES=None
@@ -245,7 +248,7 @@ def prepare(root,index,base_frames,deadline,monitor=None):
         frame_projection=written/sum(q['frames'] for q in records)*total_frames
         head_projection=written/sum(q['cached_frames'] for q in records)*total_selected
         projected=max(frame_projection,head_projection)
-        if projected>DISK_LIMIT_BYTES or projected-written>shutil.disk_usage(root).free-2*1024**3:raise RuntimeError('prepared disk projection exceeds 5 GB / reserve')
+        if projected>disk_limit() or projected-written>shutil.disk_usage(root).free-2*1024**3:raise RuntimeError('prepared disk projection exceeds owner cache limit / reserve: projected %.2f GB'%(projected/1e9))
         remaining=1.2*sum(q['build_seconds'] for q in records)/sum(q['frames'] for q in records)*(total_frames-sum(q['frames'] for q in records))
         if remaining>deadline-time.monotonic():raise RuntimeError('prepared build projection exceeds cap')
     result=dict(schema=SCHEMA,records=records,seconds=time.monotonic()-started,compressed_bytes=written if records else 0,
