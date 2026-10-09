@@ -36,8 +36,8 @@ def fit(arm,deadline):
         loaded_tag=None;step_count=0
         for fight,at in order:
             if loaded_tag!=fight['tag']:
-                from data import frames
-                rows=list(frames(LOCAL/fight['raw_file']));contexts=torch.load(out/'stored'/arm/(fight['tag']+'.pt'),weights_only=False);loaded_tag=fight['tag']
+                from training import window_rows
+                rows=window_rows(fight,b['windows_per_fight']);contexts=torch.load(out/'stored'/arm/(fight['tag']+'.pt'),weights_only=False);loaded_tag=fight['tag']
             measured=step(m,opt,rows[at:at+WINDOW],contexts[at],b['class_weights'],deadline);state['steps'].append(dict(epoch=epoch+1,fight=fight['tag'],tick=at,**measured));state['rows']+=measured['decision_rows'];step_count+=1
         if step_count!=b['samples'][arm]['steps_per_epoch']:raise RuntimeError('matched step budget violated')
         diagnostic=evaluate(m,val,b['windows_per_fight'],b['class_weights'],deadline)

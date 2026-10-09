@@ -60,8 +60,19 @@ def tensor(x,dtype=torch.float32):return {k:torch.as_tensor(v,dtype=torch.long i
 
 def forward(model,row,state,previous,cache,next_frame,state_only=False,supervised=False):
     global FORWARD_FLOPS,ENCODER_CALLS,PHASE_RHS
-    x,ids,enemies=pack(row,model.kind,with_candidates=not state_only);x=tensor(x,next(model.parameters()).dtype)
-    if supervised and not state_only:
+    dtype=next(model.parameters()).dtype
+    prepared=row.get('_prepared') if dtype==torch.float32 else None
+    if dtype!=torch.float32 and row.get('_prepared') is not None:raise RuntimeError('float64 parity requires original raw frames')
+    if prepared is None:
+        x,ids,enemies=pack(row,model.kind,with_candidates=not state_only);x=tensor(x,dtype)
+    else:
+        arrays=prepared.arrays(heads=not state_only);ids=arrays['ids'].tolist();enemies=arrays['enemies'].tolist()
+        x=dict(prepared.tensors(dtype,heads=not state_only))
+        for name in ('aim','move'):
+            if not supervised:
+                x.pop('teacher_'+name,None);x.pop(name+'_nearest',None)
+        if model.kind in ('N2','N2J0'):x.pop('move_nearest',None)
+    if supervised and not state_only and prepared is None:
         labs=labels(row,ids,enemies)
         scale=x['pos'].new_tensor([row['width'],row['height']])
         for name in ('aim','move'):x['teacher_'+name]=x['pos'].new_tensor([v[name] for v in labs]).reshape(-1,2)*scale
@@ -100,24 +111,46 @@ def selected_starts(length,windows):
     if len(starts)<=windows:return starts
     return [starts[i] for i in np.linspace(0,len(starts)-1,windows,dtype=int)]
 
+class WindowRows:
+    """Physical-tick indexing without retaining unsampled public prefixes."""
+    def __init__(self,length):self.length,self.rows=length,{}
+    def __len__(self):return self.length
+    def __getitem__(self,index):
+        if isinstance(index,slice):
+            return [self.rows[i] for i in range(*index.indices(self.length))]
+        return self.rows[index]
+
+def window_rows(fight,windows):
+    result=WindowRows(fight['frames'])
+    wanted={i for at in selected_starts(fight['frames'],windows) for i in range(at,min(fight['frames'],at+WINDOW))}
+    n=0
+    for n,row in enumerate(frames(LOCAL/fight['raw_file']),1):
+        if n-1 in wanted:result.rows[n-1]=row
+    if n!=fight['frames']:raise RuntimeError('training raw frame count drift')
+    return result
+
 def stored(model,fight,windows,deadline,path=None):
     """One linear full-fight replay; detached state and encoder at window starts.
     No teacher-forced memory and no prefix replay per training window.
     """
-    start=time.monotonic();rows=list(frames(LOCAL/fight['raw_file']));starts=selected_starts(len(rows),windows)
+    start=time.monotonic();starts=selected_starts(fight['frames'],windows)
     state=initial(model.kind,[],next(model.parameters()).dtype);ids=[];cache=None;next_frame=(0,[]);saved={}
     model.eval()
     if model.kind in ('N1','N1b'):
         # Memoryless arms refresh their encoder each tick; no prefix forward is needed.
         saved={i:(state.clone(),[],None,(0,[])) for i in starts}
         if path:atomic_checkpoint(path,saved)
-        return rows,saved,time.monotonic()-start
+        return window_rows(fight,windows),saved,time.monotonic()-start
+    rows=WindowRows(fight['frames']);wanted={i for at in starts for i in range(at,min(fight['frames'],at+WINDOW))};n=0
     with torch.no_grad():
-        for i,row in enumerate(rows):
+        for i,row in enumerate(frames(LOCAL/fight['raw_file'])):
+            n=i+1
+            if i in wanted:rows.rows[i]=row
             live_check()
             if time.monotonic()>=deadline:raise TimeoutError('cap during stored-state refresh')
             if i in starts:saved[i]=(state.clone(),ids[:],None if cache is None else cache.clone(),next_frame)
             y,state,ids,enemies,cache,next_frame,refresh=forward(model,row,state,ids,cache,next_frame,state_only=True)
+    if n!=fight['frames']:raise RuntimeError('training raw frame count drift')
     if path:atomic_checkpoint(path,saved)
     return rows,saved,time.monotonic()-start
 

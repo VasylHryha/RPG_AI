@@ -29,6 +29,28 @@ def partition(features,valid,head):
         if sorted(seen)!=expected.tolist():raise ValueError('candidate hierarchy loses or duplicates candidates')
     return table,reverse
 
+def partition_batch(features,valid,head):
+    """Same distance bins and ordinal ties, one scatter across all actors."""
+    table=np.full((len(valid),FAMILY_SLOTS,MEMBERS),-1,dtype=np.int64)
+    reverse=np.full(valid.shape+(2,),-1,dtype=np.int64)
+    unit,index=np.nonzero(valid>=.5)
+    if not len(index):return table,reverse
+    types=np.array([t for t,_ in LAYOUT[head]])
+    flags=features[unit,index][:,types]>=.5
+    if np.any(flags.sum(1)!=1):raise ValueError('candidate hierarchy loses or duplicates candidates')
+    group=flags.argmax(1)
+    distance=np.floor(features[unit,index,13]*1e8+.5)
+    order=np.lexsort((index,distance,group,unit))
+    unit,index,group=unit[order],index[order],group[order]
+    first=np.r_[True,(unit[1:]!=unit[:-1])|(group[1:]!=group[:-1])]
+    rank=np.arange(len(index))-np.maximum.accumulate(np.where(first,np.arange(len(index)),0))
+    pages=np.array([p for _,p in LAYOUT[head]])
+    if np.any(rank>=pages[group]*MEMBERS):raise ValueError('hierarchical family overflow')
+    starts=np.r_[0,np.cumsum(pages)[:-1]]
+    family=starts[group]+rank//MEMBERS;member=rank%MEMBERS
+    table[unit,family,member]=index;reverse[unit,index]=np.column_stack((family,member))
+    return table,reverse
+
 def attach(arrays):
     for head in ('aim','move'):
         table,reverse=partition(arrays[head+'_features'],arrays[head+'_valid'],head)

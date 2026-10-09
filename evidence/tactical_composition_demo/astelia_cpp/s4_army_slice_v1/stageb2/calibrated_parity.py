@@ -3,7 +3,7 @@ import runtime as r
 import os,json,subprocess,time,numpy as np,torch
 import parity
 from calibration import fire_classes
-from data import frames
+from runtime import frames # Always full public rows for native/float64 replay.
 from common import BINARY
 
 def check_live(pid=None):return parity.check_live(pid)

@@ -19,8 +19,8 @@ def run(round):
                 if r.sha(fight['raw_file'])!=fight['raw_sha256']:raise RuntimeError('baseline parity raw drift')
                 for arm in r.common.BASELINE_ARMS:
                     weights=r.read(baseline['exports'][arm]['path']);classes=[];cal.BINARY=original
-                    a=cal.replay(weights,r.data.frames(fight['raw_file']),timeout=max(1,parity.DEADLINE-time.monotonic()),fire_classes=classes)
-                    reference=[];cal.BINARY=r.BINARY;b=cal.replay(weights,r.data.frames(fight['raw_file']),timeout=max(1,parity.DEADLINE-time.monotonic()),fire_classes=reference)
+                    a=cal.replay(weights,r.frames(fight['raw_file']),timeout=max(1,parity.DEADLINE-time.monotonic()),fire_classes=classes)
+                    reference=[];cal.BINARY=r.BINARY;b=cal.replay(weights,r.frames(fight['raw_file']),timeout=max(1,parity.DEADLINE-time.monotonic()),fire_classes=reference)
                     equal=len(a)==len(b) and all(np.array_equal(x,y) for x,y in zip(a,b)) and all(np.array_equal(x,y) for x,y in zip(classes,reference))
                     proof['records'].append(dict(arm=arm,fight=fight['tag'],frames=len(a),exactly_equal=equal))
                     if not equal:raise RuntimeError('preserved Stage B decoder changed')

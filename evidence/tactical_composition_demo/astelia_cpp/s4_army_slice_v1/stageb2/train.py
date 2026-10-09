@@ -9,8 +9,8 @@ ROOT=r.LOCAL
 def configure(round):
     local=ROOT/f'round{round}';local.mkdir(parents=True,exist_ok=True)
     for m in (training,r.data):m.LOCAL=local
-    import candidate_cache
-    if (local/'CANDIDATE_CACHE.json').exists():
+    import prepared_cache as candidate_cache
+    if (local/'PREPARED_CACHE.json').exists():
         candidate_cache.activate(local,r.read(local/'INDEX.json'),r.frames)
         r.data.frames=candidate_cache.frames;training.frames=candidate_cache.frames
     training.environment.__globals__['HERE']=r.HERE
@@ -32,7 +32,7 @@ def checked(local):
 def _checked(local):
     b=r.read(local/'TRAIN_BUDGET.json');validate_index(r.read(local/'INDEX.json'))
     coverage=coverage_admission(local)
-    if r.read(local/'CANDIDATE_CACHE.json')!=b['candidate_cache']:raise RuntimeError('candidate cache manifest drift')
+    if r.read(local/'PREPARED_CACHE.json')!=b['candidate_cache']:raise RuntimeError('prepared cache manifest drift')
     if b.get('coverage_sha256')!=r.sha(local/'COVERAGE.json'):raise RuntimeError('coverage admission drift')
     if b['arms']!=list(r.ARMS) or b.get('variant')!=r.VARIANT:raise RuntimeError('arm/variant drift')
     if b['sources']!=r.sources() or b['index_sha256']!=r.sha(local/'INDEX.json'):raise RuntimeError('Stage B training code/index drift; preserve revision')
@@ -94,7 +94,7 @@ def measure(round,test_mode=False):
         for fight in index['fights']:
             if r.sha(fight['raw_file'])!=fight['raw_sha256']:raise RuntimeError('measurement raw drift')
         admission_seconds=time.monotonic()-audit_start
-        from candidate_cache import prepare as cache_prepare,activate as cache_activate,frames as cache_frames
+        from prepared_cache import prepare as cache_prepare,activate as cache_activate,frames as cache_frames
         train_all=[f for f in index['fights'] if f['split']=='train']
         val=[f for f in index['fights'] if f['split']=='validation'];test=[f for f in index['fights'] if f['split']=='test']
         cache_index=index
@@ -124,7 +124,7 @@ def measure(round,test_mode=False):
                     measured.append(value);steps.append(dict(tag=f['tag'],panel=f['panel'],tick=at,**value))
                 diag=training.evaluate(model,[q for q in timing_fights(val) if q['panel']==f['panel']],4,None,deadline)
                 vf=next(q for q in timing_fights(val) if q['panel']==f['panel'])
-                read_start=time.monotonic();list(r.data.frames(f['raw_file']));read_seconds=time.monotonic()-read_start
+                read_start=time.monotonic();training.window_rows(f,4);read_seconds=time.monotonic()-read_start
                 panel_samples[f['panel']]=dict(tag=f['tag'],frames=f['frames'],refresh_seconds_per_frame=refresh/f['frames'],read_seconds_per_frame=read_seconds/f['frames'],step_seconds=max(v['wall_seconds'] for v in measured),validation_prefix_seconds_per_frame=diag['prefix_seconds']/vf['frames'],validation_window_seconds_per_tick=(diag['wall_seconds']-diag['prefix_seconds'])/diag['window_ticks'])
             refresh_total=sum(panel_samples[f['panel']]['refresh_seconds_per_frame']*f['frames'] for f in train)
             read_total=sum(panel_samples[f['panel']]['read_seconds_per_frame']*f['frames'] for f in train)

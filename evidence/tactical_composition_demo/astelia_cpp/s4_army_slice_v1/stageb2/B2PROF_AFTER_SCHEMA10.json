@@ -1,0 +1,1986 @@
+{
+  "status": "TEST_ONLY",
+  "phase": "after",
+  "threads": 1,
+  "nice": 10,
+  "sources": {
+    "build_admission.py": "75fe338c7f5c56cd586d9398a56b2fdc29e6a7d51aa59021ffd2c5b58398a5f5",
+    "s4_army_slice_v1/rev2/a0_build.py": "b87acd5ff6f6836e6e5b223c6d3c9a8fde1709ce15e34348b64a90dd8c01d88e",
+    "s4_army_slice_v1/rev2/a0_common.py": "354f5fa50e7ea59b22d42b11637d7131097466eee4758f2c1710da74d87b2341",
+    "s4_army_slice_v1/rev2/a0_equivalence.py": "4a18f1ccd98b6c18880d6ad6a7b4b5a66388e286dde9157f33e37f27a8a17ff4",
+    "s4_army_slice_v1/rev2/a0_metrics.py": "b21ff3eb7f04a6f138c40becb5d3a7350426d14b43a8600473f523d596505e83",
+    "s4_army_slice_v1/rev2/a0_oracle.cpp": "9c520422d21aaa99967b0dbc9773a2f8c60cda94e1fbfc6a229ccbc1c1cd70e7",
+    "s4_army_slice_v1/rev2/a0_oracle.h": "7430238751a37dc647db3ad48ec50b026719b23fdf8f9732dfbc25c00d9ec641",
+    "s4_army_slice_v1/rev2/a0_run.py": "17f2dd5e4c654aa10086f00183628a3e43d9060797dfdfc22fd2bc4dffef319d",
+    "s4_army_slice_v1/stageb2/b2move_baseline.py": "62309daf6a8b9176997163b0bc78727e4a73ee29c96155d0af02af7a8ae8e7aa",
+    "s4_army_slice_v1/stageb2/b2move_diagnose.py": "7e0430d871245b8f3c4cf05a8eedd31a00ba3e2a760940998fd0510eff94ea0f",
+    "s4_army_slice_v1/stageb2/b2move_sample.py": "481ec758e19425318bd5115366dff046711a8b9705f29f844b2f12ce9d00ef7e",
+    "s4_army_slice_v1/stageb2/baseline.py": "493f5418fa0c344e66a3804ff52233a5e2fa3ebaf7a21f734e756a99a44a1f90",
+    "s4_army_slice_v1/stageb2/baseline_parity.py": "0e9b42eea59da98a78d49a5cbf17b1bf0fa8dc3b9073b4915976eb3e2807f230",
+    "s4_army_slice_v1/stageb2/bounded_json.h": "bb4bf43b51c76fea10885d69ed769624d0ac96f225ea6be0fdb376a9f7ce1fcb",
+    "s4_army_slice_v1/stageb2/build.py": "4dbbc72b63c42544d091b9658e6ebe2cdbab944ca75073a0640050b2947c92b4",
+    "s4_army_slice_v1/stageb2/cache_codec.cpp": "5a21def977425a515ec94303de27ce9c2eecf0fb5e6fdbd0ced796a22ba98df4",
+    "s4_army_slice_v1/stageb2/cache_codec.py": "58f4d8fbb1b9f9045f84391c4ac5c2ced94e658f1b8485bdc203b8155c6b8edc",
+    "s4_army_slice_v1/stageb2/cache_field_diagnostic.py": "9186f3170739ad5bd0b0ad5ff29c81c91f091e0f05b3a4e0514f577aee27dc08",
+    "s4_army_slice_v1/stageb2/calibrated_parity.py": "be52d6be87800adcde011f01adea0c09c5128d33cbc5cf573062b16969ce0d22",
+    "s4_army_slice_v1/stageb2/calibration.py": "ab60638795031ee192364809f9d11e9811e66aa79dfb51fd682f91f962e79305",
+    "s4_army_slice_v1/stageb2/candidate_audit.py": "5f9a88145a7ab8a6626b8609da47237b731a0459387e4a757e67a8f747917e9e",
+    "s4_army_slice_v1/stageb2/candidate_cache.py": "ced76113c44c9665eab18ebddc5755014cfe6225b04108530035b25925e740b0",
+    "s4_army_slice_v1/stageb2/candidates.h": "f12125eaa882ba0f148564f34953baea76d296adda73aab5dd26943781764799",
+    "s4_army_slice_v1/stageb2/candidates.py": "288cbc5e2b79cc3d31a2df09bd4565626bc1965d18353f74eb202e75fdda0073",
+    "s4_army_slice_v1/stageb2/claude_train_cap.py": "7dc9cd51a92c675a519299371a0ba58aa7c32a98ce985d010f0908772942df45",
+    "s4_army_slice_v1/stageb2/collect.py": "f553859dc4bbd91c56d9f79df19e031c28a31cbd0a0c680ca7560eb3bbda961f",
+    "s4_army_slice_v1/stageb2/common.py": "c19eea43e8866eda28459b397d05a90978fe0433fb00d14507fa928133a5bf3c",
+    "s4_army_slice_v1/stageb2/coverage.py": "64a2f8a471ad366a26e3450de9b1f368ad3e40b976918e955f100b29b25ee9de",
+    "s4_army_slice_v1/stageb2/coverage_gate.py": "724c06e48faf19f14a28c15165ac565050f98054bbaa2de15471c0f075baa040",
+    "s4_army_slice_v1/stageb2/dagger.py": "888fdac20927ee0f03203a8526171920d2de573952f378bf0f3c2209aaf45662",
+    "s4_army_slice_v1/stageb2/dagger_driver.h": "2dae9a5b71f4b32a01fd8378ce663c490448ebf7a7220f07ac8261aba14b65a4",
+    "s4_army_slice_v1/stageb2/dagger_schedule.py": "1c8605953f9c62eb9855d8c790200df3bab6e2e5b5d0327c6ad3b79e5ed2f7fc",
+    "s4_army_slice_v1/stageb2/data.py": "e5df22703a295183d6235210f8ef8cb30ed1945e37340bad6540801b3fd10604",
+    "s4_army_slice_v1/stageb2/diagnose.py": "a83a43242b872b681e1c527ab6d825401bf935bbb42fd28150e658644efbac2f",
+    "s4_army_slice_v1/stageb2/disk_policy.py": "446d161dbd3818fdce65a8b9a9206dd4b97eb82bf325cfb3e3a6fe9ebac27742",
+    "s4_army_slice_v1/stageb2/dodge_metrics.py": "b3a0067ba4faaa4923a53c60604743becc4a39b618fe7a759d4a84ea6d0e2515",
+    "s4_army_slice_v1/stageb2/enable_dodge.py": "0565ccaf0337716026b548d7efcc1d7d829f3bd46cd86f9e025f43b653c93324",
+    "s4_army_slice_v1/stageb2/execution.py": "b90bd66de283031469b373461cf04232c5320000c80eaef0aca83f8f8fe53a32",
+    "s4_army_slice_v1/stageb2/fixture_build.py": "8677471d307652a8eefec2901ab18b3b601c365b11fff4590a81c9abbd7e573b",
+    "s4_army_slice_v1/stageb2/hazard_metrics.h": "26781757d1b0bd6cb177bfcf2165bab73dab110d13d43033ff6d55daa55f23e2",
+    "s4_army_slice_v1/stageb2/hierarchy.h": "e12c34b7beab375ae62fde318098f99346cc5668f9685c142ca0dc3f07bd5801",
+    "s4_army_slice_v1/stageb2/hierarchy.py": "c6d37488af9f2df324854f847c4762d5bf305815e963d822ddd611323e131857",
+    "s4_army_slice_v1/stageb2/initialization.py": "118c7228e1c66c930c3d59a31e4135a3d5e7b979d3b6931e7cd9a19a8e710497",
+    "s4_army_slice_v1/stageb2/jobs.py": "a25f909f49e3bf78f137ab40f624fdce3706514fd2bfc433cc6666eb8084176c",
+    "s4_army_slice_v1/stageb2/loss.py": "88524683dcd5f330a2800fb193d9f97300576feab1a59b3192dd4421221f2e65",
+    "s4_army_slice_v1/stageb2/metrics.py": "e1e30a70bbd07130663cff3b53d65efae8f703c75ed97492925688eab2c404b8",
+    "s4_army_slice_v1/stageb2/models.py": "0bbd1248549c9a99ebf3e6b7928830b93d5da730e9a57cb31164ba10f8d84379",
+    "s4_army_slice_v1/stageb2/movement.h": "75ae3c4d6648f79ac6533fcd74b519056bb9940dc964ec3930a74de33db2b883",
+    "s4_army_slice_v1/stageb2/movement.py": "dcee9dd9a91ef3f1519a0a72a8383b49cfe361648a199564b3f196d2aab58892",
+    "s4_army_slice_v1/stageb2/native_cache_codec.py": "4431374f3f8b7f891ca7ac5cebbb145f5e7b9cb0cdca031fc7c352780a7d33f1",
+    "s4_army_slice_v1/stageb2/native_candidates.cpp": "8c763c63d6d95c57ddb259cf2f3e9fc401df00e3669dcca1e1e31e4b12adc1d3",
+    "s4_army_slice_v1/stageb2/native_candidates.py": "e580fc25777928b5de7c953fb17bf858810db4c3b18ff7c0db840fd25303dc61",
+    "s4_army_slice_v1/stageb2/native_fixture.cpp": "8871a0fd37490e211de017942787b85a2604a1c6cfee70f06ef05127c3682faf",
+    "s4_army_slice_v1/stageb2/native_patch.py": "07e2f7681ef2e02ff9789ee6c0fa6b37998fae789bb979bf60abe9ea5bd17ea2",
+    "s4_army_slice_v1/stageb2/oracle.py": "09935507546055ec5fc8677d986456438315c37bce5a8e726cafd13042c84cb0",
+    "s4_army_slice_v1/stageb2/owner_approvals.py": "38b40ad068f7ab996a04aadffc340a5bb2c4bfee1987ce92f25b9553ebe53131",
+    "s4_army_slice_v1/stageb2/parity.py": "d567f4dda0354c74bb01e8d1a5de4dbba568b503818f26d09df160cfb536df3e",
+    "s4_army_slice_v1/stageb2/parity_run.py": "71454b1a49adb8d876521df85baa736f2b15b9236845e39db0af5166d1ef4e6f",
+    "s4_army_slice_v1/stageb2/prepared_cache.py": "53a50c3f19ba18605eaae48460afe1e94f3388516c1377713ea642daa95df5f6",
+    "s4_army_slice_v1/stageb2/profile_training.py": "4395a82adc1a38b69b62afa69310ce7b707001e010c2ce7019b9b369c908f980",
+    "s4_army_slice_v1/stageb2/public_velocity.py": "5773cbccf41abeb8dc0c5c24751c4553cd7d072b31edd1beddc5bfc6fcd05744",
+    "s4_army_slice_v1/stageb2/readiness.py": "b10d9a0f48587a92eb06d3bcab02034488ec95359977e2445042fcc6be1f2cfa",
+    "s4_army_slice_v1/stageb2/readout.py": "ecb7fb5595942ef1043ceb00e3dc517842ff066bc3bdcb6d21df256e4a0c70bc",
+    "s4_army_slice_v1/stageb2/readout_run.py": "87a1fe1f05cd521e09f6b591afeedb68225b4b1707c350247e66e823d769d6f2",
+    "s4_army_slice_v1/stageb2/recording.py": "daaf5eb7fe8460333a59055434e0ff332f766aeb0795b9e41762e8b4347d1b84",
+    "s4_army_slice_v1/stageb2/requirements.lock": "889552de8f3d70c461b41d9014b694cdc2f2562b1c231fa6f6cba5ba20b95794",
+    "s4_army_slice_v1/stageb2/runtime.py": "040798a618c81146f473909959b12c3bd4b3a9cc6cb66f491ed50ab68493f363",
+    "s4_army_slice_v1/stageb2/shadow.cpp": "06edf4497e5a4f8a502e14050cc759318a7aee432acc66e6655d0166e88dc5d8",
+    "s4_army_slice_v1/stageb2/shadow.h": "c02d423d23996ffc71018f5c6ea9f9d80022b54fdd8aeed7a86cd2ed4b8e619b",
+    "s4_army_slice_v1/stageb2/stagea.cpp": "a2136aff079f98dab8d1ddc5d873ef95da13db2ab4b76c1e77efbda12ee87c91",
+    "s4_army_slice_v1/stageb2/stagea.h": "ebd066daa56826e78444cfa164cddd8c4579cfc7b97313eba230257ff9690f51",
+    "s4_army_slice_v1/stageb2/streaming.py": "c1eeb6ced9a175b9a202b5a7cf1f441f6ee8e36823758eff46e04aea42b2b07b",
+    "s4_army_slice_v1/stageb2/test_b2batch.py": "61761b2073c7a3a19b6e73ae3808f1405af50f87b9b8871186b7ebe16effd797",
+    "s4_army_slice_v1/stageb2/test_b2cache.py": "d1a70a1d969e367e008b5dc067e7260b531c013898056186c6221274a41ffca1",
+    "s4_army_slice_v1/stageb2/test_b2hier.py": "727a8b65fe0600b7b39b2d5bad51c0d1518a66950fb5b36b1c69fd9d8fbec9c3",
+    "s4_army_slice_v1/stageb2/test_b2move.py": "d45ec5e66dc27ac1f1231959ed6c3da951eed9836c481d8c54a15c83cbb7f48d",
+    "s4_army_slice_v1/stageb2/test_b2prof.py": "4570802b8675a82f8da49946f97627b71ad82a2f28b0ef147d0c4812d97ed763",
+    "s4_army_slice_v1/stageb2/test_b2speed.py": "c0fcde5dfe3a25707b4cbc892ed2014f234a5c7ad82cca50139ae1def9c158f7",
+    "s4_army_slice_v1/stageb2/test_stageb2.py": "4247c7513dfd2191a15a83dfaaec8455b0c41cdc7492139903462e78607d82e8",
+    "s4_army_slice_v1/stageb2/tools.h": "062538dfb2295b750a45b5cc88f0ec76a6cc9a816abdc77357f3a67c7d081742",
+    "s4_army_slice_v1/stageb2/tools.py": "1aa4a9e44f747986b844089c46d901d3e7050239f513c57d9807a4c1c20e718d",
+    "s4_army_slice_v1/stageb2/tools_fixture.cpp": "92b38a440be6769993e41f64f174055a1edc4730c2e5aa08a0ccdd873755f987",
+    "s4_army_slice_v1/stageb2/train.py": "c571f8cfcf593eb62973f77c32dea97af8b19064691e7abca868370b880da415",
+    "s4_army_slice_v1/stageb2/training.py": "bcca6ab648d538776eb4021eae2c34a86bc08aca41b0710c3e5ebe81f61c8912",
+    "s4_army_slice_v1/stageb2/training_control.py": "4decb0fc0b6172a7dcc57cdc337ebebc1db406df6dc66a0bc405cfadbab179ed",
+    "s4_army_slice_v1/stageb2/worker.py": "85457c22b58fa030ec2612f8739673fc857f089a501c5e466f5a08c4a79a8918",
+    "s4_net_slice_v1/process_gate.py": "f3e4de5b31c8a51862d55e8cd57dd1bf97661f3844cb185f68bf995fcf557abd"
+  },
+  "samples": {
+    "N1": {
+      "steps": [
+        {
+          "tag": "train_0019",
+          "panel": "C3",
+          "tick": 0,
+          "window_ticks": 90,
+          "wall_seconds": 1.4036972089961637,
+          "cpu_seconds": 1.2755010000000055,
+          "rss_bytes": 910508032,
+          "decision_rows": 4500,
+          "loss": 15.324590682983398
+        },
+        {
+          "tag": "train_0019",
+          "panel": "C3",
+          "tick": 2070,
+          "window_ticks": 31,
+          "wall_seconds": 0.11170033298549242,
+          "cpu_seconds": 0.08910500000000354,
+          "rss_bytes": 910508032,
+          "decision_rows": 27,
+          "loss": 10.047060012817383
+        },
+        {
+          "tag": "train_0049",
+          "panel": "regular",
+          "tick": 0,
+          "window_ticks": 90,
+          "wall_seconds": 1.139627583004767,
+          "cpu_seconds": 1.0936489999999992,
+          "rss_bytes": 910508032,
+          "decision_rows": 4500,
+          "loss": 11.66614055633545
+        },
+        {
+          "tag": "train_0049",
+          "panel": "regular",
+          "tick": 1350,
+          "window_ticks": 90,
+          "wall_seconds": 0.4414407919975929,
+          "cpu_seconds": 0.42981400000000747,
+          "rss_bytes": 910508032,
+          "decision_rows": 1941,
+          "loss": 6.882744312286377
+        }
+      ],
+      "hotspots": [
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/training.py",
+          "line": 157,
+          "name": "step",
+          "calls": 1,
+          "self_seconds": 0.008838755,
+          "cumulative_seconds": 1.4058039580000001
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/training.py",
+          "line": 61,
+          "name": "forward",
+          "calls": 90,
+          "self_seconds": 0.003931962000000001,
+          "cumulative_seconds": 1.165953499
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/prepared_cache.py",
+          "line": 94,
+          "name": "load",
+          "calls": 270,
+          "self_seconds": 0.007443392,
+          "cumulative_seconds": 0.575659162
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/prepared_cache.py",
+          "line": 121,
+          "name": "arrays",
+          "calls": 90,
+          "self_seconds": 0.00041482700000000005,
+          "cumulative_seconds": 0.564384919
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/models.py",
+          "line": 30,
+          "name": "tick",
+          "calls": 90,
+          "self_seconds": 0.017099084,
+          "cumulative_seconds": 0.41008396100000005
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/models.py",
+          "line": 87,
+          "name": "choose",
+          "calls": 180,
+          "self_seconds": 0.037727971,
+          "cumulative_seconds": 0.354625089
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/cache_codec.py",
+          "line": 58,
+          "name": "expand_banks",
+          "calls": 90,
+          "self_seconds": 0.06258329600000001,
+          "cumulative_seconds": 0.316808129
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/models.py",
+          "line": 104,
+          "name": "score",
+          "calls": 360,
+          "self_seconds": 0.13664246800000002,
+          "cumulative_seconds": 0.273282379
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/native_cache_codec.py",
+          "line": 25,
+          "name": "bank",
+          "calls": 180,
+          "self_seconds": 0.174619099,
+          "cumulative_seconds": 0.192289077
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/prepared_cache.py",
+          "line": 122,
+          "name": "tensors",
+          "calls": 90,
+          "self_seconds": 0.09568520700000001,
+          "cumulative_seconds": 0.180967375
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/torch/_tensor.py",
+          "line": 566,
+          "name": "backward",
+          "calls": 1,
+          "self_seconds": 1.4042e-05,
+          "cumulative_seconds": 0.17635583400000002
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/torch/autograd/__init__.py",
+          "line": 255,
+          "name": "backward",
+          "calls": 1,
+          "self_seconds": 4.1583000000000005e-05,
+          "cumulative_seconds": 0.17634158300000002
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/torch/autograd/graph.py",
+          "line": 1059,
+          "name": "_engine_run_backward",
+          "calls": 1,
+          "self_seconds": 2.5539e-05,
+          "cumulative_seconds": 0.175934166
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "name": "<method 'run_backward' of 'torch._C._EngineBase' objects>",
+          "calls": 1,
+          "self_seconds": 0.17589870900000001,
+          "cumulative_seconds": 0.17589870900000001
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/cache_codec.py",
+          "line": 87,
+          "name": "decode_frame",
+          "calls": 90,
+          "self_seconds": 0.022936904,
+          "cumulative_seconds": 0.117776745
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/numpy/lib/_npyio_impl.py",
+          "line": 239,
+          "name": "__getitem__",
+          "calls": 12,
+          "self_seconds": 9.2377e-05,
+          "cumulative_seconds": 0.114895749
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/numpy/lib/_format_impl.py",
+          "line": 780,
+          "name": "read_array",
+          "calls": 12,
+          "self_seconds": 0.009894472000000001,
+          "cumulative_seconds": 0.113987666
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/numpy/lib/_format_impl.py",
+          "line": 998,
+          "name": "_read_bytes",
+          "calls": 1443,
+          "self_seconds": 0.001166411,
+          "cumulative_seconds": 0.102260951
+        },
+        {
+          "file": "/Users/new/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/python3.11/zipfile.py",
+          "line": 957,
+          "name": "read",
+          "calls": 1455,
+          "self_seconds": 0.001778548,
+          "cumulative_seconds": 0.10109467800000001
+        },
+        {
+          "file": "/Users/new/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/python3.11/zipfile.py",
+          "line": 1039,
+          "name": "_read1",
+          "calls": 1413,
+          "self_seconds": 0.005654463,
+          "cumulative_seconds": 0.099073958
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/native_cache_codec.py",
+          "line": 39,
+          "name": "plane",
+          "calls": 4320,
+          "self_seconds": 0.057743614000000006,
+          "cumulative_seconds": 0.077691248
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "name": "<method 'decompress' of 'zlib.Decompress' objects>",
+          "calls": 1413,
+          "self_seconds": 0.07676339600000001,
+          "cumulative_seconds": 0.07676339600000001
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "name": "<built-in method torch.tanh>",
+          "calls": 900,
+          "self_seconds": 0.074295708,
+          "cumulative_seconds": 0.074295708
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/numpy/_core/fromnumeric.py",
+          "line": 1993,
+          "name": "nonzero",
+          "calls": 360,
+          "self_seconds": 0.00035142400000000003,
+          "cumulative_seconds": 0.071469746
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/numpy/_core/fromnumeric.py",
+          "line": 48,
+          "name": "_wrapfunc",
+          "calls": 360,
+          "self_seconds": 0.00040556,
+          "cumulative_seconds": 0.071118322
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "name": "<method 'nonzero' of 'numpy.ndarray' objects>",
+          "calls": 360,
+          "self_seconds": 0.07058979400000001,
+          "cumulative_seconds": 0.07058979400000001
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "name": "<built-in method torch._C._nn.linear>",
+          "calls": 2340,
+          "self_seconds": 0.044060541,
+          "cumulative_seconds": 0.044060541
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/loss.py",
+          "line": 22,
+          "name": "objective",
+          "calls": 90,
+          "self_seconds": 0.010008609,
+          "cumulative_seconds": 0.043728542
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/torch/nn/modules/module.py",
+          "line": 1779,
+          "name": "_wrapped_call_impl",
+          "calls": 1620,
+          "self_seconds": 0.0016615660000000002,
+          "cumulative_seconds": 0.035905932
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/torch/nn/modules/module.py",
+          "line": 1787,
+          "name": "_call_impl",
+          "calls": 1620,
+          "self_seconds": 0.002237751,
+          "cumulative_seconds": 0.034244366000000005
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/torch/nn/modules/linear.py",
+          "line": 130,
+          "name": "forward",
+          "calls": 1620,
+          "self_seconds": 0.002821051,
+          "cumulative_seconds": 0.031070924000000003
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "name": "<method 'clone' of 'torch._C.TensorBase' objects>",
+          "calls": 3240,
+          "self_seconds": 0.027994213,
+          "cumulative_seconds": 0.027994213
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "name": "<built-in method torch.as_tensor>",
+          "calls": 3060,
+          "self_seconds": 0.024553012000000003,
+          "cumulative_seconds": 0.024553012000000003
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/native_cache_codec.py",
+          "line": 23,
+          "name": "pointer",
+          "calls": 20340,
+          "self_seconds": 0.013952809,
+          "cumulative_seconds": 0.021870936
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/models.py",
+          "line": 29,
+          "name": "encode",
+          "calls": 90,
+          "self_seconds": 0.000575863,
+          "cumulative_seconds": 0.020692541000000002
+        }
+      ],
+      "panel_samples": {
+        "C3": {
+          "tag": "train_0019",
+          "frames": 2101,
+          "refresh_seconds_per_frame": 7.503686767773635e-05,
+          "read_seconds_per_frame": 0.00010534420133839188,
+          "step_seconds": 1.4036972089961637,
+          "validation_prefix_seconds_per_frame": 0.00015467998785046992,
+          "validation_window_seconds_per_tick": 0.00804201008541115
+        },
+        "regular": {
+          "tag": "train_0049",
+          "frames": 1440,
+          "refresh_seconds_per_frame": 0.00011088234930664638,
+          "read_seconds_per_frame": 0.00010270115694260716,
+          "step_seconds": 1.139627583004767,
+          "validation_prefix_seconds_per_frame": 0.00018071434984951088,
+          "validation_window_seconds_per_tick": 0.007949028310880143
+        }
+      },
+      "per_step_seconds": 1.4036972089961637,
+      "refresh_seconds_per_epoch": 8.555328441450637,
+      "read_seconds_per_epoch": 10.701805275398272,
+      "validation_seconds": 134.73630953545347,
+      "epoch_seconds": 582.050980051763,
+      "tail_seconds": 407.85980925008874
+    },
+    "N1b": {
+      "steps": [
+        {
+          "tag": "train_0019",
+          "panel": "C3",
+          "tick": 0,
+          "window_ticks": 90,
+          "wall_seconds": 1.1308877090050373,
+          "cpu_seconds": 1.1224179999999961,
+          "rss_bytes": 910508032,
+          "decision_rows": 4500,
+          "loss": 15.324590682983398
+        },
+        {
+          "tag": "train_0019",
+          "panel": "C3",
+          "tick": 2070,
+          "window_ticks": 31,
+          "wall_seconds": 0.07256516598863527,
+          "cpu_seconds": 0.07237299999999891,
+          "rss_bytes": 910508032,
+          "decision_rows": 27,
+          "loss": 10.047060012817383
+        },
+        {
+          "tag": "train_0049",
+          "panel": "regular",
+          "tick": 0,
+          "window_ticks": 90,
+          "wall_seconds": 1.25297658299678,
+          "cpu_seconds": 1.0841219999999936,
+          "rss_bytes": 910508032,
+          "decision_rows": 4500,
+          "loss": 11.66614055633545
+        },
+        {
+          "tag": "train_0049",
+          "panel": "regular",
+          "tick": 1350,
+          "window_ticks": 90,
+          "wall_seconds": 0.5044319170119707,
+          "cpu_seconds": 0.42851000000000283,
+          "rss_bytes": 910508032,
+          "decision_rows": 1941,
+          "loss": 7.176916599273682
+        }
+      ],
+      "hotspots": [
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/training.py",
+          "line": 157,
+          "name": "step",
+          "calls": 1,
+          "self_seconds": 0.0062915340000000005,
+          "cumulative_seconds": 1.131185959
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/training.py",
+          "line": 61,
+          "name": "forward",
+          "calls": 90,
+          "self_seconds": 0.0026678590000000003,
+          "cumulative_seconds": 1.013449622
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/prepared_cache.py",
+          "line": 94,
+          "name": "load",
+          "calls": 270,
+          "self_seconds": 0.006376321000000001,
+          "cumulative_seconds": 0.5386788370000001
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/prepared_cache.py",
+          "line": 121,
+          "name": "arrays",
+          "calls": 90,
+          "self_seconds": 0.00028125400000000004,
+          "cumulative_seconds": 0.529082795
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/models.py",
+          "line": 30,
+          "name": "tick",
+          "calls": 90,
+          "self_seconds": 0.017163482,
+          "cumulative_seconds": 0.326276581
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/cache_codec.py",
+          "line": 58,
+          "name": "expand_banks",
+          "calls": 90,
+          "self_seconds": 0.057771443000000006,
+          "cumulative_seconds": 0.29486412500000003
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/models.py",
+          "line": 87,
+          "name": "choose",
+          "calls": 180,
+          "self_seconds": 0.030320633000000003,
+          "cumulative_seconds": 0.285437534
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/models.py",
+          "line": 104,
+          "name": "score",
+          "calls": 360,
+          "self_seconds": 0.11307779300000001,
+          "cumulative_seconds": 0.22383799100000001
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/native_cache_codec.py",
+          "line": 25,
+          "name": "bank",
+          "calls": 180,
+          "self_seconds": 0.161106716,
+          "cumulative_seconds": 0.17858099900000002
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/prepared_cache.py",
+          "line": 122,
+          "name": "tensors",
+          "calls": 90,
+          "self_seconds": 0.084728669,
+          "cumulative_seconds": 0.151626339
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/cache_codec.py",
+          "line": 87,
+          "name": "decode_frame",
+          "calls": 90,
+          "self_seconds": 0.021229144000000002,
+          "cumulative_seconds": 0.113329753
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/numpy/lib/_npyio_impl.py",
+          "line": 239,
+          "name": "__getitem__",
+          "calls": 12,
+          "self_seconds": 6.3371e-05,
+          "cumulative_seconds": 0.10900554000000001
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/numpy/lib/_format_impl.py",
+          "line": 780,
+          "name": "read_array",
+          "calls": 12,
+          "self_seconds": 0.009276573,
+          "cumulative_seconds": 0.108252125
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/numpy/lib/_format_impl.py",
+          "line": 998,
+          "name": "_read_bytes",
+          "calls": 1443,
+          "self_seconds": 0.0010797830000000002,
+          "cumulative_seconds": 0.097381295
+        },
+        {
+          "file": "/Users/new/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/python3.11/zipfile.py",
+          "line": 957,
+          "name": "read",
+          "calls": 1455,
+          "self_seconds": 0.001670241,
+          "cumulative_seconds": 0.09629441100000001
+        },
+        {
+          "file": "/Users/new/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/python3.11/zipfile.py",
+          "line": 1039,
+          "name": "_read1",
+          "calls": 1413,
+          "self_seconds": 0.005366851000000001,
+          "cumulative_seconds": 0.09439446200000001
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/native_cache_codec.py",
+          "line": 39,
+          "name": "plane",
+          "calls": 4320,
+          "self_seconds": 0.05604635,
+          "cumulative_seconds": 0.075428062
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/torch/_tensor.py",
+          "line": 566,
+          "name": "backward",
+          "calls": 1,
+          "self_seconds": 3.751e-06,
+          "cumulative_seconds": 0.073921709
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/torch/autograd/__init__.py",
+          "line": 255,
+          "name": "backward",
+          "calls": 1,
+          "self_seconds": 1.6083000000000002e-05,
+          "cumulative_seconds": 0.073917833
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/torch/autograd/graph.py",
+          "line": 1059,
+          "name": "_engine_run_backward",
+          "calls": 1,
+          "self_seconds": 2.1665e-05,
+          "cumulative_seconds": 0.07388362500000001
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "name": "<method 'run_backward' of 'torch._C._EngineBase' objects>",
+          "calls": 1,
+          "self_seconds": 0.073853792,
+          "cumulative_seconds": 0.073853792
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "name": "<method 'decompress' of 'zlib.Decompress' objects>",
+          "calls": 1413,
+          "self_seconds": 0.072970673,
+          "cumulative_seconds": 0.072970673
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/numpy/_core/fromnumeric.py",
+          "line": 1993,
+          "name": "nonzero",
+          "calls": 360,
+          "self_seconds": 0.00024113400000000003,
+          "cumulative_seconds": 0.06680933800000001
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/numpy/_core/fromnumeric.py",
+          "line": 48,
+          "name": "_wrapfunc",
+          "calls": 360,
+          "self_seconds": 0.000287149,
+          "cumulative_seconds": 0.066568204
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "name": "<method 'nonzero' of 'numpy.ndarray' objects>",
+          "calls": 360,
+          "self_seconds": 0.06618375500000001,
+          "cumulative_seconds": 0.06618375500000001
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "name": "<built-in method torch.tanh>",
+          "calls": 900,
+          "self_seconds": 0.064235606,
+          "cumulative_seconds": 0.064235606
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/loss.py",
+          "line": 22,
+          "name": "objective",
+          "calls": 90,
+          "self_seconds": 0.008575016000000001,
+          "cumulative_seconds": 0.034358295000000004
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "name": "<built-in method torch._C._nn.linear>",
+          "calls": 2340,
+          "self_seconds": 0.029979937,
+          "cumulative_seconds": 0.029979937
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/torch/nn/modules/module.py",
+          "line": 1779,
+          "name": "_wrapped_call_impl",
+          "calls": 1620,
+          "self_seconds": 0.001085091,
+          "cumulative_seconds": 0.023379166
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/torch/nn/modules/module.py",
+          "line": 1787,
+          "name": "_call_impl",
+          "calls": 1620,
+          "self_seconds": 0.002156064,
+          "cumulative_seconds": 0.022294075
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/native_cache_codec.py",
+          "line": 23,
+          "name": "pointer",
+          "calls": 20340,
+          "self_seconds": 0.01326674,
+          "cumulative_seconds": 0.022101468000000003
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "name": "<method 'clone' of 'torch._C.TensorBase' objects>",
+          "calls": 3240,
+          "self_seconds": 0.021144895,
+          "cumulative_seconds": 0.021144895
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/torch/nn/modules/linear.py",
+          "line": 130,
+          "name": "forward",
+          "calls": 1620,
+          "self_seconds": 0.0023131140000000002,
+          "cumulative_seconds": 0.019514348
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "name": "<built-in method torch.as_tensor>",
+          "calls": 3060,
+          "self_seconds": 0.018630729000000002,
+          "cumulative_seconds": 0.018630729000000002
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/numpy/_core/fromnumeric.py",
+          "line": 3287,
+          "name": "prod",
+          "calls": 4320,
+          "self_seconds": 0.002018179,
+          "cumulative_seconds": 0.014218527000000002
+        }
+      ],
+      "panel_samples": {
+        "C3": {
+          "tag": "train_0019",
+          "frames": 2101,
+          "refresh_seconds_per_frame": 5.59836582556413e-05,
+          "read_seconds_per_frame": 0.00011853488387233235,
+          "step_seconds": 1.1308877090050373,
+          "validation_prefix_seconds_per_frame": 0.00011155017946223502,
+          "validation_window_seconds_per_tick": 0.008368893384289667
+        },
+        "regular": {
+          "tag": "train_0049",
+          "frames": 1440,
+          "refresh_seconds_per_frame": 0.000103529311106993,
+          "read_seconds_per_frame": 0.00010855190972102315,
+          "step_seconds": 1.25297658299678,
+          "validation_prefix_seconds_per_frame": 0.00017982629956925106,
+          "validation_window_seconds_per_tick": 0.00905637139425007
+        }
+      },
+      "per_step_seconds": 1.25297658299678,
+      "refresh_seconds_per_epoch": 6.89707699121915,
+      "read_seconds_per_epoch": 11.86861272253176,
+      "validation_seconds": 140.10906618223672,
+      "epoch_seconds": 530.525932696939,
+      "tail_seconds": 424.05774154554047
+    },
+    "N1r": {
+      "steps": [
+        {
+          "tag": "train_0019",
+          "panel": "C3",
+          "tick": 0,
+          "window_ticks": 90,
+          "wall_seconds": 1.106476457993267,
+          "cpu_seconds": 1.106669999999994,
+          "rss_bytes": 910508032,
+          "decision_rows": 4500,
+          "loss": 15.401241302490234
+        },
+        {
+          "tag": "train_0019",
+          "panel": "C3",
+          "tick": 2070,
+          "window_ticks": 31,
+          "wall_seconds": 0.06865895798546262,
+          "cpu_seconds": 0.06827899999998976,
+          "rss_bytes": 910508032,
+          "decision_rows": 27,
+          "loss": 10.055499076843262
+        },
+        {
+          "tag": "train_0049",
+          "panel": "regular",
+          "tick": 0,
+          "window_ticks": 90,
+          "wall_seconds": 1.0869077499955893,
+          "cpu_seconds": 1.0696590000000015,
+          "rss_bytes": 1010647040,
+          "decision_rows": 4500,
+          "loss": 11.650032997131348
+        },
+        {
+          "tag": "train_0049",
+          "panel": "regular",
+          "tick": 1350,
+          "window_ticks": 90,
+          "wall_seconds": 0.4311519579787273,
+          "cpu_seconds": 0.42316499999999735,
+          "rss_bytes": 1011580928,
+          "decision_rows": 1941,
+          "loss": 6.766167163848877
+        }
+      ],
+      "hotspots": [
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/training.py",
+          "line": 157,
+          "name": "step",
+          "calls": 1,
+          "self_seconds": 0.006184525000000001,
+          "cumulative_seconds": 1.106744959
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/training.py",
+          "line": 61,
+          "name": "forward",
+          "calls": 90,
+          "self_seconds": 0.00254505,
+          "cumulative_seconds": 0.988507212
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/prepared_cache.py",
+          "line": 94,
+          "name": "load",
+          "calls": 270,
+          "self_seconds": 0.006015249,
+          "cumulative_seconds": 0.5260472970000001
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/prepared_cache.py",
+          "line": 121,
+          "name": "arrays",
+          "calls": 90,
+          "self_seconds": 0.000274907,
+          "cumulative_seconds": 0.516771698
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/models.py",
+          "line": 30,
+          "name": "tick",
+          "calls": 90,
+          "self_seconds": 0.012423655,
+          "cumulative_seconds": 0.315411416
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/cache_codec.py",
+          "line": 58,
+          "name": "expand_banks",
+          "calls": 90,
+          "self_seconds": 0.057214908,
+          "cumulative_seconds": 0.288045331
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/models.py",
+          "line": 87,
+          "name": "choose",
+          "calls": 180,
+          "self_seconds": 0.029335178000000003,
+          "cumulative_seconds": 0.278408792
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/models.py",
+          "line": 104,
+          "name": "score",
+          "calls": 360,
+          "self_seconds": 0.11136976200000001,
+          "cumulative_seconds": 0.21839729600000002
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/native_cache_codec.py",
+          "line": 25,
+          "name": "bank",
+          "calls": 180,
+          "self_seconds": 0.157053835,
+          "cumulative_seconds": 0.172874626
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/prepared_cache.py",
+          "line": 122,
+          "name": "tensors",
+          "calls": 90,
+          "self_seconds": 0.084068948,
+          "cumulative_seconds": 0.150033838
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/cache_codec.py",
+          "line": 87,
+          "name": "decode_frame",
+          "calls": 90,
+          "self_seconds": 0.02083453,
+          "cumulative_seconds": 0.11079462100000001
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/numpy/lib/_npyio_impl.py",
+          "line": 239,
+          "name": "__getitem__",
+          "calls": 12,
+          "self_seconds": 5.6964000000000006e-05,
+          "cumulative_seconds": 0.106703667
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/numpy/lib/_format_impl.py",
+          "line": 780,
+          "name": "read_array",
+          "calls": 12,
+          "self_seconds": 0.008991233000000001,
+          "cumulative_seconds": 0.105974125
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/numpy/lib/_format_impl.py",
+          "line": 998,
+          "name": "_read_bytes",
+          "calls": 1443,
+          "self_seconds": 0.0010805040000000001,
+          "cumulative_seconds": 0.09556671200000001
+        },
+        {
+          "file": "/Users/new/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/python3.11/zipfile.py",
+          "line": 957,
+          "name": "read",
+          "calls": 1455,
+          "self_seconds": 0.001623621,
+          "cumulative_seconds": 0.09450185900000001
+        },
+        {
+          "file": "/Users/new/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/python3.11/zipfile.py",
+          "line": 1039,
+          "name": "_read1",
+          "calls": 1413,
+          "self_seconds": 0.004999972,
+          "cumulative_seconds": 0.092643891
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/torch/_tensor.py",
+          "line": 566,
+          "name": "backward",
+          "calls": 1,
+          "self_seconds": 3.1260000000000002e-06,
+          "cumulative_seconds": 0.075738708
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/torch/autograd/__init__.py",
+          "line": 255,
+          "name": "backward",
+          "calls": 1,
+          "self_seconds": 1.4916e-05,
+          "cumulative_seconds": 0.075735416
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/torch/autograd/graph.py",
+          "line": 1059,
+          "name": "_engine_run_backward",
+          "calls": 1,
+          "self_seconds": 2.1168e-05,
+          "cumulative_seconds": 0.075702209
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "name": "<method 'run_backward' of 'torch._C._EngineBase' objects>",
+          "calls": 1,
+          "self_seconds": 0.075673583,
+          "cumulative_seconds": 0.075673583
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/native_cache_codec.py",
+          "line": 39,
+          "name": "plane",
+          "calls": 4320,
+          "self_seconds": 0.054595265000000004,
+          "cumulative_seconds": 0.073664412
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "name": "<method 'decompress' of 'zlib.Decompress' objects>",
+          "calls": 1413,
+          "self_seconds": 0.071862566,
+          "cumulative_seconds": 0.071862566
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/numpy/_core/fromnumeric.py",
+          "line": 1993,
+          "name": "nonzero",
+          "calls": 360,
+          "self_seconds": 0.00022655,
+          "cumulative_seconds": 0.066516502
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/numpy/_core/fromnumeric.py",
+          "line": 48,
+          "name": "_wrapfunc",
+          "calls": 360,
+          "self_seconds": 0.00026947,
+          "cumulative_seconds": 0.066289952
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "name": "<method 'nonzero' of 'numpy.ndarray' objects>",
+          "calls": 360,
+          "self_seconds": 0.065942025,
+          "cumulative_seconds": 0.065942025
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "name": "<built-in method torch.tanh>",
+          "calls": 990,
+          "self_seconds": 0.063298169,
+          "cumulative_seconds": 0.063298169
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/loss.py",
+          "line": 22,
+          "name": "objective",
+          "calls": 90,
+          "self_seconds": 0.008219834,
+          "cumulative_seconds": 0.033227464000000005
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "name": "<built-in method torch._C._nn.linear>",
+          "calls": 2430,
+          "self_seconds": 0.029462636,
+          "cumulative_seconds": 0.029462636
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/torch/nn/modules/module.py",
+          "line": 1779,
+          "name": "_wrapped_call_impl",
+          "calls": 1710,
+          "self_seconds": 0.0011717160000000002,
+          "cumulative_seconds": 0.023100256000000003
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/torch/nn/modules/module.py",
+          "line": 1787,
+          "name": "_call_impl",
+          "calls": 1710,
+          "self_seconds": 0.001809438,
+          "cumulative_seconds": 0.02192854
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "name": "<method 'clone' of 'torch._C.TensorBase' objects>",
+          "calls": 3240,
+          "self_seconds": 0.020930047,
+          "cumulative_seconds": 0.020930047
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/native_cache_codec.py",
+          "line": 23,
+          "name": "pointer",
+          "calls": 20340,
+          "self_seconds": 0.013162251000000002,
+          "cumulative_seconds": 0.020743657000000002
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/torch/nn/modules/linear.py",
+          "line": 130,
+          "name": "forward",
+          "calls": 1710,
+          "self_seconds": 0.00241221,
+          "cumulative_seconds": 0.019521869
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "name": "<built-in method torch.as_tensor>",
+          "calls": 3060,
+          "self_seconds": 0.018253736,
+          "cumulative_seconds": 0.018253736
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/numpy/_core/fromnumeric.py",
+          "line": 3287,
+          "name": "prod",
+          "calls": 4320,
+          "self_seconds": 0.001985942,
+          "cumulative_seconds": 0.013926531
+        }
+      ],
+      "panel_samples": {
+        "C3": {
+          "tag": "train_0019",
+          "frames": 2101,
+          "refresh_seconds_per_frame": 0.0005762601142278431,
+          "read_seconds_per_frame": 9.632593622322114e-05,
+          "step_seconds": 1.106476457993267,
+          "validation_prefix_seconds_per_frame": 0.0007139218663767213,
+          "validation_window_seconds_per_tick": 0.007698382416369685
+        },
+        "regular": {
+          "tag": "train_0049",
+          "frames": 1440,
+          "refresh_seconds_per_frame": 0.000856943779177123,
+          "read_seconds_per_frame": 0.00011274172431714962,
+          "step_seconds": 1.0869077499955893,
+          "validation_prefix_seconds_per_frame": 0.0009159533944104373,
+          "validation_window_seconds_per_tick": 0.008062731570438094
+        }
+      },
+      "per_step_seconds": 1.106476457993267,
+      "refresh_seconds_per_epoch": 65.83578611067014,
+      "read_seconds_per_epoch": 10.25107740239256,
+      "validation_seconds": 167.92359363624055,
+      "epoch_seconds": 596.5174270673344,
+      "tail_seconds": 509.1331251627297
+    },
+    "N1rb": {
+      "steps": [
+        {
+          "tag": "train_0019",
+          "panel": "C3",
+          "tick": 0,
+          "window_ticks": 90,
+          "wall_seconds": 1.3474768750020303,
+          "cpu_seconds": 1.2125470000000007,
+          "rss_bytes": 1019674624,
+          "decision_rows": 4500,
+          "loss": 15.401241302490234
+        },
+        {
+          "tag": "train_0019",
+          "panel": "C3",
+          "tick": 2070,
+          "window_ticks": 31,
+          "wall_seconds": 0.07994441699702293,
+          "cpu_seconds": 0.07438300000001163,
+          "rss_bytes": 1019674624,
+          "decision_rows": 27,
+          "loss": 10.055499076843262
+        },
+        {
+          "tag": "train_0049",
+          "panel": "regular",
+          "tick": 0,
+          "window_ticks": 90,
+          "wall_seconds": 1.2031717909849249,
+          "cpu_seconds": 1.1089309999999983,
+          "rss_bytes": 1019674624,
+          "decision_rows": 4500,
+          "loss": 11.650032997131348
+        },
+        {
+          "tag": "train_0049",
+          "panel": "regular",
+          "tick": 1350,
+          "window_ticks": 90,
+          "wall_seconds": 0.4287344159965869,
+          "cpu_seconds": 0.4229080000000067,
+          "rss_bytes": 1019674624,
+          "decision_rows": 1941,
+          "loss": 7.058468818664551
+        }
+      ],
+      "hotspots": [
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/training.py",
+          "line": 157,
+          "name": "step",
+          "calls": 1,
+          "self_seconds": 0.007649,
+          "cumulative_seconds": 1.3477570840000002
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/training.py",
+          "line": 61,
+          "name": "forward",
+          "calls": 90,
+          "self_seconds": 0.003729539,
+          "cumulative_seconds": 1.206001997
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/prepared_cache.py",
+          "line": 94,
+          "name": "load",
+          "calls": 270,
+          "self_seconds": 0.008091243,
+          "cumulative_seconds": 0.6220015080000001
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/prepared_cache.py",
+          "line": 121,
+          "name": "arrays",
+          "calls": 90,
+          "self_seconds": 0.00041549500000000005,
+          "cumulative_seconds": 0.603713166
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/models.py",
+          "line": 30,
+          "name": "tick",
+          "calls": 90,
+          "self_seconds": 0.024294208,
+          "cumulative_seconds": 0.40405024900000003
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/cache_codec.py",
+          "line": 58,
+          "name": "expand_banks",
+          "calls": 90,
+          "self_seconds": 0.07099967700000001,
+          "cumulative_seconds": 0.349266375
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/models.py",
+          "line": 87,
+          "name": "choose",
+          "calls": 180,
+          "self_seconds": 0.036180597,
+          "cumulative_seconds": 0.346485131
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/models.py",
+          "line": 104,
+          "name": "score",
+          "calls": 360,
+          "self_seconds": 0.143562157,
+          "cumulative_seconds": 0.26971758
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/native_cache_codec.py",
+          "line": 25,
+          "name": "bank",
+          "calls": 180,
+          "self_seconds": 0.18967698100000002,
+          "cumulative_seconds": 0.208748922
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/prepared_cache.py",
+          "line": 122,
+          "name": "tensors",
+          "calls": 90,
+          "self_seconds": 0.103602358,
+          "cumulative_seconds": 0.189572335
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/cache_codec.py",
+          "line": 87,
+          "name": "decode_frame",
+          "calls": 90,
+          "self_seconds": 0.022106329,
+          "cumulative_seconds": 0.12335087800000001
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/numpy/lib/_npyio_impl.py",
+          "line": 239,
+          "name": "__getitem__",
+          "calls": 12,
+          "self_seconds": 7.2667e-05,
+          "cumulative_seconds": 0.117507209
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/numpy/lib/_format_impl.py",
+          "line": 780,
+          "name": "read_array",
+          "calls": 12,
+          "self_seconds": 0.009346866,
+          "cumulative_seconds": 0.11669579100000001
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/numpy/lib/_format_impl.py",
+          "line": 998,
+          "name": "_read_bytes",
+          "calls": 1443,
+          "self_seconds": 0.001131255,
+          "cumulative_seconds": 0.105608461
+        },
+        {
+          "file": "/Users/new/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/python3.11/zipfile.py",
+          "line": 957,
+          "name": "read",
+          "calls": 1455,
+          "self_seconds": 0.0017154700000000002,
+          "cumulative_seconds": 0.10445483100000001
+        },
+        {
+          "file": "/Users/new/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/python3.11/zipfile.py",
+          "line": 1039,
+          "name": "_read1",
+          "calls": 1413,
+          "self_seconds": 0.005559007,
+          "cumulative_seconds": 0.10243436900000001
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/native_cache_codec.py",
+          "line": 39,
+          "name": "plane",
+          "calls": 4320,
+          "self_seconds": 0.062477731,
+          "cumulative_seconds": 0.08339341700000001
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/torch/_tensor.py",
+          "line": 566,
+          "name": "backward",
+          "calls": 1,
+          "self_seconds": 3.666e-06,
+          "cumulative_seconds": 0.08310241700000001
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/torch/autograd/__init__.py",
+          "line": 255,
+          "name": "backward",
+          "calls": 1,
+          "self_seconds": 1.5709e-05,
+          "cumulative_seconds": 0.083098584
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/torch/autograd/graph.py",
+          "line": 1059,
+          "name": "_engine_run_backward",
+          "calls": 1,
+          "self_seconds": 2.1501000000000003e-05,
+          "cumulative_seconds": 0.08306445900000001
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "name": "<method 'run_backward' of 'torch._C._EngineBase' objects>",
+          "calls": 1,
+          "self_seconds": 0.083034542,
+          "cumulative_seconds": 0.083034542
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/numpy/_core/fromnumeric.py",
+          "line": 1993,
+          "name": "nonzero",
+          "calls": 360,
+          "self_seconds": 0.0004913060000000001,
+          "cumulative_seconds": 0.07980625400000001
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/numpy/_core/fromnumeric.py",
+          "line": 48,
+          "name": "_wrapfunc",
+          "calls": 360,
+          "self_seconds": 0.000431819,
+          "cumulative_seconds": 0.07931494800000001
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "name": "<method 'nonzero' of 'numpy.ndarray' objects>",
+          "calls": 360,
+          "self_seconds": 0.078712792,
+          "cumulative_seconds": 0.078712792
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "name": "<method 'decompress' of 'zlib.Decompress' objects>",
+          "calls": 1413,
+          "self_seconds": 0.07784612,
+          "cumulative_seconds": 0.07784612
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "name": "<built-in method torch.tanh>",
+          "calls": 990,
+          "self_seconds": 0.071510209,
+          "cumulative_seconds": 0.071510209
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/loss.py",
+          "line": 22,
+          "name": "objective",
+          "calls": 90,
+          "self_seconds": 0.009741823,
+          "cumulative_seconds": 0.047592291
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "name": "<built-in method torch._C._nn.linear>",
+          "calls": 2430,
+          "self_seconds": 0.04060629,
+          "cumulative_seconds": 0.04060629
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/torch/nn/modules/module.py",
+          "line": 1779,
+          "name": "_wrapped_call_impl",
+          "calls": 1710,
+          "self_seconds": 0.001505721,
+          "cumulative_seconds": 0.033188665
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/torch/nn/modules/module.py",
+          "line": 1787,
+          "name": "_call_impl",
+          "calls": 1710,
+          "self_seconds": 0.0024592060000000002,
+          "cumulative_seconds": 0.031682944000000005
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/torch/nn/modules/linear.py",
+          "line": 130,
+          "name": "forward",
+          "calls": 1710,
+          "self_seconds": 0.0027888640000000003,
+          "cumulative_seconds": 0.028375311
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "name": "<method 'clone' of 'torch._C.TensorBase' objects>",
+          "calls": 3240,
+          "self_seconds": 0.026433781,
+          "cumulative_seconds": 0.026433781
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "name": "<built-in method torch.as_tensor>",
+          "calls": 3060,
+          "self_seconds": 0.024422393,
+          "cumulative_seconds": 0.024422393
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/native_cache_codec.py",
+          "line": 23,
+          "name": "pointer",
+          "calls": 20340,
+          "self_seconds": 0.015346005000000001,
+          "cumulative_seconds": 0.023817622
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/prepared_cache.py",
+          "line": 85,
+          "name": "verify",
+          "calls": 270,
+          "self_seconds": 0.0011095080000000002,
+          "cumulative_seconds": 0.019655717
+        }
+      ],
+      "panel_samples": {
+        "C3": {
+          "tag": "train_0019",
+          "frames": 2101,
+          "refresh_seconds_per_frame": 0.000621949389345522,
+          "read_seconds_per_frame": 0.0001226669638253649,
+          "step_seconds": 1.3474768750020303,
+          "validation_prefix_seconds_per_frame": 0.0007396816212020779,
+          "validation_window_seconds_per_tick": 0.008044905402097732
+        },
+        "regular": {
+          "tag": "train_0049",
+          "frames": 1440,
+          "refresh_seconds_per_frame": 0.0009786271124944,
+          "read_seconds_per_frame": 0.00013011270277476998,
+          "step_seconds": 1.2031717909849249,
+          "validation_prefix_seconds_per_frame": 0.0013236146731224867,
+          "validation_window_seconds_per_tick": 0.010948367387848124
+        }
+      },
+      "per_step_seconds": 1.3474768750020303,
+      "refresh_seconds_per_epoch": 72.38375838551784,
+      "read_seconds_per_epoch": 12.721681698022318,
+      "validation_seconds": 187.70718326283725,
+      "epoch_seconds": 692.4608166256587,
+      "tail_seconds": 569.082974534793
+    },
+    "N2": {
+      "steps": [
+        {
+          "tag": "train_0019",
+          "panel": "C3",
+          "tick": 0,
+          "window_ticks": 90,
+          "wall_seconds": 1.954015374998562,
+          "cpu_seconds": 1.4701649999999944,
+          "rss_bytes": 1019674624,
+          "decision_rows": 4500,
+          "loss": 15.955279350280762
+        },
+        {
+          "tag": "train_0019",
+          "panel": "C3",
+          "tick": 2070,
+          "window_ticks": 31,
+          "wall_seconds": 0.09499708301154897,
+          "cpu_seconds": 0.09145999999999788,
+          "rss_bytes": 1019674624,
+          "decision_rows": 27,
+          "loss": 12.669811248779297
+        },
+        {
+          "tag": "train_0049",
+          "panel": "regular",
+          "tick": 0,
+          "window_ticks": 90,
+          "wall_seconds": 1.7060679999995045,
+          "cpu_seconds": 1.4259919999999937,
+          "rss_bytes": 1019674624,
+          "decision_rows": 4500,
+          "loss": 12.35273551940918
+        },
+        {
+          "tag": "train_0049",
+          "panel": "regular",
+          "tick": 1350,
+          "window_ticks": 90,
+          "wall_seconds": 0.6114482079865411,
+          "cpu_seconds": 0.5749110000000002,
+          "rss_bytes": 1019674624,
+          "decision_rows": 1941,
+          "loss": 6.949855804443359
+        }
+      ],
+      "hotspots": [
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/training.py",
+          "line": 157,
+          "name": "step",
+          "calls": 1,
+          "self_seconds": 0.013378434000000002,
+          "cumulative_seconds": 1.9543056250000002
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/training.py",
+          "line": 61,
+          "name": "forward",
+          "calls": 90,
+          "self_seconds": 0.020860651,
+          "cumulative_seconds": 1.715262375
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/prepared_cache.py",
+          "line": 94,
+          "name": "load",
+          "calls": 270,
+          "self_seconds": 0.008404410000000001,
+          "cumulative_seconds": 0.847432908
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/prepared_cache.py",
+          "line": 121,
+          "name": "arrays",
+          "calls": 90,
+          "self_seconds": 0.000449678,
+          "cumulative_seconds": 0.806764005
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/models.py",
+          "line": 30,
+          "name": "tick",
+          "calls": 90,
+          "self_seconds": 0.072962893,
+          "cumulative_seconds": 0.668941832
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/cache_codec.py",
+          "line": 58,
+          "name": "expand_banks",
+          "calls": 90,
+          "self_seconds": 0.129413205,
+          "cumulative_seconds": 0.531716705
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/models.py",
+          "line": 87,
+          "name": "choose",
+          "calls": 180,
+          "self_seconds": 0.09161021300000001,
+          "cumulative_seconds": 0.530602784
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/models.py",
+          "line": 104,
+          "name": "score",
+          "calls": 360,
+          "self_seconds": 0.18572991300000002,
+          "cumulative_seconds": 0.360876325
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/native_cache_codec.py",
+          "line": 25,
+          "name": "bank",
+          "calls": 180,
+          "self_seconds": 0.288017844,
+          "cumulative_seconds": 0.31502070000000004
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/prepared_cache.py",
+          "line": 122,
+          "name": "tensors",
+          "calls": 90,
+          "self_seconds": 0.118071665,
+          "cumulative_seconds": 0.21213541400000002
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/cache_codec.py",
+          "line": 87,
+          "name": "decode_frame",
+          "calls": 90,
+          "self_seconds": 0.025417463,
+          "cumulative_seconds": 0.148192454
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/torch/_tensor.py",
+          "line": 566,
+          "name": "backward",
+          "calls": 1,
+          "self_seconds": 4.457000000000001e-06,
+          "cumulative_seconds": 0.14472695800000002
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/torch/autograd/__init__.py",
+          "line": 255,
+          "name": "backward",
+          "calls": 1,
+          "self_seconds": 1.4793e-05,
+          "cumulative_seconds": 0.14472241700000002
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/torch/autograd/graph.py",
+          "line": 1059,
+          "name": "_engine_run_backward",
+          "calls": 1,
+          "self_seconds": 2.2624000000000002e-05,
+          "cumulative_seconds": 0.144689708
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "name": "<method 'run_backward' of 'torch._C._EngineBase' objects>",
+          "calls": 1,
+          "self_seconds": 0.14465875,
+          "cumulative_seconds": 0.14465875
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/numpy/lib/_npyio_impl.py",
+          "line": 239,
+          "name": "__getitem__",
+          "calls": 12,
+          "self_seconds": 6.3756e-05,
+          "cumulative_seconds": 0.11188916600000001
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/numpy/lib/_format_impl.py",
+          "line": 780,
+          "name": "read_array",
+          "calls": 12,
+          "self_seconds": 0.009455185000000001,
+          "cumulative_seconds": 0.111133669
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/numpy/lib/_format_impl.py",
+          "line": 998,
+          "name": "_read_bytes",
+          "calls": 1443,
+          "self_seconds": 0.0011366170000000001,
+          "cumulative_seconds": 0.099989982
+        },
+        {
+          "file": "/Users/new/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/python3.11/zipfile.py",
+          "line": 957,
+          "name": "read",
+          "calls": 1455,
+          "self_seconds": 0.001717889,
+          "cumulative_seconds": 0.098838348
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/numpy/_core/fromnumeric.py",
+          "line": 1993,
+          "name": "nonzero",
+          "calls": 360,
+          "self_seconds": 0.000395545,
+          "cumulative_seconds": 0.097707996
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/numpy/_core/fromnumeric.py",
+          "line": 48,
+          "name": "_wrapfunc",
+          "calls": 360,
+          "self_seconds": 0.001253826,
+          "cumulative_seconds": 0.09731245100000001
+        },
+        {
+          "file": "/Users/new/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/python3.11/zipfile.py",
+          "line": 1039,
+          "name": "_read1",
+          "calls": 1413,
+          "self_seconds": 0.005282872,
+          "cumulative_seconds": 0.096884049
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "name": "<method 'nonzero' of 'numpy.ndarray' objects>",
+          "calls": 360,
+          "self_seconds": 0.095902869,
+          "cumulative_seconds": 0.095902869
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/native_cache_codec.py",
+          "line": 39,
+          "name": "plane",
+          "calls": 4320,
+          "self_seconds": 0.064138997,
+          "cumulative_seconds": 0.09233102700000001
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "name": "<built-in method torch.tanh>",
+          "calls": 1080,
+          "self_seconds": 0.08805844700000001,
+          "cumulative_seconds": 0.08805844700000001
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "name": "<method 'decompress' of 'zlib.Decompress' objects>",
+          "calls": 1413,
+          "self_seconds": 0.07515268500000001,
+          "cumulative_seconds": 0.07515268500000001
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/loss.py",
+          "line": 22,
+          "name": "objective",
+          "calls": 90,
+          "self_seconds": 0.014459598,
+          "cumulative_seconds": 0.07384450000000001
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "name": "<built-in method torch._C._nn.linear>",
+          "calls": 2430,
+          "self_seconds": 0.059476499,
+          "cumulative_seconds": 0.059476499
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/torch/nn/modules/module.py",
+          "line": 1779,
+          "name": "_wrapped_call_impl",
+          "calls": 1710,
+          "self_seconds": 0.008951294,
+          "cumulative_seconds": 0.046736483
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/prepared_cache.py",
+          "line": 85,
+          "name": "verify",
+          "calls": 270,
+          "self_seconds": 0.001156258,
+          "cumulative_seconds": 0.043010053
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/prepared_cache.py",
+          "line": 148,
+          "name": "label_tensors",
+          "calls": 90,
+          "self_seconds": 0.000415331,
+          "cumulative_seconds": 0.040026413000000004
+        },
+        {
+          "file": "~",
+          "line": 0,
+          "name": "<method 'sum' of 'torch._C.TensorBase' objects>",
+          "calls": 1710,
+          "self_seconds": 0.038196224,
+          "cumulative_seconds": 0.038196224
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/torch/nn/modules/module.py",
+          "line": 1787,
+          "name": "_call_impl",
+          "calls": 1710,
+          "self_seconds": 0.002644097,
+          "cumulative_seconds": 0.037785189000000004
+        },
+        {
+          "file": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/lib/python3.11/site-packages/torch/nn/modules/linear.py",
+          "line": 130,
+          "name": "forward",
+          "calls": 1710,
+          "self_seconds": 0.002504211,
+          "cumulative_seconds": 0.034081335000000004
+        },
+        {
+          "file": "/Users/new/.local/share/uv/python/cpython-3.11.15-macos-aarch64-none/lib/python3.11/pathlib.py",
+          "line": 765,
+          "name": "__truediv__",
+          "calls": 270,
+          "self_seconds": 0.00016891,
+          "cumulative_seconds": 0.031988245000000005
+        }
+      ],
+      "panel_samples": {
+        "C3": {
+          "tag": "train_0019",
+          "frames": 2101,
+          "refresh_seconds_per_frame": 0.00096910608043497,
+          "read_seconds_per_frame": 0.00011562045834478042,
+          "step_seconds": 1.954015374998562,
+          "validation_prefix_seconds_per_frame": 0.0009472797029383773,
+          "validation_window_seconds_per_tick": 0.009376662216991107
+        },
+        "regular": {
+          "tag": "train_0049",
+          "frames": 1440,
+          "refresh_seconds_per_frame": 0.001398122743052631,
+          "read_seconds_per_frame": 0.00018155963540872715,
+          "step_seconds": 1.7060679999995045,
+          "validation_prefix_seconds_per_frame": 0.001023231082618967,
+          "validation_window_seconds_per_tick": 0.0096031371505934
+        }
+      },
+      "per_step_seconds": 1.954015374998562,
+      "refresh_seconds_per_epoch": 109.65408117511069,
+      "read_seconds_per_epoch": 13.44707224892004,
+      "validation_seconds": 206.54145990146102,
+      "epoch_seconds": 935.091743325107,
+      "tail_seconds": 626.3024143257699
+    }
+  },
+  "cache": {
+    "schema": 10,
+    "records": [
+      {
+        "tag": "train_0019",
+        "meta_file": "prepared/e45ed2cb515b6ea9f684a03c92b138314ec3da18a4e5a9b12e48b460c48e7c73.json",
+        "meta_sha256": "d47fa413c0f74f9c32e8355b020f5a1ea412103f5e1c488e0bfa64439303eede",
+        "frames": 2101,
+        "cached_frames": 301,
+        "compressed_bytes": 18644818,
+        "uncompressed_bytes": 754920763,
+        "build_seconds": 15.14729150000494
+      },
+      {
+        "tag": "train_0049",
+        "meta_file": "prepared/7a395efc9cb4b75a9da7c8e17b32736232aa21e7070c19c3b2275b637cf73dad.json",
+        "meta_sha256": "a0de87b5e24a294758dd0823af18bef59368abe34df1e0d3a633e2c55b37c3d7",
+        "frames": 1440,
+        "cached_frames": 360,
+        "compressed_bytes": 27185251,
+        "uncompressed_bytes": 1111265109,
+        "build_seconds": 25.48065504099941
+      },
+      {
+        "tag": "validation_0096",
+        "meta_file": "prepared/e9afdbf1b6aadca7e50297f2d65358e9de55d5654739cefc1ca4221144ef1a7c.json",
+        "meta_sha256": "7c83c844fd13aef20328c78b027ccc2d0d39a916b95a82027902ca7c5af66078",
+        "frames": 1811,
+        "cached_frames": 281,
+        "compressed_bytes": 21584924,
+        "uncompressed_bytes": 845715132,
+        "build_seconds": 17.48303466598736
+      },
+      {
+        "tag": "validation_0128",
+        "meta_file": "prepared/31f08425ded313aed21fad5427f2d462466bdb3176d906581c1253074f7de635.json",
+        "meta_sha256": "913b80c91e0e5ace5b46e1f61b5a0efdd10439a241e6aac80d108727d3a53791",
+        "frames": 1392,
+        "cached_frames": 312,
+        "compressed_bytes": 26309102,
+        "uncompressed_bytes": 968744251,
+        "build_seconds": 17.795683332980843
+      }
+    ],
+    "seconds": 76.33367525000358,
+    "compressed_bytes": 109520856,
+    "frames": 6744,
+    "cached_frames": 1254,
+    "projected_bytes": 109520856.0,
+    "projected_build_seconds": 75.90666453997255,
+    "format": "schema10: exact float32 banks; native batch bit codec; typed temporal differences and byte planes; reversible int16 hierarchy; edge graphs; cloned training inputs",
+    "max_chunk_bytes": 67108864,
+    "disk_limit_bytes": 5000000000,
+    "regeneration": "none during float32 training",
+    "owner_approvals": {
+      "path": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/OWNER_APPROVALS.json",
+      "sha256": "cc2803e5779045fc46f7c5f76687d6750f7e2a9ca82e5268474ea6ecf7c0e2e0",
+      "history": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/_local/owner_approvals/CHANGES.jsonl"
+    }
+  },
+  "selection": "largest-frame train/validation fight per panel; first/last declared windows;20 optimizer steps; cold chunk decode before every step",
+  "target_balance": "unity for controlled comparison with BEFORE; actual train-only weights/admission remain host gates",
+  "sample_steps": 20,
+  "seconds": 140.7278469169978,
+  "cache_projected_bytes": 4804505313.385586,
+  "cache_projected_bytes_with_margin": 5765406376.062703,
+  "projection": {
+    "groups": [
+      {
+        "arms": [
+          "N2"
+        ],
+        "wall_seconds": 9977.21984757684
+      },
+      {
+        "arms": [
+          "N1rb"
+        ],
+        "wall_seconds": 7493.691140791379
+      },
+      {
+        "arms": [
+          "N1r"
+        ],
+        "wall_seconds": 6474.307395836074
+      },
+      {
+        "arms": [
+          "N1",
+          "N1b"
+        ],
+        "wall_seconds": 11957.68667828265
+      }
+    ],
+    "projected_seconds": 14349.224013939178,
+    "costs": {
+      "N1": 6228.369609767718,
+      "N1b": 5729.317068514931,
+      "N1r": 6474.307395836074,
+      "N1rb": 7493.691140791379,
+      "N2": 9977.21984757684
+    }
+  },
+  "projection_limitations": "TEST_ONLY estimate, four CPU lanes; excludes source/raw admission hashing, train-only class-weight scan and real owner gates; full production measure required",
+  "owner_approvals": {
+    "path": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/OWNER_APPROVALS.json",
+    "sha256": "cc2803e5779045fc46f7c5f76687d6750f7e2a9ca82e5268474ea6ecf7c0e2e0",
+    "history": "/Users/new/RiderProjects/ai_RPG_test/evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/_local/owner_approvals/CHANGES.jsonl"
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "status": "TEST_ONLY_TARGETS_MET_PENDING_HOST_GATES",
+  "schema": 11,
+  "after_sha256": "1cd5592295b92b9cb62318984d322f6aeacfeb9aac7857e1866e12527ca6a402",
+  "before_sha256": "793e0c0623a72c2795a993b7a883d68deee73fce4cb0118ca5bb43a473830750",
+  "source_hashes_match": true,
+  "first_window_losses_exact": true,
+  "profile_regeneration_calls": {
+    "N1": [],
+    "N1b": [],
+    "N1r": [],
+    "N1rb": [],
+    "N2": []
+  },
+  "focused_tests": {
+    "passed": 41,
+    "seconds": 7.81,
+    "log": "_local/B2PROF_SCHEMA11_TESTS.log",
+    "log_sha256": "e25f7aadd3ec8d69c44b4442bd9da5cc1d9f9011525df6d7750e07850354e9a3"
+  },
+  "per_step_seconds": {
+    "N1": 1.0679722090135328,
+    "N1b": 0.9953673749987502,
+    "N1r": 0.9663505000062287,
+    "N1rb": 1.0819326250057202,
+    "N2": 1.269241542002419
+  },
+  "step_target_seconds": 1.5,
+  "step_target_met": true,
+  "projected_seconds_with_20pct_margin": 11576.40817478073,
+  "cap_seconds": 16200,
+  "projection_target_met": true,
+  "actual_sample_cache_bytes": 109520858,
+  "projected_cache_bytes": 4804505464.856376,
+  "projected_cache_bytes_with_20pct_sensitivity": 5765406557.827651,
+  "cache_target_bytes": 5000000000,
+  "cache_projection_target_met": true,
+  "full_corpus_cache_verified": false,
+  "peak_sample_rss_bytes": 1147371520,
+  "production_admitted": false,
+  "native_heldout_parity_run": false,
+  "full_training_run": false,
+  "owner_recheck": {
+    "verdict": "NO_BLOCKING_DELIVERY_ISSUES",
+    "reviewer": "/root/b2prof_recheck",
+    "family": "Codex",
+    "reviewed_after_sha256": "1cd5592295b92b9cb62318984d322f6aeacfeb9aac7857e1866e12527ca6a402",
+    "record": "OWNER_RECHECK_B2PROF.md"
+  },
+  "shell_syntax_check": "PASS",
+  "diff_whitespace_check": "PASS"
+}

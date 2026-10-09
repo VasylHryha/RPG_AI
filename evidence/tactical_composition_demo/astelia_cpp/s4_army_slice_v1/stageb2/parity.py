@@ -8,7 +8,7 @@ import time
 import numpy as np
 import torch
 from common import ARMS,BINARY,HERE,LOCAL,read,sha,write
-from data import frames
+from runtime import frames # Always full public rows for native/float64 replay.
 from models import Policy,initial
 from training import environment,flat,forward
 DEADLINE=None

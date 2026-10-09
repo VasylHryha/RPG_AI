@@ -18,12 +18,18 @@ def target_weights(fights,deadline):
     return {role:dict(counts=c,weights=[sum(c)/(2*c[0]),sum(c)/(2*c[1])]) for role,c in counts.items()}
 
 def install(balance):
+    role_weights=torch.tensor([balance[role]['weights'] for role in ('melee','ranged','artillery')],dtype=torch.float64)
     def objective(y,row,ids,enemies,weights=None):
         if not ids:return sum(v.sum()*0 for v in y.values()),{}
-        labs=training.labels(row,ids,enemies)
-        vals=lambda key:y['move'].new_tensor([v[key] for v in labs])
+        prepared=row.get('_prepared') if y['move'].dtype==torch.float32 else None
+        if prepared is None:
+            labs=training.labels(row,ids,enemies)
+            vals=lambda key:y['move'].new_tensor([v[key] for v in labs])
+            wt=y['move'].new_tensor([balance[v['role']]['weights'][int(v['target']!=0)] for v in labs])
+        else:
+            values=prepared.label_tensors(y['move'].dtype);vals=values.__getitem__
+            wt=role_weights.to(y['move'])[values['role'].long(),(values['target']!=0).long()]
         ce=torch.nn.functional.cross_entropy(y['target'],vals('target').long(),reduction='none')
-        wt=ce.new_tensor([balance[v['role']]['weights'][int(v['target']!=0)] for v in labs])
         losses=dict(target=(ce*wt).sum()/wt.sum(),fire=torch.nn.functional.cross_entropy(y['fire'],vals('fire').long()),mult=torch.mean((y['mult']-vals('mult'))**2))
         scale=y['move'].new_tensor([row['width'],row['height']])
         for name,bound in (('move',MOVE_OFFSET),('aim',AIM_OFFSET)):

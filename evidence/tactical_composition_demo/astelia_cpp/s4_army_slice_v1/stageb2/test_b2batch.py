@@ -73,7 +73,7 @@ def test_approvals_history_exclusion_live_reduction_and_code_lock(tmp_path,monke
     assert log[1]['previous_sha256']==log[0]['sha256']
     from train import checked
     budget=dict(arms=list(r.ARMS),variant=r.VARIANT,sources=dict(pins,changed='code'),index_sha256='hash',candidate_cache='cache',coverage_sha256='hash')
-    monkeypatch.setattr(r,'read',lambda p:'cache' if p.name=='CANDIDATE_CACHE.json' else budget)
+    monkeypatch.setattr(r,'read',lambda p:'cache' if p.name=='PREPARED_CACHE.json' else budget)
     monkeypatch.setattr(r,'sha',lambda _: 'hash');monkeypatch.setattr('train.validate_index',lambda _:None);monkeypatch.setattr('train.coverage_admission',lambda _:None)
     with pytest.raises(RuntimeError,match='code/index drift'):checked(tmp_path)
 

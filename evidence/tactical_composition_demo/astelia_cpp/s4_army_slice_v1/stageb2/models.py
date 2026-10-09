@@ -27,27 +27,29 @@ class Policy(nn.Module):
             setattr(self,name+'_score',nn.Linear(16,1))
         self.aim_offset=nn.Linear(64,2);self.move_offset=nn.Linear(64,2) # A,B,J,K,omega,share
     def encode(self,tokens):return torch.tanh(self.enc2(torch.tanh(self.enc1(tokens))))
-    def tick(self,tokens,query,own,enemy,pos,speeds,assignments,ids,state,dt,refresh=True,cache=None,aim_points=None,aim_features=None,aim_valid=None,move_points=None,move_features=None,move_valid=None,aim_sources=None,move_sources=None,state_only=False,aim_members=None,move_members=None,aim_mapping=None,move_mapping=None,teacher_aim=None,teacher_move=None):
+    def tick(self,tokens,query,own,enemy,pos,speeds,assignments,ids,state,dt,refresh=True,cache=None,aim_points=None,aim_features=None,aim_valid=None,move_points=None,move_features=None,move_valid=None,aim_sources=None,move_sources=None,state_only=False,aim_members=None,move_members=None,aim_mapping=None,move_mapping=None,teacher_aim=None,teacher_move=None,aim_types=None,move_types=None,aim_nearest=None,move_nearest=None,graph_order=None,graph_mask=None,graph_radius=None,graph_delta=None,graph_edge_radius=None,graph_edge_delta=None):
         encoded=self.encode(tokens) if refresh else cache
         q=torch.tanh(self.query(query));a=torch.softmax(q@encoded.T/8,dim=-1);context=a@encoded
         if self.kind in ('N1','N1b'):state=q.new_zeros((len(ids),8))
         if self.kind in ('N1r','N1rb'):
-            r=torch.linalg.vector_norm(pos[None,:,:]-pos[:,None,:],dim=-1)/100
-            order=torch.argsort(r+torch.eye(len(ids),device=r.device)*1e6,dim=-1,stable=True)[:,:8]
-            mask=(r.gather(1,order)<3)&(order!=torch.arange(len(ids),device=r.device)[:,None])
+            r=graph_radius if graph_radius is not None else (torch.linalg.vector_norm(pos[None,:,:]-pos[:,None,:],dim=-1)/100 if graph_order is None else None)
+            order=graph_order if graph_order is not None else torch.argsort(r+torch.eye(len(ids),device=r.device)*1e6,dim=-1,stable=True)[:,:8]
+            mask=graph_mask if graph_mask is not None else (r.gather(1,order)<3)&(order!=torch.arange(len(ids),device=r.device)[:,None])
             message=(state[order]*mask[...,None]).sum(1)/mask.sum(1).clamp_min(1)[:,None]
             state=torch.tanh(self.recur(torch.cat((q,context,state,message),-1)))
         if self.kind in ('N1b','N1rb'):
-            r=torch.linalg.vector_norm(pos[None,:,:]-pos[:,None,:],dim=-1)/100
-            order=torch.argsort(r+torch.eye(len(ids),device=r.device)*1e6,dim=-1,stable=True)[:,:8]
-            mask=(r.gather(1,order)<3)&(order!=torch.arange(len(ids),device=r.device)[:,None])
+            r=graph_radius if graph_radius is not None else (torch.linalg.vector_norm(pos[None,:,:]-pos[:,None,:],dim=-1)/100 if graph_order is None else None)
+            order=graph_order if graph_order is not None else torch.argsort(r+torch.eye(len(ids),device=r.device)*1e6,dim=-1,stable=True)[:,:8]
+            mask=graph_mask if graph_mask is not None else (r.gather(1,order)<3)&(order!=torch.arange(len(ids),device=r.device)[:,None])
         drift=pos*0
         if self.kind in ('N2','N2J0'):
             # graph sorted by distance then persistent ID; eight neighbors inside 300 px.
-            d=pos[None,:,:]-pos[:,None,:];r=torch.linalg.vector_norm(d,dim=-1)/100
-            order=torch.argsort(r+torch.eye(len(ids),device=r.device)*1e6,dim=-1,stable=True)[:,:8]
-            mask=(r.gather(1,order)<3)&(order!=torch.arange(len(ids),device=r.device)[:,None])
-            weight=torch.exp(-r.gather(1,order)**2)*mask
+            d=graph_delta if graph_delta is not None else (pos[None,:,:]-pos[:,None,:] if graph_edge_delta is None else None)
+            r=graph_radius if graph_radius is not None else (torch.linalg.vector_norm(d,dim=-1)/100 if graph_order is None else None)
+            order=graph_order if graph_order is not None else torch.argsort(r+torch.eye(len(ids),device=r.device)*1e6,dim=-1,stable=True)[:,:8]
+            mask=graph_mask if graph_mask is not None else (r.gather(1,order)<3)&(order!=torch.arange(len(ids),device=r.device)[:,None])
+            edge_radius=graph_edge_radius if graph_edge_radius is not None else r.gather(1,order)
+            weight=torch.exp(-edge_radius**2)*mask
             theta=state[:,0];K=2*torch.sigmoid(self.law[3]);omega=2*torch.tanh(self.law[4])
             forcing=torch.tanh(self.force(torch.cat((q,context),-1))).squeeze(-1)
             count=mask.sum(1).clamp_min(1)
@@ -58,8 +60,9 @@ class Policy(nn.Module):
             mean=(z[order]*mask[...,None]).sum(1)/count[:,None]
             state=torch.cat((theta[:,None],z,mean,forcing[:,None],q.new_zeros((len(ids),2))),-1)
             A,B,J=torch.sigmoid(self.law[:3]);J=J*0 if self.kind=='N2J0' else J
-            rr=r.gather(1,order).clamp_min(.1)
-            v=((d[torch.arange(len(ids),device=r.device)[:,None],order]/100/rr[...,None])*(A*(1+J*torch.cos(theta[order]-theta[:,None]))-B/rr)[...,None]*mask[...,None]).sum(1)/count[:,None]
+            rr=edge_radius.clamp_min(.1)
+            edge_delta=graph_edge_delta if graph_edge_delta is not None else d[torch.arange(len(ids),device=r.device)[:,None],order]
+            v=((edge_delta/100/rr[...,None])*(A*(1+J*torch.cos(theta[order]-theta[:,None]))-B/rr)[...,None]*mask[...,None]).sum(1)/count[:,None]
             drift=.25*torch.sigmoid(self.law[5])*speeds[:,None]*v/(1+torch.linalg.vector_norm(v,dim=-1)[:,None])
             state_for_head=torch.cat((state[:,1:6],q.new_zeros((len(ids),3))),-1)
         else:state_for_head=state
@@ -69,23 +72,19 @@ class Policy(nn.Module):
         # Enemy pointer, with explicit none logit. All living enemies; no top-k loss.
         targets=torch.cat((y[:,8:9],self.target(h)@encoded[enemy].T/8),-1)
         if self.kind in ('N1b','N1rb'):
-            for e,column in enumerate(enemy):
-                target_id=tokens[column,1]*256
-                peers=mask & (assignments[order]==target_id)
-                # Indicator, once per enemy, regardless of number of peers.
-                targets[:,e+1]=targets[:,e+1]+2*peers.any(1)
+            peers=mask[...,None] & (assignments[order][...,None]==tokens[enemy,1][None,None,:]*256)
+            targets=torch.cat((targets[:,:1],targets[:,1:]+2*peers.any(1)),-1)
         if self.kind in ('N2','N2J0'):
             # Phase alignment of neighboring units already engaging each target.
-            for e,column in enumerate(enemy):
-                target_id=tokens[column,1]*256
-                peers=mask & (assignments[order]==target_id)
-                group=(z[order]*peers[...,None]).sum(1)/peers.sum(1).clamp_min(1)[:,None]
-                length=torch.linalg.vector_norm(group,dim=-1)
-                targets[:,e+1]=targets[:,e+1]+2*(z*group/length.clamp_min(1e-6)[:,None]).sum(1)*(length>=1e-6)
+            peers=mask[...,None] & (assignments[order][...,None]==tokens[enemy,1][None,None,:]*256)
+            group=(z[order][:,:,None,:]*peers[...,None]).sum(1)/peers.sum(1).clamp_min(1)[...,None]
+            length=torch.linalg.vector_norm(group,dim=-1)
+            alignment=2*(z[:,None,:]*group/length.clamp_min(1e-6)[...,None]).sum(-1)*(length>=1e-6)
+            targets=torch.cat((targets[:,:1],targets[:,1:]+alignment),-1)
             # Learned logits retain the phase-window readout; no reset clock.
             y=torch.cat((y[:,:3],y[:,3:4]+2*torch.cos(theta)[:,None],y[:,4:5]-2*torch.cos(theta)[:,None],y[:,5:6]+2*torch.cos(theta)[:,None],y[:,6:]),-1)
         from candidates import AIM_OFFSET,MOVE_OFFSET
-        def choose(name,points,features,valid,sources,members,mapping,teacher,scorer,offsetter,bound):
+        def choose(name,points,features,valid,sources,members,mapping,teacher,scorer,offsetter,bound,types,static_nearest):
             from hierarchy import MEMBERS
             valid=valid>=.5
             family_valid=(members>=0).any(-1)
@@ -128,18 +127,20 @@ class Policy(nn.Module):
             offset=bound*torch.tanh(offsetter(h));point=points[ui,choice]+offset
             result={name+'_logits':logits,name+'_family_logits':family_logits,
                     name+'_residual':offset,name+'_valid':valid,
-                    name+'_types':torch.tensor(list(range(11))+list(range(18,26)),device=h.device)[features[:,:,list(range(11))+list(range(18,26))].argmax(-1)]}
+                    name+'_types':types if types is not None else torch.tensor(list(range(11))+list(range(18,26)),device=h.device)[features[:,:,list(range(11))+list(range(18,26))].argmax(-1)]}
             if teacher is not None:
                 desired=teacher-(drift.detach() if name=='move' else 0)
-                delta=desired[:,None,:]-points
-                nearest=(delta.square().sum(-1).masked_fill(~valid,torch.inf)).argmin(-1)
+                if static_nearest is None:
+                    delta=desired[:,None,:]-points
+                    nearest=(delta.square().sum(-1).masked_fill(~valid,torch.inf)).argmin(-1)
+                else:nearest=static_nearest
                 target=mapping[ui,nearest];true_family=target[:,0].clamp_min(0)
                 _,true_logits,_,_=score(true_family)
                 result.update({name+'_true_family':true_family,name+'_true_member':target[:,1].clamp_min(0),
-                               name+'_train_logits':true_logits,name+'_true_residual':delta[ui,nearest]})
+                               name+'_train_logits':true_logits,name+'_true_residual':desired-points[ui,nearest]})
             return point,result
-        movement,mresult=choose('move',move_points,move_features,move_valid,move_sources,move_members,move_mapping,teacher_move,self.move_choice,self.move_offset,MOVE_OFFSET)
-        aim,aresult=choose('aim',aim_points,aim_features,aim_valid,aim_sources,aim_members,aim_mapping,teacher_aim,self.aim_choice,self.aim_offset,AIM_OFFSET)
+        movement,mresult=choose('move',move_points,move_features,move_valid,move_sources,move_members,move_mapping,teacher_move,self.move_choice,self.move_offset,MOVE_OFFSET,move_types,move_nearest)
+        aim,aresult=choose('aim',aim_points,aim_features,aim_valid,aim_sources,aim_members,aim_mapping,teacher_aim,self.aim_choice,self.aim_offset,AIM_OFFSET,aim_types,aim_nearest)
         # query stores arena-normalized own position; dimensions passed via world token.
         scale=tokens[-1,38:40]*1000
         movement=movement/scale;aim=aim/scale;mult=torch.sigmoid(y[:,2])
@@ -151,6 +152,7 @@ def initial(kind,ids,dtype=torch.float32):
     return x
 
 def remap(kind,state,previous,ids):
+    if previous==ids:return state
     fresh=initial(kind,ids,state.dtype).to(state.device);lookup={id:i for i,id in enumerate(previous)}
     return torch.stack([state[lookup[id]] if id in lookup else fresh[i] for i,id in enumerate(ids)]) if ids else fresh
 
