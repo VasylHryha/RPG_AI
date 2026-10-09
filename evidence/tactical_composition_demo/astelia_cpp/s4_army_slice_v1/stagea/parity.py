@@ -82,9 +82,81 @@ def replay(weights,rows,timeout=600,profile=None,fixture_monitor=None):
     request_path.unlink();output_path.unlink();errpath.unlink()
     return out
 
-def compare(a,b):
-    if len(a)!=len(b) or any(x.shape!=y.shape for x,y in zip(a,b)):raise RuntimeError('parity sequence dimensions')
-    return dict(max_abs_error=max((float(np.max(np.abs(x-y))) if x.size else 0 for x,y in zip(a,b)),default=0),categorical_mismatches=sum(int(np.sum(categories(x)!=categories(y))) for x,y in zip(a,b)),rows=sum(len(x) for x in a))
+PARITY_RULE = dict(version='certified_near_tie_v1', native_atol=1e-8,
+                   native_categorical_mismatches=0,
+                   float32_bound='min(2 * measured max_abs_error per categorical head, 1e-4)',
+                   float32_near_tie_ceiling=1e-4,
+                   reference='float64', require_selected_class_deficit=True)
+HEADS = (('fire', slice(3,6)), ('target', slice(10,None)))
+RECEIPT_DIRECTORY = LOCAL/'parity'/'certified_near_tie_v1'
+
+def compare(a,b,near_ties=False):
+    # b is the float64 reference for float32 comparison. Head-wise errors are
+    # measured over the entire sequence, before certifying any mismatch.
+    if len(a)!=len(b) or any(x.shape!=y.shape or x.ndim!=2 or x.shape[1]<11 for x,y in zip(a,b)):
+        raise RuntimeError('parity sequence dimensions')
+    if any(not np.isfinite(x).all() or not np.isfinite(y).all() for x,y in zip(a,b)):
+        raise RuntimeError('nonfinite parity output')
+    result = dict(max_abs_error=max((float(np.max(np.abs(x-y))) if x.size else 0 for x,y in zip(a,b)),default=0),
+                  categorical_mismatches=sum(int(np.sum(categories(x)!=categories(y))) for x,y in zip(a,b)),
+                  rows=sum(len(x) for x in a))
+    if not near_ties:return result
+    errors={name:max((float(np.max(np.abs(x[:,part]-y[:,part]))) if x[:,part].size else 0
+                     for x,y in zip(a,b)),default=0) for name,part in HEADS}
+    details=[]
+    for frame,(x,y) in enumerate(zip(a,b)):
+        for name,part in HEADS:
+            observed=x[:,part];reference=y[:,part]
+            choices=observed.argmax(1);expected=reference.argmax(1)
+            bound=min(2*errors[name],PARITY_RULE['float32_near_tie_ceiling'])
+            for row in np.flatnonzero(choices!=expected):
+                logits=reference[row];top=np.sort(logits)[-2:]
+                gap=float(top[-1]-top[-2]) if len(top)>1 else 0.
+                deficit=float(logits[expected[row]]-logits[choices[row]])
+                details.append(dict(frame_index=frame,row_index=int(row),head=name,
+                    float32_class=int(choices[row]),float64_class=int(expected[row]),
+                    float64_top2_gap=gap,float64_selected_class_deficit=deficit,
+                    max_abs_error=errors[name],bound=bound,
+                    certified=gap<=bound and deficit<=bound))
+    result.update(head_max_abs_error=errors,near_tie_bounds={k:min(2*v,PARITY_RULE['float32_near_tie_ceiling']) for k,v in errors.items()},
+                  mismatches=details,uncertified_mismatches=sum(not d['certified'] for d in details))
+    return result
+
+def parity_passes(result):
+    native=result['native_float64'];export=result['float32_export']
+    return (native['categorical_mismatches']==0 and native['max_abs_error']<=PARITY_RULE['native_atol']
+            and export['uncertified_mismatches']==0
+            and len(export['mismatches'])==export['categorical_mismatches']
+            and all(d['certified'] and d['float64_top2_gap']<=d['bound']
+                    and d['float64_selected_class_deficit']<=d['bound'] for d in export['mismatches']))
+
+def evaluate(arm,fight,models=None,fixture_monitor=None):
+    raw=LOCAL/fight['raw_file']
+    if sha(raw)!=fight['raw_sha256']:raise RuntimeError('parity shard drift')
+    began=time.monotonic()
+    m32,weights,m64=models if models is not None else (*load_model(arm,torch.float32),load_model(arm,torch.float64)[0])
+    profile={}
+    a=sequence(m32,frames(raw));b=sequence(m64,frames(raw))
+    c=replay(weights,frames(raw),timeout=300 if DEADLINE is None else max(1,float(DEADLINE-time.monotonic())),
+             profile=profile,fixture_monitor=fixture_monitor)
+    result=dict(arm=arm,fight=fight['tag'],raw_sha256=sha(raw),
+                float32_export=compare(a,b,near_ties=True),native_float64=compare(b,c),
+                seconds=time.monotonic()-began,frames=len(a),native_memory=profile,parity_rule=PARITY_RULE)
+    # Report stable unit/time identity without retaining the decoded input bank.
+    by_frame={}
+    for detail in result['float32_export']['mismatches']:by_frame.setdefault(detail['frame_index'],[]).append(detail)
+    if by_frame:
+        from data import pack
+        for i,row in enumerate(frames(raw)):
+            if i in by_frame:
+                _,ids,enemies=pack(row,arm)
+                for detail in by_frame[i]:
+                    detail.update(time=row['t'],unit_id=ids[detail['row_index']])
+                    if detail['head']=='target':
+                        detail.update(float32_target_id=0 if detail['float32_class']==0 else enemies[detail['float32_class']-1],
+                                      float64_target_id=0 if detail['float64_class']==0 else enemies[detail['float64_class']-1])
+    result['status']='PASS' if parity_passes(result) else 'FAIL'
+    return result
 
 def run():
     global DEADLINE,MONITOR
@@ -94,7 +166,7 @@ def run():
     from jobs import admitted
     from training_control import training_cap,TrainingDeadline
     cap=training_cap(HERE);run_id=__import__('secrets').token_hex(8)
-    manifest=dict(binary=identity(),budget_sha256=sha(LOCAL/'TRAIN_BUDGET.json'),index_sha256=sha(LOCAL/'INDEX.json'),exports={a:sha(LOCAL/'training'/(a+'.weights.json')) for a in ARMS})
+    manifest=dict(parity_rule=PARITY_RULE,binary=identity(),budget_sha256=sha(LOCAL/'TRAIN_BUDGET.json'),index_sha256=sha(LOCAL/'INDEX.json'),exports={a:sha(LOCAL/'training'/(a+'.weights.json')) for a in ARMS})
     receipt=dict(status='RUNNING',cap=cap,manifest=manifest)
     try:
         with admitted(cap['cap_seconds']) as (absolute,monitor):
@@ -107,22 +179,17 @@ def run():
             for i,(arm,fight) in enumerate(jobs):
                 check_live();raw=LOCAL/fight['raw_file']
                 if sha(raw)!=fight['raw_sha256']:raise RuntimeError('parity shard drift')
-                proof_path=LOCAL/'parity'/f"{arm}_{fight['tag']}.receipt.json"
+                proof_path=RECEIPT_DIRECTORY/f"{arm}_{fight['tag']}.receipt.json"
                 if proof_path.exists():
                     r=read(proof_path)
-                    if r['manifest']!=manifest or r['raw_sha256']!=sha(raw) or r['status']!='PASS':raise RuntimeError('stored parity receipt drift')
+                    if r['manifest']!=manifest or r['raw_sha256']!=sha(raw) or r['status']!='PASS' or not parity_passes(r):raise RuntimeError('stored parity receipt drift')
                 else:
-                    began=time.monotonic();m32,weights,m64=models[arm];profile={}
-                    # Decode one row at a time on each pass; never retain the
-                    # full JSON sequence alongside three output banks.
-                    a=sequence(m32,frames(raw));b=sequence(m64,frames(raw));c=replay(weights,frames(raw),timeout=max(1,float(DEADLINE-time.monotonic())),profile=profile)
-                    r=dict(status='PASS',manifest=manifest,arm=arm,fight=fight['tag'],raw_sha256=sha(raw),float32_export=compare(a,b),native_float64=compare(b,c),seconds=time.monotonic()-began,frames=len(a),native_memory=profile)
-                    if r['float32_export']['categorical_mismatches'] or r['native_float64']['categorical_mismatches'] or r['native_float64']['max_abs_error']>1e-8:
-                        r['status']='FAIL';write(proof_path,r,exclusive=True);raise RuntimeError('categorical/numeric export parity defect')
+                    r=evaluate(arm,fight,models[arm]);r['manifest']=manifest
                     write(proof_path,r,exclusive=True)
+                    if r['status']!='PASS':raise RuntimeError('categorical/numeric export parity defect')
                 records.append(r);rates[arm]=max(rates.get(arm,0),r['seconds']/max(1,r['frames']))
                 if i==len(ARMS)-1:
-                    remaining=[(a,f) for a,f in jobs[i+1:] if not (LOCAL/'parity'/f"{a}_{f['tag']}.receipt.json").exists()]
+                    remaining=[(a,f) for a,f in jobs[i+1:] if not (RECEIPT_DIRECTORY/f"{a}_{f['tag']}.receipt.json").exists()]
                     projected=1.2*sum(rates[a]*f['frames'] for a,f in remaining)
                     write(LOCAL/'PARITY_PROJECTION.json',dict(projected_remaining_seconds=projected,sample_sequences=len(ARMS),rates=rates))
                     if projected>DEADLINE-time.monotonic():raise RuntimeError('measured remaining parity projection exceeds owner cap')

@@ -11,7 +11,14 @@ from jobs import admitted
 POLICIES=(*ARMS,'O','T')
 
 def parity_gate():
+    from parity import PARITY_RULE, parity_passes
     proof=read(HERE/'PARITY_STAGEA.json')
+    expected={(a,f['tag']) for f in read(LOCAL/'INDEX.json')['fights'] if f['split']=='validation' for a in ARMS}
+    records=proof.get('records',[])
+    if (proof.get('parity_rule')!=PARITY_RULE or len(records)!=len(expected) or
+            {(r['arm'],r['fight']) for r in records}!=expected or
+            any(r.get('parity_rule')!=PARITY_RULE or r['status']!='PASS' or not parity_passes(r) for r in records)):
+        raise RuntimeError('current certified full-sequence parity required')
     if proof['status']!='PASS' or proof['binary']!=identity() or proof['exports']!={a:sha(LOCAL/'training'/(a+'.weights.json')) for a in ARMS} or proof['budget_sha256']!=sha(LOCAL/'TRAIN_BUDGET.json') or proof['index_sha256']!=sha(LOCAL/'INDEX.json'):raise RuntimeError('current full-sequence parity required')
     from parmem_recovery import checked_inference_budget
     checked_inference_budget();return proof

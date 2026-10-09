@@ -9,13 +9,13 @@ ALLOWED = ('bounded_json.h', 'build.py', 'stagea.cpp', 'stagea.h', 'parity.py',
            'test_stagea_parmem_host.py')
 
 
-def verify_baseline(baseline):
+def verify_baseline(baseline, allowed_names=ALLOWED):
     for name, digest in baseline['preserved'].items():
         if sha(HERE/name) != digest:
             raise RuntimeError('parity recovery fixed evidence drift: '+name)
     old = baseline['sources']; now = sources()
     delta = {k for k in old.keys() | now.keys() if old.get(k) != now.get(k)}
-    allowed = {str((HERE/n).relative_to(CPP)) for n in ALLOWED}
+    allowed = {str((HERE/n).relative_to(CPP)) for n in allowed_names}
     if not delta or not delta <= allowed:
         raise RuntimeError('parity recovery unauthorized source changes')
     budget = read(LOCAL/'TRAIN_BUDGET.json')
@@ -72,6 +72,9 @@ def register():
 
 
 def checked_inference_budget():
+    if (HERE/'RECOVERY_STAGEA_PARTIE.json').exists():
+        from parity_recovery import checked as checked_ties
+        return checked_ties()
     if not RECOVERY.exists():
         from training import checked_budget
         return checked_budget()
