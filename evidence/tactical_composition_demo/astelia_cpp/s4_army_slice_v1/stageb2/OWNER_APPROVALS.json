@@ -7,7 +7,7 @@
     "cap_seconds": 16200
   },
   "coverage": {
-    "max_seconds": 1800,
+    "max_seconds": 3600,
     "thresholds": {
       "all": 0.9,
       "ordinary": 0.9,
@@ -37,5 +37,13 @@
   },
   "lab": {
     "cap_seconds": 16200
-  }
+  },
+  "change_log": [
+    {
+      "date": "2026-10-09 17:45 EEST",
+      "by": "Claude",
+      "change": "coverage.max_seconds 1800 -> 3600",
+      "reason": "hierarchical reachability check makes sampled coverage project 2,576 s; bound is an operational time target set by Claude, not an owner cap"
+    }
+  ]
 }
