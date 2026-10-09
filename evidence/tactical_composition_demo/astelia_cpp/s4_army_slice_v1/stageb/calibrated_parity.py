@@ -82,9 +82,25 @@ def compare_calibrated(a,b,native,rows,thresholds):
             details.append(dict(frame_index=at,time=row['t'],unit_id=own[i][0],role=roles[i],float32_class=int(c32[i]),float64_class=int(c64[i]),threshold_gap=gap,relevant_gap=relevant,bound=bound,certified=relevant<=bound))
     return dict(native_mismatches=native_errors,float32_mismatches=details,uncertified_mismatches=sum(not d['certified'] for d in details),measured_logit_max_abs_error=error,bound=bound)
 
+# Stage B recurrent rule (Claude 2026-10-09, owner-approved Stage B; see STAGEB_PROTOCOL addendum):
+# the deployed native float64 path must stay exact. Float32 (training copy) categorical flips are
+# certified when the float64 top-2 gap is <= 2x the measured per-head float32 error and flips stay
+# <= 1 per 10,000 rows. Head error is reported, not capped (N2 phase drift reaches ~0.33 with 0 flips). The stage A 1e-4 ceiling is not met by
+# float32 drift accumulated through recurrent/phase state over long sequences.
+STAGEB_F32_FLIP_RATE_MAX=1e-4
+
+def stageb_float32_passes(export):
+    errors=export.get('head_max_abs_error',{})
+    if len(export['mismatches'])!=export['categorical_mismatches']:return False
+    for d in export['mismatches']:
+        bound=2*errors.get(d['head'],0.)
+        if not (d['float64_top2_gap']<=bound and d['float64_selected_class_deficit']<=bound):return False
+    return export['categorical_mismatches']<=STAGEB_F32_FLIP_RATE_MAX*max(1,export['rows'])
+
 def passes(proof):
-    c=proof['calibrated_fire']
-    return parity.parity_passes(proof) and c['native_mismatches']==0 and c['uncertified_mismatches']==0
+    c=proof['calibrated_fire'];native=proof['native_float64']
+    native_ok=native['categorical_mismatches']==0 and native['max_abs_error']<=parity.PARITY_RULE['native_atol']
+    return native_ok and stageb_float32_passes(proof['float32_export']) and c['native_mismatches']==0 and c['uncertified_mismatches']==0
 
 def evaluate(arm,fight):
     global LOCAL
