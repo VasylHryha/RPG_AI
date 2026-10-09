@@ -25,7 +25,7 @@ class Policy(nn.Module):
             setattr(self,name+'_score',nn.Linear(16,1))
         self.aim_offset=nn.Linear(64,2);self.move_offset=nn.Linear(64,2) # A,B,J,K,omega,share
     def encode(self,tokens):return torch.tanh(self.enc2(torch.tanh(self.enc1(tokens))))
-    def tick(self,tokens,query,own,enemy,pos,speeds,assignments,ids,state,dt,refresh=True,cache=None,aim_points=None,aim_features=None,aim_valid=None,move_points=None,move_features=None,move_valid=None,aim_sources=None,move_sources=None):
+    def tick(self,tokens,query,own,enemy,pos,speeds,assignments,ids,state,dt,refresh=True,cache=None,aim_points=None,aim_features=None,aim_valid=None,move_points=None,move_features=None,move_valid=None,aim_sources=None,move_sources=None,state_only=False):
         encoded=self.encode(tokens) if refresh else cache
         q=torch.tanh(self.query(query));a=torch.softmax(q@encoded.T/8,dim=-1);context=a@encoded
         if self.kind in ('N1','N1h'):state=q.new_zeros((len(ids),8))
@@ -57,6 +57,7 @@ class Policy(nn.Module):
             drift=.25*torch.sigmoid(self.law[5])*speeds[:,None]*v/(1+torch.linalg.vector_norm(v,dim=-1)[:,None])
             state_for_head=torch.cat((state[:,1:6],q.new_zeros((len(ids),3))),-1)
         else:state_for_head=state
+        if state_only:return dict(drift=drift),state,encoded
         h=torch.tanh(self.head(torch.cat((q,context,state_for_head),-1)))
         y=self.out(h)
         # Enemy pointer, with explicit none logit. All living enemies; no top-k loss.

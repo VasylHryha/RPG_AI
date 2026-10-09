@@ -22,8 +22,10 @@ def collect_scores(model,fights,deadline):
             starts=selected_starts(fight['frames'],4);state=initial(model.kind,[]);ids=[];cache=None;nextframe=(0,[])
             for tick,row in enumerate(r.data.frames(fight['raw_file'])):
                 if time.monotonic()>=deadline:raise TimeoutError('calibration deadline')
-                y,state,ids,enemies,cache,nextframe,_=forward(model,row,state,ids,cache,nextframe)
-                if not any(at<=tick<at+WINDOW for at in starts):continue
+                sampled=any(at<=tick<at+WINDOW for at in starts)
+                if not sampled and model.kind in ('N1','N1h'):continue
+                y,state,ids,enemies,cache,nextframe,_=forward(model,row,state,ids,cache,nextframe,state_only=not sampled)
+                if not sampled:continue
                 byid={v['id']:v for v in row['labels']};own={v[0]:v for v in row['own']}
                 for i,id in enumerate(ids):
                     lab=byid[id];v=values[lab['role']];s=own[id]

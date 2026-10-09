@@ -9,6 +9,10 @@ ROOT=r.LOCAL
 def configure(round):
     local=ROOT/f'round{round}';local.mkdir(parents=True,exist_ok=True)
     for m in (training,r.data):m.LOCAL=local
+    import candidate_cache
+    if (local/'CANDIDATE_CACHE.json').exists():
+        candidate_cache.activate(local,r.read(local/'INDEX.json'),r.frames)
+        r.data.frames=candidate_cache.frames;training.frames=candidate_cache.frames
     training.environment.__globals__['HERE']=r.HERE
     training.checked_budget=lambda:checked(local)
     return local
@@ -16,6 +20,7 @@ def configure(round):
 def checked(local):
     b=r.read(local/'TRAIN_BUDGET.json');validate_index(r.read(local/'INDEX.json'))
     coverage=coverage_admission(local)
+    if r.read(local/'CANDIDATE_CACHE.json')!=b['candidate_cache']:raise RuntimeError('candidate cache manifest drift')
     if b.get('coverage_sha256')!=r.sha(local/'COVERAGE.json'):raise RuntimeError('coverage admission drift')
     if b['arms']!=list(r.ARMS) or b.get('variant')!=r.VARIANT:raise RuntimeError('arm/variant drift')
     if b['sources']!=r.sources() or b['index_sha256']!=r.sha(local/'INDEX.json'):raise RuntimeError('Stage B training code/index drift; preserve revision')
@@ -61,11 +66,15 @@ def project(samples,epochs,slots):
     costs={a:epochs*s['epoch_seconds']+s['tail_seconds'] for a,s in samples.items()}
     groups=lanes(costs,slots);return dict(groups=groups,projected_seconds=1.2*max(g['wall_seconds'] for g in groups),costs=costs)
 
-def measure(round):
+def timing_fights(fights):
+    # Largest prefix per panel, selected from metadata before any timing/labels.
+    return [max([f for f in fights if f['panel']==panel],key=lambda f:(f['frames'],f['tag'])) for panel in sorted({f['panel'] for f in fights})]
+
+def measure(round,test_mode=False):
     local=configure(round);index=prepare(round);training.environment();cap=training_cap(r.HERE)
-    coverage=coverage_admission(local,verify_models=True)
+    coverage=None if test_mode else coverage_admission(local,verify_models=True)
     if cap['cap_seconds']>16200:raise RuntimeError('owner Stage B2 cap cannot exceed 4.5 h')
-    if (local/'TRAIN_BUDGET.json').exists():return checked(local)
+    if not test_mode and (local/'TRAIN_BUDGET.json').exists():return checked(local)
     from jobs import admitted
     with admitted(cap['cap_seconds']) as (absolute,monitor):
         deadline=TrainingDeadline(r.HERE,absolute,cap['cap_seconds']);training.MONITOR=monitor;samples={}
@@ -73,24 +82,57 @@ def measure(round):
         for fight in index['fights']:
             if r.sha(fight['raw_file'])!=fight['raw_sha256']:raise RuntimeError('measurement raw drift')
         admission_seconds=time.monotonic()-audit_start
+        from candidate_cache import prepare as cache_prepare,activate as cache_activate,frames as cache_frames
+        train_all=[f for f in index['fights'] if f['split']=='train']
+        val=[f for f in index['fights'] if f['split']=='validation'];test=[f for f in index['fights'] if f['split']=='test']
+        cache_index=index
+        if test_mode:
+            selected=timing_fights(train_all)+timing_fights(val)
+            cache_index=dict(index,fights=selected)
+        cache_root=local/'speed_test' if test_mode else local
+        cache_receipt=cache_prepare(cache_root,cache_index,r.frames,deadline,monitor)
+        # Test mode never seals the full-cache marker or activates a partial cache
+        # for a later production process.
+        cache_activate(cache_root,cache_index,r.frames);r.data.frames=cache_frames;training.frames=cache_frames
+        sample_start=time.monotonic()
+        from loss import target_weights,install
         for arm in r.ARMS:
-            train=[f for f in index['arm_fights'][arm] if f['split']=='train'];val=[f for f in index['fights'] if f['split']=='validation'];test=[f for f in index['fights'] if f['split']=='test']
-            from loss import target_weights,install
+            train=[f for f in index['arm_fights'][arm] if f['split']=='train']
             setup=time.monotonic();balance=target_weights(train,deadline);setup_seconds=time.monotonic()-setup;install(balance)
-            model,opt=training.make(arm);rows,states,refresh=training.stored(model,train[0],4,deadline);steps=[]
-            for at,ctx in list(states.items())[:4]:steps.append(training.step(model,opt,rows[at:at+training.WINDOW],ctx,None,deadline))
-            if len(steps)<2:raise RuntimeError('measurement needs warmup plus measured windows')
-            diag=training.evaluate(model,val[:1],4,None,deadline);frame_mass=sum(f['frames'] for f in train);step_mass=sum(len(training.selected_starts(f['frames'],4)) for f in train)
-            # Reparse both stored replay and optimization; charge validation every epoch.
-            read_start=time.monotonic();list(r.data.frames(train[0]['raw_file']));read_seconds=time.monotonic()-read_start
-            validation=diag['wall_seconds']/val[0]['frames']*sum(f['frames'] for f in val)
-            tail=3*admission_seconds+setup_seconds+3*validation+diag['wall_seconds']/val[0]['frames']*sum(f['frames'] for f in test)
-            epoch=admission_seconds+refresh/train[0]['frames']*frame_mass+read_seconds/train[0]['frames']*frame_mass+step_mass*max(s['wall_seconds'] for s in steps[1:])+validation
-            samples[arm]=dict(parameter_count=sum(p.numel() for p in model.parameters()),tool_head_parameters=sum(p.numel() for k,p in model.named_parameters() if k.startswith(('aim_','move_'))),threads=1,provenance_check_seconds=admission_seconds,target_balance=balance,setup_seconds=setup_seconds,steps=steps,steps_per_epoch=step_mass,epoch_seconds=epoch,tail_seconds=tail,validation_seconds=validation,fit_seconds=10*epoch+tail)
+            model,opt=training.make(arm);steps=[];panel_samples={}
+            chosen=timing_fights(train)
+            if len(chosen)*2*len(r.ARMS)>20:raise RuntimeError('timing design exceeds 20 optimizer steps')
+            for f in chosen:
+                rows,states,refresh=training.stored(model,f,4,deadline)
+                contexts=list(states.items())
+                if len(contexts)<2:raise RuntimeError('measurement needs warmup plus measured windows')
+                measured=[]
+                for at,ctx in (contexts[0],contexts[-1]):
+                    value=training.step(model,opt,rows[at:at+training.WINDOW],ctx,None,deadline)
+                    measured.append(value);steps.append(dict(tag=f['tag'],panel=f['panel'],tick=at,**value))
+                diag=training.evaluate(model,[q for q in timing_fights(val) if q['panel']==f['panel']],4,None,deadline)
+                vf=next(q for q in timing_fights(val) if q['panel']==f['panel'])
+                read_start=time.monotonic();list(r.data.frames(f['raw_file']));read_seconds=time.monotonic()-read_start
+                panel_samples[f['panel']]=dict(tag=f['tag'],frames=f['frames'],refresh_seconds_per_frame=refresh/f['frames'],read_seconds_per_frame=read_seconds/f['frames'],step_seconds=max(v['wall_seconds'] for v in measured),validation_prefix_seconds_per_frame=diag['prefix_seconds']/vf['frames'],validation_window_seconds_per_tick=(diag['wall_seconds']-diag['prefix_seconds'])/diag['window_ticks'])
+            refresh_total=sum(panel_samples[f['panel']]['refresh_seconds_per_frame']*f['frames'] for f in train)
+            read_total=sum(panel_samples[f['panel']]['read_seconds_per_frame']*f['frames'] for f in train)
+            step_total=sum(panel_samples[f['panel']]['step_seconds']*len(training.selected_starts(f['frames'],4)) for f in train)
+            def diagnostic_seconds(fights):
+                return sum(panel_samples[f['panel']]['validation_prefix_seconds_per_frame']*f['frames']+panel_samples[f['panel']]['validation_window_seconds_per_tick']*sum(min(training.WINDOW,f['frames']-at) for at in training.selected_starts(f['frames'],4)) for f in fights)
+            validation=diagnostic_seconds(val);test_seconds=diagnostic_seconds(test)
+            step_mass=sum(len(training.selected_starts(f['frames'],4)) for f in train)
+            # Worker final test, then calibration validation and test.
+            # Calibration skips unused heads but replays physical-prefix state
+            # once; using evaluate's prefix+windows cost is conservative.
+            tail=3*admission_seconds+setup_seconds+validation+2*test_seconds
+            epoch=admission_seconds+refresh_total+read_total+step_total+validation
+            samples[arm]=dict(parameter_count=sum(p.numel() for p in model.parameters()),tool_head_parameters=sum(p.numel() for k,p in model.named_parameters() if k.startswith(('aim_','move_'))),threads=1,provenance_check_seconds=admission_seconds,target_balance=balance,setup_seconds=setup_seconds,steps=steps,per_step_seconds=max(s['wall_seconds'] for s in steps),panel_samples=panel_samples,steps_per_epoch=step_mass,refresh_seconds_per_epoch=refresh_total,read_seconds_per_epoch=read_total,epoch_seconds=epoch,tail_seconds=tail,validation_seconds=validation,fit_seconds=10*epoch+tail)
         topology=measured_cores();topology['slots']=min(4,topology['slots']);p=project(samples,10,topology['slots'])
-        b=dict(schema=1,coverage_sha256=r.sha(local/'COVERAGE.json'),coverage_admission=coverage['admission'],variant=r.VARIANT,sources=r.sources(),index_sha256=r.sha(local/'INDEX.json'),epochs=10,windows_per_fight=4,window_ticks=90,class_weights=None,loss='fire CE; train-only balanced pointer CE; candidate CE plus bounded residual SmoothL1 /100 px; validation-only fire calibration',arms=list(r.ARMS),dropped='N2J0; optional N1h only with B2_N1H=1',samples=samples,topology=topology,round=round,margin=1.2,training_cap=cap,status='ADMITTED' if p['projected_seconds']<=cap['cap_seconds'] else 'REFUSED',**p)
-        r.write(local/'TRAIN_BUDGET.json',b,exclusive=True)
-        if b['status']!='ADMITTED':raise RuntimeError('measured projection exceeds live owner cap')
+        cache_frames_count=cache_receipt['frames'];cache_projection=cache_receipt['compressed_bytes']/cache_frames_count*sum(f['frames'] for f in index['fights'])
+        b=dict(schema=1,sample_steps=sum(len(s['steps']) for s in samples.values()),measurement_seconds=time.monotonic()-sample_start,candidate_cache=cache_receipt,cache_projected_bytes=cache_projection,cache_projected_seconds=cache_receipt['seconds']/cache_frames_count*sum(f['frames'] for f in index['fights']),coverage_sha256=None if test_mode else r.sha(local/'COVERAGE.json'),coverage_admission=None if test_mode else coverage['admission'],variant=r.VARIANT,sources=r.sources(),index_sha256=r.sha(local/'INDEX.json'),epochs=10,windows_per_fight=4,window_ticks=90,class_weights=None,loss='fire CE; train-only balanced pointer CE; candidate CE plus bounded residual SmoothL1 /100 px; validation-only fire calibration',arms=list(r.ARMS),dropped='N2J0; optional N1h only with B2_N1H=1',samples=samples,topology=topology,round=round,margin=1.2,training_cap=cap,status='TEST_ONLY' if test_mode else ('ADMITTED' if p['projected_seconds']<=cap['cap_seconds'] else 'REFUSED'),timing_selection='largest-frame training/validation fight per panel; first and last selected optimizer windows; all arms, at most 20 steps',**p)
+        r.write((cache_root/'SPEED_MEASURE_TEST.json') if test_mode else (local/'TRAIN_BUDGET.json'),b,exclusive=True)
+        print(__import__('json').dumps(dict(status=b['status'],sample_steps=b['sample_steps'],measurement_seconds=b['measurement_seconds'],projected_seconds=b['projected_seconds'],cache_projected_bytes=cache_projection,per_step_seconds={a:s['per_step_seconds'] for a,s in samples.items()})))
+        if b['status']=='REFUSED':raise RuntimeError('measured projection exceeds live owner cap')
         return b
 
 def fit(arm,round,absolute,cap):
@@ -209,8 +251,11 @@ def run(round):
         raise
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('command',choices=('prepare','measure','run','worker'));p.add_argument('--round',type=int,choices=(0,1,2),default=0);p.add_argument('--arm',choices=r.ARMS);p.add_argument('--absolute',type=float);p.add_argument('--cap',type=float);p.add_argument('--fds',type=int,nargs=2);a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('command',choices=('prepare','measure','run','worker'));p.add_argument('--round',type=int,choices=(0,1,2),default=0);p.add_argument('--arm',choices=r.ARMS);p.add_argument('--absolute',type=float);p.add_argument('--cap',type=float);p.add_argument('--fds',type=int,nargs=2);p.add_argument('--test-mode',action='store_true');a=p.parse_args()
     if a.command=='worker':
         import jobs
         jobs.inherited(a.fds);os.nice(10);training.MONITOR=r.collect.a0();fit(a.arm,a.round,a.absolute,a.cap)
-    else:globals()[a.command](a.round)
+    elif a.command=='measure':measure(a.round,a.test_mode)
+    else:
+        if a.test_mode:raise ValueError('test mode is only available for measure')
+        globals()[a.command](a.round)

@@ -19,7 +19,7 @@ inline void validate(const Frame& f,unsigned id){
  std::sort(ids.begin(),ids.end());if(std::adjacent_find(ids.begin(),ids.end())!=ids.end()||owns.size()>64||f.units.size()-owns.size()>64||!actor||f.shells.size()>64||f.shots.size()>64||f.casts.size()>32||f.fields.size()>32)throw std::invalid_argument("candidate entity/threat envelope");
  for(auto& s:f.own){ownids.push_back(s[0]);if(s[2]<0||s[3]<0||s[4]<=0||s[8]<=0||s[9]<0)throw std::invalid_argument("candidate own-state physics");}std::sort(owns.begin(),owns.end());std::sort(ownids.begin(),ownids.end());if(owns!=ownids)throw std::invalid_argument("candidate own-state coverage");
 }
-inline Banks candidates(const Frame& frame,unsigned id){validate(frame,id);
+inline Banks candidates(const Frame& frame,unsigned id,bool allow_missing_aim=false){validate(frame,id);
  auto units=frame.units;std::sort(units.begin(),units.end(),[](auto& a,auto& b){return a[0]<b[0];});Row own,state;std::vector<Row> enemies,friends;
  for(auto& u:units){if(u.size()!=23)throw std::invalid_argument("candidate unit schema");if(u[0]==id&&u[1]==0)own=u;else if(u[1]==1)enemies.push_back(u);else if(u[1]==0)friends.push_back(u);}
  for(auto& s:frame.own)if(s[0]==id)state=s;
@@ -44,6 +44,6 @@ inline Banks candidates(const Frame& frame,unsigned id){validate(frame,id);
  for(size_t i=0;i<frame.fields.size();++i){auto& s=frame.fields[i];auto delta=sub(pos,{s[0]*W,s[1]*H});double d=norm(delta);move(add(pos,d<.5?Point{30,0}:mul(delta,40/d)),10,starts["fields"]+int(i));}
  double first=INFINITY;for(auto b:blasts)if(norm(sub(pos,b.p))<=b.r)first=std::min(first,b.t);
  if(std::isfinite(first)){double extent=std::max(8.,own[10]*(first+.1));for(double fraction:{1.,.6})for(int j=0;j<16;++j){double angle=j*3.14159265358979323846/8;move(add(pos,mul({std::cos(angle),std::sin(angle)},extent*fraction)),10);}}
- if(own[2]==2&&out.aim.empty())throw std::invalid_argument("empty required artillery aim bank; inspect coverage");for(auto* bank:{&out.aim,&out.move})for(auto& c:*bank){finite(c.point);for(auto x:c.features)finite(x);}if(out.aim.size()>MAX_AIM||out.move.size()>MAX_MOVE||out.move.empty())throw std::invalid_argument("candidate overflow");return out;
+ if(own[2]==2&&out.aim.empty()&&!allow_missing_aim)throw std::invalid_argument("empty required artillery aim bank; inspect coverage");for(auto* bank:{&out.aim,&out.move})for(auto& c:*bank){finite(c.point);for(auto x:c.features)finite(x);}if(out.aim.size()>MAX_AIM||out.move.size()>MAX_MOVE||out.move.empty())throw std::invalid_argument("candidate overflow");return out;
 }
 }

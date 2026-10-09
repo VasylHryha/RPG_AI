@@ -50,22 +50,22 @@ def make(kind):
 
 def tensor(x,dtype=torch.float32):return {k:torch.as_tensor(v,dtype=torch.long if k in ('own','enemy','assignments','aim_sources','move_sources') else dtype) for k,v in x.items()}
 
-def forward(model,row,state,previous,cache,next_frame):
+def forward(model,row,state,previous,cache,next_frame,state_only=False):
     global FORWARD_FLOPS,ENCODER_CALLS,PHASE_RHS
-    x,ids,enemies=pack(row,model.kind);x=tensor(x,next(model.parameters()).dtype)
+    x,ids,enemies=pack(row,model.kind,with_candidates=not state_only);x=tensor(x,next(model.parameters()).dtype)
     state=remap(model.kind,state,previous,ids)
     # Force a shared refresh on entity removal; no stale-token index reuse.
     current=[u[0] for u in sorted(row['units'],key=lambda u:u[0])]
     refresh=True # B2 public hazards and source embeddings refresh every physical tick
-    y,state,cache=model.tick(**x,ids=ids,state=state,dt=row['dt'],refresh=refresh,cache=cache)
+    y,state,cache=model.tick(**x,ids=ids,state=state,dt=row['dt'],refresh=refresh,cache=cache,state_only=state_only)
     if refresh:next_frame=(row['t']+.2,current)
     n=len(ids);nt=len(x['tokens']);ne=len(enemies)
     # Count dense multiply/add operations exactly; nonlinear kernels are separate.
-    FORWARD_FLOPS += (nt*2*2*64*64 if refresh else 0)+n*2*(128*64+136*64+64*9+64*64+2*nt*64+ne*64)
+    FORWARD_FLOPS += (nt*2*2*64*64 if refresh else 0)+n*2*(128*64+2*nt*64+(0 if state_only else 136*64+64*9+64*64+ne*64))
     from candidates import FEATURES
-    choices=int(x['aim_valid'].sum()+x['move_valid'].sum())
+    choices=0 if state_only else int(x['aim_valid'].sum()+x['move_valid'].sum())
     # Two choice/source/offset heads, factored MLP projections and source dots.
-    FORWARD_FLOPS += 2*(n*2*(64*FEATURES+64*64+64*2+64*16+nt*64)+nt*2*64*16+choices*(FEATURES+FEATURES*16+16))
+    if not state_only:FORWARD_FLOPS += 2*(n*2*(64*FEATURES+64*64+64*2+64*16+nt*64)+nt*2*64*16+choices*(FEATURES+FEATURES*16+16))
     if model.kind=='N1r':FORWARD_FLOPS+=n*2*144*8
     if model.kind in ('N2','N2J0'):FORWARD_FLOPS+=n*2*128;PHASE_RHS+=4
     ENCODER_CALLS+=int(refresh)
@@ -95,12 +95,17 @@ def stored(model,fight,windows,deadline,path=None):
     start=time.monotonic();rows=list(frames(LOCAL/fight['raw_file']));starts=selected_starts(len(rows),windows)
     state=initial(model.kind,[],next(model.parameters()).dtype);ids=[];cache=None;next_frame=(0,[]);saved={}
     model.eval()
+    if model.kind in ('N1','N1h'):
+        # Memoryless arms refresh their encoder each tick; no prefix forward is needed.
+        saved={i:(state.clone(),[],None,(0,[])) for i in starts}
+        if path:atomic_checkpoint(path,saved)
+        return rows,saved,time.monotonic()-start
     with torch.no_grad():
         for i,row in enumerate(rows):
             live_check()
             if time.monotonic()>=deadline:raise TimeoutError('cap during stored-state refresh')
             if i in starts:saved[i]=(state.clone(),ids[:],None if cache is None else cache.clone(),next_frame)
-            y,state,ids,enemies,cache,next_frame,refresh=forward(model,row,state,ids,cache,next_frame)
+            y,state,ids,enemies,cache,next_frame,refresh=forward(model,row,state,ids,cache,next_frame,state_only=True)
     if path:atomic_checkpoint(path,saved)
     return rows,saved,time.monotonic()-start
 
@@ -126,20 +131,21 @@ def step(model,optimizer,rows,context,weights,deadline):
     return dict(wall_seconds=time.monotonic()-start,cpu_seconds=time.process_time()-cpu,rss_bytes=rss,decision_rows=decisions,loss=float((loss/mass).detach()))
 
 def evaluate(model,fights,windows,weights,deadline):
-    total=mass=0;heads={};roles={};start=time.monotonic();cpu=time.process_time()
+    total=mass=0;heads={};roles={};start=time.monotonic();cpu=time.process_time();prefix_seconds=0.;window_ticks=0
     for fight in fights:
-        rows,saved,_=stored(model,fight,windows,deadline)
+        rows,saved,refresh_seconds=stored(model,fight,windows,deadline);prefix_seconds+=refresh_seconds
         with torch.no_grad():
             for at,context in saved.items():
                 state,ids,cache,next_frame=context
                 for row in rows[at:at+WINDOW]:
+                    window_ticks+=1
                     y,state,ids,enemies,cache,next_frame,_=forward(model,row,state,ids,cache,next_frame);v,ls=objective(y,row,ids,enemies,weights);total+=float(v)*len(ids);mass+=len(ids)
                     for k,x in ls.items():heads[k]=heads.get(k,0)+x*len(ids)
                     for i,l in enumerate(labels(row,ids,enemies)):
                         c=roles.setdefault(l['role'],dict(rows=0,target_correct=0,fire_correct=0,active_predicted=0,active_oracle=0,ready_rows=0))
                         c['rows']+=1;c['target_correct']+=int(int(y['target'][i].argmax())==l['target']);pred=int(y['fire'][i].argmax());c['fire_correct']+=int(pred==l['fire']);c['active_predicted']+=pred!=1;c['active_oracle']+=l['fire']!=1;c['ready_rows']+=l['ready']
     if not mass:raise RuntimeError('empty evaluation')
-    return dict(loss=total/mass,rows=mass,heads={k:v/mass for k,v in heads.items()},roles=roles,wall_seconds=time.monotonic()-start,cpu_seconds=time.process_time()-cpu)
+    return dict(prefix_seconds=prefix_seconds,window_ticks=window_ticks,loss=total/mass,rows=mass,heads={k:v/mass for k,v in heads.items()},roles=roles,wall_seconds=time.monotonic()-start,cpu_seconds=time.process_time()-cpu)
 
 def checked_budget():
     b=read(LOCAL/'TRAIN_BUDGET.json')

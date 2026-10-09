@@ -13,7 +13,7 @@ def frames(path):
     for x in rows(path):
         if x.get('stageA'):yield x
 
-def pack(row,kind):
+def pack(row,kind,with_candidates=True):
     units=sorted(row['units'],key=lambda u:u[0]);own=[u for u in units if u[1]==0];enemy=[u for u in units if u[1]==1]
     if any(sum(u[1]==side for u in units)>64 for side in (0,1)):raise ValueError('entity overflow')
     if any(len(row[k])>v for k,v in CAPS.items()):raise ValueError('threat overflow; no omitted-threat labels admitted')
@@ -48,7 +48,7 @@ def pack(row,kind):
     arrays=dict(tokens=np.asarray(tokens),query=query,own=np.array([indices[u[0]] for u in own]),enemy=np.array([indices[u[0]] for u in enemy]),pos=np.array([[u[3],u[4]] for u in own]).reshape(-1,2),speeds=np.array([u[10] for u in own]),assignments=np.array([u[15] for u in own]))
     if not all(np.isfinite(v).all() for v in arrays.values()):raise ValueError('nonfinite policy input')
     from candidates import pack_candidates
-    arrays.update(pack_candidates(row,[u[0] for u in own]))
+    if with_candidates:arrays.update(pack_candidates(row,[u[0] for u in own]))
     return arrays,[u[0] for u in own],[u[0] for u in enemy]
 
 def labels(row,ids,enemies):

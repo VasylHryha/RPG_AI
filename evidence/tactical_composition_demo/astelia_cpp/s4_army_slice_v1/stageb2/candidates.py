@@ -113,6 +113,9 @@ def bank(row,id,allow_missing_aim=False):
     return dict(aim_points=a,aim_features=af,aim_valid=am,aim_sources=asi,move_points=m,move_features=mf,move_valid=mm,move_sources=msi),dict(aim=aims,move=moves)
 
 def pack_candidates(row,ids):
+    if '_candidate_banks' in row:
+        from native_candidates import packed
+        return packed(row['_candidate_banks'],ids)
     values=[bank(row,id)[0] for id in ids]
     return {key:np.stack([v[key] for v in values]) for key in values[0]} if values else {key:np.zeros((0,*shape)) for key,shape in {'aim_points':(MAX_AIM,2),'aim_features':(MAX_AIM,FEATURES),'aim_valid':(MAX_AIM,),'aim_sources':(MAX_AIM,),'move_points':(MAX_MOVE,2),'move_features':(MAX_MOVE,FEATURES),'move_valid':(MAX_MOVE,),'move_sources':(MAX_MOVE,)}.items()}
 
@@ -125,7 +128,11 @@ def nearest(point,points,valid,bound):
 def mapped_labels(row,ids,drift=None):
     labels={v['id']:v for v in row['labels']};out=[]
     for i,id in enumerate(ids):
-        arrays,_=bank(row,id,allow_missing_aim=True);lab=labels[id];c=lab['executed'];move=np.asarray(c['goal'])-(np.asarray(drift[i]) if drift is not None else 0)
+        if '_candidate_banks' in row:
+            a,m=row['_candidate_banks'][id]
+            arrays=dict(aim_points=a[:,:2],aim_valid=np.ones(len(a)),move_points=m[:,:2],move_valid=np.ones(len(m)))
+        else:arrays,_=bank(row,id,allow_missing_aim=True)
+        lab=labels[id];c=lab['executed'];move=np.asarray(c['goal'])-(np.asarray(drift[i]) if drift is not None else 0)
         result=dict(id=id,role=lab['role'],dodge=bool(lab.get('active')),move=nearest(move,arrays['move_points'],arrays['move_valid'],MOVE_OFFSET),aim=None)
         if c['aim'] is not None:result['aim']=nearest(c['aim'],arrays['aim_points'],arrays['aim_valid'],AIM_OFFSET)
         out.append(result)
