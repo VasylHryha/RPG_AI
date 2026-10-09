@@ -1,0 +1,28 @@
+{
+  "status": "PASS",
+  "returncode": 0,
+  "wall_seconds": 7.368489000014961,
+  "command": [
+    "evidence/tactical_composition_demo/astelia_cpp/s4_net_slice_v1/_local/mlenv/bin/python",
+    "-m",
+    "pytest",
+    "-q",
+    "-o",
+    "cache_dir=evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/_local/b2move/pytest_cache",
+    "--basetemp=evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/_local/b2move/pytest_run",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/test_b2move.py",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/test_b2speed.py",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/test_stageb2.py::test_no_combat_complete_native_heads_and_memory",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/test_stageb2.py::test_factored_scorer_matches_unfactored_and_ignores_padding",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/test_stageb2.py::test_exact_dodge_geometry_and_hazard_features_native_twin",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/test_stageb2.py::test_smoothed_public_velocity_and_lead_native_twin",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/test_stageb2.py::test_extreme_logits_cannot_choose_padding",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/test_stageb2.py::test_variant_native_seams_and_near_tie_head_scope",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/test_stageb2.py::test_empty_required_aim_stops_native_and_training_but_audits",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/test_stageb2.py::test_public_candidates_and_honest_residuals",
+    "evidence/tactical_composition_demo/astelia_cpp/s4_army_slice_v1/stageb2/test_stageb2.py::test_candidate_identity_binding_and_nonlinear_gradients"
+  ],
+  "stdout": "...............................                                          [100%]\n31 passed in 6.75s\n",
+  "stderr": "",
+  "scope": "One focused pass: movement/cache and native bank/head contracts; no combat or optimizer. Existing unrelated stale PROTECTED_SOURCE_BASELINE assertion not selected."
+}

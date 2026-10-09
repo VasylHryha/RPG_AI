@@ -1,0 +1,620 @@
+{
+  "status": "READ_ONLY_DIAGNOSIS",
+  "index_sha256": "5e0292f25c6a9bfb80154fe7f526a814e1d637e2dac697ea26385ef31089e51e",
+  "sources": {
+    "candidates.h": "c6a0e230842d260eabfee31127f877828bdeba64011567ac415c81ee7c1419e5",
+    "native_candidates.cpp": "98b3021a2abb7f11d017e64a7b5982d57c4fca3351bb90431b19328b0cb9f440",
+    "tools.h": "062538dfb2295b750a45b5cc88f0ec76a6cc9a816abdc77357f3a67c7d081742",
+    "b2move_diagnose.py": "738239daf9b1399e46373eccedd51c8abe81ebaef27e9a97c660265314610498"
+  },
+  "fights": 180,
+  "sampled_frames": 38077,
+  "seconds": 627.0627412500035,
+  "ordinary_rows": {
+    "melee": 154997,
+    "ranged": 533163,
+    "artillery": 306368
+  },
+  "uncovered_rows": {
+    "melee": 99081,
+    "ranged": 234166,
+    "artillery": 56727
+  },
+  "clusters": {
+    "melee:history/baseline \u2192 participation band": {
+      "count": 79299,
+      "mean_px": 32.28951529043753,
+      "median_px": 32.055175675140475,
+      "p90_px": 34.339200688933275,
+      "max_px": 68.0000000000001
+    },
+    "ranged:escort \u2192 participation band": {
+      "count": 191341,
+      "mean_px": 27.204857988212982,
+      "median_px": 26.14027347317225,
+      "p90_px": 31.50091493599979,
+      "max_px": 66.91745299661785
+    },
+    "artillery:anchor + spacing": {
+      "count": 50531,
+      "mean_px": 33.26641110841282,
+      "median_px": 29.786159575144488,
+      "p90_px": 50.49941010798551,
+      "max_px": 95.29406078885995
+    },
+    "melee:history/baseline": {
+      "count": 19586,
+      "mean_px": 32.48129351387037,
+      "median_px": 30.329017911908593,
+      "p90_px": 47.005726694441165,
+      "max_px": 67.63630309592733
+    },
+    "ranged:escort": {
+      "count": 38157,
+      "mean_px": 26.88890302640972,
+      "median_px": 25.368702803064735,
+      "p90_px": 34.5467424932945,
+      "max_px": 79.65820831963987
+    },
+    "melee:history/baseline \u2192 engine clamp": {
+      "count": 196,
+      "mean_px": 33.962355572137646,
+      "median_px": 31.14410475021424,
+      "p90_px": 52.58987855413538,
+      "max_px": 59.683463108275426
+    },
+    "artillery:focus + spacing": {
+      "count": 1153,
+      "mean_px": 24.448678371783156,
+      "median_px": 23.663471122431957,
+      "p90_px": 29.166827934631044,
+      "max_px": 53.96135568641466
+    },
+    "artillery:focus": {
+      "count": 656,
+      "mean_px": 25.48930291247476,
+      "median_px": 24.687008628535388,
+      "p90_px": 29.44828094223481,
+      "max_px": 73.14714873052208
+    },
+    "ranged:history/baseline": {
+      "count": 3164,
+      "mean_px": 49.46122064223767,
+      "median_px": 45.2069379427059,
+      "p90_px": 79.80146464978878,
+      "max_px": 148.58972047836824
+    },
+    "ranged:history/baseline \u2192 participation band": {
+      "count": 1267,
+      "mean_px": 42.64511853556077,
+      "median_px": 30.71384053853295,
+      "p90_px": 85.35520504155451,
+      "max_px": 157.52537852388102
+    },
+    "artillery:history/baseline": {
+      "count": 3530,
+      "mean_px": 73.62554931900415,
+      "median_px": 74.89036201596853,
+      "p90_px": 105.10960778978769,
+      "max_px": 166.58361473394632
+    },
+    "artillery:history/baseline \u2192 participation band": {
+      "count": 621,
+      "mean_px": 44.56914997784671,
+      "median_px": 32.72881408948522,
+      "p90_px": 85.72793815109596,
+      "max_px": 168.22223962031592
+    },
+    "artillery:anchor + spacing \u2192 participation band": {
+      "count": 121,
+      "mean_px": 24.51785364171494,
+      "median_px": 23.237485895703138,
+      "p90_px": 29.206607755948454,
+      "max_px": 41.81910342400098
+    },
+    "artillery:focus + spacing \u2192 participation band": {
+      "count": 25,
+      "mean_px": 24.106895270209197,
+      "median_px": 23.4227915079055,
+      "p90_px": 28.058952986193727,
+      "max_px": 29.76988973615815
+    },
+    "artillery:focus \u2192 engine clamp": {
+      "count": 10,
+      "mean_px": 44.789498598559234,
+      "median_px": 41.070890056971436,
+      "p90_px": 67.75258948235243,
+      "max_px": 71.07502883075217
+    },
+    "ranged:history/baseline \u2192 engine clamp": {
+      "count": 237,
+      "mean_px": 62.85005337238414,
+      "median_px": 61.202089124084395,
+      "p90_px": 92.33451875319811,
+      "max_px": 144.71928417303084
+    },
+    "artillery:history/baseline \u2192 engine clamp": {
+      "count": 80,
+      "mean_px": 92.37657927560117,
+      "median_px": 92.32494189754655,
+      "p90_px": 112.40386353536316,
+      "max_px": 119.79560386803261
+    }
+  },
+  "overlapping_transforms": {
+    "melee:participation": {
+      "count": 79299,
+      "mean_px": 32.28951529043753,
+      "median_px": 32.055175675140475,
+      "p90_px": 34.339200688933275,
+      "max_px": 68.0000000000001
+    },
+    "ranged:participation": {
+      "count": 192608,
+      "mean_px": 27.30642599220809,
+      "median_px": 26.146931921649564,
+      "p90_px": 31.58978649671402,
+      "max_px": 157.52537852388102
+    },
+    "ranged:public_overlay_match": {
+      "count": 229498,
+      "mean_px": 27.15232640415767,
+      "median_px": 26.085172302323144,
+      "p90_px": 31.957010888824644,
+      "max_px": 79.65820831963987
+    },
+    "artillery:spacing": {
+      "count": 51830,
+      "mean_px": 33.04541150982591,
+      "median_px": 29.455880491090916,
+      "p90_px": 50.25306960690575,
+      "max_px": 95.29406078885995
+    },
+    "artillery:public_overlay_match": {
+      "count": 52496,
+      "mean_px": 32.953226079145956,
+      "median_px": 29.313358176745076,
+      "p90_px": 50.14869275837117,
+      "max_px": 95.29406078885995
+    },
+    "melee:engine_clamp": {
+      "count": 196,
+      "mean_px": 33.962355572137646,
+      "median_px": 31.14410475021424,
+      "p90_px": 52.58987855413538,
+      "max_px": 59.683463108275426
+    },
+    "artillery:participation": {
+      "count": 767,
+      "mean_px": 40.73895020683904,
+      "median_px": 28.932879649941754,
+      "p90_px": 76.05839933918004,
+      "max_px": 168.22223962031592
+    },
+    "artillery:engine_clamp": {
+      "count": 90,
+      "mean_px": 87.08912586704095,
+      "median_px": 90.83887022276406,
+      "p90_px": 111.69150898910756,
+      "max_px": 119.79560386803261
+    },
+    "ranged:engine_clamp": {
+      "count": 237,
+      "mean_px": 62.85005337238414,
+      "median_px": 61.202089124084395,
+      "p90_px": 92.33451875319811,
+      "max_px": 144.71928417303084
+    }
+  },
+  "examples": [
+    {
+      "tag": "train_0000",
+      "tick": 1,
+      "id": 1,
+      "role": "melee",
+      "component": "history/baseline \u2192 participation band",
+      "distance_px": 32.0042876716319,
+      "position": [
+        238.6460472506978,
+        507.41061658415055
+      ],
+      "goal": [
+        1051.8923769815256,
+        464.3158024265504
+      ],
+      "confidence": "inferred baseline; intermediates absent"
+    },
+    {
+      "tag": "train_0000",
+      "tick": 1,
+      "id": 2,
+      "role": "melee",
+      "component": "history/baseline \u2192 participation band",
+      "distance_px": 32.04219224348816,
+      "position": [
+        247.8352412553565,
+        414.9201665049104
+      ],
+      "goal": [
+        1051.7900335777986,
+        409.949104449419
+      ],
+      "confidence": "inferred baseline; intermediates absent"
+    },
+    {
+      "tag": "train_0000",
+      "tick": 1,
+      "id": 3,
+      "role": "melee",
+      "component": "history/baseline \u2192 participation band",
+      "distance_px": 32.00486147874255,
+      "position": [
+        282.3017490168673,
+        462.6502154504925
+      ],
+      "goal": [
+        1051.8372449378985,
+        460.8236987214369
+      ],
+      "confidence": "inferred baseline; intermediates absent"
+    },
+    {
+      "tag": "train_0000",
+      "tick": 1,
+      "id": 4,
+      "role": "melee",
+      "component": "history/baseline \u2192 participation band",
+      "distance_px": 32.04753341122249,
+      "position": [
+        257.16297060451535,
+        286.79900310786655
+      ],
+      "goal": [
+        1052.490864252266,
+        289.59842305437985
+      ],
+      "confidence": "inferred baseline; intermediates absent"
+    },
+    {
+      "tag": "train_0000",
+      "tick": 1,
+      "id": 5,
+      "role": "melee",
+      "component": "history/baseline \u2192 participation band",
+      "distance_px": 32.03481177322383,
+      "position": [
+        282.21165367503687,
+        287.14119195808445
+      ],
+      "goal": [
+        1052.48051467259,
+        289.2792371229279
+      ],
+      "confidence": "inferred baseline; intermediates absent"
+    },
+    {
+      "tag": "train_0000",
+      "tick": 1,
+      "id": 6,
+      "role": "melee",
+      "component": "history/baseline \u2192 participation band",
+      "distance_px": 32.00051842367171,
+      "position": [
+        235.07633373277403,
+        475.18390690112705
+      ],
+      "goal": [
+        1051.8463833007072,
+        462.7988223340871
+      ],
+      "confidence": "inferred baseline; intermediates absent"
+    },
+    {
+      "tag": "train_0000",
+      "tick": 1,
+      "id": 7,
+      "role": "melee",
+      "component": "history/baseline \u2192 participation band",
+      "distance_px": 32.034874701466336,
+      "position": [
+        247.60583617677037,
+        338.9634388168457
+      ],
+      "goal": [
+        1052.7213402348245,
+        293.3061765279525
+      ],
+      "confidence": "inferred baseline; intermediates absent"
+    },
+    {
+      "tag": "train_0000",
+      "tick": 1,
+      "id": 8,
+      "role": "melee",
+      "component": "history/baseline \u2192 participation band",
+      "distance_px": 32.046743922711116,
+      "position": [
+        265.6608063789569,
+        524.562957218657
+      ],
+      "goal": [
+        1052.2350460386956,
+        468.8718376012812
+      ],
+      "confidence": "inferred baseline; intermediates absent"
+    },
+    {
+      "tag": "train_0000",
+      "tick": 1,
+      "id": 9,
+      "role": "melee",
+      "component": "history/baseline \u2192 participation band",
+      "distance_px": 32.0278302395021,
+      "position": [
+        281.99372055565465,
+        413.24170185128116
+      ],
+      "goal": [
+        1051.7817986733924,
+        410.24672421068755
+      ],
+      "confidence": "inferred baseline; intermediates absent"
+    },
+    {
+      "tag": "train_0000",
+      "tick": 1,
+      "id": 10,
+      "role": "melee",
+      "component": "history/baseline \u2192 participation band",
+      "distance_px": 32.00275157630405,
+      "position": [
+        258.00298312836895,
+        463.6827258112648
+      ],
+      "goal": [
+        1051.8351164453059,
+        461.09240513298033
+      ],
+      "confidence": "inferred baseline; intermediates absent"
+    },
+    {
+      "tag": "train_0000",
+      "tick": 1,
+      "id": 11,
+      "role": "ranged",
+      "component": "escort \u2192 participation band",
+      "distance_px": 26.136470821263956,
+      "position": [
+        225.8167895347588,
+        514.7201848231908
+      ],
+      "goal": [
+        835.9734953562656,
+        470.3996192946721
+      ],
+      "confidence": "exact public overlay endpoint match"
+    },
+    {
+      "tag": "train_0000",
+      "tick": 1,
+      "id": 12,
+      "role": "ranged",
+      "component": "escort \u2192 participation band",
+      "distance_px": 25.462764390729156,
+      "position": [
+        202.50539174169586,
+        368.03423424511413
+      ],
+      "goal": [
+        836.3722772046426,
+        393.3360864055659
+      ],
+      "confidence": "exact public overlay endpoint match"
+    },
+    {
+      "tag": "train_0000",
+      "tick": 1,
+      "id": 13,
+      "role": "ranged",
+      "component": "escort \u2192 participation band",
+      "distance_px": 25.241004609015214,
+      "position": [
+        171.3832611928629,
+        340.97107727207276
+      ],
+      "goal": [
+        837.1332293683561,
+        306.92596462582986
+      ],
+      "confidence": "exact public overlay endpoint match"
+    },
+    {
+      "tag": "train_0000",
+      "tick": 1,
+      "id": 14,
+      "role": "ranged",
+      "component": "escort \u2192 participation band",
+      "distance_px": 27.007870299965177,
+      "position": [
+        180.1935315663274,
+        526.4672638374362
+      ],
+      "goal": [
+        835.9734953562656,
+        470.3996192946721
+      ],
+      "confidence": "exact public overlay endpoint match"
+    },
+    {
+      "tag": "train_0000",
+      "tick": 1,
+      "id": 15,
+      "role": "ranged",
+      "component": "escort \u2192 participation band",
+      "distance_px": 25.660134803177574,
+      "position": [
+        159.77198826153435,
+        369.35874958081894
+      ],
+      "goal": [
+        836.3722772046426,
+        393.3360864055659
+      ],
+      "confidence": "exact public overlay endpoint match"
+    },
+    {
+      "tag": "train_0000",
+      "tick": 1,
+      "id": 16,
+      "role": "ranged",
+      "component": "escort \u2192 participation band",
+      "distance_px": 26.434506719301343,
+      "position": [
+        197.73909990367375,
+        410.1002198288608
+      ],
+      "goal": [
+        835.8844428458423,
+        420.3939591638174
+      ],
+      "confidence": "exact public overlay endpoint match"
+    },
+    {
+      "tag": "train_0000",
+      "tick": 1,
+      "id": 17,
+      "role": "ranged",
+      "component": "escort \u2192 participation band",
+      "distance_px": 25.023860932658476,
+      "position": [
+        230.9227083522813,
+        434.7443254578065
+      ],
+      "goal": [
+        835.8844428458423,
+        420.3939591638174
+      ],
+      "confidence": "exact public overlay endpoint match"
+    },
+    {
+      "tag": "train_0000",
+      "tick": 1,
+      "id": 18,
+      "role": "ranged",
+      "component": "escort \u2192 participation band",
+      "distance_px": 25.865996467670104,
+      "position": [
+        179.25333933301056,
+        462.57056072616933
+      ],
+      "goal": [
+        835.9112036049029,
+        454.871414791702
+      ],
+      "confidence": "exact public overlay endpoint match"
+    },
+    {
+      "tag": "train_0000",
+      "tick": 1,
+      "id": 19,
+      "role": "ranged",
+      "component": "escort \u2192 participation band",
+      "distance_px": 27.29715675979159,
+      "position": [
+        166.36433775577618,
+        530.044600539749
+      ],
+      "goal": [
+        835.9734953562656,
+        470.3996192946721
+      ],
+      "confidence": "exact public overlay endpoint match"
+    },
+    {
+      "tag": "train_0000",
+      "tick": 1,
+      "id": 20,
+      "role": "ranged",
+      "component": "escort \u2192 participation band",
+      "distance_px": 27.765841821761608,
+      "position": [
+        180.91828802999396,
+        392.12545531326646
+      ],
+      "goal": [
+        836.3722772046426,
+        393.3360864055659
+      ],
+      "confidence": "exact public overlay endpoint match"
+    },
+    {
+      "tag": "train_0000",
+      "tick": 1,
+      "id": 21,
+      "role": "ranged",
+      "component": "escort \u2192 participation band",
+      "distance_px": 25.709633436085905,
+      "position": [
+        176.042015563392,
+        419.07249055001427
+      ],
+      "goal": [
+        835.8844428458423,
+        420.3939591638174
+      ],
+      "confidence": "exact public overlay endpoint match"
+    },
+    {
+      "tag": "train_0000",
+      "tick": 1,
+      "id": 22,
+      "role": "ranged",
+      "component": "escort \u2192 participation band",
+      "distance_px": 30.115574491765475,
+      "position": [
+        208.65334509845178,
+        294.0442856538708
+      ],
+      "goal": [
+        837.1332293683561,
+        306.92596462582986
+      ],
+      "confidence": "exact public overlay endpoint match"
+    },
+    {
+      "tag": "train_0000",
+      "tick": 1,
+      "id": 23,
+      "role": "ranged",
+      "component": "escort \u2192 participation band",
+      "distance_px": 26.288853446593784,
+      "position": [
+        153.81007925201973,
+        520.819978739298
+      ],
+      "goal": [
+        835.9734953562656,
+        470.3996192946721
+      ],
+      "confidence": "exact public overlay endpoint match"
+    },
+    {
+      "tag": "train_0000",
+      "tick": 1,
+      "id": 24,
+      "role": "ranged",
+      "component": "escort \u2192 participation band",
+      "distance_px": 26.932890699574628,
+      "position": [
+        228.53338224203668,
+        386.3519858484175
+      ],
+      "goal": [
+        836.3722772046426,
+        393.3360864055659
+      ],
+      "confidence": "exact public overlay endpoint match"
+    }
+  ],
+  "limitations": "P16 overlays reconstructed only for diagnostic attribution; no label-dependent candidates. Raw/winner discarded in slim round0; baseline and participation-only attribution inferred, not causal replay proof. Baseline history includes v6 complex-mode/enemy motion; engine has no ordinary velocity smoother for command goals. No irreducible private-input movement is established: O is a deterministic public-prefix controller."
+}

@@ -8,7 +8,7 @@ LIB=None
 def library():
     global LIB
     if LIB is not None:return LIB
-    identity=''.join(c.sha(c.HERE/p) for p in ('native_candidates.cpp','candidates.h','tools.h'))
+    identity=''.join(c.sha(c.HERE/p) for p in ('native_candidates.cpp','candidates.h','tools.h','movement.h'))
     import hashlib
     folder=c.HERE/'_local/native_candidates';folder.mkdir(parents=True,exist_ok=True)
     path=folder/(hashlib.sha256(identity.encode()).hexdigest()+('.dylib' if sys.platform=='darwin' else '.so'))

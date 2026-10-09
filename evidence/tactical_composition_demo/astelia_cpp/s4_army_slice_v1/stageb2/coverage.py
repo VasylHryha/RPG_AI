@@ -42,7 +42,19 @@ def error_bounds(table,pop):
             v['deterministic_error_bound'][metric]=dict(lower=lo,upper=hi,max_absolute_error=max(v[metric]-lo,hi-v[metric]))
     return out
 
-def run(round,test_mode=False):
+def preserve_previous(local,sources,index_sha256):
+    """Explicit corrected-revision binding, under the ordinary admitted lock."""
+    path=local/'COVERAGE.json'
+    if not path.exists():return None
+    old=r.read(path)
+    if old.get('sources')==sources and old.get('index_sha256')==index_sha256:
+        raise RuntimeError('same-code coverage already recorded; do not repeat')
+    digest=r.sha(path);archive=local/('COVERAGE_PRE_B2MOVE_'+digest[:16]+'.json')
+    if archive.exists():raise RuntimeError('previous coverage archive already exists; preserve and inspect')
+    path.rename(archive)
+    return dict(path=str(archive),sha256=digest)
+
+def run(round,test_mode=False,preserve_stale=False):
     import torch,training
     from models import Policy,initial
     from train import configure,prepare
@@ -58,6 +70,7 @@ def run(round,test_mode=False):
         index=dict(index,fights=timing_fights([f for f in index['fights'] if f['split']=='train']))
     try:
         with admitted(cap['cap_seconds']) as (absolute,monitor):
+            if preserve_stale and not test_mode:receipt['preserved_coverage']=preserve_previous(local,receipt['sources'],receipt['index_sha256'])
             deadline=TrainingDeadline(r.HERE,absolute,cap['cap_seconds']);coverage_end=time.monotonic()+MAX_SECONDS;counts={};fit_counts={};checkpoint_counts={};populations={};fit_populations={};mass=0;physical_mass=0;initial_models={};checkpoints={}
             for arm in r.ARMS:
                 model,_=training.make(arm);model.eval();initial_models[arm]=model
@@ -116,4 +129,4 @@ def run(round,test_mode=False):
     except BaseException as e:receipt.update(status='STOP',error=str(e));raise
     finally:receipt['seconds']=time.monotonic()-start;r.write(r.HERE/('COVERAGE_RUN_'+token+'.json'),receipt,exclusive=True)
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('--round',type=int,choices=(0,1,2),default=0);p.add_argument('--test-mode',action='store_true');a=p.parse_args();run(a.round,a.test_mode)
+    p=argparse.ArgumentParser();p.add_argument('--round',type=int,choices=(0,1,2),default=0);p.add_argument('--test-mode',action='store_true');p.add_argument('--preserve-stale',action='store_true');a=p.parse_args();run(a.round,a.test_mode,a.preserve_stale)

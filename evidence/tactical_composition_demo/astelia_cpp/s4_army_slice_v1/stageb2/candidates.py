@@ -5,8 +5,8 @@ from tools import (add,sub,mul,norm,direction,lead,flight_time,range_project,
                    splash_coverage,best_splash,cluster_centres,dodge_spot,
                    behind_friend,threat_estimate)
 MAX_AIM=194
-MAX_MOVE=896 # corrected legacy envelope; revised vocabulary bound is 576
-FEATURES=18
+MAX_MOVE=1280 # preserved 576 + at most 650 new ordinary points = 1226
+FEATURES=26
 AIM_OFFSET=12. # px per axis
 MOVE_OFFSET=24. # px per axis
 TOLERANCE=20. # Euclidean pixels, same for all roles/head types
@@ -90,6 +90,8 @@ def bank(row,id,allow_missing_aim=False):
             for j in range(16):
                 angle=j*math.pi/8
                 move(add(pos,mul((math.cos(angle),math.sin(angle)),extent*fraction)),10)
+    from movement import ordinary_points
+    for p,typ,source in ordinary_points(row,own,units):append(moves,p,typ,source)
     if own[2]==2 and not aims and not allow_missing_aim:raise ValueError('empty required artillery aim bank; inspect coverage')
     if len(aims)>MAX_AIM or len(moves)>MAX_MOVE:raise ValueError('candidate overflow; no truncation')
     def arrays(items,cap):

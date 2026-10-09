@@ -14,7 +14,7 @@ extern "C" long candidate_batch(const double* input,const int* counts,double wid
   auto units=f.units;std::sort(units.begin(),units.end(),[](auto& a,auto& b){return a[0]<b[0];});
   output.clear();
   for(auto& u:units)if(u[1]==0){auto bank=stageb2::candidates(f,unsigned(u[0]),allow_missing_aim!=0);output.insert(output.end(),{u[0],double(bank.aim.size()),double(bank.move.size())});
-   for(auto* cs:{&bank.aim,&bank.move})for(auto& c:*cs){output.push_back(c.point.x);output.push_back(c.point.y);output.insert(output.end(),c.features.begin()+11,c.features.end());output.push_back(c.type);output.push_back(c.source);}
+   for(auto* cs:{&bank.aim,&bank.move})for(auto& c:*cs){output.push_back(c.point.x);output.push_back(c.point.y);output.insert(output.end(),c.features.begin()+11,c.features.begin()+18);output.push_back(c.type);output.push_back(c.source);}
   }
   *result=output.data();return long(output.size());
  }catch(const std::exception& e){error=e.what();*result=nullptr;return -1;}
