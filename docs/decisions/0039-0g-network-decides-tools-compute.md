@@ -22,8 +22,9 @@
 
 ## Addendum: tools are a bridge (owner, 2026-10-09 ~15:45)
 
-Owner: "so we should use teacher tools only in case we can quickly or properly replace it with network". Agreed rule:
+Owner (corrected wording): "so we should use teacher tools only in case we can not quickly or properly replace it with network". The network is the default; a tool is allowed only where the network cannot do that job quickly or properly. Agreed rule:
 
+0. **Network first.** No new tool is added unless evidence shows the network cannot learn that job properly at reasonable cost. B2's aim and movement tools meet this: artillery aim was about 99.7% wrong and movement unlearned, even on training data, in stage A/B.
 1. **Decisions are always learned.** Tools never decide (unchanged).
 2. **A pure-math tool is temporary.** It stays only until the network can do its job equally well. Each tool gets a replacement test: the same network with the tool removed, trained to compute that part itself (first by distillation from the tool's outputs, then reward training), compared on the same paired fights (deaths, kills per own death, wins).
    - **If the network matches the tool,** the tool is removed.
